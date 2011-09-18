@@ -1,0 +1,111 @@
+/* Structure start */
+body {
+  background: url(img/bg.png) #fafafa top left repeat-x;
+  font-family: 'Ubuntu', Helvetica, sans-serif;
+  color: #333;
+}
+
+a, a:visited {
+  color: #D30000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #7B0000;
+}
+
+#header {
+  padding-top: 1%;
+  text-align: center;
+}
+
+#footer {
+  text-align: center;
+}
+
+#footer p {
+  margin: 0;
+  color: #666;
+}
+
+#main {
+  padding: 2%;
+}
+
+h1 { font-size: 197%; }
+h2 { font-size: 153.9%; }
+h3 { font-size: 108%; }
+
+h1, h2, h3, h4 {
+  font-family: 'Amaranth', sans-serif;
+  text-shadow: 0px 1px 0px #fff;
+}
+
+div.block {
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+}
+
+#block_1 {
+  height: 70px;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 140%;
+  text-shadow: 0px 2px 6px #000;
+  background: url(img/bg_block1.png) #2ac0ff top right repeat-x;
+}
+
+#block_2 {
+  padding: 10px;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 120%;
+  background: url(img/bg_block2.png) #aef36a top right repeat-x;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+}
+
+#block_2 span {
+  text-shadow: 0px 2px 6px #000;
+  color: #fff;
+}
+
+#block_3 {
+  padding: 10px;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 120%;
+  margin-top: 1em;
+  background-color: #fefefe;
+  border: 2px solid #f0f0f0;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+}
+
+#block_3 div {
+  text-align: center;
+}
+
+div.tooltip {
+  display: none;
+  background: transparent url(img/white_arrow_big.png);
+  height: 163px;
+  padding: 40px 30px 10px 30px;
+  width: 310px;
+  color: #000;
+}
+
+div.tooltip table {
+  text-align: center;
+  table-layout: fixed;
+  width: 100%;
+}
+
+div.tooltip table td span {
+  font-weight: bold;
+}
+
+div.ml_desc {
+  font-size: 110%;
+  font-weight: bold;
+}

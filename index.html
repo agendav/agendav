@@ -1,77 +1,123 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-  <title>adobo/agendav @ GitHub</title>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="reset.css">
+ <link rel="stylesheet" type="text/css" href="text.css">
+ <link rel="stylesheet" type="text/css" href="960_12_col.css">
+ <link href="http://fonts.googleapis.com/css?family=Amaranth" rel="stylesheet" type="text/css">
+ <link href="style.css" rel="stylesheet" type="text/css">
+ <!--[if !IE 7]>
+ <style type="text/css">
+   #wrap {display:table;height:100%}
+ </style>
+ <![endif]-->
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #a58fe1;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #5a701e; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #5a701e; }
-    h3 { text-align: center; color: #5a701e; }
-    a { color: #5a701e; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+ <title>
+  AgenDAV, a CalDAV web client
+ </title>
+ </head>
+ <body>
+<a href="http://github.com/adobo/agendav/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
 
-<body>
-  <a href="http://github.com/adobo/agendav"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<div id="wrap">
 
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/adobo/agendav/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/adobo/agendav/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/adobo/agendav">agendav</a>
-      <span class="small">by <a href="http://github.com/adobo">adobo</a></span></h1>
-
-    <div class="description">
-      A CalDAV web client similar to Google Calendar
-    </div>
-
-    <h2>Authors</h2>
-<p>Jorge López Pérez (jorge@adobo.org)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Jorge López Pérez (jorge@adobo.org)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/adobo/agendav/zipball/master">zip</a> or
-      <a href="http://github.com/adobo/agendav/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/adobo/agendav</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/adobo/agendav">adobo/agendav</a>
-    </div>
-
+  <div id="header">
+   <img src="agendav_big.png" alt="AgenDAV" />
   </div>
 
-  
-</body>
-</html>
+ <div class="container_12" id="main">
+  <div class="grid_7">
+  <div class="block" id="block_1">
+   AgenDAV is an <strong>open source</strong> CalDAV web client which features a
+   rich AJAX interface with shared calendars support
+  </div><!-- block_1 -->
+  </div>
+
+  <div class="grid_4 suffix_1">
+   <div class="block" id="block_2">
+    <span>Some features:</span>
+    <ul>
+     <li>Drag&amp;Drop user interface</li>
+     <li>Multiple calendar support</li>
+     <li>Configurable calendar colours</li>
+     <li>Calendar sharing</li>
+     <li>Basic recurring events support</li>
+    </li>
+   </div>
+  </div>
+  <div class="clear"></div>
+
+  <div class="grid_12 block" id="block_3">
+   	<div class="grid_4 alpha" id="download_link">
+	 <img src="img/zip_file_download.png" 
+	 	alt="Download" />
+	 <p>Download</p>
+	</div>
+	<div class="grid_4">
+	 <a href="doc/1.1">
+	 <img src="img/office_folders.png" alt="Documentation" />
+	 <p>Documentation</p>
+	 </a>
+	</div>
+	<div class="grid_4 omega" id="mail_link">
+	 <img src="img/users_comments.png" alt="Mailing lists" />
+	 <p>Mailing lists</p>
+	</div>
+  </div>
+
+ </div>
+</div>
+
+<div class="tooltip" id="download_tooltip">
+ <table>
+  <tr>
+   <td style="text-align: center" colspan="2">
+   <a href="http://github.com/adobo/agendav/tarball/1.1">
+    <img src="img/download_to_computer.png" alt="Download" />
+    <br />
+    Download tar.gz
+   </a>
+   </td>
+  </tr>
+  <tr>
+   <td><span>Version</span></td><td>1.1</td>
+  </tr>
+  <tr>
+   <td><span>Release date</span></td><td>2011-09-18</td>
+  </tr>
+ </table>
+</div>
+<div class="tooltip" id="mail_tooltip">
+ <p>
+  Feel free to subscribe to these mailing lists:
+  <div class="ml_desc">Users and announcements</div>
+  <a href="http://groups.google.com/group/agendav-general">agendav-general@googlegroups.com</a>
+  <div class="ml_desc">Development discussion</div>
+  <a
+  href="http://groups.google.com/group/agendav-dev">agendav-dev@googlegroups.com</a>
+ </p>
+</div>
+
+<div id="footer">
+ <p>
+ AgenDAV is published under <a
+ href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a> license
+ </p>
+ <p>
+ Icons by <a href="http://dryicons.com/">dryicons</a>
+ </p>
+</div>
+ <script src="http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js"></script>
+ <script language="JavaScript">
+  $(document).ready(function() {
+   $("#download_link").tooltip({ tip: '#download_tooltip', position: 'top center' });
+   $("#mail_link").tooltip({ tip: '#mail_tooltip', position: 'top center' });
+  });
+ </script>
+ </body>
+</html> 
+

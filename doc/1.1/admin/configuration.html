@@ -1,0 +1,412 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.2. Configuration &mdash; AgenDAV v1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="AgenDAV v1.1 documentation" href="../index.html" />
+    <link rel="up" title="1. Installation and configuration" href="index.html" />
+    <link rel="prev" title="1.1. Installation" href="installation.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>AgenDAV v1.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>1.2. Configuration</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="installation.html" title="1.1. Installation" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Installation and configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">1.1. Installation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">1.2. Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configuration">
+<h1>1.2. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Configuring AgenDAV requires modifying some PHP text files located in the
+<tt class="docutils literal"><span class="pre">web/config/</span></tt> directory.</p>
+<p>The following files are usually found as <tt class="docutils literal"><span class="pre">filename.php.template</span></tt>, so make
+a copy of them with the correct file name to make them work.</p>
+<div class="section" id="general-configuration-config-php">
+<h2>1.2.1. General configuration (config.php)<a class="headerlink" href="#general-configuration-config-php" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">config.php</span></tt> file specifies general options about AgenDAV environment.
+Please, do not change variables which don&#8217;t appear below unles you really
+know what you are doing.</p>
+<dl class="confval">
+<dt id="confval-base_url">
+<tt class="descname">base_url</tt><a class="headerlink" href="#confval-base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify here your full public URL to access AgenDAV, adding a trailing
+slash. Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;base_url&#39;] = &#39;https://agendav.host/&#39;;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-show_in_log">
+<tt class="descname">show_in_log</tt><a class="headerlink" href="#confval-show_in_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array of logging levels which will appear in logs. Possible logging
+levels are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">ERROR</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">INFO</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">AUTHERR</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">AUTHOK</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">INTERNALS</span></tt></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;show_in_log&#39;]= array(&#39;ERROR&#39;,&#39;INFO&#39;,&#39;AUTHERR&#39;, &#39;AUTHOK&#39;);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-log_path">
+<tt class="descname">log_path</tt><a class="headerlink" href="#confval-log_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path where logs will be created. Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;log_path&#39;] = &#39;&#39;;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-encryption_key">
+<tt class="descname">encryption_key</tt><a class="headerlink" href="#confval-encryption_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random string which will be used to encrypt some cookie values.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-cookie_domain">
+<tt class="descname">cookie_domain</tt><a class="headerlink" href="#confval-cookie_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Domain the cookie will be defined for. Use <tt class="docutils literal"><span class="pre">.domain.tld</span></tt> or
+<tt class="docutils literal"><span class="pre">full.host.domain.tld</span></tt>, depending on what you want.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-cookie_path">
+<tt class="descname">cookie_path</tt><a class="headerlink" href="#confval-cookie_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path the cookie will be defined for.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-cookie_secure">
+<tt class="descname">cookie_secure</tt><a class="headerlink" href="#confval-cookie_secure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create cookies only for use in https environments. Set it TRUE if your
+users access AgenDAV via https.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-LC_ALL">
+<tt class="descname">LC_ALL</tt><a class="headerlink" href="#confval-LC_ALL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Really not a configuration variable, but a locale setting. Look for a
+<tt class="docutils literal"><span class="pre">setlocale</span></tt> directive and set it to the desired locale.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-site_title">
+<tt class="descname">site_title</tt><a class="headerlink" href="#confval-site_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Title of every page</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-logo">
+<tt class="descname">logo</tt><a class="headerlink" href="#confval-logo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image filename which will be used as a logo. Has to be a valid filename
+placed inside <tt class="docutils literal"><span class="pre">web/public/img/</span></tt> directory.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-footer">
+<tt class="descname">footer</tt><a class="headerlink" href="#confval-footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to be placed in the footer.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-logout_redirect_to">
+<tt class="descname">logout_redirect_to</tt><a class="headerlink" href="#confval-logout_redirect_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>When logging out from AgenDAV, the URL the user will be redirected to.</p>
+<p>Can be left empty to redirect user to login page again.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-additional_js">
+<tt class="descname">additional_js</tt><a class="headerlink" href="#confval-additional_js" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array of additional JavaScript files which you will be loading on every
+page. They have to be placed inside <tt class="docutils literal"><span class="pre">web/public/js</span></tt></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-show_public_caldav_url">
+<tt class="descname">show_public_caldav_url</tt><a class="headerlink" href="#confval-show_public_caldav_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to show CalDAV URL links or not in the edit dialog</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#confval-public_caldav_url"><tt class="xref std std-confval docutils literal"><span class="pre">public_caldav_url</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-default_calendar_color">
+<tt class="descname">default_calendar_color</tt><a class="headerlink" href="#confval-default_calendar_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default background and foreground colors for calendars. Has to be
+specified as an associative array. Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// Default background color: #B5C7EB</span>
+<span class="x">// Default foreground (text) color: #000000</span>
+<span class="x">$config[&#39;default_calendar_color&#39;] = array(&#39;B5C7EB&#39; =&gt; &#39;000000&#39;);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-additional_calendar_colors">
+<tt class="descname">additional_calendar_colors</tt><a class="headerlink" href="#confval-additional_calendar_colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of selectable background and foreground color combinations. Specify
+them as an associative array. Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// background color =&gt; foreground color</span>
+<span class="x">$config[&#39;additional_calendar_colors&#39;] = array(</span>
+<span class="x">        &#39;FAC5C0&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;B7E3C0&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;CAB2FC&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;F8F087&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;E6D5C1&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;FFC48C&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;DAF5FF&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">        &#39;C4C4BC&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="database-configuration-database-php">
+<h2>1.2.2. Database configuration (database.php)<a class="headerlink" href="#database-configuration-database-php" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">database.php</span></tt> contains how to connect to your MySQL database. Just follow
+inline comments, it&#8217;s pretty straight forward.</p>
+</div>
+<div class="section" id="ldap-configuration-ldap-php">
+<h2>1.2.3. LDAP configuration (ldap.php)<a class="headerlink" href="#ldap-configuration-ldap-php" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">ldap.php</span></tt> specifies how to connect to a LDAP server to authenticate users
+before they enter the application. At this moment, AgenDAV authenticates
+users against LDAP and lets them enter only if succeeded. Will disappear in
+future releases because it&#8217;s an unnecessary double check.</p>
+<dl class="confval">
+<dt id="confval-ldap_host">
+<tt class="descname">ldap_host</tt><a class="headerlink" href="#confval-ldap_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host to connect</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-ldap_port">
+<tt class="descname">ldap_port</tt><a class="headerlink" href="#confval-ldap_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port on which LDAP is being served at <tt class="docutils literal"><span class="pre">ldap_host</span></tt></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-ldap_admin_dn">
+<tt class="descname">ldap_admin_dn</tt><a class="headerlink" href="#confval-ldap_admin_dn" title="Permalink to this definition">¶</a></dt>
+<dd><p>DN to be used to bind on LDAP which has search privileges.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-ldap_admin_passwd">
+<tt class="descname">ldap_admin_passwd</tt><a class="headerlink" href="#confval-ldap_admin_passwd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Password used to bind with DN specified in <tt class="docutils literal"><span class="pre">ldap_admin_dn</span></tt>.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-ldap_base_dn">
+<tt class="descname">ldap_base_dn</tt><a class="headerlink" href="#confval-ldap_base_dn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base DN to search for users</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-ldap_id_attr">
+<tt class="descname">ldap_id_attr</tt><a class="headerlink" href="#confval-ldap_id_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attribute on LDAP that contains usernames.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-ldap_search_filter">
+<tt class="descname">ldap_search_filter</tt><a class="headerlink" href="#confval-ldap_search_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter pattern used to search for users. The placeholder <tt class="docutils literal"><span class="pre">%u</span></tt> will be
+replaced by current username trying to log in.</p>
+<p>Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;ldap_search_filter&#39;] = &#39;(&amp;(uid=%u)(inetUserStatus=Active))&#39;;</span>
+</pre></div>
+</div>
+<p>If user <tt class="docutils literal"><span class="pre">user1</span></tt> is trying to log in, will become:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">(&amp;(uid=user1)(inetUserStatus=Active))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="caldav-specific-options-caldav-php">
+<h2>1.2.4. CalDAV specific options (caldav.php)<a class="headerlink" href="#caldav-specific-options-caldav-php" title="Permalink to this headline">¶</a></h2>
+<p>Here you will configure every single aspect of your CalDAV server.</p>
+<dl class="confval">
+<dt id="confval-caldav_url">
+<tt class="descname">caldav_url</tt><a class="headerlink" href="#confval-caldav_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>The _internal_ URL used by AgenDAV to connect to your CalDAV server. The
+placeholder <tt class="docutils literal"><span class="pre">%u</span></tt> will be replaced by current user.</p>
+<p>Needs a trailing slash.</p>
+<p>Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;caldav_url&#39;] = &#39;http://10.0.0.12/caldav.php/%u/&#39;;</span>
+</pre></div>
+</div>
+<p>For user4 Will become:</p>
+<blockquote>
+<div><a class="reference external" href="http://10.0.12/caldav.php/user4/">http://10.0.12/caldav.php/user4/</a></div></blockquote>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-public_caldav_url">
+<tt class="descname">public_caldav_url</tt><a class="headerlink" href="#confval-public_caldav_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URL that will be shown to users if <a class="reference internal" href="#confval-show_public_caldav_url"><tt class="xref std std-confval docutils literal"><span class="pre">show_public_caldav_url</span></tt></a> is
+enabled. It&#8217;s not used for internal connections. Placeholder <tt class="docutils literal"><span class="pre">%s</span></tt> will
+be replaced by current username and calendar.</p>
+<p>Needs a trailing slash.</p>
+<p>Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;public_caldav_url&#39;] = &#39;https://public.caldav.tld/caldav.php/%s/&#39;;</span>
+</pre></div>
+</div>
+<p>Will become for user <tt class="docutils literal"><span class="pre">user2</span></tt> and calendar <tt class="docutils literal"><span class="pre">myhomecalendar</span></tt>:</p>
+<blockquote>
+<div><a class="reference external" href="https://public.caldav.tld/caldav.php/user2/myhomecalendar/">https://public.caldav.tld/caldav.php/user2/myhomecalendar/</a></div></blockquote>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-owner_permissions">
+<tt class="descname">owner_permissions</tt><a class="headerlink" href="#confval-owner_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of DAV permissions used for the calendar owner when sharing a
+calendar. As DAV ACLs are used, when editing a calendar sharing options a
+full ACL has to be built with the following structure:</p>
+<ul class="simple">
+<li>Permissions given to the owner (this option)</li>
+<li>Permissions given to granted users (<a class="reference internal" href="#confval-share_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">share_permissions</span></tt></a>)</li>
+<li>Permissions given to other users (<a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>)</li>
+</ul>
+<p>Please, refer to your CalDAV server documentation to know which
+permissions does it support.</p>
+<p>For DAViCal you can follow <a class="reference external" href="http://wiki.davical.org/w/Permissions">Permissions page on DAViCal wiki</a>. Default values of this option
+will work all right for DAViCal.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Used in conjunction with options <a class="reference internal" href="#confval-share_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">share_permissions</span></tt></a>
+and <a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-share_permissions">
+<tt class="descname">share_permissions</tt><a class="headerlink" href="#confval-share_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of DAV permissions used for granted users when another user shares a
+calendar with them.</p>
+<p>Please, refer to your CalDAV server documentation to know which
+permissions does it support.</p>
+<p>Default value lets users to read and write on shared calendars. AgenDAV
+doesn&#8217;t support at this moment to select whether you want read or shared
+rights.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Used in conjunction with options <a class="reference internal" href="#confval-owner_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">owner_permissions</span></tt></a>
+and <a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-default_permissions">
+<tt class="descname">default_permissions</tt><a class="headerlink" href="#confval-default_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of DAV permissions used for users which are not owner neither
+granted users when some user shares a calendar with other ones.</p>
+<p>Please, refer to your CalDAV server documentation to know which
+permissions does it support.</p>
+<p>Default value lets users just to make free/busy queries in DAViCal.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Used in conjunction with options <a class="reference internal" href="#confval-owner_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">owner_permissions</span></tt></a>
+and <a class="reference internal" href="#confval-share_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">share_permissions</span></tt></a>.</p>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2011, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		<a href="index.html" accesskey="U">1. Installation and configuration</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
+		1.2. Configuration
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+  </body>
+</html>
