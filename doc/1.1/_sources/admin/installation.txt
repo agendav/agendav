@@ -22,14 +22,10 @@ AgenDAV |release| can be obtained at `AgenDAV official webpage
 <http://agendav.org>`_, but you can use GitHub to download latest version.
 Have a look at `<http://github.com/adobo/agendav>`_.
 
-Remember to check SHA1 checksum of the downloaded file::
-
- $ sha1sum agendav-1.1.tar.gz
-
 Uncompress it using ``tar``::
 
- $ tar xzf agendav-1.1.tar.gz
- $ cd agendav-1.1/
+ $ tar xzf adobo-agendav-1.1....tar.gz
+ $ cd adobo-agendav-.../
 
 Database and tables
 -------------------
