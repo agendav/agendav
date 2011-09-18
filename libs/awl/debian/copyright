@@ -1,0 +1,34 @@
+Andrew's Web Libraries are are licensed under the Gnu Public License
+version 2, or later.
+
+This package was debianized by Andrew McMillan <debian@mcmillan.net.nz>
+since it's inception.
+
+The current Debian maintainer is Andrew McMillan <awm@debian.org>
+
+It was downloaded from:
+  http://debian.mcmillan.net.nz/packages/awl-libawl-php-0.30.tar.gz
+
+Upstream Authors: Andrew McMillan
+
+Copyright: 2006 - 2008 Catalyst IT Ltd
+           2006 - 2008 Andrew McMillan
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License with
+ the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL;
+ if not, write to the Free Software Foundation, Inc., 51 Franklin St,
+ Fifth Floor, Boston, MA 02110-1301, USA.
+
+On Debian systems, the complete text of the GNU General Public
+License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+
+The licensed software includes the Debian packaging.

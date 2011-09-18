@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg3032"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="Documento nuevo 2">
+  <defs
+     id="defs3034" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="230.07656"
+     inkscape:cy="895.53186"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="813"
+     inkscape:window-height="700"
+     inkscape:window-x="479"
+     inkscape:window-y="199"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata3037">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       transform="translate(15.888439,-68.981324)"
+       id="g3014"
+       inkscape:export-filename="/home/jorge/agendav_small.png"
+       inkscape:export-xdpi="62.159191"
+       inkscape:export-ydpi="62.159191">
+      <text
+         sodipodi:linespacing="125%"
+         id="text3840-30"
+         y="130.06177"
+         x="25.506361"
+         style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:PT Sans Caption;-inkscape-font-specification:PT Sans Caption"
+         xml:space="preserve"><tspan
+           dy="0 0 0 0 2.8571432"
+           dx="0 0.25253814 -0.50507629 -0.75761443 0.50507629 -0.25253814 -0.50507629"
+           style="letter-spacing:-2.45322752"
+           y="130.06177"
+           x="25.506361"
+           id="tspan3844-7"
+           sodipodi:role="line">Agen<tspan
+   id="tspan3011-7"
+   style="font-weight:bold;-inkscape-font-specification:PT Sans Caption Bold">DAV</tspan></tspan></text>
+      <rect
+         y="115.02753"
+         x="148.0443"
+         height="3.3912008"
+         width="19.391201"
+         id="rect3025-4"
+         style="opacity:0.9;fill:#3b8bda;fill-opacity:1;stroke:#0063ff;stroke-width:0.6087994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="129.65854"
+         x="148.0443"
+         height="3.3912008"
+         width="19.391201"
+         id="rect3025-1-8"
+         style="opacity:0.9;fill:#84d67d;fill-opacity:1;stroke:#07ab00;stroke-width:0.6087994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="122.34301"
+         x="148.0443"
+         height="3.3912008"
+         width="19.391201"
+         id="rect3025-1-5-1"
+         style="opacity:0.9;fill:#eb7c74;fill-opacity:1;stroke:#ff0a00;stroke-width:0.6087994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+  </g>
+</svg>

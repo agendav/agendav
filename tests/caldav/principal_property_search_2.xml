@@ -1,0 +1,13 @@
+<principal-property-search xmlns="DAV:">
+  <property-search>
+    <prop>
+      <displayname/>
+    </prop>
+    <match>JORGE</match>
+  </property-search>
+  <prop>
+    <displayname/>
+    <C:calendar-home-set
+      xmlns:C="urn:ietf:params:xml:ns:caldav"/>
+  </prop>
+</principal-property-search>

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+[ -n "${DEBUG}" ] && set -o xtrace
+PACKAGE=::package::
+[ -n "${DEBUG}" ] && echo "PostInst Parameters: $@"
+
+case $1 in
+  configure)
+      # Attempt to run the database upgrade script with default
+      # settings, but ignore any possible failure.
+      /usr/share/davical/dba/update-davical-database > /var/log/davical-upgrade.log 2>&1 || true
+    ;;
+esac
+
+#DEBHELPER#

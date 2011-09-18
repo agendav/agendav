@@ -1,0 +1,35 @@
+Release 1.1 (2011-09-18)
+	* AgenDAV has now a logo!
+	* Added multiple calendars support. Auto discovered via PROPFIND
+	* Added read+write calendar sharing, based on WebDAV ACLs
+	* Changed from jQuery overlay to qTip tooltips
+	* Restyled whole application using Aristo jQuery UI theme
+	* Added a 'Create event' button on top of calendar list
+	* Event creation/modification is now tabbed
+	* iCalendar parsing times are now benchmarked. They get logged and
+	  sent within HTTP header X-Parse-Time
+	* Upgraded libraries:
+	   - CodeIgniter 2.0.3
+	   - iCalcreator 2.10.5
+	   - jQuery 1.6.4
+	   - jQuery UI 1.8.16
+	   - Fullcalendar 1.5.2
+
+Release 1.0.1 (2011-06-14)
+	* Added 'logout_redirect_to' option
+	* Added 'additional_js' option
+	* All day events can now last more than a single day
+	* Upgraded to latest iCalcreator beta (2.9.6rc)
+	* VTIMEZONEs are now generated using iCalcreator functionality
+	instead of having lots of .ics files on config/vtimezones
+	* Upgraded to jQuery 1.6.1 and jQuery UI 1.8.13
+	* Rearranged calendar navigation items, including a new datepicker
+	* Multiple calendar support
+	* Automatic and periodic session refresh
+	* Dialogs have now icons within buttons to make them clearer
+	* Several bugfixes and optimizations
+	* Changed to perifer timePicker (resembles Google Calendar
+	  timepicker)
+
+
+

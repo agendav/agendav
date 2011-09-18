@@ -1,0 +1,38 @@
+#
+# Administration Configuration file (sample)
+#
+#  This file is only used by command-line programs accessing the DAViCal
+#  database for maintenance.  It should be as secure as you can make it
+#  since it contains passwords and connection details for a more powerful
+#  database connection.  Mode 600 is recommended.
+#
+#  This file should be called 'administration.yml' in the config directory.
+#
+
+##
+## The database username for connecting with sufficient rights to create
+## tables, functions and granting access to other users.
+admin_db_user: davical_dba
+
+##
+## The password.  Leading and trailling spaces are stripped, so don't do that
+#admin_db_pass: very, very 5ecret
+
+##
+## The hostname/IP.  Not needed if using unix sockets to a local server.
+#admin_db_host: 2401:170:20:17::1024:0
+#admin_db_host: 172.17.217.2
+#admin_db_host: dbserver.davical.net
+
+##
+## The database name
+admin_db_name: davical
+
+##
+## The database port.  Not needed if it is the default '5432'
+#admin_db_port: 5432
+
+
+##
+## The name of the database user the web application uses to connect
+app_db_user: davical_app

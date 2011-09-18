@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<expand-property xmlns="DAV:">
+ <property name="group-membership" namespace="DAV:">
+   <property name="getcontenttype"/>
+   <property name="resourcetype"/>
+ </property>
+</expand-property>

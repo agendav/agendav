@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+[ -n "${DEBUG}" ] && set -o xtrace
+PACKAGE=::package::
+
+[ -n "${DEBUG}" ] && echo "PostRM Parameters: $@"
+
+case $1 in
+  purge)
+    ;;
+esac
+
+#DEBHELPER#

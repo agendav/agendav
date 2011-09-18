@@ -1,0 +1,12 @@
+UseGit: 1
+StatusStrict: 1
+StatusOpenList: New
+StatusOpenList: InProgress
+StatusClosedList: Finished
+DefaultNewStatus: New
+LabelStrict: 1
+LabelAllowedList: Type-Enhancement
+LabelAllowedList: Type-Defect
+LabelAllowedList: Priority-High
+LabelAllowedList: Priority-Medium
+LabelAllowedList: Priority-Low

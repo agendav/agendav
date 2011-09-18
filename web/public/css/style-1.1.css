@@ -1,0 +1,580 @@
+* {margin:0;padding:0;}
+body {
+  background: url(../img/bg_11.png) #c6c8cd top left repeat-x;
+  font: normal 0.8em 'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
+  min-width: 930px;
+}
+
+/* jQuery UI font override */
+.ui-widget { font-family: 'Trebuchet MS',Arial,sans-serif !important; font-size: 1.1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: 'Lucida Grande', 'Trebuchet MS', Arial,sans-serif !important; font-size: 1em; } 
+
+a, a:visited {
+  color: #002D5A;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover, a:active {
+  color: #636363;
+}
+
+img {
+  border: 0;
+  background-color: transparent;
+  border-radius: 0.;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+}
+
+.logintitle {
+  text-align: center;
+  font-family: Ubuntu, Verdana, sans-serif;
+  margin-top: 5%
+}
+
+.logintitle img, .logintitle h1 {
+  display: inline;
+  vertical-align: bottom;
+}
+
+
+.loginform {
+  margin: 5% auto;
+  text-align: center;
+  width: 430px;
+}
+
+.loginform .loginform_fields {
+  margin: 0.7em;
+  padding: 1em;
+}
+
+.loginerrors {
+  width: 400px;
+  margin: 5% auto 0 auto;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #324269; 
+  max-width: 20em;
+}
+
+#topbar {
+  background: url(../img/bg_topbar.png) #f0f0f0 top left repeat-x;
+  height: 25px;
+  min-height: 25px;
+  color: #808080;
+  text-align: right;
+}
+
+#topbar div.title {
+  display: inline;
+  float: left;
+  color: black;
+  font-weight: bold;
+}
+
+#topbar div.current_username {
+  font-style: italic;
+  color: black;
+  display: inline;
+  padding-left: 20px;
+  background: url(../img/user.png) transparent left center no-repeat;
+}
+
+#wrap_topbar {
+  padding: 3px 2px;
+}
+
+#logoutbutton {
+  vertical-align: middle;
+}
+
+#footer {
+  clear: both;
+  margin: 0 auto 0 auto;
+  text-align: center;
+  width: 80%;
+}
+
+#footer p {
+  color: #777777;
+}
+
+#page_contents {
+  float: right;
+  width: 80%;
+  margin: 1% 0;
+}
+
+#left_frame {
+  float: left;
+  width: 20%;
+  padding-top: 1%;
+}
+
+#calendar_view {
+  width: 99%;
+  margin: 0 auto 0 auto;
+}
+
+label.suboption {
+  padding-left: 0.8em;
+}
+
+div.block {
+  margin: 0 auto 5% auto;
+  width: 90%;
+}
+
+div.block .ui-widget-header {
+  padding: 0.4em 1em 0.3em 1em;
+}
+
+div#logo {
+  text-align: center;
+}
+
+div.block div.links {
+  text-align: right;
+  margin-top: 1em;
+  margin-right: 1%;
+}
+
+div.block div.links span.item {
+  margin-left: 1%;
+  cursor:pointer;
+}
+
+#calendar_list ul, #calendar_list li {
+  list-style: none;
+  padding-left: 1%;
+  cursor:pointer;
+}
+
+#calendar_list li {
+  padding: 4px 4px 4px 15px;
+  margin: 3px;
+  -moz-border-radius: 0.4em;
+  -webkit-border-radius: 0.4em;
+  zoom: 1;
+  filter: alpha(opacity=80);
+  opacity: 0.8;
+}
+
+li.selected_calendar {
+  color: black !important;
+  background: url(../img/current.png) transparent center left no-repeat;
+  filter: alpha(opacity=100) !important;
+  opacity: 1.0 !important;
+}
+
+.color1 {
+  background-color: #36c;
+  border-color: #36c;
+}
+
+.color2 {
+  background-color: #D1001A;
+  border-color: #D1001A;
+}
+
+.color3 {
+  background-color: #06862E;
+  border-color: #06862E;
+}
+
+.color4 {
+  background-color: #EA5E00;
+  border-color: #EA5E00;
+}
+
+.color5 {
+  background-color: #673496;
+  border-color: #673496;
+}
+
+
+/* Loadmask starts */
+.loadmask {
+    z-index: 100;
+    position: absolute;
+    top:0;
+    left:0;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+    background-color: #CCC;
+    width: 100%;
+    height: 100%;
+    zoom: 1;
+}
+.loadmask-msg {
+    z-index: 20001;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border:1px solid #6593cf;
+    background: #c3daf9;
+    padding:2px;
+}
+.loadmask-msg div {
+    padding:5px 10px 5px 25px;
+    background: #fbfbfb url('../img/loading.gif') no-repeat 5px 5px;
+    line-height: 16px;
+	border:1px solid #a3bad9;
+    color:#222;
+    font:normal 11px tahoma, arial, helvetica, sans-serif;
+    cursor:wait;
+}
+.masked {
+    overflow: hidden !important;
+}
+.masked-relative {
+    position: relative !important;
+}
+.masked-hidden {
+    visibility: hidden !important;
+}
+
+/* Loadmask end */
+
+/* Freeow starts */
+
+/* Outermost Container */
+.freeow {
+    position: fixed;
+    width: 300px;
+    z-index: 9999;  
+}
+.freeow-top-right {
+    top: 40px;
+    right: 10px; 
+}
+/* Message */
+.freeow > div {
+    position: relative;
+    margin-bottom: 5px;
+	cursor: pointer;
+}
+.freeow .content {
+    margin: 5px 5px 5px 69px;
+}
+.freeow h2,
+.freeow p {
+    margin: 0;
+    padding: 0;
+
+}
+.freeow .icon {
+    position: absolute;
+    display: block;
+    width: 48px;
+    height: 48px;
+    top: 5px;
+    left: 10px;
+    z-index: 1;
+}
+
+
+
+.freeow .close {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    top: 8px;
+    left: 8px;
+    background: none;
+    z-index: 2;
+}
+.freeow div:hover .close {
+    background: transparent url(../img/close.png) no-repeat 0 0;
+}
+
+.freeow .popup_success,
+.freeow .popup_error {
+	color: white;
+}
+.freeow .popup_error .background,
+.freeow .popup_success .background {
+    -moz-border-radius: 12px;
+	border-radius: 12px;
+    opacity: .80;
+    -moz-box-shadow: 2px 2px 3px #888;
+    -webkit-box-shadow: 2px 2px 3px #888;
+    box-shadow: 2px 2px 3px #888;
+}
+
+
+.freeow .popup_error .background {
+    border: 3px solid #E27782;
+    background: #9A1120;
+}
+
+.freeow .popup_success .background {
+    border: 3px solid #33AC00;
+    background: #2F7013;
+}
+
+.freeow .popup_error:hover .background {
+    border-color: #77121D;
+}
+
+.freeow .popup_success:hover .background {
+    border-color: #1A390D;
+}
+.freeow .popup_success .content,
+.freeow .popup_error .content {
+    margin: 5px 5px 5px 69px;
+}
+.freeow .popup_success h2,
+.freeow .popup_error h2 {
+    font-family: "Lucida Grande", Helvetica, arial, sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+}
+.freeow .popup_success p,
+.freeow .popup_error p {
+    padding-top: 8px;
+    font-family: Helvetica, arial, sans-serif;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.freeow .popup_error .icon {
+    background: transparent url(../img/freeow-notice.png) no-repeat 0 0;
+}
+
+.freeow .popup_success .icon {
+    background: transparent url(../img/Ok.png) no-repeat 0 0;
+}
+
+/* Freeow ends */
+
+/* overlay starts */
+
+#view_event_details_template {
+  display: none;
+}
+
+.view_event_details {
+  width: 400px !important;
+  max-width: 400px !important;
+}
+
+.view_event_details .label {
+  font-weight: bold;
+}
+
+.view_event_details p.start_and_finish {
+  font-style: italic;
+}
+
+.view_event_details .ui-tooltip-content div {
+  margin-bottom: 1.7em;
+  line-height: 1.5em;
+}
+
+.view_event_details .description_value {
+  margin-left: 2em;
+  font-family: monospace;
+  max-height: 250px;
+  width: 90%;
+  overflow: auto;
+}
+
+.view_event_details span.rrule_raw_value {
+  font-family: monospace;
+}
+
+
+.view_event_details .actions {
+  text-align: right;
+}
+
+.view_event_details .ui-tooltip-content {
+  line-height: 150%;
+  padding: 0.5em 2em 0.5em 2em !important;
+  font-size: 120% !important;
+}
+
+.view_event_details .ui-tooltip-title {
+  font-size: 120%;
+}
+
+/* overlay ends */
+
+#delete_event_dialog .title {
+  font-size: 120%;
+  font-style: italic;
+}
+
+#delete_event_dialog .calendar {
+  font-style: italic;
+}
+
+/* delete event dialog ends */
+
+.time-picker {
+  z-index: 9999 !important;
+}
+
+#ui-datepicker-div {
+  z-index: 9999 !important;
+}
+
+/* colorPicker starts */
+div.color_picker {
+  height: 16px;
+  width: 32px;
+  padding: 0 !important;
+  border: 1px solid #ccc;
+  background: url(../img/arrow_colorpicker.gif) no-repeat top right;
+  cursor: pointer;
+  line-height: 16px;
+}
+
+div#color_selector {
+  width: 100px;
+  position: absolute;
+  border: 1px solid #598FEF;
+  background-color: #EFEFEF;
+  padding: 2px;
+  z-index: 9999;
+}
+  div#color_custom {width: 100%; float:left }
+  div#color_custom label {font-size: 95%; color: #2F2F2F; margin: 5px 2px; width: 25%}
+  div#color_custom input {margin: 5px 2px; padding: 0; font-size: 95%; border: 1px solid #000; width: 65%; }
+
+div.color_swatch {
+  height: 24px;
+  width: 24px;
+  border: 1px solid #000;
+  margin: 2px;
+  float: left;
+  cursor: pointer;
+  line-height: 12px;
+}
+/* colorPicker ends */
+
+/* tag-it starts */
+
+ul.tagit {
+	padding: 1px 5px;
+	overflow: auto;
+    margin-left: inherit; /* usually we don't want the regular ul margins. */
+    margin-right: inherit;
+}
+ul.tagit li {
+	display: block;
+	float: left;
+	margin: 2px 5px 2px 0;
+}
+ul.tagit li.tagit-choice {
+	padding: .2em 18px .2em .5em;
+    position: relative;
+    line-height: inherit;
+}
+ul.tagit li.tagit-new {
+	padding: .25em 4px .25em 0;
+}
+
+ul.tagit li.tagit-choice a.tagit-label {
+	cursor: pointer;
+	text-decoration: none;
+}
+ul.tagit li.tagit-choice .close {
+	cursor: pointer;
+    position: absolute;
+    right: .1em;
+    top: 50%;
+    margin-top: -8px;
+}
+
+/* used for some custom themes that don't need image icons */
+ul.tagit li.tagit-choice .close .text-icon {
+    display: none;
+}
+
+ul.tagit li.tagit-choice input {
+	display: block;
+	float: left;
+	margin: 2px 5px 2px 0;
+}
+ul.tagit input[type="text"] {
+    -moz-box-sizing:    border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing:         border-box;
+
+    border: none;
+	margin: 0;
+	padding: 0;
+	width: inherit;
+	background-color: inherit;
+    outline: none;
+}
+/* tag-it ends */
+
+#tabs-share ul.tagit {
+  width: 300px;
+}
+
+div.public_url {
+  text-align: right;
+  font-size: 80%;
+  margin-top: 1em;
+}
+
+#comm {
+  display: none;
+}
+
+span.shared {
+  display: block;
+  height: 16px;
+  width: 16px;
+  float: right;
+  background-image: url(../img/share.png);
+  background-position: 95% 50%;
+  background-repeat: no-repeat;
+}
+
+div.share_info {
+  background: url(../img/share_big.png) #fafafa center left no-repeat;
+  padding: 10px 10px 10px 40px;
+  border: 1px solid #e0e0e0;
+  width: 350px;
+  margin: 0 auto 0 auto;
+}
+
+/* 
+ * Dialog buttons
+ * --------------
+ */
+.btn-icon-cancel {
+  background-image: url(../img/button-icons/cancel.png) !important;
+}
+
+.btn-icon-ok {
+  background-image: url(../img/button-icons/ok.png) !important;
+}
+
+.btn-icon-event-delete, .btn-icon-calendar-delete {
+  background-image: url(../img/button-icons/calendar_delete.png) !important;
+}
+
+.btn-icon-calendar-add {
+  background-image: url(../img/button-icons/calendar_add.png) !important;
+}
+
+.btn-icon-event-edit, .btn-icon-calendar-edit {
+  background-image: url(../img/button-icons/calendar_edit.png) !important;
+}
+
+

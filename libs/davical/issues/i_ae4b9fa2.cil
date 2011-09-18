@@ -1,0 +1,47 @@
+Summary: Fix handling of schedule-calendar-transparent response
+Status: New
+CreatedBy: Andrew McMillan <andrew@morphoss.com>
+AssignedTo: 
+Inserted: 2010-11-28T09:50:55
+Updated: 2010-11-28T09:50:55
+
+I'm seeing this in the query response to iOS4.2 on an iPhone:
+
+    <C1:schedule-calendar-transp>
+ &lt;urn:ietf:params:xml:ns:caldav:opaque/&gt;
+</C1:schedule-calendar-transp>
+
+which doesn't look pretty.  The incoming request looks like:
+
+User-Agent: DAVKit/5.0 (767); iCalendar/5.0 (79); iPhone/4.2.1 8C148
+Depth: 1
+Content-Type: text/xml
+Content-Length: 785
+
+<?xml version="1.0" encoding="utf-8"?>
+<x0:propfind xmlns:x0="DAV:" xmlns:x1="http://calendarserver.org/ns/" xmlns:x2="urn:ietf:params:xml:ns:caldav" xmlns:x3="http://apple.com/ns/ical/">
+ <x0:prop>
+  <x1:getctag/>
+  <x0:displayname/>
+  <x2:calendar-description/>
+  <x3:calendar-color/>
+  <x3:calendar-order/>
+  <x2:supported-calendar-component-set/>
+  <x0:resourcetype/>
+  <x2:calendar-free-busy-set/>
+  <x2:schedule-calendar-transp/>
+  <x2:schedule-default-calendar-URL/>
+  <x0:quota-available-bytes/>
+  <x0:quota-used-bytes/>
+  <x2:calendar-timezone/>
+  <x0:current-user-privilege-set/>
+  <x1:subscribed-strip-todos/>
+  <x1:subscribed-strip-alarms/>
+  <x1:subscribed-strip-attachments/>
+  <x1:source/>
+  <x1:pushkey/>
+  <x1:push-transports/>
+  <x0:owner/>
+ </x0:prop>
+</x0:propfind>
+

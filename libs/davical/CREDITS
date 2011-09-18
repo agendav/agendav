@@ -1,0 +1,21 @@
+The DAViCal CalDAV Server is the brainchild of Andrew McMillan.
+
+Other people have contributed code and/or criticism to help
+the project along it's way:
+
+  Maxime Delorme (LDAP, bugfixes, styles)
+  Andrew Ruthven (a useful touchstone)
+
+
+And a big thank you to the translators:
+  Cristina Radalescu
+  Lorena Paoletti
+  Guillaume Rosquin
+  Nick Khazov
+  Eelco Maljaars
+  Rafał Ślubowski
+
+
+Many other people have contributed bug reports, fixes and
+in many small ways.  These are acknowledged in the changelog
+and version control history.

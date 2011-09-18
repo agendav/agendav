@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<propertyupdate xmlns="DAV:"
+                xmlns:ical="http://apple.com/ns/ical/">
+ <set>
+   <prop>
+     <ical:calendar-order>2</ical:calendar-order>
+     <ical:calendar-color>#ea5e00ff</ical:calendar-color>
+   </prop>
+  </set>
+ </propertyupdate>
+

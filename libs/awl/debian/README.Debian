@@ -1,0 +1,21 @@
+libawl-php for Debian
+------------------------------------------
+
+This package includes a bunch of web libraries, mostly
+written by Andrew McMillan, and mostly used by PHP things
+that he wrote.
+
+They're supposed to be fairly lightweight, and they are
+intended to simplify things rather than complexify them.
+
+To use them, you will need to add the path into your PHP
+application.  The recommended way is to do this inside
+the Apache virtual host, like so:
+
+  php_value include_path ../inc:/usr/share/awl/inc
+
+Which would include your application's 'inc' directory
+first, allowing it to override any AWL functionality
+it wanted to.
+
+Andrew McMillan <andrew@catalyst.net.nz>, Tue.  2 May 2006 07:11:22 +1200

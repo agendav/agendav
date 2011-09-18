@@ -1,0 +1,1563 @@
+# Hungarian translation for Really Simple CalDAV Store.
+# Copyright (C) 2007
+# This file is distributed under the same license as the rscds package.
+# David Takacs <david.takacs@cafeopen.eu>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: rscds 0.7.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-24 12:40+1200\n"
+"PO-Revision-Date: 2007-05-03 15:00+0001\n"
+"Last-Translator: David Takacs <david.takacs@cafeopen.eu>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "*** Default Locale ***"
+msgstr ""
+
+msgid "*** Unknown ***"
+msgstr ""
+
+#, fuzzy, c-format
+msgid "- adding %s to group : %s"
+msgstr "Felhasználó szerkesztése"
+
+#, fuzzy, c-format
+msgid "- adding users %s to group : %s"
+msgstr "Felhasználó szerkesztése"
+
+#, fuzzy, c-format
+msgid "- creating groups : %s"
+msgstr "Felhasználó szerkesztése"
+
+#, c-format
+msgid "- creating record for users :  %s"
+msgstr ""
+
+#, fuzzy, c-format
+msgid "- deactivate groups : %s"
+msgstr "Felhasználó szerkesztése"
+
+#, fuzzy, c-format
+msgid "- deactivating users : %s"
+msgstr "Felhasználó szerkesztése"
+
+#, c-format
+msgid "- nothing done on : %s"
+msgstr ""
+
+#, c-format
+msgid "- removing %s from group : %s"
+msgstr ""
+
+#, fuzzy, c-format
+msgid "- updating groups : %s"
+msgstr "Felhasználó szerkesztése"
+
+#, fuzzy, c-format
+msgid "- updating user records : %s"
+msgstr "Felhasználó szerkesztése"
+
+msgid "<b>WARNING: all events in this path will be deleted before inserting allof the ics file</b>"
+msgstr ""
+
+#, c-format
+msgid ""
+"<h1>Log On Please</h1><p>For access to the %s you should log on withthe username and password that "
+"have been issued to you.</p><p>If you would like to request access, please e-mail %s.</p>"
+msgstr ""
+"<h1>Lépjen be</h1><p>'%s' - hozzáféréshez lépjen befelhasználónevével és jelszavával</p><p>Ha "
+"hozzáférést szeretne kapni, írjon ide: %s</p>"
+
+msgid "A DAViCal principal collection may only contain collections"
+msgstr ""
+
+msgid "A collection already exists at that location."
+msgstr "Már létezik ilyen gyűjtemény"
+
+#, fuzzy
+msgid "A resource already exists at the destination."
+msgstr "Már létezik ilyen gyűjtemény"
+
+msgid "Access Tickets"
+msgstr ""
+
+#, fuzzy
+msgid "Access ticket deleted"
+msgstr "Felhasználó szerepei"
+
+msgid "Action"
+msgstr "Akció"
+
+msgid "Active"
+msgstr "Aktív"
+
+msgid "Adding new member to this Group Principal"
+msgstr ""
+
+msgid "Admin <!-- in the sense of 'systems admin' -->"
+msgstr "Adminisztrátor"
+
+msgid "Admin"
+msgstr "Adminisztrátor"
+
+msgid "Administration"
+msgstr ""
+
+msgid "Administrator"
+msgstr ""
+
+msgid "All collection data will be unrecoverably deleted."
+msgstr ""
+
+msgid "All of the principal's calendars and events will be unrecoverably deleted."
+msgstr ""
+
+msgid "All privileges"
+msgstr ""
+
+msgid "All requested changes were made."
+msgstr "Minden változás mentve"
+
+msgid "All"
+msgstr ""
+
+msgid "Allow free/busy enquiries targeted at the owner of this scheduling inbox"
+msgstr ""
+
+msgid "An \"Administrator\" user has full rights to the whole DAViCal System"
+msgstr ""
+
+msgid "Anonymous users are not allowed to modify calendars"
+msgstr ""
+
+#, fuzzy
+msgid "Anonymous users may only access public calendars"
+msgstr "Nincs jogosultsága hozzáférni a naptárhoz"
+
+msgid "Application DB User"
+msgstr ""
+
+msgid "Apply Changes"
+msgstr ""
+
+msgid "Apply DB Patches"
+msgstr ""
+
+#, fuzzy
+msgid "Binding deleted"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Bindings to this Collection"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Bindings to this Principal's Collections"
+msgstr "Valóban törli a kapcsolattípust?"
+
+msgid "Bound As"
+msgstr ""
+
+msgid "Browse all users"
+msgstr "Felhasználók listája"
+
+msgid "Busy"
+msgstr ""
+
+#, fuzzy
+msgid "Calendar Principals"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "Calendar Timezone"
+msgstr "Naptár felhasználói"
+
+#, c-format
+msgid "Calendar \"%s\" was loaded from file."
+msgstr ""
+
+#, fuzzy
+msgid "Change Password"
+msgstr "Új jelszó"
+
+msgid "Click to display user details"
+msgstr "Felhasználó adatainak megjelenítése"
+
+#, fuzzy
+msgid "Click to edit principal details"
+msgstr "Felhasználó adatainak megjelenítése"
+
+#, fuzzy
+msgid "Collection Grants"
+msgstr "Gyűjtemény elérési útja"
+
+#, fuzzy
+msgid "Collection ID"
+msgstr "Gyűjtemény elérési útja"
+
+#, fuzzy
+msgid "Collection deleted"
+msgstr "Gyűjtemény elérési útja"
+
+#, fuzzy
+msgid "Collection"
+msgstr "Gyűjtemény elérési útja"
+
+msgid "Collections may not be both CalDAV calendars and CardDAV addressbooks at the same time"
+msgstr ""
+
+msgid "Configuring Calendar Clients for DAViCal"
+msgstr ""
+
+msgid "Configuring DAViCal"
+msgstr ""
+
+#, fuzzy
+msgid "Confirm Deletion of the Binding"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Confirm Deletion of the Collection"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Confirm Deletion of the Principal"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Confirm Deletion of the Ticket"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Confirm Password"
+msgstr "Új jelszó ellenőrzése"
+
+msgid "Confirm the new password."
+msgstr "Új jelszó ellenőrzése"
+
+msgid "Confirm"
+msgstr "Ellenőrzés"
+
+msgid "Could not retrieve"
+msgstr ""
+
+#, fuzzy
+msgid "Create Collection"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Create Events/Collections"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Create New Collection"
+msgstr "Valóban törli a kapcsolattípust?"
+
+msgid "Create New Principal"
+msgstr ""
+
+#, fuzzy
+msgid "Create Principal"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "Create Ticket"
+msgstr "Új létrehozása"
+
+msgid "Create a new principal (i.e. a new user, resource or group)"
+msgstr ""
+
+#, fuzzy
+msgid "Create a resource or collection"
+msgstr "Valóban törli a kapcsolattípust?"
+
+msgid "Create"
+msgstr "Új létrehozása"
+
+#, fuzzy
+msgid "Creating new Collection."
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Creating new Principal record."
+msgstr "Naptár felhasználói"
+
+msgid "Current DAViCal version "
+msgstr ""
+
+msgid "Current Versions"
+msgstr ""
+
+msgid ""
+"Currently this page does very little.  Suggestions or patches to make it do more useful stuff will be "
+"gratefully received."
+msgstr ""
+
+msgid "DAV Path"
+msgstr ""
+
+msgid "DAV::resourcetype may only be set to a new value, it may not be removed."
+msgstr ""
+
+msgid "DAViCal CalDAV Server"
+msgstr ""
+
+msgid "DAViCal DB Schema version "
+msgstr ""
+
+msgid "DAViCal Homepage"
+msgstr ""
+
+msgid "DAViCal Wiki"
+msgstr ""
+
+msgid "DAViCal only allows BIND requests for collections at present."
+msgstr ""
+
+msgid "DKIM signature invalid "
+msgstr ""
+
+msgid "DKIM signature missing"
+msgstr ""
+
+msgid "DKIM signature validation failed(DNS ERROR)"
+msgstr ""
+
+msgid "DKIM signature validation failed(KEY Parse ERROR)"
+msgstr ""
+
+msgid "DKIM signature validation failed(KEY Validation ERROR)"
+msgstr ""
+
+msgid "DKIM signature validation failed(Signature verification ERROR)"
+msgstr ""
+
+msgid "Database Error"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Database Host"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Database Name"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Database Owner"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Database Password"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Database Port"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Database Username"
+msgstr "Adatbázis-hiba"
+
+msgid "Database error"
+msgstr "Adatbázis-hiba"
+
+#, fuzzy
+msgid "Date Format Style"
+msgstr "Dátumformátum"
+
+msgid "Date Style"
+msgstr "Dátumformátum"
+
+msgid "Default Privileges"
+msgstr ""
+
+#, fuzzy
+msgid "Delete Events/Collections"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Delete Principal"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "Delete a resource or collection"
+msgstr "Valóban törli a kapcsolattípust?"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "Deleted a grant from this Principal"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Binding:"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "Deleting Collection:"
+msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+msgid "Deleting Principal:"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "Deleting Ticket:"
+msgstr "Törlés"
+
+msgid "Deliver scheduling invitations from an organiser to this scheduling inbox"
+msgstr ""
+
+msgid "Deliver scheduling replies from an attendee to this scheduling inbox"
+msgstr ""
+
+msgid "Dependencies"
+msgstr ""
+
+msgid "Dependency"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Destination collection does not exist"
+msgstr ""
+
+msgid "Directory on the server"
+msgstr ""
+
+msgid "Display Name"
+msgstr ""
+
+msgid "Displayname"
+msgstr ""
+
+msgid "Does the user have the right to perform this role?"
+msgstr "Van jogosultsága a felhasználónak?"
+
+msgid "EMail OK"
+msgstr "E-mail OK"
+
+msgid "EMail"
+msgstr "E-mail"
+
+#, c-format
+msgid "ERROR: %s"
+msgstr "HIBA: %s"
+
+msgid "ERROR: The full name may not be blank."
+msgstr ""
+
+msgid "ERROR: The new password must match the confirmed password."
+msgstr ""
+
+msgid "ERROR: There was a database error writing the roles information!"
+msgstr "HIBA: Adatbázis-hiba történt a szerepek írásakor"
+
+msgid "Edit this user record"
+msgstr "Felhasználó szerkesztése"
+
+#, fuzzy
+msgid "Edit"
+msgstr "Szerkesztés"
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Enter a username, if you know it, and click here, to be e-mailed a temporary password."
+msgstr "Írja be a felhasználónevet. Egy e-mailt fog kapni egy új ideiglenes jelszóval."
+
+msgid "Enter your username and password then click here to log in."
+msgstr "Írja be a felhasználónevét és jelszavát a belépéshez"
+
+#, c-format
+msgid "Error NoGroupFound with filter >%s<, attributes >%s< , dn >%s<"
+msgstr ""
+
+#, c-format
+msgid "Error NoUserFound with filter >%s<, attributes >%s< , dn >%s<"
+msgstr ""
+
+msgid "Error querying database."
+msgstr "Adatbázis-hiba lekérdezéskor."
+
+msgid "Error writing calendar details to database."
+msgstr "Adatbázis-hiba a naptár elemeinek írásakor."
+
+#, fuzzy
+msgid "Error writing calendar properties to database."
+msgstr "Adatbázis-hiba a naptár elemeinek írásakor."
+
+msgid "European (d/m/y)"
+msgstr "Európai (nap/hónap/év)"
+
+#, fuzzy
+msgid "European"
+msgstr "Európai (nap/hónap/év)"
+
+#, fuzzy
+msgid "Existing resource does not match \"If-Match\" header - not accepted."
+msgstr "Az erőforrásokra nem illeszkedik 'If-Match' minta - elutasítva."
+
+#, fuzzy
+msgid "Existing resource matches \"If-None-Match\" header - not accepted."
+msgstr "Az erőforrásokra illeszkedik egy 'If-None-Match' minta - elutasítva."
+
+msgid "Expires"
+msgstr ""
+
+msgid "Failed to write collection."
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "For access to the"
+msgstr "Hozzáféréshez"
+
+msgid "Forbidden"
+msgstr ""
+
+msgid "Free/Busy"
+msgstr ""
+
+msgid "Full Name"
+msgstr "Teljes név"
+
+#, fuzzy
+msgid "Fullname"
+msgstr "Teljes név"
+
+msgid "GET requests on collections are only supported for calendars."
+msgstr ""
+
+msgid "GNU gettext support"
+msgstr ""
+
+msgid "GO!"
+msgstr "Mehet!"
+
+msgid "Go to the DAViCal Feature Requests"
+msgstr ""
+
+msgid "Grant"
+msgstr ""
+
+msgid "Granting new privileges from this Principal"
+msgstr ""
+
+msgid "Group <!-- in the sense of a group of people -->"
+msgstr "Csoport"
+
+msgid "Group Members"
+msgstr ""
+
+msgid "Group Memberships"
+msgstr ""
+
+msgid "Group Principals"
+msgstr ""
+
+msgid "Group"
+msgstr "Csoport"
+
+msgid "Has Members"
+msgstr ""
+
+msgid "Help on the current screen"
+msgstr ""
+
+msgid "Help! I've forgotten my password!"
+msgstr "Elfelejtettem a jelszavamat!"
+
+msgid "Help"
+msgstr "Segítség"
+
+#, fuzzy
+msgid "Home Page"
+msgstr "Kezdőlap"
+
+msgid "Home calendar added."
+msgstr ""
+
+msgid "Home"
+msgstr "Kezdőlap"
+
+msgid "ID"
+msgstr ""
+
+msgid "ISO Format (YYYY-MM-DD)"
+msgstr "ISO-formátum (ÉÉÉÉ-HH-NN)"
+
+#, fuzzy
+msgid "ISO Format"
+msgstr "ISO-formátum (ÉÉÉÉ-HH-NN)"
+
+msgid "Id <!-- short for 'Identifier' -->"
+msgstr "Id"
+
+msgid "Id"
+msgstr "Azonosító"
+
+msgid "If you have forgotten your password then"
+msgstr "Ha elfelejtette jelszavát, "
+
+msgid "If you would like to request access, please e-mail"
+msgstr "Ha hozzáférést szeretne kapni, írjon: "
+
+#, fuzzy
+msgid "Import Calendars"
+msgstr "Naptár felhasználói"
+
+msgid "Import all .ics files of a directory"
+msgstr ""
+
+#, fuzzy
+msgid "Inactive Principals"
+msgstr "Naptár felhasználói"
+
+msgid "Incorrect content type for addressbook: "
+msgstr ""
+
+msgid "Incorrect content type for calendar: "
+msgstr ""
+
+msgid "Invalid user name or password."
+msgstr "Hibás felhasználónév vagy jelszó."
+
+msgid "Invalid username or password."
+msgstr "Hibás felhasználónév vagy jelszó."
+
+msgid "Is Member of"
+msgstr ""
+
+#, fuzzy
+msgid "Is a Calendar"
+msgstr "Ez egy naptár?"
+
+msgid "Is an Addressbook"
+msgstr ""
+
+msgid "Is this user active?"
+msgstr "Aktív felhasználó?"
+
+#, fuzzy
+msgid "Items in Collection"
+msgstr "Gyűjtemény elérési útja"
+
+msgid "Joined"
+msgstr "Csatlakozott"
+
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "Last used"
+msgstr "Utoljára használva"
+
+#, fuzzy
+msgid "List Groups"
+msgstr "Csoport"
+
+#, fuzzy
+msgid "List Resources"
+msgstr "Erőforrás"
+
+#, fuzzy
+msgid "List Users"
+msgstr "Felhasználók"
+
+msgid "Load From File"
+msgstr ""
+
+msgid "Locale"
+msgstr ""
+
+msgid "Log On Please"
+msgstr "Lépjen be."
+
+#, fuzzy
+msgid "Log out of DAViCal"
+msgstr "Kilépés innen:"
+
+msgid "Logout"
+msgstr "Kilépés"
+
+msgid "Member deleted from this Group Principal"
+msgstr ""
+
+msgid "Name"
+msgstr "Név"
+
+#, fuzzy
+msgid "New Collection"
+msgstr "Gyűjtemény elérési útja"
+
+msgid "New Password"
+msgstr "Új jelszó"
+
+#, fuzzy
+msgid "New Principal"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "No <!-- not 'Yes' -->"
+msgstr "Sz."
+
+msgid "No calendar content"
+msgstr ""
+
+msgid "No collection found at that location."
+msgstr "Ezen a helyen nincs gyűjtemény."
+
+msgid "No scheduling support for user"
+msgstr ""
+
+#, fuzzy
+msgid "No"
+msgstr "Szám"
+
+msgid "No. <!-- short for 'Number' -->"
+msgstr "Sz."
+
+#, fuzzy
+msgid "No. of Collections"
+msgstr "Gyűjtemény elérési útja"
+
+#, fuzzy
+msgid "No. of Principals"
+msgstr "Naptár felhasználói"
+
+#, fuzzy
+msgid "No. of Resources"
+msgstr "Erőforrás"
+
+msgid "No."
+msgstr "Szám"
+
+msgid "Not overwriting existing destination resource"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Opaque"
+msgstr ""
+
+msgid "Operations on your calendar"
+msgstr ""
+
+msgid "Override a Lock"
+msgstr ""
+
+#, fuzzy
+msgid "PDO PostgreSQL drivers"
+msgstr "A felhasználó nem elérhető"
+
+msgid "PHP PDO module available"
+msgstr ""
+
+#, fuzzy
+msgid "PHP PostgreSQL available"
+msgstr "A felhasználó nem elérhető"
+
+msgid "PUT on a collection is only allowed for text/calendar content against a calendar collection"
+msgstr ""
+
+msgid "Password"
+msgstr "Jelszó"
+
+msgid "Path"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+#, fuzzy
+msgid "Please confirm deletion of access ticket - see below"
+msgstr "Törlés megerősítése"
+
+#, fuzzy
+msgid "Please confirm deletion of binding - see below"
+msgstr "Törlés megerősítése"
+
+msgid "Please confirm deletion of collection - see below"
+msgstr ""
+
+#, fuzzy
+msgid "Please confirm deletion of the principal"
+msgstr "Törlés megerősítése"
+
+msgid "Please note the time and advise the administrator of your system."
+msgstr "Jegyezze fel az időpontot és értesítse az adminisztrátort!"
+
+#, fuzzy
+msgid "Principal Collections"
+msgstr "Valóban törli a kapcsolattípust?"
+
+msgid "Principal Grants"
+msgstr ""
+
+msgid "Principal ID"
+msgstr ""
+
+msgid "Principal Type"
+msgstr ""
+
+#, fuzzy
+msgid "Principal deleted"
+msgstr "Valóban törli a kapcsolattípust?"
+
+msgid "Principal"
+msgstr ""
+
+msgid "Privileges granted to All Users"
+msgstr ""
+
+msgid "Privileges"
+msgstr ""
+
+msgid "Property is read-only"
+msgstr "Csak olvasható"
+
+msgid "Public <!-- in the sense of being available to all users -->"
+msgstr "Nyilvános"
+
+msgid "Public"
+msgstr "Nyilvános"
+
+msgid "Publicly Readable"
+msgstr ""
+
+msgid "REPORT body contains no XML data!"
+msgstr ""
+
+msgid "REPORT body is not valid XML data!"
+msgstr ""
+
+msgid "Read ACLs for a resource or collection"
+msgstr ""
+
+msgid "Read Access Controls"
+msgstr ""
+
+msgid "Read Current User's Access"
+msgstr ""
+
+msgid "Read Free/Busy Information"
+msgstr ""
+
+#, fuzzy
+msgid "Read the content of a resource or collection"
+msgstr "Gyűjtemény tartalmának megjelenítése"
+
+msgid "Read the details of the current user's access control to this resource."
+msgstr ""
+
+msgid "Read the free/busy information for a calendar collection"
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Read/Write"
+msgstr ""
+
+msgid "Remove a lock"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Report Bug"
+msgstr "Hibajelentés"
+
+msgid "Report a bug in the system"
+msgstr "Rendszerhiba bejelentése"
+
+msgid "Request Feature"
+msgstr ""
+
+msgid "Request body contains no XML data!"
+msgstr ""
+
+msgid "Request body is not valid XML data!"
+msgstr ""
+
+msgid "Resource <!-- a thing which might be booked: a room, a carpark, a projector... -->"
+msgstr "Erőforrás"
+
+msgid "Resource Calendar Principals"
+msgstr ""
+
+#, fuzzy
+msgid "Resource Not Found."
+msgstr "Nem található ilyen naptár-erőforrás"
+
+msgid "Resource has changed on server - not deleted"
+msgstr "Az erőforrás a szerveren módosítva - törlés elutasítva."
+
+msgid "Resource"
+msgstr "Erőforrás"
+
+msgid "Resources may not be changed to / from collections."
+msgstr "Erőforrások nem cserélhetők fel gyűjteményekkel"
+
+msgid "Revoke"
+msgstr ""
+
+msgid "Schedule Deliver"
+msgstr ""
+
+msgid "Schedule Send"
+msgstr ""
+
+msgid "Schedule Transparency"
+msgstr ""
+
+msgid "Scheduling: Deliver a Reply"
+msgstr ""
+
+msgid "Scheduling: Deliver an Invitation"
+msgstr ""
+
+msgid "Scheduling: Delivery"
+msgstr ""
+
+msgid "Scheduling: Query free/busy"
+msgstr ""
+
+msgid "Scheduling: Send a Reply"
+msgstr ""
+
+msgid "Scheduling: Send an Invitation"
+msgstr ""
+
+msgid "Scheduling: Send free/busy"
+msgstr ""
+
+msgid "Scheduling: Sending"
+msgstr ""
+
+msgid "Send free/busy enquiries"
+msgstr ""
+
+msgid "Send scheduling invitations as an organiser from the owner of this scheduling outbox."
+msgstr ""
+
+msgid "Send scheduling replies as an attendee from the owner of this scheduling outbox."
+msgstr ""
+
+msgid "Set free/busy privileges"
+msgstr ""
+
+msgid "Set read privileges"
+msgstr ""
+
+msgid "Set read+write privileges"
+msgstr ""
+
+msgid "Set schedule-deliver privileges"
+msgstr ""
+
+msgid "Set the path to store your ics e.g. 'home' will be referenced as /caldav.php/me/home/"
+msgstr ""
+
+msgid "Setup DAViCal"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Show help on"
+msgstr "Súgó erről: "
+
+msgid "Site Statistics require the database to be available!"
+msgstr ""
+
+msgid "Site Statistics"
+msgstr ""
+
+msgid "Some properties were not able to be changed."
+msgstr "Néhány tulajdonság nem módosítható."
+
+#, fuzzy
+msgid "Some properties were not able to be set."
+msgstr "Néhány tulajdonság nem módosítható."
+
+msgid "Source resource does not exist."
+msgstr ""
+
+msgid "Special collections may not contain a calendar or other special collection."
+msgstr ""
+
+msgid "Specific Privileges"
+msgstr ""
+
+#, fuzzy
+msgid "Status"
+msgstr "Start"
+
+#, c-format
+msgid "Status: %d, Message: %s, User: %d, Path: %s"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Suhosin \"server.strip\" disabled"
+msgstr ""
+
+msgid "Sync LDAP Groups with RSCDS"
+msgstr ""
+
+msgid "Sync LDAP with DAViCal"
+msgstr ""
+
+msgid "Target"
+msgstr ""
+
+#, fuzzy
+msgid "That destination name contains invalid characters."
+msgstr "A naptár elérési útja érvénytelen karaktert tartalmaz."
+
+msgid "That resource is not present on this server."
+msgstr ""
+
+msgid "The BIND Request MUST identify an existing resource."
+msgstr ""
+
+msgid "The BIND Request-URI MUST identify a collection."
+msgstr ""
+
+#, fuzzy
+msgid "The BIND method is not allowed at that location."
+msgstr "Ezen a helyen nincs gyűjtemény."
+
+msgid "The CalDAV:schedule-calendar-transp property may only be set on calendars."
+msgstr ""
+
+msgid "The DAViCal Home Page"
+msgstr ""
+
+msgid "The access ticket will be deleted."
+msgstr ""
+
+msgid "The addressbook-query report must be run against an addressbook collection"
+msgstr ""
+
+msgid "The application program does not understand that request."
+msgstr "Az alkalmazás nem tudja értelmezni a kérést."
+
+msgid "The binding will be deleted."
+msgstr ""
+
+msgid "The calendar path contains illegal characters."
+msgstr "A naptár elérési útja érvénytelen karaktert tartalmaz."
+
+msgid ""
+"The calendar-free-busy-set is superseded by the schedule-transp property of a calendar collection."
+msgstr ""
+
+msgid "The calendar-query report must be run against a calendar or a scheduling collection"
+msgstr ""
+
+msgid "The collection name may not be blank."
+msgstr ""
+
+msgid "The destination collection does not exist"
+msgstr ""
+
+#, fuzzy
+msgid "The displayname may only be set on collections, principals or bindings."
+msgstr "A megjelenített név csak gyűjteményekhez vagy megbízókhoz állítható be."
+
+msgid "The email address really should not be blank."
+msgstr ""
+
+msgid "The file is not UTF-8 encoded, please check the error for more details."
+msgstr ""
+
+msgid "The full name for this person, group or other type of principal."
+msgstr ""
+
+msgid "The full name must not be blank."
+msgstr ""
+
+msgid "The name this user can log into the system with."
+msgstr "Felhasználónév"
+
+msgid "The path on the server where your .ics files are."
+msgstr ""
+
+msgid "The preferred language for this person."
+msgstr "Preferált nyelv"
+
+msgid "The style of dates used for this person."
+msgstr "Dátumformátum"
+
+msgid "The user's e-mail address."
+msgstr "E-mail cím"
+
+msgid "The user's full name."
+msgstr "Teljes név"
+
+msgid "The user's password for logging in."
+msgstr "Jelszó"
+
+msgid "The username must not be blank, and may not contain a slash"
+msgstr ""
+
+msgid "There was an error writing to the database."
+msgstr "Adatbázis-hiba történt íráskor."
+
+msgid ""
+"This operation does the following: <ul><li>check valid groups in LDAP directory</li> <li>check groups "
+"in DAViCal</li></ul> then <ul><li>if a group is present in DAViCal but not in LDAP set as inactive in "
+"DAViCal</li> <li>if a group is present in LDAP but not in DAViCal create the group in DAViCal</li> "
+"<li>if a group in present in LDAP and DAViCal then update information in DAViCal</li> </ul>"
+msgstr ""
+
+msgid ""
+"This operation does the following: <ul><li>check valid users in LDAP directory</li> <li>check users in "
+"DAViCal</li></ul> then <ul><li>if a user is present in DAViCal but not in LDAP set him as inactive in "
+"DAViCal</li> <li>if a user is present in LDAP but not in DAViCal create the user in DAViCal</li> "
+"<li>if a user in present in LDAP and DAViCal then update information in DAViCal</li> </ul>"
+msgstr ""
+
+msgid "Ticket ID"
+msgstr ""
+
+msgid "To ID"
+msgstr ""
+
+msgid "Toggle all privileges"
+msgstr ""
+
+msgid "Transparent"
+msgstr ""
+
+msgid "US Format"
+msgstr ""
+
+msgid "United States of America (m/d/y)"
+msgstr "Egyesült Államok (HH/NN/ÉÉ)"
+
+msgid "Update"
+msgstr "Frissítés"
+
+msgid "Updated"
+msgstr "Frissítve"
+
+#, fuzzy
+msgid "Updating Collection record."
+msgstr "Adataim"
+
+msgid "Updating Member of this Group Principal"
+msgstr ""
+
+#, fuzzy
+msgid "Updating Principal record."
+msgstr "Adataim"
+
+msgid "Updating grants by this Principal"
+msgstr ""
+
+msgid "Upgrade DAViCal database schema"
+msgstr ""
+
+msgid "Upgrade Database"
+msgstr ""
+
+msgid "Upload a .ics calendar in iCalendar format to initialise or replace this calendar."
+msgstr ""
+
+msgid "User Calendar Principals"
+msgstr ""
+
+msgid "User Details"
+msgstr "Felhasználó adatai"
+
+#, fuzzy
+msgid "User Functions"
+msgstr "Felhasználó adatai"
+
+msgid "User Name"
+msgstr "Felhasználónév"
+
+msgid "User Roles"
+msgstr "Felhasználó szerepei"
+
+msgid "User is active"
+msgstr "A felhasználó aktív"
+
+msgid "User record written."
+msgstr "Felhasználó adatai tárolva."
+
+#, fuzzy
+msgid "Username"
+msgstr "Felhasználónév"
+
+#, fuzzy
+msgid "View My Details"
+msgstr "Adataim"
+
+#, fuzzy
+msgid "View my own principal record"
+msgstr "Adataim"
+
+msgid "View this user record"
+msgstr "Felhasználó adatai"
+
+msgid "Visit the DAViCal Wiki"
+msgstr ""
+
+msgid "Warning: there are no active admin users, you should fix this before logging out."
+msgstr ""
+
+msgid "When the user's e-mail account was validated."
+msgstr "Mikor lett ellenőrizve a felhasználó e-mail-címe"
+
+msgid "Write ACLs for a resource or collection"
+msgstr ""
+
+msgid "Write Access Controls"
+msgstr ""
+
+msgid "Write Data"
+msgstr ""
+
+msgid "Write Metadata"
+msgstr ""
+
+msgid "Write content"
+msgstr ""
+
+msgid "Write properties"
+msgstr ""
+
+msgid "Write"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+#, c-format
+msgid "You are currently running DAViCal version %s. The database schema is at version %d.%d.%d."
+msgstr ""
+
+#, c-format
+msgid ""
+"You are currently running DAViCal version %s. The database schema should be at version %s and it is at "
+"version %d.%d.%d."
+msgstr ""
+
+msgid "You are editing"
+msgstr ""
+
+msgid "You are not authorised to use this function."
+msgstr "Nincs jogosultsága ehhez a művelethez."
+
+msgid "You are viewing"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permission to modify this record."
+msgstr "Nincs jogosultsága hozzáférni az erőforráshoz"
+
+#, fuzzy
+msgid "You may not PUT to a collection URL"
+msgstr "Nincs jogosultsága hozzáférni a naptárhoz"
+
+msgid "You must log in to use this system."
+msgstr "Be kell jelentkeznie a rendszer használatához."
+
+msgid "Your configuration produced PHP errors which should be corrected"
+msgstr ""
+
+#, c-format
+msgid "all events of user %s were deleted and replaced by those from file %s"
+msgstr ""
+
+msgid "calendar-timezone property is only valid for a calendar."
+msgstr ""
+
+#, c-format
+msgid "directory %s is not readable"
+msgstr ""
+
+msgid "drivers_ldap : Could not start TLS: ldap_start_tls() failed"
+msgstr ""
+
+#, c-format
+msgid "drivers_ldap : Failed to bind to host %1$s on port %2$s with bindDN of %3$s"
+msgstr ""
+
+msgid "drivers_ldap : Failed to set LDAP to use protocol version 3, TLS not supported"
+msgstr ""
+
+msgid ""
+"drivers_ldap : Unable to bind to LDAP - check your configuration for bindDN and passDN, and that your "
+"LDAP server is reachable"
+msgstr ""
+
+#, c-format
+msgid "drivers_ldap : Unable to connect to LDAP with port %s on host %s"
+msgstr ""
+
+msgid "drivers_ldap : function ldap_connect not defined, check your php_ldap module"
+msgstr ""
+
+#, c-format
+msgid "drivers_pwauth_pam : Unable to find %s file"
+msgstr ""
+
+#, c-format
+msgid "drivers_squid_pam : Unable to find %s file"
+msgstr ""
+
+msgid ""
+"forget me not <!-- this is a colloquial phrase in english (the name of a flower) and is an option "
+"allowing people to log in automatically in future -->"
+msgstr "Emlékezzen rám ezen a gépen"
+
+msgid "forget me not"
+msgstr "Emlékezzen rám"
+
+#, fuzzy
+msgid "from principal"
+msgstr "Naptár felhasználói"
+
+msgid "path to store your ics"
+msgstr ""
+
+#, c-format
+msgid "the file %s is not UTF-8 encoded, please check error for more details"
+msgstr ""
+
+msgid "you should log on with the username and password that have been issued to you."
+msgstr "Lépjen be felhasználónevével és jelszavával."
+
+#~ msgid "--- select a relationship type ---"
+#~ msgstr "--- válasszon kapcsolattípust ---"
+
+#~ msgid "--- select a user or resource ---"
+#~ msgstr "--- válasszon felhasználót vagy erőforrást ---"
+
+#~ msgid "--- select a user, group or resource ---"
+#~ msgstr "--- válasszon felhasználót, csoportot vagy erőforrást"
+
+#~ msgid "Add Relationship"
+#~ msgstr "Kapcsolat hozzáadása"
+
+#~ msgid "Add"
+#~ msgstr "Hozzáadás"
+
+#~ msgid "Changed On"
+#~ msgstr "Megváltoztatva"
+
+#~ msgid "Click to display that user"
+#~ msgstr "Felhasználó megjelenítése"
+
+#~ msgid "Click to display the contents of the collection"
+#~ msgstr "Gyűjtemény tartalmának megjelenítése"
+
+#~ msgid "Collection Contents"
+#~ msgstr "Gyűjtemény tartalma"
+
+#~ msgid "Collection Path"
+#~ msgstr "Gyűjtemény elérési útja"
+
+#~ msgid "Confirm Deletion of the Relationship Type"
+#~ msgstr "Valóban törli a kapcsolattípust?"
+
+#, fuzzy
+#~ msgid "Create Calendar"
+#~ msgstr "Naptár felhasználói"
+
+#~ msgid "Database Error."
+#~ msgstr "Adatbázis-hiba."
+
+#, fuzzy
+#~ msgid "Delete User"
+#~ msgstr "Törlés"
+
+#~ msgid "Enter the name for this resource type"
+#~ msgstr "Erőforrástípus neve"
+
+#~ msgid "Finish"
+#~ msgstr "Befejezés"
+
+#~ msgid "Is a Calendar?"
+#~ msgstr "Ez egy naptár?"
+
+#~ msgid "Is this access read ('R') or Read and Write ('RW')?"
+#~ msgstr "Csak olvasható ('R') vagy írható/olvasható ('RW') hozzáférési jog?"
+
+#~ msgid "Linked From"
+#~ msgstr "Link innen: "
+
+#~ msgid "Linked To"
+#~ msgstr "Link ide: "
+
+#~ msgid "Please Confirm Deletion"
+#~ msgstr "Törlés megerősítése"
+
+#~ msgid "Relationship Type Added."
+#~ msgstr "Kapcsolattípus hozzáadva."
+
+#~ msgid "Relationship Type Deleted."
+#~ msgstr "Kapcsolattípus törölve."
+
+#~ msgid "Relationship Types"
+#~ msgstr "Kapcsolattípusok"
+
+#~ msgid "Relationship added."
+#~ msgstr "Kapcsolat hozzáadva."
+
+#~ msgid "Relationship deleted"
+#~ msgstr "Kapcsolat törölve."
+
+#~ msgid "Relationship"
+#~ msgstr "Kapcsolat"
+
+#~ msgid "Relationships from this user"
+#~ msgstr "Kapcsolatok ettől a felhasználótól"
+
+#~ msgid "Relationships to this user"
+#~ msgstr "Kapcsolatok ehhez a felhasználóhoz"
+
+#~ msgid "Repeat Rule"
+#~ msgstr "Ismétlési szabály"
+
+#~ msgid "Resource changed on server - not changed."
+#~ msgstr "Erőforrás a szerveren módosítva - itt nem módosítható."
+
+#~ msgid "Resource does not match 'If-Match' header - not deleted"
+#~ msgstr "Az erőforrásra nem illeszkedik 'If-Match' minta - törlés elutasítva."
+
+#~ msgid "Rights"
+#~ msgstr "Jogok"
+
+#~ msgid "Select the type of relationship from this user"
+#~ msgstr "Kapcsolattípus kiválasztása"
+
+#~ msgid "Select the user, resource or group to relate this user to"
+#~ msgstr "Kapcsolandó felhasználó, erőforrás vagy csoport kiválasztása"
+
+#~ msgid "Start"
+#~ msgstr "Start"
+
+#~ msgid "Summary"
+#~ msgstr "Összefoglalás"
+
+#~ msgid "That relationship type is being used. See ##RelationshipTypeUsed##"
+#~ msgstr "Ez a kapcsolattípus használatban van. Ld. ##RelationshipTypeUsed##"
+
+#, fuzzy
+#~ msgid "There is no collection at that URL."
+#~ msgstr "Ezen a helyen nincs gyűjtemény."
+
+#~ msgid "This user's collections"
+#~ msgstr "Felhasználó gyűjteményei"
+
+#~ msgid "Type"
+#~ msgstr "Típus"
+
+#~ msgid "You may not add entries to this calendar."
+#~ msgstr "Nincs jogosultsága új bejegyzéseket írni a naptárba."
+
+#~ msgid "You may not modify entries on this calendar."
+#~ msgstr "Nincs jogosultsága bejegyzéseket módosítani ebben a naptárban."
+
+#~ msgid "You may not delete entries from this calendar."
+#~ msgstr "Nincs jogosultsága bejegyzéseket törölni ebből a naptárból."
+
+#~ msgid "You do not have sufficient access to lock that"
+#~ msgstr "Nincs jogosultsága zárolni"
+
+#~ msgid "Calendar Users"
+#~ msgstr "Naptár felhasználói"
+
+#, fuzzy
+#~ msgid "Edit %s"
+#~ msgstr "Szerkesztés"
+
+#~ msgid "New User"
+#~ msgstr "Új felhasználó"
+
+#~ msgid "Relationships"
+#~ msgstr "Kapcsolatok"
+
+#~ msgid "User Unavailable"
+#~ msgstr "A felhasználó nem elérhető"
+
+#, fuzzy
+#~ msgid "View %s"
+#~ msgstr "Megtekintés"
+
+#~ msgid "Can read from"
+#~ msgstr "Láthatja"
+
+#~ msgid "Can see free/busy time of"
+#~ msgstr "Szabad/foglalt állapotot láthatja"
+
+#~ msgid "Relationship <!-- in the sense of a work relationship between people -->"
+#~ msgstr "Kapcsolat"
+
+#~ msgid "is Assistant to"
+#~ msgstr "asszisztense neki:"
+
+#, fuzzy
+#~ msgid "Default relationships added."
+#~ msgstr "Kapcsolat hozzáadva."
+
+#~ msgid "You may not access that calendar"
+#~ msgstr "Nincs jogosultsága hozzáférni a naptárhoz"
+
+#~ msgid "You may not create a calendar there."
+#~ msgstr "Itt nem hozható létre naptár."
+
+#~ msgid "Add a new user"
+#~ msgstr "Felhasználó hozzáadása"
+
+#~ msgid "Browse all relationship types"
+#~ msgstr "Kapcsolattípusok listája"
+
+#, fuzzy
+#~ msgid "Create Resources"
+#~ msgstr "Erőforrás"
+
+#, fuzzy
+#~ msgid "Delete Resources"
+#~ msgstr "Erőforrás"
+
+#~ msgid "Help on something or other"
+#~ msgstr "Segítség"
+
+#, fuzzy
+#~ msgid "Operations"
+#~ msgstr "Kapcsolat"
+
+#~ msgid "Created On"
+#~ msgstr "Létrehozva"
+
+#, fuzzy
+#~ msgid "Your .ics calendar"
+#~ msgstr "Nincs jogosultsága hozzáférni a naptárhoz"
+
+#~ msgid "Really Simple CalDAV Store"
+#~ msgstr "Really Simple CalDAV Store"
+
+#~ msgid ""
+#~ "You may not PUT a collection - you may only PUT things *in* one or use MKCOL/MKCALENDAR to create "
+#~ "one."
+#~ msgstr ""
+#~ "Gyűjteményre nem végezhető PUT művelet, csak gyűjteményen belül.Létrehozhat egyet az MKCOL/"
+#~ "MKCALENDAR művelettel."

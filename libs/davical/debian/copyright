@@ -1,0 +1,47 @@
+This package was debianized by Andrew McMillan <andrew@mcmillan.net.nz>
+
+It was downloaded from http://sourceforge.net/projects/rscds/
+
+Upstream Author: Andrew McMillan <andrew@mcmillan.net.nz>
+
+Copyright: 2006-2009 Andrew McMillan
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+  02110-1301, USA
+
+You are free to distribute this software under the terms of the GNU General
+Public License. On Debian systems, the complete text of the GNU General
+Public License can be found in /usr/share/common-licenses/GPL file.
+
+
+License for Translation Building code
+=====================================
+The following files inherit their license separately:
+   scripts/po/extract.pl
+   scripts/po/rebuild-translations.sh
+
+The process used for building the translations for DAViCal is based on
+prior code originally from the Horde project and subsequently from the
+Gallery project.  It has also been somewhat further modified here.
+
+The applicable Horde license is the LGPL, as identified here:
+   http://cvs.horde.org/co.php/horde/COPYING?r=2.1 
+
+Authors:
+   Copyright 2000-2002 Joris Braakman <jbraakman@yahoo.com>
+   Copyright 2001-2002 Chuck Hagenbuch <chuck@horde.org>
+   Copyright 2001-2002 Jan Schneider <jan@horde.org>
+   Copyright 2002-2003 Bharat Mediratta <bharat@menalto.co>
+   Copyright 2006-2008 Andrew McMillan <andrew@mcmillan.net.nz>

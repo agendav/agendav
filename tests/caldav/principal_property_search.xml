@@ -1,0 +1,11 @@
+<principal-property-search xmlns="DAV:">
+  <property-search>
+    <prop>
+      <displayname/>
+    </prop>
+    <match>JORGE</match>
+  </property-search>
+  <prop>
+    <displayname/>
+  </prop>
+</principal-property-search>

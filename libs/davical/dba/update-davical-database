@@ -1,0 +1,460 @@
+#!/usr/bin/env perl
+#
+# Update the DAViCal database by repeatedly applying patches to it
+# in the correct order.
+#
+
+use warnings;
+use strict;
+
+use DBI;
+use POSIX qw(floor);
+use Getopt::Long qw(:config permute);  # allow mixed args.
+
+# Options variables
+my $debug  = 0;
+my $dbname = "davical";
+my $dbport = 5432;
+my $dbuser = "davical_dba";
+my $dbpass = "";
+my $dbhost = "";
+my $appuser = "davical_app";
+my $helpmeplease = 0;
+my $apply_patches = 1;
+my $revoke_list = "";
+my $force_owner = "";
+my $config_file = "config/administration.yml";
+
+my $dbadir = $0;
+$dbadir =~ s#/[^/]*$##;
+my $patchdir = $dbadir . "/patches";
+
+#
+# We look in a few places for the config file.  First relative to
+# where we are, then relative to the code we are running, then we
+# start to look in absolute locations.  Then we give up :-)
+if ( ! -f $config_file ) {
+  $config_file = $0;
+  $config_file =~ s{[^/]+/update-[a-z]+-database}{config/administration.yml};
+}
+if ( ! -f $config_file ) {
+  $config_file = "/etc/davical/administration.yml";
+}
+if ( -f $config_file ) {
+  use YAML qw( LoadFile );
+
+  my ($ycfg) = LoadFile($config_file);
+  $dbuser  = $ycfg->{'admin_db_user'} if ( defined($ycfg->{'admin_db_user'}));
+  $dbpass  = $ycfg->{'admin_db_pass'} if ( defined($ycfg->{'admin_db_pass'}));
+  $dbhost  = $ycfg->{'admin_db_host'} if ( defined($ycfg->{'admin_db_host'}));
+  $dbname  = $ycfg->{'admin_db_name'} if ( defined($ycfg->{'admin_db_name'}));
+  $dbport  = $ycfg->{'admin_db_port'} if ( defined($ycfg->{'admin_db_port'}));
+  $appuser = $ycfg->{'app_db_user'}   if ( defined($ycfg->{'app_db_user'}));
+}
+
+GetOptions ('debug!'    => \$debug,
+            'dbname=s'  => \$dbname,
+            'dbuser=s'  => \$dbuser,
+            'dbpass=s'  => \$dbpass,
+            'dbport=s'  => \$dbport,
+            'dbhost=s'  => \$dbhost,
+            'appuser=s' => \$appuser,
+            'patch!'    => \$apply_patches,
+            'owner=s'   => \$force_owner,
+            'revoke=s'  => \$revoke_list,
+            'help'      => \$helpmeplease  );
+
+show_usage() if ( $helpmeplease );
+
+$revoke_list = ", ". $revoke_list if ( $revoke_list ne "" );
+
+
+############################################################
+# Open database connection. Note that the standard PostgreSQL
+# environment variables will also work with DBD::Pg.
+############################################################
+my $dsn = "dbi:Pg:dbname=$dbname";
+$dsn .= ";host=$dbhost" if ( "$dbhost" ne "" );
+$dsn .= ";port=$dbport" if ( $dbport != 5432 );
+
+print "Using database: $dbuser".'%'.$dbpass.'@'.$dsn."\n" if ( $debug );
+
+my $pg_version = get_postgresql_version();
+my $current_revision;
+my $last_results = '';  # Will hold the last SQL result from applying a patch
+
+if ( $apply_patches ) {
+  $current_revision = get_current_revision();
+  printf( "The database is version %.1lf currently at revision %d.%d.%d.\n", $pg_version, $current_revision->{'schema_major'}, $current_revision->{'schema_minor'}, $current_revision->{'schema_patch'} );
+
+  opendir( PATCHDIR, $patchdir ) or die "Can't open patch directory $patchdir";
+  my @patches = grep { /^([0-9]+)\.([0-9]+)\.([0-9]+)([a-z]?)\.sql$/ } readdir(PATCHDIR);
+  closedir(PATCHDIR);
+
+  @patches = sort { compare_revisions(revision_hash($a),revision_hash($b), 1); } @patches;
+
+  my $applied = 0;
+
+  for ( my $i=0; $i <= $#patches;  $i++ ) {
+    printf( "Looking at patches[%d] (%s)\n", $i, $patches[$i]) if ( $debug );
+    if ( compare_revisions(revision_hash($patches[$i]),$current_revision) > 0 ) {
+      print "Applying patch $patches[$i] ... ";
+      if ( !apply_patch( $patches[$i] ) ) {
+        # Skip to the end unless the next patch is an alternate for the same version.
+        if ( defined($patches[$i+1]) && compare_revisions(revision_hash($patches[$i]),revision_hash($patches[$i+1])) == 0 ) {
+          print "failed.  Attempting next alternative.\n";
+          $applied--;
+        }
+        else {
+          print "failed!\n$last_results  ==> No further patches will be attempted!\n";
+          last;
+        }
+      }
+      else {
+        print "succeeded.\n";
+      }
+      $applied++;
+    }
+    else {
+      print "Patch $patches[$i] has already been applied.\n" if ( $debug );
+    }
+  }
+
+  if ( $applied ) {
+    print "Successfully applied $applied patches.\n";
+  }
+  else {
+    print "No patches were applied.\n";
+  }
+}
+
+# Ensure the locales data is up to date
+apply_sql_file( $dbadir, "supported_locales.sql" );
+print "Supported locales updated.\n";
+
+# update any views
+apply_sql_folder( $dbadir, 'views', "Updated view: " );
+
+# Ensure the functions are up to date
+apply_sql_file( $dbadir, "caldav_functions.sql" );
+print "CalDAV functions updated.\n";
+
+if ( $pg_version >= 8.3 ) {
+  apply_sql_file( $dbadir, "rrule_functions.sql" );
+}
+else {
+  apply_sql_file( $dbadir, "rrule_functions-8.1.sql",  );
+}
+print "RRULE functions updated.\n";
+
+# Ensure the permissions are up to date
+apply_permissions( $dbadir, "appuser_permissions.txt" );
+print "Database permissions updated.\n";
+
+# The End!
+exit 0;
+
+
+
+
+############################################################
+# Revision Hash - we either have a single parameter,
+# which is of the form "1.2.3" or we have three parameters.
+############################################################
+sub revision_hash {
+  my $rev = +{ 'schema_major', => 0, 'schema_minor' => 0, 'schema_patch' => 0, 'alternative' => '0' };
+  my $first = shift;
+  return $rev unless ( defined($first) );
+  if ( $first =~ /^([0-9]+)\.([0-9]+)\.([0-9]+)([a-z]?)([^0-9]|$)/ ) {
+    $rev->{'schema_major'} = $1;
+    $rev->{'schema_minor'} = $2;
+    $rev->{'schema_patch'} = $3;
+    $rev->{'alternative'} = $4;
+  }
+  else {
+    $rev->{'schema_major'} = $first;
+    $rev->{'schema_minor'} = shift;
+    $rev->{'schema_patch'} = shift;
+    $rev->{'alternative'} = '0';
+  }
+  return $rev;
+}
+
+
+############################################################
+# Compare revisions
+############################################################
+sub compare_revisions {
+  my $a = shift;
+  my $b = shift;
+  my $test_alt = shift;
+
+  return -1 if ( $a->{'schema_major'} < $b->{'schema_major'} );
+  return  1 if ( $a->{'schema_major'} > $b->{'schema_major'} );
+
+  return -1 if ( $a->{'schema_minor'} < $b->{'schema_minor'} );
+  return  1 if ( $a->{'schema_minor'} > $b->{'schema_minor'} );
+
+  return -1 if ( $a->{'schema_patch'} < $b->{'schema_patch'} );
+  return  1 if ( $a->{'schema_patch'} > $b->{'schema_patch'} );
+
+  if ( defined($test_alt) ) {
+    return -1 if ( $a->{'alternative'} lt $b->{'alternative'} );
+    return  1 if ( $a->{'alternative'} gt $b->{'alternative'} );
+  }
+
+  return 0;
+
+}
+
+
+
+############################################################
+=item folder_ordering()
+Function to allow us to sort folders which may have a number
+prefix.
+=cut
+############################################################
+sub folder_ordering {
+  my $a = shift;
+  my $b = shift;
+
+  my $numeric_a = 999999;
+  my $numeric_b = 999999;
+  if ( $a =~ m{^(\d+)-} ) { $numeric_a = $1; }
+  if ( $b =~ m{^(\d+)-} ) { $numeric_b = $1; }
+
+  return -1 if ( $numeric_a < $numeric_b );
+  return  1 if ( $numeric_a > $numeric_b );
+
+  # Fall back on alphanumeric comparison
+  return -1 if ( $a lt $b );
+  return  1 if ( $a lt $b );
+
+  return 0;
+}
+
+
+
+############################################################
+# Get the current version of PostgreSQL
+############################################################
+sub get_postgresql_version {
+
+  my $dbh = DBI->connect($dsn, $dbuser, $dbpass, { AutoCommit => 0 } ) or die "Can't connect to database $dbname";
+
+  my $current_version = $dbh->prepare( <<EOQ  ) or die $dbh->errstr;
+  SELECT regexp_replace( split_part( version(), ' ', 2), E'\.[0-9]\$', '')
+EOQ
+
+  if ( $current_version->execute() ) {
+    my $version = $current_version->fetchrow_arrayref();
+    undef $current_version;
+    $dbh->disconnect;
+    $version->[0] =~ s/\D+$//;  # It seems the regex in SQL is broken in 8.1, at least on CentOS 5.3
+    return $version->[0];
+  }
+  else {
+    die "ERROR: Cannot read current revision from database.";
+  }
+
+}
+
+
+############################################################
+# Get the current revision
+############################################################
+sub get_current_revision {
+
+  my $dbh = DBI->connect($dsn, $dbuser, $dbpass, { AutoCommit => 0 } ) or die "Can't connect to database $dbname";
+
+  my $current_revision = $dbh->prepare( <<EOQ  ) or die $dbh->errstr;
+  SELECT schema_major, schema_minor, schema_patch FROM awl_db_revision ORDER BY schema_id DESC LIMIT 1
+EOQ
+
+  if ( $current_revision->execute() ) {
+    my $revision = $current_revision->fetchrow_hashref();
+    undef $current_revision;
+    $dbh->disconnect;
+    return $revision;
+  }
+  else {
+    die "ERROR: Cannot read current revision from database.";
+  }
+
+}
+
+
+
+############################################################
+# Apply a DB Patch File
+############################################################
+sub apply_patch {
+
+  my $patch = shift;
+
+  apply_sql_file( $patchdir, $patch );
+
+  $current_revision = get_current_revision();
+  if ( compare_revisions($current_revision,revision_hash($patch)) != 0 ) {
+    printf( "Failed to apply revision %s to the database!\n", $patch ) if ( $debug );
+    return 0;
+  }
+  return 1;  # Success
+}
+
+
+
+############################################################
+# Apply SQL File
+#  Note that this stuffs the password into an environment
+#  variable, which isn't ideal.  If you use a .pgpass you
+#  can bypass that issue, but you still need it on the command
+#  line for this program until I get a patch from someone.
+############################################################
+sub apply_sql_file {
+
+  my $sqldir  = shift;
+  my $sqlfile = shift;
+
+  my @psql_opts = ( "psql", "-q", "-f", $sqldir."/".$sqlfile );
+  push @psql_opts, "-h", $dbhost if ( $dbhost ne "" );
+  push @psql_opts, "-p", "$dbport" if ( $dbport != 5432 );
+  push @psql_opts, "-U", $dbuser if ( $dbuser ne "" );
+  push @psql_opts, $dbname;    # It seems that FreeBSD has a poorer argument parsing library so non-option arguments must be last
+  $ENV{'PGPASS'} = $dbpass if ( $dbpass ne "" );
+
+  my $command = join ' ', @psql_opts;
+  $last_results = `$command 2>&1 1>/dev/null`;
+
+  $last_results =~ s/^.*WARNING:  there is no transaction in progress\s$//m;
+  $last_results =~ s/^.*NOTICE: //m;
+}
+
+
+############################################################
+=item apply_sql_folder
+Applies the SQL files in a folder in order, with some magic to apply
+specifically versioned ones by preference.
+=cut
+sub apply_sql_folder {
+  my $dbadir = shift;
+  my $folder_name = shift;
+  my $announce_prefix = shift;
+
+  my $folder = $dbadir . '/' . $folder_name;
+  opendir( FOLDER, $folder ) or die "Can't open SQL directory $folder";
+  my @sql_files = grep { /^[^.].*\.sql$/ } readdir(FOLDER);
+  closedir(FOLDER);
+  @sql_files = grep( !/-\d+.\d+\.sql$/, @sql_files);
+  @sql_files = sort { folder_ordering($a,$b); } @sql_files;
+
+  for ( my $i=0; $i <= $#sql_files;  $i++ ) {
+    my $apply_file = $sql_files[$i];
+    my $testfile = $folder . '/' . $apply_file;
+    $testfile =~ s{\.sql$}{-$pg_version.sql};
+    $apply_file = $testfile if ( -f $testfile );
+
+    apply_sql_file( $folder, $apply_file );
+    print $announce_prefix, $apply_file, " applied.\n";
+  }
+
+}
+
+
+############################################################
+# Apply database permissions from file
+############################################################
+sub apply_permissions {
+
+  my $sqldir  = shift;
+  my $permsfile = shift;
+
+  open PERMS, '<', $sqldir."/".$permsfile;
+  my $dbh = DBI->connect($dsn, $dbuser, $dbpass, { AutoCommit => 1 } ) or die "Can't connect to database $dbname";
+
+  my $sql;
+  my $current_grant;
+
+  while( <PERMS> ) {
+    next if ( /^\s*(#|--)/ );
+
+    /^\s*GRANT\s+(\S.*)\s*$/i && do {
+      $current_grant = $1;
+    };
+
+    /^\s*ON\s+(\S.*)\s*$/i && do {
+      defined($current_grant) or die "No GRANT before ON in $permsfile\n";
+      my $doohickey = $1;
+
+      if ( $revoke_list ne "" ) {
+        # TODO: we should really loop through the revoke_list so that a single non-existent
+        # user doesn't cause this whole statement to fail.
+        $sql = sprintf( "REVOKE ALL ON %s FROM %s %s", $doohickey, $appuser, $revoke_list );
+        print $sql, "\n" if ( $debug );
+        $dbh->do($sql);
+      }
+
+      $sql = sprintf( "GRANT %s on %s to %s", $current_grant, $doohickey, $appuser );
+      print $sql, "\n" if ( $debug );
+      $dbh->do($sql);
+
+      if ( $force_owner ne "" ) {
+        if ( $doohickey =~ /_seq$/ ) {
+          $sql = sprintf( "GRANT ALL on %s to %s", $doohickey, $force_owner );
+        }
+        else {
+          $sql = sprintf( "ALTER TABLE %s OWNER to %s", $doohickey, $force_owner );
+        }
+        print $sql, "\n" if ( $debug );
+        $dbh->do($sql);
+      }
+    };
+
+  }
+  close(PERMS);
+  $dbh->disconnect;
+}
+
+
+
+############################################################
+# Tell the nice user how we do things.  Short and sweet.
+############################################################
+sub show_usage {
+    print <<OPTHELP;
+
+update-davical-database [options]
+
+Options are:
+    --debug           Turn on debugging
+    --dbname  name    The database to dig into
+    --dbuser  name    Connect to the database as this user.
+    --dbport  5432    Connect to the database on this port.
+    --dbhost  name    Connect to the database on this host.
+    --appuser name    The database username which the application uses for it's
+                      database connection.
+    --owner name      The database username which is used for administrative
+                      access to the database.  This option forces the tables
+                      to be owned by this user (default: not present).
+    --nopatch         Don't try and apply any patches
+    --revoke  name    Revoke permissions from this user
+
+The program will apply any patches to the database which have
+not yet been applied, run any desired data patch scripts and set
+the correct minimum permissions for the web application user.
+
+Rather than providing a password on the command-line it is recommended
+that you use a .pgpass file in your home directory to hold the database
+password.  This file must be mode 600 to work and should have lines
+like:
+
+hostname:port:database:username:password
+
+Each bit can be replaced by an asterisk, e.g:
+*:*:davical:davical_dba:53cr3t
+
+OPTHELP
+    exit 0;
+}
+

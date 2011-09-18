@@ -1,0 +1,22 @@
+<?php
+
+// Internal CalDAV URL. Will not be shown
+// %u will be replaced by current username. Please, add trailing slash
+$config['caldav_url'] = 'https://caldav.server/caldav.php/%u/';
+
+// Public CalDAV URL
+// %s is a placeholder for the rest of the URL. Please, add trailing slash
+$config['public_caldav_url'] = 'https://public.server/caldav.php/%s/';
+
+// Default permissions for calendar owner
+$config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
+		'read-current-user-privilege-set', 'write-acl', 'C:read-free-busy',
+		'write', 'write-properties', 'write-content', 'bind', 'unbind');
+
+// Permissions given to users who have access to another user calendars
+$config['share_permissions'] = array('read', 'write');
+
+// Authenticated users default permissions
+$config['default_permissions'] = array('C:read-free-busy');
+
+?>

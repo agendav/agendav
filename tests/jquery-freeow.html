@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html><head>
+ <title>
+  jQuery freeow! 
+ </title>
+ <script language="JavaScript" type="text/javascript"
+   src="../js/jquery-1.5.2.min.js"></script>
+
+ <script language="JavaScript" type="text/javascript"
+   src="../js/freeow-1.0.1/jquery.freeow.min.js"></script>
+
+ <link rel="stylesheet" type="text/css"
+ href="../js/freeow-1.0.1/style/freeow/freeow.css" />
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+ $(document).ready(function() {
+ 	$("#aviso").freeow("Título", "Mensaje", {
+		classes: ["gray", "error", "slide"],
+		autoHide: true,
+		hideStyle: {
+			opacity: 0,
+			left: "400px"
+		},
+		showStyle: {
+			opacity: 1,
+			left: 0
+		}
+
+
+	});
+ });
+//]]>
+ </script>
+ </head>
+
+ <body>
+
+  <h1>Esto es una prueba</h1>
+  <p>¿Funcionará?</p>
+
+  <div id="aviso" class="freeow freeow-top-right">
+  </div>
+ </body>
+</html> 
+

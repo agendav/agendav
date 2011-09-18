@@ -1,0 +1,1458 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-24 12:40+1200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "*** Default Locale ***"
+msgstr ""
+
+msgid "*** Unknown ***"
+msgstr ""
+
+#, c-format
+msgid "- adding %s to group : %s"
+msgstr ""
+
+#, c-format
+msgid "- adding users %s to group : %s"
+msgstr ""
+
+#, c-format
+msgid "- creating groups : %s"
+msgstr ""
+
+#, c-format
+msgid "- creating record for users :  %s"
+msgstr ""
+
+#, c-format
+msgid "- deactivate groups : %s"
+msgstr ""
+
+#, c-format
+msgid "- deactivating users : %s"
+msgstr ""
+
+#, c-format
+msgid "- nothing done on : %s"
+msgstr ""
+
+#, c-format
+msgid "- removing %s from group : %s"
+msgstr ""
+
+#, c-format
+msgid "- updating groups : %s"
+msgstr ""
+
+#, c-format
+msgid "- updating user records : %s"
+msgstr ""
+
+msgid "<b>WARNING: all events in this path will be deleted before inserting allof the ics file</b>"
+msgstr ""
+"<b>ATTENZIONE: tutti gli eventi in questo path saranno cancellati dall'inserimento del file ics</b>"
+
+#, c-format
+msgid ""
+"<h1>Log On Please</h1><p>For access to the %s you should log on withthe username and password that "
+"have been issued to you.</p><p>If you would like to request access, please e-mail %s.</p>"
+msgstr ""
+"<h1>Log On</h1><p>Per accedere a %s devi autenticarti con le credenziali username e password che ti "
+"sono state assegnate.</p><p>Se desideri ottenere un accesso, invia una richiesta e-mail a %s.</p>"
+
+msgid "A DAViCal principal collection may only contain collections"
+msgstr ""
+
+msgid "A collection already exists at that location."
+msgstr ""
+
+msgid "A resource already exists at the destination."
+msgstr ""
+
+msgid "Access Tickets"
+msgstr ""
+
+#, fuzzy
+msgid "Access ticket deleted"
+msgstr "Ruoli utente"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Active"
+msgstr ""
+
+msgid "Adding new member to this Group Principal"
+msgstr ""
+
+msgid "Admin <!-- in the sense of 'systems admin' -->"
+msgstr "Amministratore <!-- in the sense of 'systems admin' -->"
+
+msgid "Admin"
+msgstr "Amministratore"
+
+#, fuzzy
+msgid "Administration"
+msgstr "Gestisce"
+
+#, fuzzy
+msgid "Administrator"
+msgstr "Gestisce"
+
+msgid "All collection data will be unrecoverably deleted."
+msgstr ""
+
+msgid "All of the principal's calendars and events will be unrecoverably deleted."
+msgstr ""
+
+msgid "All privileges"
+msgstr ""
+
+msgid "All requested changes were made."
+msgstr "Tutte le modifiche richieste sono state apportate."
+
+msgid "All"
+msgstr "Tutti"
+
+msgid "Allow free/busy enquiries targeted at the owner of this scheduling inbox"
+msgstr ""
+
+msgid "An \"Administrator\" user has full rights to the whole DAViCal System"
+msgstr ""
+
+msgid "Anonymous users are not allowed to modify calendars"
+msgstr "Gli utenti anonimi non sono autorizzati a modificare i calendari"
+
+#, fuzzy
+msgid "Anonymous users may only access public calendars"
+msgstr "Gli utenti anonimi non sono autorizzati a modificare i calendari"
+
+msgid "Application DB User"
+msgstr ""
+
+msgid "Apply Changes"
+msgstr ""
+
+msgid "Apply DB Patches"
+msgstr ""
+
+#, fuzzy
+msgid "Binding deleted"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Bindings to this Collection"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Bindings to this Principal's Collections"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Bound As"
+msgstr ""
+
+msgid "Browse all users"
+msgstr "Vedi tutti gli utenti"
+
+msgid "Busy"
+msgstr "Occupato"
+
+#, fuzzy
+msgid "Calendar Principals"
+msgstr "Calendario utenti"
+
+#, fuzzy
+msgid "Calendar Timezone"
+msgstr "Calendario utenti"
+
+#, c-format
+msgid "Calendar \"%s\" was loaded from file."
+msgstr ""
+
+#, fuzzy
+msgid "Change Password"
+msgstr "Nuova password"
+
+msgid "Click to display user details"
+msgstr "Fare clic per visualizzare i dettagli dell'utente"
+
+#, fuzzy
+msgid "Click to edit principal details"
+msgstr "Fare clic per visualizzare i dettagli dell'utente"
+
+#, fuzzy
+msgid "Collection Grants"
+msgstr "Percorso archivio"
+
+#, fuzzy
+msgid "Collection ID"
+msgstr "Percorso archivio"
+
+msgid "Collection deleted"
+msgstr "Archivio cancellato"
+
+#, fuzzy
+msgid "Collection"
+msgstr "Percorso archivio"
+
+msgid "Collections may not be both CalDAV calendars and CardDAV addressbooks at the same time"
+msgstr ""
+
+msgid "Configuring Calendar Clients for DAViCal"
+msgstr ""
+
+msgid "Configuring DAViCal"
+msgstr ""
+
+#, fuzzy
+msgid "Confirm Deletion of the Binding"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Confirm Deletion of the Collection"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Confirm Deletion of the Principal"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Confirm Deletion of the Ticket"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Confirm Password"
+msgstr "Conferma la nuova password."
+
+msgid "Confirm the new password."
+msgstr "Conferma la nuova password."
+
+msgid "Confirm"
+msgstr "Conferma"
+
+msgid "Could not retrieve"
+msgstr ""
+
+#, fuzzy
+msgid "Create Collection"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Create Events/Collections"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Create New Collection"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Create New Principal"
+msgstr ""
+
+#, fuzzy
+msgid "Create Principal"
+msgstr "Calendario utenti"
+
+#, fuzzy
+msgid "Create Ticket"
+msgstr "Crea"
+
+msgid "Create a new principal (i.e. a new user, resource or group)"
+msgstr ""
+
+#, fuzzy
+msgid "Create a resource or collection"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Create"
+msgstr "Crea"
+
+#, fuzzy
+msgid "Creating new Collection."
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Creating new Principal record."
+msgstr "Calendario utenti"
+
+msgid "Current DAViCal version "
+msgstr ""
+
+msgid "Current Versions"
+msgstr ""
+
+msgid ""
+"Currently this page does very little.  Suggestions or patches to make it do more useful stuff will be "
+"gratefully received."
+msgstr ""
+
+msgid "DAV Path"
+msgstr ""
+
+msgid "DAV::resourcetype may only be set to a new value, it may not be removed."
+msgstr ""
+
+msgid "DAViCal CalDAV Server"
+msgstr "DAViCal CalDAV Server"
+
+#, fuzzy
+msgid "DAViCal DB Schema version "
+msgstr "DAViCal CalDAV Server"
+
+msgid "DAViCal Homepage"
+msgstr ""
+
+msgid "DAViCal Wiki"
+msgstr ""
+
+msgid "DAViCal only allows BIND requests for collections at present."
+msgstr ""
+
+msgid "DKIM signature invalid "
+msgstr ""
+
+msgid "DKIM signature missing"
+msgstr ""
+
+msgid "DKIM signature validation failed(DNS ERROR)"
+msgstr ""
+
+msgid "DKIM signature validation failed(KEY Parse ERROR)"
+msgstr ""
+
+msgid "DKIM signature validation failed(KEY Validation ERROR)"
+msgstr ""
+
+msgid "DKIM signature validation failed(Signature verification ERROR)"
+msgstr ""
+
+msgid "Database Error"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Database Host"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Database Name"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Database Owner"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Database Password"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Database Port"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Database Username"
+msgstr "Errore database"
+
+msgid "Database error"
+msgstr "Errore database"
+
+#, fuzzy
+msgid "Date Format Style"
+msgstr "Formato data"
+
+msgid "Date Style"
+msgstr "Formato data"
+
+msgid "Default Privileges"
+msgstr ""
+
+#, fuzzy
+msgid "Delete Events/Collections"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Delete Principal"
+msgstr "Calendario utenti"
+
+#, fuzzy
+msgid "Delete a resource or collection"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Deleted a grant from this Principal"
+msgstr ""
+
+#, fuzzy
+msgid "Deleting Binding:"
+msgstr "Calendario utenti"
+
+#, fuzzy
+msgid "Deleting Collection:"
+msgstr "Conferma cancellazione archivio"
+
+#, fuzzy
+msgid "Deleting Principal:"
+msgstr "Calendario utenti"
+
+#, fuzzy
+msgid "Deleting Ticket:"
+msgstr "Elimina"
+
+msgid "Deliver scheduling invitations from an organiser to this scheduling inbox"
+msgstr ""
+
+msgid "Deliver scheduling replies from an attendee to this scheduling inbox"
+msgstr ""
+
+msgid "Dependencies"
+msgstr ""
+
+msgid "Dependency"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Destination collection does not exist"
+msgstr ""
+
+msgid "Directory on the server"
+msgstr "Directory sul server"
+
+msgid "Display Name"
+msgstr ""
+
+msgid "Displayname"
+msgstr ""
+
+msgid "Does the user have the right to perform this role?"
+msgstr "L'utente ha i privilegi per ricoprire questo ruolo?"
+
+msgid "EMail OK"
+msgstr "E-mail OK"
+
+msgid "EMail"
+msgstr "E-mail:"
+
+#, c-format
+msgid "ERROR: %s"
+msgstr "ERRORE: %s"
+
+msgid "ERROR: The full name may not be blank."
+msgstr ""
+
+msgid "ERROR: The new password must match the confirmed password."
+msgstr ""
+
+msgid "ERROR: There was a database error writing the roles information!"
+msgstr ""
+
+msgid "Edit this user record"
+msgstr "Modifica questo record utente"
+
+#, fuzzy
+msgid "Edit"
+msgstr "Modifica %s"
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Enter a username, if you know it, and click here, to be e-mailed a temporary password."
+msgstr ""
+
+msgid "Enter your username and password then click here to log in."
+msgstr "Inserire nome utente e password quindi clicca su log in per accedere"
+
+#, c-format
+msgid "Error NoGroupFound with filter >%s<, attributes >%s< , dn >%s<"
+msgstr ""
+
+#, c-format
+msgid "Error NoUserFound with filter >%s<, attributes >%s< , dn >%s<"
+msgstr ""
+
+msgid "Error querying database."
+msgstr "Errore durante l'interrogazione al database."
+
+msgid "Error writing calendar details to database."
+msgstr "Errore durante la scrittura dettagli calendario nel database."
+
+#, fuzzy
+msgid "Error writing calendar properties to database."
+msgstr "Errore durante la scrittura dettagli calendario nel database."
+
+msgid "European (d/m/y)"
+msgstr "Europeo (d/m/y)"
+
+#, fuzzy
+msgid "European"
+msgstr "Europeo (d/m/y)"
+
+msgid "Existing resource does not match \"If-Match\" header - not accepted."
+msgstr ""
+
+msgid "Existing resource matches \"If-None-Match\" header - not accepted."
+msgstr ""
+
+msgid "Expires"
+msgstr ""
+
+#, fuzzy
+msgid "Failed to write collection."
+msgstr "Importa file ICS nell'archivio"
+
+msgid "Failed"
+msgstr ""
+
+msgid "For access to the"
+msgstr ""
+
+msgid "Forbidden"
+msgstr "Negato"
+
+#, fuzzy
+msgid "Free/Busy"
+msgstr "Impegnato"
+
+msgid "Full Name"
+msgstr "Nome visualizzato"
+
+#, fuzzy
+msgid "Fullname"
+msgstr "Nome visualizzato"
+
+msgid "GET requests on collections are only supported for calendars."
+msgstr ""
+
+msgid "GNU gettext support"
+msgstr ""
+
+msgid "GO!"
+msgstr "VAI!"
+
+msgid "Go to the DAViCal Feature Requests"
+msgstr ""
+
+msgid "Grant"
+msgstr ""
+
+msgid "Granting new privileges from this Principal"
+msgstr ""
+
+msgid "Group <!-- in the sense of a group of people -->"
+msgstr "Gruppo"
+
+msgid "Group Members"
+msgstr ""
+
+msgid "Group Memberships"
+msgstr ""
+
+msgid "Group Principals"
+msgstr ""
+
+msgid "Group"
+msgstr ""
+
+msgid "Has Members"
+msgstr ""
+
+msgid "Help on the current screen"
+msgstr ""
+
+msgid "Help! I've forgotten my password!"
+msgstr "Aiuto! Ho dimenticato la password!"
+
+msgid "Help"
+msgstr "Aiuto"
+
+#, fuzzy
+msgid "Home Page"
+msgstr "Home"
+
+msgid "Home calendar added."
+msgstr ""
+
+msgid "Home"
+msgstr "Home"
+
+msgid "ID"
+msgstr ""
+
+msgid "ISO Format (YYYY-MM-DD)"
+msgstr "Formato ISO (YYYY-MM-DD)"
+
+#, fuzzy
+msgid "ISO Format"
+msgstr "Formato ISO (YYYY-MM-DD)"
+
+msgid "Id <!-- short for 'Identifier' -->"
+msgstr "Id <!-- short for 'Identifier' -->"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "If you have forgotten your password then"
+msgstr "Se hai dimenticato la password"
+
+msgid "If you would like to request access, please e-mail"
+msgstr "Se si desidera richiedere un accesso, inviare un'e-mail"
+
+#, fuzzy
+msgid "Import Calendars"
+msgstr "Calendario"
+
+msgid "Import all .ics files of a directory"
+msgstr "Importa tutti i file .ics di una directory"
+
+#, fuzzy
+msgid "Inactive Principals"
+msgstr "Calendario utenti"
+
+msgid "Incorrect content type for addressbook: "
+msgstr ""
+
+msgid "Incorrect content type for calendar: "
+msgstr ""
+
+msgid "Invalid user name or password."
+msgstr "Nome utente o password non valida."
+
+msgid "Invalid username or password."
+msgstr "Nome utente o password non valida."
+
+msgid "Is Member of"
+msgstr ""
+
+#, fuzzy
+msgid "Is a Calendar"
+msgstr "È un calendario?"
+
+msgid "Is an Addressbook"
+msgstr ""
+
+msgid "Is this user active?"
+msgstr "Questo utente è attivo?"
+
+#, fuzzy
+msgid "Items in Collection"
+msgstr "Percorso archivio"
+
+msgid "Joined"
+msgstr "Aggiunto"
+
+msgid "Language"
+msgstr "Lingua"
+
+msgid "Last used"
+msgstr "Ultimo accesso"
+
+#, fuzzy
+msgid "List Groups"
+msgstr "Ultimo accesso"
+
+msgid "List Resources"
+msgstr ""
+
+#, fuzzy
+msgid "List Users"
+msgstr "Utenti"
+
+msgid "Load From File"
+msgstr ""
+
+msgid "Locale"
+msgstr ""
+
+msgid "Log On Please"
+msgstr "Autenticazione richiesta"
+
+msgid "Log out of DAViCal"
+msgstr ""
+
+msgid "Logout"
+msgstr "Esci"
+
+msgid "Member deleted from this Group Principal"
+msgstr ""
+
+msgid "Name"
+msgstr "Nome"
+
+#, fuzzy
+msgid "New Collection"
+msgstr "Percorso archivio"
+
+msgid "New Password"
+msgstr "Nuova password"
+
+#, fuzzy
+msgid "New Principal"
+msgstr "Calendario utenti"
+
+#, fuzzy
+msgid "No <!-- not 'Yes' -->"
+msgstr "Nr. <!-- short for 'Number' -->"
+
+msgid "No calendar content"
+msgstr ""
+
+msgid "No collection found at that location."
+msgstr ""
+
+msgid "No scheduling support for user"
+msgstr ""
+
+#, fuzzy
+msgid "No"
+msgstr "No."
+
+msgid "No. <!-- short for 'Number' -->"
+msgstr "Nr. <!-- short for 'Number' -->"
+
+#, fuzzy
+msgid "No. of Collections"
+msgstr "Percorso archivio"
+
+#, fuzzy
+msgid "No. of Principals"
+msgstr "Calendario utenti"
+
+msgid "No. of Resources"
+msgstr ""
+
+msgid "No."
+msgstr "No."
+
+msgid "Not overwriting existing destination resource"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Opaque"
+msgstr ""
+
+msgid "Operations on your calendar"
+msgstr ""
+
+msgid "Override a Lock"
+msgstr ""
+
+#, fuzzy
+msgid "PDO PostgreSQL drivers"
+msgstr "L'utente non è disponibile"
+
+msgid "PHP PDO module available"
+msgstr ""
+
+#, fuzzy
+msgid "PHP PostgreSQL available"
+msgstr "L'utente non è disponibile"
+
+msgid "PUT on a collection is only allowed for text/calendar content against a calendar collection"
+msgstr ""
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Path"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+#, fuzzy
+msgid "Please confirm deletion of access ticket - see below"
+msgstr "Conferma cancellazione"
+
+#, fuzzy
+msgid "Please confirm deletion of binding - see below"
+msgstr "Conferma cancellazione"
+
+msgid "Please confirm deletion of collection - see below"
+msgstr ""
+
+#, fuzzy
+msgid "Please confirm deletion of the principal"
+msgstr "Conferma cancellazione"
+
+msgid "Please note the time and advise the administrator of your system."
+msgstr ""
+
+#, fuzzy
+msgid "Principal Collections"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Principal Grants"
+msgstr ""
+
+msgid "Principal ID"
+msgstr ""
+
+msgid "Principal Type"
+msgstr ""
+
+#, fuzzy
+msgid "Principal deleted"
+msgstr "Conferma cancellazione archivio"
+
+msgid "Principal"
+msgstr ""
+
+msgid "Privileges granted to All Users"
+msgstr ""
+
+msgid "Privileges"
+msgstr ""
+
+msgid "Property is read-only"
+msgstr ""
+
+msgid "Public <!-- in the sense of being available to all users -->"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Publicly Readable"
+msgstr ""
+
+msgid "REPORT body contains no XML data!"
+msgstr ""
+
+msgid "REPORT body is not valid XML data!"
+msgstr ""
+
+msgid "Read ACLs for a resource or collection"
+msgstr ""
+
+msgid "Read Access Controls"
+msgstr ""
+
+msgid "Read Current User's Access"
+msgstr ""
+
+msgid "Read Free/Busy Information"
+msgstr ""
+
+msgid "Read the content of a resource or collection"
+msgstr ""
+
+msgid "Read the details of the current user's access control to this resource."
+msgstr ""
+
+msgid "Read the free/busy information for a calendar collection"
+msgstr ""
+
+msgid "Read"
+msgstr "Lettura"
+
+#, fuzzy
+msgid "Read/Write"
+msgstr "Lettura/Scrittura"
+
+msgid "Remove a lock"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Report Bug"
+msgstr "Segnala Bug"
+
+msgid "Report a bug in the system"
+msgstr ""
+
+msgid "Request Feature"
+msgstr ""
+
+msgid "Request body contains no XML data!"
+msgstr ""
+
+msgid "Request body is not valid XML data!"
+msgstr ""
+
+msgid "Resource <!-- a thing which might be booked: a room, a carpark, a projector... -->"
+msgstr ""
+
+msgid "Resource Calendar Principals"
+msgstr ""
+
+msgid "Resource Not Found."
+msgstr ""
+
+msgid "Resource has changed on server - not deleted"
+msgstr ""
+
+msgid "Resource"
+msgstr ""
+
+msgid "Resources may not be changed to / from collections."
+msgstr ""
+
+msgid "Revoke"
+msgstr ""
+
+msgid "Schedule Deliver"
+msgstr ""
+
+msgid "Schedule Send"
+msgstr ""
+
+msgid "Schedule Transparency"
+msgstr ""
+
+msgid "Scheduling: Deliver a Reply"
+msgstr ""
+
+msgid "Scheduling: Deliver an Invitation"
+msgstr ""
+
+msgid "Scheduling: Delivery"
+msgstr ""
+
+msgid "Scheduling: Query free/busy"
+msgstr ""
+
+msgid "Scheduling: Send a Reply"
+msgstr ""
+
+msgid "Scheduling: Send an Invitation"
+msgstr ""
+
+msgid "Scheduling: Send free/busy"
+msgstr ""
+
+msgid "Scheduling: Sending"
+msgstr ""
+
+msgid "Send free/busy enquiries"
+msgstr ""
+
+msgid "Send scheduling invitations as an organiser from the owner of this scheduling outbox."
+msgstr ""
+
+msgid "Send scheduling replies as an attendee from the owner of this scheduling outbox."
+msgstr ""
+
+msgid "Set free/busy privileges"
+msgstr ""
+
+msgid "Set read privileges"
+msgstr ""
+
+msgid "Set read+write privileges"
+msgstr ""
+
+msgid "Set schedule-deliver privileges"
+msgstr ""
+
+msgid "Set the path to store your ics e.g. 'home' will be referenced as /caldav.php/me/home/"
+msgstr ""
+"Impostare il percorso per memorizzare il file ics - es. 'home' - che sarà referenziato come /caldav."
+"php/me/home/"
+
+msgid "Setup DAViCal"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Show help on"
+msgstr ""
+
+msgid "Site Statistics require the database to be available!"
+msgstr ""
+
+msgid "Site Statistics"
+msgstr ""
+
+msgid "Some properties were not able to be changed."
+msgstr ""
+
+msgid "Some properties were not able to be set."
+msgstr ""
+
+msgid "Source resource does not exist."
+msgstr ""
+
+msgid "Special collections may not contain a calendar or other special collection."
+msgstr ""
+
+msgid "Specific Privileges"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+#, c-format
+msgid "Status: %d, Message: %s, User: %d, Path: %s"
+msgstr ""
+
+msgid "Submit"
+msgstr "Invia"
+
+msgid "Suhosin \"server.strip\" disabled"
+msgstr ""
+
+msgid "Sync LDAP Groups with RSCDS"
+msgstr ""
+
+msgid "Sync LDAP with DAViCal"
+msgstr ""
+
+msgid "Target"
+msgstr ""
+
+msgid "That destination name contains invalid characters."
+msgstr ""
+
+msgid "That resource is not present on this server."
+msgstr ""
+
+msgid "The BIND Request MUST identify an existing resource."
+msgstr ""
+
+msgid "The BIND Request-URI MUST identify a collection."
+msgstr ""
+
+msgid "The BIND method is not allowed at that location."
+msgstr ""
+
+msgid "The CalDAV:schedule-calendar-transp property may only be set on calendars."
+msgstr ""
+
+msgid "The DAViCal Home Page"
+msgstr ""
+
+msgid "The access ticket will be deleted."
+msgstr ""
+
+msgid "The addressbook-query report must be run against an addressbook collection"
+msgstr ""
+
+msgid "The application program does not understand that request."
+msgstr ""
+
+msgid "The binding will be deleted."
+msgstr ""
+
+msgid "The calendar path contains illegal characters."
+msgstr ""
+
+msgid ""
+"The calendar-free-busy-set is superseded by the schedule-transp property of a calendar collection."
+msgstr ""
+
+msgid "The calendar-query report must be run against a calendar or a scheduling collection"
+msgstr ""
+
+msgid "The collection name may not be blank."
+msgstr ""
+
+msgid "The destination collection does not exist"
+msgstr ""
+
+msgid "The displayname may only be set on collections, principals or bindings."
+msgstr ""
+
+msgid "The email address really should not be blank."
+msgstr ""
+
+msgid "The file is not UTF-8 encoded, please check the error for more details."
+msgstr ""
+
+msgid "The full name for this person, group or other type of principal."
+msgstr ""
+
+msgid "The full name must not be blank."
+msgstr ""
+
+msgid "The name this user can log into the system with."
+msgstr ""
+
+msgid "The path on the server where your .ics files are."
+msgstr ""
+
+msgid "The preferred language for this person."
+msgstr ""
+
+msgid "The style of dates used for this person."
+msgstr ""
+
+msgid "The user's e-mail address."
+msgstr ""
+
+msgid "The user's full name."
+msgstr ""
+
+msgid "The user's password for logging in."
+msgstr ""
+
+msgid "The username must not be blank, and may not contain a slash"
+msgstr ""
+
+msgid "There was an error writing to the database."
+msgstr ""
+
+msgid ""
+"This operation does the following: <ul><li>check valid groups in LDAP directory</li> <li>check groups "
+"in DAViCal</li></ul> then <ul><li>if a group is present in DAViCal but not in LDAP set as inactive in "
+"DAViCal</li> <li>if a group is present in LDAP but not in DAViCal create the group in DAViCal</li> "
+"<li>if a group in present in LDAP and DAViCal then update information in DAViCal</li> </ul>"
+msgstr ""
+
+msgid ""
+"This operation does the following: <ul><li>check valid users in LDAP directory</li> <li>check users in "
+"DAViCal</li></ul> then <ul><li>if a user is present in DAViCal but not in LDAP set him as inactive in "
+"DAViCal</li> <li>if a user is present in LDAP but not in DAViCal create the user in DAViCal</li> "
+"<li>if a user in present in LDAP and DAViCal then update information in DAViCal</li> </ul>"
+msgstr ""
+
+msgid "Ticket ID"
+msgstr ""
+
+msgid "To ID"
+msgstr ""
+
+msgid "Toggle all privileges"
+msgstr ""
+
+msgid "Transparent"
+msgstr ""
+
+msgid "US Format"
+msgstr ""
+
+msgid "United States of America (m/d/y)"
+msgstr ""
+
+msgid "Update"
+msgstr "Aggiorna"
+
+msgid "Updated"
+msgstr "Ultima modifica"
+
+#, fuzzy
+msgid "Updating Collection record."
+msgstr "Conferma cancellazione archivio"
+
+msgid "Updating Member of this Group Principal"
+msgstr ""
+
+msgid "Updating Principal record."
+msgstr ""
+
+msgid "Updating grants by this Principal"
+msgstr ""
+
+msgid "Upgrade DAViCal database schema"
+msgstr ""
+
+msgid "Upgrade Database"
+msgstr ""
+
+msgid "Upload a .ics calendar in iCalendar format to initialise or replace this calendar."
+msgstr ""
+
+msgid "User Calendar Principals"
+msgstr ""
+
+msgid "User Details"
+msgstr "Dettaglio utente"
+
+#, fuzzy
+msgid "User Functions"
+msgstr "Dettaglio utente"
+
+msgid "User Name"
+msgstr "Nome utente"
+
+msgid "User Roles"
+msgstr "Ruoli utente"
+
+msgid "User is active"
+msgstr "L'utente è attivo"
+
+msgid "User record written."
+msgstr ""
+
+#, fuzzy
+msgid "Username"
+msgstr "Nome utente"
+
+#, fuzzy
+msgid "View My Details"
+msgstr "I miei dati"
+
+msgid "View my own principal record"
+msgstr ""
+
+msgid "View this user record"
+msgstr ""
+
+msgid "Visit the DAViCal Wiki"
+msgstr ""
+
+msgid "Warning: there are no active admin users, you should fix this before logging out."
+msgstr ""
+
+msgid "When the user's e-mail account was validated."
+msgstr ""
+
+msgid "Write ACLs for a resource or collection"
+msgstr ""
+
+msgid "Write Access Controls"
+msgstr ""
+
+#, fuzzy
+msgid "Write Data"
+msgstr "Scrittura"
+
+msgid "Write Metadata"
+msgstr ""
+
+#, fuzzy
+msgid "Write content"
+msgstr "Scrittura"
+
+msgid "Write properties"
+msgstr ""
+
+msgid "Write"
+msgstr "Scrittura"
+
+msgid "Yes"
+msgstr ""
+
+#, c-format
+msgid "You are currently running DAViCal version %s. The database schema is at version %d.%d.%d."
+msgstr ""
+
+#, c-format
+msgid ""
+"You are currently running DAViCal version %s. The database schema should be at version %s and it is at "
+"version %d.%d.%d."
+msgstr ""
+
+msgid "You are editing"
+msgstr ""
+
+msgid "You are not authorised to use this function."
+msgstr ""
+
+msgid "You are viewing"
+msgstr ""
+
+msgid "You do not have permission to modify this record."
+msgstr ""
+
+msgid "You may not PUT to a collection URL"
+msgstr ""
+
+msgid "You must log in to use this system."
+msgstr "È necessario autenticarsi per utilizzare questo sistema."
+
+msgid "Your configuration produced PHP errors which should be corrected"
+msgstr ""
+
+#, c-format
+msgid "all events of user %s were deleted and replaced by those from file %s"
+msgstr ""
+
+msgid "calendar-timezone property is only valid for a calendar."
+msgstr ""
+
+#, c-format
+msgid "directory %s is not readable"
+msgstr ""
+
+msgid "drivers_ldap : Could not start TLS: ldap_start_tls() failed"
+msgstr ""
+
+#, c-format
+msgid "drivers_ldap : Failed to bind to host %1$s on port %2$s with bindDN of %3$s"
+msgstr ""
+
+msgid "drivers_ldap : Failed to set LDAP to use protocol version 3, TLS not supported"
+msgstr ""
+
+msgid ""
+"drivers_ldap : Unable to bind to LDAP - check your configuration for bindDN and passDN, and that your "
+"LDAP server is reachable"
+msgstr ""
+
+#, c-format
+msgid "drivers_ldap : Unable to connect to LDAP with port %s on host %s"
+msgstr ""
+
+msgid "drivers_ldap : function ldap_connect not defined, check your php_ldap module"
+msgstr ""
+
+#, c-format
+msgid "drivers_pwauth_pam : Unable to find %s file"
+msgstr ""
+
+#, c-format
+msgid "drivers_squid_pam : Unable to find %s file"
+msgstr ""
+
+msgid ""
+"forget me not <!-- this is a colloquial phrase in english (the name of a flower) and is an option "
+"allowing people to log in automatically in future -->"
+msgstr "Mantieni aperta la connessione"
+
+msgid "forget me not"
+msgstr "Mantieni aperta la connessione"
+
+#, fuzzy
+msgid "from principal"
+msgstr "Calendario utenti"
+
+msgid "path to store your ics"
+msgstr "percorso dove memorizzare il file ics"
+
+#, c-format
+msgid "the file %s is not UTF-8 encoded, please check error for more details"
+msgstr ""
+
+msgid "you should log on with the username and password that have been issued to you."
+msgstr ""
+
+#~ msgid "--- select a relationship type ---"
+#~ msgstr "--- seleziona il tipo di relazione ---"
+
+#~ msgid "--- select a user or resource ---"
+#~ msgstr "--- seleziona l'utente o la risorsa ---"
+
+#~ msgid "--- select a user, group or resource ---"
+#~ msgstr "--- seleziona l'utente, gruppo di risorse ---"
+
+#~ msgid "Add Relationship"
+#~ msgstr "Aggiungi relazione"
+
+#~ msgid "Add"
+#~ msgstr "Aggiungi"
+
+#~ msgid "Collection Path"
+#~ msgstr "Percorso archivio"
+
+#~ msgid "Confirm Deletion of the Relationship Type"
+#~ msgstr "Conferma cancellazione del tipo di relazione"
+
+#, fuzzy
+#~ msgid "Create Calendar"
+#~ msgstr "Calendario"
+
+#~ msgid "Database Error."
+#~ msgstr "Errore database."
+
+#, fuzzy
+#~ msgid "Delete User"
+#~ msgstr "Elimina"
+
+#~ msgid "Enter the name for this resource type"
+#~ msgstr "Immettere il nome per questo tipo di risorsa"
+
+#~ msgid "Finish"
+#~ msgstr "Fine"
+
+#~ msgid "FreeBusy"
+#~ msgstr "Impegnato"
+
+#~ msgid "Is a Calendar?"
+#~ msgstr "È un calendario?"
+
+#~ msgid "Please Confirm Deletion"
+#~ msgstr "Conferma cancellazione"
+
+#~ msgid "ReadWrite"
+#~ msgstr "Lettura/Scrittura"
+
+#~ msgid "Relationship Type Added."
+#~ msgstr "Aggiunto tipo di relazione."
+
+#~ msgid "Relationship Type Deleted."
+#~ msgstr "Cancellato tipo di relazione."
+
+#~ msgid "Relationship Types"
+#~ msgstr "Tipi di relazione"
+
+#~ msgid "Relationship added."
+#~ msgstr "Relazione aggiunta."
+
+#~ msgid "Relationship deleted"
+#~ msgstr "Relazione cancellata"
+
+#~ msgid "Relationship"
+#~ msgstr "Relazione"
+
+#~ msgid "Rights"
+#~ msgstr "Privilegi"
+
+#, fuzzy
+#~ msgid ""
+#~ "The calendar name part of the path to store your ics. E.g. the \"home\" part of \"/caldav.php/"
+#~ "username/home/\""
+#~ msgstr ""
+#~ "Impostare il percorso per memorizzare il file ics - es. 'home' - che sarà referenziato come /caldav."
+#~ "php/me/home/"
+
+#~ msgid "Calendar Users"
+#~ msgstr "Calendario utenti"
+
+#~ msgid "Edit %s"
+#~ msgstr "Modifica %s"
+
+#~ msgid "New User"
+#~ msgstr "Nuovo utente"
+
+#~ msgid "Relationships"
+#~ msgstr "Relazioni"
+
+#~ msgid "User Unavailable"
+#~ msgstr "L'utente non è disponibile"
+
+#~ msgid "Administers"
+#~ msgstr "Gestisce"
+
+#~ msgid "Can read from"
+#~ msgstr "Può leggere da"
+
+#~ msgid "Default relationships added."
+#~ msgstr "Relazioni di default aggiunte."
+
+#~ msgid "Add a new user"
+#~ msgstr "Aggiungi un nuovo utente"
+
+#~ msgid "Browse all relationship types"
+#~ msgstr "Vedi tutti i tipi di relazione"
+
+#~ msgid "Operations"
+#~ msgstr "Operazioni"
+
+#~ msgid "<b>WARNING: all events in this path will be deleted before inserting all of the ics file</b>"
+#~ msgstr ""
+#~ "<b>ATTENZIONE: tutti gli eventi in questo path saranno cancellati dall'inserimento del file ics</b>"
+
+#~ msgid "Created On"
+#~ msgstr "Creato il"
+
+#~ msgid "Your .ics calendar"
+#~ msgstr "Il tuo calendario .ics"

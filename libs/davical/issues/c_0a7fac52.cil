@@ -1,0 +1,11 @@
+Issue: 54a5f811
+CreatedBy: Leho Kraav <leho@kraav.com>
+Inserted: 2010-12-26T17:43:10
+Updated: 2010-12-26T17:43:10
+
+i think feed.php is almost feature-complete and bug-free now. here's a list of stuff that happened while you were sleeping (wrap-up for irc monologue):
+ * fixed escaping special characters for xml content, my 761 item feed works now
+ * fixed escaping and hyperlinking content in correct order, so browser gets real <> instead of &lt;&gt; for tags
+ * fixed Time string concatenation ($p_time)
+ * added et_EE support to dba/supported_locales.sql, growled about rebuild script looking at .sql for language support info. why not iterate through ./po/?
+ * migrated to using strftime instead of DateTime->format, because strftime actually support locales

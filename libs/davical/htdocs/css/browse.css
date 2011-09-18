@@ -1,0 +1,45 @@
+/* CSS for browse pages in DAViCal */
+
+tr.header th, td {
+padding: 1px 4px;
+}
+
+tr.header th {
+font-family: Arial Narrow, sans-serif;
+background-color: #CDF;
+color: black;
+}
+
+tr.header a {
+color: inherit;
+text-decoration:none;
+border:0;
+}
+
+tr.r0:hover, tr.r1:hover {
+background-color:#AADEFF;
+}
+
+tr.r0 {
+background-color: white;
+}
+
+tr.r1 {
+background-color: #DEF;
+}
+
+img.order {
+border:0;
+}
+
+.right {
+text-align:right;
+}
+
+.left {
+text-align:left;
+}
+
+#browser h2 {
+  margin: 0.8em 0 0.1em;
+}

@@ -1,0 +1,5 @@
+dba htdocs inc locale usr/share/davical
+debian/keepme etc/davical/.keep
+config/example-config.php usr/share/doc/davical/examples/davical-conf.php
+config/example-administration.yml usr/share/doc/davical/examples/administration.yml
+config/debug-config.php config/other-config.php usr/share/doc/davical/examples

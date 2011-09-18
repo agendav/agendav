@@ -1,0 +1,33 @@
+
+# SetHandler php-script
+
+#<LimitExcept MOVE COPY CONNECT>
+#        Order allow,deny
+#        Allow from all
+#</LimitExcept>
+#
+#<Limit MOVE COPY CONNECT>
+#        Order deny,allow
+#        Deny from all
+#</Limit>
+
+# RewriteEngine On
+
+# # Not if it's the root URL.  You might want to comment this out if you
+# # want to use an explicit /index.php for getting to the admin pages.
+# RewriteCond %{REQUEST_URI} !^/$
+# RewriteCond %{REQUEST_URI} !^/davical/$
+
+# # Not if it explicitly specifies a .php program, stylesheet or image
+# RewriteCond %{REQUEST_URI} !\.(php|css|js|png|gif|jpg)
+
+# # Everything else gets rewritten to /caldav.php/...
+# RewriteRule ^(.*)$ /caldav.php$1  [NC,L]
+
+# # php_value include_path /usr/share/awl/inc
+# php_value magic_quotes_gpc 0
+# php_value register_globals 0
+# php_value open_basedir 1
+# php_value error_reporting "E_ALL & ~E_NOTICE"
+# php_value default_charset "utf-8"
+

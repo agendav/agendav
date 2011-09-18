@@ -1,0 +1,6 @@
+div#topbar,
+div#left_frame,
+div#footer {
+  display: none !important;
+}
+

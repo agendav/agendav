@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<propfind xmlns="DAV:" xmlns:caldav="urn:ietf:params:xml:ns:caldav">
+ <prop>
+  <acl/>
+ </prop>
+</propfind>

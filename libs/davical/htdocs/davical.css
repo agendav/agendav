@@ -1,0 +1,354 @@
+/* Basic overridable CSS for DAViCal CalDAV Server */
+
+body, p, li, td {
+padding: 0;
+margin: 0;
+border: none;
+padding-bottom:2em;
+}
+
+.prompt {
+font-weight: bold;
+padding: 1px 1em 1px 0.5em;
+text-align: right;
+}
+
+th.prompt {
+  width:18%;
+}
+
+.error {
+/* font-weight: bold; */
+font-size: 110%;
+font-family: Bitstream Vera Sans, Vera Sans, sans-serif;
+padding: 1px 0.3em;
+background-color: #c00000;
+color: #ffff00;
+}
+
+a.error, a.error:hover, a.error:visited {
+  background-color: #c00000;
+  color: #ffffd0;
+  text-decoration:underline;
+}
+
+h1, h2, h3, h4, h5 {
+font-weight: bold;
+font-family: Bitstream Vera Sans, Vera Sans, sans-serif;
+padding-left: 0.3em;
+padding-right: 0.3em;
+padding-bottom: 0.1em;
+}
+
+h1 {
+font-size: 100%;
+background-color: #ABF;
+margin-top: 10px;
+padding: 0.3em;
+color:white;
+border-bottom:2px dashed #009;
+}
+
+h1:first-letter {
+font-size: 120%;
+}
+
+h2 {
+font-size: 100%;
+background-color: #BCF;
+margin: 0;
+padding-top: 0.3em;
+/*margin-top: 2px;
+margin-bottom: 0.3em;
+margin-left :15px;
+*/
+border:1px dashed #99F;
+}
+
+h3 {
+font-size: 100%;
+background-color: #DEF;
+margin: 0;
+padding-top: 0.2em;
+margin-top: 0.4em;
+margin-bottom: 0.2em;
+margin-left :25px;
+border:1px dashed #BCF;
+}
+
+p {
+padding: 0.1em 0.3em 0.2em;
+}
+
+ul {
+list-style-type: square;
+margin: 0 0 0.5em;
+}
+
+li {
+padding: 0 0.3em 0.2em;
+}
+input.text, input.password, label, input.fcheckbox,
+input.ftext, input.fpassword, input.fdate, input.ftimestamp, select.fselect, select.flookup {
+background-color: #EFFAFF;
+color: navy;
+border: thin solid #c0c0c0;
+width:250px;
+}
+label.fcheckbox {
+display:block;
+width:244px;
+margin-top:2px;
+}
+input.fcheckbox {
+width:13px;
+}
+input.text, input.password,
+input.ftext, input.fpassword, input.fdate, input.ftimestamp {
+padding: 3px;
+margin: 0;
+}
+
+label.fcheckbox {
+padding: 2px;
+margin-right: 2px;
+}
+
+input.fcheckbox {
+margin-top: 6px;
+margin-bottom: 3px;
+vertical-align:-4px;
+border: none;
+}
+
+select.fselect, select.flookup {
+padding: 2px 0;
+margin: 3px 0 0;
+}
+
+.prompt {
+font-family: Arial Narrow, sans-serif;
+background-color: #CDF;
+color: #003010;
+}
+
+td.entry {
+padding: 1px;
+}
+
+.ph {
+font-family:Bitstream Vera Sans, sans-serif;
+color: #003010;
+font-size: 120%;
+background-color: #BCF;
+text-align:left;
+border-top:10px white solid;
+padding-top:3px;
+border-bottom:4px white solid;
+}
+
+
+#messages {
+background-color: #602000;
+color:white;
+border:0;
+padding:2px 6px;
+}
+
+ul.messages, li.messages {
+font-family:Bitstream Vera Sans, sans-serif;
+font-weight:700;
+font-size: 1.1em;
+}
+
+li.messages {
+display:inherit;
+}
+
+
+.fsubmit {
+background-color: white;
+font-family: Bitstream Vera Sans, Vera Sans, sans-serif;
+font-weight: bold;
+border:2px solid #009;
+height:1.4em;
+line-height:1.6em;
+font-size: 1.0em;
+background-color: #ABE;
+-moz-border-radius: 2em;
+text-decoration:none;
+color:black;
+padding:0 1em 0.1em;
+margin:0 1em 0.1em;
+}
+/* To get a matching height on 'input' buttons we have to set height, not line-height */
+input.fsubmit {
+  height:1.6em;
+}
+.fsubmit:hover {
+border:2px outset #009;
+}
+.fsubmit:active {
+border:2px inset #009;
+}
+
+a.error {
+font-family: Bitstream Vera Sans, Vera Sans, sans-serif;
+font-weight: bold;
+border:2px solid #800;
+height:1.4em;
+line-height:1.6em;
+font-size: 1.0em;
+background-color: #F31;
+-moz-border-radius: 2em;
+text-decoration:none;
+color:white;
+padding:0 1em 0.1em;
+margin:0 1em 0.1em;
+}
+a.error:hover {
+border:2px outset #800;
+background-color: #F31;
+}
+a.error:active {
+border:2px inset #800;
+}
+
+.w40 { width: 40em; }
+.w35 { width: 35em; }
+.w30 { width: 30em; }
+.w25 { width: 25em; }
+.w20 { width: 20em; }
+.w15 { width: 15em; }
+.w10 { width: 10em; }
+
+/* Handle the menus, usually at the top of the screen */
+
+div.menu {
+  width:100%;
+  font-size:1em;
+  display:block;
+  height:1.5em;
+/*  position:absolute; */
+/*  z-index:100; */
+  background-color:#e0e0ef;
+/*  border: 1px red solid; */
+/*  background-color: #c7d0d9;
+  border: thin outset #b0b0e0; */
+  z-index: 10;
+}
+
+#related  {
+background-color: white;
+color: white;
+font-weight: bold;
+padding: 0.8em 0.4em 0.2em 0;
+margin-bottom: 0;
+height:1.3em;
+border-bottom:1px solid #ABF;
+}
+
+#related a.menu, #related a.menu:hover, #related a.menu_active, #related a.menu_active:hover {
+color: #999;
+text-decoration: none;
+background-color: #DEF;
+padding: 0.2em 0.4em;
+margin-right: 0.4em;
+height:1.3em;
+border: 1px solid #ABF;
+-moz-border-radius-topright: 0.8em;
+-moz-border-radius-topleft: 0.8em;
+
+}
+
+#related a.menu:hover, #related a.menu_active:hover {
+color: white;
+background-color: #BCF;
+}
+
+#related a.menu_active, #related a.menu_active:hover {
+background-color: white;
+color: #008;
+border-bottom:1px solid white;
+}
+
+
+/* remove all the bullets, borders and padding from the default list styling */
+.menu ul {
+  width:100%;
+  padding:0;
+  margin:0;
+  list-style-type:none;
+  display:block;
+  height:1.4em;
+  position: fixed;
+  top: 0px;
+  background-color: #c7d0d9;
+  border: thin outset #b0b0e0;
+}
+
+/* float the list to make it horizontal and a relative positon so that you can control the dropdown menu positon */
+.menu li {
+  float:left;
+  position:relative;
+  padding:0;
+  display: inline;
+}
+
+/* style the links for the top level */
+.menu a, .menu a:visited {
+  display:block;
+  font-weight: bold;
+  font-family: sans-serif;
+  text-decoration:none;
+  color:navy;
+  height:1.2em;
+  vertical-align:middle;
+  border:0 solid #fff;
+  background-color:#f0f0ff;
+  border-width:0;
+  padding: 0.1em 1em;
+  margin: 0;
+  line-height:100%;
+/*  border: 1px green dashed; */
+}
+
+/* hide the sub levels and give them a positon absolute so that they take up no room */
+.menu ul ul {
+  visibility:hidden;
+  position:absolute;
+  text-decoration:none;
+  height:0;
+  top:1.2em;
+  left:0;
+}
+
+/* style the second level links */
+.menu ul ul a,
+.menu ul ul a:visited {
+  background:#f0f0ff;
+  color:navy;
+  font-family: sans-serif;
+  border-bottom: 1px solid #cccccc;
+  height:auto;
+  line-height:1em;
+  padding:0.2em 0 0.2em 1em;
+  width:12em;
+}
+
+/* style the top level hover */
+.menu :hover > a,
+.menu ul ul :hover > a,
+.menu a:hover,
+.menu ul ul a:hover {
+  background-color:#3050c0;
+  color:#f0f0a0;
+  text-decoration:none;
+}
+
+/* make the second level visible when hover on first level list OR link */
+.menu ul li:hover ul,
+.menu ul a:hover ul{
+  visibility:visible;
+}
+
