@@ -50,16 +50,22 @@ class Login extends CI_Controller {
 		$err = '';
 
 		if ($validation !== FALSE) {
-			// Check authentication
-			$this->load->model('ldap');
+			// Check authentication against server
+			$this->load->library('caldav');
 			
 			$user = $this->input->post('user');
 			$passwd = $this->input->post('passwd');
 
-			$check_login = $this->ldap->login($user, $passwd, $err);
-			if ($check_login !== FALSE) {
-				$valid_auth = TRUE;
-				$this->auth->new_session($check_login);
+			$valid_auth = $this->caldav->check_server_authentication($user, $passwd);
+			if ($valid_auth !== FALSE) {
+				// TODO load user prefs
+				$data = array(
+						'user' => $user,
+						'passwd' => $passwd,
+						);
+				$this->auth->new_session($data);
+			} else {
+				$err = 'Nombre de usuario o contraseña inválidos';
 			}
 		}
 
@@ -84,14 +90,6 @@ class Login extends CI_Controller {
 			$this->load->view('login_ldap/login.php', $data);
 			$this->load->view('footer');
 		} else {
-			// Initial tasks
-			$this->load->library('caldav');
-
-			// Check if we are using a valid CalDAV server
-			// TODO move it out from mycaldav.php
-
-			// Retrieve a list of current calendars
-
 			redirect("/calendar");
 		}
 

@@ -224,6 +224,15 @@ class Caldav {
 	}
 
 	/**
+	 * Check for correct authentication
+	 */
+
+	function check_server_authentication($user, $passwd) {
+		$this->prepare_client($user, $passwd, '');
+		return $this->client->CheckValidCalDAV();
+	}
+
+	/**
 	 * Gets last HTTP response in array form:
 	 * [http result code, http response headers, http response body]
 	 */
