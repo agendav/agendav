@@ -12,7 +12,6 @@ Requisites
 * A web server
 * PHP > 5.2
 * PHP mbstring extension
-* PHP LDAP support (_until a better authentication mechanism is written_)
 * MySQL > 5.1
 
 Thanks
