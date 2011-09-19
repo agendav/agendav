@@ -26,7 +26,7 @@
 <div id="wrap">
 
   <div id="header">
-   <img src="agendav_big.png" alt="AgenDAV" />
+   <img src="agendav_big.png" alt="AgenDAV" width="350" height="68" />
   </div>
 
  <div class="container_12" id="main">
@@ -51,20 +51,45 @@
   </div>
   <div class="clear"></div>
 
+  <div class="grid_12 block" id="screenshots">
+  <h2>Screenshots</h2>
+   <a href="img/screenshots/1.1/01_general.png" 
+   title="Month view of AgenDAV. On the left you can see the calendar list">
+    <img src="img/screenshots/1.1/thumb/01_general.png" width="126"
+    height="60" />
+   </a>
+   <a href="img/screenshots/1.1/02_dialog_calendar.png" 
+   title="Calendar modification dialog. Here you can see the color selection widget.">
+    <img src="img/screenshots/1.1/thumb/02_dialog_calendar.png" width="103"
+    height="60" />
+   </a>
+   <a href="img/screenshots/1.1/03_dialog_event.png" 
+   title="Dialog for creating or editing existing events.">
+    <img src="img/screenshots/1.1/thumb/03_dialog_event.png" width="67"
+    height="60" />
+   </a>
+   <a href="img/screenshots/1.1/04_week_view.png" title="Week view of
+   AgenDAV. You can see an all day event on the top">
+    <img src="img/screenshots/1.1/thumb/04_week_view.png" width="105"
+    height="60" />
+   </a>
+  </div>
+  <div class="clear"></div>
+
   <div class="grid_12 block" id="block_3">
    	<div class="grid_4 alpha" id="download_link">
-	 <img src="img/zip_file_download.png" 
+	 <img src="img/zip_file_download.png" width="64" height="64"
 	 	alt="Download" />
 	 <p>Download</p>
 	</div>
 	<div class="grid_4">
 	 <a href="doc/1.1">
-	 <img src="img/office_folders.png" alt="Documentation" />
+	 <img src="img/office_folders.png" alt="Documentation"  width="64" height="64" />
 	 <p>Documentation</p>
 	 </a>
 	</div>
 	<div class="grid_4 omega" id="mail_link">
-	 <img src="img/users_comments.png" alt="Mailing lists" />
+	 <img src="img/users_comments.png" alt="Mailing lists"  width="64" height="64" />
 	 <p>Mailing lists</p>
 	</div>
   </div>
@@ -77,7 +102,7 @@
   <tr>
    <td style="text-align: center" colspan="2">
    <a href="http://github.com/adobo/agendav/tarball/1.1">
-    <img src="img/download_to_computer.png" alt="Download" />
+    <img src="img/download_to_computer.png" alt="Download" width="48" height="48" />
     <br />
     Download tar.gz
    </a>
@@ -112,10 +137,18 @@
  </p>
 </div>
  <script src="http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js"></script>
+ <script language="JavaScript" src="jquery.lightbox-0.5.pack.js"></script>
  <script language="JavaScript">
   $(document).ready(function() {
    $("#download_link").tooltip({ tip: '#download_tooltip', position: 'top center' });
    $("#mail_link").tooltip({ tip: '#mail_tooltip', position: 'top center' });
+   $("#screenshots a").lightBox({
+	imageLoading:'img/lightbox-ico-loading.gif',
+	imageBtnPrev:'img/lightbox-btn-prev.gif',
+	imageBtnNext:'img/lightbox-btn-next.gif',
+	imageBtnClose:'img/lightbox-btn-close.gif',
+	imageBlank:'img/lightbox-blank.gif'
+   });
   });
  </script>
  </body>
