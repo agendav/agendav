@@ -14,7 +14,7 @@ class CalendarExtendedInfo extends CalendarInfo {
 
 class MyCalDAV extends CalDAVClient {
 
-	var $valid_caldav_server = null;
+	protected $valid_caldav_server = null;
 
 
 	function __construct( $base_url, $user, $pass ) {
