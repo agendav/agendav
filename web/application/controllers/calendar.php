@@ -44,9 +44,9 @@ class Calendar extends CI_Controller {
 					'jquery.qtip.min.cf537c5e9a87fffcae65aa249b80fb0d0016d572.js',
 					),
 				'css' => array(
-					'css/style-1.1.css',
+					'css/style-1.1.1.css',
 					array(
-						'href' => 'css/style-1.1.print.css',
+						'href' => 'css/style-1.1.1.print.css',
 						'rel' => 'stylesheet',
 						'type' => 'text/css',
 						'media' => 'print',
@@ -64,9 +64,9 @@ class Calendar extends CI_Controller {
 					));
 
 		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-1.1.min.js';
+			$data_header['js'][] = 'agendav-1.1.1.min.js';
 		} else {
-			$data_header['js'][] = 'agendav-1.1.js';
+			$data_header['js'][] = 'agendav-1.1.1.js';
 		}
 
 		// Additional JS files

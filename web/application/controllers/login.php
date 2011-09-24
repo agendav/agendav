@@ -77,7 +77,7 @@ class Login extends CI_Controller {
                         'jquery-ui-1.8.16.min.js',
                         ),
                     'css' => array(
-                        'css/style-1.1.css',
+                        'css/style-1.1.1.css',
                         'css/jquery-ui-1.8.16.custom.css',
                         ));
 			$this->load->view('common_header', $data_header);
