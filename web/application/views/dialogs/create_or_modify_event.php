@@ -30,7 +30,7 @@ echo form_open('caldav2json/com_event', $data_form);
 $form_summary = array(
 		'name' => 'summary',
 		'value' => (isset($summary) && $summary !== FALSE) ? $summary : '',
-		'class' => 'summary required ui-widget-content ui-corner-all',
+		'class' => 'summary required',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -105,7 +105,7 @@ $form_recurrence_count = array(
 		'name' => 'recurrence_count',
 		'value' => (isset($recurrence_count) && $recurrence_count !== FALSE)
 			? $recurrence_count : '',
-		'class' => 'recurrence_count ui-widget-content ui-corner-all',
+		'class' => 'recurrence_count',
 		'maxlength' => '20',
 		'size' => '3',
 		);
