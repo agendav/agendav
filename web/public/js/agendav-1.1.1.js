@@ -351,7 +351,7 @@ $(document).ready(function() {
 					'click': function() { destroy_dialog("#delete_event_dialog"); }
 				}
 			],
-			'delete_event_dialog');
+			'delete_event_dialog', 400);
 			
 			// Close tooltip
 			$(this).parents(ved).qtip('hide');
@@ -533,7 +533,7 @@ function set_data(name, value) {
 /**
  * Loads a form (via AJAX) to a specified div
  */
-function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname) {
+function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
 	// Do it via POST
 	var newid = generate_on_the_fly_form(
 		base_app_url + 'caldav2json/edit_event', data);
@@ -566,7 +566,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					autoOpen: true,
 					buttons: buttons,
 					title: title,
-					width: 'auto',
+          width: width,
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
@@ -934,7 +934,7 @@ function event_field_form(type, data) {
 				'click': function() { destroy_dialog(ced); }
 			}
 		],
-		'com_event_dialog');
+		'com_event_dialog', 500);
 }
 
 /*
@@ -988,7 +988,7 @@ function calendar_create_form() {
 				'click': function() { destroy_dialog(ccd); }
 			}
 		],
-		'create_calendar_dialog');
+		'create_calendar_dialog', 500);
 }
 //
 // Triggers a dialog for editing calendars
@@ -1062,7 +1062,7 @@ function calendar_modify_form(calendar_obj) {
 							'click': function() { destroy_dialog(dcd); }
 						}
 					],
-					'delete_calendar_dialog');
+					'delete_calendar_dialog', 500);
 				}
 			},
 			{
@@ -1111,7 +1111,7 @@ function calendar_modify_form(calendar_obj) {
 		},
 		title,
 		buttons_and_actions,
-		'modify_calendar_dialog');
+		'modify_calendar_dialog', 500);
 }
 
 /*

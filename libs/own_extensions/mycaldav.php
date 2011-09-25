@@ -14,7 +14,7 @@ class CalendarExtendedInfo extends CalendarInfo {
 
 class MyCalDAV extends CalDAVClient {
 
-	var $valid_caldav_server = null;
+	protected $valid_caldav_server = null;
 
 
 	function __construct( $base_url, $user, $pass ) {
@@ -22,7 +22,12 @@ class MyCalDAV extends CalDAVClient {
 	}
 
 
-	// Check with OPTIONS is PROPFIND and REPORT are supported
+	/**
+	 * Check with OPTIONS if PROPFIND and REPORT are supported
+	 * 
+	 * Can be used to check authentication against server
+	 *
+	 */
 	function CheckValidCalDAV() {
 		$options = $this->DoOptionsRequest();
 		if (isset($options['REPORT']) && isset($options['PROPFIND'])) {
@@ -30,6 +35,8 @@ class MyCalDAV extends CalDAVClient {
 		} else {
 			$this->valid_caldav_server = FALSE;
 		}
+
+		return $this->valid_caldav_server;
 	}
 
 	function DoCalendarQuery( $filter, $url = null ) {
