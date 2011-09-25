@@ -12,7 +12,6 @@ AgenDAV |release| requires the following software to be installed:
 * A web server
 * PHP > 5.2
 * PHP mbstring extension
-* PHP LDAP support
 * MySQL > 5.1
 
 Downloading AgenDAV and uncompressing
@@ -24,7 +23,7 @@ Have a look at `<http://github.com/adobo/agendav>`_.
 
 Uncompress it using ``tar``::
 
- $ tar xzf adobo-agendav-1.1....tar.gz
+ $ tar xzf adobo-agendav-1.1.1...tar.gz
  $ cd adobo-agendav-.../
 
 Database and tables

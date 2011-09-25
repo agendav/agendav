@@ -7,6 +7,10 @@ Configuring AgenDAV requires modifying some PHP text files located in the
 The following files are usually found as ``filename.php.template``, so make
 a copy of them with the correct file name to make them work.
 
+.. note::
+
+   ``ldap.php`` was removed in AgenDAV 1.1.1
+
 General configuration (config.php)
 ----------------------------------
 
@@ -126,51 +130,6 @@ Database configuration (database.php)
 
 ``database.php`` contains how to connect to your MySQL database. Just follow
 inline comments, it's pretty straight forward.
-
-LDAP configuration (ldap.php)
------------------------------
-
-``ldap.php`` specifies how to connect to a LDAP server to authenticate users
-before they enter the application. At this moment, AgenDAV authenticates
-users against LDAP and lets them enter only if succeeded. Will disappear in
-future releases because it's an unnecessary double check.
-
-.. confval:: ldap_host
-
-   Host to connect
-
-.. confval:: ldap_port
-
-   Port on which LDAP is being served at ``ldap_host``
-
-.. confval:: ldap_admin_dn
-
-   DN to be used to bind on LDAP which has search privileges.
-
-.. confval:: ldap_admin_passwd
-
-   Password used to bind with DN specified in ``ldap_admin_dn``.
-
-.. confval:: ldap_base_dn
-
-   Base DN to search for users
-
-.. confval:: ldap_id_attr
-
-   Attribute on LDAP that contains usernames.
-
-.. confval:: ldap_search_filter
-
-   Filter pattern used to search for users. The placeholder ``%u`` will be
-   replaced by current username trying to log in.
-
-   Example::
-
-    $config['ldap_search_filter'] = '(&(uid=%u)(inetUserStatus=Active))';
-
-   If user ``user1`` is trying to log in, will become::
-
-    (&(uid=user1)(inetUserStatus=Active))
 
 CalDAV specific options (caldav.php)
 ------------------------------------
