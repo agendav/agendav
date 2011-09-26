@@ -2,7 +2,7 @@ Release notes
 =============
 
 .. _v1.1.1:: 
-1.1.1 (2011-30-24)
+1.1.1 (2011-09-24)
 ------------------
 
 * Fix DB schema. Wasn't properlty updated on sql/schema.sql, which
