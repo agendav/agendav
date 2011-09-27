@@ -39,7 +39,7 @@ Create an user in MySQL like this::
  Enter password: 
  [...]
  mysql> GRANT ALL PRIVILEGES ON agendav.* TO agendav@localhost IDENTIFIED BY 'yourpassword'
- mysql> CREATE DATABASE agendav;
+ mysql> CREATE DATABASE agendav CHARACTER SET utf8 COLLATE utf8_general_ci;
  mysql> FLUSH PRIVILEGES;
  mysql> ^D
 
