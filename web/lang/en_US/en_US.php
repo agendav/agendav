@@ -7,7 +7,7 @@ $js_messages = array();
 // Labels
 
 $labels['username'] = 'User name';
-$labels['passwd'] = 'Password';
+$labels['password'] = 'Password';
 $labels['months_long'] = array('January', 'February', 'March', 'April',
 		'May', 'June', 'July', 'August', 'September', 'October', 'November',
 		'December');
@@ -80,10 +80,14 @@ $labels['share_options'] = 'Share';
 
 $labels['new_calendar'] = 'New calendar';
 
+$labels['create_event'] = 'Create event';
+$labels['calendars'] = 'Calendars';
+$labels['refresh'] = 'Refresh';
 $labels['delete'] = 'Delete';
 $labels['close'] = 'Close';
 $labels['save'] = 'Save';
 $labels['create'] = 'Create';
+$labels['login'] = 'Login';
 $labels['modify'] = 'Modify';
 $labels['cancel'] = 'Cancel';
 $labels['next'] = 'next';
@@ -94,6 +98,8 @@ $labels['shared_by'] = 'shared by %user';
 $labels['share_with_label'] = 'Share with:';
 $labels['invalid_calendar'] = 'Invalid calendar %calendar';
 $labels['public_caldav_url'] = 'URL for calendaring desktop applications:';
+
+$labels['create_new_calendar'] = 'Create new calendar';
 
 // Messages
 $messages['bad_login'] = 'Invalid username or password';
