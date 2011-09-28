@@ -39,9 +39,8 @@ $labels['calendar_label'] = 'Calendar:';
 $labels['location_label'] = 'Location:';
 $labels['description_label'] = 'Description:';
 $labels['rrule_label'] = 'Recurrence:';
-$labels['rrule_template'] = 'This event repeats $explanation';
-$labels['rrule_unparseable'] = 'This event has recurrence rules associated
-that this program cannot understand. Raw definition: $rule';
+$labels['rrule_template'] = 'This event repeats %explanation';
+$labels['rrule_unparseable'] = 'This event has recurrence rules associated that this program cannot understand. Raw definition: %rule';
 
 $labels['displayname_label'] = 'Display name:';
 $labels['internal_name_label'] = 'Internal name:';
@@ -91,9 +90,9 @@ $labels['next'] = 'next';
 $labels['previous'] = 'previous';
 $labels['yes'] = 'Yes';
 
-$labels['shared_by'] = 'shared by $user';
+$labels['shared_by'] = 'shared by %user';
 $labels['share_with_label'] = 'Share with:';
-$labels['invalid_calendar'] = 'Invalid calendar $calendar';
+$labels['invalid_calendar'] = 'Invalid calendar %calendar';
 $labels['public_caldav_url'] = 'URL for calendaring desktop applications:';
 
 // Messages
@@ -102,20 +101,20 @@ $messages['invalid_date'] = 'Invalid date';
 $messages['invalid_time'] = 'Invalid time';
 $messages['element_not_found'] = 'Element not found';
 $messages['element_modified'] = 'Element was modified while you were editing it. Please, refresh.';
-$messages['unknown_http_code'] = 'Unknown error, HTTP code=$res';
-$messages['no_internal_calendar_name'] = 'Empty internal calendar name'];
+$messages['unknown_http_code'] = 'Unknown error, HTTP code=%res';
+$messages['no_internal_calendar_name'] = 'Empty internal calendar name';
 $messages['no_calendar_name'] = 'Empty calendar name';
 $messages['no_calendar_color'] = 'Color must be supplied';
 $messages['mkcalendar_invalid_params'] = 'Server refused to create calendar. Please, check your creation parameters';
-$message['server_forbidden'] = 'Server refused your request (permission forbidden)';
+$messages['server_forbidden'] = 'Server refused your request (permission forbidden)';
 $messages['setacl_invalid_xml'] = 'Internal error when generating permissions';
-$messages['setacl_invalid_users'] = 'Some of the users you specified do not exist'
-$messages['invalid_dialog_call'] = 'Interface error: invalid call to $func';
-$messages['not_implemented'] = '$feature: still not implemented';
-$messages['rrule_missing'] = 'Internal error on recurrence rule: $message';
+$messages['setacl_invalid_users'] = 'Some of the users you specified do notexist';
+$messages['invalid_dialog_call'] = 'Interface error: invalid call to %func';
+$messages['not_implemented'] = '%feature: still not implemented';
+$messages['rrule_missing'] = 'Internal error on recurrence rule: %message';
 $messages['start_greater_than_end'] = 'End date must be greater than or equal to start date';
 $messages['invalid_rrule'] = 'Check your recurrence parameters';
-$messages['invalid_calendar'] = 'You have no access to calendar $calendar or it does not exist';
+$messages['invalid_calendar'] = 'You have no access to calendar %calendar or it does not exist';
 $messages['internal_generation_error'] = 'Internal calendar generation error';
 $messages['internal_name_in_use'] = 'Internal calendar name already being used';
 $messages['calendar_created'] = 'Successful calendar creation';
@@ -125,8 +124,8 @@ $messages['calendar_modified'] = 'Successful calendar modification';
 $messages['confirm_calendar_delete'] = 'Are you sure you want to delete the following calendar?';
 $messages['confirm_calendar_delete'] = 'Are you sure you want to delete the following event?';
 $messages['permanent_removal_warning'] = 'Information associated to it will be lost permanently';
-$messages['recurrent_delete_all'] = 'All repetitions of this event will be deleted';
-$messages['shared_with_you'] = 'You have access to this calendar because $user shared it with you';
+$messages['recurrent_delete_all'] = 'Every repetition of this event will be deleted';
+$messages['shared_with_you'] = 'You have access to this calendar because %user shared it with you';
 $messages['share_with_explanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
 by commas or spaces';
@@ -134,5 +133,5 @@ by commas or spaces';
 // JS messages
 $js_messages['modification_failed'] = 'Modification failed';
 $js_messages['calendar_created'] = $messages['calendar_created'];
-$js_messages['error_loading_events'] = 'Error loading events from calendar $cal';
+$js_messages['error_loading_events'] = 'Error loading events from calendar %cal';
 $js_messages['error_refreshing_session'] = 'Error refreshing your session';
