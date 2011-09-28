@@ -1,13 +1,11 @@
 <div id="delete_event_dialog">
- <p>¿Confirma que desea borrar el siguiente evento del calendario <span
- class="calendar"></span>?</p>
+ <p><?php echo $this->i18n->_('messages', 'confirm_event_delete')?></p>
 
  <p class="title">
  </p>
 
  <div class="rrule">
- <p>Tenga en cuenta que al ser un evento recurrente se borrarán todas las repeticiones del
- mismo</p>
+ <p><?php echo $this->i18n->_('messages', 'recurrent_delete_all')?></p>
  </div>
 
  
