@@ -34,12 +34,12 @@ class Login extends CI_Controller {
 				array(
 					array(
 						'field' => 'user',
-						'label' => 'Nombre de usuario',
+						'label' => $this->i18n->_('labels', 'username'),
 						'rules' => 'required',
 						),
 					array(
 						'field' => 'passwd',
-						'label' => 'Contraseña',
+						'label' => $this->i18n->_('labels', 'password'),
 						'rules' => 'required',
 						),
 					));
@@ -65,7 +65,7 @@ class Login extends CI_Controller {
 						);
 				$this->auth->new_session($data);
 			} else {
-				$err = 'Nombre de usuario o contraseña inválidos';
+				$err = $this->i18n->_('messages', 'bad_login');
 			}
 		}
 

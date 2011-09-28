@@ -53,7 +53,7 @@ endif;
 	 <td>
 <?php
 
-  echo form_label('Nombre de usuario:');
+  echo form_label($this->i18n->_('labels', 'username'));
   echo '</td><td>';
   $usuario = array(
 		  'name' => 'user',
@@ -65,7 +65,7 @@ endif;
 		  );
   echo form_input($usuario);
   echo '</td></tr><tr><td>';
-  echo form_label('Contraseña:');
+  echo form_label($this->i18n->_('labels', 'password'));
   echo '</td><td>';
   $password = array(
 		  'name' => 'passwd',
@@ -76,7 +76,7 @@ endif;
 		  );
   echo form_password($password);
   echo '</td></tr><tr><td></td><td>';
-  echo form_submit('login', 'Acceder');
+  echo form_submit('login', $this->i18n->_('labels', 'login'));
   echo '</td></tr></table>';
   echo form_close();
 

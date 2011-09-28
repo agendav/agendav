@@ -21,11 +21,13 @@ if (isset($logo)):
 ?>
 
  <div id="shortcuts" class="block">
-   <div id="shortcut_add_event">Crear evento</div>
+   <div id="shortcut_add_event"><?php echo $this->i18n->_('labels',
+		   'create_event')?></div>
  </div>
 
  <div id="calendar_list" class="ui-widget block">
-  <div class="ui-widget-header ui-corner-all">Calendarios</div>
+  <div class="ui-widget-header ui-corner-all"><?php echo
+  $this->i18n->_('labels', 'calendars')?></div>
   <div class="ui-widget-content">
    <ul>
    </ul>
@@ -34,15 +36,15 @@ if (isset($logo)):
 // Links
 $img_add = array(
         'src' => 'img/calendar_add.png',
-        'alt' => 'Añadir nuevo calendario',
-        'title' => 'Añadir nuevo calendario',
+        'alt' => $this->i18n->_('labels', 'create_new_calendar'),
+        'title' => $this->i18n->_('labels', 'create_new_calendar'),
 		'id' => 'calendar_add',
         );
 
 $img_refresh = array(
         'src' => 'img/arrow_refresh.png',
-        'alt' => 'Refrescar',
-        'title' => 'Refrescar',
+        'alt' => $this->i18n->_('labels', 'refresh'),
+        'title' => $this->i18n->_('labels', 'refresh'),
 		'id' => 'calendar_list_refresh',
         );
 
