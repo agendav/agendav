@@ -14,9 +14,11 @@ if (isset($shared) && $shared === TRUE) {
 }
 ?>
 <ul>
- <li><a href="#tabs-general">General</a></li>
+ <li><a href="#tabs-general"><?php echo
+ $this->i18n->_('labels', 'general_options')?></a></li>
 <?php if (!$show_shared): ?>
- <li><a href="#tabs-share">Compartir</a></li>
+ <li><a href="#tabs-share"><?php echo 
+  $this->i18n->_('labels','share_options')?></a></li>
 <?php endif; ?>
 </ul>
 
@@ -63,9 +65,10 @@ $form_color = array(
 if ($show_shared):
 ?>
 <div class="share_info ui-corner-all">
-Tiene acceso a este calendario porque el usuario <span
-class="show_user_name"><?php echo $user_from ?></span> lo
-ha compartido con usted.
+<?php
+echo $this->i18n->_('messages', 'shared_with_you',
+		array('%user' => '<span
+			class="show_user_name">'.$user_from.'</span>'))?>
 </div>
 
 <?php
@@ -73,12 +76,13 @@ endif;
 ?>
  <table>
   <tr>
-   <td><label for="displayname">Nombre descriptivo del
-   calendario:</label></td>
+   <td><label for="displayname"><?php echo $this->i18n->_('labels',
+		   'displayname_label')?></label></td>
 	<td><?php echo form_input($form_displayname);?></td>
    </tr>
    <tr>
-   <td><label for="calendar_color">Color del calendario:</label></td>
+   <td><label for="calendar_color"><?php echo $this->i18n->_('labels',
+		   'color_label')?></label></td>
 	<td><?php echo form_input($form_color);?></td>
    </tr>
 </table>
@@ -86,11 +90,12 @@ endif;
 if (isset($public_url)):
 	$img = array(
 			'src' => 'img/calendar_link.png',
-			'alt' => 'URL para clientes de escritorio CalDAV',
-			'title' => 'URL para clientes de escritorio CalDAV',
+			'alt' => $this->i18n->_('labels', 'public_caldav_url'),
+			'title' => $this->i18n->_('labels', 'public_caldav_url'),
 			);
 ?>
-<div class="public_url">URL para clientes de escritorio: <?php echo anchor($public_url, img($img))?></div>
+<div class="public_url"><?php echo $this->i18n->_('labels',
+		'public_caldav_url') . ' ' . anchor($public_url, img($img))?></div>
 <?php
 endif;
 ?>
@@ -101,13 +106,12 @@ if (!$show_shared):
 ?>
 <div id="tabs-share">
 	<div class="share_info ui-corner-all">
-	 Puede compartir este calendario con otros usuarios para que ellos
-	 también puedan modificarlo. Separe con espacios
-	 o comas los nombres de los usuarios.
+	<?php echo $this->i18n->_('messages', 'share_with_explanation');?>
 	</div>
  <table>
   <tr>
-   <td><label for="share_with">Compartir con:</label></td>
+   <td><label for="share_with"><?php echo $this->i18n->_('labels',
+		   'share_with_label')?></label></td>
 	<td><?php echo form_input($form_share_with);?></td>
    </tr>
 </table>

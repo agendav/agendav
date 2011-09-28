@@ -40,11 +40,11 @@ $labels['location_label'] = 'Location:';
 $labels['description_label'] = 'Description:';
 $labels['rrule_label'] = 'Recurrence:';
 $labels['rrule_template'] = 'This event repeats %explanation';
-$labels['rrule_unparseable'] = 'This event has recurrence rules associated that this program cannot understand. Raw definition: %rule';
+$labels['rrule_unparseable'] = 'This event has recurrence rules associated that this program cannot understand. Raw definition:';
 
 $labels['displayname_label'] = 'Display name:';
 $labels['internal_name_label'] = 'Internal name:';
-$labels['optional'] = 'optional';
+$labels['optional'] = '(optional)';
 $labels['color_label'] = 'Color:';
 
 $labels['summary_label'] = 'Summary:';
@@ -53,6 +53,8 @@ $labels['end_date_label'] = 'End date:';
 $labels['start_time_label'] = 'Start time:';
 $labels['end_time_label'] = 'End time:';
 $labels['all_day_label'] = 'All day:';
+
+$labels['exceptions_to_recurrent_events'] = 'Exceptions to recurrent events';
 
 $labels['repeat_label'] = 'Repeat:';
 $labels['recurrence_no'] = 'No repetitions';
@@ -117,7 +119,7 @@ $messages['setacl_invalid_xml'] = 'Internal error when generating permissions';
 $messages['setacl_invalid_users'] = 'Some of the users you specified do notexist';
 $messages['invalid_dialog_call'] = 'Interface error: invalid call to %func';
 $messages['not_implemented'] = '%feature: still not implemented';
-$messages['rrule_missing'] = 'Internal error on recurrence rule: %message';
+$messages['rrule_missing'] = 'Internal error accesing recurrence rule';
 $messages['start_greater_than_end'] = 'End date must be greater than or equal to start date';
 $messages['invalid_rrule'] = 'Check your recurrence parameters';
 $messages['invalid_calendar'] = 'You have no access to calendar %calendar or it does not exist';
@@ -128,8 +130,8 @@ $messages['calendar_deleted'] = 'Successful calendar delete';
 $messages['calendar_modified'] = 'Successful calendar modification';
 
 $messages['confirm_calendar_delete'] = 'Are you sure you want to delete the following calendar?';
-$messages['confirm_calendar_delete'] = 'Are you sure you want to delete the following event?';
-$messages['permanent_removal_warning'] = 'Information associated to it will be lost permanently';
+$messages['confirm_event_delete_from_calendar'] = 'Are you sure you want to delete the following event?';
+$messages['permanent_removal_warning'] = 'Your information will be permanently lost';
 $messages['recurrent_delete_all'] = 'Every repetition of this event will be deleted';
 $messages['shared_with_you'] = 'You have access to this calendar because %user shared it with you';
 $messages['share_with_explanation'] = 'You can share this calendar with
