@@ -1060,7 +1060,7 @@ function calendar_modify_form(calendar_obj) {
 							}
 						},
 						{
-							'text': 'Cancelar',
+							'text': _('labels', 'cancel'),
 							'class': 'addicon btn-icon-cancel',
 							'click': function() { destroy_dialog(dcd); }
 						}
@@ -1069,20 +1069,21 @@ function calendar_modify_form(calendar_obj) {
 				}
 			},
 			{
-				'text': "Modificar",
+				'text': _('labels', 'modify'),
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
 				var thisform = $("#modify_calendar_form");
 				proceed_send_ajax_form(thisform,
 					function(data) {
-						show_success('Calendario modificado', 'Cambios aplicados');
+						// TODO remove?
+						show_success(_('js_messages', 'calendar_modified'), '');
 						destroy_dialog(mcd);
 						// TODO remove specific calendar and update only its events
 						update_calendar_list(false);
 					},
 					function(data) {
 						// Problem with form data
-						show_error('Datos inválidos', data);
+						show_error(_('js_messages', 'invalid_data'), data);
 					},
 					function(data) {
 						// Do nothing
@@ -1090,7 +1091,7 @@ function calendar_modify_form(calendar_obj) {
 				}
 			},
 			{
-				'text': "Cancelar",
+				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
 				'click': function() { destroy_dialog(mcd); }
 			}
@@ -1129,7 +1130,7 @@ function update_calendar_list(maskbody) {
 		async: false, // Let's wait
 		beforeSend: function(jqXHR, settings) {
 			if (maskbody) {
-				$("body").mask("Actualizando calendarios...", 500);
+				$("body").mask(_('labels', 'loading_calendar_list'), 500);
 			}
 		},
 		complete: function(jqXHR, textStatus) {
@@ -1138,8 +1139,8 @@ function update_calendar_list(maskbody) {
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error cargando lista de calendarios',
-				'Por favor, inténtelo de nuevo. Mensaje: ' + textStatus);
+			show_error(_('labels', 'error_loading_calendar_list'),
+				_('labels', 'oops') + textStatus);
 		},
 		success: function(data, textStatus, jqXHR) {
 			// Remove old eventSources and remove every list item
@@ -1174,7 +1175,7 @@ function update_calendar_list(maskbody) {
 					setTimeout("update_calendar_list(false)", 1);
 				} else {
 					// Calendar list received empty twice
-					show_error('Sin calendarios', 'No tiene calendarios');
+					show_error(_('labels','no_calendars'), '');
 				}
 			} else {
 				set_data('last_calendar_count', count);
@@ -1196,10 +1197,10 @@ function generate_event_source(calendar) {
 				tzoffset: new Date().getTimezoneOffset()
 				},
 			error: function() {
-				show_error('Error cargando calendario', 
-					'Los eventos del calendario '+ calendar +' no se pudieron '
-					+' cargar. Por favor, inténtelo de nuevo');
-						 }
+				show_error(_('label', 'interface_error'), 
+				_('js_messages', 
+					'error_loading_events', { '%cal' : calendar }));
+			}
 	};
 
 	return ajax_options;
@@ -1226,7 +1227,8 @@ function session_refresh(n) {
 		success: function(data, textStatus, jqXHR) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error("Error refrescando sesión", "No se pudo recargar su sesión");
+			show_error(_('labels', 'interface_error'), 
+			 _('js_messages', 'error_refreshing_session'));
 		}
 	});
 	setTimeout("session_refresh(" + n + ")", n);
@@ -1324,7 +1326,8 @@ function reload_event_source(cal) {
 		$("#calendar_view").fullCalendar('removeEventSource', eventsource);
 		$("#calendar_view").fullCalendar('addEventSource', eventsource);
 	} else {
-		show_error('Calendario inexistente', 'Se intentó recargar el calendario ' + cal);
+		show_error(_('labels', 'interface_error'),
+			_('labels', 'invalid_calendar', {'%calendar' : cal }));
 	}
 }
 

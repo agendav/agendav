@@ -6,7 +6,7 @@ $i18n = array('labels' => $labels, 'js_messages' => $js_messages);
 
 ?>
 //<![CDATA[
-function _(mtype, s) {
+function _(mtype, s, params) {
 	var ret = '[' + mtype + ':' + s + ']';
 
 	if (typeof(i18n)!= 'undefined' && (mtype == 'js_messages' 
@@ -16,6 +16,10 @@ function _(mtype, s) {
 		} else if (mtype == 'js_messages' && i18n.js_messages[s]) {
 			ret = i18n.js_messages[s];
 		}
+	}
+
+	for (var i in params) {
+		ret.replace(i, params[i]);
 	}
 
 	return ret;
