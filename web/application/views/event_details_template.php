@@ -4,7 +4,8 @@
 </p>
 
 <p>
-<span class="label calendar_label">Calendario:</span> 
+<span class="label calendar_label"><?php echo $this->i18n->_('labels',
+		'calendar_label')?></span> 
 <span class="calendar_value"></span>
 </p>
 
@@ -15,26 +16,30 @@
 </p>
 
 <p class="description">
-<span class="label label_description">Descripción:</span>
+<span class="label label_description"><?php echo $this->i18n->_('labels',
+		'description_label')?></span>
 <p class="description_value"></p>
 </p>
 
 <div class="parseable_rrule">
-<span class="label label_rrule">Repetición:</span>
-Este evento se repite <span class="rrule_explained_value"></span>.
+<span class="label label_rrule"><?php echo $this->i18n->_('labels',
+		'repeat_label')?></span>
+<?php echo $this->i18n->_('labels', 'rrule_template', array('%explanation'
+			=> '<span class="rrule_explained_value"></span>.'))?>
 </div>
 
 <div class="unparseable_rrule">
-<span class="label label_rrule">Repetición:</span>
-Este evento tiene reglas de repetición, fue creado externamente y se muestra
-su definición: <span class="rrule_raw_value"></span>.
+<span class="label label_rrule"><?php echo $this->i18n->_('labels',
+		        'repeat_label')?></span>
+<?php echo $this->i18n->_('labels',
+		        'rrule_unparseable')?> <span class="rrule_raw_value"></span>.
 </div>
 
 <div class="actions">
 <button type="button" href="#" class="addicon btn-icon-calendar-edit
-link_edit_event">Modificar</button>
+link_edit_event"><?php echo $this->i18n->_('labels','modify')?></button>
 <button type="button" href="#" class="addicon btn-icon-calendar-delete
-link_delete_event">Borrar</button>
+link_delete_event"><?php echo $this->i18n->_('labels','delete')?></button>
 </div>
 
 </div>
