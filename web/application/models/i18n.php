@@ -58,6 +58,12 @@ class I18n extends CI_Model {
 			$js_messages = array();
 
 			@include($file);
+
+			// Datepicker transformations
+			$labels['months_long_datepicker'] = $this->last_to_first($labels['months_long']); 
+			$labels['months_short_datepicker'] = $this->last_to_first($labels['months_short']); 
+			$labels['daynames_long_datepicker'] = $this->last_to_first($labels['daynames_long']); 
+			$labels['daynames_short_datepicker'] = $this->last_to_first($labels['daynames_short']); 
 			return array(
 				'messages' => $messages,
 				'labels' => $labels,
@@ -82,6 +88,12 @@ class I18n extends CI_Model {
 	public function dump($type, $use_default = FALSE) {
 		$contents = $this->default_contents;
 		return $contents[$type];
+	}
+
+	private function last_to_first($arr) {
+		$last = array_pop($arr);
+		array_unshift($arr, $last);
+		return $arr;
 	}
 
 }
