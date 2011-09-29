@@ -159,15 +159,3 @@ $js_messages['error_generating_form'] = 'Error generating form';
 $js_messages['invalid_data'] = 'Invalid data';
 $js_messages['error_delete_calendar'] = 'Error deleting calendar';
 
-// ------------------
-// Do not touch below
-// For datepicker
-function last_to_first($arr) {
-	$last = array_pop($arr);
-	array_unshift($arr, $last);
-	return $arr;
-}
-$labels['months_long_datepicker'] = last_to_first($labels['months_long']); 
-$labels['months_short_datepicker'] = last_to_first($labels['months_short']); 
-$labels['daynames_long_datepicker'] = last_to_first($labels['daynames_long']); 
-$labels['daynames_short_datepicker'] = last_to_first($labels['daynames_short']); 
