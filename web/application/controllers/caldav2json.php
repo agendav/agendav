@@ -133,7 +133,8 @@ class Caldav2json extends CI_Controller {
 				empty($href) || empty($calendar) || empty($etag)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to delete_event() with no calendar, uid, href or etag');
-			$this->_throw_error('Llamada al borrado con parámetros insuficientes');
+			$this->_throw_error($this->i18n->_('messages',
+						'error_interfacefailure'));
 		} else {
 			$this->load->library('caldav');
 			$res = $this->caldav->delete_resource(
@@ -174,20 +175,22 @@ class Caldav2json extends CI_Controller {
 
 		$this->load->library('form_validation');
 		$this->form_validation
-			->set_rules('calendar', 'Calendario', 'required');
+			->set_rules('calendar', $this->i18n->_('labels', 'calendar'), 'required');
 		$this->form_validation
-			->set_rules('summary', 'Título', 'required');
+			->set_rules('summary', $this->i18n->_('labels', 'summary'), 'required');
 		$this->form_validation
-			->set_rules('start_date', 'Fecha de inicio',
+			->set_rules('start_date', $this->i18n->_('labels', 'startdate'),
 					'required|callback__valid_date');
 		$this->form_validation
-			->set_rules('end_date', 'Fecha de fin',
+			->set_rules('end_date', $this->i18n->_('labels', 'enddate'),
 					'required|callback__valid_date');
 		$this->form_validation
-			->set_rules('recurrence_count', 'Número de repeticiones',
+			->set_rules('recurrence_count', $this->i18n->_('labels',
+						'repeatcount'),
 					'callback__empty_or_natural_no_zero');
 		$this->form_validation
-			->set_rules('recurrence_until', 'Fecha límite de repeticiones',
+			->set_rules('recurrence_until', $this->i18n->_('labels',
+						'repeatuntil'),
 					'callback__empty_or_valid_date');
 
 		if ($this->form_validation->run() === FALSE) {
@@ -231,8 +234,8 @@ class Caldav2json extends CI_Controller {
 			$end = $this->dates->frontend2datetime($p['end_date'] 
 					. ' ' .  $p['end_time']);
 			if ($end->getTimestamp() < $start->getTimestamp()) {
-				$this->_throw_exception('La fecha de fin '
-						.'debe ser mayor o igual a la de inicio');
+				$this->_throw_exception($this->i18n->_('messages',
+							'error_startgreaterend'));
 			}
 		}
 
@@ -255,8 +258,8 @@ class Caldav2json extends CI_Controller {
 					$this->extended_logs->message('ERROR', 
 							'Error building RRULE ('
 								. $rrule_err .')');
-					$this->_throw_exception('Revise los parámetros de '
-						.'repetición del evento: ' . $rrule_err);
+					$this->_throw_exception($this->i18n->_('messages',
+							'error_bogusrepeatrule') . ': ' . $rrule_err);
 				}
 			} else {
 				// Deleted RRULE
@@ -276,8 +279,9 @@ class Caldav2json extends CI_Controller {
 				$this->auth->user,
 				$this->auth->passwd,
 				$p['calendar'])) {
-			$this->_throw_exception('El calendario ' . $p['calendar'] 
-					.' no existe o no tiene acceso a él');
+			$this->_throw_exception(
+					$this->i18n->_('messages', 'error_invalidcalendar', 
+						array('%calendar' => $p['calendar'])));
 		} else {
 			$calendar = $p['calendar'];
 		}
@@ -294,7 +298,8 @@ class Caldav2json extends CI_Controller {
 
 			// Valid original calendar?
 			if (!isset($p['original_calendar'])) {
-				$this->_throw_exception('Falta el parámetro original_calendar');
+				$this->_throw_exception($this->i18n->_('messages',
+							'error_interfacefailure'));
 			} else {
 				$original_calendar = $p['original_calendar'];
 			}
@@ -303,8 +308,9 @@ class Caldav2json extends CI_Controller {
 					$this->auth->user,
 					$this->auth->passwd,
 					$original_calendar)) {
-				$this->_throw_exception('El calendario ' . $original_calendar 
-						.' no existe o no tiene acceso a él');
+				$this->_throw_exception(
+					$this->i18n->_('messages', 'error_invalidcalendar', 
+						array('%calendar' => $original_calendar)));
 			}
 
 			$uid = $p['uid'];
@@ -318,11 +324,13 @@ class Caldav2json extends CI_Controller {
 					$original_calendar);
 
 			if (is_null($res)) {
-				$this->_throw_error('El evento ya no existe');
+				$this->_throw_error(
+						$this->i18n->_('messages', 'error_eventnotfound'));
 			}
 
 			if ($etag != $res['etag']) {
-				$this->_throw_error('El evento se modificó en este rato');
+				$this->_throw_error(
+						$this->i18n->_('messages', 'error_eventchanged'));
 			}
 
 
@@ -334,7 +342,8 @@ class Caldav2json extends CI_Controller {
 				$this->icshelper->find_component_position($resource,
 					'VEVENT', array(), $vevent);
 			if (is_null($vevent)) {
-				$this->_throw_error('El evento no parece existir. Recargue');
+				$this->_throw_error(
+						$this->i18n->_('messages', 'error_eventnofound'));
 			}
 
 			$tz = $this->icshelper->detect_tz($vevent, $timezones);
@@ -378,7 +387,8 @@ class Caldav2json extends CI_Controller {
 			$resource = $this->icshelper->replace_component($resource,
 					'vevent', $modify_pos, $vevent);
 			if ($resource === FALSE) {
-				$this->_throw_error('Error interno. Contacte con correo@us.es');
+				$this->_throw_error(
+						$this->i18n->_('messages', 'error_internalgen'));
 			}
 
 			// Moving event between calendars
@@ -422,17 +432,19 @@ class Caldav2json extends CI_Controller {
 				case '412':
 					// TODO new events + already used UIDs!
 					if (isset($p['modification'])) {
-						$this->_throw_exception('El evento cambió '
-								.'en este rato. Por favor, recargue');
+						$this->_throw_exception(
+							$this->i18n->_('messages', 'error_eventchanged'));
 					} else {
 						// Already used UID on new event. What a bad luck!
 						// TODO propose a solution
-						$this->_throw_error('¡Qué mala suerte!'
-								.' Repetimos uid creando el evento');
+						$this->_throw_error('Bad luck'
+								.' Repeated UID');
 					}
 					break;
 				default:
-					$this->_throw_error('Código HTTP ' . $code[0]);
+					$this->_throw_error( $this->i18n->_('messages',
+								'error_unknownhttpcode',
+								array('%res' =>  $code[0])));
 					break;
 			}
 		} else {
@@ -469,7 +481,8 @@ class Caldav2json extends CI_Controller {
 				$minuteDelta === FALSE || 
 				$view === FALSE || $allday === FALSE ||
 				$type === FALSE || $was_allday === FALSE) {
-			$this->_throw_error('Llamada incorrecta a resize_or_drag_event()');
+			$this->_throw_error($this->i18n->_('messages',
+						'error_interfacefailure'));
 		}
 
 		// Generate a duration string
@@ -492,11 +505,13 @@ class Caldav2json extends CI_Controller {
 
 
 		if (is_null($resource)) {
-			$this->_throw_error('El evento ya no existe');
+			$this->_throw_error(
+						$this->i18n->_('messages', 'error_eventnotfound'));
 		}
 
 		if ($etag != $resource['etag']) {
-			$this->_throw_error('El evento se modificó en este rato');
+			$this->_throw_error(
+						$this->i18n->_('messages', 'error_eventchanged'));
 		}
 
 		// We're prepared to modify the event
@@ -509,7 +524,8 @@ class Caldav2json extends CI_Controller {
 				'VEVENT', array(), $vevent);
 
 		if (is_null($vevent)) {
-			$this->_throw_error('El evento no parece existir. Recargue');
+			$this->_throw_error(
+						$this->i18n->_('messages', 'error_eventnotfound'));
 		}
 
 		$tz = $this->icshelper->detect_tz($vevent, $timezones);
@@ -568,7 +584,8 @@ class Caldav2json extends CI_Controller {
 		$ical = $this->icshelper->replace_component($ical, 'vevent',
 				$modify_pos, $new_vevent);
 		if ($ical === FALSE) {
-			$this->_throw_error('Error interno. Contacte con correo@us.es');
+			$this->_throw_error($this->i18n->_('messages',
+						'error_internalgen'));
 		}
 
 		// PUT on server
@@ -585,11 +602,13 @@ class Caldav2json extends CI_Controller {
 			$code = $this->caldav->get_last_response();
 			switch ($code[0]) {
 				case '412':
-					$this->_throw_exception('El evento cambió '
-							.'en este rato. Por favor, recargue');
+					$this->_throw_exception(
+							$this->i18n->_('messages', 'error_eventchanged'));
 					break;
 				default:
-					$this->_throw_error('Código HTTP ' . $code[0]);
+					$this->_throw_error( $this->i18n->_('messages',
+								'error_unknownhttpcode',
+								array('%res' =>  $code[0])));
 					break;
 			}
 		} else {
@@ -903,7 +922,7 @@ class Caldav2json extends CI_Controller {
 		$obj = $this->dates->frontend2datetime($d . ' 12:34');
 		if (FALSE === $obj) {
 			$this->form_validation->set_message('_valid_date',
-					'El campo %s contiene una fecha inválida');
+					$this->i18n->_('messages', 'error_invaliddate'));
 			return FALSE;
 		} else {
 			return TRUE;
@@ -927,7 +946,7 @@ class Caldav2json extends CI_Controller {
 		$obj = $this->dates->frontend2datetime('1/1/2011 ' . $t);
 		if (FALSE === $obj) {
 			$this->form_validation->set_message('_valid_time',
-					'El campo %s contiene una hora inválida');
+					$this->i18n->_('messages', 'error_invalidtime'));
 			return FALSE;
 		} else {
 			return TRUE;

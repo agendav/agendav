@@ -166,16 +166,15 @@ class Dialog_generator extends CI_Controller {
 				|| $etag === FALSE || $start === FALSE 
 				|| $end === FALSE || $allday === FALSE) {
 			$this->_throw_error('com_event', 
-					$this->i18n->_('labels', 'oops'),
-					$this->i18n->_('messages', 'invalid_dialog_call',
-						array('%func' => 'edit_event()')));
+					$this->i18n->_('messages', 'error_oops'),
+					$this->i18n->_('messages', 'error_interfacefailure'));
 		} elseif ($recurrence_id != 'undefined') {
 			$this->_throw_error('com_event',
-					$this->i18n->_('labels', 'oops'),
+					$this->i18n->_('messages', 'error_oops'),
 					$this->i18n->_('messages', 'not_implemented',
 						array(
 							'%feature' => $this->i18n->_('labels',
-								'exceptions_to_recurrent_events'))));
+								'repetitionexceptions'))));
 		} else {
 			// Calendars
 			$tmp_cals= $this->session->userdata('available_calendars');
@@ -233,25 +232,37 @@ class Dialog_generator extends CI_Controller {
 				} else {
 					if ($rrule_serialized == 'undefined') {
 						// No serialized value?
+						$this->extended_logs->message('ERROR',
+								'rrule_serialized undefined while editing'
+								. $uid . ' at calendar ' . $calendar);
 						$this->_throw_error('com_event',
-								$this->i18n->_('labels', 'oops'),
-								$this->i18n->_('messages', 'rrule_missing'));
+								$this->i18n->_('messages', 'error_oops'),
+								$this->i18n->_('messages',
+									'error_interfacefailure'));
 						return;
 					}
 
 					$rrule_serialized = @base64_decode($rrule_serialized);
 					if ($rrule_serialized == FALSE) {
+						$this->extended_logs->message('ERROR',
+								'rrule_serialized b64 failed while editing'
+								. $uid . ' at calendar ' . $calendar);
 						$this->_throw_error('com_event',
-								$this->i18n->_('labels', 'oops'),
-								$this->i18n->_('messages', 'rrule_missing'));
+								$this->i18n->_('messages', 'error_oops'),
+								$this->i18n->_('messages',
+									'error_interfacefailure'));
 						return;
 					}
 
 					$rrule_arr = @unserialize($rrule_serialized);
 					if ($rrule_arr === FALSE) {
+						$this->extended_logs->message('ERROR',
+								'rrule unserialize failed while editing'
+								. $uid . ' at calendar ' . $calendar);
 						$this->_throw_error('com_event',
-								$this->i18n->_('labels', 'oops'),
-								$this->i18n->_('messages', 'rrule_missing'));
+								$this->i18n->_('messages', 'error_oops'),
+								$this->i18n->_('messages',
+									'error_interfacefailure'));
 						return;
 					}
 
@@ -324,9 +335,8 @@ class Dialog_generator extends CI_Controller {
 		if ($calendar === FALSE || $displayname === FALSE 
 				|| $color === FALSE || $url === FALSE) {
 			$this->_throw_error('modify_calendar_dialog', 
-					$this->i18n->_('labels', 'oops'),
-					$this->i18n->_('messages', 'invalid_dialog_call',
-						array('%func' => 'modify_calendar()')));
+					$this->i18n->_('messages', 'error_oops'),
+					$this->i18n->_('messages', 'error_interfacefailure'));
 		} else {
 			$data = array(
 					'calendar' => $calendar,
@@ -345,9 +355,9 @@ class Dialog_generator extends CI_Controller {
 			if ($shared !== FALSE && $shared == 'true') {
 				if ($sid === FALSE || $user_from === FALSE) {
 					$this->_throw_error('modify_calendar_dialog', 
-						$this->i18n->_('labels', 'oops'),
-						$this->i18n->_('messages', 'invalid_dialog_call',
-							array('%func' => 'modify_calendar_shared()')));
+						$this->i18n->_('messages', 'error_oops'),
+						$this->i18n->_('messages',
+							'error_interfacefailure'));
 
 				} else {
 					$data['shared'] = TRUE;
@@ -374,9 +384,8 @@ class Dialog_generator extends CI_Controller {
 
 		if ($calendar === FALSE || $displayname === FALSE) {
 			$this->_throw_error('delete_calendar_dialog', 
-				$this->i18n->_('labels', 'oops'),
-				$this->i18n->_('messages', 'invalid_dialog_call',
-					array('%func' => 'delete_calendar()')));
+				$this->i18n->_('messages', 'error_oops'),
+				$this->i18n->_('messages', 'error_interfacefailure'));
 		} else {
 			$data = array(
 					'calendar' => $calendar,

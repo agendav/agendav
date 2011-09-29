@@ -93,11 +93,11 @@ $form_description = array(
 		);
 
 $form_recurrence_type = array(
-		'none' => $this->i18n->_('labels', 'recurrence_no'),
-		'DAILY' => $this->i18n->_('labels', 'recurrence_daily'),
-		'WEEKLY' => $this->i18n->_('labels', 'recurrence_weekly'),
-		'MONTHLY' => $this->i18n->_('labels', 'recurrence_monthly'),
-		'YEARLY' => $this->i18n->_('labels', 'recurrence_yearly'),
+		'none' => $this->i18n->_('labels', 'repeatno'),
+		'DAILY' => $this->i18n->_('labels', 'repeatdaily'),
+		'WEEKLY' => $this->i18n->_('labels', 'repeatweekly'),
+		'MONTHLY' => $this->i18n->_('labels', 'repeatmonthly'),
+		'YEARLY' => $this->i18n->_('labels', 'repeatyearly'),
 		);
 
 
@@ -124,24 +124,24 @@ if (isset($recurrence_type) && $recurrence_type == 'none') {
 }
 
 $form_class = array(
-		'PUBLIC' => $this->i18n->_('labels', 'privacy_public'),
-		'PRIVATE' => $this->i18n->_('labels', 'privacy_private'),
-		'CONFIDENTIAL' => $this->i18n->_('labels', 'privacy_confidential'),
+		'PUBLIC' => $this->i18n->_('labels', 'public'),
+		'PRIVATE' => $this->i18n->_('labels', 'private'),
+		'CONFIDENTIAL' => $this->i18n->_('labels', 'confidential'),
 		);
 
 $form_transp = array(
-		'OPAQUE' => $this->i18n->_('labels', 'transp_opaque'),
-		'TRANSPARENT' => $this->i18n->_('labels', 'transp_transparent'),
+		'OPAQUE' => $this->i18n->_('labels', 'opaque'),
+		'TRANSPARENT' => $this->i18n->_('labels', 'transparent'),
 		);
 
 ?>
 <ul>
  <li><a href="#tabs-general"><?php echo $this->i18n->_('labels',
-		 'general_options')?></a></li>
+		 'generaloptions')?></a></li>
  <li><a href="#tabs-recurrence"><?php echo $this->i18n->_('labels',
-		 'repeat_options')?></a></li>
+		 'repeatoptions')?></a></li>
  <li><a href="#tabs-workgroup"><?php echo $this->i18n->_('labels',
-		 'workgroup_options')?></a></li>
+		 'workgroupoptions')?></a></li>
 </ul>
 <div id="tabs-general">
 <?php if (isset($modification) && $modification === TRUE): ?>
@@ -156,17 +156,17 @@ $form_transp = array(
   <table>
    <tr>
     <td><label for="summary"><?php echo $this->i18n->_('labels',
-			'summary_label')?></label></td>
+			'summary')?></label></td>
 	<td><?php echo form_input($form_summary);?></td>
    </tr>
    <tr>
     <td><label for="location"><?php echo $this->i18n->_('labels',
-			'location_label')?></label></td>
+			'location')?></label></td>
 	<td><?php echo form_input($form_location);?></td>
    </tr>
    <tr>
     <td><label for="calendar"><?php echo $this->i18n->_('labels',
-			'calendar_label')?></label></td>
+			'calendar')?></label></td>
 	<?php echo form_hidden('original_calendar', $calendar)?>
 	<td><?php echo form_dropdown('calendar', $form_calendar,
 			$calendar)?></td>
@@ -174,27 +174,27 @@ $form_transp = array(
 
    <tr>
     <td><label for="start_date"><?php echo $this->i18n->_('labels',
-			'start_date_label')?></label></td>
+			'startdate')?></label></td>
 	<td><?php echo form_input($form_startdate);?> <?php echo
 	form_input($form_starttime)?></td>
    </tr>
 
    <tr>
     <td><label for="end_date"><?php echo $this->i18n->_('labels',
-			'end_date_label')?></label></td>
+			'enddate')?></label></td>
 	<td><?php echo form_input($form_enddate);?> <?php echo
 	form_input($form_endtime)?></td>
    </tr>
 
    <tr>
     <td><label for="allday"><?php echo $this->i18n->_('labels',
-			'all_day_label')?></label></td>
+			'alldayform')?></label></td>
 	<td><?php echo form_checkbox($form_allday);?></td>
    </tr>
 
    <tr>
     <td><label for="description"><?php echo $this->i18n->_('labels',
-			'description_label')?></label></td>
+			'description')?></label></td>
 	<td><?php echo form_textarea($form_description);?></td>
    </tr>
   </table>
@@ -203,7 +203,7 @@ $form_transp = array(
   <table>
    <tr>
     <td><label for="recurrence_type"><?php echo $this->i18n->_('labels',
-			'repeat_label')?></label></td>
+			'repeat')?></label></td>
    <?php if (!isset($unparseable_rrule)): ?>
 	<td><?php echo form_dropdown('recurrence_type',
 			$form_recurrence_type, (isset($recurrence_type) ?
@@ -211,18 +211,18 @@ $form_transp = array(
 			'class="recurrence_type"');?></td>
    <tr>
     <td><label class="suboption" for="recurrence_count"><?php echo
-	$this->i18n->_('labels', 'repeat_count_label')?></label></td>
+	$this->i18n->_('labels', 'repeatcount')?></label></td>
 	<td><?php echo form_input($form_recurrence_count)?></td>
    </tr>
    <tr>
     <td><label class="suboption" for="recurrence_until"><?php echo
-	$this->i18n->_('labels', 'repeat_until_label')?></label></td>
+	$this->i18n->_('labels', 'repeatuntil')?></label></td>
 	<td><?php echo form_input($form_recurrence_until)?></td>
    </tr>
    <?php else: ?>
 	<td>
 	 <input type="hidden" name="unparseable_rrule" value="true" />
-	 <?php echo $this->i18n->_('labels', 'rrule_unparseable')?>
+	 <?php echo $this->i18n->_('messages', 'info_repetition_unparseable')?>
 	 <pre><?php echo $rrule_raw?></pre>
 	</td>
    <?php endif; ?>
@@ -233,12 +233,12 @@ $form_transp = array(
   <table>
    <tr>
     <td><label for="class"><?php echo $this->i18n->_('labels',
-			'privacy_label')?></label></td>
+			'privacy')?></label></td>
 	<td><?php echo form_dropdown('class', 
 			$form_class, (isset($class) ? $class : 'PUBLIC'))?></td>
    <tr>
     <td><label for="transp"><?php echo $this->i18n->_('labels',
-			'transp_label')?></label></td>
+			'transp')?></label></td>
 	<td><?php echo form_dropdown('transp', 
 			$form_transp, (isset($transp) ? $transp : 'OPAQUE'))?></td>
    </tr>

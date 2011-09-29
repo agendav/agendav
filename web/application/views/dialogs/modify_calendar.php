@@ -15,10 +15,10 @@ if (isset($shared) && $shared === TRUE) {
 ?>
 <ul>
  <li><a href="#tabs-general"><?php echo
- $this->i18n->_('labels', 'general_options')?></a></li>
+ $this->i18n->_('labels', 'generaloptions')?></a></li>
 <?php if (!$show_shared): ?>
  <li><a href="#tabs-share"><?php echo 
-  $this->i18n->_('labels','share_options')?></a></li>
+  $this->i18n->_('labels','shareoptions')?></a></li>
 <?php endif; ?>
 </ul>
 
@@ -77,12 +77,12 @@ endif;
  <table>
   <tr>
    <td><label for="displayname"><?php echo $this->i18n->_('labels',
-		   'displayname_label')?></label></td>
+		   'displayname')?></label></td>
 	<td><?php echo form_input($form_displayname);?></td>
    </tr>
    <tr>
    <td><label for="calendar_color"><?php echo $this->i18n->_('labels',
-		   'color_label')?></label></td>
+		   'color')?></label></td>
 	<td><?php echo form_input($form_color);?></td>
    </tr>
 </table>
@@ -90,12 +90,12 @@ endif;
 if (isset($public_url)):
 	$img = array(
 			'src' => 'img/calendar_link.png',
-			'alt' => $this->i18n->_('labels', 'public_caldav_url'),
-			'title' => $this->i18n->_('labels', 'public_caldav_url'),
+			'alt' => $this->i18n->_('labels', 'publicurl'),
+			'title' => $this->i18n->_('labels', 'publicurl'),
 			);
 ?>
 <div class="public_url"><?php echo $this->i18n->_('labels',
-		'public_caldav_url') . ' ' . anchor($public_url, img($img))?></div>
+		'publicurl') . ' ' . anchor($public_url, img($img))?></div>
 <?php
 endif;
 ?>
@@ -111,7 +111,7 @@ if (!$show_shared):
  <table>
   <tr>
    <td><label for="share_with"><?php echo $this->i18n->_('labels',
-		   'share_with_label')?></label></td>
+		   'sharewith')?></label></td>
 	<td><?php echo form_input($form_share_with);?></td>
    </tr>
 </table>

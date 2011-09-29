@@ -31,17 +31,17 @@ $form_color = array(
  <table>
   <tr>
    <td><label for="displayname"><?php echo $this->i18n->_('labels',
-		   'displayname_label') ?></label></td>
+		   'displayname') ?></label></td>
 	<td><?php echo form_input($form_displayname);?></td>
    </tr>
    <tr>
    <td><label for="internal"><?php echo $this->i18n->_('labels',
-		   'internal_name_label')?> 
+		   'internalname')?> 
    <?php echo $this->i18n->_('labels', 'optional')?></label></td>
 	<td><?php echo form_input($form_internal);?></td>
    </tr>
    <td><label for="calendar_color"><?php echo
-   $this->i18n->_('labels', 'color_label')?></label></td>
+   $this->i18n->_('labels', 'color')?></label></td>
 	<td><?php echo form_input($form_color);?></td>
    </tr>
 </table>
