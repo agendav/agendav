@@ -1,5 +1,6 @@
 <div id="delete_event_dialog">
- <p><?php echo $this->i18n->_('messages', 'confirm_event_delete')?></p>
+ <p><?php echo $this->i18n->_('messages',
+		 'confirm_event_delete_from_calendar')?></p>
 
  <p class="title">
  </p>
