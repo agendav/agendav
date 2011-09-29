@@ -56,4 +56,11 @@ class Js_generator extends CI_Controller {
 		$this->output->set_output(json_encode(''));
 	}
 
+	/**
+	 * Loads i18n strings
+	 */
+	function i18n() {
+		$this->load->view('js_code/localized_strings');
+	}
+
 }

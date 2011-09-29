@@ -17,6 +17,7 @@ $labels['daynames_long'] = array('Monday', 'Tuesday', 'Wednesday',
 		'Thursday', 'Friday', 'Saturday', 'Sunday');
 $labels['daynames_short'] = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
 		'Sun');
+
 $labels['today'] = 'Today';
 $labels['month'] = 'month';
 $labels['week'] = 'week';
@@ -81,8 +82,12 @@ $labels['workgroup_options'] = 'Workgroup';
 $labels['share_options'] = 'Share';
 
 $labels['new_calendar'] = 'New calendar';
+$labels['modify_calendar'] = 'Modify calendar';
 
 $labels['create_event'] = 'Create event';
+$labels['edit_event'] = 'Edit event';
+$labels['delete_event'] = 'Delete event';
+$labels['delete_calendar'] = 'Delete calendar';
 $labels['calendars'] = 'Calendars';
 $labels['refresh'] = 'Refresh';
 $labels['delete'] = 'Delete';
@@ -100,8 +105,6 @@ $labels['shared_by'] = 'shared by %user';
 $labels['share_with_label'] = 'Share with:';
 $labels['invalid_calendar'] = 'Invalid calendar %calendar';
 $labels['public_caldav_url'] = 'URL for calendaring desktop applications:';
-
-$labels['create_new_calendar'] = 'Create new calendar';
 
 // Messages
 $messages['bad_login'] = 'Invalid username or password';
@@ -142,6 +145,26 @@ $messages['login_again'] = 'Please, log in again';
 
 // JS messages
 $js_messages['modification_failed'] = 'Modification failed';
+// TODO remove calendar_created?
 $js_messages['calendar_created'] = $messages['calendar_created'];
+// TODO remove?
+$js_messages['calendar_deleted'] = $messages['calendar_deleted'];
 $js_messages['error_loading_events'] = 'Error loading events from calendar %cal';
 $js_messages['error_refreshing_session'] = 'Error refreshing your session';
+$js_messages['internal_error'] = 'Internal error';
+$js_messages['error_generating_form'] = 'Error generating form';
+$js_messages['invalid_data'] = 'Invalid data';
+$js_messages['error_delete_calendar'] = 'Error deleting calendar';
+
+// ------------------
+// Do not touch below
+// For datepicker
+function last_to_first($arr) {
+	$last = array_pop($arr);
+	array_unshift($arr, $last);
+	return $arr;
+}
+$labels['months_long_datepicker'] = last_to_first($labels['months_long']); 
+$labels['months_short_datepicker'] = last_to_first($labels['months_short']); 
+$labels['daynames_long_datepicker'] = last_to_first($labels['daynames_long']); 
+$labels['daynames_short_datepicker'] = last_to_first($labels['daynames_short']); 

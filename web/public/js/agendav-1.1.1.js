@@ -66,21 +66,18 @@ $(document).ready(function() {
 			center: 'title',
 			right:  'today prev,next'
 		},
-		monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-			'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-		monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul',
-			'ago', 'sep', 'oct', 'nov', 'dic' ],
-		dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves',
-			'viernes', 'sábado' ],
-		dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+		monthNames: _('labels', 'months_long'),
+		monthNamesShort: _('labels', 'months_short'),
+		dayNames: _('labels', 'daynames_long'),
+		dayNamesShort: _('labels', 'daynames_short'),
 		buttonText: {
-			today: 'Hoy',
-			month: 'mes',
-			week: 'semana',
-			day: 'día'
+			today: _('labels', 'today'),
+			month: _('labels', 'month'),
+			week: _('labels', 'week'),
+			day: _('labels', 'day')
 		},
 		theme: true, // use jQuery UI themeing
-		allDayText: 'día completo',
+		allDayText: _('labels', 'allday'),
 		axisFormat: 'HH:mm',
 		slotMinutes: 30,
 		firstHour: 8,
@@ -90,7 +87,7 @@ $(document).ready(function() {
 		loading: function(bool) {
 			if (bool) {
 				// Now loading
-				$("#calendar_view").mask("Sincronizando eventos...", 500);
+				$("#calendar_view").mask(_('labels', 'synchronizing'), 500);
 			} else {
 				// Finished loading
 				$("#calendar_view").unmask();
@@ -210,7 +207,7 @@ $(document).ready(function() {
 						update_single_event(event, data);
 					},
 					function(data) {
-						show_error('Los cambios fallaron', data);
+						show_error(_('js_messages', 'modification_failed'), data);
 						revertFunc();
 					},
 					function() {
@@ -250,7 +247,7 @@ $(document).ready(function() {
 						update_single_event(event, data);
 					},
 					function(data) {
-						show_error('Los cambios fallaron', data);
+						show_error(_('js_messages', 'modification_failed'), data);
 						revertFunc();
 					},
 					function() {
@@ -267,7 +264,7 @@ $(document).ready(function() {
 
 	// Refresh link
 	$("#calendar_view td.fc-header-right")
-		.append('<span class="fc-header-space"></span><span class="fc-button-refresh">Refrescar</span>');
+		.append('<span class="fc-header-space"></span><span class="fc-button-refresh">' +_('labels', 'refresh') + '</span>');
 	$("#calendar_view span.fc-button-refresh")
 		.button() 
 		.click(function() {
@@ -276,12 +273,13 @@ $(document).ready(function() {
 
 	// Date picker above calendar
 	$("#calendar_view span.fc-button-today").after('<span class="fc-header-space"></span><span class="fc-button-datepicker">'
-		+'<img src="' + base_url + '/img/datepicker.gif" alt="Choose date" />'
+		+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
+		+ _('labels', 'choose_date') +'" />'
 		+'</span><input type="hidden" id="datepicker_fullcalendar" />');
 	
 	$("#datepicker_fullcalendar").datepicker({
 		changeYear: true,
-		closeText: 'Cancelar',
+		closeText: _('labels', 'cancel'),
 		onSelect: function(date, text) {
 			var d = $("#datepicker_fullcalendar").datepicker('getDate');	
 			$("#calendar_view").fullCalendar('gotoDate', d);
@@ -298,7 +296,8 @@ $(document).ready(function() {
 	$(ved + ' button.link_delete_event').live('click', function() {
 		var data = get_data('current_event');
 		if (data === undefined) {
-			show_error('Error de interfaz', 'El evento actual no está cargado');
+			show_error(_('labels', 'interface_error'), 
+				_('labels', 'current_event_not_loaded'));
 			return;
 		}
 
@@ -323,20 +322,20 @@ $(document).ready(function() {
 				thisform.find("input.etag").val(data.etag);
 				
 			},
-			'Borrar evento',
+			_('labels', 'delete_event'),
 			[ 
 				{
-					'text': 'Sí',
+					'text': _('labels', 'yes'),
 					'class': 'addicon btn-icon-event-delete',
 					'click': function() {
 						var thisform = $("#delete_form");
 						proceed_send_ajax_form(thisform,
 							function(data) {
-								show_success('Evento eliminado', 'El evento fue eliminado correctamente');
+								show_success(_('labels', 'event_deleted'), '');
 								$("#calendar_view").fullCalendar('removeEvents', get_data('current_event').id);
 							},
 							function(data) {
-								show_error('No se pudo eliminar el evento', data);
+								show_error(_('labels', 'event_not_deleted'), data);
 							},
 							function() {}); 
 
@@ -346,7 +345,7 @@ $(document).ready(function() {
 					}
 				},
 				{
-					'text': 'Cancelar',
+					'text': _('labels', 'cancel'),
 					'class': 'addicon btn-icon-cancel',
 					'click': function() { destroy_dialog("#delete_event_dialog"); }
 				}
@@ -375,7 +374,8 @@ $(document).ready(function() {
 		// Data about this event
 		var event_data = get_data('current_event');
 		if (event_data === undefined) {
-			show_error('Error de interfaz', 'El evento actual no está cargado');
+			show_error(_('labels', 'interface_error'), 
+				_('labels', 'current_event_not_loaded'));
 			return;
 		}
 
@@ -546,7 +546,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		$.ajax({
 			url: base_app_url + url,
 			beforeSend: function(jqXHR, settings) {
-				$("body").mask("Cargando diálogo...", 500);
+				$("body").mask(_('labels', 'loading_dialog'), 500);
 			},
 			complete: function(jqXHR, textStatus) {
 				$("body").unmask();
@@ -582,7 +582,8 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		$(thisform).remove();
 	} else {
 		// Error generating dialog on the fly?
-		show_error('Error de interfaz', 'No se pudo generar diálogo OTF');
+		show_error(_('labels', 'interface_error'), 
+				_('labels', 'oops'));
 	}
 }
 
@@ -599,7 +600,7 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 	$.ajax({
 		url: url,
 		beforeSend: function(jqXHR, settings) {
-			$("body").mask("Enviando formulario...", 1000);
+			$("body").mask(_('labels', 'sending_form'), 1000);
 		},
 		complete: function(jqXHR, textStatus) {
 			$("body").unmask();
@@ -609,8 +610,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 		data: data,
 		dataType: 'json',
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error procesando formulario',
-				'Por favor, inténtelo de nuevo. Mensaje: [AS] ' + textStatus);
+			show_error(_('labels', 'interface_error'),
+				_('labels', 'oops') + ':' + textStatus);
 			set_data('lastoperation', 'failed');
 			errorFunc();
 		},
@@ -620,7 +621,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 			var message = data.message;
 			if (result == "ERROR") {
 				set_data('lastoperation', 'failed');
-				show_error('Ocurrió algo inesperado',
+				show_error(
+					_('js_messages', 'internal_error'),
 					message);
 				errorFunc();
 			} else if (result == "EXCEPTION") {
@@ -630,8 +632,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 				set_data('lastoperation', 'success');
 				successFunc(message);
 			} else {
-				show_error('Respuesta desconocida del servicio AJAX',
-						'Estado ' + result + ' desconocido.');
+				show_error(_('js_messages', 'internal_error'),
+						_('labels', 'oops') + ':' + result);
 			}
 		}
 		});
@@ -660,8 +662,8 @@ function generate_on_the_fly_form(action, data) {
 		dataType: 'text',
 		async: false, // Let's wait
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error cargando formulario dinámico',
-				'Por favor, inténtelo de nuevo. Mensaje: ' + textStatus);
+			show_error(_('js_messages', 'error_generating_form'),
+				textStatus);
 			set_data('formcreation', 'failed');
 		},
 		success: function(formdata, textStatus, jqXHR) {
@@ -702,26 +704,24 @@ function apply_jQueryUI_styles() {
  */
 function set_default_datepicker_options() {
 	// Localization (TODO: make this configurable!)
-$.datepicker.regional['es'] = {
-	closeText: 'Cerrar',
-	prevText: '&#x3c;Ant',
-	nextText: 'Sig&#x3e;',
-	currentText: 'Hoy',
-	monthNames: ['enero','febrero','marzo','abril','mayo','junio',
-	'julio','agosto','septiembre','octubre','noviembre','diciembre'],
-	monthNamesShort: ['ene','feb','mar','abr','may','jun',
-	'jul','ago','sep','oct','nov','dic'],
-	dayNames: ['domingo','lunes','martes','mi&eacute;rcoles','jueves','viernes','s&aacute;bado'],
-	dayNamesShort: ['dom','lun','mar','mi&eacute;','juv','vie','s&aacute;b'],
-	dayNamesMin: ['do','lu','ma','mi','ju','vi','s&aacute;'],
+$.datepicker.regional['custom'] = {
+	closeText: _('labels', 'close'),
+	prevText: _('labels', 'previous'),
+	nextText: _('labels', 'next'),
+	currentText: _('labels', 'today'),
+	monthNames: _('labels', 'months_long_datepicker'),
+	monthNamesShort: _('labels', 'months_short_datepicker'),
+	dayNames: _('labels', 'daynames_long_datepicker'),
+	dayNamesShort: _('labels', 'daynames_short_datepicker'),
+	dayNamesMin: _('labels', 'daynames_short_datepicker'),
 	weekHeader: 'Sm',
 	dateFormat: 'dd/mm/yy',
-	firstDay: 1,
+	firstDay: 1, // XXX TODO
 	isRTL: false,
 	showMonthAfterYear: false,
 	yearSuffix: ''};	
 
-$.datepicker.setDefaults($.datepicker.regional['es']);
+$.datepicker.setDefaults($.datepicker.regional['custom']);
 $.datepicker.setDefaults({constrainInput: true});
 }
 
@@ -782,17 +782,18 @@ function event_field_form(type, data) {
 
 	if (type == 'new') {
 		url_dialog += 'create_event';
-		title = 'Crear nuevo evento';
-		action_verb = 'creado';
+		title = _('labels', 'create_event');
+		action_verb = 'creado'; // XXX remove
 	} else {
 		url_dialog += 'edit_event';
-		title = 'Editar evento';
-		action_verb = 'modificado';
+		title = _('labels', 'edit_event');
+		action_verb = 'modificado'; // XXX remove
 	}
 
 	load_generated_dialog(url_dialog,
 		data,
 		function() {
+			// TODO make this configurable
 			var common_timepicker_opts = {
 				show24Hours: true,
 				separator: ':',
@@ -901,12 +902,13 @@ function event_field_form(type, data) {
 		title,
 		[
 			{
-				'text': 'Guardar',
+				'text': _('labels', 'save'),
 				'class': 'addicon btn-icon-event-edit',
 				'click': function() {
 					var thisform = $("#com_form");
 					proceed_send_ajax_form(thisform,
 						function(data) {
+							// TODO remove this
 							show_success('Evento '+action_verb, 'El evento fue '+action_verb
 								+' correctamente');
 
@@ -920,7 +922,7 @@ function event_field_form(type, data) {
 						},
 						function(data) {
 							// Problem with form data
-							show_error('Datos inválidos', data);
+							show_error(_('js_messages', 'invalid_data'), data);
 						},
 						function(data) {
 							// Do nothing
@@ -929,7 +931,7 @@ function event_field_form(type, data) {
 				}
 			},
 			{
-				'text': 'Cancelar',
+				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
 				'click': function() { destroy_dialog(ced); }
 			}
@@ -952,7 +954,7 @@ function update_single_event(event, new_data) {
 function calendar_create_form() {
 
 	var url_dialog = 'dialog_generator/create_calendar';
-	var title = 'Nuevo calendario';
+	var title = _('labels', 'new_calendar');
 
 
 	load_generated_dialog(url_dialog,
@@ -963,19 +965,20 @@ function calendar_create_form() {
 		title,
 		[
 			{
-				'text': 'Crear',
+				'text': _('labels', 'create_calendar'),
 				'class': 'addicon btn-icon-calendar-add',
 				'click': function() {
 					var thisform = $("#calendar_create_form");
 					proceed_send_ajax_form(thisform,
 						function(data) {
+							// TODO remove?
 							show_success('Calendario creado', 'Ya puede acceder a él');
 							destroy_dialog(ccd);
 							update_calendar_list(false);
 						},
 						function(data) {
 							// Problem with form data
-							show_error('Datos inválidos', data);
+							show_error(_('js_messages', 'invalid_data'), data);
 						},
 						function(data) {
 							// Do nothing
@@ -983,7 +986,7 @@ function calendar_create_form() {
 					}
 			},
 			{
-				'text': 'Cancelar',
+				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
 				'click': function() { destroy_dialog(ccd); }
 			}
@@ -995,7 +998,7 @@ function calendar_create_form() {
 function calendar_modify_form(calendar_obj) {
 
 	var url_dialog = 'dialog_generator/modify_calendar';
-	var title = 'Modificar calendario';
+	var title = _('labels', 'modify_calendar');
 	var data = $(calendar_obj).data();
 
 	var calendar_data = {
@@ -1012,7 +1015,7 @@ function calendar_modify_form(calendar_obj) {
 	var buttons_and_actions = 
 		[
 			{
-				'text': "Eliminar calendario",
+				'text': _('labels', '_delete_calendar'),
 				'class': 'addicon btn-icon-calendar-delete',
 				'click': function() { 
 					destroy_dialog(mcd);
@@ -1022,17 +1025,17 @@ function calendar_modify_form(calendar_obj) {
 							displayname: $(calendar_obj).data().displayname
 						},
 						function() {},
-						'Eliminar calendario',
+						_('labels', 'delete'),
 						[ 
 						{
-							'text': 'Sí',
+							'text': _('labels', '_yes'),
 							'class': 'addicon btn-icon-calendar-delete',
 							'click': function() {
 								var thisform = $("#delete_calendar_form");
 								proceed_send_ajax_form(thisform,
 										function(data) {
-										show_success('Calendario eliminado', 
-											'El calendario fue eliminado correctamente');
+										show_success(_('js_messages', 'calendar_deleted'), 
+											'');
 
 											// Remove from calendar and UI
 											var es = $(calendar_obj).data().eventsource;
@@ -1047,7 +1050,7 @@ function calendar_modify_form(calendar_obj) {
 											$(calendar_obj).remove();
 										},
 										function(data) {
-											show_error('No se pudo eliminar el calendario', data);
+											show_error(_('labels', 'error_delete_calendar'), data);
 										},
 										function() {}); 
 
