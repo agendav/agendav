@@ -65,7 +65,7 @@ class Login extends CI_Controller {
 						);
 				$this->auth->new_session($data);
 			} else {
-				$err = $this->i18n->_('messages', 'bad_login');
+				$err = $this->i18n->_('messages', 'error_auth');
 			}
 		}
 

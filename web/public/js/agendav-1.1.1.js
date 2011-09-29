@@ -87,7 +87,7 @@ $(document).ready(function() {
 		loading: function(bool) {
 			if (bool) {
 				// Now loading
-				$("#calendar_view").mask(_('labels', 'synchronizing'), 500);
+				$("#calendar_view").mask(_('messages', 'overlay_synchronizing'), 500);
 			} else {
 				// Finished loading
 				$("#calendar_view").unmask();
@@ -296,8 +296,8 @@ $(document).ready(function() {
 	$(ved + ' button.link_delete_event').live('click', function() {
 		var data = get_data('current_event');
 		if (data === undefined) {
-			show_error(_('labels', 'interface_error'), 
-				_('labels', 'current_event_not_loaded'));
+			show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 'error_current_event_not_loaded'));
 			return;
 		}
 
@@ -322,7 +322,7 @@ $(document).ready(function() {
 				thisform.find("input.etag").val(data.etag);
 				
 			},
-			_('labels', 'delete_event'),
+			_('labels', 'deleteevent'),
 			[ 
 				{
 					'text': _('labels', 'yes'),
@@ -331,11 +331,10 @@ $(document).ready(function() {
 						var thisform = $("#delete_form");
 						proceed_send_ajax_form(thisform,
 							function(data) {
-								show_success(_('labels', 'event_deleted'), '');
 								$("#calendar_view").fullCalendar('removeEvents', get_data('current_event').id);
 							},
 							function(data) {
-								show_error(_('labels', 'event_not_deleted'), data);
+								show_error(_('messages', 'error_event_not_deleted'), data);
 							},
 							function() {}); 
 
@@ -374,8 +373,8 @@ $(document).ready(function() {
 		// Data about this event
 		var event_data = get_data('current_event');
 		if (event_data === undefined) {
-			show_error(_('labels', 'interface_error'), 
-				_('labels', 'current_event_not_loaded'));
+			show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 'error_current_event_not_loaded'));
 			return;
 		}
 
@@ -546,7 +545,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		$.ajax({
 			url: base_app_url + url,
 			beforeSend: function(jqXHR, settings) {
-				$("body").mask(_('labels', 'loading_dialog'), 500);
+				$("body").mask(_('messages', 'overlay_loading_dialog'), 500);
 			},
 			complete: function(jqXHR, textStatus) {
 				$("body").unmask();
@@ -556,8 +555,8 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 			data: formdata,
 			dataType: 'html',
 			error: function(jqXHR, textStatus, errorThrown) {
-				show_error('Error cargando formulario',
-					'Por favor, inténtelo de nuevo. Mensaje: ' + textStatus);
+				show_error(_('messages', 'error_loading_dialog'),
+					_('messages', 'error_oops') + ': ' + textStatus);
 			},
 			success: function(data, textStatus, jqXHR) {
 				$("body").append(data);
@@ -582,8 +581,8 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		$(thisform).remove();
 	} else {
 		// Error generating dialog on the fly?
-		show_error(_('labels', 'interface_error'), 
-				_('labels', 'oops'));
+		show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 'error_oops'));
 	}
 }
 
@@ -600,7 +599,7 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 	$.ajax({
 		url: url,
 		beforeSend: function(jqXHR, settings) {
-			$("body").mask(_('labels', 'sending_form'), 1000);
+			$("body").mask(_('messages', 'overlay_sending_form'), 1000);
 		},
 		complete: function(jqXHR, textStatus) {
 			$("body").unmask();
@@ -610,8 +609,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 		data: data,
 		dataType: 'json',
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('labels', 'interface_error'),
-				_('labels', 'oops') + ':' + textStatus);
+			show_error(_('messages', 'error_interfacefailure'),
+				_('messages', 'error_oops') + ':' + textStatus);
 			set_data('lastoperation', 'failed');
 			errorFunc();
 		},
@@ -633,7 +632,7 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 				successFunc(message);
 			} else {
 				show_error(_('js_messages', 'internal_error'),
-						_('labels', 'oops') + ':' + result);
+						_('messages', 'error_oops') + ':' + result);
 			}
 		}
 		});
@@ -782,11 +781,11 @@ function event_field_form(type, data) {
 
 	if (type == 'new') {
 		url_dialog += 'create_event';
-		title = _('labels', 'create_event');
+		title = _('labels', 'createevent');
 		action_verb = 'creado'; // XXX remove
 	} else {
 		url_dialog += 'edit_event';
-		title = _('labels', 'edit_event');
+		title = _('labels', 'editevent');
 		action_verb = 'modificado'; // XXX remove
 	}
 
@@ -954,7 +953,7 @@ function update_single_event(event, new_data) {
 function calendar_create_form() {
 
 	var url_dialog = 'dialog_generator/create_calendar';
-	var title = _('labels', 'new_calendar');
+	var title = _('labels', 'newcalendar');
 
 
 	load_generated_dialog(url_dialog,
@@ -998,7 +997,7 @@ function calendar_create_form() {
 function calendar_modify_form(calendar_obj) {
 
 	var url_dialog = 'dialog_generator/modify_calendar';
-	var title = _('labels', 'modify_calendar');
+	var title = _('labels', 'modifycalendar');
 	var data = $(calendar_obj).data();
 
 	var calendar_data = {
@@ -1015,7 +1014,7 @@ function calendar_modify_form(calendar_obj) {
 	var buttons_and_actions = 
 		[
 			{
-				'text': _('labels', '_delete_calendar'),
+				'text': _('labels', '_deletecalendar'),
 				'class': 'addicon btn-icon-calendar-delete',
 				'click': function() { 
 					destroy_dialog(mcd);
@@ -1130,7 +1129,7 @@ function update_calendar_list(maskbody) {
 		async: false, // Let's wait
 		beforeSend: function(jqXHR, settings) {
 			if (maskbody) {
-				$("body").mask(_('labels', 'loading_calendar_list'), 500);
+				$("body").mask(_('messages', 'overlay_loading_calendar_list'), 500);
 			}
 		},
 		complete: function(jqXHR, textStatus) {
@@ -1139,8 +1138,8 @@ function update_calendar_list(maskbody) {
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('labels', 'error_loading_calendar_list'),
-				_('labels', 'oops') + textStatus);
+			show_error(_('messages', 'error_loading_calendar_list'),
+				_('messages', 'error_oops') + textStatus);
 		},
 		success: function(data, textStatus, jqXHR) {
 			// Remove old eventSources and remove every list item
@@ -1175,7 +1174,7 @@ function update_calendar_list(maskbody) {
 					setTimeout("update_calendar_list(false)", 1);
 				} else {
 					// Calendar list received empty twice
-					show_error(_('labels','no_calendars'), '');
+					show_error(_('messages','notice_no_calendars'), '');
 				}
 			} else {
 				set_data('last_calendar_count', count);
@@ -1197,7 +1196,7 @@ function generate_event_source(calendar) {
 				tzoffset: new Date().getTimezoneOffset()
 				},
 			error: function() {
-				show_error(_('label', 'interface_error'), 
+				show_error(_('messages', 'error_interfacefailure'), 
 				_('js_messages', 
 					'error_loading_events', { '%cal' : calendar }));
 			}
@@ -1227,7 +1226,7 @@ function session_refresh(n) {
 		success: function(data, textStatus, jqXHR) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('labels', 'interface_error'), 
+			show_error(_('messages', 'error_interfacefailure'), 
 			 _('js_messages', 'error_refreshing_session'));
 		}
 	});
@@ -1326,8 +1325,8 @@ function reload_event_source(cal) {
 		$("#calendar_view").fullCalendar('removeEventSource', eventsource);
 		$("#calendar_view").fullCalendar('addEventSource', eventsource);
 	} else {
-		show_error(_('labels', 'interface_error'),
-			_('labels', 'invalid_calendar', {'%calendar' : cal }));
+		show_error(_('messages', 'error_interfacefailure'),
+			_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
 	}
 }
 
