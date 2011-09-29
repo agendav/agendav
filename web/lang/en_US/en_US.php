@@ -89,7 +89,7 @@ $labels['delete'] = 'Delete';
 $labels['close'] = 'Close';
 $labels['save'] = 'Save';
 $labels['create'] = 'Create';
-$labels['login'] = 'Login';
+$labels['login'] = 'Log in';
 $labels['modify'] = 'Modify';
 $labels['cancel'] = 'Cancel';
 $labels['next'] = 'next';
@@ -137,6 +137,8 @@ $messages['shared_with_you'] = 'You have access to this calendar because %user s
 $messages['share_with_explanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
 by commas or spaces';
+$messages['session_expired'] = 'Your session has expired';
+$messages['login_again'] = 'Please, log in again';
 
 // JS messages
 $js_messages['modification_failed'] = 'Modification failed';
