@@ -26,6 +26,7 @@ $labels['allday'] = 'all day';
 $labels['synchronizing'] = 'Sinchronyzing events...';
 $labels['loading_dialog'] = 'Loading dialog...';
 $labels['sending_form'] = 'Sending form...';
+$labels['loading_calendar_list'] = 'Loading calendar list...';
 $labels['error_loading_dialog'] = 'Error loading dialog';
 $labels['oops'] = 'Oops. Unexpected error';
 $labels['choose_date'] = 'Choose date';
@@ -149,6 +150,8 @@ $js_messages['modification_failed'] = 'Modification failed';
 $js_messages['calendar_created'] = $messages['calendar_created'];
 // TODO remove?
 $js_messages['calendar_deleted'] = $messages['calendar_deleted'];
+// TODO remove?
+$js_messages['calendar_modified'] = $messages['calendar_modified'];
 $js_messages['error_loading_events'] = 'Error loading events from calendar %cal';
 $js_messages['error_refreshing_session'] = 'Error refreshing your session';
 $js_messages['internal_error'] = 'Internal error';
