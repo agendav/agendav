@@ -52,6 +52,9 @@ $labels['repeatyearly'] = 'Yearly';
 $labels['repeatcount'] = 'Count:';
 $labels['repeatuntil'] = 'Until:';
 
+$labels['explntimes'] = '%n times';
+$labels['expluntil'] = 'until %d';
+
 $labels['privacylabel'] = 'Privacy:';
 $labels['public'] = 'Public';
 $labels['private'] = 'Private';
