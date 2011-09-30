@@ -66,7 +66,7 @@ if ($show_shared):
 ?>
 <div class="share_info ui-corner-all">
 <?php
-echo $this->i18n->_('messages', 'shared_with_you',
+echo $this->i18n->_('messages', 'info_sharedby',
 		array('%user' => '<span
 			class="show_user_name">'.$user_from.'</span>'))?>
 </div>
@@ -106,7 +106,7 @@ if (!$show_shared):
 ?>
 <div id="tabs-share">
 	<div class="share_info ui-corner-all">
-	<?php echo $this->i18n->_('messages', 'share_with_explanation');?>
+	<?php echo $this->i18n->_('messages', 'info_shareexplanation');?>
 	</div>
  <table>
   <tr>

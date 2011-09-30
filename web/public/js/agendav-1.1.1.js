@@ -207,7 +207,7 @@ $(document).ready(function() {
 						update_single_event(event, data);
 					},
 					function(data) {
-						show_error(_('js_messages', 'modification_failed'), data);
+						show_error(_('messages', 'error_modfailed'), data);
 						revertFunc();
 					},
 					function() {
@@ -247,7 +247,7 @@ $(document).ready(function() {
 						update_single_event(event, data);
 					},
 					function(data) {
-						show_error(_('js_messages', 'modification_failed'), data);
+						show_error(_('messages', 'error_modfailed'), data);
 						revertFunc();
 					},
 					function() {
@@ -661,7 +661,7 @@ function generate_on_the_fly_form(action, data) {
 		dataType: 'text',
 		async: false, // Let's wait
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('js_messages', 'error_generating_form'),
+			show_error(_('messages', 'error_genform'),
 				textStatus);
 			set_data('formcreation', 'failed');
 		},
@@ -921,7 +921,7 @@ function event_field_form(type, data) {
 						},
 						function(data) {
 							// Problem with form data
-							show_error(_('js_messages', 'invalid_data'), data);
+							show_error(_('messages', 'error_invalidinput'), data);
 						},
 						function(data) {
 							// Do nothing
@@ -977,7 +977,7 @@ function calendar_create_form() {
 						},
 						function(data) {
 							// Problem with form data
-							show_error(_('js_messages', 'invalid_data'), data);
+							show_error(_('messages', 'error_invalidinput'), data);
 						},
 						function(data) {
 							// Do nothing
@@ -1033,9 +1033,6 @@ function calendar_modify_form(calendar_obj) {
 								var thisform = $("#delete_calendar_form");
 								proceed_send_ajax_form(thisform,
 										function(data) {
-										show_success(_('js_messages', 'calendar_deleted'), 
-											'');
-
 											// Remove from calendar and UI
 											var es = $(calendar_obj).data().eventsource;
 											$("#calendar_view").fullCalendar('removeEventSource',
@@ -1049,7 +1046,7 @@ function calendar_modify_form(calendar_obj) {
 											$(calendar_obj).remove();
 										},
 										function(data) {
-											show_error(_('labels', 'error_delete_calendar'), data);
+											show_error(_('labels', 'error_caldelete'), data);
 										},
 										function() {}); 
 
@@ -1074,15 +1071,13 @@ function calendar_modify_form(calendar_obj) {
 				var thisform = $("#modify_calendar_form");
 				proceed_send_ajax_form(thisform,
 					function(data) {
-						// TODO remove?
-						show_success(_('js_messages', 'calendar_modified'), '');
 						destroy_dialog(mcd);
 						// TODO remove specific calendar and update only its events
 						update_calendar_list(false);
 					},
 					function(data) {
 						// Problem with form data
-						show_error(_('js_messages', 'invalid_data'), data);
+						show_error(_('messages', 'error_invalidinput'), data);
 					},
 					function(data) {
 						// Do nothing
@@ -1197,8 +1192,8 @@ function generate_event_source(calendar) {
 				},
 			error: function() {
 				show_error(_('messages', 'error_interfacefailure'), 
-				_('js_messages', 
-					'error_loading_events', { '%cal' : calendar }));
+				_('messages', 
+					'error_loadevents', { '%cal' : calendar }));
 			}
 	};
 
@@ -1227,7 +1222,7 @@ function session_refresh(n) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			show_error(_('messages', 'error_interfacefailure'), 
-			 _('js_messages', 'error_refreshing_session'));
+			 _('messages', 'error_sessrefres'));
 		}
 	});
 	setTimeout("session_refresh(" + n + ")", n);

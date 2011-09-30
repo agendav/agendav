@@ -1,12 +1,12 @@
 <div id="delete_event_dialog">
  <p><?php echo $this->i18n->_('messages',
-		 'confirm_event_delete_from_calendar')?></p>
+		 'info_confirmeventdelete')?></p>
 
  <p class="title">
  </p>
 
  <div class="rrule">
- <p><?php echo $this->i18n->_('messages', 'recurrent_delete_all')?></p>
+ <p><?php echo $this->i18n->_('messages', 'info_repetitivedeleteall')?></p>
  </div>
 
  

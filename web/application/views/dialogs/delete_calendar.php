@@ -6,13 +6,13 @@ $data_form = array(
 echo form_open('caldav2json/delete_calendar', $data_form);
 ?>
  <input type="hidden" name="calendar" value="<?php echo $calendar?>" />
- <p><?php echo $this->i18n->_('messages', 'confirm_calendar_delete')?></p>
+<p><?php echo $this->i18n->_('messages', 'info_confirmcaldelete')?></p>
 
  <p class="title">
   <?php echo $displayname;?>
  </p>
 
- <p><?php echo $this->i18n->_('messages', 'permanent_removal_warning')?></p>
+ <p><?php echo $this->i18n->_('messages', 'info_permanentremoval')?></p>
 
 <?php
 echo form_close();
