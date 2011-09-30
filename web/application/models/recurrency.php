@@ -66,7 +66,6 @@ class Recurrency extends CI_Model {
 					}
 					break;
 				case 'COUNT':
-					$explanation .= ', un total de ' . $v . ' veces';
 					$explanation .= ', ' . $this->i18n->_('labels',
 							'explntimes',
 							array('%n' => $v));
