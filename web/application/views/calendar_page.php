@@ -22,7 +22,7 @@ if (isset($logo)):
 
  <div id="shortcuts" class="block">
    <div id="shortcut_add_event"><?php echo $this->i18n->_('labels',
-		   'create_event')?></div>
+		   'createevent')?></div>
  </div>
 
  <div id="calendar_list" class="ui-widget block">
