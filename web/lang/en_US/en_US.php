@@ -135,7 +135,7 @@ $messages['notice_no_calendars'] = 'No calendars available';
 $messages['info_repetition_human'] = 'This event repeats %explanation';
 $messages['info_repetition_unparseable'] = 'This event has recurrence rules associated that this program cannot understand. Raw definition:';
 $messages['error_calendarnotfound'] = 'Invalid calendar %calendar';
-$messages['error_eventnotfound'] = 'Event not found';
+$messages['error_eventnotfound'] = 'Element not found';
 $messages['error_eventchanged'] = 'Element was modified while you were editing it. Please, refresh.';
 $messages['error_unknownhttpcode'] = 'Unknown error, HTTP code=%res';
 $messages['error_internalcalnamemissing'] = 'Empty internal calendar name';

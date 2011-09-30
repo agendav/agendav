@@ -144,17 +144,12 @@ class Caldav2json extends CI_Controller {
 					$calendar,
 					$etag);
 			if ($res === TRUE) {
-				$this->extended_logs->message('INTERNALS', 
-						'Deleted event with uid=' . $uid 
-						.' from calendar ' .  $calendar);
 				$this->_throw_success();
 			} else {
 				// There was an error
-				$this->extended_logs->message('INTERNALS',
-						'Delete failed for event with uid=' . $uid
-						.' from calendar ' . $calendar . ': '
-						. $res);
-				$this->_throw_exception($res);
+				$msg = $this->i18n->_('messages', $res[0],
+						$res[1]);
+				$this->_throw_exception($msg);
 			}
 		}
 	}
@@ -713,9 +708,9 @@ class Caldav2json extends CI_Controller {
 				$props);
 
 		if ($res !== TRUE) {
-			$this->_throw_error($res);
+			$this->_throw_error($this->i18n->_('messages', $res[0], $res[1]));
 		} else {
-			$this->_throw_success('El calendario se creó correctamente');
+			$this->_throw_success();
 		}
 	}
 
@@ -771,15 +766,11 @@ class Caldav2json extends CI_Controller {
 			null);
 
 		if ($res === TRUE) {
-			$this->extended_logs->message('INTERNALS', 
-				'Removed calendar ' . $calendar);
-			$this->_throw_success('Calendario borrado');
+			$this->_throw_success();
 		} else {
 			// There was an error
-			$this->extended_logs->message('INTERNALS',
-				'Error trying to remove calendar ' . $calendar
-				.': ' . $res);
-			$this->_throw_exception($res);
+			$this->_throw_exception($this->i18n->_('messages', $res[0],
+						$res[1]));
 		}
 	}
 
@@ -906,15 +897,11 @@ class Caldav2json extends CI_Controller {
 		}
 
 		if ($res === TRUE) {
-			$this->extended_logs->message('INTERNALS', 
-				'Successful modification of calendar ' . $calendar);
-			$this->_throw_success('Calendario modificado correctamente');
+			$this->_throw_success();
 		} else {
 			// There was an error
-			$this->extended_logs->message('INTERNALS',
-				'Error trying to modify calendar ' . $calendar
-				.': ' . $res);
-			$this->_throw_exception($res);
+			$this->_throw_exception($this->i18n->_('messages', $res[0],
+						$res[1]));
 		}
 	}
 
