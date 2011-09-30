@@ -782,11 +782,9 @@ function event_field_form(type, data) {
 	if (type == 'new') {
 		url_dialog += 'create_event';
 		title = _('labels', 'createevent');
-		action_verb = 'creado'; // XXX remove
 	} else {
 		url_dialog += 'edit_event';
 		title = _('labels', 'editevent');
-		action_verb = 'modificado'; // XXX remove
 	}
 
 	load_generated_dialog(url_dialog,
@@ -907,10 +905,6 @@ function event_field_form(type, data) {
 					var thisform = $("#com_form");
 					proceed_send_ajax_form(thisform,
 						function(data) {
-							// TODO remove this
-							show_success('Evento '+action_verb, 'El evento fue '+action_verb
-								+' correctamente');
-
 							// Reload only affected calendars
 							$.each(data, function(k, cal) {
 								reload_event_source(cal);
@@ -970,8 +964,6 @@ function calendar_create_form() {
 					var thisform = $("#calendar_create_form");
 					proceed_send_ajax_form(thisform,
 						function(data) {
-							// TODO remove?
-							show_success('Calendario creado', 'Ya puede acceder a él');
 							destroy_dialog(ccd);
 							update_calendar_list(false);
 						},
@@ -1222,7 +1214,7 @@ function session_refresh(n) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			show_error(_('messages', 'error_interfacefailure'), 
-			 _('messages', 'error_sessrefres'));
+			 _('messages', 'error_sessrefresh'));
 		}
 	});
 	setTimeout("session_refresh(" + n + ")", n);
