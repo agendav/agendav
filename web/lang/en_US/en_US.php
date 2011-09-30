@@ -99,28 +99,25 @@ $messages['error_startgreaterend'] = 'End date must be greater than or equal to 
 $messages['error_bogusrepeatrule'] = 'Error, check your recurrence parameters';
 $messages['error_internalgen'] = 'Internal calendar generation error';
 $messages['error_internalcalnameinuse'] = 'Internal calendar name already being used';
-$messages['calendar_created'] = 'Successful calendar creation';
-$messages['calendar_deleted'] = 'Successful calendar delete';
-$messages['calendar_modified'] = 'Successful calendar modification';
 
-$messages['confirm_calendar_delete'] = 'Are you sure you want to delete the following calendar?';
-$messages['confirm_event_delete_from_calendar'] = 'Are you sure you want to delete the following event?';
-$messages['permanent_removal_warning'] = 'Your information will be permanently lost';
-$messages['recurrent_delete_all'] = 'Every repetition of this event will be deleted';
-$messages['shared_with_you'] = 'You have access to this calendar because %user shared it with you';
-$messages['share_with_explanation'] = 'You can share this calendar with
+$messages['info_confirmcaldelete'] = 'Are you sure you want to delete the following calendar?';
+$messages['info_confirmeventdelete'] = 'Are you sure you want to delete the following event?';
+$messages['info_permanentremoval'] = 'Your information will be permanently lost';
+$messages['info_repetitivedeleteall'] = 'All repetitive instances of this event will be deleted';
+$messages['info_sharedby'] = 'You have access to this calendar because %user shared it with you';
+$messages['info_shareexplanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
 by commas or spaces';
-$messages['session_expired'] = 'Your session has expired';
-$messages['login_again'] = 'Please, log in again';
+$messages['error_sessexpired'] = 'Your session has expired';
+$messages['error_loginagain'] = 'Please, log in again';
 
-$messages['modification_failed'] = 'Modification failed';
-$messages['error_loading_events'] = 'Error loading events from calendar %cal';
-$messages['error_refreshing_session'] = 'Error refreshing your session';
+$messages['error_modfailed'] = 'Modification failed';
+$messages['error_loadevents'] = 'Error loading events from calendar %cal';
+$messages['error_sessrefresh'] = 'Error refreshing your session';
 $messages['error_internal'] = 'Internal error';
-$messages['error_generating_form'] = 'Error generating form';
-$messages['invalid_data'] = 'Invalid data';
-$messages['error_delete_calendar'] = 'Error deleting calendar';
+$messages['error_genform'] = 'Error generating form';
+$messages['error_invalidinput'] = 'Invalid value';
+$messages['error_caldelete'] = 'Error deleting calendar';
 
 $messages['overlay_synchronizing'] = 'Sinchronyzing events...';
 $messages['overlay_loading_dialog'] = 'Loading dialog...';
