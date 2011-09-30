@@ -217,10 +217,12 @@ class Caldav2json extends CI_Controller {
 		} else {
 			// Create new form validation rules
 			$this->form_validation
-				->set_rules('start_time', 'Hora de inicio',
+				->set_rules('start_time', $this->i18n->_('labels',
+							'starttime'),
 						'required|callback__valid_time');
 			$this->form_validation
-				->set_rules('end_time', 'Hora de fin',
+				->set_rules('end_time', $this->i18n->_('labels',
+							'endtime'),
 						'required|callback__valid_time');
 
 			if ($this->form_validation->run() === FALSE) {
@@ -280,7 +282,7 @@ class Caldav2json extends CI_Controller {
 				$this->auth->passwd,
 				$p['calendar'])) {
 			$this->_throw_exception(
-					$this->i18n->_('messages', 'error_invalidcalendar', 
+					$this->i18n->_('messages', 'error_calendarnotfound', 
 						array('%calendar' => $p['calendar'])));
 		} else {
 			$calendar = $p['calendar'];
@@ -309,7 +311,7 @@ class Caldav2json extends CI_Controller {
 					$this->auth->passwd,
 					$original_calendar)) {
 				$this->_throw_exception(
-					$this->i18n->_('messages', 'error_invalidcalendar', 
+					$this->i18n->_('messages', 'error_calendarnotfound', 
 						array('%calendar' => $original_calendar)));
 			}
 
@@ -684,8 +686,8 @@ class Caldav2json extends CI_Controller {
 			// Already exists?
 			$internal = $this->auth->get_user() . ':' . $calendar;
 			if (isset($current_calendars[$internal])) {
-				$this->_throw_exception('El nombre interno '
-						. $internal . ' ya existe');
+				$this->_throw_exception($this->i18n->_('messages',
+							'error_internalcalnameinuse'));
 			}
 		} else {
 			do {
@@ -726,7 +728,8 @@ class Caldav2json extends CI_Controller {
 		if ($calendar === FALSE) {
 			$this->extended_logs->message('ERROR', 
 					'Call to delete_calendar() without calendar');
-			$this->_throw_error('Llamada al borrado con parámetros insuficientes');
+			$this->_throw_error($this->i18n->_('messages',
+						'error_interfacefailure'));
 		}
 
 		// Get current own calendars and check if this one exists
@@ -739,7 +742,9 @@ class Caldav2json extends CI_Controller {
 			$this->extended_logs->message('INTERNALS', 
 					'Call to delete_calendar() with non-existent calendar ('
 						.$calendar.')');
-			$this->_throw_exception('El calendario no existe');
+			$this->_throw_exception(
+				$this->i18n->_('messages', 'error_calendarnotfound', 
+					array('%calendar' => $p['calendar'])));
 		}
 
 		// Delete calendar shares (if any)
@@ -794,14 +799,15 @@ class Caldav2json extends CI_Controller {
 				FALSE || $shared === FALSE || $shared === FALSE) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with incomplete parameters');
-			$this->_throw_error('Llamada a modificación con parámetros insuficientes');
+			$this->_throw_error($this->i18n->_('messages',
+						'error_interfacefailure'));
 		}
 
 		if ($shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with shared calendar and incomplete parameters');
-			$this->_throw_error('Llamada a modificación de calendario '
-					.'compartido con parámetros insuficientes');
+			$this->_throw_error($this->i18n->_('messages',
+						'error_interfacefailure'));
 		}
 
 		// Check if calendar is valid
@@ -813,8 +819,10 @@ class Caldav2json extends CI_Controller {
 					'Call to modify_calendar() with non-existent calendar '
 					.' or with access forbidden ('
 						.$calendar.')');
-			$this->_throw_exception('El calendario que intenta modificar no'
-				. ' existe o no tiene permiso para modificarlo');
+
+			$this->_throw_exception(
+				$this->i18n->_('messages', 'error_calendarnotfound', 
+					array('%calendar' => $calendar)));
 		}
 
 
@@ -846,7 +854,7 @@ class Caldav2json extends CI_Controller {
 					$this->auth->user,
 					$props);
 			if ($success === FALSE) {
-				$res = 'No se pudieron guardar las opciones';
+				$res = $this->i18n->_('messages', 'error_internal');
 			} else {
 				$res = TRUE;
 			}

@@ -621,7 +621,7 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 			if (result == "ERROR") {
 				set_data('lastoperation', 'failed');
 				show_error(
-					_('js_messages', 'internal_error'),
+					_('messages', 'error_internal'),
 					message);
 				errorFunc();
 			} else if (result == "EXCEPTION") {
@@ -631,7 +631,7 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 				set_data('lastoperation', 'success');
 				successFunc(message);
 			} else {
-				show_error(_('js_messages', 'internal_error'),
+				show_error(_('messages', 'error_internal'),
 						_('messages', 'error_oops') + ':' + result);
 			}
 		}
