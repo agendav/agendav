@@ -1,3 +1,4 @@
 logs/
 doc/build
 *.swp
+web/application/controllers/x.php
