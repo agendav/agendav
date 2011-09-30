@@ -19,7 +19,7 @@ function _(mtype, s, params) {
 	}
 
 	for (var i in params) {
-		ret.replace(i, params[i]);
+		ret = ret.replace(i, params[i]);
 	}
 
 	return ret;
