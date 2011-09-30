@@ -12,10 +12,10 @@ $labels['months_long'] = array('January', 'February', 'March', 'April',
 		'December');
 $labels['months_short'] = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 		'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-$labels['daynames_long'] = array('Monday', 'Tuesday', 'Wednesday',
-		'Thursday', 'Friday', 'Saturday', 'Sunday');
-$labels['daynames_short'] = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-		'Sun');
+$labels['daynames_long'] = array('Sunday', 'Monday', 'Tuesday', 'Wednesday',
+		'Thursday', 'Friday', 'Saturday');
+$labels['daynames_short'] = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri',
+		'Sat');
 
 $labels['today'] = 'Today';
 $labels['month'] = 'month';
