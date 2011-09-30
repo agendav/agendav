@@ -44,16 +44,20 @@ class Recurrency extends CI_Model {
 				case 'FREQ':
 					switch ($v) {
 						case 'DAILY':
-							$explanation = 'diariamente';
+							$explanation = $this->i18n->_('labels',
+									'repeatdaily');
 							break;
 						case 'WEEKLY':
-							$explanation = 'semanalmente';
+							$explanation = $this->i18n->_('labels',
+									'repeatweekly');
 							break;
 						case 'MONTHLY':
-							$explanation = 'mensualmente';
+							$explanation = $this->i18n->_('labels',
+									'repeatmonthly');
 							break;
 						case 'YEARLY':
-							$explanation = 'anualmente';
+							$explanation = $this->i18n->_('labels',
+									'repeatyearly');
 							break;
 						default:
 							// Oops!
@@ -63,14 +67,18 @@ class Recurrency extends CI_Model {
 					break;
 				case 'COUNT':
 					$explanation .= ', un total de ' . $v . ' veces';
+					$explanation .= ', ' . $this->i18n->_('labels',
+							'explntimes',
+							array('%n' => $v));
 					break;
 				case 'UNTIL':
 					$date = $this->dates->idt2datetime($v, 
 								'UTC');
 					// TODO configurable timezone and format
 					$date->setTimeZone(new DateTimeZone('Europe/Madrid'));
-					$explanation .= ', hasta que llegue el día ' .
-						$date->format('d/m/Y');
+					$explanation .= ', ' . $this->i18n->_('labels',
+							'expluntil',
+							array('%d' => $date->format('d/m/Y')));
 					break;
 				case 'INTERVAL':
 					if ($v != "1") {
@@ -93,7 +101,8 @@ class Recurrency extends CI_Model {
 
 	function build($opts, &$rrule_err) {
 		if (!isset($opts['recurrence_type'])) {
-			$rrule_err = 'Tipo de recurrencia no definido';
+			$rrule_err = $this->i18n->_('messages',
+					'error_bogusrepeatrule');
 			return FALSE;
 		}
 
@@ -108,8 +117,8 @@ class Recurrency extends CI_Model {
 				break;
 			default:
 				// Oops
-				$rrule_err = 'Tipo de recurrencia ' .
-					$opts['recurrence_type'] . ' desconocido';
+				$rrule_err = $this->i18n->_('messages',
+						'error_bogusrepeatrule');
 				return FALSE;
 				break;
 		}
@@ -123,8 +132,8 @@ class Recurrency extends CI_Model {
 				$this->dates->frontend2datetime($opts['recurrence_until'],
 						'UTC');
 			if ($date === FALSE) {
-				$rrule_err = 'La fecha pasada no es válida ('
-						.  $opts['recurrence_until'] .')';
+				$rrule_err = $this->i18n->_('messages',
+						'error_bogusrepeatrule');
 				return FALSE;
 			} else {
 				$res['UNTIL'] = $this->dates->datetime2idt($date);
