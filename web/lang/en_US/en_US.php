@@ -1,4 +1,26 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+/*
+ * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ *
+ *  This file is part of AgenDAV.
+ *
+ *  AgenDAV is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  any later version.
+ *
+ *  AgenDAV is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * English master language file
+ */
 
 $labels = array();
 $messages = array();
@@ -24,43 +46,43 @@ $labels['day'] = 'day';
 $labels['allday'] = 'all day';
 $labels['choose_date'] = 'Choose date';
 
-$labels['calendar'] = 'Calendar:';
-$labels['location'] = 'Location:';
-$labels['description'] = 'Description:';
+$labels['calendar'] = 'Calendar';
+$labels['location'] = 'Location';
+$labels['description'] = 'Description';
 
-$labels['displayname'] = 'Display name:';
-$labels['internalname'] = 'Internal name:';
+$labels['displayname'] = 'Display name';
+$labels['internalname'] = 'Internal name';
 $labels['optional'] = '(optional)';
-$labels['color'] = 'Color:';
+$labels['color'] = 'Color';
 
-$labels['summary'] = 'Summary:';
-$labels['startdate'] = 'Start date:';
-$labels['enddate'] = 'End date:';
+$labels['summary'] = 'Summary';
+$labels['startdate'] = 'Start date';
+$labels['enddate'] = 'End date';
 $labels['starttime'] = 'Start time';
 $labels['endtime'] = 'End time';
-$labels['alldayform'] = 'All day:';
+$labels['alldayform'] = 'All day';
 
 $labels['repetitionexceptions'] = 'Exceptions to recurrent events';
 
-$labels['repeat'] = 'Repeat:';
+$labels['repeat'] = 'Repeat';
 $labels['repeatno'] = 'No repetitions';
 $labels['repeatdaily'] = 'Daily';
 $labels['repeatweekly'] = 'Weekly';
 $labels['repeatmonthly'] = 'Monthly';
 $labels['repeatyearly'] = 'Yearly';
 
-$labels['repeatcount'] = 'Count:';
-$labels['repeatuntil'] = 'Until:';
+$labels['repeatcount'] = 'Count';
+$labels['repeatuntil'] = 'Until';
 
 $labels['explntimes'] = '%n times';
 $labels['expluntil'] = 'until %d';
 
-$labels['privacylabel'] = 'Privacy:';
+$labels['privacylabel'] = 'Privacy';
 $labels['public'] = 'Public';
 $labels['private'] = 'Private';
 $labels['confidential'] = 'Confidential';
 
-$labels['transp'] = 'Show this time as:';
+$labels['transp'] = 'Show this time as';
 $labels['opaque'] = 'Busy';
 $labels['transparent'] = 'Free';
 
@@ -89,8 +111,8 @@ $labels['next'] = 'next';
 $labels['previous'] = 'previous';
 $labels['yes'] = 'Yes';
 
-$labels['sharewith'] = 'Share with:';
-$labels['publicurl'] = 'URL for calendaring desktop applications:';
+$labels['sharewith'] = 'Share with';
+$labels['publicurl'] = 'URL for calendaring desktop applications';
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
@@ -145,4 +167,4 @@ $messages['error_internalcalnamemissing'] = 'Empty internal calendar name';
 $messages['error_calname_missing'] = 'Empty calendar name';
 $messages['error_calcolor_missing'] = 'Color must be supplied';
 $messages['error_mkcalendar'] = 'Server refused to create calendar. Please, check your creation parameters';
-$messages['error_shareunknownusers'] = 'Some of the users you specified do notexist';
+$messages['error_shareunknownusers'] = 'Some of the users you specified do not exist';
