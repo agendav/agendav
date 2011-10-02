@@ -78,7 +78,7 @@ class Login extends CI_Controller {
                         ),
                     'css' => array(
                         'css/style-1.1.1.css',
-                        'css/jquery-ui-1.8.16.custom.css',
+                        'css/Aristo_20110919.css',
                         ));
 			$this->load->view('common_header', $data_header);
 

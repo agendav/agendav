@@ -58,7 +58,7 @@ class Calendar extends CI_Controller {
 						'type' => 'text/css',
 						'media' => 'print',
 						),
-					'css/jquery-ui-1.8.16.custom.css',
+					'css/Aristo_20110919.css',
 					'css/timePicker.css',
 					'css/jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
 					));

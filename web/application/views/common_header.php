@@ -41,7 +41,7 @@ var relative_url = '<?php echo $relative; ?>';
 //]]>
 </script>
 </head>
-<body>
+<body class="ui-form">
 <div id="topbar">
  <div id="wrap_topbar">
   <div class="title">
