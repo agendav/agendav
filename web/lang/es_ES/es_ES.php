@@ -77,7 +77,7 @@ $labels['repeatuntil'] = 'Hasta';
 $labels['explntimes'] = '%n veces';
 $labels['expluntil'] = 'hasta la fecha %d';
 
-$labels['privacylabel'] = 'Privacidad';
+$labels['privacy'] = 'Privacidad';
 $labels['public'] = 'Público';
 $labels['private'] = 'Privado';
 $labels['confidential'] = 'Confidencial';

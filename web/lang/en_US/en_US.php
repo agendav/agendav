@@ -77,7 +77,7 @@ $labels['repeatuntil'] = 'Until';
 $labels['explntimes'] = '%n times';
 $labels['expluntil'] = 'until %d';
 
-$labels['privacylabel'] = 'Privacy';
+$labels['privacy'] = 'Privacy';
 $labels['public'] = 'Public';
 $labels['private'] = 'Private';
 $labels['confidential'] = 'Confidential';
