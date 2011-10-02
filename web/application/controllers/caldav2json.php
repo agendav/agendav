@@ -41,12 +41,19 @@ class Caldav2json extends CI_Controller {
 	function index() {
 	}
 
-	function events($calendar = 'calendario') {
+	function events() {
 		$returned_events = array();
 		$err = 0;
 
 		// For benchmarking
 		$time_start = microtime(TRUE);
+
+		$calendar = $this->input->get('calendar');
+		if ($calendar === FALSE) {
+			$this->extended_logs->message('ERROR',
+					'Calendar events request with no calendar name');
+			$err = 400;
+		}
 
 		$start = $this->input->get('start');
 		$end = $this->input->get('end');
@@ -59,13 +66,13 @@ class Caldav2json extends CI_Controller {
 			$tzoffset = intval($tzoffset) * 60;
 		}
 
-		if ($start === FALSE) {
+		if ($err == 0 && $start === FALSE) {
 			// Something is wrong here
 			$this->extended_logs->message('ERROR',
 					'Calendar events request for ' . $calendar 
 					.' with no start timestamp');
 			$err = 400;
-		} else {
+		} else if ($err == 0) {
 			$start =
 				$this->dates->datetime2idt(
 						$this->dates->ts2datetime(

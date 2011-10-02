@@ -166,7 +166,7 @@ $(document).ready(function() {
 					end: endDate.getTime()/1000,
 					allday: pass_allday,
 					view: view.name,
-					current_calendar: $("#calendar_list li.selected_calendar").data().calendar
+					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
 		
 		// Useful for creating events in agenda view
@@ -411,13 +411,13 @@ $(document).ready(function() {
 	 *************************************************************/
 
 	// Choosing a calendar
-	$("li.available_calendar").live('click', function() {
-		$("#calendar_list li.selected_calendar").removeClass("selected_calendar");
-		$(this).addClass("selected_calendar");
+	$('li.available_calendar').live('click', function() {
+		$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
+		$(this).addClass('selected_calendar');
 	});
 
 	// Editing a calendar
-	$("li.available_calendar").live('dblclick', function(e) {
+	$('li.available_calendar').live('dblclick', function(e) {
 		e.preventDefault();
 		calendar_modify_form(this);
 	});
@@ -426,12 +426,12 @@ $(document).ready(function() {
 	update_calendar_list(true);
 
 	// Refresh calendar list
-	$("#calendar_list_refresh").click(function() {
+	$('#calendar_list_refresh').click(function() {
 		update_calendar_list(true);
 	});
 
 	// Create calendar
-	$("#calendar_add").click(calendar_create_form);
+	$('#calendar_add').click(calendar_create_form);
 	
 
 	/*************************************************************
@@ -449,12 +449,12 @@ $(document).ready(function() {
 			}
 		})
 		.bind('click', function() {
-			var start = $("#calendar_view").fullCalendar('getDate').getTime()/1000;
+			var start = $('#calendar_view').fullCalendar('getDate').getTime()/1000;
 			var data = {
 					start: start,
 					allday: false,
 					view: 'month',
-					current_calendar: $("#calendar_list li.selected_calendar").data().calendar
+					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
 
 			// Unselect every single day/slot
@@ -1027,12 +1027,12 @@ function calendar_modify_form(calendar_obj) {
 										function(data) {
 											// Remove from calendar and UI
 											var es = $(calendar_obj).data().eventsource;
-											$("#calendar_view").fullCalendar('removeEventSource',
+											$('#calendar_view').fullCalendar('removeEventSource',
 												$(calendar_obj).data().eventsource);
 
 											// Select another calendar before removing this one
-											if ($(calendar_obj).hasClass("selected_calendar")) {
-												$("#calendar_list li.available_calendar:first").click();
+											if ($(calendar_obj).hasClass('selected_calendar')) {
+												$('#calendar_list li.available_calendar:first').click();
 											}
 
 											$(calendar_obj).remove();
@@ -1130,9 +1130,9 @@ function update_calendar_list(maskbody) {
 		},
 		success: function(data, textStatus, jqXHR) {
 			// Remove old eventSources and remove every list item
-			$("#calendar_list li.available_calendar").each(function(index) {
+			$('#calendar_list li.available_calendar').each(function(index) {
 				var data = $(this).data();
-				$("#calendar_view").fullCalendar('removeEventSource',
+				$('#calendar_view').fullCalendar('removeEventSource',
 					data.eventsource);
 				$(this).remove();
 			});
@@ -1145,9 +1145,9 @@ function update_calendar_list(maskbody) {
 
 				var li = generate_calendar_entry(value);
 
-				$("#calendar_list ul").append(li);
+				$('#calendar_list ul').append(li);
 
-				$("#calendar_view").fullCalendar('addEventSource', $(li).data().eventsource);
+				$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
 			});
 
 			// No calendars?
@@ -1158,7 +1158,7 @@ function update_calendar_list(maskbody) {
 				if (last_calendar_count === undefined ||
 					last_calendar_count != '0') {
 					set_data('last_calendar_count', 0);
-					setTimeout("update_calendar_list(false)", 1);
+					setTimeout('update_calendar_list(false)', 1);
 				} else {
 					// Calendar list received empty twice
 					show_error(_('messages','notice_no_calendars'), '');
@@ -1166,7 +1166,7 @@ function update_calendar_list(maskbody) {
 			} else {
 				set_data('last_calendar_count', count);
 				// Select the first one by default
-				$("#calendar_list li.available_calendar:first").click();
+				$('#calendar_list li.available_calendar:first').click();
 			}
 		}
 	});
@@ -1177,9 +1177,13 @@ function update_calendar_list(maskbody) {
  */
 function generate_event_source(calendar) {
 	var ajax_options = {
-			url: base_app_url + 'caldav2json/events/' + calendar,
+			// If #calendar is not used, Fullcalendar will be confused when
+			// calling removeEventSource, and will remove all calendars
+			url: base_app_url + 'caldav2json/events#' + calendar,
 			cache: false,
+			// TODO make timezone configurable
 			data: {
+				calendar: calendar,
 				tzoffset: new Date().getTimezoneOffset()
 				},
 			error: function() {
@@ -1190,13 +1194,6 @@ function generate_event_source(calendar) {
 	};
 
 	return ajax_options;
-}
-
-/**
- * Allows using selectors with ':', from docs.jquery.com
- */
-function jq(myid) { 
-	return myid.replace(/(:|\.)/g,'\\$1');
 }
 
 /**
@@ -1262,7 +1259,6 @@ function generate_calendar_entry(data) {
 	var li = $("<li></li>")
 		.addClass("calendar_color")
 		.addClass("available_calendar")
-		.attr("id", "calendar_" + data.calendar)
 		.attr("title", data.displayname)
 		.css('background-color', data.color)
 		.html(data.shown_displayname);
@@ -1291,30 +1287,41 @@ function generate_calendar_entry(data) {
  * Gets calendar display name from its internal name
  */
 function get_calendar_displayname(c) {
-	var calelem = $(jq("#calendar_" + c));
-	if (calelem.length == 1) {
-		calname = $(calelem).data().displayname;
-	} else {
-		calname = event.calendar + " (?)";
-	}
+	var calname = undefined;
 
-	return calname;
+	$('#calendar_list li.available_calendar').each(function(index) {
+		var thiscal = $(this).data();
+		if (thiscal.calendar == c) {
+			calname = thiscal.displayname;
+			return false; // stop looking for calendar
+		}
+	});
+
+	return (calname !== undefined ? calname : event.calendar + '(?)');;
 }
 
 /*
  * Reloads an event source by removing it and reenabling it
  */
 function reload_event_source(cal) {
-	var calelem = $(jq("#calendar_" + cal));
+	var eventsource = undefined;
 
-	if (calelem.length == 1) {
-		var eventsource = $(calelem).data().eventsource;
-		$("#calendar_view").fullCalendar('removeEventSource', eventsource);
-		$("#calendar_view").fullCalendar('addEventSource', eventsource);
+	$('#calendar_list li.available_calendar').each(function(index) {
+		var thiscal = $(this).data();
+		if (thiscal.calendar == cal) {
+			eventsource = thiscal.eventsource;
+			return false; // stop looking for calendar
+		}
+	});
+
+	if (eventsource !== undefined) {
+		$('#calendar_view').fullCalendar('removeEventSource', eventsource);
+		$('#calendar_view').fullCalendar('addEventSource', eventsource);
 	} else {
 		show_error(_('messages', 'error_interfacefailure'),
-			_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
+				_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
 	}
+
 }
 
 /*
