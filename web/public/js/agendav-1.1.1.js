@@ -29,9 +29,6 @@ $(document).ready(function() {
 	// Refresh session every X seconds code at js_generator
 	// Calls session_refresh()
 
-	// Form elements
-	apply_jQueryUI_styles();
-
 	// Default datepicker options
 	set_default_datepicker_options();
 
@@ -560,7 +557,6 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 			},
 			success: function(data, textStatus, jqXHR) {
 				$("body").append(data);
-				apply_jQueryUI_styles();
 				$("#" + divname).dialog({
 					autoOpen: true,
 					buttons: buttons,
@@ -687,15 +683,6 @@ function destroy_dialog(name) {
 	$(name).dialog('destroy');
 	$(name).remove();
 
-}
-
-
-/**
- * Applies jQuery UI themeing classes
- */
-function apply_jQueryUI_styles() {
-	$('input[type="text"],input[type="password"],textarea').addClass("ui-widget-content ui-corner-all");
-	$('input[disabled="disabled"]').addClass("ui-state-disabled");
 }
 
 /**
