@@ -577,4 +577,6 @@ div.share_info {
   background-image: url(../img/button-icons/calendar_edit.png) !important;
 }
 
-
+td.fc-today {
+  background-color: #FFFFCC !important;
+}

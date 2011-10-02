@@ -1,10 +1,15 @@
 Release 1.2 (2011-x)
 	* Fix DB schema to allow full UTF8 strings. Database changes needed
 	* Add localization support
-	* Remove useless success messages
+	* Remove annoying success messages
 	* Login page now shows correct logo
 	* Simplified configuration file
 	* Fixed error on calendars with special names
+	* Upgraded Aristo jQuery UI theme to latest git version
+	* Appearance on form elements is now correct after removing some
+	  useless custom code
+	* Make 'today' cell to show with a yellow background instead the
+	  previous pale blue
 
 Release 1.1.1 (2011-09-24)
 	* Fix DB schema. Wasn't properlty updated on sql/schema.sql, which
