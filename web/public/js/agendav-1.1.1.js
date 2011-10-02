@@ -565,7 +565,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					autoOpen: true,
 					buttons: buttons,
 					title: title,
-          width: width,
+          minWidth: width,
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
