@@ -54,13 +54,12 @@ img {
   width: 400px;
   margin: 5% auto 0 auto;
 }
-
-label {
-  display: block;
-  font-weight: bold;
-  color: #324269; 
-  max-width: 20em;
-}
+.uniForm legend{ font-weight: bold; font-size: 100%; margin: 0; padding: 1.5em 0; }
+.uniForm .ctrlHolder{ padding: 1em; border-bottom: 1px solid #efefef; }
+.uniForm .formHint                    { font-size: .85em; color: #777; }
+.uniForm .inlineLabels .formHint      { padding-top: .5em; }
+.uniForm .ctrlHolder.focused .formHint{ color: #333; }
+.uniForm textarea    { height: 12em; }
 
 #topbar {
   background: url(../img/bg_topbar.png) #f0f0f0 top left repeat-x;

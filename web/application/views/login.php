@@ -51,16 +51,14 @@ endif;
 
   <div class="loginform_fields">
   <?php
-  echo form_open('login/');
+  echo form_open('login/', array('class' => 'uniForm'));
   ?>
-   <table>
-    <tr>
-	 <td>
+  <fieldset class="inlineLabels">
+  <div class="ctrlHolder">
 <?php
 
   echo form_label($this->i18n->_('labels', 'username'));
-  echo '</td><td>';
-  $usuario = array(
+  $user = array(
 		  'name' => 'user',
 		  'id' => 'login_user',
 		  'value' => set_value('user'),
@@ -68,10 +66,12 @@ endif;
 		  'size' => '15',
 		  'autofocus' => 'autofocus',
 		  );
-  echo form_input($usuario);
-  echo '</td></tr><tr><td>';
+  echo form_input($user);
+  ?>
+  </div>
+  <div class="ctrlHolder">
+  <?php
   echo form_label($this->i18n->_('labels', 'password'));
-  echo '</td><td>';
   $password = array(
 		  'name' => 'passwd',
 		  'id' => 'login_passwd',
@@ -80,12 +80,16 @@ endif;
 		  'size' => '15',
 		  );
   echo form_password($password);
-  echo '</td></tr><tr><td></td><td>';
+  ?>
+	</div>
+	<div class="buttonHolder">
+  <?php
   echo form_submit('login', $this->i18n->_('labels', 'login'));
-  echo '</td></tr></table>';
   echo form_close();
 
  ?>
+  </div>
+ </fieldset>
  </div>
  </div>
 </div>

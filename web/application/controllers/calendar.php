@@ -44,7 +44,6 @@ class Calendar extends CI_Controller {
 					'jquery.qtip.min.cf537c5e9a87fffcae65aa249b80fb0d0016d572.js',
 					),
 				'css' => array(
-					'css/style-1.1.1.css',
 					array(
 						'href' => 'css/style-1.1.1.print.css',
 						'rel' => 'stylesheet',
@@ -58,9 +57,11 @@ class Calendar extends CI_Controller {
 						'type' => 'text/css',
 						'media' => 'print',
 						),
-					'css/Aristo_20110919.css',
 					'css/timePicker.css',
 					'css/jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
+					'css/uni-form_20110104.css',
+					'css/Aristo_20110919.css',
+					'css/style-1.1.1.css',
 					));
 
 		if (ENVIRONMENT == 'production') {
