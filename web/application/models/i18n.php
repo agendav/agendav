@@ -20,31 +20,31 @@
  */
 
 class I18n extends CI_Model {
-	private $default_name = 'en_US';  // TODO
-	private $current_name;
+	private $langname;
 	
 	private $lang_path;
 
-	private $default_contents;
+	private $langcontents;
 
 	function __construct() {
 		parent::__construct();
 
 		$this->lang_path = APPPATH . '../lang';
+		$this->langname = $this->config->item('language');
 
 		if (!is_dir($this->lang_path)) {
 			log_message('ERROR', 'Language path is not a directory');
 			die();
 		}
 
-		if (FALSE === ($this->default_contents =
-					$this->parse_language($this->default_name))) {
-			$this->extended_logs->message('ERROR', 'Default language '
-					. $this->default_name . ' not found');
+		if (FALSE === ($this->langcontents =
+					$this->parse_language($this->langname))) {
+			$this->extended_logs->message('ERROR', 'Language '
+					. $this->langname . ' not found');
 			die();
 		}
 
-		setlocale(LC_ALL, 'en_US.utf8');
+		setlocale(LC_ALL, $this->langname . '.utf8');
 	}
 
 	private function parse_language($lang) {
@@ -68,7 +68,7 @@ class I18n extends CI_Model {
 	}
 
 	public function _($type, $id, $params = array()) {
-		$contents = $this->default_contents;
+		$contents = $this->langcontents;
 		$raw = (isset($contents[$type][$id])) ? 
 			$contents[$type][$id] : 
 			'[' . $type . ':' . $id . ']';
@@ -81,7 +81,7 @@ class I18n extends CI_Model {
 	}
 
 	public function dump($type, $use_default = FALSE) {
-		$contents = $this->default_contents;
+		$contents = $this->langcontents;
 		return $contents[$type];
 	}
 }
