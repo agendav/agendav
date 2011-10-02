@@ -30,15 +30,18 @@ $form_color = array(
 ?>
  <table>
   <tr>
-   <td><label for="displayname">Nombre descriptivo del
-   calendario:</label></td>
+   <td><label for="displayname"><?php echo $this->i18n->_('labels',
+		   'displayname') ?></label></td>
 	<td><?php echo form_input($form_displayname);?></td>
    </tr>
    <tr>
-   <td><label for="displayname">Nombre interno (opcional):</label></td>
+   <td><label for="internal"><?php echo $this->i18n->_('labels',
+		   'internalname')?> 
+   <?php echo $this->i18n->_('labels', 'optional')?></label></td>
 	<td><?php echo form_input($form_internal);?></td>
    </tr>
-   <td><label for="calendar_color">Color del calendario:</label></td>
+   <td><label for="calendar_color"><?php echo
+   $this->i18n->_('labels', 'color')?></label></td>
 	<td><?php echo form_input($form_color);?></td>
    </tr>
 </table>

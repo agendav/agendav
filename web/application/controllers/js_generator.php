@@ -21,12 +21,18 @@
 
 class Js_generator extends CI_Controller {
 
+	// Special methods that do should not enforce authentication
+	private $not_enforced = array(
+			'i18n',
+			);
+
 	function __construct() {
 		parent::__construct();
 
 		define('SPECIAL_REQUEST', TRUE);
 
-		if (!$this->auth->is_authenticated()) {
+		if (!in_array($this->uri->segment(2), $this->not_enforced) &&
+				!$this->auth->is_authenticated()) {
 			$this->extended_logs->message('INTERNALS', 
 					'Anonymous access attempt to '
 					. uri_string());
@@ -54,6 +60,13 @@ class Js_generator extends CI_Controller {
 	 */
 	function dumb() {
 		$this->output->set_output(json_encode(''));
+	}
+
+	/**
+	 * Loads i18n strings
+	 */
+	function i18n() {
+		$this->load->view('js_code/localized_strings');
 	}
 
 }

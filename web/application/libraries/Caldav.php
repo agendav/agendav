@@ -113,7 +113,8 @@ class Caldav {
 	/**
 	 * Deletes a resource
 	 *
-	 * Returns TRUE on success, or an error message on failure
+	 * Returns TRUE on success, or an i18n array (msg, [params]) 
+	 * on failure
 	 */
 
 	function delete_resource( $user, $passwd, $href,
@@ -127,20 +128,41 @@ class Caldav {
 		$res = $this->client->DoDELETERequest($resource, $etag);
 
 		// Did this operation succeed?
+		$success = FALSE;
+		$logmsg = '';
+		$usermsg = '';
+		$params = array();
 		switch ($res) {
 			case '404':
-				return 'Elemento no encontrado';
+				$logmsg = 'Element not found';
+				$usermsg = 'error_eventnotfound';
 				break;
 			case '412':
-				return 'El evento sufrió cambios en este rato. '
-					.'Refresque antes de eliminarlo';
+				$logmsg = 'Element was modified while deleting';
+				$usermsg = 'error_eventchanged';
 				break;
 			case '204':
 				// Success
-				return TRUE;
-			default:
-				return "Código HTTP " . $res;
+				$success = TRUE;
 				break;
+			default:
+				$logmsg = "HTTP code: " . $res;
+				$usermsg = 'error_unknownhttpcode'; 
+				$params = array('%res' => $res);
+				break;
+		}
+
+		if ($success === FALSE) {
+			$this->CI->extended_logs->message('INTERNALS', 
+					'Delete failed for resource ' . $href .
+					'on calendar ' . $calendar .'. Reason: ' .
+					$logmsg);
+			return array($usermsg, $params);
+		} else {
+			$this->CI->extended_logs->message('INTERNALS', 
+					'Deleted resource ' . $href 
+					.' from calendar ' .  $calendar);
+			return TRUE;
 		}
 
 	}
@@ -302,7 +324,8 @@ class Caldav {
 	/**
 	 * Creates a new calendar inside a principal collection
 	 *
-	 * @return boolean	TRUE on successful creation, error message otherwise
+	 * @return boolean	TRUE on successful creation, i18n array (msg,
+	 * [params])
 	 */
 
 	function mkcalendar( $user, $passwd, $calendar = '',
@@ -310,23 +333,31 @@ class Caldav {
 
 		$this->prepare_client($user, $passwd, '');
 
+		// Preconditions
+		$logmsg = '';
+		$usermsg = '';
+		$params = array();
+
 		// Empty calendar?
 		if (empty($calendar)) {
-			$this->CI->extended_logs->message('ERROR', 'Call to mkcalendar()'
-					.' with no calendar!');
-			return 'Falta nombre interno del calendario';
+			$logmsg = 'no internal name specified';
+			$usermsg = 'error_internalcalnamemissing';
 		}
 		
 		if (!isset($props['displayname'])) {
-			$this->CI->extended_logs->message('ERROR', 'Call to mkcalendar()'
-					.' with no displayname!');
-			return 'Falta nombre del calendario';
+			$logmsg = 'no display name specified';
+			$usermsg = 'error_calnamemissing';
 		}
 
 		if (!isset($props['color'])) {
-			$this->CI->extended_logs->message('ERROR', 'Call to mkcalendar()'
-					.' with no color!');
-			return 'Falta el color del calendario';
+			$logmsg = 'no color specified';
+			$usermsg = 'error_calcolormissing';
+		}
+
+		if (!empty($logmsg)) {
+			$this->CI->extended_logs->message('ERROR', 
+					'Invalid call to mkcalendar(): ' . $logmsg);
+			return array($usermsg, $params);
 		}
 
 		$url = $this->final_url . $calendar;
@@ -353,61 +384,80 @@ class Caldav {
 		$res = $this->client->DoXMLRequest('MKCALENDAR', 
 				$xml_text, $url);
 
+		$success = FALSE;
+		$logmsg = '';
+		$usermsg = '';
+		$params = array();
+
 		switch ($this->client->GetHTTPResultCode()) {
 			case '201':
 				// OK
-				$this->CI->extended_logs->message('INTERNALS',
-						'Calendar ' . $calendar . ' successfully created');
-				return TRUE;
+				$success = TRUE;
+				break;
 			case '207':
 				// Error on parameters
-				$this->CI->extended_logs->message('INTERNALS',
-						'Calendar '.$calendar.' not created.'
-						.' Error 207, invalid parameter(s)');
-				return 'El servidor rechazó la creación (revise'
-						.' los parámetros)';
+				$logmsg = 'Invalid parameters (207)';
+				$usermsg = 'error_mkcalendar';
+				break;
 			case '403':
 				// Permission denied
-				$this->CI->extended_logs->message('INTERNALS',
-						'Calendar '.$calendar.' not created.'
-						.' Error 403, access forbidden');
-				return 'El servidor denegó la petición (contacte con'
-						.' soporte)';
+				$logmsg = 'Access forbidden';
+				$usermsg =  'error_denied';
+				break;
 			default:
-				$this->CI->extended_logs->message('INTERNALS',
-						'Calendar '.$calendar.' not created.'
-						.' Error '
-						. $this->client->GetHttpResultCode());
-				return 'Error ' . $this->client->GetHTTPResultCode();
+				$code = $this->client->GetHttpResultCode();
+				$logmsg = "HTTP code: " . $code;
+				$usermsg = 'error_unknownhttpcode'; 
+				$params = array('%res' => $code);
+		}
+
+		if ($success === FALSE) {
+			$this->CI->extended_logs->message('INTERNALS',
+					'Calendar '.$calendar.' not created.'
+					.' Reason: ' . $logmsg);
+			return array($usermsg, $params);
+		} else {
+			$this->CI->extended_logs->message('INTERNALS',
+					'Calendar ' . $calendar . ' successfully created');
+			return TRUE;
 		}
 	}
 
 	/**
 	 * Applies a properties change to a DAV resource
 	 *
-	 * @return boolean	TRUE on successful creation, error message otherwise
+	 * @return boolean	TRUE on successful creation, i18n array (msg,
+	 * [params]) otherwise
 	 */
 	function proppatch( $user, $passwd, $calendar = '',
 						$props = array()) {
 		$this->prepare_client($user, $passwd, '');
 
+		// Preconditions
+		$logmsg = '';
+		$usermsg = '';
+		$params = array();
+
 		// Empty calendar?
 		if (empty($calendar)) {
-			$this->CI->extended_logs->message('ERROR', 'Call to proppatch()'
-					.' with no calendar!');
-			return 'Falta nombre interno del calendario';
+			$logmsg = 'no internal name specified';
+			$usermsg = 'error_internalcalnamemissing';
 		}
 		
 		if (!isset($props['displayname'])) {
-			$this->CI->extended_logs->message('ERROR', 'Call to proppatch()'
-					.' with no displayname!');
-			return 'Falta nombre del calendario';
+			$logmsg = 'no display name specified';
+			$usermsg = 'error_calnamemissing';
 		}
 
 		if (!isset($props['color'])) {
-			$this->CI->extended_logs->message('ERROR', 'Call to proppatch()'
-					.' with no color!');
-			return 'Falta el color del calendario';
+			$logmsg = 'no color specified';
+			$usermsg = 'error_calcolormissing';
+		}
+
+		if (!empty($logmsg)) {
+			$this->CI->extended_logs->message('ERROR', 
+					'Invalid call to proppatch(): ' . $logmsg);
+			return array($usermsg, $params);
 		}
 
 		$url = $this->final_url . $calendar;
@@ -434,35 +484,59 @@ class Caldav {
 		$res = $this->client->DoXMLRequest('PROPPATCH', 
 				$xml_text, $url);
 
+		$success = FALSE;
+		$logmsg = '';
+		$usermsg = '';
+
 		switch ($this->client->GetHTTPResultCode()) {
 			case '200':
 				// OK
-				$this->CI->extended_logs->message('INTERNALS',
-						'Calendar ' . $calendar . ' successful modification');
-				return TRUE;
+				$success = TRUE;
+				break;
 			default:
-				$this->CI->extended_logs->message('INTERNALS',
-						'Calendar '.$calendar.' not modified.'
-						.' Error '
-						. $this->client->GetHttpResultCode());
-				return 'Error ' . $this->client->GetHTTPResultCode();
+				$code = $this->client->GetHttpResultCode();
+				$logmsg = "HTTP code: " . $code;
+				$usermsg = 'error_unknownhttpcode'; 
+				$params = array('%res' => $code);
+		}
+
+		if ($success === FALSE) {
+			$this->CI->extended_logs->message('INTERNALS',
+					'Calendar '.$calendar.' not modified.'
+					.' Reason: ' . $logmsg);
+			return array($usermsg, $params);
+		} else {
+			$this->CI->extended_logs->message('INTERNALS',
+					'Calendar ' . $calendar . ' successfully modified');
+			return TRUE;
 		}
 	}
 
 	/**
 	 * Sets ACL on a resource
 	 *
-	 * @return boolean	TRUE on successful creation, error message otherwise
+	 * @return boolean	TRUE on successful creation, i18n array (message,
+	 * [params]) otherwise
 	 */
 	function setacl( $user, $passwd, $calendar = '',
 						$share_with = array()) {
 		$this->prepare_client($user, $passwd, '');
 
+		// Preconditions
+		$logmsg = '';
+		$usermsg = '';
+		$params = array();
+
 		// Empty calendar?
 		if (empty($calendar)) {
+			$logmsg = 'no internal name specified';
+			$usermsg = 'error_internalcalnamemissing';
+		}
+
+		if (!empty($logmsg)) {
 			$this->CI->extended_logs->message('ERROR', 'Call to setacl()'
 					.' with no calendar!');
-			return 'Falta nombre interno del calendario';
+			return array($usermsg, $params);
 		}
 		
 		$url = $this->final_url . $calendar;
@@ -472,26 +546,39 @@ class Caldav {
 		if ($xmlbody === FALSE) {
 			$this->CI->extended_logs->message('ERROR', 'Call to setacl()'
 					.' generated invalid XML code. Giving up.');
-			return 'Error interno de generación de permisos';
+			return array('error_internal', array());
 		}
 
 		$res = $this->client->DoXMLRequest('ACL', 
 				$xmlbody, $url);
 
+		$success = FALSE;
+		$logmsg = '';
+		$usermsg = '';
+		$params = array();
+
 		switch ($this->client->GetHTTPResultCode()) {
 			case '200':
 				// OK
-				$this->CI->extended_logs->message('INTERNALS',
-						'Successful modification of ACL for calendar ' 
-						. $calendar);
-				return TRUE;
+				$success = TRUE;
+				break;
 			default:
-				$this->CI->extended_logs->message('INTERNALS',
-						'ACL for calendar '.$calendar.' not modified.'
-						.' Error '
-						. $this->client->GetHttpResultCode());
-				return 'Error ' . $this->client->GetHTTPResultCode()
-					.'. Posiblemente algún usuario de los indicados no exista';
+				$code = $this->client->GetHTTPResultCode();
+				$logmsg = "HTTP code: " . $code;
+				$usermsg = 'error_unknownhttpcode'; 
+				$params = array('%res' => $code);
+		}
+
+		if ($success === FALSE) {
+			$this->CI->extended_logs->message('INTERNALS',
+					'ACL for calendar '.$calendar.' not modified.'
+					.' Reason: ' . $logmsg);
+			return array($usermsg, $params);
+		} else {
+			$this->CI->extended_logs->message('INTERNALS',
+					'Successful modification of ACL for calendar ' 
+					. $calendar);
+			return TRUE;
 		}
 	}
 

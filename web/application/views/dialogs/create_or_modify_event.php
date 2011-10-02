@@ -93,11 +93,11 @@ $form_description = array(
 		);
 
 $form_recurrence_type = array(
-		'none' => 'No',
-		'DAILY' => 'Diariamente',
-		'WEEKLY' => 'Semanalmente',
-		'MONTHLY' => 'Mensualmente',
-		'YEARLY' => 'Anualmente',
+		'none' => $this->i18n->_('labels', 'repeatno'),
+		'DAILY' => $this->i18n->_('labels', 'repeatdaily'),
+		'WEEKLY' => $this->i18n->_('labels', 'repeatweekly'),
+		'MONTHLY' => $this->i18n->_('labels', 'repeatmonthly'),
+		'YEARLY' => $this->i18n->_('labels', 'repeatyearly'),
 		);
 
 
@@ -124,21 +124,24 @@ if (isset($recurrence_type) && $recurrence_type == 'none') {
 }
 
 $form_class = array(
-		'PUBLIC' => 'Público',
-		'PRIVATE' => 'Privado',
-		'CONFIDENTIAL' => 'Confidencial',
+		'PUBLIC' => $this->i18n->_('labels', 'public'),
+		'PRIVATE' => $this->i18n->_('labels', 'private'),
+		'CONFIDENTIAL' => $this->i18n->_('labels', 'confidential'),
 		);
 
 $form_transp = array(
-		'OPAQUE' => 'Ocupado',
-		'TRANSPARENT' => 'Libre',
+		'OPAQUE' => $this->i18n->_('labels', 'opaque'),
+		'TRANSPARENT' => $this->i18n->_('labels', 'transparent'),
 		);
 
 ?>
 <ul>
- <li><a href="#tabs-general">General</a></li>
- <li><a href="#tabs-recurrence">Repetición</a></li>
- <li><a href="#tabs-workgroup">Trabajo en grupo</a></li>
+ <li><a href="#tabs-general"><?php echo $this->i18n->_('labels',
+		 'generaloptions')?></a></li>
+ <li><a href="#tabs-recurrence"><?php echo $this->i18n->_('labels',
+		 'repeatoptions')?></a></li>
+ <li><a href="#tabs-workgroup"><?php echo $this->i18n->_('labels',
+		 'workgroupoptions')?></a></li>
 </ul>
 <div id="tabs-general">
 <?php if (isset($modification) && $modification === TRUE): ?>
@@ -152,39 +155,46 @@ $form_transp = array(
  	value="<?php echo isset($etag) ? $etag : ''; ?>" />
   <table>
    <tr>
-    <td><label for="summary">Título:</label></td>
+    <td><label for="summary"><?php echo $this->i18n->_('labels',
+			'summary')?></label></td>
 	<td><?php echo form_input($form_summary);?></td>
    </tr>
    <tr>
-    <td><label for="location">Lugar:</label></td>
+    <td><label for="location"><?php echo $this->i18n->_('labels',
+			'location')?></label></td>
 	<td><?php echo form_input($form_location);?></td>
    </tr>
    <tr>
-    <td><label for="calendar">Calendario:</label></td>
+    <td><label for="calendar"><?php echo $this->i18n->_('labels',
+			'calendar')?></label></td>
 	<?php echo form_hidden('original_calendar', $calendar)?>
 	<td><?php echo form_dropdown('calendar', $form_calendar,
 			$calendar)?></td>
    </tr>
 
    <tr>
-    <td><label for="start_date">Fecha de inicio:</label></td>
+    <td><label for="start_date"><?php echo $this->i18n->_('labels',
+			'startdate')?></label></td>
 	<td><?php echo form_input($form_startdate);?> <?php echo
 	form_input($form_starttime)?></td>
    </tr>
 
    <tr>
-    <td><label for="end_date">Fecha de finalización:</label></td>
+    <td><label for="end_date"><?php echo $this->i18n->_('labels',
+			'enddate')?></label></td>
 	<td><?php echo form_input($form_enddate);?> <?php echo
 	form_input($form_endtime)?></td>
    </tr>
 
    <tr>
-    <td><label for="allday">Día completo:</label></td>
+    <td><label for="allday"><?php echo $this->i18n->_('labels',
+			'alldayform')?></label></td>
 	<td><?php echo form_checkbox($form_allday);?></td>
    </tr>
 
    <tr>
-    <td><label for="description">Descripción:</label></td>
+    <td><label for="description"><?php echo $this->i18n->_('labels',
+			'description')?></label></td>
 	<td><?php echo form_textarea($form_description);?></td>
    </tr>
   </table>
@@ -192,27 +202,28 @@ $form_transp = array(
  <div id="tabs-recurrence">
   <table>
    <tr>
+    <td><label for="recurrence_type"><?php echo $this->i18n->_('labels',
+			'repeat')?></label></td>
    <?php if (!isset($unparseable_rrule)): ?>
-    <td><label for="recurrence_type">Repetir evento:</label></td>
 	<td><?php echo form_dropdown('recurrence_type',
 			$form_recurrence_type, (isset($recurrence_type) ?
 				$recurrence_type : 'none'),
 			'class="recurrence_type"');?></td>
    <tr>
-    <td><label class="suboption" for="recurrence_count">Repeticiones:</label></td>
+    <td><label class="suboption" for="recurrence_count"><?php echo
+	$this->i18n->_('labels', 'repeatcount')?></label></td>
 	<td><?php echo form_input($form_recurrence_count)?></td>
    </tr>
    <tr>
-    <td><label class="suboption" for="recurrence_until">Repetir hasta:</label></td>
+    <td><label class="suboption" for="recurrence_until"><?php echo
+	$this->i18n->_('labels', 'repeatuntil')?></label></td>
 	<td><?php echo form_input($form_recurrence_until)?></td>
    </tr>
    <?php else: ?>
-    <td><label for="recurrence_type">Repetir evento:</label></td>
 	<td>
 	 <input type="hidden" name="unparseable_rrule" value="true" />
-	 Definió la siguiente regla de repetición fuera de AgenDAV: 
+	 <?php echo $this->i18n->_('messages', 'info_repetition_unparseable')?>
 	 <pre><?php echo $rrule_raw?></pre>
-	 Para modificarla utilice un cliente de escritorio.
 	</td>
    <?php endif; ?>
    </tr>
@@ -221,11 +232,13 @@ $form_transp = array(
  <div id="tabs-workgroup">
   <table>
    <tr>
-    <td><label for="class">Privacidad:</label></td>
+    <td><label for="class"><?php echo $this->i18n->_('labels',
+			'privacy')?></label></td>
 	<td><?php echo form_dropdown('class', 
 			$form_class, (isset($class) ? $class : 'PUBLIC'))?></td>
    <tr>
-    <td><label for="transp">Consideración del tiempo:</label></td>
+    <td><label for="transp"><?php echo $this->i18n->_('labels',
+			'transp')?></label></td>
 	<td><?php echo form_dropdown('transp', 
 			$form_transp, (isset($transp) ? $transp : 'OPAQUE'))?></td>
    </tr>
