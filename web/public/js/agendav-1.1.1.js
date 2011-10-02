@@ -958,7 +958,7 @@ function calendar_create_form() {
 		title,
 		[
 			{
-				'text': _('labels', 'create_calendar'),
+				'text': _('labels', 'create'),
 				'class': 'addicon btn-icon-calendar-add',
 				'click': function() {
 					var thisform = $("#calendar_create_form");
@@ -1006,7 +1006,7 @@ function calendar_modify_form(calendar_obj) {
 	var buttons_and_actions = 
 		[
 			{
-				'text': _('labels', '_deletecalendar'),
+				'text': _('labels', 'deletecalendar'),
 				'class': 'addicon btn-icon-calendar-delete',
 				'click': function() { 
 					destroy_dialog(mcd);
