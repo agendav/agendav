@@ -87,7 +87,13 @@ class Login extends CI_Controller {
 				$data['custom_errors'] = $err;
 			}
 
-			$this->load->view('login_ldap/login.php', $data);
+			$logo = $this->config->item('logo');
+			if ($logo !== FALSE) {
+				$data['logo'] = $logo;
+				$data['title'] = $data_header['title'];
+			}
+
+			$this->load->view('login', $data);
 			$this->load->view('footer');
 		} else {
 			redirect("/calendar");

@@ -10,12 +10,18 @@ $(document).ready(function() {
 </script>
 <div class="logintitle">
 <?php
-$img = array(
-		'src' => 'img/US.gif',
-		'alt' => 'Universidad de Sevilla',
-		);
-echo img($img);
-
+if (isset($logo)):
+	$img = array(
+        'src' => 'img/' . $logo,
+        'alt' => $title,
+        'title' => $title,
+			);
+	?>
+ <div id="logo" class="block">
+ <?php echo img($img); ?>
+ </div>
+ <?php
+ endif;
 ?>
 <h1><?php echo $this->config->item('site_title')?></h1>
 </div>
