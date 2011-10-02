@@ -89,7 +89,7 @@ $labels['transparent'] = 'Libre';
 $labels['generaloptions'] = 'General';
 $labels['repeatoptions'] = 'Repetición';
 $labels['workgroupoptions'] = 'Trabajo en grupo';
-$labels['shareoptions'] = 'Compartición';
+$labels['shareoptions'] = 'Compartir';
 
 $labels['newcalendar'] = 'Nuevo calendario';
 $labels['modifycalendar'] = 'Modificar calendar';
