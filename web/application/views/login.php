@@ -2,7 +2,6 @@
 //<![CDATA[
 $(document).ready(function() {
 	$("input:submit").button();
-	$('input[type="text"],input[type="password"],textarea').addClass("ui-widget-content ui-corner-all");
 	$('input[name="user"]').focus();
 
 });
