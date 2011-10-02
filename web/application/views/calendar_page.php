@@ -36,8 +36,8 @@ if (isset($logo)):
 // Links
 $img_add = array(
         'src' => 'img/calendar_add.png',
-        'alt' => $this->i18n->_('labels', 'create_new_calendar'),
-        'title' => $this->i18n->_('labels', 'create_new_calendar'),
+        'alt' => $this->i18n->_('labels', 'create'),
+        'title' => $this->i18n->_('labels', 'create'),
 		'id' => 'calendar_add',
         );
 
