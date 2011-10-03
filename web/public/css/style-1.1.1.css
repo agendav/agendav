@@ -430,6 +430,7 @@ li.selected_calendar {
 
 /* colorPicker starts */
 div.color_picker {
+  float: left;
   height: 16px;
   width: 32px;
   padding: 0 !important;
