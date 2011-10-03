@@ -1006,7 +1006,7 @@ function calendar_modify_form(calendar_obj) {
 						_('labels', 'delete'),
 						[ 
 						{
-							'text': _('labels', '_yes'),
+							'text': _('labels', 'yes'),
 							'class': 'addicon btn-icon-calendar-delete',
 							'click': function() {
 								var thisform = $("#delete_calendar_form");
