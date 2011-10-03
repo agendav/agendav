@@ -77,7 +77,6 @@ class Login extends CI_Controller {
                         'jquery-ui-1.8.16.min.js',
                         ),
                     'css' => array(
-                        'css/uni-form_20110104.css',
                         'css/Aristo_20110919.css',
                         'css/style-1.1.1.css',
                         ));

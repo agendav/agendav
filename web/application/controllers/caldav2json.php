@@ -671,6 +671,7 @@ class Caldav2json extends CI_Controller {
 
 		// Display name
 		if (empty($displayname)) {
+			log_message('ERROR', var_export($displayname));
 			$this->_throw_exception($this->i18n->_('messages',
 						'error_calname_missing'));
 		}

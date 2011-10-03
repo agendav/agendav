@@ -16,6 +16,13 @@ if (isset($css)) {
 	}
 }
 ?>
+    <!--[if lte ie 7]>
+      <style type="text/css" media="screen">
+        /* Move these to your IE6/7 specific stylesheet if possible */
+        .uniForm, .uniForm .ctrlHolder, .uniForm .buttonHolder, .uniForm .ctrlHolder ul{ zoom:1; }
+      </style>
+    <![endif]-->
+
 
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/i18n/' . AGENDAV_VERSION)?>"></script>

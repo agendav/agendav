@@ -73,3 +73,17 @@ if ( ! function_exists('script_tag'))
         return $script;
     }
 }
+
+if ( ! function_exists('formelement'))
+{
+    function formelement($label, $input) {
+		?>
+			<div class="ctrlHolder">
+			<?php 
+			echo form_label($label);
+			echo $input;
+			?>
+			</div>
+		<?php
+	}
+}

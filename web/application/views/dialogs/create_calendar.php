@@ -29,28 +29,20 @@ $form_color = array(
 		'size' => '7',
 		);
 ?>
- <fieldset class="inlineLabels">
-  <div class="ctrlHolder">
-  <label for="displayname"><?php echo $this->i18n->_('labels',
-		   'displayname') ?></label>
-	<?php echo form_input($form_displayname);?>
-  </div>
-  <div class="ctrlHolder">
-   <label for="internal"><?php echo $this->i18n->_('labels',
-		   'internalname')?> 
-   <?php echo $this->i18n->_('labels', 'optional')?></label>
-	<?php echo form_input($form_internal);?>
-  </div>
-
-   
-  <div class="ctrlHolder">
-   <label for="calendar_color"><?php echo
-   $this->i18n->_('labels', 'color')?></label>
-	<?php echo form_input($form_color);?>
-  </div>
-   
 <?php
+echo formelement(
+	  $this->i18n->_('labels', 'displayname'),
+	  form_input($form_displayname));
+
+echo formelement(
+	  $this->i18n->_('labels', 'internalname') . ' ' 
+	  . $this->i18n->_('labels', 'optional'),
+	  form_input($form_internal));
+
+echo formelement(
+	  $this->i18n->_('labels', 'color'),
+	  form_input($form_color));
+
 echo form_close();
 ?>
-</fieldset>
 </div>

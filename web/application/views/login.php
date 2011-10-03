@@ -54,10 +54,8 @@ endif;
   echo form_open('login/', array('class' => 'uniForm'));
   ?>
   <fieldset class="inlineLabels">
-  <div class="ctrlHolder">
 <?php
 
-  echo form_label($this->i18n->_('labels', 'username'));
   $user = array(
 		  'name' => 'user',
 		  'id' => 'login_user',
@@ -66,12 +64,11 @@ endif;
 		  'size' => '15',
 		  'autofocus' => 'autofocus',
 		  );
-  echo form_input($user);
+  echo formelement(
+		  $this->i18n->_('labels', 'username'),
+		  form_input($user));
   ?>
-  </div>
-  <div class="ctrlHolder">
   <?php
-  echo form_label($this->i18n->_('labels', 'password'));
   $password = array(
 		  'name' => 'passwd',
 		  'id' => 'login_passwd',
@@ -79,9 +76,10 @@ endif;
 		  'maxlength' => '40',
 		  'size' => '15',
 		  );
-  echo form_password($password);
+  echo formelement(
+		  $this->i18n->_('labels', 'password'),
+		  form_password($password));
   ?>
-	</div>
 	<div class="buttonHolder">
   <?php
   echo form_submit('login', $this->i18n->_('labels', 'login'));
