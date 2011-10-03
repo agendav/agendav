@@ -26,10 +26,12 @@ class Dates {
 			'24' => array(
 				'strftime' => '%H:%M',
 				'date' => 'H:i',
+				'fullcalendar' => 'HH:mm',
 				),
 			'12' => array(
 				'strftime' => '%I:%M%P',
 				'date' => 'h:ia',
+				'fullcalendar' => 'hh(:mm)tt',
 				));
 
 	// Possible date formats (not needed for strftime)

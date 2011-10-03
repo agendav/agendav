@@ -69,4 +69,18 @@ class Js_generator extends CI_Controller {
 		$this->load->view('js_code/localized_strings');
 	}
 
+	/**
+	 * Loads app preferences
+	 */
+	function prefs() {
+		$this->output->set_header(
+				'Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		$this->output->set_header(
+				'Cache-Control: no-store, no-cache, must-revalidate');
+		$this->output->set_header(
+				'Cache-Control: post-check=0, pre-check=0');
+		$this->output->set_header('Pragma: no-cache'); 
+		$this->load->view('js_code/preferences');
+	}
+
 }

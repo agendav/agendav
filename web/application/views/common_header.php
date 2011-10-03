@@ -26,6 +26,8 @@ if (isset($css)) {
 
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/i18n/' . AGENDAV_VERSION)?>"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo
+site_url('js_generator/prefs')?>"></script>
 
 <?php
 if (isset($js)) {
