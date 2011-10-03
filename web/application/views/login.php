@@ -53,7 +53,6 @@ endif;
   <?php
   echo form_open('login/', array('class' => 'uniForm'));
   ?>
-  <fieldset class="inlineLabels">
 <?php
 
   $user = array(
@@ -87,7 +86,6 @@ endif;
 
  ?>
   </div>
- </fieldset>
  </div>
  </div>
 </div>
