@@ -40,7 +40,7 @@ if ($show_shared) {
 	$form_share_with = array(
 			'name' => 'share_with',
 			'value' => $share_with,
-			'class' => 'share_with',
+			'class' => 'share_with large',
 			'maxlength' => '255',
 			'size' => '25',
 			);
@@ -49,7 +49,7 @@ if ($show_shared) {
 $form_displayname = array(
 		'name' => 'displayname',
 		'value' => $displayname,
-		'class' => 'displayname',
+		'class' => 'displayname medium',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -57,7 +57,7 @@ $form_displayname = array(
 $form_color = array(
 		'name' => 'calendar_color',
 		'value' => $color,
-		'class' => 'calendar_color pick_color',
+		'class' => 'calendar_color pick_color ultrasmall',
 		'maxlength' => '7',
 		'size' => '7',
 		);

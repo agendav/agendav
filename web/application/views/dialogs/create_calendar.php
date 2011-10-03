@@ -24,7 +24,7 @@ $form_displayname = array(
 $form_color = array(
 		'name' => 'calendar_color',
 		'value' => $default_calendar_color,
-		'class' => 'calendar_color pick_color auto',
+		'class' => 'calendar_color pick_color ultrasmall',
 		'maxlength' => '7',
 		'size' => '7',
 		);

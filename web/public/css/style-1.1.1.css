@@ -61,7 +61,7 @@ img {
 .uniForm .ultrasmall { width: 20% !important; }
 .uniForm .small { width: 30% !important; }
 .uniForm .medium{ width: 45% !important; }
-.uniForm .large {  } /* Large is default and should match the value you set for .textInput, textarea or select */
+.uniForm .large { width: 60% !important; } 
 .uniForm .auto  { width: auto !important; height: auto !important; }
 .uniForm .small,
 .uniForm .ultrasmall,
@@ -530,7 +530,7 @@ ul.tagit input[type="text"] {
 /* tag-it ends */
 
 #tabs-share ul.tagit {
-  width: 300px;
+  width: 80%;
 }
 
 div.public_url {

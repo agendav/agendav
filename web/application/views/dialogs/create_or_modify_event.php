@@ -31,7 +31,7 @@ echo form_open('caldav2json/com_event', $data_form);
 $form_summary = array(
 		'name' => 'summary',
 		'value' => (isset($summary) && $summary !== FALSE) ? $summary : '',
-		'class' => 'summary required',
+		'class' => 'summary large required',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -39,7 +39,7 @@ $form_summary = array(
 $form_location = array(
 		'name' => 'location',
 		'value' => (isset($location) && $location !== FALSE) ? $location : '',
-		'class' => 'location',
+		'class' => 'location large',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -87,7 +87,7 @@ $form_allday = array(
 
 $form_description = array(
 		'name' => 'description',
-		'class' => 'description',
+		'class' => 'description large',
 		'rows' => '4',
 		'cols' => '25',
 		'value' => (isset($description) && $description !== FALSE) ? $description : '',
@@ -106,7 +106,7 @@ $form_recurrence_count = array(
 		'name' => 'recurrence_count',
 		'value' => (isset($recurrence_count) && $recurrence_count !== FALSE)
 			? $recurrence_count : '',
-		'class' => 'recurrence_count',
+		'class' => 'recurrence_count ultrasmall',
 		'maxlength' => '20',
 		'size' => '3',
 		);
@@ -114,7 +114,7 @@ $form_recurrence_until = array(
 		'name' => 'recurrence_until',
 		'value' => (isset($recurrence_until) && $recurrence_until !== FALSE)
 			? $recurrence_until : '',
-		'class' => 'recurrence_until',
+		'class' => 'recurrence_until ultrasmall',
 		'maxlength' => '10',
 		'size' => '15',
 		);
@@ -169,7 +169,8 @@ echo formelement(
 echo form_hidden('original_calendar', $calendar);
 echo formelement(
 		$this->i18n->_('labels', 'calendar'),
-		form_dropdown('calendar', $form_calendar, $calendar));
+		form_dropdown('calendar', $form_calendar, $calendar,
+			'class="medium"'));
 
 
 echo formelement(
