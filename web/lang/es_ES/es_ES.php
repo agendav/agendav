@@ -27,6 +27,8 @@ $messages = array();
 
 // Labels
 
+$labels['format_date'] = '%a %e de %B de %Y'; // Just date with no time, strftime format
+
 $labels['username'] = 'Nombre de usuario';
 $labels['password'] = 'Contraseña';
 $labels['months_long'] = array('enero', 'febrero', 'marzo', 'abril',
@@ -110,6 +112,8 @@ $labels['cancel'] = 'Cancelar';
 $labels['next'] = 'siguiente';
 $labels['previous'] = 'anterior';
 $labels['yes'] = 'Sí';
+
+$labels['untitled'] = 'Sin título';
 
 $labels['sharewith'] = 'Compartir con';
 $labels['publicurl'] = 'URL para clientes de escritorio';

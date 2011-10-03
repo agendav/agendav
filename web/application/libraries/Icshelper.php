@@ -22,10 +22,26 @@
 class Icshelper {
 	var $final_url;
 	var $config; // for iCalCreator
+	private $format_date; // Date format given by lang file
+	private $format_time; // Time format given by configuration
 
 	function __construct() {
 
 		$this->CI =& get_instance();
+
+		// Date and time formats
+		$this->format_date = $this->CI->i18n->_('labels', 'format_date');
+
+		$cfg_time = $this->CI->config->item('format_time');
+		if ($cfg_time === FALSE 
+				|| ($cfg_time != '12' && $cfg_time != '24')) {
+			log_message('ERROR', 'Invalid format_time configuration value');
+			$this->format_time = '%H:%M';
+		} else {
+			$this->format_time =
+				Dates::$timeformats[$cfg_time]['strftime'];
+		}
+
 
 		$this->config = array(
 				'unique_id' =>
@@ -491,41 +507,35 @@ class Icshelper {
 
 
 		// Readable dates for start and end
-
-		// TODO make this all configurable
-		$format = '%a %e de %B, %H:%M';
-		$alldayformat = '%a %e de %B de %Y';
-		$samedayformat = '%H:%M';
+		$this_event['formatted_start'] = strftime($this->format_date,
+				$this_event['start']);
 
 		if (isset($this_event['allDay']) && $this_event['allDay'] == TRUE) {
-			$this_event['formatted_start'] = strftime($alldayformat,
-					$this_event['start']);
-
 			// Next day?
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				// TODO i18n
-				$this_event['formatted_end'] = '(Día completo)';
+				$this_event['formatted_end'] =
+					'('.$this->CI->i18n->_('labels', 'allday').')';
 			} else {
-				$this_event['formatted_end'] = strftime($alldayformat,
+				$this_event['formatted_end'] = strftime($this->format_date,
 						$this_event['end']);
 			}
 		} else {
 			// Are they in the same day?
-			$this_event['formatted_start'] = strftime($format,
-					$this_event['start']);
+			$this_event['formatted_start'] .= ' ' 
+				. strftime($this->format_time, $this_event['start']);
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				$this_event['formatted_end'] = strftime($samedayformat,
+				$this_event['formatted_end'] = strftime($this->format_time,
 						$this_event['end']);
 			} else {
-				$this_event['formatted_end'] = strftime($format,
+				$this_event['formatted_end'] = strftime($this->format_date .
+						' ' . $this->format_time,
 						$this_event['end']);
 			}
 		}
 
 		// Empty title?
 		if (!isset($this_event['title'])) {
-			// TODO localization
-			$this_event['title'] = 'Sin título';
+			$this_event['title'] = $this->CI->i18n->_('labels', 'untitled');
 		}
 
 		return $this_event;

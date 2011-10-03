@@ -20,6 +20,25 @@
  */
 
 class Dates {
+
+	// Possible time formats
+	static $timeformats = array(
+			'24' => array(
+				'strftime' => '%H:%M',
+				'date' => 'H:i',
+				),
+			'12' => array(
+				'strftime' => '%I:%M%P',
+				'date' => 'h:ia',
+				));
+
+	// Possible date formats (not needed for strftime)
+	static $dateformats = array(
+			'ymd' => 'Y-m-d',
+			'dmy' => 'd/m/Y',
+			'mdy' => 'm/d/Y',
+			);
+
 	/**
 	 * Returns a DatTime object with date approximated by factor seconds.
 	 * Defaults to 30 minutes (60*30 = 1800)

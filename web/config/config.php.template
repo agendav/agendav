@@ -33,6 +33,16 @@ $config['language']	= 'en_US';
 
 /*
 |--------------------------------------------------------------------------
+| Default time format
+|--------------------------------------------------------------------------
+|
+| This determines which time should be used by default. You can choose
+| between 12 and 24 hours time format
+*/
+$config['format_time'] = '24';
+
+/*
+|--------------------------------------------------------------------------
 | Categories of log messages which will get logged
 |--------------------------------------------------------------------------
 |
