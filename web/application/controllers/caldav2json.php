@@ -669,8 +669,14 @@ class Caldav2json extends CI_Controller {
 		$displayname = $this->input->post('displayname', TRUE);
 		$calendar_color = $this->input->post('calendar_color', TRUE);
 
+		// Display name
+		if (empty($displayname)) {
+			$this->_throw_exception($this->i18n->_('messages',
+						'error_calname_missing'));
+		}
+
 		// Default color
-		if ($calendar_color === FALSE) {
+		if (empty($calendar_color)) {
 			$default_calendar_color =
 				$this->config->item('default_calendar_color');
 			$calendar_color = '#' . $default_calendar_color;
@@ -702,8 +708,7 @@ class Caldav2json extends CI_Controller {
 
 		// Calendar properties
 		$props = array(
-				'displayname' => ($displayname === FALSE ? $calendar :
-					$displayname),
+				'displayname' => $displayname,
 				'color' => $calendar_color,
 				);
 
