@@ -42,8 +42,7 @@ class Dialog_generator extends CI_Controller {
 			$this->load->helper('form');
 			
 			// Load formats
-			$this->format_date = $this->i18n->_('labels',
-					'xxx');
+			$this->format_date = $this->dates->date_format_string('date');
 			$this->format_time = $this->dates->time_format_string('date');
 		}
 	}
@@ -135,9 +134,9 @@ class Dialog_generator extends CI_Controller {
 		}
 
 		$data = array(
-				'start_date' => $dstart->format('d/m/Y'),
+				'start_date' => $dstart->format($this->format_date),
 				'start_time' => $dstart->format($this->format_time),
-				'end_date' => $dend->format('d/m/Y'),
+				'end_date' => $dend->format($this->format_date),
 				'end_time' => $dend->format($this->format_time),
 				'allday' => $allday,
 				'calendars' => $calendars,
@@ -280,7 +279,7 @@ class Dialog_generator extends CI_Controller {
 						// TODO timezone and configurable format
 						$rrule_arr['UNTIL'] =
 							$this->dates->idt2datetime($rrule_arr['UNTIL'],
-									date_default_timezone_get())->format('d/m/Y');
+									date_default_timezone_get())->format($this->format_date);
 					}
 					$data['recurrence'] = $rrule_arr;
 				}
@@ -303,8 +302,8 @@ class Dialog_generator extends CI_Controller {
 			}
 
 			// TODO make this format configurable
-			$data['start_date'] = $start_obj->format('d/m/Y');
-			$data['end_date'] = $end_obj->format('d/m/Y');
+			$data['start_date'] = $start_obj->format($this->format_date);
+			$data['end_date'] = $end_obj->format($this->format_date);
 			$data['start_time'] = $start_obj->format($this->format_time);
 			$data['end_time'] = $end_obj->format($this->format_time);
 

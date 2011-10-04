@@ -704,7 +704,6 @@ $.datepicker.regional['custom'] = {
 	dayNamesShort: _('labels', 'daynames_short'),
 	dayNamesMin: _('labels', 'daynames_short'),
 	weekHeader: 'Sm',
-	dateFormat: 'dd/mm/yy',
 	firstDay: 1, // XXX TODO
 	isRTL: false,
 	showMonthAfterYear: false,
@@ -712,6 +711,7 @@ $.datepicker.regional['custom'] = {
 
 $.datepicker.setDefaults($.datepicker.regional['custom']);
 $.datepicker.setDefaults({constrainInput: true});
+$.datepicker.setDefaults({dateFormat: prefs_dateformat});
 }
 
 /**

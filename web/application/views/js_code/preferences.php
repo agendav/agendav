@@ -1,7 +1,9 @@
 var prefs_timeformat_option = '<?php 
-echo $this->config->item('format_time')?>';
+echo addslashes($this->config->item('default_time_format'))?>';
 var prefs_timeformat = '<?php 
-echo Dates::$timeformats[$this->config->item('format_time')]['fullcalendar']?>';
+echo addslashes($this->dates->time_format_string('fullcalendar'))?>';
+var prefs_dateformat = '<?php 
+echo addslashes($this->dates->date_format_string('datepicker'))?>';
 <?php
 // Locale dependent format
 $prefs = array(

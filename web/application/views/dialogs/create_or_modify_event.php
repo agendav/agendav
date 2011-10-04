@@ -49,7 +49,7 @@ $form_calendar = $calendars;
 $form_startdate = array(
 		'name' => 'start_date',
 		'value' => $start_date,
-		'class' => 'start_date required ultrasmall',
+		'class' => 'start_date required small',
 		'maxlength' => '10',
 		'size' => '15',
 		);
@@ -57,7 +57,7 @@ $form_startdate = array(
 $form_enddate = array(
 		'name' => 'end_date',
 		'value' => $end_date,
-		'class' => 'end_date ultrasmall',
+		'class' => 'end_date small',
 		'maxlength' => '10',
 		'size' => '15',
 		);
@@ -114,7 +114,7 @@ $form_recurrence_until = array(
 		'name' => 'recurrence_until',
 		'value' => (isset($recurrence_until) && $recurrence_until !== FALSE)
 			? $recurrence_until : '',
-		'class' => 'recurrence_until ultrasmall',
+		'class' => 'recurrence_until small',
 		'maxlength' => '10',
 		'size' => '15',
 		);

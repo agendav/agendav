@@ -21,8 +21,11 @@
 
 class Recurrency extends CI_Model {
 
+	private $date_format;
+
 	function __construct() {
 		parent::__construct();
+		$this->date_format = $this->dates->date_format_string('date');
 	}
 
 	/**
@@ -77,7 +80,7 @@ class Recurrency extends CI_Model {
 					$date->setTimeZone(new DateTimeZone('Europe/Madrid'));
 					$explanation .= ', ' . $this->i18n->_('labels',
 							'expluntil',
-							array('%d' => $date->format('d/m/Y')));
+							array('%d' => $date->format($this->date_format)));
 					break;
 				case 'INTERVAL':
 					if ($v != "1") {

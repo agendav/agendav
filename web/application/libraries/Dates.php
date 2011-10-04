@@ -36,9 +36,18 @@ class Dates {
 
 	// Possible date formats (not needed for strftime)
 	static $dateformats = array(
-			'ymd' => 'Y-m-d',
-			'dmy' => 'd/m/Y',
-			'mdy' => 'm/d/Y',
+			'ymd' => array(
+				'date' => 'Y-m-d',
+				'datepicker' => 'yy-mm-dd',
+				),
+			'dmy' => array(
+				'date' => 'd/m/Y',
+				'datepicker' => 'dd/mm/yy',
+				),
+			'mdy' => array(
+				'date' => 'm/d/Y',
+				'datepicker' => 'mm/dd/yy',
+				),
 			);
 
 	private $CI;
@@ -90,8 +99,7 @@ class Dates {
 			$tz = date_default_timezone_get();
 		}
 
-		// TODO date format
-		$format = 'd/m/Y ' . $this->time_format_string('date');
+		$format = $this->date_format_string('date') . ' '. $this->time_format_string('date');
 		$obj = DateTime::createFromFormat($format, $str, new
 				DateTimeZone($tz));
 		$err = DateTime::getLastErrors();
@@ -282,16 +290,14 @@ class Dates {
 	}
 
 	/**
-	 * Returns a format string for the current user
+	 * Returns a time format string for the current user
 	 *
 	 * @param	string	Type of format (fullcalendar, date, strftime)
 	 * @return	string	Format string. Default formats on invalid params
 	 */
 	function time_format_string($type) {
-		$return_format = '';
-
 		// TODO prefs
-		$cfg_time = $this->CI->config->item('format_time');
+		$cfg_time = $this->CI->config->item('default_time_format');
 		if ($cfg_time === FALSE 
 				|| ($cfg_time != '12' && $cfg_time != '24')) {
 			$this->CI->extended_logs->message('ERROR', 
@@ -306,10 +312,41 @@ class Dates {
 				break;
 			default:
 				$this->CI->extended_logs->message('ERROR', 
-						'Invalid format_time configuration value');
+						'Invalid type for time_format_string() passed'
+						.' ('.$type.')');
 				break;
 		}
 	}
 
+	/**
+	 * Returns a date format string for the current user
+	 *
+	 * @param	string	Type of format (date, datepicker)
+	 * @return	string	Format string. Default formats on invalid params
+	 */
+	function date_format_string($type) {
+		// TODO prefs
+		$cfg_date = $this->CI->config->item('default_date_format');
+		if ($cfg_date === FALSE 
+				|| ($cfg_date != 'ymd' && $cfg_date != 'dmy'
+					&& $cfg_date != 'mdy')) {
+			$this->CI->extended_logs->message('ERROR', 
+					'Invalid default_date_format configuration value');
+			$cfg_date = 'ymd';
+		} 
+
+		switch($type) {
+			case 'date':
+			case 'datepicker':
+				return Dates::$dateformats[$cfg_date][$type];
+				break;
+			default:
+				$this->CI->extended_logs->message('ERROR', 
+						'Invalid type for date_format_string() passed'
+						.' ('.$type.')');
+				break;
+		}
+
+	}
 
 }

@@ -36,10 +36,25 @@ $config['language']	= 'en_US';
 | Default time format
 |--------------------------------------------------------------------------
 |
-| This determines which time should be used by default. You can choose
+| This determines which time format should be used by default. You can choose
 | between 12 and 24 hours time format
 */
-$config['format_time'] = '24';
+$config['default_time_format'] = '24';
+
+/*
+|--------------------------------------------------------------------------
+| Default date format
+|--------------------------------------------------------------------------
+|
+| This determines which date format should be used by default in forms.
+| Dates will be formatted anywhere else as stated in locale file.
+| You can choose any of the following values:
+|
+| * ymd : YYYY-month-day will be used
+| * dmy: day-month-YYYY will be used
+| * mdy: month-day-YYYY will be used
+*/
+$config['default_date_format'] = 'ymd';
 
 /*
 |--------------------------------------------------------------------------

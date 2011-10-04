@@ -36,7 +36,7 @@ class Caldav2json extends CI_Controller {
 			die();
 		}
 
-		$this->format_date = ''; // TODO
+		$this->format_date = $this->dates->date_format_string('date');
 		$this->format_time = $this->dates->time_format_string('date');
 
 		$this->load->library('caldav');
@@ -259,7 +259,8 @@ class Caldav2json extends CI_Controller {
 			if ($p['recurrence_type'] != 'none') {
 				if (isset($p['recurrence_until']) &&
 						!empty($p['recurrence_until'])) {
-					$p['recurrence_until'] .= ' 00:00'; // Tricky
+					$p['recurrence_until'] .= date($this->format_time,
+							mktime(0, 0)); // Tricky
 				}
 
 				$rrule = $this->recurrency->build($p, $rrule_err);
@@ -931,7 +932,6 @@ class Caldav2json extends CI_Controller {
 	 */
 
 	// Validate date format
-	// TODO: configurable date format
 	function _valid_date($d) {
 		$obj = $this->dates->frontend2datetime($d .' ' .
 				date($this->format_time));
@@ -945,7 +945,6 @@ class Caldav2json extends CI_Controller {
 	}
 
 	// Validate date format (or empty string)
-	// TODO: configurable date format
 	function _empty_or_valid_date($d) {
 		return empty($d) || $this->_valid_date($d);
 	}
@@ -956,9 +955,8 @@ class Caldav2json extends CI_Controller {
 	}
 
 	// Validate time format
-	// TODO: configurable time format
 	function _valid_time($t) {
-		$obj = $this->dates->frontend2datetime('1/1/2011 ' . $t);
+		$obj = $this->dates->frontend2datetime(date($this->format_date) .' '. $t);
 		if (FALSE === $obj) {
 			$this->form_validation->set_message('_valid_time',
 					$this->i18n->_('messages', 'error_invalidtime'));
