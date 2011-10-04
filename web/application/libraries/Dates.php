@@ -30,7 +30,7 @@ class Dates {
 				),
 			'12' => array(
 				'strftime' => '%l:%M%P',
-				'date' => 'h:ia',
+				'date' => 'h:i A', // timepicker format
 				'fullcalendar' => 'h(:mm)tt',
 				));
 

@@ -1,3 +1,5 @@
+var prefs_timeformat_option = '<?php 
+echo $this->config->item('format_time')?>';
 var prefs_timeformat = '<?php 
 echo Dates::$timeformats[$this->config->item('format_time')]['fullcalendar']?>';
 <?php
