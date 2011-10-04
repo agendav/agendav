@@ -111,14 +111,14 @@ class MyCalDAV extends CalDAVClient {
 
 				$calendar = new CalendarExtendedInfo($href);
 
-				// Transform href into calendar
-				$calendar_id = $href;
-				$calendar_id = preg_replace(
-						array(
-							'/^\/caldav\.php\//',
-							'/\/$/',
-							'/\//'),
-						array('', '', ':'), $calendar_id);
+				/*
+				 *  Transform href into calendar
+				 * /xxxxx/yyyyy/caldav.php/principal/resource/
+				 *                          t-3       t-2
+				 */
+				$pieces = preg_split('/\//', $href);
+				$total = count($pieces);
+				$calendar_id = $pieces[$total-3] . ':' . $pieces[$total-2];
 				$calendar->calendar = $calendar_id;
 
 				$ok_props = $this->GetOKProps($hnode);

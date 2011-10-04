@@ -5,6 +5,7 @@ Release 1.2 (2011-x)
 	* Login page now shows correct logo
 	* Simplified configuration file
 	* Fixed error on calendars with special names
+	* Fixed error on DAViCal installations not on host root
 	* Upgraded Aristo jQuery UI theme to latest git version
 	* Better form appearance and alignment
 	* 'Today' cell shows with a yellow background instead the
