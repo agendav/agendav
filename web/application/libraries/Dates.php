@@ -29,9 +29,9 @@ class Dates {
 				'fullcalendar' => 'HH:mm',
 				),
 			'12' => array(
-				'strftime' => '%I:%M%P',
+				'strftime' => '%l:%M%P',
 				'date' => 'h:ia',
-				'fullcalendar' => 'hh(:mm)tt',
+				'fullcalendar' => 'h(:mm)tt',
 				));
 
 	// Possible date formats (not needed for strftime)
