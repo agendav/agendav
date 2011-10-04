@@ -9,6 +9,7 @@ Release 1.2 (2011-x)
 	* Better form appearance and alignment
 	* 'Today' cell shows with a yellow background instead the
 	  previous pale blue
+	* Time/date formats can now be customizable
 
 Release 1.1.1 (2011-09-24)
 	* Fix DB schema. Wasn't properlty updated on sql/schema.sql, which
