@@ -32,17 +32,7 @@ class Icshelper {
 		// Date and time formats
 		$this->format_date = $this->CI->i18n->_('labels',
 				'format_date_strftime');
-
-		$cfg_time = $this->CI->config->item('format_time');
-		if ($cfg_time === FALSE 
-				|| ($cfg_time != '12' && $cfg_time != '24')) {
-			log_message('ERROR', 'Invalid format_time configuration value');
-			$this->format_time = '%H:%M';
-		} else {
-			$this->format_time =
-				Dates::$timeformats[$cfg_time]['strftime'];
-		}
-
+		$this->format_time = $this->CI->dates->time_format_string('strftime');
 
 		$this->config = array(
 				'unique_id' =>

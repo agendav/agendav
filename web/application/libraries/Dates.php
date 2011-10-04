@@ -41,6 +41,12 @@ class Dates {
 			'mdy' => 'm/d/Y',
 			);
 
+	private $CI;
+
+	function __construct() {
+		$this->CI =& get_instance();
+	}
+
 	/**
 	 * Returns a DatTime object with date approximated by factor seconds.
 	 * Defaults to 30 minutes (60*30 = 1800)
@@ -84,7 +90,9 @@ class Dates {
 			$tz = date_default_timezone_get();
 		}
 
-		$obj = DateTime::createFromFormat('d/m/Y H:i', $str, new
+		// TODO date format
+		$format = 'd/m/Y ' . $this->time_format_string('date');
+		$obj = DateTime::createFromFormat($format, $str, new
 				DateTimeZone($tz));
 		$err = DateTime::getLastErrors();
 		if (FALSE === $obj || $err['warning_count']>0) {
@@ -272,5 +280,36 @@ class Dates {
 
 		return $dt;
 	}
+
+	/**
+	 * Returns a format string for the current user
+	 *
+	 * @param	string	Type of format (fullcalendar, date, strftime)
+	 * @return	string	Format string. Default formats on invalid params
+	 */
+	function time_format_string($type) {
+		$return_format = '';
+
+		// TODO prefs
+		$cfg_time = $this->CI->config->item('format_time');
+		if ($cfg_time === FALSE 
+				|| ($cfg_time != '12' && $cfg_time != '24')) {
+			$this->CI->extended_logs->message('ERROR', 
+					'Invalid format_time configuration value');
+			$cfg_time = '24';
+		} 
+		switch($type) {
+			case 'fullcalendar':
+			case 'date':
+			case 'strftime':
+				return Dates::$timeformats[$cfg_time][$type];
+				break;
+			default:
+				$this->CI->extended_logs->message('ERROR', 
+						'Invalid format_time configuration value');
+				break;
+		}
+	}
+
 
 }

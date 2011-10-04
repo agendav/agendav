@@ -782,7 +782,7 @@ function event_field_form(type, data) {
 		function() {
 			// TODO make this configurable
 			var common_timepicker_opts = {
-				show24Hours: true,
+				show24Hours: (prefs_timeformat_option == '24' ? true : false),
 				separator: ':',
 				step: 30
 			};

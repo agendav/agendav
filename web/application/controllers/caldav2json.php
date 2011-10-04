@@ -21,6 +21,9 @@
 
 class Caldav2json extends CI_Controller {
 
+	private $format_time;
+	private $format_date;
+
 	function __construct() {
 		parent::__construct();
 
@@ -32,6 +35,9 @@ class Caldav2json extends CI_Controller {
 					. uri_string());
 			die();
 		}
+
+		$this->format_date = ''; // TODO
+		$this->format_time = $this->dates->time_format_string('date');
 
 		$this->load->library('caldav');
 
@@ -927,7 +933,8 @@ class Caldav2json extends CI_Controller {
 	// Validate date format
 	// TODO: configurable date format
 	function _valid_date($d) {
-		$obj = $this->dates->frontend2datetime($d . ' 12:34');
+		$obj = $this->dates->frontend2datetime($d .' ' .
+				date($this->format_time));
 		if (FALSE === $obj) {
 			$this->form_validation->set_message('_valid_date',
 					$this->i18n->_('messages', 'error_invaliddate'));
