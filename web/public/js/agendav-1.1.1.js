@@ -41,16 +41,19 @@ $(document).ready(function() {
 		selectable: true,
 		editable: true,
 		firstDay: 1,
-		timeFormat: 'HH:mm',
+		timeFormat: {
+			agenda: prefs_timeformat + '{ - ' + prefs_timeformat + '}',
+			'': prefs_timeformat
+		},
 		columnFormat: {
-			month: 'ddd',    // lun
-			week: 'ddd d', // lun 9
-			day: 'dddd d MMMM'  // lunes 9 abril
+			month: prefs_format_column_month,
+			week: prefs_format_column_week,
+			day: prefs_format_column_day
 		},
 		titleFormat: {
-			month: 'MMMM yyyy',                             // September 2009
-			week: "d [ MMM][ yyyy]{ '&#8212;'d MMM yyyy}", // Sep 7 - 13 2009
-			day: 'dddd, dd MMM, yyyy'                  // Tuesday, Sep 8, 2009
+			month: prefs_format_title_month,
+			week: prefs_format_title_week,
+			day: prefs_format_title_day
 		},
 		weekMode: 'variable',
 		aspectRatio: 1.2,
@@ -75,7 +78,7 @@ $(document).ready(function() {
 		},
 		theme: true, // use jQuery UI themeing
 		allDayText: _('labels', 'allday'),
-		axisFormat: 'HH:mm',
+		axisFormat: prefs_timeformat,
 		slotMinutes: 30,
 		firstHour: 8,
 

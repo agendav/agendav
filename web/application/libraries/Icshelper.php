@@ -30,7 +30,8 @@ class Icshelper {
 		$this->CI =& get_instance();
 
 		// Date and time formats
-		$this->format_date = $this->CI->i18n->_('labels', 'format_date');
+		$this->format_date = $this->CI->i18n->_('labels',
+				'format_date_strftime');
 
 		$cfg_time = $this->CI->config->item('format_time');
 		if ($cfg_time === FALSE 

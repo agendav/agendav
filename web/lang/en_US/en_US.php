@@ -27,7 +27,16 @@ $messages = array();
 
 // Labels
 
-$labels['format_date'] = '%a %e %B %Y'; // Just date with no time, strftime format
+$labels['format_date_strftime'] = '%a %e %B %Y'; // Just date with no time, strftime format
+// Fullcalendar labels 
+// (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
+$labels['format_column_month'] = 'ddd'; 
+$labels['format_column_week'] = 'ddd d'; 
+$labels['format_column_day'] = 'ddd d MMMM'; 
+
+$labels['format_title_month'] = 'MMMM yyyy';
+$labels['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
+$labels['format_title_day'] = 'dddd, MMM d yyyy';
 
 $labels['username'] = 'User name';
 $labels['password'] = 'Password';
