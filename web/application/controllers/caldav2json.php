@@ -53,6 +53,8 @@ class Caldav2json extends CI_Controller {
 
 		// For benchmarking
 		$time_start = microtime(TRUE);
+		$time_end = $time_fetch = -1;
+		$total_fetch = $total_parse = -1;
 
 		$calendar = $this->input->get('calendar');
 		if ($calendar === FALSE) {
@@ -102,6 +104,9 @@ class Caldav2json extends CI_Controller {
 						$this->auth->get_passwd(),
 						$start, $end,
 						$calendar);
+
+				$time_fetch = microtime(TRUE);
+
 				if ($returned_events === FALSE) {
 					// Something went wrong
 					$err = 500;
@@ -115,12 +120,18 @@ class Caldav2json extends CI_Controller {
 						$end, $calendar);
 
 			$time_end = microtime(TRUE);
-			$parse_time = $time_end - $time_start;
+
+			$total_fetch = sprintf('%.4F', $time_fetch - $time_start);
+			$total_parse = sprintf('%.4F', $time_end - $time_fetch);
+			$total_time = sprintf('%.4F', $time_end - $time_start);
+
+
 			$this->extended_logs->message('INTERNALS', 'Sending to client ' .
 					count($parsed) . ' event(s) on calendar ' . $calendar 
-					.' (spent: '.$parse_time.' us)');
+					.' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
 
-			$this->output->set_header("X-Parse-Time: " . $parse_time);
+			$this->output->set_header("X-Fetch-Time: " . $total_fetch);
+			$this->output->set_header("X-Parse-Time: " . $total_parse);
 			$this->output->set_output(json_encode($parsed));
 		} else {
 			$this->output->set_status_header($err, 'Error');
