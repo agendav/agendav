@@ -78,6 +78,12 @@ $form_endtime = array(
 		'size' => '15',
 		);
 
+// Disable time fields if allday is true
+if (isset($allday)) {
+	$form_starttime['disabled'] = 'disabled';
+	$form_endtime['disabled'] = 'disabled';
+}
+
 $form_allday = array(
 		'name' => 'allday',
 		'value' => 'true', // Value used if checkbox is marked
