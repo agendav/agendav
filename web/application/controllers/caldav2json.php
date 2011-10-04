@@ -21,8 +21,8 @@
 
 class Caldav2json extends CI_Controller {
 
-	private $format_time;
-	private $format_date;
+	private $time_format;
+	private $date_format;
 
 	function __construct() {
 		parent::__construct();
@@ -36,8 +36,8 @@ class Caldav2json extends CI_Controller {
 			die();
 		}
 
-		$this->format_date = $this->dates->date_format_string('date');
-		$this->format_time = $this->dates->time_format_string('date');
+		$this->date_format = $this->dates->date_format_string('date');
+		$this->time_format = $this->dates->time_format_string('date');
 
 		$this->load->library('caldav');
 
@@ -259,7 +259,7 @@ class Caldav2json extends CI_Controller {
 			if ($p['recurrence_type'] != 'none') {
 				if (isset($p['recurrence_until']) &&
 						!empty($p['recurrence_until'])) {
-					$p['recurrence_until'] .= date($this->format_time,
+					$p['recurrence_until'] .= date($this->time_format,
 							mktime(0, 0)); // Tricky
 				}
 
@@ -934,7 +934,7 @@ class Caldav2json extends CI_Controller {
 	// Validate date format
 	function _valid_date($d) {
 		$obj = $this->dates->frontend2datetime($d .' ' .
-				date($this->format_time));
+				date($this->time_format));
 		if (FALSE === $obj) {
 			$this->form_validation->set_message('_valid_date',
 					$this->i18n->_('messages', 'error_invaliddate'));
@@ -956,7 +956,7 @@ class Caldav2json extends CI_Controller {
 
 	// Validate time format
 	function _valid_time($t) {
-		$obj = $this->dates->frontend2datetime(date($this->format_date) .' '. $t);
+		$obj = $this->dates->frontend2datetime(date($this->date_format) .' '. $t);
 		if (FALSE === $obj) {
 			$this->form_validation->set_message('_valid_time',
 					$this->i18n->_('messages', 'error_invalidtime'));

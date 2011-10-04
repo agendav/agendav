@@ -22,17 +22,17 @@
 class Icshelper {
 	var $final_url;
 	var $config; // for iCalCreator
-	private $format_date; // Date format given by lang file
-	private $format_time; // Time format given by configuration
+	private $date_format; // Date format given by lang file
+	private $time_format; // Time format given by configuration
 
 	function __construct() {
 
 		$this->CI =& get_instance();
 
 		// Date and time formats
-		$this->format_date = $this->CI->i18n->_('labels',
-				'format_date_strftime');
-		$this->format_time = $this->CI->dates->time_format_string('strftime');
+		$this->date_format = $this->CI->i18n->_('labels',
+				'date_format_strftime');
+		$this->time_format = $this->CI->dates->time_format_string('strftime');
 
 		$this->config = array(
 				'unique_id' =>
@@ -498,7 +498,7 @@ class Icshelper {
 
 
 		// Readable dates for start and end
-		$this_event['formatted_start'] = strftime($this->format_date,
+		$this_event['formatted_start'] = strftime($this->date_format,
 				$this_event['start']);
 
 		if (isset($this_event['allDay']) && $this_event['allDay'] == TRUE) {
@@ -507,19 +507,19 @@ class Icshelper {
 				$this_event['formatted_end'] =
 					'('.$this->CI->i18n->_('labels', 'allday').')';
 			} else {
-				$this_event['formatted_end'] = strftime($this->format_date,
+				$this_event['formatted_end'] = strftime($this->date_format,
 						$this_event['end']);
 			}
 		} else {
 			// Are they in the same day?
 			$this_event['formatted_start'] .= ' ' 
-				. strftime($this->format_time, $this_event['start']);
+				. strftime($this->time_format, $this_event['start']);
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				$this_event['formatted_end'] = strftime($this->format_time,
+				$this_event['formatted_end'] = strftime($this->time_format,
 						$this_event['end']);
 			} else {
-				$this_event['formatted_end'] = strftime($this->format_date .
-						' ' . $this->format_time,
+				$this_event['formatted_end'] = strftime($this->date_format .
+						' ' . $this->time_format,
 						$this_event['end']);
 			}
 		}

@@ -22,8 +22,8 @@
 class Dialog_generator extends CI_Controller {
 
 	// Formats
-	private $format_time;
-	private $format_date;
+	private $time_format;
+	private $date_format;
 
 	function __construct() {
 		parent::__construct();
@@ -42,8 +42,8 @@ class Dialog_generator extends CI_Controller {
 			$this->load->helper('form');
 			
 			// Load formats
-			$this->format_date = $this->dates->date_format_string('date');
-			$this->format_time = $this->dates->time_format_string('date');
+			$this->date_format = $this->dates->date_format_string('date');
+			$this->time_format = $this->dates->time_format_string('date');
 		}
 	}
 
@@ -134,10 +134,10 @@ class Dialog_generator extends CI_Controller {
 		}
 
 		$data = array(
-				'start_date' => $dstart->format($this->format_date),
-				'start_time' => $dstart->format($this->format_time),
-				'end_date' => $dend->format($this->format_date),
-				'end_time' => $dend->format($this->format_time),
+				'start_date' => $dstart->format($this->date_format),
+				'start_time' => $dstart->format($this->time_format),
+				'end_date' => $dend->format($this->date_format),
+				'end_time' => $dend->format($this->time_format),
 				'allday' => $allday,
 				'calendars' => $calendars,
 				'calendar' => $calendar,
@@ -279,7 +279,7 @@ class Dialog_generator extends CI_Controller {
 						// TODO timezone and configurable format
 						$rrule_arr['UNTIL'] =
 							$this->dates->idt2datetime($rrule_arr['UNTIL'],
-									date_default_timezone_get())->format($this->format_date);
+									date_default_timezone_get())->format($this->date_format);
 					}
 					$data['recurrence'] = $rrule_arr;
 				}
@@ -302,10 +302,10 @@ class Dialog_generator extends CI_Controller {
 			}
 
 			// TODO make this format configurable
-			$data['start_date'] = $start_obj->format($this->format_date);
-			$data['end_date'] = $end_obj->format($this->format_date);
-			$data['start_time'] = $start_obj->format($this->format_time);
-			$data['end_time'] = $end_obj->format($this->format_time);
+			$data['start_date'] = $start_obj->format($this->date_format);
+			$data['end_date'] = $end_obj->format($this->date_format);
+			$data['start_time'] = $start_obj->format($this->time_format);
+			$data['end_time'] = $end_obj->format($this->time_format);
 
 
 			// Clean 'undefined' values

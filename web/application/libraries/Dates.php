@@ -301,7 +301,7 @@ class Dates {
 		if ($cfg_time === FALSE 
 				|| ($cfg_time != '12' && $cfg_time != '24')) {
 			$this->CI->extended_logs->message('ERROR', 
-					'Invalid format_time configuration value');
+					'Invalid default_time_format configuration value');
 			$cfg_time = '24';
 		} 
 		switch($type) {
