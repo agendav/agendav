@@ -219,9 +219,9 @@ class Caldav2json extends CI_Controller {
 		if (isset($p['allday']) && $p['allday'] == 'true') {
 			// Start and end days, 00:00
 			$start = $this->dates->frontend2datetime($p['start_date'] 
-					. ' 00:00', 'UTC');
+					. ' ' . date($this->time_format, mktime(0,0)), 'UTC');
 			$end = $this->dates->frontend2datetime($p['end_date'] 
-					. ' 00:00', 'UTC');
+					. ' ' . date($this->time_format, mktime(0, 0)), 'UTC');
 		} else {
 			// Create new form validation rules
 			$this->form_validation
