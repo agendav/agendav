@@ -34,6 +34,11 @@ class Extended_logs {
 		// TODO X-Forwarded-for?
 		$username = $this->CI->auth->get_user();
 
+		// Include URL on errors
+		if ($level == 'ERROR') {
+			$message .= ' ['.$this->CI->uri->uri_string().']';
+		}
+
 		log_message($level, $username . '@' . $ip . ' ' . $message);
 	}
 }
