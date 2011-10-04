@@ -6,7 +6,7 @@ CREATE TABLE `sessions` (
   `user_data` mediumtext NOT NULL,
   PRIMARY KEY (`session_id`),
   KEY `last_activity_idx` (`last_activity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `shared` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
@@ -17,5 +17,5 @@ CREATE TABLE `shared` (
   PRIMARY KEY (`sid`),
   KEY `shareidx` (`user_from`,`calendar`),
   KEY `sharedwithidx` (`user_which`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
