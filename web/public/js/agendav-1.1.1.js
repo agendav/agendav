@@ -55,7 +55,7 @@ $(document).ready(function() {
 			week: prefs_format_title_week,
 			day: prefs_format_title_day
 		},
-		weekMode: 'variable',
+		weekMode: 'liquid',
 		aspectRatio: 1.2,
 		height: calendar_height(),
 		windowResize: function(view) {
