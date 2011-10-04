@@ -58,6 +58,18 @@ $config['default_date_format'] = 'ymd';
 
 /*
 |--------------------------------------------------------------------------
+| Default first day of week
+|--------------------------------------------------------------------------
+|
+| This determines which day should be first of week.
+|
+| 0 means Sunday, 1 means Monday and so on
+*/
+
+$config['default_first_day'] = 0;
+
+/*
+|--------------------------------------------------------------------------
 | Categories of log messages which will get logged
 |--------------------------------------------------------------------------
 |

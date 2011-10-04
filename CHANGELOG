@@ -1,6 +1,6 @@
 Release 1.2 (2011-x)
 	* Fixed DB schema to allow full UTF8 strings. Database changes needed
-	* Added localization support
+	* Added localization support (i18n)
 	* Removed annoying success messages
 	* Login page now shows correct logo
 	* Simplified configuration file
@@ -9,7 +9,8 @@ Release 1.2 (2011-x)
 	* Better form appearance and alignment
 	* 'Today' cell shows with a yellow background instead the
 	  previous pale blue
-	* Time/date formats can now be customizable
+	* Now you can customize time/date formats and some calendar
+	  visualization parameters
 	* Calendar now keeps its height when changing between months with
 	  5-6 weeks
 

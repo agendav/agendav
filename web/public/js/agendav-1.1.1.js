@@ -40,7 +40,7 @@ $(document).ready(function() {
 	$("#calendar_view").fullCalendar({
 		selectable: true,
 		editable: true,
-		firstDay: 1,
+		firstDay: prefs_firstday,
 		timeFormat: {
 			agenda: prefs_timeformat + '{ - ' + prefs_timeformat + '}',
 			'': prefs_timeformat
@@ -704,7 +704,7 @@ $.datepicker.regional['custom'] = {
 	dayNamesShort: _('labels', 'daynames_short'),
 	dayNamesMin: _('labels', 'daynames_short'),
 	weekHeader: 'Sm',
-	firstDay: 1, // XXX TODO
+	firstDay: prefs_firstday,
 	isRTL: false,
 	showMonthAfterYear: false,
 	yearSuffix: ''};	

@@ -4,6 +4,8 @@ var prefs_timeformat = '<?php
 echo addslashes($this->dates->time_format_string('fullcalendar'))?>';
 var prefs_dateformat = '<?php 
 echo addslashes($this->dates->date_format_string('datepicker'))?>';
+var prefs_firstday = <?php 
+echo $this->config->item('default_first_day')?>;
 <?php
 // Locale dependent format
 $prefs = array(
