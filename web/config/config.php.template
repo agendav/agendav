@@ -70,6 +70,18 @@ $config['default_first_day'] = 0;
 
 /*
 |--------------------------------------------------------------------------
+| Default timezone
+|--------------------------------------------------------------------------
+|
+| This determines which timezone should be used by default
+|
+| Please, use a valid timezone from http://php.net/timezones
+*/
+
+$config['default_timezone'] = 'Europe/Madrid';
+
+/*
+|--------------------------------------------------------------------------
 | Categories of log messages which will get logged
 |--------------------------------------------------------------------------
 |

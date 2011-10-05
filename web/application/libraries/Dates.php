@@ -77,7 +77,7 @@ class Dates {
 	 */
 	function ts2datetime($ts, $tz = null) {
 		if (is_null($tz)) {
-			$tz = date_default_timezone_get();
+			$tz = $this->CI->config->item('default_timezone');
 		}
 
 		$obj = new DateTime('@' . $ts);
@@ -96,7 +96,7 @@ class Dates {
 	 */
 	function frontend2datetime($str, $tz = null) {
 		if (is_null($tz)) {
-			$tz = date_default_timezone_get();
+			$tz = $this->CI->config->item('default_timezone');
 		}
 
 		$format = $this->date_format_string('date') . ' '. $this->time_format_string('date');
@@ -142,7 +142,7 @@ class Dates {
 	function idt2datetime($id_arr, $tz = null) {
 		if ($tz == null) {
 			// Suppose current timezone
-			$tz = date_default_timezone_get();
+			$tz = $this->CI->config->item('default_timezone');
 		}
 
 		$format = 'YmdHis';

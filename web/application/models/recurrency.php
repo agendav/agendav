@@ -22,10 +22,12 @@
 class Recurrency extends CI_Model {
 
 	private $date_format;
+	private $tz;
 
 	function __construct() {
 		parent::__construct();
 		$this->date_format = $this->dates->date_format_string('date');
+		$this->tz = $this->config->item('default_timezone');
 	}
 
 	/**
@@ -76,8 +78,7 @@ class Recurrency extends CI_Model {
 				case 'UNTIL':
 					$date = $this->dates->idt2datetime($v, 
 								'UTC');
-					// TODO configurable timezone and format
-					$date->setTimeZone(new DateTimeZone('Europe/Madrid'));
+					$date->setTimeZone(new DateTimeZone($this->tz));
 					$explanation .= ', ' . $this->i18n->_('labels',
 							'expluntil',
 							array('%d' => $date->format($this->date_format)));
