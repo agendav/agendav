@@ -31,7 +31,7 @@ class Icshelper {
 
 		// Date and time formats
 		$this->date_format = $this->CI->i18n->_('labels',
-				'date_format_strftime');
+				'format_date_strftime');
 		$this->time_format = $this->CI->dates->time_format_string('strftime');
 
 		$this->config = array(

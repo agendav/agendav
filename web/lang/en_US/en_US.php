@@ -157,7 +157,7 @@ $messages['error_genform'] = 'Error generating form';
 $messages['error_invalidinput'] = 'Invalid value';
 $messages['error_caldelete'] = 'Error deleting calendar';
 
-$messages['overlay_synchronizing'] = 'Sinchronyzing events...';
+$messages['overlay_synchronizing'] = 'Synchronizing events...';
 $messages['overlay_loading_dialog'] = 'Loading dialog...';
 $messages['overlay_sending_form'] = 'Sending form...';
 $messages['overlay_loading_calendar_list'] = 'Loading calendar list...';
