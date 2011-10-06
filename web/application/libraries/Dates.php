@@ -90,7 +90,6 @@ class Dates {
 	/**
 	 * Creates a DateTime object from a date formatted by frontend (such as
 	 * m/d/Y H:i).
-	 * TODO configurable format
 	 *
 	 * Returns FALSE on date parsing error
 	 */

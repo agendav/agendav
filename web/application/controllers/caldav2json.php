@@ -24,6 +24,8 @@ class Caldav2json extends CI_Controller {
 	private $time_format;
 	private $date_format;
 
+	private $tz;
+
 	function __construct() {
 		parent::__construct();
 
@@ -38,6 +40,8 @@ class Caldav2json extends CI_Controller {
 
 		$this->date_format = $this->dates->date_format_string('date');
 		$this->time_format = $this->dates->time_format_string('date');
+
+		$this->tz = $this->config->item('default_timezone');
 
 		$this->load->library('caldav');
 
@@ -116,8 +120,8 @@ class Caldav2json extends CI_Controller {
 
 		if ($err == 0) {
 			$parsed =
-				$this->icshelper->expand_and_parse_events($returned_events, $start,
-						$end, $calendar);
+				$this->icshelper->expand_and_parse_events($returned_events, 
+						$start, $end, $calendar, $tzoffset);
 
 			$time_end = microtime(TRUE);
 
@@ -222,6 +226,8 @@ class Caldav2json extends CI_Controller {
 		$start = null;
 		$end = null;
 
+		$tz = isset($p['timezone']) ? $p['timezone'] : null;
+
 
 		// Additional validations
 
@@ -249,11 +255,10 @@ class Caldav2json extends CI_Controller {
 			}
 
 			// 2. Check if start date <= end date
-			// TODO: configurable format
 			$start = $this->dates->frontend2datetime($p['start_date'] 
-					. ' ' .  $p['start_time']);
+					. ' ' .  $p['start_time'], $tz);
 			$end = $this->dates->frontend2datetime($p['end_date'] 
-					. ' ' .  $p['end_time']);
+					. ' ' .  $p['end_time'], $tz);
 			if ($end->getTimestamp() < $start->getTimestamp()) {
 				$this->_throw_exception($this->i18n->_('messages',
 							'error_startgreaterend'));
@@ -310,9 +315,8 @@ class Caldav2json extends CI_Controller {
 
 		if (!isset($p['modification'])) {
 			// New event (resource)
-			// TODO TODO configurable timezone
 			$new_uid = $this->icshelper->new_resource($p,
-					$resource, 'Europe/Madrid');
+					$resource, $this->tz);
 			$href = $new_uid . '.ics';
 			$etag = '*';
 		} else {
@@ -497,6 +501,7 @@ class Caldav2json extends CI_Controller {
 		$was_allday = $this->input->post('was_allday');
 		$view = $this->input->post('view');
 		$type = $this->input->post('type');
+		$browser_tzoffset = $this->input->post('tzoffset');
 
 		if ($uid === FALSE || $calendar === FALSE ||
 				$etag === FALSE || $dayDelta === FALSE || 
@@ -635,8 +640,16 @@ class Caldav2json extends CI_Controller {
 			}
 		} else {
 			// Send new information about this event
+
+			if ($browser_tzoffset === FALSE) {
+				$browser_tzoffset = 0;
+			} else {
+				$browser_tzoffset = intval($browser_tzoffset) * 60;
+			}
+
 			$info = $this->icshelper->parse_vevent_fullcalendar(
-					$new_vevent, $href, $new_etag, $calendar, $tz);
+					$new_vevent, $href, $new_etag, $calendar, $tz,
+					$browser_tzoffset);
 			$this->_throw_success($info);
 		}
 	}

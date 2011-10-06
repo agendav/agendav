@@ -24,8 +24,10 @@ var ccd = "#create_calendar_dialog";
 var mcd = "#modify_calendar_dialog";
 var dcd = "#delete_calendar_dialog";
 
-$(document).ready(function() {
+// Timezone offset
+var current_tzoffset = new Date().getTimezoneOffset();
 
+$(document).ready(function() {
 	// Refresh session every X seconds code at js_generator
 	// Calls session_refresh()
 
@@ -195,6 +197,8 @@ $(document).ready(function() {
 					minuteDelta: minuteDelta,
 					allday: event.allDay,
 					was_allday: event.was_allday,
+					timezone: event.timezone,
+					tzoffset: current_tzoffset,
 					type: 'resize'
 				});
 
@@ -235,6 +239,8 @@ $(document).ready(function() {
 					minuteDelta: minuteDelta,
 					allday: event.allDay,
 					was_allday: event.orig_allday,
+					timezone: event.timezone,
+					tzoffset: current_tzoffset,
 					type: 'drag'
 				});
 
@@ -395,6 +401,9 @@ $(document).ready(function() {
 			icalendar_class: event_data.icalendar_class,
 			transp: event_data.transp,
 			recurrence_id: event_data.recurrence_id,
+			tzoffset: current_tzoffset,
+			adjust_start: event_data.adjust_start,
+			adjust_end: event_data.adjust_end,
 			orig_start: event_data.orig_start,
 			orig_end: event_data.orig_end
 		};
@@ -780,7 +789,6 @@ function event_field_form(type, data) {
 	load_generated_dialog(url_dialog,
 		data,
 		function() {
-			// TODO make this configurable
 			var common_timepicker_opts = {
 				show24Hours: (prefs_timeformat_option == '24' ? true : false),
 				separator: ':',
@@ -1174,7 +1182,7 @@ function generate_event_source(calendar) {
 			// TODO make timezone configurable
 			data: {
 				calendar: calendar,
-				tzoffset: new Date().getTimezoneOffset()
+				tzoffset: current_tzoffset
 				},
 			error: function() {
 				show_error(_('messages', 'error_interfacefailure'), 
@@ -1260,6 +1268,7 @@ function generate_calendar_entry(data) {
 	}
 
 	var eventsource = generate_event_source(data.calendar);
+	eventsource.ignoreTimezone = true; // Ignore UTC offsets
 	eventsource.color = data.color;
 	eventsource.textColor = fg;
 	data.eventsource = eventsource;
