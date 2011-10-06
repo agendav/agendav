@@ -14,6 +14,7 @@ Release 1.2 (2011-x)
 	  visualization parameters
 	* Calendar now keeps its height when changing between months with
 	  5-6 weeks
+	* Configurable timezone support
 
 Release 1.1.1 (2011-09-24)
 	* Fix DB schema. Wasn't properlty updated on sql/schema.sql, which
