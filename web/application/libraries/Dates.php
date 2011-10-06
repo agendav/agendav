@@ -258,8 +258,8 @@ class Dates {
 
 		if ($res === FALSE || $res != 1) {
 			log_message('ERROR',
-					'Error procesando [' . $str . '] como cadena'
-					.' para X-CURRENT-*');
+					'Error processing [' . $str . '] as X-CURRENT-*'
+					.' string');
 			return new DateTime();
 		}
 
