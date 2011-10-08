@@ -828,22 +828,15 @@ function event_field_form(type, data) {
 				set_end_minDate();
 
 				if ($(this).is(":checked")) {
-
-					$(ced + " input.start_time").attr('disabled', 'disabled');;
-					$(ced + " input.start_time").addClass('ui-state-disabled');
-					$(ced + " input.end_time").attr('disabled', 'disabled');;
-					$(ced + " input.end_time").addClass('ui-state-disabled');
+					$(ced + " input.start_time").hide();
+					$(ced + " input.end_time").hide();
 				} else {
 					$(ced + " input.end_date").removeAttr('disabled');
 					$(ced + " input.end_date").removeClass('ui-state-disabled');
 					$(ced + " input.end_date").datepicker('setDate', current);
 
-					$(ced + " input.start_time").removeAttr('disabled');
-					$(ced + " input.start_time").removeClass('ui-state-disabled');
-					$(ced + " input.start_time").timepicker('enable');
-					$(ced + " input.end_time").removeAttr('disabled');
-					$(ced + " input.end_time").removeClass('ui-state-disabled');
-					$(ced + " input.end_time").timepicker('enable');
+					$(ced + " input.start_time").show();
+					$(ced + " input.end_time").show();
 				}
 			});
 

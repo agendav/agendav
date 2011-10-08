@@ -82,6 +82,8 @@ $form_endtime = array(
 if (isset($allday)) {
 	$form_starttime['disabled'] = 'disabled';
 	$form_endtime['disabled'] = 'disabled';
+	$form_starttime['style'] = 'display: none';
+	$form_endtime['style'] = 'display: none';
 }
 
 $form_allday = array(
