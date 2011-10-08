@@ -29,8 +29,9 @@ class Dates {
 				'fullcalendar' => 'HH:mm',
 				),
 			'12' => array(
-				'strftime' => '%l:%M%P',
-				'date' => 'h:i A', // timepicker format
+				'strftime' => '%l:%M',  // %P will be simulated, not working
+										// in all systems
+				'date' => 'h:i A', // Match timepicker format
 				'fullcalendar' => 'h(:mm)tt',
 				));
 
@@ -51,9 +52,34 @@ class Dates {
 			);
 
 	private $CI;
+	private $cfg_time;
+	private $cfg_date;
 
 	function __construct() {
 		$this->CI =& get_instance();
+
+		// Load time and date formats
+		$cfg_time = $this->CI->config->item('default_time_format');
+		if ($cfg_time === FALSE 
+				|| ($cfg_time != '12' && $cfg_time != '24')) {
+			$this->CI->extended_logs->message('ERROR', 
+					'Invalid default_time_format configuration value');
+			$this->cfg_time = '24';
+		} else {
+			$this->cfg_time = $cfg_time;
+		}
+
+		$cfg_date = $this->CI->config->item('default_date_format');
+		if ($cfg_date === FALSE 
+				|| ($cfg_date != 'ymd' && $cfg_date != 'dmy'
+					&& $cfg_date != 'mdy')) {
+			$this->CI->extended_logs->message('ERROR', 
+					'Invalid default_date_format configuration value');
+			$this->cfg_date = 'ymd';
+		}  else {
+			$this->cfg_date = $cfg_date;
+		}
+
 	}
 
 	/**
@@ -295,19 +321,11 @@ class Dates {
 	 * @return	string	Format string. Default formats on invalid params
 	 */
 	function time_format_string($type) {
-		// TODO prefs
-		$cfg_time = $this->CI->config->item('default_time_format');
-		if ($cfg_time === FALSE 
-				|| ($cfg_time != '12' && $cfg_time != '24')) {
-			$this->CI->extended_logs->message('ERROR', 
-					'Invalid default_time_format configuration value');
-			$cfg_time = '24';
-		} 
 		switch($type) {
 			case 'fullcalendar':
 			case 'date':
 			case 'strftime':
-				return Dates::$timeformats[$cfg_time][$type];
+				return Dates::$timeformats[$this->cfg_time][$type];
 				break;
 			default:
 				$this->CI->extended_logs->message('ERROR', 
@@ -324,20 +342,10 @@ class Dates {
 	 * @return	string	Format string. Default formats on invalid params
 	 */
 	function date_format_string($type) {
-		// TODO prefs
-		$cfg_date = $this->CI->config->item('default_date_format');
-		if ($cfg_date === FALSE 
-				|| ($cfg_date != 'ymd' && $cfg_date != 'dmy'
-					&& $cfg_date != 'mdy')) {
-			$this->CI->extended_logs->message('ERROR', 
-					'Invalid default_date_format configuration value');
-			$cfg_date = 'ymd';
-		} 
-
 		switch($type) {
 			case 'date':
 			case 'datepicker':
-				return Dates::$dateformats[$cfg_date][$type];
+				return Dates::$dateformats[$this->cfg_date][$type];
 				break;
 			default:
 				$this->CI->extended_logs->message('ERROR', 
@@ -346,6 +354,33 @@ class Dates {
 				break;
 		}
 
+	}
+
+
+	/**
+	 * Formats a timestamp time using strftime
+	 *
+	 * @param	int	Timestamp
+	 * @return	string	Formatted time string with strftime
+	 */
+	function strftime_time($timestamp) {
+		$format = Dates::$timeformats[$this->cfg_time]['strftime'];
+		$result = strftime($format, $timestamp);
+		if ($this->cfg_time == '12') {
+			$result .= $this->calc_ampm($timestamp);
+		}
+		
+		return $result;
+	}
+
+	/**
+	 * Calculates strftime %P (am/pm) for a given time
+	 *
+	 * @param	int	timestamp
+	 * @return	string	am/pm string
+	 */
+	function calc_ampm($timestamp) {
+		return (($timestamp%86400) < 43200) ? 'pm' : 'am';
 	}
 
 }

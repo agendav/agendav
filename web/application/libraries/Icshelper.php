@@ -22,24 +22,22 @@
 class Icshelper {
 	var $final_url;
 	var $config; // for iCalCreator
-	private $date_format; // Date format given by lang file
-	private $time_format; // Time format given by configuration
-	
+
 	private $tz;
 	private $tz_obj;
+
+	private $date_format; // Date format given by lang file
 
 	function __construct() {
 
 		$this->CI =& get_instance();
 
-		// Date and time formats
-		$this->date_format = $this->CI->i18n->_('labels',
-				'format_date_strftime');
-		$this->time_format = $this->CI->dates->time_format_string('strftime');
-
 		// Timezone
 		$this->tz = $this->CI->config->item('default_timezone');
 		$this->tz_obj = new DateTimeZone($this->tz);
+
+		$this->date_format = $this->CI->i18n->_('labels',
+				'format_date_strftime');
 
 		$this->config = array(
 				'unique_id' =>
@@ -479,8 +477,10 @@ class Icshelper {
 		$system_tz = date_default_timezone_get();
 		date_default_timezone_set($this->tz);
 
-		$this_event['formatted_start'] = strftime($this->date_format,
-				$start->getTimestamp());
+		$ts_start = $start->getTimestamp();
+		$ts_end = $end->getTimestamp();
+
+		$this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
 
 		if (isset($this_event['allDay']) && $this_event['allDay'] == TRUE) {
 			// Next day?
@@ -488,20 +488,18 @@ class Icshelper {
 				$this_event['formatted_end'] =
 					'('.$this->CI->i18n->_('labels', 'allday').')';
 			} else {
-				$this_event['formatted_end'] = strftime($this->date_format,
-						$end->getTimestamp());
+				$this_event['formatted_end'] = strftime($this->date_format, $ts_end); 
 			}
 		} else {
 			// Are they in the same day?
 			$this_event['formatted_start'] .= ' ' 
-				. strftime($this->time_format, $start->getTimestamp());
+				. $this->CI->dates->strftime_time($ts_start);
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				$this_event['formatted_end'] = strftime($this->time_format,
-						$end->getTimestamp());
+				$this_event['formatted_end'] = $this->CI->dates->strftime_time($ts_end);
 			} else {
-				$this_event['formatted_end'] = strftime($this->date_format .
-						' ' . $this->time_format,
-						$end->getTimestamp());
+				$this_event['formatted_end'] =
+					strftime($this->date_format, $ts_end) . ' ' .
+					$this->CI->dates->strftime_time($ts_end);
 			}
 		}
 
