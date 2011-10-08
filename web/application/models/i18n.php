@@ -44,7 +44,7 @@ class I18n extends CI_Model {
 			die();
 		}
 
-		setlocale(LC_ALL, $this->langname . '.utf8');
+		$this->setlocale();
 	}
 
 	private function parse_language($lang) {
@@ -78,6 +78,10 @@ class I18n extends CI_Model {
 		}
 
 		return $raw;
+	}
+
+	public function setlocale() {
+		setlocale(LC_ALL, $this->langname . '.utf8');
 	}
 
 	public function dump($type, $use_default = FALSE) {
