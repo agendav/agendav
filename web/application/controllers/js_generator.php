@@ -24,6 +24,7 @@ class Js_generator extends CI_Controller {
 	// Special methods that do should not enforce authentication
 	private $not_enforced = array(
 			'i18n',
+			'prefs',
 			);
 
 	function __construct() {
