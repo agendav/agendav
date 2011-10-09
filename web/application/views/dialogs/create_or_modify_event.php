@@ -2,7 +2,7 @@
 <div id="com_event_dialog_tabs">
 <?php
 /**
-  allday can be false (on editing). Disable some fields
+  allday can be false (on editing). Hide some fields
  */
 
 if (isset($allday) && $allday === FALSE) {
@@ -78,10 +78,8 @@ $form_endtime = array(
 		'size' => '15',
 		);
 
-// Disable time fields if allday is true
+// Hide time fields if allday is true
 if (isset($allday)) {
-	$form_starttime['disabled'] = 'disabled';
-	$form_endtime['disabled'] = 'disabled';
 	$form_starttime['style'] = 'display: none';
 	$form_endtime['style'] = 'display: none';
 }
