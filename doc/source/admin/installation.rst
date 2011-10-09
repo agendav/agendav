@@ -23,7 +23,7 @@ Have a look at `<http://github.com/adobo/agendav>`_.
 
 Uncompress it using ``tar``::
 
- $ tar xzf adobo-agendav-1.1.1...tar.gz
+ $ tar xzf adobo-agendav-...tar.gz
  $ cd adobo-agendav-.../
 
 Database and tables
@@ -61,7 +61,7 @@ Example using a dedicated virtualhost::
 
  <VirtualHost 1.2.3.4:443>
   ServerAdmin admin@email.host
-  DocumentRoot /path/to/agendav-1.1/web/public
+  DocumentRoot /path/to/agendav/web/public
   ServerName agendav.host
   ErrorLog logs/agendav_error_log
   CustomLog logs/agendav_access_log common
@@ -69,7 +69,7 @@ Example using a dedicated virtualhost::
 
 Example using the Alias directive::
 
- Alias /agendav /path/to/agendav-1.1/web/public
+ Alias /agendav /path/to/agendav/web/public
 
 Other web servers
 ^^^^^^^^^^^^^^^^^

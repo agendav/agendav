@@ -14,9 +14,9 @@ a copy of them with the correct file name to make them work.
 General configuration (config.php)
 ----------------------------------
 
-``config.php`` file specifies general options about AgenDAV environment.
-Please, do not change variables which don't appear below unles you really
-know what you are doing.
+``config.php`` file specifies general options about AgenDAV environment. It
+loads a set of default option values from ``defaults.php``, but it is
+recommended to configure all of the following variables.
 
 .. confval:: base_url
 
@@ -30,11 +30,14 @@ know what you are doing.
    Array of logging levels which will appear in logs. Possible logging
    levels are:
 
-   * ``ERROR``
-   * ``INFO``
-   * ``AUTHERR``
-   * ``AUTHOK``
-   * ``INTERNALS``
+   * ``ERROR``: error messages, recommended
+   * ``INFO``: informational messages, recommended
+   * ``AUTHERR``: authentication errors
+   * ``AUTHOK``: successful authentications
+   * ``INTERNALS``:  AgenDAV internal processing actions, not recommended unless
+     you are having problems or you want to debug AgenDAV
+   * ``DEBUG``: CodeIgniter internal debug. Do not enable unless you know
+     what you are doing
 
    Example::
 
@@ -42,13 +45,22 @@ know what you are doing.
 
 .. confval:: log_path
 
-   Full path where logs will be created. Example::
+   Full path where logs will be created. Add a trailing slash. Example::
 
-    $config['log_path'] = '';
+    $config['log_path'] = '/var/log/agendav/';
+
+   Make sure the user that runs your web server has write rights on that
+   directory.
 
 .. confval:: encryption_key
 
    Random string which will be used to encrypt some cookie values.
+
+.. confval:: cookie_prefix
+
+   Prefix that should be prepended to your cookie names. Useful if you have
+   several sites hosted on the same hostname and you want to avoid name
+   collisions
 
 .. confval:: cookie_domain
 
@@ -64,10 +76,11 @@ know what you are doing.
    Create cookies only for use in https environments. Set it TRUE if your
    users access AgenDAV via https.
 
-.. confval:: LC_ALL
+.. confval:: proxy_ips
 
-   Really not a configuration variable, but a locale setting. Look for a
-   ``setlocale`` directive and set it to the desired locale.
+   Comma delimited IPs of your proxies, which will make CodeIgniter
+   framework to trust the HTTP_X_FORWARDED_FOR header. Leave it blank if
+   your AgenDAV installation isn't being accessed via HTTP proxy.
 
 .. confval:: site_title
 
@@ -98,6 +111,56 @@ know what you are doing.
    Whether to show CalDAV URL links or not in the edit dialog
 
    .. seealso:: :confval:`public_caldav_url`
+
+.. confval:: default_language
+
+   Language to be used in AgenDAV interface.
+
+   Currently available options (languages):
+
+   * ``de_DE``: German
+   * ``en_US``: English (United States)
+   * ``es_ES``: Spanish
+
+   .. versionadded:: 1.2
+
+.. confval:: default_time_format
+
+   Preferred time format: 12 hours (e.g. 3pm / 2:30am) or 24 hours
+   (e.g. 15:00 / 2:30).
+
+   Set this option using a **string** (``'12'`` or ``'24'``).
+
+   .. versionadded:: 1.2
+
+.. confval:: default_date_format
+
+   Preferred date format to be used inside date fields. Possible values are:
+
+   * ``ymd``: e.g. 2011/10/22
+   * ``dmy``: e.g. 22/10/2011
+   * ``mdy``: e.g. 10/22/2011
+
+   .. versionadded:: 1.2
+
+.. confval:: default_first_day
+   
+   Which day should be considered the first of the week. Starting with 0
+   (Sunday), 1 means Monday and so on.
+
+   Use a numerical value, not an integer.
+
+   .. versionadded:: 1.2
+
+.. confval:: default_timezone
+
+   Timezone to be used internally. Will be used for recalculating other
+   timezone dates and hours to be sent to the browser, ignoring browser
+   configured timezone.
+
+   Make sure you use a valid timezone from http://php.net/timezones
+
+   .. versionadded:: 1.2
 
 .. confval:: default_calendar_color
 
@@ -215,3 +278,12 @@ Here you will configure every single aspect of your CalDAV server.
 
    .. seealso:: Used in conjunction with options :confval:`owner_permissions`
       and :confval:`share_permissions`.
+
+Other configuration files
+-------------------------
+
+Advanced options (advanced.php)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This file should be kept untouched unless you know what you are trying to
+modify. It contains several options that make AgenDAV work by default.

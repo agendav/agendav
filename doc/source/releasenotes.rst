@@ -1,6 +1,28 @@
 Release notes
 =============
 
+.. _v1.2:: 
+1.2 (2011-x-x)
+--------------
+
+* DB schema needs to be altered. UTF8 wasn't being used by default, and
+  sessions table wasn't using InnoDB. Apply the changes on
+  ``sql/changes/1.1.1_to_1.2.mysql``, which are the following::
+
+        ALTER DATABASE agendav CHARACTER SET utf8 COLLATE utf8_general_ci;
+        ALTER TABLE sessions CONVERT TO CHARACTER SET utf8;
+        ALTER TABLE sessions ENGINE InnoDB;
+        ALTER TABLE shared CONVERT TO CHARACTER SET utf8;
+
+* Main configuration file (``config.php``) has been completely **rewritten**
+  to make it easier to write. Please, use the provided ``config.php.template``
+  as the base for a new ``config.php``
+
+* Interface translation and timezone configuration is now possible in
+  AgenDAV. Please, make sure you set correct values on ``config.php``
+
+* AgenDAV has lots of corrections and fixes. See the ``CHANGELOG``
+
 .. _v1.1.1:: 
 1.1.1 (2011-09-24)
 ------------------
