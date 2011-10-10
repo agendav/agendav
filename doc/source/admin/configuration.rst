@@ -18,6 +18,10 @@ General configuration (config.php)
 loads a set of default option values from ``defaults.php``, but it is
 recommended to configure all of the following variables.
 
+Please, do not modify ``defaults.php``, as it is a file that updates on
+every AgenDAV upgrade to avoid problems if you forget any configuration
+setting.
+
 .. confval:: base_url
 
    Specify here your full public URL to access AgenDAV, adding a trailing
