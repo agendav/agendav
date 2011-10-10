@@ -1,8 +1,5 @@
 <?php
-$labels = $this->i18n->dump('labels');
-$messages = $this->i18n->dump('messages');
-
-$i18n = array('labels' => $labels, 'messages' => $messages);
+$i18n = $this->i18n->dump();
 
 ?>
 //<![CDATA[

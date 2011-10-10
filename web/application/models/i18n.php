@@ -68,11 +68,19 @@ class I18n extends CI_Model {
 			$this->langcontents = $this->parse_language($this->langname);
 		}
 
+		// Locale
 		$this->setlocale();
 
+		// Set CodeIgniter language
 		$this->set_ci_language();
 	}
 
+	/**
+	 * Loads a language file and returns it
+	 *
+	 * @param	string	Language to load
+	 * @return	array	Array with labels and messages, FALSE on error
+	 */
 	private function parse_language($lang) {
 		$file = $this->lang_path . '/' . $lang . '/' . $lang . '.php';
 
@@ -93,6 +101,14 @@ class I18n extends CI_Model {
 		}
 	}
 
+	/**
+	 * Translates a string from current language
+	 *
+	 * @param	string	Type (label or message)
+	 * @param	string	Label/message id
+	 * @param	array	Associative array of parameters
+	 * @return	string	Translated string
+	 */
 	public function _($type, $id, $params = array()) {
 		$contents = $this->langcontents;
 		$raw = (isset($contents[$type][$id])) ? 
@@ -121,8 +137,11 @@ class I18n extends CI_Model {
 				I18n::$lang_rels[$this->langname]['codeigniter']);
 	}
 
-	public function dump($type, $use_default = FALSE) {
-		$contents = $this->langcontents;
-		return $contents[$type];
+	/**
+	 * Dumps language contents 
+	 */
+
+	public function dump() {
+		return $this->langcontents;
 	}
 }
