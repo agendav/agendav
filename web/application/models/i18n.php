@@ -35,7 +35,7 @@ class I18n extends CI_Model {
 		$this->config->load('languages');
 
 		$this->lang_path = APPPATH . '../lang';
-		$this->langname = $this->config->item('lang');
+		$this->langname = $this->config->item('default_language');
 
 		if (!is_dir($this->lang_path)) {
 			log_message('ERROR', 'Language path is not a directory');
