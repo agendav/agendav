@@ -47,8 +47,8 @@ $labels['months_short'] = array('Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
 		'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez');
 $labels['daynames_long'] = array('Sonntag', 'Montag', 'Dienstag', 'Mittwoch',
 		'Donnerstag', 'Freitag', 'Samstag');
-$labels['daynames_short'] = array('Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre',
-		'Sam');
+$labels['daynames_short'] = array('So', 'Mo', 'Di', 'Mi', 'Do', 'Fr',
+		'Sa');
 
 $labels['today'] = 'Heute';
 $labels['month'] = 'Monat';
@@ -76,11 +76,11 @@ $labels['alldayform'] = 'Ganztags';
 $labels['repetitionexceptions'] = 'Ausnahmen des sich wiederholenden Termins';
 
 $labels['repeat'] = 'Wiederholen';
-$labels['repeatno'] = 'Keine Wiederholung';
-$labels['repeatdaily'] = 'Täglich';
-$labels['repeatweekly'] = 'Wöchentlich';
-$labels['repeatmonthly'] = 'Monatlich';
-$labels['repeatyearly'] = 'Jährlich';
+$labels['repeatno'] = 'keine Wiederholung';
+$labels['repeatdaily'] = 'täglich';
+$labels['repeatweekly'] = 'wöchentlich';
+$labels['repeatmonthly'] = 'monatlich';
+$labels['repeatyearly'] = 'jährlich';
 
 $labels['repeatcount'] = 'Zahl der Wiederholungen';
 $labels['repeatuntil'] = 'Bis';
@@ -171,7 +171,7 @@ $messages['error_event_not_deleted'] = 'Fehler beim Löschen des Termins';
 $messages['error_loading_calendar_list'] = 'Fehler beim Laden der Kalenderliste';
 $messages['notice_no_calendars'] = 'Keine Kalender verfügbar';
 $messages['info_repetition_human'] = 'Dieser Termin wiederholt sich %explanation';
-$messages['info_repetition_unparseable'] = 'Dieser Termin besitzt Wiederholungsregeln, die dieses Programm nicht versteht. Pure Definition:';
+$messages['info_repetition_unparseable'] = 'Dieser Termin besitzt Wiederholungsregeln, die dieses Programm nicht versteht. Rohfassung:';
 $messages['error_calendarnotfound'] = 'Ungültiger Kalender %calendar';
 $messages['error_eventnotfound'] = 'Element nicht gefunden';
 $messages['error_eventchanged'] = 'Das Element wurde geändert, während Sie es bearbeitet haben. Bitte aktualisieren Sie die Ansicht.';
