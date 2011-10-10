@@ -24,26 +24,15 @@ class I18n extends CI_Model {
 	
 	private $lang_path;
 
-	private $langcontents;
+	private $lang_contents;
 
-	// Language definitions
-	static $lang_rels = array(
-			'en_US' => array(
-				'codeigniter' => 'english',
-				),
-			'es_ES' => array(
-				'codeigniter' => 'spanish',
-				),
-			'de_DE' => array(
-				'codeigniter' => 'german',
-				),
-			'de_AT' => array(
-				'codeigniter' => 'german',
-				),
-			);
+	private $lang_relations;
 
 	function __construct() {
 		parent::__construct();
+
+		// Load language relations file
+		$this->config->load('languages');
 
 		$this->lang_path = APPPATH . '../lang';
 		$this->langname = $this->config->item('lang');
@@ -54,18 +43,21 @@ class I18n extends CI_Model {
 		}
 
 		// Defined language?
-		if (!isset(I18n::$lang_rels[$this->langname])) {
+		$lang_rels = $this->config->item('lang_rels');
+		if (!isset($lang_rels[$this->langname])) {
 			log_message('ERROR', 'Language ' .
 					$this->langname . ' not registered');
 			$this->langname = 'en_US';
 		}
 
-		if (FALSE === ($this->langcontents =
+		$this->lang_relations = $lang_rels[$this->langname];
+
+		if (FALSE === ($this->lang_contents =
 					$this->parse_language($this->langname))) {
 			$this->extended_logs->message('ERROR', 'Language '
 					. $this->langname . ' not found');
 			$this->langname = 'en_US';
-			$this->langcontents = $this->parse_language($this->langname);
+			$this->lang_contents = $this->parse_language($this->langname);
 		}
 
 		// Locale
@@ -110,7 +102,7 @@ class I18n extends CI_Model {
 	 * @return	string	Translated string
 	 */
 	public function _($type, $id, $params = array()) {
-		$contents = $this->langcontents;
+		$contents = $this->lang_contents;
 		$raw = (isset($contents[$type][$id])) ? 
 			$contents[$type][$id] : 
 			'[' . $type . ':' . $id . ']';
@@ -134,7 +126,7 @@ class I18n extends CI_Model {
 	 */
 	private function set_ci_language() {
 		$this->config->set_item('language',
-				I18n::$lang_rels[$this->langname]['codeigniter']);
+				$this->lang_relations['codeigniter']);
 	}
 
 	/**
@@ -142,6 +134,6 @@ class I18n extends CI_Model {
 	 */
 
 	public function dump() {
-		return $this->langcontents;
+		return $this->lang_contents;
 	}
 }
