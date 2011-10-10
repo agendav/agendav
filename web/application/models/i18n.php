@@ -26,25 +26,51 @@ class I18n extends CI_Model {
 
 	private $langcontents;
 
+	// Language definitions
+	static $lang_rels = array(
+			'en_US' => array(
+				'codeigniter' => 'english',
+				),
+			'es_ES' => array(
+				'codeigniter' => 'spanish',
+				),
+			'de_DE' => array(
+				'codeigniter' => 'german',
+				),
+			'de_AT' => array(
+				'codeigniter' => 'german',
+				),
+			);
+
 	function __construct() {
 		parent::__construct();
 
 		$this->lang_path = APPPATH . '../lang';
-		$this->langname = $this->config->item('language');
+		$this->langname = $this->config->item('lang');
 
 		if (!is_dir($this->lang_path)) {
 			log_message('ERROR', 'Language path is not a directory');
 			die();
 		}
 
+		// Defined language?
+		if (!isset(I18n::$lang_rels[$this->langname])) {
+			log_message('ERROR', 'Language ' .
+					$this->langname . ' not registered');
+			$this->langname = 'en_US';
+		}
+
 		if (FALSE === ($this->langcontents =
 					$this->parse_language($this->langname))) {
 			$this->extended_logs->message('ERROR', 'Language '
 					. $this->langname . ' not found');
-			die();
+			$this->langname = 'en_US';
+			$this->langcontents = $this->parse_language($this->langname);
 		}
 
 		$this->setlocale();
+
+		$this->set_ci_language();
 	}
 
 	private function parse_language($lang) {
@@ -80,8 +106,19 @@ class I18n extends CI_Model {
 		return $raw;
 	}
 
-	public function setlocale() {
+	/**
+	 * Sets current locale
+	 */
+	private function setlocale() {
 		setlocale(LC_ALL, $this->langname . '.utf8');
+	}
+
+	/**
+	 * Sets CodeIgniter language
+	 */
+	private function set_ci_language() {
+		$this->config->set_item('language',
+				I18n::$lang_rels[$this->langname]['codeigniter']);
 	}
 
 	public function dump($type, $use_default = FALSE) {
