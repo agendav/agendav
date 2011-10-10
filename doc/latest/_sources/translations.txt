@@ -24,10 +24,14 @@ Consider the ``en_US`` language to be the master reference language file.
 
 5. Uncompress the CodeIgniter translation into ``web/application/language``
 
-6. Rename the uncompressed directory to have the same name as the locale.  For example::
+6. Edit ``web/config/languages.php`` and add a new entry like this::
 
-   $ cd web/application/language
-   $ mv french fr_FR
+    $config['lang_rels']['fr_FR'] = array(
+            'codeigniter' => 'french',
+    );
+
+   This supposes the language file you downloadad for CodeIgniter resulted
+   in a directory called ``french/``
 
 7. You're done! Set :confval:`default_language` to your new language name
 (``fr_FR`` in our example)
