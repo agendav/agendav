@@ -73,7 +73,7 @@ $config['show_public_caldav_url'] = TRUE;
 | than en_US.
 |
 */
-$config['language']	= 'en_US';
+$config['default_language']	= 'en_US';
 
 /*
 |--------------------------------------------------------------------------
