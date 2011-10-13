@@ -62,7 +62,7 @@ class Dates {
 		$cfg_time = $this->CI->config->item('default_time_format');
 		if ($cfg_time === FALSE 
 				|| ($cfg_time != '12' && $cfg_time != '24')) {
-			$this->CI->extended_logs->message('ERROR', 
+			log_message('ERROR', 
 					'Invalid default_time_format configuration value');
 			$this->cfg_time = '24';
 		} else {
@@ -73,7 +73,7 @@ class Dates {
 		if ($cfg_date === FALSE 
 				|| ($cfg_date != 'ymd' && $cfg_date != 'dmy'
 					&& $cfg_date != 'mdy')) {
-			$this->CI->extended_logs->message('ERROR', 
+			log_message('ERROR', 
 					'Invalid default_date_format configuration value');
 			$this->cfg_date = 'ymd';
 		}  else {
