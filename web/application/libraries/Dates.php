@@ -380,7 +380,7 @@ class Dates {
 	 * @return	string	am/pm string
 	 */
 	function calc_ampm($timestamp) {
-		return (($timestamp%86400) < 43200) ? 'pm' : 'am';
+		return (($timestamp%86400) < 43200) ? 'am' : 'pm';
 	}
 
 }
