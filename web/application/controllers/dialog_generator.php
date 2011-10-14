@@ -99,31 +99,37 @@ class Dialog_generator extends CI_Controller {
 			$browser_tzoffset = intval($browser_tzoffset) * 60;
 		}
 
+		// Correct offsets
+		$start -= $browser_tzoffset;
+		if ($end !== FALSE) {
+			$end -= $browser_tzoffset;
+		}
+
+		// Base DateTime start
+		$dstart = $this->dates->ts2datetime($start, 'UTC');
 
 		// TODO make default duration configurable
 
 		if ($view == 'month') {
-			// Calculate times (next/previous 15min)
-			$now = $this->dates->approx_by_factor();
-			$dstart = $this->dates->approx_by_factor($start);
+			// Calculate times
+			$now = $this->dates->approx_by_factor(null, $this->tz);
 			$dstart->setTime($now->format('H'), $now->format('i'));
 			if ($end === FALSE || $start == $end) {
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M'));
 			} else {
-				$dend = $this->dates->ts2datetime($end);
+				$dend = $this->dates->ts2datetime($end, 'UTC');
 				$dend->setTime($dstart->format('H'), $dstart->format('i'));
 			}
 		} elseif ($allday === FALSE) {
-			$dstart = $this->dates->ts2datetime($start);
 			if ($end === FALSE || $start == $end) {
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M')); // 1h
 			} else {
-				$dend = $this->dates->ts2datetime($end);
+				$dend = $this->dates->ts2datetime($end, 'UTC');
 			}
 		} else {
-			$dstart = $this->dates->ts2datetime($start)->setTime(0, 0);
+			$dstart->setTime(0, 0);
 			$dend = clone $dstart;
 			$dend->add(new DateInterval('P1D'));
 		}

@@ -164,10 +164,11 @@ $(document).ready(function() {
 		select: function(startDate, endDate, allDay, jsEvent, view) {
 			var pass_allday = (view.name == 'month') ? false : allDay;
 			var data = {
-					start: startDate.getTime()/1000,
-					end: endDate.getTime()/1000,
+					start: timestamp(startDate),
+					end: timestamp(endDate),
 					allday: pass_allday,
 					view: view.name,
+					tzoffset: current_tzoffset,
 					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
 		
@@ -389,8 +390,8 @@ $(document).ready(function() {
 			calendar: event_data.calendar,
 			href: event_data.href,
 			etag: event_data.etag,
-			start: event_data.start.getTime()/1000,
-			end: event_data.end.getTime()/1000,
+			start: timestamp(event_data.start),
+			end: timestamp(event_data.end),
 			summary: event_data.title,
 			location: event_data.location,
 			allday: event_data.allDay,
@@ -458,7 +459,7 @@ $(document).ready(function() {
 			}
 		})
 		.bind('click', function() {
-			var start = $('#calendar_view').fullCalendar('getDate').getTime()/1000;
+			var start = timestamp($('#calendar_view').fullCalendar('getDate'));
 			var data = {
 					start: start,
 					allday: false,
@@ -1382,6 +1383,13 @@ function event_bubble_content(event) {
 	}
 
 	return tmpl.html();
+}
+
+/*
+ * Round a Date timestamp
+ */
+function timestamp(d) {
+	return Math.round(d.getTime()/1000);
 }
 
 // vim: sw=2 tabstop=2

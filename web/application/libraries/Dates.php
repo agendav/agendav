@@ -87,14 +87,18 @@ class Dates {
 	 * Defaults to 30 minutes (60*30 = 1800)
 	 */
 
-	function approx_by_factor($time = null, $factor = 1800, $tz = null) {
+	function approx_by_factor($time = null, $tz = null, $factor = 1800) {
 		if (is_null($time)) {
 			$time = time();
 		}
 
+		if (is_null($tz)) {
+			$tz = $this->CI->config->item('default_timezone');
+		}
+
 		$rounded = (round($time/$factor))*$factor;
 
-		return $this->ts2datetime($rounded);
+		return $this->ts2datetime($rounded, $tz);
 	}
 
 	/**
