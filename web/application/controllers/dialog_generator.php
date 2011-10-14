@@ -115,7 +115,6 @@ class Dialog_generator extends CI_Controller {
 			$now = $this->dates->approx_by_factor(null, $this->tz);
 			$dstart->setTime($now->format('H'), $now->format('i'));
 			if ($end === FALSE || $start == $end) {
-				log_message('ERROR', 'Clonando dend');
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M'));
 			} else {
