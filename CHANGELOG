@@ -18,6 +18,7 @@ Release 1.2 (2011-x)
 	* Hide time fields when editing/creating an all day event
 	* Add a select helper when creating events in week/day view
 	* Added de_DE translation (thanks to Andreas Stöckel)
+	* Added it_IT translation (thanks to Lorenzo Novaro)
 
 Release 1.1.1 (2011-09-24)
 	* Fix DB schema. Wasn't properlty updated on sql/schema.sql, which

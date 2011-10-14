@@ -17,5 +17,8 @@ $config['lang_rels'] = array(
 		'de_AT' => array(
 			'codeigniter' => 'german',
 			),
+		'it_IT' => array(
+			'codeigniter' => 'italian',
+			),
 		);
 
