@@ -589,3 +589,7 @@ div.share_info {
 td.fc-today {
   background-color: #FFFFCC !important;
 }
+
+div.selecthelper {
+  opacity: 0.5;
+}

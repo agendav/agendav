@@ -171,15 +171,22 @@ $(document).ready(function() {
 					tzoffset: current_tzoffset,
 					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
-		
-		// Useful for creating events in agenda view
-		// TODO: enable and use a custom function to reflect calendar colour (by
-		// default it uses blue events)
-		//selectHelper: true,
 
 			// Unselect every single day/slot
 			$("#calendar_view").fullCalendar('unselect');
 			event_field_form('new', data);
+		},
+		
+		// Useful for creating events in agenda view
+		selectHelper: function(start,end) {
+			var current_calendar_color = 
+				$('#calendar_list li.selected_calendar').data().color;
+
+			return $('<div style="background-color: '+current_calendar_color
+			+'" class="selecthelper"/>')
+				.text(
+						$.fullCalendar.formatDates(start, end,
+							prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
 		},
 
 		// Event resizing
