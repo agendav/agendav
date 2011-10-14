@@ -16,6 +16,7 @@ Release 1.2 (2011-x)
 	  5-6 weeks
 	* Configurable timezone support
 	* Hide time fields when editing/creating an all day event
+	* Add a select helper when creating events in week/day view
 	* Added de_DE translation (thanks to Andreas Stöckel)
 
 Release 1.1.1 (2011-09-24)

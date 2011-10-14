@@ -592,4 +592,6 @@ td.fc-today {
 
 div.selecthelper {
   opacity: 0.5;
+  filter: alpha(opacity = 50);
+  zoom: 1;
 }
