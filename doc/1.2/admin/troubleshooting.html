@@ -1,0 +1,120 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Troubleshooting AgenDAV &mdash; AgenDAV v1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="AgenDAV v1.2 documentation" href="../index.html" />
+    <link rel="up" title="Installation and configuration" href="index.html" />
+    <link rel="next" title="Translating AgenDAV" href="../translations.html" />
+    <link rel="prev" title="2. Configuration" href="configuration.html" />
+    <link media="only screen and (max-device-width: 480px)" href="../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>AgenDAV v1.2 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>3. Troubleshooting AgenDAV</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="../translations.html" title="Translating AgenDAV" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="configuration.html" title="2. Configuration" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation and configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">2. Configuration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">3. Troubleshooting AgenDAV</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../translations.html">Translating AgenDAV</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="troubleshooting-agendav">
+<h1>3. Troubleshooting AgenDAV<a class="headerlink" href="#troubleshooting-agendav" title="Permalink to this headline">¶</a></h1>
+<p>If you are having problems with AgenDAV, do the following changes to enable
+more verbose debugging:</p>
+<p>Edit <tt class="docutils literal"><span class="pre">web/config/config.php</span></tt> and add the value <tt class="docutils literal"><span class="pre">INTERNALS</span></tt> inside
+<tt class="docutils literal"><span class="pre">show_in_log</span></tt> variable. For example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;show_in_log&#39;]= array(&#39;ERROR&#39;,&#39;INFO&#39;,&#39;AUTHERR&#39;, &#39;AUTHOK&#39;,&#39;INTERNALS&#39;);</span>
+</pre></div>
+</div>
+<p>Check AgenDAV logs (make sure you have Check AgenDAV logs (make sure you
+have a valid path configured in <a class="reference internal" href="configuration.html#confval-log_path"><tt class="xref std std-confval docutils literal"><span class="pre">log_path</span></tt></a> and the user which runs
+the webserver has writing access to it) and your webserver logs.</p>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2011, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		<a href="index.html" accesskey="U">Installation and configuration</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
+		3. Troubleshooting AgenDAV
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+  </body>
+</html>
