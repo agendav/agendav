@@ -24,13 +24,12 @@ var ccd = "#create_calendar_dialog";
 var mcd = "#modify_calendar_dialog";
 var dcd = "#delete_calendar_dialog";
 
-$(document).ready(function() {
+// Timezone offset
+var current_tzoffset = new Date().getTimezoneOffset();
 
+$(document).ready(function() {
 	// Refresh session every X seconds code at js_generator
 	// Calls session_refresh()
-
-	// Form elements
-	apply_jQueryUI_styles();
 
 	// Default datepicker options
 	set_default_datepicker_options();
@@ -43,19 +42,22 @@ $(document).ready(function() {
 	$("#calendar_view").fullCalendar({
 		selectable: true,
 		editable: true,
-		firstDay: 1,
-		timeFormat: 'HH:mm',
+		firstDay: prefs_firstday,
+		timeFormat: {
+			agenda: prefs_timeformat + '{ - ' + prefs_timeformat + '}',
+			'': prefs_timeformat
+		},
 		columnFormat: {
-			month: 'ddd',    // lun
-			week: 'ddd d', // lun 9
-			day: 'dddd d MMMM'  // lunes 9 abril
+			month: prefs_format_column_month,
+			week: prefs_format_column_week,
+			day: prefs_format_column_day
 		},
 		titleFormat: {
-			month: 'MMMM yyyy',                             // September 2009
-			week: "d [ MMM][ yyyy]{ '&#8212;'d MMM yyyy}", // Sep 7 - 13 2009
-			day: 'dddd, dd MMM, yyyy'                  // Tuesday, Sep 8, 2009
+			month: prefs_format_title_month,
+			week: prefs_format_title_week,
+			day: prefs_format_title_day
 		},
-		weekMode: 'variable',
+		weekMode: 'liquid',
 		aspectRatio: 1.2,
 		height: calendar_height(),
 		windowResize: function(view) {
@@ -66,22 +68,19 @@ $(document).ready(function() {
 			center: 'title',
 			right:  'today prev,next'
 		},
-		monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-			'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-		monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul',
-			'ago', 'sep', 'oct', 'nov', 'dic' ],
-		dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves',
-			'viernes', 'sábado' ],
-		dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+		monthNames: _('labels', 'months_long'),
+		monthNamesShort: _('labels', 'months_short'),
+		dayNames: _('labels', 'daynames_long'),
+		dayNamesShort: _('labels', 'daynames_short'),
 		buttonText: {
-			today: 'Hoy',
-			month: 'mes',
-			week: 'semana',
-			day: 'día'
+			today: _('labels', 'today'),
+			month: _('labels', 'month'),
+			week: _('labels', 'week'),
+			day: _('labels', 'day')
 		},
 		theme: true, // use jQuery UI themeing
-		allDayText: 'día completo',
-		axisFormat: 'HH:mm',
+		allDayText: _('labels', 'allday'),
+		axisFormat: prefs_timeformat,
 		slotMinutes: 30,
 		firstHour: 8,
 
@@ -90,7 +89,7 @@ $(document).ready(function() {
 		loading: function(bool) {
 			if (bool) {
 				// Now loading
-				$("#calendar_view").mask("Sincronizando eventos...", 500);
+				$("#calendar_view").mask(_('messages', 'overlay_synchronizing'), 500);
 			} else {
 				// Finished loading
 				$("#calendar_view").unmask();
@@ -165,21 +164,29 @@ $(document).ready(function() {
 		select: function(startDate, endDate, allDay, jsEvent, view) {
 			var pass_allday = (view.name == 'month') ? false : allDay;
 			var data = {
-					start: startDate.getTime()/1000,
-					end: endDate.getTime()/1000,
+					start: timestamp(startDate),
+					end: timestamp(endDate),
 					allday: pass_allday,
 					view: view.name,
-					current_calendar: $("#calendar_list li.selected_calendar").data().calendar
+					tzoffset: current_tzoffset,
+					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
-		
-		// Useful for creating events in agenda view
-		// TODO: enable and use a custom function to reflect calendar colour (by
-		// default it uses blue events)
-		//selectHelper: true,
 
 			// Unselect every single day/slot
 			$("#calendar_view").fullCalendar('unselect');
 			event_field_form('new', data);
+		},
+		
+		// Useful for creating events in agenda view
+		selectHelper: function(start,end) {
+			var current_calendar_color = 
+				$('#calendar_list li.selected_calendar').data().color;
+
+			return $('<div style="background-color: '+current_calendar_color
+			+'" class="selecthelper"/>')
+				.text(
+						$.fullCalendar.formatDates(start, end,
+							prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
 		},
 
 		// Event resizing
@@ -198,6 +205,8 @@ $(document).ready(function() {
 					minuteDelta: minuteDelta,
 					allday: event.allDay,
 					was_allday: event.was_allday,
+					timezone: event.timezone,
+					tzoffset: current_tzoffset,
 					type: 'resize'
 				});
 
@@ -210,7 +219,7 @@ $(document).ready(function() {
 						update_single_event(event, data);
 					},
 					function(data) {
-						show_error('Los cambios fallaron', data);
+						show_error(_('messages', 'error_modfailed'), data);
 						revertFunc();
 					},
 					function() {
@@ -238,6 +247,8 @@ $(document).ready(function() {
 					minuteDelta: minuteDelta,
 					allday: event.allDay,
 					was_allday: event.orig_allday,
+					timezone: event.timezone,
+					tzoffset: current_tzoffset,
 					type: 'drag'
 				});
 
@@ -250,7 +261,7 @@ $(document).ready(function() {
 						update_single_event(event, data);
 					},
 					function(data) {
-						show_error('Los cambios fallaron', data);
+						show_error(_('messages', 'error_modfailed'), data);
 						revertFunc();
 					},
 					function() {
@@ -267,7 +278,7 @@ $(document).ready(function() {
 
 	// Refresh link
 	$("#calendar_view td.fc-header-right")
-		.append('<span class="fc-header-space"></span><span class="fc-button-refresh">Refrescar</span>');
+		.append('<span class="fc-header-space"></span><span class="fc-button-refresh">' +_('labels', 'refresh') + '</span>');
 	$("#calendar_view span.fc-button-refresh")
 		.button() 
 		.click(function() {
@@ -276,12 +287,13 @@ $(document).ready(function() {
 
 	// Date picker above calendar
 	$("#calendar_view span.fc-button-today").after('<span class="fc-header-space"></span><span class="fc-button-datepicker">'
-		+'<img src="' + base_url + '/img/datepicker.gif" alt="Choose date" />'
+		+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
+		+ _('labels', 'choose_date') +'" />'
 		+'</span><input type="hidden" id="datepicker_fullcalendar" />');
 	
 	$("#datepicker_fullcalendar").datepicker({
 		changeYear: true,
-		closeText: 'Cancelar',
+		closeText: _('labels', 'cancel'),
 		onSelect: function(date, text) {
 			var d = $("#datepicker_fullcalendar").datepicker('getDate');	
 			$("#calendar_view").fullCalendar('gotoDate', d);
@@ -298,7 +310,8 @@ $(document).ready(function() {
 	$(ved + ' button.link_delete_event').live('click', function() {
 		var data = get_data('current_event');
 		if (data === undefined) {
-			show_error('Error de interfaz', 'El evento actual no está cargado');
+			show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 'error_current_event_not_loaded'));
 			return;
 		}
 
@@ -323,20 +336,19 @@ $(document).ready(function() {
 				thisform.find("input.etag").val(data.etag);
 				
 			},
-			'Borrar evento',
+			_('labels', 'deleteevent'),
 			[ 
 				{
-					'text': 'Sí',
+					'text': _('labels', 'yes'),
 					'class': 'addicon btn-icon-event-delete',
 					'click': function() {
 						var thisform = $("#delete_form");
 						proceed_send_ajax_form(thisform,
 							function(data) {
-								show_success('Evento eliminado', 'El evento fue eliminado correctamente');
 								$("#calendar_view").fullCalendar('removeEvents', get_data('current_event').id);
 							},
 							function(data) {
-								show_error('No se pudo eliminar el evento', data);
+								show_error(_('messages', 'error_event_not_deleted'), data);
 							},
 							function() {}); 
 
@@ -346,7 +358,7 @@ $(document).ready(function() {
 					}
 				},
 				{
-					'text': 'Cancelar',
+					'text': _('labels', 'cancel'),
 					'class': 'addicon btn-icon-cancel',
 					'click': function() { destroy_dialog("#delete_event_dialog"); }
 				}
@@ -375,7 +387,8 @@ $(document).ready(function() {
 		// Data about this event
 		var event_data = get_data('current_event');
 		if (event_data === undefined) {
-			show_error('Error de interfaz', 'El evento actual no está cargado');
+			show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 'error_current_event_not_loaded'));
 			return;
 		}
 
@@ -384,8 +397,8 @@ $(document).ready(function() {
 			calendar: event_data.calendar,
 			href: event_data.href,
 			etag: event_data.etag,
-			start: event_data.start.getTime()/1000,
-			end: event_data.end.getTime()/1000,
+			start: timestamp(event_data.start),
+			end: timestamp(event_data.end),
 			summary: event_data.title,
 			location: event_data.location,
 			allday: event_data.allDay,
@@ -396,6 +409,9 @@ $(document).ready(function() {
 			icalendar_class: event_data.icalendar_class,
 			transp: event_data.transp,
 			recurrence_id: event_data.recurrence_id,
+			tzoffset: current_tzoffset,
+			adjust_start: event_data.adjust_start,
+			adjust_end: event_data.adjust_end,
 			orig_start: event_data.orig_start,
 			orig_end: event_data.orig_end
 		};
@@ -412,13 +428,13 @@ $(document).ready(function() {
 	 *************************************************************/
 
 	// Choosing a calendar
-	$("li.available_calendar").live('click', function() {
-		$("#calendar_list li.selected_calendar").removeClass("selected_calendar");
-		$(this).addClass("selected_calendar");
+	$('li.available_calendar').live('click', function() {
+		$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
+		$(this).addClass('selected_calendar');
 	});
 
 	// Editing a calendar
-	$("li.available_calendar").live('dblclick', function(e) {
+	$('li.available_calendar').live('dblclick', function(e) {
 		e.preventDefault();
 		calendar_modify_form(this);
 	});
@@ -427,12 +443,12 @@ $(document).ready(function() {
 	update_calendar_list(true);
 
 	// Refresh calendar list
-	$("#calendar_list_refresh").click(function() {
+	$('#calendar_list_refresh').click(function() {
 		update_calendar_list(true);
 	});
 
 	// Create calendar
-	$("#calendar_add").click(calendar_create_form);
+	$('#calendar_add').click(calendar_create_form);
 	
 
 	/*************************************************************
@@ -450,12 +466,12 @@ $(document).ready(function() {
 			}
 		})
 		.bind('click', function() {
-			var start = $("#calendar_view").fullCalendar('getDate').getTime()/1000;
+			var start = timestamp($('#calendar_view').fullCalendar('getDate'));
 			var data = {
 					start: start,
 					allday: false,
 					view: 'month',
-					current_calendar: $("#calendar_list li.selected_calendar").data().calendar
+					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
 
 			// Unselect every single day/slot
@@ -546,7 +562,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		$.ajax({
 			url: base_app_url + url,
 			beforeSend: function(jqXHR, settings) {
-				$("body").mask("Cargando diálogo...", 500);
+				$("body").mask(_('messages', 'overlay_loading_dialog'), 500);
 			},
 			complete: function(jqXHR, textStatus) {
 				$("body").unmask();
@@ -556,17 +572,16 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 			data: formdata,
 			dataType: 'html',
 			error: function(jqXHR, textStatus, errorThrown) {
-				show_error('Error cargando formulario',
-					'Por favor, inténtelo de nuevo. Mensaje: ' + textStatus);
+				show_error(_('messages', 'error_loading_dialog'),
+					_('messages', 'error_oops') + ': ' + textStatus);
 			},
 			success: function(data, textStatus, jqXHR) {
 				$("body").append(data);
-				apply_jQueryUI_styles();
 				$("#" + divname).dialog({
 					autoOpen: true,
 					buttons: buttons,
 					title: title,
-          width: width,
+          minWidth: width,
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
@@ -582,7 +597,8 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		$(thisform).remove();
 	} else {
 		// Error generating dialog on the fly?
-		show_error('Error de interfaz', 'No se pudo generar diálogo OTF');
+		show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 'error_oops'));
 	}
 }
 
@@ -599,7 +615,7 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 	$.ajax({
 		url: url,
 		beforeSend: function(jqXHR, settings) {
-			$("body").mask("Enviando formulario...", 1000);
+			$("body").mask(_('messages', 'overlay_sending_form'), 1000);
 		},
 		complete: function(jqXHR, textStatus) {
 			$("body").unmask();
@@ -609,8 +625,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 		data: data,
 		dataType: 'json',
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error procesando formulario',
-				'Por favor, inténtelo de nuevo. Mensaje: [AS] ' + textStatus);
+			show_error(_('messages', 'error_interfacefailure'),
+				_('messages', 'error_oops') + ':' + textStatus);
 			set_data('lastoperation', 'failed');
 			errorFunc();
 		},
@@ -620,7 +636,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 			var message = data.message;
 			if (result == "ERROR") {
 				set_data('lastoperation', 'failed');
-				show_error('Ocurrió algo inesperado',
+				show_error(
+					_('messages', 'error_internal'),
 					message);
 				errorFunc();
 			} else if (result == "EXCEPTION") {
@@ -630,8 +647,8 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 				set_data('lastoperation', 'success');
 				successFunc(message);
 			} else {
-				show_error('Respuesta desconocida del servicio AJAX',
-						'Estado ' + result + ' desconocido.');
+				show_error(_('messages', 'error_internal'),
+						_('messages', 'error_oops') + ':' + result);
 			}
 		}
 		});
@@ -660,8 +677,8 @@ function generate_on_the_fly_form(action, data) {
 		dataType: 'text',
 		async: false, // Let's wait
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error cargando formulario dinámico',
-				'Por favor, inténtelo de nuevo. Mensaje: ' + textStatus);
+			show_error(_('messages', 'error_genform'),
+				textStatus);
 			set_data('formcreation', 'failed');
 		},
 		success: function(formdata, textStatus, jqXHR) {
@@ -688,41 +705,30 @@ function destroy_dialog(name) {
 
 }
 
-
-/**
- * Applies jQuery UI themeing classes
- */
-function apply_jQueryUI_styles() {
-	$('input[type="text"],input[type="password"],textarea').addClass("ui-widget-content ui-corner-all");
-	$('input[disabled="disabled"]').addClass("ui-state-disabled");
-}
-
 /**
  * Sets datepicker options
  */
 function set_default_datepicker_options() {
 	// Localization (TODO: make this configurable!)
-$.datepicker.regional['es'] = {
-	closeText: 'Cerrar',
-	prevText: '&#x3c;Ant',
-	nextText: 'Sig&#x3e;',
-	currentText: 'Hoy',
-	monthNames: ['enero','febrero','marzo','abril','mayo','junio',
-	'julio','agosto','septiembre','octubre','noviembre','diciembre'],
-	monthNamesShort: ['ene','feb','mar','abr','may','jun',
-	'jul','ago','sep','oct','nov','dic'],
-	dayNames: ['domingo','lunes','martes','mi&eacute;rcoles','jueves','viernes','s&aacute;bado'],
-	dayNamesShort: ['dom','lun','mar','mi&eacute;','juv','vie','s&aacute;b'],
-	dayNamesMin: ['do','lu','ma','mi','ju','vi','s&aacute;'],
+$.datepicker.regional['custom'] = {
+	closeText: _('labels', 'close'),
+	prevText: _('labels', 'previous'),
+	nextText: _('labels', 'next'),
+	currentText: _('labels', 'today'),
+	monthNames: _('labels', 'months_long'),
+	monthNamesShort: _('labels', 'months_short'),
+	dayNames: _('labels', 'daynames_long'),
+	dayNamesShort: _('labels', 'daynames_short'),
+	dayNamesMin: _('labels', 'daynames_short'),
 	weekHeader: 'Sm',
-	dateFormat: 'dd/mm/yy',
-	firstDay: 1,
+	firstDay: prefs_firstday,
 	isRTL: false,
 	showMonthAfterYear: false,
 	yearSuffix: ''};	
 
-$.datepicker.setDefaults($.datepicker.regional['es']);
+$.datepicker.setDefaults($.datepicker.regional['custom']);
 $.datepicker.setDefaults({constrainInput: true});
+$.datepicker.setDefaults({dateFormat: prefs_dateformat});
 }
 
 /**
@@ -782,19 +788,17 @@ function event_field_form(type, data) {
 
 	if (type == 'new') {
 		url_dialog += 'create_event';
-		title = 'Crear nuevo evento';
-		action_verb = 'creado';
+		title = _('labels', 'createevent');
 	} else {
 		url_dialog += 'edit_event';
-		title = 'Editar evento';
-		action_verb = 'modificado';
+		title = _('labels', 'editevent');
 	}
 
 	load_generated_dialog(url_dialog,
 		data,
 		function() {
 			var common_timepicker_opts = {
-				show24Hours: true,
+				show24Hours: (prefs_timeformat_option == '24' ? true : false),
 				separator: ':',
 				step: 30
 			};
@@ -832,22 +836,15 @@ function event_field_form(type, data) {
 				set_end_minDate();
 
 				if ($(this).is(":checked")) {
-
-					$(ced + " input.start_time").attr('disabled', 'disabled');;
-					$(ced + " input.start_time").addClass('ui-state-disabled');
-					$(ced + " input.end_time").attr('disabled', 'disabled');;
-					$(ced + " input.end_time").addClass('ui-state-disabled');
+					$(ced + " input.start_time").hide();
+					$(ced + " input.end_time").hide();
 				} else {
 					$(ced + " input.end_date").removeAttr('disabled');
 					$(ced + " input.end_date").removeClass('ui-state-disabled');
 					$(ced + " input.end_date").datepicker('setDate', current);
 
-					$(ced + " input.start_time").removeAttr('disabled');
-					$(ced + " input.start_time").removeClass('ui-state-disabled');
-					$(ced + " input.start_time").timepicker('enable');
-					$(ced + " input.end_time").removeAttr('disabled');
-					$(ced + " input.end_time").removeClass('ui-state-disabled');
-					$(ced + " input.end_time").timepicker('enable');
+					$(ced + " input.start_time").show();
+					$(ced + " input.end_time").show();
 				}
 			});
 
@@ -901,15 +898,12 @@ function event_field_form(type, data) {
 		title,
 		[
 			{
-				'text': 'Guardar',
+				'text': _('labels', 'save'),
 				'class': 'addicon btn-icon-event-edit',
 				'click': function() {
 					var thisform = $("#com_form");
 					proceed_send_ajax_form(thisform,
 						function(data) {
-							show_success('Evento '+action_verb, 'El evento fue '+action_verb
-								+' correctamente');
-
 							// Reload only affected calendars
 							$.each(data, function(k, cal) {
 								reload_event_source(cal);
@@ -920,7 +914,7 @@ function event_field_form(type, data) {
 						},
 						function(data) {
 							// Problem with form data
-							show_error('Datos inválidos', data);
+							show_error(_('messages', 'error_invalidinput'), data);
 						},
 						function(data) {
 							// Do nothing
@@ -929,7 +923,7 @@ function event_field_form(type, data) {
 				}
 			},
 			{
-				'text': 'Cancelar',
+				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
 				'click': function() { destroy_dialog(ced); }
 			}
@@ -952,7 +946,7 @@ function update_single_event(event, new_data) {
 function calendar_create_form() {
 
 	var url_dialog = 'dialog_generator/create_calendar';
-	var title = 'Nuevo calendario';
+	var title = _('labels', 'newcalendar');
 
 
 	load_generated_dialog(url_dialog,
@@ -963,19 +957,18 @@ function calendar_create_form() {
 		title,
 		[
 			{
-				'text': 'Crear',
+				'text': _('labels', 'create'),
 				'class': 'addicon btn-icon-calendar-add',
 				'click': function() {
 					var thisform = $("#calendar_create_form");
 					proceed_send_ajax_form(thisform,
 						function(data) {
-							show_success('Calendario creado', 'Ya puede acceder a él');
 							destroy_dialog(ccd);
 							update_calendar_list(false);
 						},
 						function(data) {
 							// Problem with form data
-							show_error('Datos inválidos', data);
+							show_error(_('messages', 'error_invalidinput'), data);
 						},
 						function(data) {
 							// Do nothing
@@ -983,7 +976,7 @@ function calendar_create_form() {
 					}
 			},
 			{
-				'text': 'Cancelar',
+				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
 				'click': function() { destroy_dialog(ccd); }
 			}
@@ -995,7 +988,7 @@ function calendar_create_form() {
 function calendar_modify_form(calendar_obj) {
 
 	var url_dialog = 'dialog_generator/modify_calendar';
-	var title = 'Modificar calendario';
+	var title = _('labels', 'modifycalendar');
 	var data = $(calendar_obj).data();
 
 	var calendar_data = {
@@ -1012,7 +1005,7 @@ function calendar_modify_form(calendar_obj) {
 	var buttons_and_actions = 
 		[
 			{
-				'text': "Eliminar calendario",
+				'text': _('labels', 'deletecalendar'),
 				'class': 'addicon btn-icon-calendar-delete',
 				'click': function() { 
 					destroy_dialog(mcd);
@@ -1022,32 +1015,29 @@ function calendar_modify_form(calendar_obj) {
 							displayname: $(calendar_obj).data().displayname
 						},
 						function() {},
-						'Eliminar calendario',
+						_('labels', 'delete'),
 						[ 
 						{
-							'text': 'Sí',
+							'text': _('labels', 'yes'),
 							'class': 'addicon btn-icon-calendar-delete',
 							'click': function() {
 								var thisform = $("#delete_calendar_form");
 								proceed_send_ajax_form(thisform,
 										function(data) {
-										show_success('Calendario eliminado', 
-											'El calendario fue eliminado correctamente');
-
 											// Remove from calendar and UI
 											var es = $(calendar_obj).data().eventsource;
-											$("#calendar_view").fullCalendar('removeEventSource',
+											$('#calendar_view').fullCalendar('removeEventSource',
 												$(calendar_obj).data().eventsource);
 
 											// Select another calendar before removing this one
-											if ($(calendar_obj).hasClass("selected_calendar")) {
-												$("#calendar_list li.available_calendar:first").click();
+											if ($(calendar_obj).hasClass('selected_calendar')) {
+												$('#calendar_list li.available_calendar:first').click();
 											}
 
 											$(calendar_obj).remove();
 										},
 										function(data) {
-											show_error('No se pudo eliminar el calendario', data);
+											show_error(_('labels', 'error_caldelete'), data);
 										},
 										function() {}); 
 
@@ -1057,7 +1047,7 @@ function calendar_modify_form(calendar_obj) {
 							}
 						},
 						{
-							'text': 'Cancelar',
+							'text': _('labels', 'cancel'),
 							'class': 'addicon btn-icon-cancel',
 							'click': function() { destroy_dialog(dcd); }
 						}
@@ -1066,20 +1056,19 @@ function calendar_modify_form(calendar_obj) {
 				}
 			},
 			{
-				'text': "Modificar",
+				'text': _('labels', 'modify'),
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
 				var thisform = $("#modify_calendar_form");
 				proceed_send_ajax_form(thisform,
 					function(data) {
-						show_success('Calendario modificado', 'Cambios aplicados');
 						destroy_dialog(mcd);
 						// TODO remove specific calendar and update only its events
 						update_calendar_list(false);
 					},
 					function(data) {
 						// Problem with form data
-						show_error('Datos inválidos', data);
+						show_error(_('messages', 'error_invalidinput'), data);
 					},
 					function(data) {
 						// Do nothing
@@ -1087,7 +1076,7 @@ function calendar_modify_form(calendar_obj) {
 				}
 			},
 			{
-				'text': "Cancelar",
+				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
 				'click': function() { destroy_dialog(mcd); }
 			}
@@ -1126,7 +1115,7 @@ function update_calendar_list(maskbody) {
 		async: false, // Let's wait
 		beforeSend: function(jqXHR, settings) {
 			if (maskbody) {
-				$("body").mask("Actualizando calendarios...", 500);
+				$("body").mask(_('messages', 'overlay_loading_calendar_list'), 500);
 			}
 		},
 		complete: function(jqXHR, textStatus) {
@@ -1135,14 +1124,14 @@ function update_calendar_list(maskbody) {
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error cargando lista de calendarios',
-				'Por favor, inténtelo de nuevo. Mensaje: ' + textStatus);
+			show_error(_('messages', 'error_loading_calendar_list'),
+				_('messages', 'error_oops') + textStatus);
 		},
 		success: function(data, textStatus, jqXHR) {
 			// Remove old eventSources and remove every list item
-			$("#calendar_list li.available_calendar").each(function(index) {
+			$('#calendar_list li.available_calendar').each(function(index) {
 				var data = $(this).data();
-				$("#calendar_view").fullCalendar('removeEventSource',
+				$('#calendar_view').fullCalendar('removeEventSource',
 					data.eventsource);
 				$(this).remove();
 			});
@@ -1155,9 +1144,9 @@ function update_calendar_list(maskbody) {
 
 				var li = generate_calendar_entry(value);
 
-				$("#calendar_list ul").append(li);
+				$('#calendar_list ul').append(li);
 
-				$("#calendar_view").fullCalendar('addEventSource', $(li).data().eventsource);
+				$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
 			});
 
 			// No calendars?
@@ -1168,15 +1157,15 @@ function update_calendar_list(maskbody) {
 				if (last_calendar_count === undefined ||
 					last_calendar_count != '0') {
 					set_data('last_calendar_count', 0);
-					setTimeout("update_calendar_list(false)", 1);
+					setTimeout('update_calendar_list(false)', 1);
 				} else {
 					// Calendar list received empty twice
-					show_error('Sin calendarios', 'No tiene calendarios');
+					show_error(_('messages','notice_no_calendars'), '');
 				}
 			} else {
 				set_data('last_calendar_count', count);
 				// Select the first one by default
-				$("#calendar_list li.available_calendar:first").click();
+				$('#calendar_list li.available_calendar:first').click();
 			}
 		}
 	});
@@ -1187,26 +1176,23 @@ function update_calendar_list(maskbody) {
  */
 function generate_event_source(calendar) {
 	var ajax_options = {
-			url: base_app_url + 'caldav2json/events/' + calendar,
+			// If #calendar is not used, Fullcalendar will be confused when
+			// calling removeEventSource, and will remove all calendars
+			url: base_app_url + 'caldav2json/events#' + calendar,
 			cache: false,
+			// TODO make timezone configurable
 			data: {
-				tzoffset: new Date().getTimezoneOffset()
+				calendar: calendar,
+				tzoffset: current_tzoffset
 				},
 			error: function() {
-				show_error('Error cargando calendario', 
-					'Los eventos del calendario '+ calendar +' no se pudieron '
-					+' cargar. Por favor, inténtelo de nuevo');
-						 }
+				show_error(_('messages', 'error_interfacefailure'), 
+				_('messages', 
+					'error_loadevents', { '%cal' : calendar }));
+			}
 	};
 
 	return ajax_options;
-}
-
-/**
- * Allows using selectors with ':', from docs.jquery.com
- */
-function jq(myid) { 
-	return myid.replace(/(:|\.)/g,'\\$1');
 }
 
 /**
@@ -1223,7 +1209,8 @@ function session_refresh(n) {
 		success: function(data, textStatus, jqXHR) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error("Error refrescando sesión", "No se pudo recargar su sesión");
+			show_error(_('messages', 'error_interfacefailure'), 
+			 _('messages', 'error_sessrefresh'));
 		}
 	});
 	setTimeout("session_refresh(" + n + ")", n);
@@ -1271,7 +1258,6 @@ function generate_calendar_entry(data) {
 	var li = $("<li></li>")
 		.addClass("calendar_color")
 		.addClass("available_calendar")
-		.attr("id", "calendar_" + data.calendar)
 		.attr("title", data.displayname)
 		.css('background-color', data.color)
 		.html(data.shown_displayname);
@@ -1283,6 +1269,7 @@ function generate_calendar_entry(data) {
 	}
 
 	var eventsource = generate_event_source(data.calendar);
+	eventsource.ignoreTimezone = true; // Ignore UTC offsets
 	eventsource.color = data.color;
 	eventsource.textColor = fg;
 	data.eventsource = eventsource;
@@ -1300,29 +1287,41 @@ function generate_calendar_entry(data) {
  * Gets calendar display name from its internal name
  */
 function get_calendar_displayname(c) {
-	var calelem = $(jq("#calendar_" + c));
-	if (calelem.length == 1) {
-		calname = $(calelem).data().displayname;
-	} else {
-		calname = event.calendar + " (?)";
-	}
+	var calname = undefined;
 
-	return calname;
+	$('#calendar_list li.available_calendar').each(function(index) {
+		var thiscal = $(this).data();
+		if (thiscal.calendar == c) {
+			calname = thiscal.displayname;
+			return false; // stop looking for calendar
+		}
+	});
+
+	return (calname !== undefined ? calname : event.calendar + '(?)');;
 }
 
 /*
  * Reloads an event source by removing it and reenabling it
  */
 function reload_event_source(cal) {
-	var calelem = $(jq("#calendar_" + cal));
+	var eventsource = undefined;
 
-	if (calelem.length == 1) {
-		var eventsource = $(calelem).data().eventsource;
-		$("#calendar_view").fullCalendar('removeEventSource', eventsource);
-		$("#calendar_view").fullCalendar('addEventSource', eventsource);
+	$('#calendar_list li.available_calendar').each(function(index) {
+		var thiscal = $(this).data();
+		if (thiscal.calendar == cal) {
+			eventsource = thiscal.eventsource;
+			return false; // stop looking for calendar
+		}
+	});
+
+	if (eventsource !== undefined) {
+		$('#calendar_view').fullCalendar('removeEventSource', eventsource);
+		$('#calendar_view').fullCalendar('addEventSource', eventsource);
 	} else {
-		show_error('Calendario inexistente', 'Se intentó recargar el calendario ' + cal);
+		show_error(_('messages', 'error_interfacefailure'),
+				_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
 	}
+
 }
 
 /*
@@ -1391,6 +1390,13 @@ function event_bubble_content(event) {
 	}
 
 	return tmpl.html();
+}
+
+/*
+ * Round a Date timestamp
+ */
+function timestamp(d) {
+	return Math.round(d.getTime()/1000);
 }
 
 // vim: sw=2 tabstop=2

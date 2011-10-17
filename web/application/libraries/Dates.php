@@ -20,19 +20,85 @@
  */
 
 class Dates {
+
+	// Possible time formats
+	static $timeformats = array(
+			'24' => array(
+				'strftime' => '%H:%M',
+				'date' => 'H:i',
+				'fullcalendar' => 'HH:mm',
+				),
+			'12' => array(
+				'strftime' => '%l:%M',  // %P will be simulated, not working
+										// in all systems
+				'date' => 'h:i A', // Match timepicker format
+				'fullcalendar' => 'h(:mm)tt',
+				));
+
+	// Possible date formats (not needed for strftime)
+	static $dateformats = array(
+			'ymd' => array(
+				'date' => 'Y-m-d',
+				'datepicker' => 'yy-mm-dd',
+				),
+			'dmy' => array(
+				'date' => 'd/m/Y',
+				'datepicker' => 'dd/mm/yy',
+				),
+			'mdy' => array(
+				'date' => 'm/d/Y',
+				'datepicker' => 'mm/dd/yy',
+				),
+			);
+
+	private $CI;
+	private $cfg_time;
+	private $cfg_date;
+
+	function __construct() {
+		$this->CI =& get_instance();
+
+		// Load time and date formats
+		$cfg_time = $this->CI->config->item('default_time_format');
+		if ($cfg_time === FALSE 
+				|| ($cfg_time != '12' && $cfg_time != '24')) {
+			log_message('ERROR', 
+					'Invalid default_time_format configuration value');
+			$this->cfg_time = '24';
+		} else {
+			$this->cfg_time = $cfg_time;
+		}
+
+		$cfg_date = $this->CI->config->item('default_date_format');
+		if ($cfg_date === FALSE 
+				|| ($cfg_date != 'ymd' && $cfg_date != 'dmy'
+					&& $cfg_date != 'mdy')) {
+			log_message('ERROR', 
+					'Invalid default_date_format configuration value');
+			$this->cfg_date = 'ymd';
+		}  else {
+			$this->cfg_date = $cfg_date;
+		}
+
+	}
+
 	/**
 	 * Returns a DatTime object with date approximated by factor seconds.
 	 * Defaults to 30 minutes (60*30 = 1800)
 	 */
 
-	function approx_by_factor($time = null, $factor = 1800, $tz = null) {
+	function approx_by_factor($time = null, $tz = null, $factor = 1800) {
 		if (is_null($time)) {
 			$time = time();
 		}
 
+		if (is_null($tz)) {
+			$tz = $this->CI->config->item('default_timezone');
+		}
+
 		$rounded = (round($time/$factor))*$factor;
 
-		return $this->ts2datetime($rounded);
+		return $this->ts2datetime($rounded, $tz);
 	}
 
 	/**
@@ -41,7 +107,7 @@ class Dates {
 	 */
 	function ts2datetime($ts, $tz = null) {
 		if (is_null($tz)) {
-			$tz = date_default_timezone_get();
+			$tz = $this->CI->config->item('default_timezone');
 		}
 
 		$obj = new DateTime('@' . $ts);
@@ -54,16 +120,16 @@ class Dates {
 	/**
 	 * Creates a DateTime object from a date formatted by frontend (such as
 	 * m/d/Y H:i).
-	 * TODO configurable format
 	 *
 	 * Returns FALSE on date parsing error
 	 */
 	function frontend2datetime($str, $tz = null) {
 		if (is_null($tz)) {
-			$tz = date_default_timezone_get();
+			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$obj = DateTime::createFromFormat('d/m/Y H:i', $str, new
+		$format = $this->date_format_string('date') . ' '. $this->time_format_string('date');
+		$obj = DateTime::createFromFormat($format, $str, new
 				DateTimeZone($tz));
 		$err = DateTime::getLastErrors();
 		if (FALSE === $obj || $err['warning_count']>0) {
@@ -105,7 +171,7 @@ class Dates {
 	function idt2datetime($id_arr, $tz = null) {
 		if ($tz == null) {
 			// Suppose current timezone
-			$tz = date_default_timezone_get();
+			$tz = $this->CI->config->item('default_timezone');
 		}
 
 		$format = 'YmdHis';
@@ -222,8 +288,8 @@ class Dates {
 
 		if ($res === FALSE || $res != 1) {
 			log_message('ERROR',
-					'Error procesando [' . $str . '] como cadena'
-					.' para X-CURRENT-*');
+					'Error processing [' . $str . '] as X-CURRENT-*'
+					.' string');
 			return new DateTime();
 		}
 
@@ -250,6 +316,75 @@ class Dates {
 		}
 
 		return $dt;
+	}
+
+	/**
+	 * Returns a time format string for the current user
+	 *
+	 * @param	string	Type of format (fullcalendar, date, strftime)
+	 * @return	string	Format string. Default formats on invalid params
+	 */
+	function time_format_string($type) {
+		switch($type) {
+			case 'fullcalendar':
+			case 'date':
+			case 'strftime':
+				return Dates::$timeformats[$this->cfg_time][$type];
+				break;
+			default:
+				$this->CI->extended_logs->message('ERROR', 
+						'Invalid type for time_format_string() passed'
+						.' ('.$type.')');
+				break;
+		}
+	}
+
+	/**
+	 * Returns a date format string for the current user
+	 *
+	 * @param	string	Type of format (date, datepicker)
+	 * @return	string	Format string. Default formats on invalid params
+	 */
+	function date_format_string($type) {
+		switch($type) {
+			case 'date':
+			case 'datepicker':
+				return Dates::$dateformats[$this->cfg_date][$type];
+				break;
+			default:
+				$this->CI->extended_logs->message('ERROR', 
+						'Invalid type for date_format_string() passed'
+						.' ('.$type.')');
+				break;
+		}
+
+	}
+
+
+	/**
+	 * Formats a timestamp time using strftime
+	 *
+	 * @param	int	Timestamp
+	 * @return	string	Formatted time string with strftime
+	 */
+	function strftime_time($timestamp) {
+		$format = Dates::$timeformats[$this->cfg_time]['strftime'];
+		$result = strftime($format, $timestamp);
+		if ($this->cfg_time == '12') {
+			$result .= $this->calc_ampm($timestamp);
+		}
+		
+		return $result;
+	}
+
+	/**
+	 * Calculates strftime %P (am/pm) for a given time
+	 *
+	 * @param	int	timestamp
+	 * @return	string	am/pm string
+	 */
+	function calc_ampm($timestamp) {
+		return (($timestamp%86400) < 43200) ? 'am' : 'pm';
 	}
 
 }

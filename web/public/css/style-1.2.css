@@ -55,12 +55,20 @@ img {
   margin: 5% auto 0 auto;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  color: #324269; 
-  max-width: 20em;
-}
+.uniForm .ctrlHolder{ padding: .3em; }
+.uniForm textarea    { height: 6em; }
+.uniForm label { float: left; width: 30%; }
+.uniForm .ultrasmall { width: 20% !important; }
+.uniForm .small { width: 30% !important; }
+.uniForm .medium{ width: 45% !important; }
+.uniForm .large { width: 60% !important; } 
+.uniForm .auto  { width: auto !important; height: auto !important; }
+.uniForm .small,
+.uniForm .ultrasmall,
+.uniForm .medium,
+.uniForm .auto{ margin-right: 4px; }
+.uniForm:after,
+.uniForm .ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
 
 #topbar {
   background: url(../img/bg_topbar.png) #f0f0f0 top left repeat-x;
@@ -401,7 +409,6 @@ li.selected_calendar {
 .view_event_details .ui-tooltip-content {
   line-height: 150%;
   padding: 0.5em 2em 0.5em 2em !important;
-  font-size: 120% !important;
 }
 
 .view_event_details .ui-tooltip-title {
@@ -431,6 +438,7 @@ li.selected_calendar {
 
 /* colorPicker starts */
 div.color_picker {
+  float: left;
   height: 16px;
   width: 32px;
   padding: 0 !important;
@@ -522,10 +530,11 @@ ul.tagit input[type="text"] {
 /* tag-it ends */
 
 #tabs-share ul.tagit {
-  width: 300px;
+  width: 80%;
 }
 
 div.public_url {
+  width: 90%;
   text-align: right;
   font-size: 80%;
   margin-top: 1em;
@@ -550,7 +559,7 @@ div.share_info {
   padding: 10px 10px 10px 40px;
   border: 1px solid #e0e0e0;
   width: 350px;
-  margin: 0 auto 0 auto;
+  margin: 0.5em auto 0 auto;
 }
 
 /* 
@@ -577,4 +586,12 @@ div.share_info {
   background-image: url(../img/button-icons/calendar_edit.png) !important;
 }
 
+td.fc-today {
+  background-color: #FFFFCC !important;
+}
 
+div.selecthelper {
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
+  zoom: 1;
+}

@@ -34,12 +34,12 @@ class Login extends CI_Controller {
 				array(
 					array(
 						'field' => 'user',
-						'label' => 'Nombre de usuario',
+						'label' => $this->i18n->_('labels', 'username'),
 						'rules' => 'required',
 						),
 					array(
 						'field' => 'passwd',
-						'label' => 'Contraseña',
+						'label' => $this->i18n->_('labels', 'password'),
 						'rules' => 'required',
 						),
 					));
@@ -65,7 +65,7 @@ class Login extends CI_Controller {
 						);
 				$this->auth->new_session($data);
 			} else {
-				$err = 'Nombre de usuario o contraseña inválidos';
+				$err = $this->i18n->_('messages', 'error_auth');
 			}
 		}
 
@@ -77,8 +77,8 @@ class Login extends CI_Controller {
                         'jquery-ui-1.8.16.min.js',
                         ),
                     'css' => array(
-                        'css/style-1.1.1.css',
-                        'css/jquery-ui-1.8.16.custom.css',
+                        'css/Aristo_20110919.css',
+                        'css/style-1.2.css',
                         ));
 			$this->load->view('common_header', $data_header);
 
@@ -87,7 +87,13 @@ class Login extends CI_Controller {
 				$data['custom_errors'] = $err;
 			}
 
-			$this->load->view('login_ldap/login.php', $data);
+			$logo = $this->config->item('logo');
+			if ($logo !== FALSE) {
+				$data['logo'] = $logo;
+				$data['title'] = $data_header['title'];
+			}
+
+			$this->load->view('login', $data);
 			$this->load->view('footer');
 		} else {
 			redirect("/calendar");

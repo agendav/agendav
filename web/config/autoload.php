@@ -110,7 +110,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('auth', 'recurrency', 'shared_calendars');
+$autoload['model'] = array('auth', 'recurrency', 'shared_calendars', 'i18n');
 
 
 /* End of file autoload.php */

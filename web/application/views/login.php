@@ -2,7 +2,6 @@
 //<![CDATA[
 $(document).ready(function() {
 	$("input:submit").button();
-	$('input[type="text"],input[type="password"],textarea').addClass("ui-widget-content ui-corner-all");
 	$('input[name="user"]').focus();
 
 });
@@ -10,12 +9,18 @@ $(document).ready(function() {
 </script>
 <div class="logintitle">
 <?php
-$img = array(
-		'src' => 'img/US.gif',
-		'alt' => 'Universidad de Sevilla',
-		);
-echo img($img);
-
+if (isset($logo)):
+	$img = array(
+        'src' => 'img/' . $logo,
+        'alt' => $title,
+        'title' => $title,
+			);
+	?>
+ <div id="logo" class="block">
+ <?php echo img($img); ?>
+ </div>
+ <?php
+ endif;
 ?>
 <h1><?php echo $this->config->item('site_title')?></h1>
 </div>
@@ -46,16 +51,11 @@ endif;
 
   <div class="loginform_fields">
   <?php
-  echo form_open('login/');
+  echo form_open('login/', array('class' => 'uniForm'));
   ?>
-   <table>
-    <tr>
-	 <td>
 <?php
 
-  echo form_label('Nombre de usuario:');
-  echo '</td><td>';
-  $usuario = array(
+  $user = array(
 		  'name' => 'user',
 		  'id' => 'login_user',
 		  'value' => set_value('user'),
@@ -63,10 +63,11 @@ endif;
 		  'size' => '15',
 		  'autofocus' => 'autofocus',
 		  );
-  echo form_input($usuario);
-  echo '</td></tr><tr><td>';
-  echo form_label('Contraseña:');
-  echo '</td><td>';
+  echo formelement(
+		  $this->i18n->_('labels', 'username'),
+		  form_input($user));
+  ?>
+  <?php
   $password = array(
 		  'name' => 'passwd',
 		  'id' => 'login_passwd',
@@ -74,13 +75,17 @@ endif;
 		  'maxlength' => '40',
 		  'size' => '15',
 		  );
-  echo form_password($password);
-  echo '</td></tr><tr><td></td><td>';
-  echo form_submit('login', 'Acceder');
-  echo '</td></tr></table>';
+  echo formelement(
+		  $this->i18n->_('labels', 'password'),
+		  form_password($password));
+  ?>
+	<div class="buttonHolder">
+  <?php
+  echo form_submit('login', $this->i18n->_('labels', 'login'));
   echo form_close();
 
  ?>
+  </div>
  </div>
  </div>
 </div>

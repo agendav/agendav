@@ -23,9 +23,21 @@ class Icshelper {
 	var $final_url;
 	var $config; // for iCalCreator
 
+	private $tz;
+	private $tz_obj;
+
+	private $date_format; // Date format given by lang file
+
 	function __construct() {
 
 		$this->CI =& get_instance();
+
+		// Timezone
+		$this->tz = $this->CI->config->item('default_timezone');
+		$this->tz_obj = new DateTimeZone($this->tz);
+
+		$this->date_format = $this->CI->i18n->_('labels',
+				'format_date_strftime');
 
 		$this->config = array(
 				'unique_id' =>
@@ -148,7 +160,8 @@ class Icshelper {
 	 * @param int		$end		End timestamp
 	 * @param string		$calendar		Current calendar
 	 */
-	function expand_and_parse_events($resources, $start, $end, $calendar) {
+	function expand_and_parse_events($resources, $start, $end, $calendar,
+			$browser_tzoffset = 0) {
 		$result = array();
 
 		// Dates
@@ -197,7 +210,8 @@ class Icshelper {
 								$tz = $this->detect_tz($event, $timezones);
 								$result[] =
 									$this->parse_vevent_fullcalendar($event,
-										$event_href, $event_etag, $calendar, $tz);
+										$event_href, $event_etag, $calendar,
+										$tz, $browser_tzoffset);
 							}
 						}
 					}
@@ -213,7 +227,8 @@ class Icshelper {
 						$tz = $this->detect_tz($event, $timezones);
 						$result[] =
 							$this->parse_vevent_fullcalendar($event,
-									$event_href, $event_etag, $calendar, $tz);
+									$event_href, $event_etag, $calendar,
+									$tz, $browser_tzoffset);
 					}
 				}
 			}
@@ -224,51 +239,11 @@ class Icshelper {
 	}
 
 	/**
-	 * Parses a list of events for Fullcalendar
-	 */
-
-	function events_fullcalendar($resources, $calendar) {
-
-		$parsed = array();
-
-		foreach ($resources as $r) {
-
-			$event_data = $r['data'];
-			$event_href = $r['href'];
-			$event_etag = $r['etag'];
-
-			$ical = new vcalendar($this->config);
-			$res = $ical->parse($event_data);
-			if ($res === FALSE) {
-				$this->CI->extended_logs->message('ERROR',
-						'Error parsing calendar ' . $calendar . '/' .
-						$event_href);
-				return;
-			}
-
-			// Do it right
-			$timezones = $this->get_timezones($ical);
-
-			// Only VEVENTs (ATM)
-			while ($c = $ical->getComponent('vevent')) {
-				$tz = $this->detect_tz($c, $timezones);
-				$thisone = $this->parse_vevent_fullcalendar($c,
-						$event_href, $event_etag, $calendar, $tz);
-				if (FALSE !== $thisone) {
-					$parsed[] = $thisone;
-				}
-			}
-		}
-
-		return $parsed;
-	}
-
-	/**
 	 * Parses an VEVENT for Fullcalendar
 	 */
 	function parse_vevent_fullcalendar($vevent, 
-			$href, $etag, $calendar = 'calendario', $tz) {
-
+			$href, $etag, $calendar = 'calendario', $tz,
+			$browser_tzoffset = 0) {
 
 		//log_message('INTERNALS', 'PARA MOSTRAR: ' . $vevent->createComponent($xxx));
 
@@ -278,23 +253,23 @@ class Icshelper {
 				'etag' => $etag,
 				'disableDragging' => FALSE,
 				'disableResizing' => FALSE,
+				'ignoreTimezone' => TRUE,
+				'timezone' => $tz,
 				);
 
 		// Start and end date
 		$dtstart = $this->extract_date($vevent, 'DTSTART', $tz);
 		$dtend = $this->extract_date($vevent, 'DTEND', $tz);
 
+		// Current event timezone
+		$tzcur = new DateTimeZone($tz);
 
 		// We have for sure DTSTART
 		$start = $dtstart['result'];
-		$ts_start = $start->getTimestamp();
-		$this_event['start'] = $ts_start;
 
 		// Do we have DTEND?
 		if (!is_null($dtend)) {
 			$end = $dtend['result'];
-			$ts_end = $end->getTimestamp();
-			$this_event['end'] = $ts_end;
 		}
 
 		// Is this a recurrent event?
@@ -316,20 +291,18 @@ class Icshelper {
 				$current_dtstart[1] .= ' 00:00:00';
 			}
 
-			$this_event['orig_start'] = $ts_start;
+			// Keep a copy
+			$orig_start = clone $start;
+
 			$start = $this->CI->dates->x_current2datetime($current_dtstart[1], $tz);
-			$this_event['start'] = $start->getTimestamp();
 			unset($this_event['end']);
 
 			$current_dtend = $vevent->getProperty('x-current-dtend');
 			if ($current_dtend !== FALSE) {
-				$this_event['orig_end'] = $ts_end;
+				$orig_end = clone $end;
 				$end =
 					$this->CI->dates->x_current2datetime($current_dtend[1],
 							$tz);
-				$ts_end = $end->getTimestamp();
-
-				$this_event['end'] = $ts_end;
 			}
 		}
 
@@ -430,8 +403,6 @@ class Icshelper {
 			}
 
 			$end->add($this->CI->dates->duration2di($this_event['duration']));
-			$ts_end = $end->getTimestamp();
-			$this_event['end'] = $ts_end;
 		}
 
 
@@ -441,16 +412,16 @@ class Icshelper {
 		if (isset($dtstart['value']) &&
 				$dtstart['value'] == 'DATE') {
 			$this_event['allDay'] = TRUE;
-		} else if ($ts_end-$ts_start == 86400) {
+		} else if ($start->diff($end)->format('s') == '86400') {
 			if ($start->format('Hi') == '0000') {
 				$this_event['allDay'] = TRUE;
 			}
 
 			// Check using UTC and local time
 			if ($start->getTimeZone()->getName() == 'UTC') {
-				// TODO configurable timezone!
-				$start->setTimeZone(new DateTimeZone('Europe/Madrid'));
-				if ($start->format('Hi') == '0000') {
+				$test_start = clone $start;
+				$test_start->setTimeZone($this->tz_obj);
+				if ($test_start->format('Hi') == '0000') {
 					$this_event['allDay'] = TRUE;
 				}
 			}
@@ -472,15 +443,9 @@ class Icshelper {
 				$end->add(new DateInterval('PT1H'));
 			}
 
-			$ts_start = $start->getTimestamp();
-			$ts_end = $end->getTimestamp();
-
-			$this_event['start'] = $ts_start;
-			$this_event['end'] = $ts_end;
-
 			if (isset($this_event['expanded'])) {
-				$this_event['orig_start'] = $ts_start;
-				$this_event['orig_end'] = $ts_end;
+				$orig_start = clone $start;
+				$orig_end = clone $end;
 			}
 
 			$this_event['orig_allday'] = TRUE;
@@ -489,43 +454,61 @@ class Icshelper {
 			$this_event['orig_allday'] = FALSE;
 		}
 
+		// Recalculate timestamps to fit into configured timezone and
+		// browser
+		$adjust_start = $browser_tzoffset + $this->tz_obj->getOffset($start);
+		$adjust_end = $browser_tzoffset + $this->tz_obj->getOffset($end);
+		$ts_start = $start->getTimestamp() + $adjust_start;
+		$ts_end = $end->getTimestamp() + $adjust_end;
+		$this_event['start'] = $ts_start;
+		$this_event['end'] = $ts_end;
+		$this_event['adjust_start'] = $adjust_start;
+		$this_event['adjust_end'] = $adjust_end;
+
+		if (isset($orig_start)) {
+			// TODO deal with these adjustments
+			$ts_orig_start = $orig_start->getTimestamp() + $browser_tzoffset
+				+ $this->tz_obj->getOffset($orig_start);
+			$ts_orig_end = $orig_end->getTimestamp() + $browser_tzoffset +
+				$this->tz_obj->getOffset($orig_end);
+		}
 
 		// Readable dates for start and end
+		$system_tz = date_default_timezone_get();
+		date_default_timezone_set($this->tz);
 
-		// TODO make this all configurable
-		$format = '%a %e de %B, %H:%M';
-		$alldayformat = '%a %e de %B de %Y';
-		$samedayformat = '%H:%M';
+		$ts_start = $start->getTimestamp();
+		$ts_end = $end->getTimestamp();
+
+		$this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
 
 		if (isset($this_event['allDay']) && $this_event['allDay'] == TRUE) {
-			$this_event['formatted_start'] = strftime($alldayformat,
-					$this_event['start']);
-
 			// Next day?
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				// TODO i18n
-				$this_event['formatted_end'] = '(Día completo)';
+				$this_event['formatted_end'] =
+					'('.$this->CI->i18n->_('labels', 'allday').')';
 			} else {
-				$this_event['formatted_end'] = strftime($alldayformat,
-						$this_event['end']);
+				$this_event['formatted_end'] = strftime($this->date_format, $ts_end); 
 			}
 		} else {
 			// Are they in the same day?
-			$this_event['formatted_start'] = strftime($format,
-					$this_event['start']);
+			$this_event['formatted_start'] .= ' ' 
+				. $this->CI->dates->strftime_time($ts_start);
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				$this_event['formatted_end'] = strftime($samedayformat,
-						$this_event['end']);
+				$this_event['formatted_end'] = $this->CI->dates->strftime_time($ts_end);
 			} else {
-				$this_event['formatted_end'] = strftime($format,
-						$this_event['end']);
+				$this_event['formatted_end'] =
+					strftime($this->date_format, $ts_end) . ' ' .
+					$this->CI->dates->strftime_time($ts_end);
 			}
 		}
 
+		// Restore TZ
+		date_default_timezone_set($system_tz);
+
 		// Empty title?
 		if (!isset($this_event['title'])) {
-			// TODO localization
-			$this_event['title'] = 'Sin título';
+			$this_event['title'] = $this->CI->i18n->_('labels', 'untitled');
 		}
 
 		return $this_event;
@@ -559,10 +542,12 @@ class Icshelper {
 				if (preg_match('#([^/]+/[^/]+)$#', $tzid, $matches)) {
 					$tzval = $matches[1];
 				}
+			} else {
+				$tzval = $tzval[1];
 			}
 
 			// Do we have tzval?
-			if ($tzval === FALSE && !empty($tzval)) {
+			if ($tzval !== FALSE && !empty($tzval)) {
 				$result[$tzid] = $tzval;
 			}
 		}
@@ -657,11 +642,11 @@ class Icshelper {
 		} else {
 			$tzid = $this->paramvalue($params, 'tzid');;
 
-			if ($tzid !== FALSE && isset($timezones[$tzid])) {
+			if ($tzid !== FALSE && isset($tzs[$tzid])) {
 				$used_tz = $tzs[$tzid];
 			} else {
 				// No UTC but no TZID/invalid TZID?!
-				$used_tz = date_default_timezone_get();
+				$used_tz = $this->CI->config->item('default_timezone');
 			}
 		}
 

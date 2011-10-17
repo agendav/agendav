@@ -21,6 +21,13 @@
 
 class Dialog_generator extends CI_Controller {
 
+	// Formats
+	private $time_format;
+	private $date_format;
+
+	// Timezone
+	private $tz;
+
 	function __construct() {
 		parent::__construct();
 
@@ -36,6 +43,13 @@ class Dialog_generator extends CI_Controller {
 			exit;
 		} else {
 			$this->load->helper('form');
+			
+			// Load formats
+			$this->date_format = $this->dates->date_format_string('date');
+			$this->time_format = $this->dates->time_format_string('date');
+
+			// Timezone
+			$this->tz = $this->config->item('default_timezone');
 		}
 	}
 
@@ -58,6 +72,7 @@ class Dialog_generator extends CI_Controller {
 		// Start/end date passed?
 		$start = $this->input->post('start');
 		$end = $this->input->post('end');
+		$browser_tzoffset = $this->input->post('tzoffset');
 
 		if (FALSE === $start) {
 			$start = time();
@@ -77,30 +92,44 @@ class Dialog_generator extends CI_Controller {
 		$dstart = null;
 		$dend = null;
 
+		// Split start and end on date+time
+		if ($browser_tzoffset === FALSE) {
+			$browser_tzoffset = 0;
+		} else {
+			$browser_tzoffset = intval($browser_tzoffset) * 60;
+		}
+
+		// Correct offsets
+		$start -= $browser_tzoffset;
+		if ($end !== FALSE) {
+			$end -= $browser_tzoffset;
+		}
+
+		// Base DateTime start
+		$dstart = $this->dates->ts2datetime($start, 'UTC');
+
 		// TODO make default duration configurable
 
 		if ($view == 'month') {
-			// Calculate times (next/previous 15min)
-			$now = $this->dates->approx_by_factor();
-			$dstart = $this->dates->approx_by_factor($start);
+			// Calculate times
+			$now = $this->dates->approx_by_factor(null, $this->tz);
 			$dstart->setTime($now->format('H'), $now->format('i'));
 			if ($end === FALSE || $start == $end) {
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M'));
 			} else {
-				$dend = $this->dates->ts2datetime($end);
+				$dend = $this->dates->ts2datetime($end, 'UTC');
 				$dend->setTime($dstart->format('H'), $dstart->format('i'));
 			}
 		} elseif ($allday === FALSE) {
-			$dstart = $this->dates->ts2datetime($start);
 			if ($end === FALSE || $start == $end) {
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M')); // 1h
 			} else {
-				$dend = $this->dates->ts2datetime($end);
+				$dend = $this->dates->ts2datetime($end, 'UTC');
 			}
 		} else {
-			$dstart = $this->dates->ts2datetime($start)->setTime(0, 0);
+			$dstart->setTime(0, 0);
 			$dend = clone $dstart;
 			$dend->add(new DateInterval('P1D'));
 		}
@@ -126,13 +155,14 @@ class Dialog_generator extends CI_Controller {
 		}
 
 		$data = array(
-				'start_date' => $dstart->format('d/m/Y'),
-				'start_time' => $dstart->format('H:i'),
-				'end_date' => $dend->format('d/m/Y'),
-				'end_time' => $dend->format('H:i'),
+				'start_date' => $dstart->format($this->date_format),
+				'start_time' => $dstart->format($this->time_format),
+				'end_date' => $dend->format($this->date_format),
+				'end_time' => $dend->format($this->time_format),
 				'allday' => $allday,
 				'calendars' => $calendars,
 				'calendar' => $calendar,
+				'browser_tzoffset' => $browser_tzoffset,
 				);
 		$this->load->view('dialogs/create_or_modify_event', $data);
 	}
@@ -160,18 +190,24 @@ class Dialog_generator extends CI_Controller {
 		$recurrence_id = $this->input->post('recurrence_id');
 		$orig_start = $this->input->post('orig_start');
 		$orig_end = $this->input->post('orig_end');
+		$tzoffset = $this->input->post('tzoffset');
+		$adjust_start = $this->input->post('adjust_start');
+		$adjust_end = $this->input->post('adjust_end');
 
 		// Required fields
 		if ($uid === FALSE || $calendar === FALSE || $href === FALSE
 				|| $etag === FALSE || $start === FALSE 
 				|| $end === FALSE || $allday === FALSE) {
 			$this->_throw_error('com_event', 
-					'Llamada incorrecta a edit_event()',
-					'Contacte con correo@us.es');
+					$this->i18n->_('messages', 'error_oops'),
+					$this->i18n->_('messages', 'error_interfacefailure'));
 		} elseif ($recurrence_id != 'undefined') {
 			$this->_throw_error('com_event',
-						'Funcionalidad no implementada',
-						'Aún no se pueden modificar las excepciones a eventos repetitivos');
+					$this->i18n->_('messages', 'error_oops'),
+					$this->i18n->_('messages', 'not_implemented',
+						array(
+							'%feature' => $this->i18n->_('labels',
+								'repetitionexceptions'))));
 		} else {
 			// Calendars
 			$tmp_cals= $this->session->userdata('available_calendars');
@@ -229,25 +265,37 @@ class Dialog_generator extends CI_Controller {
 				} else {
 					if ($rrule_serialized == 'undefined') {
 						// No serialized value?
+						$this->extended_logs->message('ERROR',
+								'rrule_serialized undefined while editing'
+								. $uid . ' at calendar ' . $calendar);
 						$this->_throw_error('com_event',
-								'Error de concordancia en regla de recurrencia', 
-								'Escriba a correo@us.es');
+								$this->i18n->_('messages', 'error_oops'),
+								$this->i18n->_('messages',
+									'error_interfacefailure'));
 						return;
 					}
 
 					$rrule_serialized = @base64_decode($rrule_serialized);
 					if ($rrule_serialized == FALSE) {
+						$this->extended_logs->message('ERROR',
+								'rrule_serialized b64 failed while editing'
+								. $uid . ' at calendar ' . $calendar);
 						$this->_throw_error('com_event',
-								'Error de formato en regla de recurrencia b64.',
-								'Escriba a correo@us.es');
+								$this->i18n->_('messages', 'error_oops'),
+								$this->i18n->_('messages',
+									'error_interfacefailure'));
 						return;
 					}
 
 					$rrule_arr = @unserialize($rrule_serialized);
 					if ($rrule_arr === FALSE) {
+						$this->extended_logs->message('ERROR',
+								'rrule unserialize failed while editing'
+								. $uid . ' at calendar ' . $calendar);
 						$this->_throw_error('com_event',
-								'Error de formato en regla de recurrencia serializada.',
-								'Escriba a correo@us.es');
+								$this->i18n->_('messages', 'error_oops'),
+								$this->i18n->_('messages',
+									'error_interfacefailure'));
 						return;
 					}
 
@@ -256,18 +304,18 @@ class Dialog_generator extends CI_Controller {
 						// TODO timezone and configurable format
 						$rrule_arr['UNTIL'] =
 							$this->dates->idt2datetime($rrule_arr['UNTIL'],
-									date_default_timezone_get())->format('d/m/Y');
+									$this->tz)->format($this->date_format);
 					}
 					$data['recurrence'] = $rrule_arr;
 				}
 
 			}
 
-			// Split start and end on date+time
-			$start_obj = new DateTime('@' . $start);
-			$end_obj = new DateTime('@' . $end);
-			// TODO configurable TZ
-			$tz = new DateTimeZone(date_default_timezone_get());
+			$start -= $adjust_start;
+			$end -= $adjust_end;
+			$start_obj = $this->dates->ts2datetime($start, 'UTC');
+			$end_obj = $this->dates->ts2datetime($end, 'UTC');
+			$tz = new DateTimeZone($this->tz);
 			$start_obj->setTimeZone($tz);
 			$end_obj->setTimeZone($tz);
 
@@ -279,10 +327,10 @@ class Dialog_generator extends CI_Controller {
 			}
 
 			// TODO make this format configurable
-			$data['start_date'] = $start_obj->format('d/m/Y');
-			$data['end_date'] = $end_obj->format('d/m/Y');
-			$data['start_time'] = $start_obj->format('H:i');
-			$data['end_time'] = $end_obj->format('H:i');
+			$data['start_date'] = $start_obj->format($this->date_format);
+			$data['end_date'] = $end_obj->format($this->date_format);
+			$data['start_time'] = $start_obj->format($this->time_format);
+			$data['end_time'] = $end_obj->format($this->time_format);
 
 
 			// Clean 'undefined' values
@@ -320,8 +368,8 @@ class Dialog_generator extends CI_Controller {
 		if ($calendar === FALSE || $displayname === FALSE 
 				|| $color === FALSE || $url === FALSE) {
 			$this->_throw_error('modify_calendar_dialog', 
-					'Datos inválidos',
-					'Faltan datos para el diálogo de edición');
+					$this->i18n->_('messages', 'error_oops'),
+					$this->i18n->_('messages', 'error_interfacefailure'));
 		} else {
 			$data = array(
 					'calendar' => $calendar,
@@ -340,8 +388,9 @@ class Dialog_generator extends CI_Controller {
 			if ($shared !== FALSE && $shared == 'true') {
 				if ($sid === FALSE || $user_from === FALSE) {
 					$this->_throw_error('modify_calendar_dialog', 
-							'Datos inválidos del calendario compartido',
-							'Faltan datos para el diálogo de edición');
+						$this->i18n->_('messages', 'error_oops'),
+						$this->i18n->_('messages',
+							'error_interfacefailure'));
 
 				} else {
 					$data['shared'] = TRUE;
@@ -368,8 +417,8 @@ class Dialog_generator extends CI_Controller {
 
 		if ($calendar === FALSE || $displayname === FALSE) {
 			$this->_throw_error('delete_calendar_dialog', 
-					'Datos inválidos',
-					'Faltan datos para el diálogo de borrado');
+				$this->i18n->_('messages', 'error_oops'),
+				$this->i18n->_('messages', 'error_interfacefailure'));
 		} else {
 			$data = array(
 					'calendar' => $calendar,
