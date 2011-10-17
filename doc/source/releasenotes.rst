@@ -2,8 +2,8 @@ Release notes
 =============
 
 .. _v1.2:: 
-1.2 (2011-x-x)
---------------
+1.2 (2011-10-17)
+----------------
 
 * DB schema needs to be altered. UTF8 wasn't being used by default, and
   sessions table wasn't using InnoDB. Apply the changes on
