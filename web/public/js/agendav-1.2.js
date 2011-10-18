@@ -471,6 +471,7 @@ $(document).ready(function() {
 					start: start,
 					allday: false,
 					view: 'month',
+					tzoffset: current_tzoffset,
 					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
 
