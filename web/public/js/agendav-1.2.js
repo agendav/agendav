@@ -1265,7 +1265,7 @@ function generate_calendar_entry(data) {
 	// Shared calendars
 	if (data.shared !== undefined && data.shared == true) {
 		li.append('<span class="shared"></span>');
-		li.attr("title", li.attr("title") + " (compartido por " + data.user_from + ")");
+		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
 	}
 
 	var eventsource = generate_event_source(data.calendar);
