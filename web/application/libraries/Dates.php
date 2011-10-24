@@ -140,6 +140,28 @@ class Dates {
 	}
 
 	/**
+	 * Creates a DateTime object from a date formatted by Fullcalendar
+	 * events: yyymmddHHii).
+	 *
+	 * Returns FALSE on date parsing error
+	 */
+	function fullcalendar2datetime($str, $tz = null) {
+		if (is_null($tz)) {
+			$tz = $this->CI->config->item('default_timezone');
+		}
+
+		$format = 'YmdHis';
+		$obj = DateTime::createFromFormat($format, $str, new
+				DateTimeZone($tz));
+		$err = DateTime::getLastErrors();
+		if (FALSE === $obj || $err['warning_count']>0) {
+			return FALSE;
+		}
+
+		return $obj;
+	}
+
+	/**
 	 * Converts a DateTime to DATE-TIME format 
 	 * in UTC time by default
 	 *

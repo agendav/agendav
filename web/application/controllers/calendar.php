@@ -41,7 +41,7 @@ class Calendar extends CI_Controller {
 					'loadmask-0.4/jquery.loadmask.min.js',
 					'jquery.colorPicker.20091014.min.js',
 					'tag-it.20110621.min.js',
-					'jquery.qtip.min.cf537c5e9a87fffcae65aa249b80fb0d0016d572.js',
+					'jquery.qtip.20111022.min.js',
 					),
 				'css' => array(
 					array(
@@ -64,9 +64,9 @@ class Calendar extends CI_Controller {
 					));
 
 		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-1.2.min.js';
+			$data_header['js'][] = 'agendav-1.2.1.min.js';
 		} else {
-			$data_header['js'][] = 'agendav-1.2.js';
+			$data_header['js'][] = 'agendav-1.2.1.js';
 		}
 
 		// Additional JS files

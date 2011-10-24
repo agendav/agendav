@@ -160,8 +160,7 @@ class Icshelper {
 	 * @param int		$end		End timestamp
 	 * @param string		$calendar		Current calendar
 	 */
-	function expand_and_parse_events($resources, $start, $end, $calendar,
-			$browser_tzoffset = 0) {
+	function expand_and_parse_events($resources, $start, $end, $calendar) {
 		$result = array();
 
 		// Dates
@@ -211,7 +210,7 @@ class Icshelper {
 								$result[] =
 									$this->parse_vevent_fullcalendar($event,
 										$event_href, $event_etag, $calendar,
-										$tz, $browser_tzoffset);
+										$tz);
 							}
 						}
 					}
@@ -228,7 +227,7 @@ class Icshelper {
 						$result[] =
 							$this->parse_vevent_fullcalendar($event,
 									$event_href, $event_etag, $calendar,
-									$tz, $browser_tzoffset);
+									$tz);
 					}
 				}
 			}
@@ -242,8 +241,7 @@ class Icshelper {
 	 * Parses an VEVENT for Fullcalendar
 	 */
 	function parse_vevent_fullcalendar($vevent, 
-			$href, $etag, $calendar = 'calendario', $tz,
-			$browser_tzoffset = 0) {
+			$href, $etag, $calendar = 'calendario', $tz) {
 
 		//log_message('INTERNALS', 'PARA MOSTRAR: ' . $vevent->createComponent($xxx));
 
@@ -454,31 +452,20 @@ class Icshelper {
 			$this_event['orig_allday'] = FALSE;
 		}
 
-		// Recalculate timestamps to fit into configured timezone and
-		// browser
-		$adjust_start = $browser_tzoffset + $this->tz_obj->getOffset($start);
-		$adjust_end = $browser_tzoffset + $this->tz_obj->getOffset($end);
-		$ts_start = $start->getTimestamp() + $adjust_start;
-		$ts_end = $end->getTimestamp() + $adjust_end;
-		$this_event['start'] = $ts_start;
-		$this_event['end'] = $ts_end;
-		$this_event['adjust_start'] = $adjust_start;
-		$this_event['adjust_end'] = $adjust_end;
+
+		// To be used with strftime()
+		$ts_start = $start->getTimestamp();
+		$ts_end = $end->getTimestamp();
 
 		if (isset($orig_start)) {
 			// TODO deal with these adjustments
-			$ts_orig_start = $orig_start->getTimestamp() + $browser_tzoffset
-				+ $this->tz_obj->getOffset($orig_start);
-			$ts_orig_end = $orig_end->getTimestamp() + $browser_tzoffset +
-				$this->tz_obj->getOffset($orig_end);
+			$ts_orig_start = $orig_start->getTimestamp();
+			$ts_orig_end = $orig_end->getTimestamp();
 		}
 
 		// Readable dates for start and end
 		$system_tz = date_default_timezone_get();
 		date_default_timezone_set($this->tz);
-
-		$ts_start = $start->getTimestamp();
-		$ts_end = $end->getTimestamp();
 
 		$this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
 
@@ -511,6 +498,10 @@ class Icshelper {
 			$this_event['title'] = $this->CI->i18n->_('labels', 'untitled');
 		}
 
+		$start->setTimeZone($this->tz_obj);
+		$end->setTimeZone($this->tz_obj);
+		$this_event['start'] = $start->format(DateTime::ISO8601);
+		$this_event['end'] = $end->format(DateTime::ISO8601);
 		return $this_event;
 	}
 

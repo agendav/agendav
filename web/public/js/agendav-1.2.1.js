@@ -24,9 +24,6 @@ var ccd = "#create_calendar_dialog";
 var mcd = "#modify_calendar_dialog";
 var dcd = "#delete_calendar_dialog";
 
-// Timezone offset
-var current_tzoffset = new Date().getTimezoneOffset();
-
 $(document).ready(function() {
 	// Refresh session every X seconds code at js_generator
 	// Calls session_refresh()
@@ -164,11 +161,10 @@ $(document).ready(function() {
 		select: function(startDate, endDate, allDay, jsEvent, view) {
 			var pass_allday = (view.name == 'month') ? false : allDay;
 			var data = {
-					start: timestamp(startDate),
-					end: timestamp(endDate),
+					start: fulldatetimestring(startDate),
+					end: fulldatetimestring(endDate),
 					allday: pass_allday,
 					view: view.name,
-					tzoffset: current_tzoffset,
 					current_calendar: $('#calendar_list li.selected_calendar').data().calendar
 			};
 
@@ -206,7 +202,6 @@ $(document).ready(function() {
 					allday: event.allDay,
 					was_allday: event.was_allday,
 					timezone: event.timezone,
-					tzoffset: current_tzoffset,
 					type: 'resize'
 				});
 
@@ -248,7 +243,6 @@ $(document).ready(function() {
 					allday: event.allDay,
 					was_allday: event.orig_allday,
 					timezone: event.timezone,
-					tzoffset: current_tzoffset,
 					type: 'drag'
 				});
 
@@ -397,8 +391,8 @@ $(document).ready(function() {
 			calendar: event_data.calendar,
 			href: event_data.href,
 			etag: event_data.etag,
-			start: timestamp(event_data.start),
-			end: timestamp(event_data.end),
+			start: fulldatetimestring(event_data.start),
+			end: fulldatetimestring(event_data.end),
 			summary: event_data.title,
 			location: event_data.location,
 			allday: event_data.allDay,
@@ -409,9 +403,6 @@ $(document).ready(function() {
 			icalendar_class: event_data.icalendar_class,
 			transp: event_data.transp,
 			recurrence_id: event_data.recurrence_id,
-			tzoffset: current_tzoffset,
-			adjust_start: event_data.adjust_start,
-			adjust_end: event_data.adjust_end,
 			orig_start: event_data.orig_start,
 			orig_end: event_data.orig_end
 		};
@@ -466,7 +457,7 @@ $(document).ready(function() {
 			}
 		})
 		.bind('click', function() {
-			var start = timestamp($('#calendar_view').fullCalendar('getDate'));
+			var start = fulldatetimestring($('#calendar_view').fullCalendar('getDate'));
 			var data = {
 					start: start,
 					allday: false,
@@ -585,6 +576,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
+						$("#" + divname).dialog('option', 'position', 'center');
 						var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
 						add_button_icons(buttons);
 					},
@@ -1182,14 +1174,15 @@ function generate_event_source(calendar) {
 			cache: false,
 			// TODO make timezone configurable
 			data: {
-				calendar: calendar,
-				tzoffset: current_tzoffset
+				calendar: calendar
 				},
 			error: function() {
 				show_error(_('messages', 'error_interfacefailure'), 
 				_('messages', 
 					'error_loadevents', { '%cal' : calendar }));
-			}
+			},
+		       startParamUTC: true,
+		       endParamUTC: true
 	};
 
 	return ajax_options;
@@ -1265,7 +1258,7 @@ function generate_calendar_entry(data) {
 	// Shared calendars
 	if (data.shared !== undefined && data.shared == true) {
 		li.append('<span class="shared"></span>');
-		li.attr("title", li.attr("title") + " (compartido por " + data.user_from + ")");
+		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
 	}
 
 	var eventsource = generate_event_source(data.calendar);
@@ -1397,6 +1390,13 @@ function event_bubble_content(event) {
  */
 function timestamp(d) {
 	return Math.round(d.getTime()/1000);
+}
+
+/*
+ * Returns a full date+time string which is easily parseable
+ */
+function fulldatetimestring(d) {
+	return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
 }
 
 // vim: sw=2 tabstop=2

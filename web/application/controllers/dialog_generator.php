@@ -72,7 +72,6 @@ class Dialog_generator extends CI_Controller {
 		// Start/end date passed?
 		$start = $this->input->post('start');
 		$end = $this->input->post('end');
-		$browser_tzoffset = $this->input->post('tzoffset');
 
 		if (FALSE === $start) {
 			$start = time();
@@ -92,21 +91,8 @@ class Dialog_generator extends CI_Controller {
 		$dstart = null;
 		$dend = null;
 
-		// Split start and end on date+time
-		if ($browser_tzoffset === FALSE) {
-			$browser_tzoffset = 0;
-		} else {
-			$browser_tzoffset = intval($browser_tzoffset) * 60;
-		}
-
-		// Correct offsets
-		$start -= $browser_tzoffset;
-		if ($end !== FALSE) {
-			$end -= $browser_tzoffset;
-		}
-
 		// Base DateTime start
-		$dstart = $this->dates->ts2datetime($start, 'UTC');
+		$dstart = $this->dates->fullcalendar2datetime($start, 'UTC');
 
 		// TODO make default duration configurable
 
@@ -118,7 +104,8 @@ class Dialog_generator extends CI_Controller {
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M'));
 			} else {
-				$dend = $this->dates->ts2datetime($end, 'UTC');
+				$dend = $this->dates->
+					fullcalendar2datetime($end, 'UTC');
 				$dend->setTime($dstart->format('H'), $dstart->format('i'));
 			}
 		} elseif ($allday === FALSE) {
@@ -126,7 +113,8 @@ class Dialog_generator extends CI_Controller {
 				$dend = clone $dstart;
 				$dend->add(new DateInterval('PT60M')); // 1h
 			} else {
-				$dend = $this->dates->ts2datetime($end, 'UTC');
+				$dend = $this->dates->
+					fullcalendar2datetime($end, 'UTC');
 			}
 		} else {
 			$dstart->setTime(0, 0);
@@ -162,7 +150,6 @@ class Dialog_generator extends CI_Controller {
 				'allday' => $allday,
 				'calendars' => $calendars,
 				'calendar' => $calendar,
-				'browser_tzoffset' => $browser_tzoffset,
 				);
 		$this->load->view('dialogs/create_or_modify_event', $data);
 	}
@@ -190,9 +177,6 @@ class Dialog_generator extends CI_Controller {
 		$recurrence_id = $this->input->post('recurrence_id');
 		$orig_start = $this->input->post('orig_start');
 		$orig_end = $this->input->post('orig_end');
-		$tzoffset = $this->input->post('tzoffset');
-		$adjust_start = $this->input->post('adjust_start');
-		$adjust_end = $this->input->post('adjust_end');
 
 		// Required fields
 		if ($uid === FALSE || $calendar === FALSE || $href === FALSE
@@ -311,14 +295,8 @@ class Dialog_generator extends CI_Controller {
 
 			}
 
-			$start -= $adjust_start;
-			$end -= $adjust_end;
-			$start_obj = $this->dates->ts2datetime($start, 'UTC');
-			$end_obj = $this->dates->ts2datetime($end, 'UTC');
-			$tz = new DateTimeZone($this->tz);
-			$start_obj->setTimeZone($tz);
-			$end_obj->setTimeZone($tz);
-
+			$start_obj = $this->dates->fullcalendar2datetime($start, 'UTC');
+			$end_obj = $this->dates->fullcalendar2datetime($end, 'UTC');
 
 			if ($allday == 'true') {
 				$data['allday'] = TRUE;

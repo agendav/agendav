@@ -20,6 +20,6 @@
 
 class Defs {
 	function definitions() {
-		define('AGENDAV_VERSION', '1.2');
+		define('AGENDAV_VERSION', '1.2.1');
 	}
 }
