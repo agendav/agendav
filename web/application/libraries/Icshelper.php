@@ -499,7 +499,7 @@ class Icshelper {
 		}
 
 		$start->setTimeZone($this->tz_obj);
-		$start->setTimeZone($this->tz_obj);
+		$end->setTimeZone($this->tz_obj);
 		$this_event['start'] = $start->format(DateTime::ISO8601);
 		$this_event['end'] = $end->format(DateTime::ISO8601);
 		return $this_event;
