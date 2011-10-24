@@ -1,3 +1,11 @@
+Release 1.2.1 (2011-10-24)
+	* Fixed timezone and DST issues
+	* Fixed untranslated string
+	* Fixed centering of dialogs, which were top aligned
+	* Upgraded to latest iCalcreator release (2.10.15)
+	* Upgraded to latest git qTip2 release
+	* Modified Fullcalendar to send UTC timestamps to server
+
 Release 1.2 (2011-10-17)
 	* Fixed DB schema to allow full UTF8 strings. Database changes needed
 	* Added localization support (i18n)
