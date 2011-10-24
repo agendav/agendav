@@ -1,9 +1,9 @@
 <?php
 /*********************************************************************************/
 /**
- * iCalcreator class v2.10.5
+ * iCalcreator v2.10.15
  * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
- * www.kigkonsult.se/iCalcreator/index.php
+ * kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se
  *
  * Description:
@@ -55,7 +55,7 @@ if( substr( phpversion(), 0, 3 ) >= '5.1' )
 require_once 'iCalUtilityFunctions.class.php';
 /*********************************************************************************/
 /*         version, do NOT remove!!                                              */
-define( 'ICALCREATOR_VERSION', 'iCalcreator 2.10.5' );
+define( 'ICALCREATOR_VERSION', 'iCalcreator 2.10.15' );
 /*********************************************************************************/
 /*********************************************************************************/
 /**
@@ -652,13 +652,22 @@ class vcalendar {
  * general vcalendar config setting
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.9.6 - 2011-05-14
+ * @since 2.10.10 - 2011-09-19
  * @param mixed  $config
  * @param string $value
  * @return void
  */
   function setConfig( $config, $value = FALSE) {
     if( is_array( $config )) {
+      $ak = array_keys( $config );
+      foreach( $ak as $k ) {
+        if( 'DIRECTORY' == strtoupper( $k )) {
+          if( FALSE === $this->setConfig( 'DIRECTORY', $config[$k] ))
+            return FALSE;
+          unset( $config[$k] );
+          break;
+        }
+      }
       foreach( $config as $cKey => $cValue ) {
         if( FALSE === $this->setConfig( $cKey, $cValue ))
           return FALSE;
@@ -1002,21 +1011,21 @@ class vcalendar {
  * No date controls occurs.
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.9.7 - 2011-06-04
+ * @since 2.10.13 - 2011-09-23
  * @param mixed $startY optional, start Year, default current Year ALT. array selecOptions
- * @param int $startM optional,  start Month, default current Month
- * @param int $startD optional,  start Day, default current Day
- * @param int $endY optional,    end Year, default $startY
- * @param int $endY optional,    end Month, default $startM
- * @param int $endY optional,    end Day, default $startD
- * @param mixed $cType optional, calendar component type(-s), default FALSE=all else string/array type(-s)
- * @param bool $flat optional,   FALSE (default) => output : array[Year][Month][Day][]
- *                               TRUE => output : array[] (ignores split)
- * @param bool $any optional,    TRUE (default) - select component that take place within period
- *                               FALSE - only components that starts within period
- * @param bool $split optional,  TRUE (default) - one component copy every day it take place during the
+ * @param int $startM optional,   start Month, default current Month
+ * @param int $startD optional,   start Day, default current Day
+ * @param int $endY optional,     end Year, default $startY
+ * @param int $endY optional,     end Month, default $startM
+ * @param int $endY optional,     end Day, default $startD
+ * @param mixed $cType optional,  calendar component type(-s), default FALSE=all else string/array type(-s)
+ * @param bool $flat optional,    FALSE (default) => output : array[Year][Month][Day][]
+ *                                TRUE => output : array[] (ignores split)
+ * @param bool $any optional,     TRUE (default) - select component that take place within period
+ *                                FALSE - only components that starts within period
+ * @param bool $split optional,   TRUE (default) - one component copy every day it take place during the
  *                                       period (implies flat=FALSE)
- *                               FALSE - one occurance of component only in output array
+ *                                FALSE - one occurance of component only in output array
  * @return array or FALSE
  */
   function selectComponents( $startY=FALSE, $startM=FALSE, $startD=FALSE, $endY=FALSE, $endM=FALSE, $endD=FALSE, $cType=FALSE, $flat=FALSE, $any=TRUE, $split=TRUE ) {
@@ -1112,7 +1121,7 @@ class vcalendar {
         $end = array( 'year' => $start['year'], 'month' => $start['month'], 'day' => $start['day'], 'hour' => 23, 'min' => 59, 'sec' => 59 );
         $endWdate = iCalUtilityFunctions::_date2timestamp( $end );
       }
-      $rdurWsecs  = $endWdate - $startWdate; // compute component duration in seconds
+      $rdurWsecs  = $endWdate - $startWdate; // compute event (component) duration in seconds
             /* make a list of optional exclude dates for component occurence from exrule and exdate */
       $exdatelist = array();
       $workstart  = iCalUtilityFunctions::_timestamp2date(( $startDate - $rdurWsecs ), 6);
@@ -1125,9 +1134,54 @@ class vcalendar {
           $exWdate = mktime( 0, 0, 0, date( 'm', $exWdate ), date( 'd', $exWdate ), date( 'Y', $exWdate ) ); // on a day-basis !!!
           if((( $startDate - $rdurWsecs ) <= $exWdate ) && ( $endDate >= $exWdate ))
             $exdatelist[$exWdate] = TRUE;
-        }
-      }
-            /* if 'any' components, check repeating components, removing all excluding dates */
+        } // end - foreach( $exdate as $theExdate )
+      }  // end - check exdate
+            /* select only components with startdate within period */
+      if(( $startWdate >= $startDate ) && ( $startWdate <= $endDate )) {
+            /* add the selected component (WITHIN valid dates) to output array */
+        if( $flat )
+          $result[$component->getProperty( 'UID' )] = $component->copy(); // copy original to output;
+        elseif( $split ) { // split the original component
+          if( $endWdate > $endDate )
+            $endWdate = $endDate;     // use period end date
+          $rstart = $startWdate;
+          if( $rstart < $startDate )
+            $rstart = $startDate; // use period start date
+          $startYMD = date( 'Ymd', $rstart );
+          $endYMD   = date( 'Ymd', $endWdate );
+          $checkDate = mktime( 0, 0, 0, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ) ); // on a day-basis !!!
+          while( date( 'Ymd', $rstart ) <= $endYMD ) { // iterate
+            $checkDate = mktime( 0, 0, 0, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ) ); // on a day-basis !!!
+            if( isset( $exdatelist[$checkDate] )) { // exclude any recurrence date, found in exdatelist
+              $rstart = mktime( date( 'H', $rstart ), date( 'i', $rstart ), date( 's', $rstart ), date( 'm', $rstart ), date( 'd', $rstart ) + 1, date( 'Y', $rstart ) ); // step one day
+              continue;
+            }
+            if( date( 'Ymd', $rstart ) > $startYMD ) // date after dtstart
+              $datestring = date( $startDateFormat, mktime( 0, 0, 0, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart )));
+            else
+              $datestring = date( $startDateFormat, $rstart );
+            if( isset( $start['tz'] ))
+              $datestring .= ' '.$start['tz'];
+// echo "X-CURRENT-DTSTART 3 = $datestring xRecurrence=$xRecurrence tcnt =".++$tcnt."<br />";$component->setProperty( 'X-CNT', $tcnt ); // test ###
+            $component->setProperty( 'X-CURRENT-DTSTART', $datestring );
+            if( $dtendExist || $dueExist || $durationExist ) {
+              if( date( 'Ymd', $rstart ) < $endYMD ) // not the last day
+                $tend = mktime( 23, 59, 59, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ));
+              else
+                $tend = mktime( date( 'H', $endWdate ), date( 'i', $endWdate ), date( 's', $endWdate ), date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ) ); // on a day-basis !!!
+              $datestring = date( $endDateFormat, $tend );
+              if( isset( $end['tz'] ))
+                $datestring .= ' '.$end['tz'];
+              $propName = ( !$dueExist ) ? 'X-CURRENT-DTEND' : 'X-CURRENT-DUE';
+              $component->setProperty( $propName, $datestring );
+            } // end if( $dtendExist || $dueExist || $durationExist )
+            $wd = getdate( $rstart );
+            $result[$wd['year']][$wd['mon']][$wd['mday']][$component->getProperty( 'UID' )] = $component->copy(); // copy to output
+            $rstart = mktime( date( 'H', $rstart ), date( 'i', $rstart ), date( 's', $rstart ), date( 'm', $rstart ), date( 'd', $rstart ) + 1, date( 'Y', $rstart ) ); // step one day
+          } // end while( $rstart <= $endWdate )
+        } // end if( $split )   -  else use component date
+      } // end if(( $startWdate >= $startDate ) && ( $startWdate <= $endDate ))
+            /* if 'any' components, check components with reccurrence rules, removing all excluding dates */
       if( TRUE === $any ) {
             /* make a list of optional repeating dates for component occurence, rrule, rdate */
         $recurlist = array();
@@ -1159,7 +1213,7 @@ class vcalendar {
                 $recurlist[$theRdate] = $rdurWsecs; // set start date for recurrence instance + event duration in seconds
             }
           }
-        }
+        }  // end - check rdate
         if( 0 < count( $recurlist )) {
           ksort( $recurlist );
           $xRecurrence = 1;
@@ -1264,63 +1318,13 @@ class vcalendar {
         if(( $endWdate < $startDate ) || ( $startWdate > $endDate ))
           continue;
       } // end if( TRUE === $any )
-            /* deselect components with startdate not within period */
-      elseif(( $startWdate < $startDate ) || ( $startWdate > $endDate ))
-        continue;
-            /* add the selected component (WITHIN valid dates) to output array */
-      if( $flat )
-        $result[$component->getProperty( 'UID' )] = $component->copy(); // copy to output;
-      elseif( $split ) { // split the original component
-        if( $endWdate > $endDate )
-          $endWdate = $endDate;     // use period end date
-        $rstart = $startWdate;
-        if( $rstart < $startDate )
-          $rstart = $startDate; // use period start date
-        $checkDate = mktime( 0, 0, 0, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ) ); // on a day-basis !!!
-        if( !isset( $exdatelist[$checkDate] )) { // exclude any recurrence START date, found in exdatelist
-          foreach( array( 'X-CURRENT-DTSTART','X-CURRENT-DTEND','X-CURRENT-DUE','X-RECURRENCE' ) as $propName )
-            $component->deleteProperty( $propName ); // remove any x-props, if set
-          while( $rstart <= $endWdate ) { // iterate
-            if( $rstart > $startWdate ) { // if NOT startdate, set X-properties
-              $datestring = date( $startDateFormat, mktime( 0, 0, 0, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart )));
-              if( isset( $start['tz'] ))
-                $datestring .= ' '.$start['tz'];
-// echo "X-CURRENT-DTSTART 3 = $datestring xRecurrence=$xRecurrence tcnt =".++$tcnt."<br />";$component->setProperty( 'X-CNT', $tcnt ); // test ###
-              $component->setProperty( 'X-CURRENT-DTSTART', $datestring );
-              if( $dtendExist || $dueExist || $durationExist ) {
-                if( date( 'Ymd', $rstart ) < date( 'Ymd', $endWdate ))
-                  $tend = mktime( 0, 0, 0, date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ));
-                else
-                  $tend = mktime( date( 'H', $endWdate ), date( 'i', $endWdate ), date( 's', $endWdate ), date( 'm', $rstart ), date( 'd', $rstart ), date( 'Y', $rstart ) ); // on a day-basis !!!
-                $datestring = date( $endDateFormat, $tend );
-                if( isset( $end['tz'] ))
-                  $datestring .= ' '.$end['tz'];
-                $propName = ( !$dueExist ) ? 'X-CURRENT-DTEND' : 'X-CURRENT-DUE';
-                $component->setProperty( $propName, $datestring );
-              } // end if( $dtendExist || $dueExist || $durationExist )
-            } // end if( $rstart > $startWdate )
-            $wd = getdate( $rstart );
-            $result[$wd['year']][$wd['mon']][$wd['mday']][$component->getProperty( 'UID' )] = $component->copy(); // copy to output
-            $rstart = mktime( date( 'H', $rstart ), date( 'i', $rstart ), date( 's', $rstart ), date( 'm', $rstart ), date( 'd', $rstart ) + 1, date( 'Y', $rstart ) ); // step one day
-          } // end while( $rstart <= $endWdate )
-        } // end if( !isset( $exdatelist[$checkDate] ))
-      } // end if( $split )   -  else use component date
-      elseif( $startWdate >= $startDate ) {          // within period
-        $checkDate = mktime( 0, 0, 0, date( 'm', $startWdate ), date( 'd', $startWdate ), date( 'Y', $startWdate ) ); // on a day-basis !!!
-        if( !isset( $exdatelist[$checkDate] )) { // exclude any recurrence START date, found in exdatelist
-          foreach( array( 'X-CURRENT-DTSTART','X-CURRENT-DTEND','X-CURRENT-DUE','X-RECURRENCE' ) as $propName )
-            $component->deleteProperty( $propName ); // remove any x-props, if set
-          $wd = getdate( $startWdate );
-          $result[$wd['year']][$wd['mon']][$wd['mday']][$component->getProperty( 'UID' )] = $component->copy(); // copy to output
-        }
-      }
     } // end foreach ( $this->components as $cix => $component )
     if( 0 >= count( $result )) return FALSE;
     elseif( !$flat ) {
       foreach( $result as $y => $yeararr ) {
         foreach( $yeararr as $m => $montharr ) {
           foreach( $montharr as $d => $dayarr )
-            $result[$y][$m][$d] = array_values( $dayarr ); // skip tricky UID-index
+            $result[$y][$m][$d] = array_values( $dayarr ); // skip tricky UID-index, hoping they are in hour order.. .
           ksort( $result[$y][$m] );
         }
         ksort( $result[$y] );
@@ -2603,11 +2607,11 @@ class calendarComponent {
  * computes datestamp for calendar component object instance dtstamp
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.6.25 - 2010-11-09
+ * @since 2.10.9 - 2011-08-10
  * @return void
  */
   function _makeDtstamp() {
-    $d = mktime( date('H'), date('m'), (date('s') - date( 'Z' )), date('m'), date('d'), date('Y'));
+    $d = mktime( date('H'), date('i'), (date('s') - date( 'Z' )), date('m'), date('d'), date('Y'));
     $this->dtstamp['value'] = array( 'year'  => date( 'Y', $d )
                                    , 'month' => date( 'm', $d )
                                    , 'day'   => date( 'd', $d )
@@ -3742,14 +3746,14 @@ class calendarComponent {
 /**
  * set calendar component property sequence
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.9.3 - 2011-05-14
+ * @since 2.10.8 - 2011-09-19
  * @param int $value optional
  * @param array $params optional
  * @return bool
  */
   function setSequence( $value=FALSE, $params=FALSE ) {
     if(( empty( $value ) && !is_numeric( $value )) && ( '0' != $value ))
-      $value = ( isset( $this->sequence['value'] ) && ( 0 < $this->sequence['value'] )) ? $this->sequence['value'] + 1 : 1;
+      $value = ( isset( $this->sequence['value'] ) && ( -1 < $this->sequence['value'] )) ? $this->sequence['value'] + 1 : '0';
     $this->sequence = array( 'value' => $value, 'params' => iCalUtilityFunctions::_setParams( $params ));
     return TRUE;
   }
@@ -6093,49 +6097,49 @@ class calendarComponent {
  * Fix uses var $breakAtChar=75 and breaks the line at $breakAtChar-1 if need be.
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.6.13 - 2010-12-06
+ * @since 2.10.11 - 2011-09-01
  * @param string $value
  * @return string
  */
   function _size75( $string ) {
-    $tmp    = $string;
-    $string = null;
-            /* if PHP is config with  mb_string.. . */
-    if( defined( MB_OVERLOAD_STRING )) {
+    $tmp        = $string;
+    $string     = '';
+    $eolcharlen = strlen( '\n' );
+            /* if PHP is config with  mb_string and conf overload.. . */
+    if( defined( 'MB_OVERLOAD_STRING' ) && ( 1 < ini_get( 'mbstring.func_overload' ))) {
       $strlen  = mb_strlen( $tmp );
       while( $strlen > 75 ) {
-        $breakAtChar = 75;
-        if( substr( $tmp, ( $breakAtChar - 1 ), strlen( '\n' )) == '\n' )
-          $breakAtChar = $breakAtChar - 1;
+        if( '\n' == mb_substr( $tmp, 75, $eolcharlen ))
+          $breakAtChar = 74;
+        else
+          $breakAtChar = 75;
         $string .= mb_substr( $tmp, 0, $breakAtChar );
-        if( '\n' == substr( $string, ( 0 - strlen( '\n' ))))
-          $string = substr( $string, 0, ( strlen( $string ) - strlen( '\n' )));
-        if( $this->nl != mb_substr( $string, ( 0 - strlen( $this->nl ))))
+        if( $this->nl != mb_substr( $string, ( 0 - mb_strlen( $this->nl ))))
           $string .= $this->nl;
-        $tmp     = ' '.mb_substr( $tmp, $breakAtChar );
+        $tmp     = mb_substr( $tmp, $breakAtChar );
+        if( !empty( $tmp ))
+          $tmp   = ' '.$tmp;
         $strlen  = mb_strlen( $tmp );
       } // end while
       if( 0 < $strlen ) {
         $string .= $tmp; // the rest
-        if( '\n' == substr( $string, ( 0 - strlen( '\n' ))))
-          $string = substr( $string, 0, ( strlen( $string ) - strlen( '\n' )));
-        if( $this->nl != mb_substr( $string, ( 0 - strlen( $this->nl ))))
+        if( $this->nl != mb_substr( $string, ( 0 - mb_strlen( $this->nl ))))
           $string .= $this->nl;
       }
       return $string;
     }
             /* if PHP is not config with  mb_string.. . */
-    $eolcharlen = strlen( '\n' );
     while( TRUE ) {
       $bytecnt = strlen( $tmp );
       $charCnt = $ix = 0;
       for( $ix = 0; $ix < $bytecnt; $ix++ ) {
-        if(( 73 < $charCnt ) && ( '\n' == substr( $tmp, $ix, $eolcharlen ))) {
-          $ix += $eolcharlen;
-          break;                                    // break when '\n' and eol
+        if(( 73 < $charCnt ) && ( '\n' == substr( $tmp, $ix, $eolcharlen )))
+          break;                                    // break before '\n'
+        elseif( 74 < $charCnt ) {
+          if( '\n' == substr( $tmp, $ix, $eolcharlen ))
+            $ix -= 1;                               // don't break inside '\n'
+          break;                                    // always break while-loop here
         }
-        elseif( 74 < $charCnt )
-          break;                                    // always break for-loop here
         else {
           $byte = ord( $tmp[$ix] );
           if ($byte <= 127) {                       // add a one byte character
@@ -6156,8 +6160,6 @@ class calendarComponent {
           }
         }
       } // end for
-      if( '\n' == substr( $string, ( 0 - strlen( '\n' ))))
-        $string = substr( $string, 0, ( strlen( $string ) - strlen( '\n' )));
       if( $this->nl != substr( $string, ( 0 - strlen( $this->nl ))))
         $string .= $this->nl;
       $tmp     = substr( $tmp, $ix );
@@ -6166,12 +6168,6 @@ class calendarComponent {
       else
         $tmp  = ' '.$tmp;
     } // end while
-    if( !empty( $tmp )) {
-      if( '\n' == substr( $string, ( 0 - strlen( '\n' ))))
-        $string = substr( $string, 0, ( strlen( $string ) - strlen( '\n' ))).$this->nl;
-      if( $this->nl != substr( $string, ( 0 - strlen( $this->nl ))))
-        $string .= $this->nl;
-    }
     return $string;
   }
 /**
