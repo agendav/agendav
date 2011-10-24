@@ -69,14 +69,6 @@ class Caldav2json extends CI_Controller {
 
 		$start = $this->input->get('start');
 		$end = $this->input->get('end');
-		$tzoffset = $this->input->get('tzoffset');
-
-		// Default
-		if ($tzoffset === FALSE) {
-			$tzoffset = 0;
-		} else {
-			$tzoffset = intval($tzoffset) * 60;
-		}
 
 		if ($err == 0 && $start === FALSE) {
 			// Something is wrong here
@@ -88,7 +80,7 @@ class Caldav2json extends CI_Controller {
 			$start =
 				$this->dates->datetime2idt(
 						$this->dates->ts2datetime(
-							$start - $tzoffset,
+							$start,
 							'UTC'));
 
 			if ($end === FALSE) {
@@ -100,7 +92,7 @@ class Caldav2json extends CI_Controller {
 				$end =
 					$this->dates->datetime2idt(
 							$this->dates->ts2datetime(
-								$end - $tzoffset,
+								$end,
 								'UTC'));
 
 				$returned_events = $this->caldav->fetch_events(
@@ -121,7 +113,7 @@ class Caldav2json extends CI_Controller {
 		if ($err == 0) {
 			$parsed =
 				$this->icshelper->expand_and_parse_events($returned_events, 
-						$start, $end, $calendar, $tzoffset);
+						$start, $end, $calendar);
 
 			$time_end = microtime(TRUE);
 
@@ -501,7 +493,6 @@ class Caldav2json extends CI_Controller {
 		$was_allday = $this->input->post('was_allday');
 		$view = $this->input->post('view');
 		$type = $this->input->post('type');
-		$browser_tzoffset = $this->input->post('tzoffset');
 
 		if ($uid === FALSE || $calendar === FALSE ||
 				$etag === FALSE || $dayDelta === FALSE || 
@@ -641,15 +632,8 @@ class Caldav2json extends CI_Controller {
 		} else {
 			// Send new information about this event
 
-			if ($browser_tzoffset === FALSE) {
-				$browser_tzoffset = 0;
-			} else {
-				$browser_tzoffset = intval($browser_tzoffset) * 60;
-			}
-
 			$info = $this->icshelper->parse_vevent_fullcalendar(
-					$new_vevent, $href, $new_etag, $calendar, $tz,
-					$browser_tzoffset);
+					$new_vevent, $href, $new_etag, $calendar, $tz);
 			$this->_throw_success($info);
 		}
 	}
