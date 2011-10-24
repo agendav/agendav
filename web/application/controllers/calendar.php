@@ -41,7 +41,7 @@ class Calendar extends CI_Controller {
 					'loadmask-0.4/jquery.loadmask.min.js',
 					'jquery.colorPicker.20091014.min.js',
 					'tag-it.20110621.min.js',
-					'jquery.qtip.20111022.js',
+					'jquery.qtip.20111022.min.js',
 					),
 				'css' => array(
 					array(
