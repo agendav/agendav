@@ -576,6 +576,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
+						$("#" + divname).dialog('option', 'position', 'center');
 						var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
 						add_button_icons(buttons);
 					},
