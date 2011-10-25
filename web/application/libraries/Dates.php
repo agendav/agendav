@@ -387,26 +387,17 @@ class Dates {
 	 * Formats a timestamp time using strftime
 	 *
 	 * @param	int	Timestamp
+	 * @param	DateTime	DateTime object (used to calculate am/pm)
 	 * @return	string	Formatted time string with strftime
 	 */
-	function strftime_time($timestamp) {
+	function strftime_time($timestamp, $dt) {
 		$format = Dates::$timeformats[$this->cfg_time]['strftime'];
 		$result = strftime($format, $timestamp);
 		if ($this->cfg_time == '12') {
-			$result .= $this->calc_ampm($timestamp);
+			$result .= $dt->format('a');
 		}
 		
 		return $result;
-	}
-
-	/**
-	 * Calculates strftime %P (am/pm) for a given time
-	 *
-	 * @param	int	timestamp
-	 * @return	string	am/pm string
-	 */
-	function calc_ampm($timestamp) {
-		return (($timestamp%86400) < 43200) ? 'am' : 'pm';
 	}
 
 }

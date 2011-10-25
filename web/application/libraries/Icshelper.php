@@ -482,13 +482,14 @@ class Icshelper {
 		} else {
 			// Are they in the same day?
 			$this_event['formatted_start'] .= ' ' 
-				. $this->CI->dates->strftime_time($ts_start);
+				. $this->CI->dates->strftime_time($ts_start, $start);
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				$this_event['formatted_end'] = $this->CI->dates->strftime_time($ts_end);
+				$this_event['formatted_end'] =
+					$this->CI->dates->strftime_time($ts_end, $end);
 			} else {
 				$this_event['formatted_end'] =
 					strftime($this->date_format, $ts_end) . ' ' .
-					$this->CI->dates->strftime_time($ts_end);
+					$this->CI->dates->strftime_time($ts_end, $end);
 			}
 		}
 
