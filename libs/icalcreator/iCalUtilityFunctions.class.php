@@ -1,8 +1,8 @@
 <?php
 /**
- * iCalcreator v2.10.15
+ * iCalcreator class v2.10.5
  * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
- * kigkonsult.se/iCalcreator/index.php
+ * www.kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se
  *
  * This library is free software; you can redistribute it and/or

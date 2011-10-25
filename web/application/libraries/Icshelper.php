@@ -457,10 +457,12 @@ class Icshelper {
 		$ts_start = $start->getTimestamp();
 		$ts_end = $end->getTimestamp();
 
+		// Expanded events
 		if (isset($orig_start)) {
-			// TODO deal with these adjustments
-			$ts_orig_start = $orig_start->getTimestamp();
-			$ts_orig_end = $orig_end->getTimestamp();
+			$orig_start->setTimeZone($this->tz_obj);
+			$orig_end->setTimeZone($this->tz_obj);
+			$this_event['orig_start'] = $orig_start->format(DateTime::ISO8601);
+			$this_event['orig_end'] = $orig_end->format(DateTime::ISO8601);
 		}
 
 		// Readable dates for start and end
@@ -480,13 +482,14 @@ class Icshelper {
 		} else {
 			// Are they in the same day?
 			$this_event['formatted_start'] .= ' ' 
-				. $this->CI->dates->strftime_time($ts_start);
+				. $this->CI->dates->strftime_time($ts_start, $start);
 			if ($start->format('Ymd') == $end->format('Ymd')) {
-				$this_event['formatted_end'] = $this->CI->dates->strftime_time($ts_end);
+				$this_event['formatted_end'] =
+					$this->CI->dates->strftime_time($ts_end, $end);
 			} else {
 				$this_event['formatted_end'] =
 					strftime($this->date_format, $ts_end) . ' ' .
-					$this->CI->dates->strftime_time($ts_end);
+					$this->CI->dates->strftime_time($ts_end, $end);
 			}
 		}
 
