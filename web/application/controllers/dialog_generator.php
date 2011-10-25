@@ -304,7 +304,6 @@ class Dialog_generator extends CI_Controller {
 				$end_obj->add(new DateInterval('P1D'));
 			}
 
-			// TODO make this format configurable
 			$data['start_date'] = $start_obj->format($this->date_format);
 			$data['end_date'] = $end_obj->format($this->date_format);
 			$data['start_time'] = $start_obj->format($this->time_format);

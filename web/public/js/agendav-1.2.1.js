@@ -403,8 +403,8 @@ $(document).ready(function() {
 			icalendar_class: event_data.icalendar_class,
 			transp: event_data.transp,
 			recurrence_id: event_data.recurrence_id,
-			orig_start: event_data.orig_start,
-			orig_end: event_data.orig_end
+			orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
+			orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
 		};
 		// Close tooltip
 		$(this).parents(ved).qtip('hide');

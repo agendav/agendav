@@ -457,10 +457,12 @@ class Icshelper {
 		$ts_start = $start->getTimestamp();
 		$ts_end = $end->getTimestamp();
 
+		// Expanded events
 		if (isset($orig_start)) {
-			// TODO deal with these adjustments
-			$ts_orig_start = $orig_start->getTimestamp();
-			$ts_orig_end = $orig_end->getTimestamp();
+			$orig_start->setTimeZone($this->tz_obj);
+			$orig_end->setTimeZone($this->tz_obj);
+			$this_event['orig_start'] = $orig_start->format(DateTime::ISO8601);
+			$this_event['orig_end'] = $orig_end->format(DateTime::ISO8601);
 		}
 
 		// Readable dates for start and end
