@@ -1,4 +1,4 @@
-Release 1.2.2 (2011-10-xx)
+Release 1.2.2 (2011-10-25)
 	* Reverted upgrade to iCalcreator. Went back to 2.10.5
 	* Fixed am/pm indicator
 	* Fixed edit of recurrent events

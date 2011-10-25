@@ -1,7 +1,18 @@
 Release notes
 =============
 
-.. _v1.2.1:: 
+.. _v1.2.2:
+
+1.2.2 (2011-10-25)
+------------------
+
+This release fixes important issues with recurrent events. It also fixes
+the am/pm indicator on times.
+
+It requires no database upgrades.
+
+.. _v1.2.1:
+
 1.2.1 (2011-10-24)
 ------------------
 
@@ -13,7 +24,8 @@ Also updates iCalcreator library to latest version (2.10.15) and qTip2.
 It requires no database upgrades.
 
 
-.. _v1.2:: 
+.. _v1.2:
+
 1.2 (2011-10-17)
 ----------------
 
@@ -35,7 +47,8 @@ It requires no database upgrades.
 
 * AgenDAV has lots of corrections and fixes. See the ``CHANGELOG``
 
-.. _v1.1.1:: 
+.. _v1.1.1:
+
 1.1.1 (2011-09-24)
 ------------------
 
