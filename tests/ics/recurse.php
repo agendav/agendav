@@ -2,7 +2,7 @@
 // Add required paths
 $current_include_path = get_include_path();
 set_include_path($current_include_path .
-        ':/home/jorge/tmp/icalcreator_ultima:'); 
+        ':/home/jorge/pry/agendav/libs/icalcreator'); 
 
 
 // . '../../libs/icalcreator:' 
@@ -13,14 +13,14 @@ $config = array(
         );
 
 $file = explode("\n",
-        @file_get_contents('9DAF859E-0DF8-45D2-AFEE-42E73135DCEB.ics'));
+        @file_get_contents('33EAB23E-CB57-45EA-BF71-DA3A141F63A8.ics'));
 
 $ical = new vcalendar($config);
 
 $res = $ical->parse($file);
 $ical->sort();
 
-$expand = $ical->selectComponents(2011, 5, 10, 2011, 6, 15,
+$expand = $ical->selectComponents(2011, 10, 1, 2011, 11, 1,
         'vevent', false, true, false);
 
            if ($expand !== FALSE) {
@@ -28,8 +28,7 @@ $expand = $ical->selectComponents(2011, 5, 10, 2011, 6, 15,
                    foreach( $year_arr as $month => $month_arr ) {
                        foreach( $month_arr as $day => $day_arr ) {
                            foreach( $day_arr as $event ) {
-                               echo
-                                   $current_dtstart =
+							   $current_dtstart =
                                    $event->getProperty('X-CURRENT-DTSTART');
                                $dtstart =
                                    $event->getProperty('DTSTART');
