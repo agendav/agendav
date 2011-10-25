@@ -1,3 +1,8 @@
+Release 1.2.2 (2011-10-xx)
+	* Reverted upgrade to iCalcreator. Went back to 2.10.5
+	* Fixed am/pm indicator
+	* Fixed edit of recurrent events
+
 Release 1.2.1 (2011-10-24)
 	* Fixed timezone and DST issues
 	* Fixed untranslated string
