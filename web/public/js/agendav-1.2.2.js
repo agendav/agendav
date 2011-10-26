@@ -1396,7 +1396,11 @@ function timestamp(d) {
  * Returns a full date+time string which is easily parseable
  */
 function fulldatetimestring(d) {
-	return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
+	if (d != null && d !== undefined) {
+		return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
+	} else {
+		return undefined;
+	}
 }
 
 // vim: sw=2 tabstop=2
