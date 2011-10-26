@@ -30,6 +30,9 @@
 
 if (defined('ENVIRONMENT'))
 {
+	ini_set('log_errors', TRUE);
+	ini_set('display_errors', FALSE);
+
 	switch (ENVIRONMENT)
 	{
 		case 'development':
@@ -38,7 +41,7 @@ if (defined('ENVIRONMENT'))
 	
 		case 'testing':
 		case 'production':
-			error_reporting(0);
+			error_reporting(E_ERROR | E_WARNING | E_PARSE);
 		break;
 
 		default:
