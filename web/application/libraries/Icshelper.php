@@ -46,10 +46,11 @@ class Icshelper {
 
 		// Add required paths
 		$current_include_path = get_include_path();
-		set_include_path($current_include_path . ':' 
+		set_include_path('.:'
 				. APPPATH . '../../libs/icalcreator:' 
 				. APPPATH . '../../libs/own_extensions:' 
-				. APPPATH . '../../libs/davical/inc');
+				. APPPATH . '../../libs/davical/inc:'
+				. $current_include_path);
 
 		require_once('iCalcreator.class.php');
 	}
