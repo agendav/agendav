@@ -89,9 +89,9 @@
 	 <p>Documentation</p>
 	 </a>
 	</div>
-	<div class="grid_4 omega" id="mail_link">
-	 <img src="img/users_comments.png" alt="Mailing lists"  width="64" height="64" />
-	 <p>Mailing lists</p>
+	<div class="grid_4 omega" id="community_link">
+	 <img src="img/users_comments.png" alt="Community"  width="64" height="64" />
+	 <p>Community</p>
 	</div>
   </div>
 
@@ -117,15 +117,14 @@
   </tr>
  </table>
 </div>
-<div class="tooltip" id="mail_tooltip">
- <p>
-  Feel free to subscribe to these mailing lists:
-  <div class="ml_desc">Users and announcements</div>
+<div class="tooltip" id="community_tooltip">
+  <div class="descript">Users and announcements</div>
   <a href="http://groups.google.com/group/agendav-general">agendav-general@googlegroups.com</a>
-  <div class="ml_desc">Development discussion</div>
+  <div class="descript">Development discussion</div>
   <a
   href="http://groups.google.com/group/agendav-dev">agendav-dev@googlegroups.com</a>
- </p>
+  <div class="descript">IRC</div>
+  Join IRC channel <tt>#agendav</tt> at <tt>irc.oftc.net</tt>
 </div>
 
 <div id="footer">
@@ -142,7 +141,7 @@
  <script language="JavaScript">
   $(document).ready(function() {
    $("#download_link").tooltip({ tip: '#download_tooltip', position: 'top center' });
-   $("#mail_link").tooltip({ tip: '#mail_tooltip', position: 'top center' });
+   $("#community_link").tooltip({ tip: '#community_tooltip', position: 'top center' });
    $("#screenshots a").lightBox({
 	imageLoading:'img/lightbox-ico-loading.gif',
 	imageBtnPrev:'img/lightbox-btn-prev.gif',
