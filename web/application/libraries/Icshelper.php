@@ -458,6 +458,11 @@ class Icshelper {
 		$ts_start = $start->getTimestamp();
 		$ts_end = $end->getTimestamp();
 
+		// Needed for some conversions (Fullcalendar timestamp and am/pm
+		// indicator)
+		$start->setTimeZone($this->tz_obj);
+		$end->setTimeZone($this->tz_obj);
+
 		// Expanded events
 		if (isset($orig_start)) {
 			$orig_start->setTimeZone($this->tz_obj);
@@ -502,8 +507,6 @@ class Icshelper {
 			$this_event['title'] = $this->CI->i18n->_('labels', 'untitled');
 		}
 
-		$start->setTimeZone($this->tz_obj);
-		$end->setTimeZone($this->tz_obj);
 		$this_event['start'] = $start->format(DateTime::ISO8601);
 		$this_event['end'] = $end->format(DateTime::ISO8601);
 		return $this_event;
