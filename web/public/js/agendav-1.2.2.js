@@ -1056,7 +1056,7 @@ function calendar_modify_form(calendar_obj) {
 				}
 			},
 			{
-				'text': _('labels', 'modify'),
+				'text': _('labels', 'save'),
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
 				var thisform = $("#modify_calendar_form");
