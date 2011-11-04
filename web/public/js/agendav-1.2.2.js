@@ -541,6 +541,14 @@ function set_data(name, value) {
  * Loads a form (via AJAX) to a specified div
  */
 function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
+	
+	divname = '#' + divname;
+
+	// Avoid double dialog opening
+	if ($(divname).length != 0) {
+		return false;
+	}
+
 	// Do it via POST
 	var newid = generate_on_the_fly_form(
 		base_app_url + 'caldav2json/edit_event', data);
@@ -568,7 +576,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 			},
 			success: function(data, textStatus, jqXHR) {
 				$("body").append(data);
-				$("#" + divname).dialog({
+				$(divname).dialog({
 					autoOpen: true,
 					buttons: buttons,
 					title: title,
@@ -576,7 +584,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
-						$("#" + divname).dialog('option', 'position', 'center');
+						$(divname).dialog('option', 'position', 'center');
 						var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
 						add_button_icons(buttons);
 					},
