@@ -20,8 +20,7 @@
  */
 
 class Icshelper {
-	var $final_url;
-	var $config; // for iCalCreator
+	private $config; // for iCalCreator
 
 	private $tz;
 	private $tz_obj;

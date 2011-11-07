@@ -20,9 +20,9 @@
  */
 
 class Caldav {
-	var $final_url;
-	var $CI;
-	var $client = null;
+	private $final_url;
+	private $CI;
+	private $client = null;
 
 	function __construct($params) {
 

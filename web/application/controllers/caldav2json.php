@@ -158,8 +158,8 @@ class Caldav2json extends CI_Controller {
 		} else {
 			$this->load->library('caldav');
 			$res = $this->caldav->delete_resource(
-					$this->auth->user,
-					$this->auth->passwd,
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
 					$href,
 					$calendar,
 					$etag);
@@ -295,8 +295,8 @@ class Caldav2json extends CI_Controller {
 
 		// Valid destination calendar? 
 		if (!$this->caldav->is_valid_calendar(
-				$this->auth->user,
-				$this->auth->passwd,
+				$this->auth->get_user(),
+				$this->auth->get_passwd(),
 				$p['calendar'])) {
 			$this->_throw_exception(
 					$this->i18n->_('messages', 'error_calendarnotfound', 
@@ -323,8 +323,8 @@ class Caldav2json extends CI_Controller {
 			}
 
 			if (!$this->caldav->is_valid_calendar(
-					$this->auth->user,
-					$this->auth->passwd,
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
 					$original_calendar)) {
 				$this->_throw_exception(
 					$this->i18n->_('messages', 'error_calendarnotfound', 
@@ -336,8 +336,8 @@ class Caldav2json extends CI_Controller {
 			$etag = $p['etag'];
 
 			$res = $this->caldav->fetch_resource_by_uid(
-					$this->auth->user,
-					$this->auth->passwd,
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
 					$uid,
 					$original_calendar);
 
@@ -412,8 +412,8 @@ class Caldav2json extends CI_Controller {
 			// Moving event between calendars
 			if ($original_calendar != $calendar) {
 				$res = $this->caldav->delete_resource(
-						$this->auth->user,
-						$this->auth->passwd,
+						$this->auth->get_user(),
+						$this->auth->get_passwd(),
 						$href,
 						$original_calendar,
 						$etag);
@@ -437,8 +437,8 @@ class Caldav2json extends CI_Controller {
 
 		// PUT on server
 		$new_etag = $this->caldav->put_resource(
-				$this->auth->user,
-				$this->auth->passwd,
+				$this->auth->get_user(),
+				$this->auth->get_passwd(),
 				$href,
 				$calendar,
 				$resource,
@@ -516,8 +516,8 @@ class Caldav2json extends CI_Controller {
 
 		// Load resource
 		$resource = $this->caldav->fetch_resource_by_uid(
-				$this->auth->user,
-				$this->auth->passwd,
+				$this->auth->get_user(),
+				$this->auth->get_passwd(),
 				$uid,
 				$calendar);
 
@@ -608,8 +608,8 @@ class Caldav2json extends CI_Controller {
 
 		// PUT on server
 		$new_etag = $this->caldav->put_resource(
-				$this->auth->user,
-				$this->auth->passwd,
+				$this->auth->get_user(),
+				$this->auth->get_passwd(),
 				$href,
 				$calendar,
 				$ical,
@@ -646,19 +646,19 @@ class Caldav2json extends CI_Controller {
 	function calendar_list() {
 		// TODO order
 		$own_calendars = $this->caldav->get_own_calendars(
-				$this->auth->user,
-				$this->auth->passwd
+				$this->auth->get_user(),
+				$this->auth->get_passwd()
 				);
 		$arr_calendars = $own_calendars;
 
 		// Look for shared calendars
 		$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
-				$this->auth->user);
+				$this->auth->get_user());
 
 		if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
 			$shared_calendars = $this->caldav->get_shared_calendars_info(
-					$this->auth->user,
-					$this->auth->passwd,
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
 					$tmp_shared_calendars);
 			if ($shared_calendars === FALSE) {
 				$this->extended_logs->message('ERROR', 
@@ -700,8 +700,8 @@ class Caldav2json extends CI_Controller {
 
 		// Get current own calendars
 		$current_calendars = $this->caldav->get_own_calendars(
-				$this->auth->user,
-				$this->auth->passwd
+				$this->auth->get_user(),
+				$this->auth->get_passwd()
 				);
 
 		// Was internal calendar name provided? FALSE and '' return TRUE for
@@ -730,8 +730,8 @@ class Caldav2json extends CI_Controller {
 
 
 		$res = $this->caldav->mkcalendar(
-				$this->auth->user,
-				$this->auth->passwd,
+				$this->auth->get_user(),
+				$this->auth->get_passwd(),
 				$calendar,
 				$props);
 
@@ -757,8 +757,8 @@ class Caldav2json extends CI_Controller {
 
 		// Get current own calendars and check if this one exists
 		$current_calendars = $this->caldav->get_own_calendars(
-				$this->auth->user,
-				$this->auth->passwd
+				$this->auth->get_user(),
+				$this->auth->get_passwd()
 				);
 
 		if (!isset($current_calendars[$calendar])) {
@@ -772,7 +772,7 @@ class Caldav2json extends CI_Controller {
 
 		// Delete calendar shares (if any)
 		$shares =
-			$this->shared_calendars->get_shared_from($this->auth->user);
+			$this->shared_calendars->get_shared_from($this->auth->get_user());
 
 		if (isset($shares[$calendar])) {
 			$this_calendar_shares = array_values($shares[$calendar]);
@@ -781,14 +781,14 @@ class Caldav2json extends CI_Controller {
 			}
 		}
 
-		$replace_pattern = '/^' . $this->auth->user . ':/';
+		$replace_pattern = '/^' . $this->auth->get_user() . ':/';
 		$internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
 
 		// Proceed to remove calendar from CalDAV server
 		$res = $this->caldav->delete_resource(
-			$this->auth->user,
-			$this->auth->passwd,
+			$this->auth->get_user(),
+			$this->auth->get_passwd(),
 			'',
 			$internal_calendar,
 			null);
@@ -831,8 +831,8 @@ class Caldav2json extends CI_Controller {
 
 		// Check if calendar is valid
 		if (!$this->caldav->is_valid_calendar(
-					$this->auth->user,
-					$this->auth->passwd,
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
 					$calendar)) {
 			$this->extended_logs->message('INTERNALS', 
 					'Call to modify_calendar() with non-existent calendar '
@@ -857,12 +857,12 @@ class Caldav2json extends CI_Controller {
 
 		// Proceed to modify calendar
 		if ($shared != 'true') {
-			$replace_pattern = '/^' . $this->auth->user . ':/';
+			$replace_pattern = '/^' . $this->auth->get_user() . ':/';
 			$internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
 			$res = $this->caldav->proppatch(
-				$this->auth->user,
-				$this->auth->passwd,
+				$this->auth->get_user(),
+				$this->auth->get_passwd(),
 				$internal_calendar,
 				$props);
 		} else {
@@ -870,7 +870,7 @@ class Caldav2json extends CI_Controller {
 			$success = $this->shared_calendars->store($sid,
 					$user_from,
 					$calendar,
-					$this->auth->user,
+					$this->auth->get_user(),
 					$props);
 			if ($success === FALSE) {
 				$res = $this->i18n->_('messages', 'error_internal');
@@ -891,8 +891,8 @@ class Caldav2json extends CI_Controller {
 			}
 
 			$res = $this->caldav->setacl(
-					$this->auth->user,
-					$this->auth->passwd,
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
 					$internal_calendar,
 					$arr_share_with);
 
@@ -910,7 +910,7 @@ class Caldav2json extends CI_Controller {
 					// New users
 					foreach ($add as $added_user) {
 						$this->shared_calendars->store(null,
-								$this->auth->user,
+								$this->auth->get_user(),
 								$internal_calendar,
 								$added_user);
 					}
