@@ -25,6 +25,7 @@ class Caldav2json extends CI_Controller {
 	private $date_format;
 
 	private $tz;
+	private $calendar_colors;
 
 	function __construct() {
 		parent::__construct();
@@ -42,6 +43,8 @@ class Caldav2json extends CI_Controller {
 		$this->time_format = $this->dates->time_format_string('date');
 
 		$this->tz = $this->config->item('default_timezone');
+
+		$this->calendar_colors = $this->config->item('calendar_colors');
 
 		$this->load->library('caldav');
 
@@ -693,9 +696,7 @@ class Caldav2json extends CI_Controller {
 
 		// Default color
 		if (empty($calendar_color)) {
-			$default_calendar_color =
-				$this->config->item('default_calendar_color');
-			$calendar_color = '#' . $default_calendar_color;
+			$calendar_color = '#' . $this->calendar_color[0];
 		}
 
 		// Get current own calendars

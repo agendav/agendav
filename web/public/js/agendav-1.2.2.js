@@ -1250,11 +1250,7 @@ function generate_calendar_entry(data) {
 	}
 
 	// Foreground color
-	var fg = calendar_colors[data.color];
-	if (fg === undefined) {
-		// Good luck!
-		fg = '#000000';
-	}
+	var fg = fg_for_bg(data.color);
 
 	var li = $("<li></li>")
 		.addClass("calendar_color")
@@ -1409,6 +1405,20 @@ function fulldatetimestring(d) {
 	} else {
 		return undefined;
 	}
+}
+
+/**
+ * Returns a foreground color for a given background
+ */
+function fg_for_bg(color) {
+	var colr = parseInt(color.substr(1), 16);
+
+	var is_dark = (colr >>> 16) // R
+		+ ((colr >>> 8) & 0x00ff) // G 
+		+ (colr & 0x0000ff) // B
+		< 500;
+
+	return (is_dark) ? '#ffffff' : '#000000';
 }
 
 // vim: sw=2 tabstop=2
