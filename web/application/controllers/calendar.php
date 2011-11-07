@@ -42,6 +42,7 @@ class Calendar extends CI_Controller {
 					'jquery.colorPicker.20091014.min.js',
 					'tag-it.20110621.min.js',
 					'jquery.qtip.20111022.min.js',
+					'jquery.colorhelpers.js',
 					),
 				'css' => array(
 					array(
@@ -86,9 +87,7 @@ class Calendar extends CI_Controller {
 		}
 
 		// Calendar colors
-		$calendar_colors = $this->config->item('default_calendar_color');
-		$calendar_colors = array_merge($calendar_colors,
-				$this->config->item('additional_calendar_colors'));
+		$calendar_colors = $this->config->item('calendar_colors');
 
 		$this->load->view('common_header', $data_header);
 		$this->load->view('calendar_page', $data_calendar);

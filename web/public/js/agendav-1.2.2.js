@@ -422,6 +422,7 @@ $(document).ready(function() {
 	$('li.available_calendar').live('click', function() {
 		$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
 		$(this).addClass('selected_calendar');
+		$(this).css('color', $(this).data().eventsource.textColor);
 	});
 
 	// Editing a calendar
@@ -541,6 +542,14 @@ function set_data(name, value) {
  * Loads a form (via AJAX) to a specified div
  */
 function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
+	
+	divname = '#' + divname;
+
+	// Avoid double dialog opening
+	if ($(divname).length != 0) {
+		return false;
+	}
+
 	// Do it via POST
 	var newid = generate_on_the_fly_form(
 		base_app_url + 'caldav2json/edit_event', data);
@@ -568,7 +577,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 			},
 			success: function(data, textStatus, jqXHR) {
 				$("body").append(data);
-				$("#" + divname).dialog({
+				$(divname).dialog({
 					autoOpen: true,
 					buttons: buttons,
 					title: title,
@@ -576,7 +585,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					modal: true,
 					open: function(event, ui) {
 						preDialogFunc();
-						$("#" + divname).dialog('option', 'position', 'center');
+						$(divname).dialog('option', 'position', 'center');
 						var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
 						add_button_icons(buttons);
 					},
@@ -1048,7 +1057,7 @@ function calendar_modify_form(calendar_obj) {
 				}
 			},
 			{
-				'text': _('labels', 'modify'),
+				'text': _('labels', 'save'),
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
 				var thisform = $("#modify_calendar_form");
@@ -1242,17 +1251,17 @@ function generate_calendar_entry(data) {
 	}
 
 	// Foreground color
-	var fg = calendar_colors[data.color];
-	if (fg === undefined) {
-		// Good luck!
-		fg = '#000000';
-	}
+	var fg = fg_for_bg(data.color);
+	// Border color
+	var border = $.color.parse(data.color).scale('rgb', 0.8).toString();
 
 	var li = $("<li></li>")
 		.addClass("calendar_color")
 		.addClass("available_calendar")
 		.attr("title", data.displayname)
 		.css('background-color', data.color)
+		.css('border-color', border)
+		.css('color', fg)
 		.html(data.shown_displayname);
 
 	// Shared calendars
@@ -1266,6 +1275,8 @@ function generate_calendar_entry(data) {
 	eventsource.color = data.color;
 	eventsource.textColor = fg;
 	data.eventsource = eventsource;
+
+	eventsource.borderColor = border;
 
 	// Associate data + eventsource to new list item
 	li.data(data);
@@ -1401,6 +1412,20 @@ function fulldatetimestring(d) {
 	} else {
 		return undefined;
 	}
+}
+
+/**
+ * Returns a foreground color for a given background
+ */
+function fg_for_bg(color) {
+	var colr = parseInt(color.substr(1), 16);
+
+	var is_dark = (colr >>> 16) // R
+		+ ((colr >>> 8) & 0x00ff) // G 
+		+ (colr & 0x0000ff) // B
+		< 500;
+
+	return (is_dark) ? '#ffffff' : '#000000';
 }
 
 // vim: sw=2 tabstop=2

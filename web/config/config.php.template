@@ -222,33 +222,20 @@ $config['default_timezone'] = 'Europe/Madrid';
 | Color list
 |--------------------------------------------------------------------------
 |
-| Default background => foreground color for just created calendars
+| Background colors. Foreground color are calculated by clients
 |
 */
 
-$config['default_calendar_color'] = array('B5C7EB' => '000000');
-
-
-/*
-|--------------------------------------------------------------------------
-| Color list
-|--------------------------------------------------------------------------
-|
-| Available color list.
-| It's an associative array on which each key => value should be interpreted
-| as 'background color' => 'foreground color'
-|
-*/
-
-$config['additional_calendar_colors'] = array(
-	'FAC5C0' => '000000',
-	'B7E3C0' => '000000',
-	'CAB2FC' => '000000',
-	'F8F087' => '000000',
-	'E6D5C1' => '000000',
-	'FFC48C' => '000000',
-	'DAF5FF' => '000000',
-	'C4C4BC' => '000000',
+$config['calendar_colors'] = array(
+	'B5C7EB',
+	'FAC5C0',
+	'B7E3C0',
+	'CAB2FC',
+	'F8F087',
+	'E6D5C1',
+	'FFC48C',
+	'DAF5FF',
+	'C4C4BC',
 );
 
 
