@@ -422,6 +422,7 @@ $(document).ready(function() {
 	$('li.available_calendar').live('click', function() {
 		$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
 		$(this).addClass('selected_calendar');
+		$(this).css('color', $(this).data().eventsource.textColor);
 	});
 
 	// Editing a calendar
@@ -1251,12 +1252,16 @@ function generate_calendar_entry(data) {
 
 	// Foreground color
 	var fg = fg_for_bg(data.color);
+	// Border color
+	var border = $.color.parse(data.color).scale('rgb', 0.8).toString();
 
 	var li = $("<li></li>")
 		.addClass("calendar_color")
 		.addClass("available_calendar")
 		.attr("title", data.displayname)
 		.css('background-color', data.color)
+		.css('border-color', border)
+		.css('color', fg)
 		.html(data.shown_displayname);
 
 	// Shared calendars
@@ -1270,6 +1275,8 @@ function generate_calendar_entry(data) {
 	eventsource.color = data.color;
 	eventsource.textColor = fg;
 	data.eventsource = eventsource;
+
+	eventsource.borderColor = border;
 
 	// Associate data + eventsource to new list item
 	li.data(data);

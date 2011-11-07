@@ -164,6 +164,8 @@ div.block div.links span.item {
 }
 
 #calendar_list li {
+  border-width: 1px;
+  border-style: solid;
   padding: 4px 4px 4px 15px;
   margin: 3px;
   -moz-border-radius: 0.4em;
@@ -174,7 +176,6 @@ div.block div.links span.item {
 }
 
 li.selected_calendar {
-  color: black !important;
   background: url(../img/current.png) transparent center left no-repeat;
   filter: alpha(opacity=100) !important;
   opacity: 1.0 !important;
