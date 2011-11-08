@@ -168,6 +168,8 @@ setting.
 
 .. confval:: default_calendar_color
 
+   .. deprecated:: 1.2.3
+
    Default background and foreground colors for calendars. Has to be
    specified as an associative array. Example::
 
@@ -176,6 +178,8 @@ setting.
     $config['default_calendar_color'] = array('B5C7EB' => '000000');
 
 .. confval:: additional_calendar_colors
+
+   .. deprecated:: 1.2.3
 
    List of selectable background and foreground color combinations. Specify
    them as an associative array. Example::
@@ -191,6 +195,28 @@ setting.
                 'DAF5FF' => '000000',
                 'C4C4BC' => '000000',
         );
+
+.. confval:: calendar_colors
+
+   List of selectable background colors. Foreground color will be 
+   automatically calculated depending on the darkness of the color. Specify
+   them as an array. Example::
+
+        $config['calendar_colors'] = array(
+		'9CC4E4',
+		'3A89C9',
+		'107FC9',
+		'FAC5C0',
+		'FF4E50',
+		'BD3737',
+		'C9DF8A',
+		'77AB59',
+		'36802D',
+		'F8F087',
+		'E6D5C1',
+		'3E4147',
+        );
+
 
 Database configuration (database.php)
 -------------------------------------

@@ -1,6 +1,25 @@
 Release notes
 =============
 
+.. _v1.2.3:
+
+1.2.3 (2011-11-08)
+------------------
+
+This release fixes some bugs with am/pm indicators under some circumstances,
+editing recurring events, include_path problems and other bugs.
+
+It also introduces dynamic text color calculation and new default calendar
+colors, so it's recommended to remove the following settings from
+``config.php``:
+
+* :confval:`default_calendar_color`: now the first color from :confval:`calendar_colors` is used
+* :confval:`additional_calendar_colors`: this option has been replaced by :confval:`calendar_colors` 
+
+Copy :confval:`calendar_colors` definition from ``config.php.template`` to your ``config.php`` 
+
+This release requires no database upgrades.
+
 .. _v1.2.2:
 
 1.2.2 (2011-10-25)
