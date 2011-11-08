@@ -1,3 +1,12 @@
+Release 1.2.3 (2011-11-08)
+	* Better error logging when in production mode
+	* Fixed editing of recurring events
+	* Fixed DAViCal/awl include paths when installed in same machine
+	* Fixed am/pm indicator under some circumstances
+	* Fixed fuzzy buttons on dialogs (issue #13)
+	* Event text color changes depending on background (dark/light)
+	* New default colors and color selection dialog
+
 Release 1.2.2 (2011-10-25)
 	* Reverted upgrade to iCalcreator. Went back to 2.10.5
 	* Fixed am/pm indicator
