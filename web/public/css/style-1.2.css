@@ -170,6 +170,7 @@ div.block div.links span.item {
   margin: 3px;
   -moz-border-radius: 0.4em;
   -webkit-border-radius: 0.4em;
+  border-radius: 0.4em;
   zoom: 1;
   filter: alpha(opacity=80);
   opacity: 0.8;
@@ -180,32 +181,6 @@ li.selected_calendar {
   filter: alpha(opacity=100) !important;
   opacity: 1.0 !important;
 }
-
-.color1 {
-  background-color: #36c;
-  border-color: #36c;
-}
-
-.color2 {
-  background-color: #D1001A;
-  border-color: #D1001A;
-}
-
-.color3 {
-  background-color: #06862E;
-  border-color: #06862E;
-}
-
-.color4 {
-  background-color: #EA5E00;
-  border-color: #EA5E00;
-}
-
-.color5 {
-  background-color: #673496;
-  border-color: #673496;
-}
-
 
 /* Loadmask starts */
 .loadmask {
@@ -595,4 +570,14 @@ div.selecthelper {
   opacity: 0.5;
   filter: alpha(opacity = 50);
   zoom: 1;
+}
+
+.fc-event {
+    font-size: 0.9em !important;
+    padding: 0.2em 0 0.2em 0;
+    -moz-border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+    border-radius: 3px !important;
+    border-width: 1px;
+    border-style: solid;
 }
