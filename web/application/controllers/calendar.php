@@ -65,9 +65,9 @@ class Calendar extends CI_Controller {
 					));
 
 		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-1.2.2.min.js';
+			$data_header['js'][] = 'agendav-1.2.3.min.js';
 		} else {
-			$data_header['js'][] = 'agendav-1.2.2.js';
+			$data_header['js'][] = 'agendav-1.2.3.js';
 		}
 
 		// Additional JS files
