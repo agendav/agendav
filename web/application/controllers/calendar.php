@@ -42,7 +42,7 @@ class Calendar extends CI_Controller {
 					'jquery.colorPicker.20091014.min.js',
 					'tag-it.20110621.min.js',
 					'jquery.qtip.20111022.min.js',
-					'jquery.colorhelpers.js',
+					'jquery.colorhelpers.min.js',
 					),
 				'css' => array(
 					array(
