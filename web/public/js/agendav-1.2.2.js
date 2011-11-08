@@ -1253,7 +1253,13 @@ function generate_calendar_entry(data) {
 	// Foreground color
 	var fg = fg_for_bg(data.color);
 	// Border color
-	var border = $.color.parse(data.color).scale('rgb', 0.8).toString();
+	//var border = $.color.parse(data.color).scale('rgb', 0.8).toString();
+	var border = $.color.parse(data.color);
+	if (fg == '#000000') {
+		border = border.scale('rgb', 0.8).toString();
+	} else {
+		border = border.add('rgb', 120).toString();
+	}
 
 	var li = $("<li></li>")
 		.addClass("calendar_color")
