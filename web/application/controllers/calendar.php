@@ -42,10 +42,11 @@ class Calendar extends CI_Controller {
 					'jquery.colorPicker.20091014.min.js',
 					'tag-it.20110621.min.js',
 					'jquery.qtip.20111022.min.js',
+					'jquery.colorhelpers.min.js',
 					),
 				'css' => array(
 					array(
-						'href' => 'css/style-1.2.print.css',
+						'href' => 'css/style-1.2.3.print.css',
 						'rel' => 'stylesheet',
 						'type' => 'text/css',
 						'media' => 'print',
@@ -60,13 +61,13 @@ class Calendar extends CI_Controller {
 					'css/timePicker.css',
 					'css/jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
 					'css/Aristo_20110919.css',
-					'css/style-1.2.css',
+					'css/style-1.2.3.css',
 					));
 
 		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-1.2.2.min.js';
+			$data_header['js'][] = 'agendav-1.2.3.min.js';
 		} else {
-			$data_header['js'][] = 'agendav-1.2.2.js';
+			$data_header['js'][] = 'agendav-1.2.3.js';
 		}
 
 		// Additional JS files
@@ -86,9 +87,7 @@ class Calendar extends CI_Controller {
 		}
 
 		// Calendar colors
-		$calendar_colors = $this->config->item('default_calendar_color');
-		$calendar_colors = array_merge($calendar_colors,
-				$this->config->item('additional_calendar_colors'));
+		$calendar_colors = $this->config->item('calendar_colors');
 
 		$this->load->view('common_header', $data_header);
 		$this->load->view('calendar_page', $data_calendar);

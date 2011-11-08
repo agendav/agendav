@@ -164,47 +164,23 @@ div.block div.links span.item {
 }
 
 #calendar_list li {
+  border-width: 1px;
+  border-style: solid;
   padding: 4px 4px 4px 15px;
   margin: 3px;
   -moz-border-radius: 0.4em;
   -webkit-border-radius: 0.4em;
+  border-radius: 0.4em;
   zoom: 1;
   filter: alpha(opacity=80);
   opacity: 0.8;
 }
 
 li.selected_calendar {
-  color: black !important;
   background: url(../img/current.png) transparent center left no-repeat;
   filter: alpha(opacity=100) !important;
   opacity: 1.0 !important;
 }
-
-.color1 {
-  background-color: #36c;
-  border-color: #36c;
-}
-
-.color2 {
-  background-color: #D1001A;
-  border-color: #D1001A;
-}
-
-.color3 {
-  background-color: #06862E;
-  border-color: #06862E;
-}
-
-.color4 {
-  background-color: #EA5E00;
-  border-color: #EA5E00;
-}
-
-.color5 {
-  background-color: #673496;
-  border-color: #673496;
-}
-
 
 /* Loadmask starts */
 .loadmask {
@@ -442,28 +418,28 @@ div.color_picker {
   height: 16px;
   width: 32px;
   padding: 0 !important;
-  border: 1px solid #ccc;
+  border-width: 0;
   background: url(../img/arrow_colorpicker.gif) no-repeat top right;
   cursor: pointer;
   line-height: 16px;
 }
 
 div#color_selector {
-  width: 100px;
+  width: 180px;
   position: absolute;
-  border: 1px solid #598FEF;
+  border-width: 0;
   background-color: #EFEFEF;
   padding: 2px;
   z-index: 9999;
 }
   div#color_custom {width: 100%; float:left }
   div#color_custom label {font-size: 95%; color: #2F2F2F; margin: 5px 2px; width: 25%}
-  div#color_custom input {margin: 5px 2px; padding: 0; font-size: 95%; border: 1px solid #000; width: 65%; }
+  div#color_custom input {margin: 5px 2px; padding: 0; font-size: 95%; border: 1px solid #ccc; width: 65%; }
 
 div.color_swatch {
   height: 24px;
   width: 24px;
-  border: 1px solid #000;
+  border-width: 0;
   margin: 2px;
   float: left;
   cursor: pointer;
@@ -594,4 +570,14 @@ div.selecthelper {
   opacity: 0.5;
   filter: alpha(opacity = 50);
   zoom: 1;
+}
+
+.fc-event {
+    font-size: 0.9em !important;
+    padding: 0.2em 0 0.2em 0;
+    -moz-border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+    border-radius: 3px !important;
+    border-width: 1px;
+    border-style: solid;
 }

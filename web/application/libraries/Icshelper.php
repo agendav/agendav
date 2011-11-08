@@ -20,8 +20,7 @@
  */
 
 class Icshelper {
-	var $final_url;
-	var $config; // for iCalCreator
+	private $config; // for iCalCreator
 
 	private $tz;
 	private $tz_obj;
@@ -46,10 +45,11 @@ class Icshelper {
 
 		// Add required paths
 		$current_include_path = get_include_path();
-		set_include_path($current_include_path . ':' 
+		set_include_path('.:'
 				. APPPATH . '../../libs/icalcreator:' 
 				. APPPATH . '../../libs/own_extensions:' 
-				. APPPATH . '../../libs/davical/inc');
+				. APPPATH . '../../libs/davical/inc:'
+				. $current_include_path);
 
 		require_once('iCalcreator.class.php');
 	}
@@ -457,6 +457,11 @@ class Icshelper {
 		$ts_start = $start->getTimestamp();
 		$ts_end = $end->getTimestamp();
 
+		// Needed for some conversions (Fullcalendar timestamp and am/pm
+		// indicator)
+		$start->setTimeZone($this->tz_obj);
+		$end->setTimeZone($this->tz_obj);
+
 		// Expanded events
 		if (isset($orig_start)) {
 			$orig_start->setTimeZone($this->tz_obj);
@@ -501,8 +506,6 @@ class Icshelper {
 			$this_event['title'] = $this->CI->i18n->_('labels', 'untitled');
 		}
 
-		$start->setTimeZone($this->tz_obj);
-		$end->setTimeZone($this->tz_obj);
 		$this_event['start'] = $start->format(DateTime::ISO8601);
 		$this_event['end'] = $end->format(DateTime::ISO8601);
 		return $this_event;

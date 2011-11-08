@@ -321,12 +321,11 @@ class Dialog_generator extends CI_Controller {
 	 * Calendar creation dialog
 	 */
 	function create_calendar() {
-		$default_calendar_color = array_keys(
-					$this->config->item('default_calendar_color'));
+		$calendar_colors = $this->config->item('calendar_colors');
 
 		$this->load->view('dialogs/create_calendar',
 				array(
-					'default_calendar_color' => '#' . $default_calendar_color[0]
+					'default_calendar_color' => '#' . $calendar_colors[0]
 					));
 	}
 

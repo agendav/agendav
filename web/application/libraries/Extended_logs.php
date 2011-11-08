@@ -21,7 +21,7 @@
 
 class Extended_logs {
 
-	var $CI;
+	private $CI;
 
 	function __construct() {
 		$this->CI = get_instance();

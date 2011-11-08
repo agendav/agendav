@@ -180,11 +180,14 @@ class CalDAVClient {
       xml_parser_set_option ( $parser, XML_OPTION_CASE_FOLDING, 0 );
 
       if ( xml_parse_into_struct( $parser, $this->xmlResponse, $this->xmlnodes, $this->xmltags ) === 0 ) {
-        printf( "XML parsing error: %s - %s\n", xml_get_error_code($parser), xml_error_string(xml_get_error_code($parser)) );
+        //printf( "XML parsing error: %s - %s\n", xml_get_error_code($parser), xml_error_string(xml_get_error_code($parser)) );
 //        debug_print_backtrace();
 //        echo "\nNodes array............................................................\n"; print_r( $this->xmlnodes );
 //        echo "\nTags array............................................................\n";  print_r( $this->xmltags );
-        printf( "\nXML Reponse:\n%s\n", $this->xmlResponse );
+        //printf( "\nXML Reponse:\n%s\n", $this->xmlResponse );
+		  log_message('ERROR', 'XML parsing error: ' 
+				  . xml_get_error_code($parser) . ', ' 
+				  . xml_error_string(xml_get_error_code($parser)));
       }
 
       xml_parser_free($parser);

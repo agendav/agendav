@@ -20,7 +20,7 @@
  */
 
 class Auth extends CI_Model {
-	var $user, $passwd, $name, $mail;
+	private $user, $passwd, $name, $mail;
 
 	function __construct() {
 		parent::__construct();
