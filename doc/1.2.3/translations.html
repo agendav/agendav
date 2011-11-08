@@ -1,0 +1,138 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Translating AgenDAV &mdash; AgenDAV v1.2.3 documentation</title>
+    <link rel="stylesheet" href="_static/adctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="AgenDAV v1.2.3 documentation" href="index.html" />
+    <link rel="prev" title="3. Troubleshooting AgenDAV" href="admin/troubleshooting.html" />
+    <link media="only screen and (max-device-width: 480px)" href="_static/mobile.css" type="text/css" rel="stylesheet" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>AgenDAV v1.2.3 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>Translating AgenDAV</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="admin/troubleshooting.html" title="3. Troubleshooting AgenDAV" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin/index.html">Installation and configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Translating AgenDAV</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-add-a-translation">How to add a translation</a></li>
+</ul>
+</li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="translating-agendav">
+<h1>Translating AgenDAV<a class="headerlink" href="#translating-agendav" title="Permalink to this headline">¶</a></h1>
+<p>AgenDAV translation system is based on labels which get translated into
+full sentences/paragraphs. They can contain placeholders which get replaced
+by the system depending on the context.</p>
+<div class="section" id="how-to-add-a-translation">
+<h2>How to add a translation<a class="headerlink" href="#how-to-add-a-translation" title="Permalink to this headline">¶</a></h2>
+<p>Consider the <tt class="docutils literal"><span class="pre">en_US</span></tt> language to be the master reference language file.</p>
+<ol class="arabic">
+<li><p class="first">Copy the directory <tt class="docutils literal"><span class="pre">web/lang/en_US</span></tt> to a new directory inside
+<tt class="docutils literal"><span class="pre">web/lang</span></tt> with the name of the locale of the new language. For example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$ cp -R web/lang/en_US web/lang/fr_FR</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Rename <tt class="docutils literal"><span class="pre">en_US.php</span></tt> inside <tt class="docutils literal"><span class="pre">fr_FR/</span></tt> directory to <tt class="docutils literal"><span class="pre">fr_FR.php</span></tt></p>
+</li>
+<li><p class="first">Edit all strings on the file. Make sure you save it using UTF-8 encoding.</p>
+</li>
+<li><p class="first">Search the corresponding <a class="reference external" href="http://mygengo.com/string/p/codeigniter-2-1">CodeIgniter translation</a> and download its zip file.</p>
+</li>
+<li><p class="first">Uncompress the CodeIgniter translation into <tt class="docutils literal"><span class="pre">web/application/language</span></tt></p>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">web/config/languages.php</span></tt> and add a new entry like this:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;lang_rels&#39;][&#39;fr_FR&#39;] = array(</span>
+<span class="x">        &#39;codeigniter&#39; =&gt; &#39;french&#39;,</span>
+<span class="x">);</span>
+</pre></div>
+</div>
+<p>This supposes the language file you downloadad for CodeIgniter resulted
+in a directory called <tt class="docutils literal"><span class="pre">french/</span></tt></p>
+</li>
+</ol>
+<p>7. You&#8217;re done! Set <a class="reference internal" href="admin/configuration.html#confval-default_language"><tt class="xref std std-confval docutils literal"><span class="pre">default_language</span></tt></a> to your new language name
+(<tt class="docutils literal"><span class="pre">fr_FR</span></tt> in our example)</p>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2011, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		Translating AgenDAV
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>
