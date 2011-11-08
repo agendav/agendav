@@ -136,13 +136,16 @@ $config['default_timezone'] = 'Europe/Madrid';
 */
 
 $config['calendar_colors'] = array(
-	'B5C7EB',
-	'FAC5C0',
-	'B7E3C0',
-	'CAB2FC',
-	'F8F087',
-	'E6D5C1',
-	'FFC48C',
-	'DAF5FF',
-	'C4C4BC',
+		'9CC4E4',
+		'3A89C9',
+		'107FC9',
+		'FAC5C0',
+		'FF4E50',
+		'BD3737',
+		'C9DF8A',
+		'77AB59',
+		'36802D',
+		'F8F087',
+		'E6D5C1',
+		'3E4147',
 );
