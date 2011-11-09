@@ -32,18 +32,6 @@ class Calendar extends CI_Controller {
 		$data_header = array(
 				'title' => $this->config->item('site_title'),
 				'logged_in' => TRUE,
-				'js' => array(
-					'jquery-1.6.4.min.js',
-					'jquery-ui-1.8.16.min.js',
-					'freeow-1.0.1/jquery.freeow.min.js',
-					'fullcalendar-1.5.2/fullcalendar.min.js',
-					'jquery.timePicker.20110318.min.js',
-					'loadmask-0.4/jquery.loadmask.min.js',
-					'jquery.colorPicker.20091014.min.js',
-					'tag-it.20110621.min.js',
-					'jquery.qtip.20111022.min.js',
-					'jquery.colorhelpers.min.js',
-					),
 				'css' => array(
 					array(
 						'href' => 'css/style-1.2.3.print.css',
@@ -65,9 +53,21 @@ class Calendar extends CI_Controller {
 					));
 
 		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-1.2.3.min.js';
+			$data_header['js'][] = 'agendav-' . AGENDAV_VERSION . '.js';
 		} else {
-			$data_header['js'][] = 'agendav-1.2.3.js';
+			$data_header['js'] = array(
+					'libs/jquery-1.6.4.min.js',
+					'libs/jquery-ui-1.8.16.min.js',
+					'libs/jquery.freeow.min.js',
+					'libs/fullcalendar.min.js',
+					'libs/jquery.timePicker.20110318.min.js',
+					'libs/jquery.loadmask.min.js',
+					'libs/jquery.colorPicker.20091014.js',
+					'libs/tag-it.20110621.js',
+					'libs/jquery.qtip.20111022.min.js',
+					'libs/jquery.colorhelpers.js',
+					'app.js',
+					);
 		}
 
 		// Additional JS files
