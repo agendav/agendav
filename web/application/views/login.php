@@ -1,12 +1,3 @@
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-$(document).ready(function() {
-	$("input:submit").button();
-	$('input[name="user"]').focus();
-
-});
-//]]>
-</script>
 <div class="logintitle">
 <?php
 if (isset($logo)):

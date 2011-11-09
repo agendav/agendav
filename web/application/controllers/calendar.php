@@ -52,20 +52,6 @@ class Calendar extends CI_Controller {
 					'css/style-1.2.3.css',
 					));
 
-		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-' . AGENDAV_VERSION . '.js';
-		} else {
-			$data_header['js'] = Defs::$jsfiles;
-		}
-
-		// Additional JS files
-		$additional_js = $this->config->item('additional_js');
-		if ($additional_js !== FALSE && is_array($additional_js)) {
-			foreach ($additional_js as $js) {
-				$data_header['js'][] = $js;
-			}
-		}
-
 		// Calendar view
 		$data_calendar = array();
 		$logo = $this->config->item('logo');
@@ -74,17 +60,15 @@ class Calendar extends CI_Controller {
 			$data_calendar['title'] = $data_header['title'];
 		}
 
-		// Calendar colors
-		$calendar_colors = $this->config->item('calendar_colors');
-
 		$this->load->view('common_header', $data_header);
 		$this->load->view('calendar_page', $data_calendar);
 		$this->load->view('event_details_template');
-		$this->load->view('js_code/calendar_colors',
-			array('colors' => $calendar_colors));
+
 		$this->load->view('footer',
 				array(
+					'full_js_set' => TRUE,
 					'load_session_refresh' => TRUE,
+					'load_calendar_colors' => TRUE,
 					));
 	}
 

@@ -22,33 +22,6 @@ if (isset($css)) {
         .uniForm, .uniForm .ctrlHolder, .uniForm .buttonHolder, .uniForm .ctrlHolder ul{ zoom:1; }
       </style>
     <![endif]-->
-
-
-<script language="JavaScript" type="text/javascript" src="<?php echo
-site_url('js_generator/i18n/' . AGENDAV_VERSION)?>"></script>
-<script language="JavaScript" type="text/javascript" src="<?php echo
-site_url('js_generator/prefs')?>"></script>
-
-<?php
-if (isset($js)) {
-	foreach ($js as $jsfile) {
-		echo script_tag('js/' . $jsfile);
-	}
-}
-?>
-
-<?php
-$base = base_url();
-$relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
-?>
- 
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-var base_url = '<?php echo $base; ?>';
-var base_app_url = '<?php echo site_url(); ?>/';
-var relative_url = '<?php echo $relative; ?>';
-//]]>
-</script>
 </head>
 <body class="ui-form">
 <div id="topbar">

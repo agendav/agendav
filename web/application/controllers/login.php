@@ -72,10 +72,6 @@ class Login extends CI_Controller {
 		if ($valid_auth === FALSE) {
             $data_header = array(
 					'title' => $this->config->item('site_title'),
-                    'js' => array(
-                        'jquery-1.6.4.min.js',
-                        'jquery-ui-1.8.16.min.js',
-                        ),
                     'css' => array(
                         'css/Aristo_20110919.css',
                         'css/style-1.2.3.css',
@@ -94,7 +90,8 @@ class Login extends CI_Controller {
 			}
 
 			$this->load->view('login', $data);
-			$this->load->view('footer');
+			$this->load->view('footer',
+					array('login_page' => TRUE));
 		} else {
 			redirect("/calendar");
 		}

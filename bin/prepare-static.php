@@ -36,8 +36,12 @@ require_once($app_dir . 'hooks/Defs.php');
 $defs = new Defs();
 $defs->definitions();
 
+$jsmin = $js_dir . 'jquery-base-' . AGENDAV_VERSION . '.js';
 $jsfull = $js_dir . 'agendav-' . AGENDAV_VERSION . '.js';
-$tmp = fopen($jsfull, 'w');
+
+$jsfullhandle = fopen($jsfull, 'w');
+$jsminhandle = fopen($jsmin, 'w');
+$i = 0;
 foreach (Defs::$jsfiles as $js) {
 	echo "Processing $js...";
 	$contents = '';
@@ -53,8 +57,16 @@ foreach (Defs::$jsfiles as $js) {
 			$contents .= fread($cmdhandle, 8192);
 		}
 	}
-	fwrite($tmp, $contents);
+
+	// Write on two files
+	if ($i < 2) {
+		fwrite($jsminhandle, $contents);
+	} else {
+		fwrite($jsfullhandle, $contents);
+	}
+	$i++;
 }
-fclose($tmp);
+fclose($jsfullhandle);
+fclose($jsminhandle);
 
-
+// Minimal JS
