@@ -227,7 +227,7 @@ $config['default_timezone'] = 'Europe/Madrid';
 */
 
 $config['calendar_colors'] = array(
-		'9CC4E4',
+		'D4EAEF',
 		'3A89C9',
 		'107FC9',
 		'FAC5C0',
