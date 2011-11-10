@@ -115,7 +115,7 @@ img {
 #page_contents {
   float: right;
   width: 80%;
-  margin: 1% 0;
+  margin-top: 10px;
 }
 
 #left_frame {
