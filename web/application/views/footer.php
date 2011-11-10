@@ -76,9 +76,5 @@ $img = array(
 		'alt' => 'AgenDAV',
 		);
 ?>
-<div id="footer">
-<?php echo img($img); ?>
-<p><?php echo $this->config->item('footer')?></p>
-</div>
 </body>
 </html>
