@@ -30,7 +30,7 @@ class Defs {
 			'libs/tag-it.20110621.js',
 			'libs/jquery.qtip.20111022.min.js',
 			'libs/jquery.colorhelpers.js',
-			'libs/jquery.timePicker.20110318.min.js',
+			'libs/jquery.timePicker.20110318.js',
 			'app.js',
 			);
 
