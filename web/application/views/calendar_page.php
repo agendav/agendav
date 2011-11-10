@@ -65,6 +65,3 @@ foreach ($items as $item) {
 
 <div id="popup" class="freeow freeow-top-right">
 </div>
-
-<div id="comm"></div>
-
