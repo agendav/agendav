@@ -564,6 +564,8 @@ div.share_info {
 
 td.fc-today {
   background-color: #FFFFCC !important;
+  font-weight: bold;
+  border: 2px solid #777;
 }
 
 div.selecthelper {
