@@ -25,8 +25,10 @@ var mcd = "#modify_calendar_dialog";
 var dcd = "#delete_calendar_dialog";
 
 $(document).ready(function() {
-	// Refresh session every X seconds code at js_generator
-	// Calls session_refresh()
+	// Load i18n strings
+	var i18n = undefined;
+	// TODO: language
+	load_i18n_strings();
 
 	// Default datepicker options
 	set_default_datepicker_options();
@@ -1433,6 +1435,49 @@ function fg_for_bg(color) {
 		< 500;
 
 	return (is_dark) ? '#ffffff' : '#000000';
+}
+
+/**
+ * Loads localized strings
+ */
+function load_i18n_strings() {
+	$.ajax({
+		async: false,
+		url: base_app_url + 'strings/load/' + agendav_version,
+		dataType: 'json',
+		method: 'GET',
+		ifModified: false, // TODO set to true + cache
+		success: function(data, textStatus, jqXHR) {
+			i18n = data;
+		},
+		
+		error: function(jqXHR, textStatus, errorThrown) {
+			show_error('Error loading translation',
+				'Please, contact your system administrator');
+		}
+		});
+}
+
+/**
+ * Function that translates a given label/message
+ */
+function _(mtype, s, params) {
+	var ret = '[' + mtype + ':' + s + ']';
+
+	if (typeof(i18n)!= 'undefined' && (mtype == 'messages' 
+			|| mtype == 'labels')) {
+		if (mtype == 'labels' && i18n.labels[s]) {
+			ret = i18n.labels[s];
+		} else if (mtype == 'messages' && i18n.messages[s]) {
+			ret = i18n.messages[s];
+		}
+	}
+
+	for (var i in params) {
+		ret = ret.replace(i, params[i]);
+	}
+
+	return ret;
 }
 
 // vim: sw=2 tabstop=2

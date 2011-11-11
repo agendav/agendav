@@ -8,10 +8,9 @@ $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
 var base_url = '<?php echo $base; ?>';
 var base_app_url = '<?php echo site_url(); ?>/';
 var relative_url = '<?php echo $relative; ?>';
+var agendav_version = '<?php echo AGENDAV_VERSION; ?>';
 //]]>
 </script>
-<script language="JavaScript" type="text/javascript" src="<?php echo
-site_url('js_generator/i18n/' . AGENDAV_VERSION)?>"></script>
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/prefs')?>"></script>
 
