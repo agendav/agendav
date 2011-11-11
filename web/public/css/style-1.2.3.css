@@ -568,6 +568,10 @@ td.fc-today {
   border: 2px solid #777;
 }
 
+td.fc-sat, td.fc-sun {
+  background-color: #f6f6f6;
+}
+
 div.selecthelper {
   opacity: 0.5;
   filter: alpha(opacity = 50);
