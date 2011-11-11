@@ -591,6 +591,20 @@ class Caldav2json extends CI_Controller {
 		} else {
 			$new_vevent = $this->icshelper->make_end($vevent,
 					$tz, null, $dur_string);
+
+			// Check if DTSTART == DTEND
+			$new_dtstart = $this->icshelper->extract_date($new_vevent,
+					'DTSTART', $tz);
+			$new_dtend = $this->icshelper->extract_date($new_vevent,
+					'DTEND', $tz);
+			if ($new_dtstart['result'] == $new_dtend['result']) {
+				// Avoid this
+				$new_vevent = $this->icshelper->make_end($vevent,
+						$tz, null, ($new_dtend['value'] == 'DATE' ? 'P1D' :
+							'PT60M'));
+			}
+
+
 		}
 
 		// Apply LAST-MODIFIED update
