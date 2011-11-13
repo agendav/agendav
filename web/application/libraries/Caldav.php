@@ -726,6 +726,7 @@ class Caldav {
 	 */
 	function build_url($user, $calendar) {
 		$base_url = $this->CI->config->item('caldav_url');
+		log_message('ERROR', $base_url);
 
 		$pieces = preg_split('/:/', $calendar);
 		if (count($pieces) == '1') {
@@ -736,7 +737,7 @@ class Caldav {
 		}
 
 		return preg_replace('/%u/', $use_principal, $base_url) .
-			$calendar . '/';
+			$calendar;
 	}
 
 
