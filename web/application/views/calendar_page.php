@@ -61,6 +61,16 @@ foreach ($items as $item) {
   </div>
   </div>
  </div>
+ <div id="footer">
+<?php
+ $img = array(
+		 'src' => 'img/agendav_small.png',
+		 'alt' => 'AgenDAV',
+		 );
+ echo img($img);
+?>
+  <p><?php echo $this->config->item('footer')?></p>
+ </div>
 </div>
 
 <div id="popup" class="freeow freeow-top-right">
