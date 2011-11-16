@@ -35,14 +35,14 @@ class Defs {
 			);
 
 	static $cssfiles = array(
-			'src/Aristo_20110919.css',
-			'src/fullcalendar.1.5.2.css',
-			'src/jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
-			'src/timePicker.css',
+			'Aristo_20110919.css',
+			'fullcalendar.1.5.2.css',
+			'jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
+			'timePicker.css',
 			'app.css',
 			);
 	static $printcssfiles = array(
-			'src/fullcalendar.print.1.5.2.css',
+			'fullcalendar.print.1.5.2.css',
 			'app.print.css',
 			);
 

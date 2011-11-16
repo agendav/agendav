@@ -39,14 +39,14 @@ foreach ($compilers as $path => $url) {
 	}
 }
 
-die();
-
-// Load JS file list
+// Load file list
 require_once($app_dir . 'hooks/Defs.php');
 
 $defs = new Defs();
 $defs->definitions();
 
+
+// JS
 $jsmin = $js_dir . 'jquery-base-' . AGENDAV_VERSION . '.js';
 $jsfull = $js_dir . 'agendav-' . AGENDAV_VERSION . '.js';
 
@@ -82,4 +82,39 @@ fclose($jsminhandle);
 
 
 // CSS
+$cssmin = $css_dir . 'agendav-' . AGENDAV_VERSION . '.css';
+$cssprint = $css_dir . 'agendav-' . AGENDAV_VERSION . '.print.css';
+$tmp = array_keys($compilers);
+$yuicompressor = basename($tmp[1]);
+
+$csshandle = fopen($cssmin, 'w');
+$cssprinthandle = fopen($cssprint, 'w');
+$tasks = array('cssfiles', 'printcssfiles');
+foreach ($tasks as $task) {
+	foreach (Defs::$$task as $css) {
+		echo "Processing $css...";
+		$contents = '';
+		if (strpos($css, '.min.') !== FALSE) {
+			echo " already minimized.\n";
+			$contents = file_get_contents($css_dir . $css);
+		} else {
+			echo " using ".$yuicompressor."\n";
+			$cmd = 'java -jar '.$yuicompressor.' --type css'
+					.' ' . $css_dir . $css;
+			$cmdhandle = popen($cmd, 'r');
+			while (!feof($cmdhandle)) {
+				$contents .= fread($cmdhandle, 8192);
+			}
+		}
+
+		// Write
+		if ($task == 'cssfiles') {
+			fwrite($csshandle, $contents);
+		} else {
+			fwrite($cssprinthandle, $contents);
+		}
+	}
+}
+fclose($csshandle);
+fclose($cssprinthandle);
 
