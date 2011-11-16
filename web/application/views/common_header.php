@@ -10,10 +10,30 @@ href="<?php echo base_url() . 'favicon.ico';?>" />
  
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <?php
-if (isset($css)) {
-	foreach ($css as $cssfile) {
-		echo link_tag($cssfile);
-	}
+if (ENVIRONMENT == 'development') {
+	$css = Defs::$cssfiles;
+	$printcss = Defs::$printcssfiles;
+} else {
+	$css = array(
+			'agendav-' . AGENDAV_VERSION . '.css',
+			);
+	$printcss = array(
+			'agendav-' . AGENDAV_VERSION . '.print.css',
+			);
+}
+
+foreach ($css as $cssfile) {
+	echo link_tag('css/' . $cssfile);
+}
+
+foreach ($printcss as $pcss) {
+	echo link_tag(array(
+				'href' => 'css/' . $pcss,
+				'type' => 'text/css',
+				'rel' => 'stylesheet',
+				'media' => 'print',
+				)
+			);
 }
 ?>
     <!--[if lte ie 7]>

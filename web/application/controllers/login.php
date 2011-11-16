@@ -72,10 +72,7 @@ class Login extends CI_Controller {
 		if ($valid_auth === FALSE) {
             $data_header = array(
 					'title' => $this->config->item('site_title'),
-                    'css' => array(
-                        'css/Aristo_20110919.css',
-                        'css/style-1.2.3.css',
-                        ));
+					);
 			$this->load->view('common_header', $data_header);
 
 			$data = array();

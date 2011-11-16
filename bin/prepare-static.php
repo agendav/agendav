@@ -5,8 +5,12 @@
  */
 
 set_time_limit(0);
-define('CLOSURE_COMPILER_URL',
-		'http://closure-compiler.googlecode.com/files/compiler-latest.zip');
+$compilers = array(
+		'compiler.jar' =>
+			'http://closure-compiler.googlecode.com/files/compiler-latest.zip',
+		'yuicompressor-2.4.7/build/yuicompressor-2.4.7.jar' =>
+			'http://yui.zenfs.com/releases/yuicompressor/yuicompressor-2.4.7.zip'
+		);
 
 $web_dir = getcwd() . '/../web/';
 $public_dir = $web_dir . 'public/';
@@ -14,21 +18,28 @@ $js_dir = $web_dir . 'public/js/';
 $css_dir = $web_dir . 'public/css/';
 $app_dir = $web_dir . 'application/';
 
-// Is compiler.jar available?
-if (!file_exists('compiler.jar')) {
-	$zip = getcwd() . '/compiler-latest.zip';
-	$ziphandle = fopen($zip, 'w');
-	$options = array(
-			CURLOPT_FILE => $ziphandle,
-			CURLOPT_TIMEOUT => 28800, 
-			CURLOPT_URL => CLOSURE_COMPILER_URL,
-			);
-	$ch = curl_init();
-	curl_setopt_array($ch, $options);
-	curl_exec($ch);
+// Google Closure Compiler and YUI
+foreach ($compilers as $path => $url) {
+	$file = basename($path);
+	if (!file_exists($file)) {
+		$zip = '/tmp/tmp_'.$file.'.zip';
+		$ziphandle = fopen($zip, 'w');
+		$options = array(
+				CURLOPT_FILE => $ziphandle,
+				CURLOPT_TIMEOUT => 28800, 
+				CURLOPT_URL => $url,
+				);
+		$ch = curl_init();
+		curl_setopt_array($ch, $options);
+		curl_exec($ch);
 
-	exec('unzip ' . $zip . ' compiler.jar');
+		// Use -j to extract here
+		exec('unzip -j ' . $zip . ' ' . $path);
+		fclose($ziphandle);
+	}
 }
+
+die();
 
 // Load JS file list
 require_once($app_dir . 'hooks/Defs.php');
@@ -69,4 +80,6 @@ foreach (Defs::$jsfiles as $js) {
 fclose($jsfullhandle);
 fclose($jsminhandle);
 
-// Minimal JS
+
+// CSS
+

@@ -32,25 +32,7 @@ class Calendar extends CI_Controller {
 		$data_header = array(
 				'title' => $this->config->item('site_title'),
 				'logged_in' => TRUE,
-				'css' => array(
-					array(
-						'href' => 'css/style-1.2.3.print.css',
-						'rel' => 'stylesheet',
-						'type' => 'text/css',
-						'media' => 'print',
-						),
-					'css/fullcalendar.1.5.2.css',
-					array(
-						'href' => 'css/fullcalendar.print.1.5.2.css',
-						'rel' => 'stylesheet',
-						'type' => 'text/css',
-						'media' => 'print',
-						),
-					'css/timePicker.css',
-					'css/jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
-					'css/Aristo_20110919.css',
-					'css/style-1.2.3.css',
-					));
+				);
 
 		// Calendar view
 		$data_calendar = array();
