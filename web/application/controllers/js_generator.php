@@ -62,7 +62,7 @@ class Js_generator extends CI_Controller {
 	 * Dumb function to allow session refresh
 	 */
 	function dumb() {
-		$this->output->set_output(json_encode(''));
+		$this->output->set_output('');
 	}
 
 	/**

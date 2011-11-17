@@ -1207,7 +1207,7 @@ function session_refresh(n) {
 		method: 'GET',
 		dataType: 'html',
 		success: function(data, textStatus, jqXHR) {
-			if (data != '') {
+			if (data !== '') {
 				// When data is not empty, it's usually JavaScript code
 				// TODO think about using dataType: script here
 				$("body").append(data);
