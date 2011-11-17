@@ -675,8 +675,8 @@ function generate_on_the_fly_form(action, data) {
 		dataType: 'text',
 		async: false, // Let's wait
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('messages', 'error_genform'),
-				textStatus);
+			// This is generally caused by expired session
+			session_expired();
 			set_data('formcreation', 'failed');
 		},
 		success: function(formdata, textStatus, jqXHR) {
@@ -1205,14 +1205,21 @@ function session_refresh(n) {
 		url: base_app_url + 'js_generator/dumb',
 		cache: false,
 		method: 'GET',
+		dataType: 'html',
 		success: function(data, textStatus, jqXHR) {
+			if (data != '') {
+				// When data is not empty, it's usually JavaScript code
+				// TODO think about using dataType: script here
+				$("body").append(data);
+			} else {
+				setTimeout("session_refresh(" + n + ")", n);
+			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			show_error(_('messages', 'error_interfacefailure'), 
 			 _('messages', 'error_sessrefresh'));
 		}
 	});
-	setTimeout("session_refresh(" + n + ")", n);
 }
 
 /**
@@ -1472,6 +1479,17 @@ function _(mtype, s, params) {
 	}
 
 	return ret;
+}
+
+/**
+ * This method is called when a session has expired
+ */
+function session_expired() {
+	$(".ui-dialog-content").dialog("close");
+
+	show_error(_('messages', 'error_sessexpired'),
+			_('messages', 'error_loginagain'));
+	setTimeout( "window.location = '"+base_url+"';", 2000);
 }
 
 // vim: sw=2 tabstop=2
