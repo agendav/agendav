@@ -124,7 +124,7 @@ class Caldav {
 
 		$this->prepare_client($user, $passwd, $calendar);
 
-		$resource = $this->final_url . $href;
+		$resource = $this->build_url($user, $calendar, $href);
 
 		$res = $this->client->DoDELETERequest($resource, $etag);
 
@@ -189,7 +189,7 @@ class Caldav {
 					.' attempt without href specified');
 			return FALSE;
 		}
-		$url = $this->final_url . $href;
+		$url = $this->build_url($user, $calendar, $href);
 		$ical_text = $icalendar->createCalendar();
 		$new_etag = $this->client->DoPUTRequest($url, $ical_text, $etag);
 
@@ -721,12 +721,16 @@ class Caldav {
 
 
 	/**
-	 * Builds an URL based on $user and $calendar.
-	 * $calendar can contain 'user:calendar'
+	 * Builds an URL for a given username
+	 *
+	 * @param	$user	Username
+	 * @param	$calendar	Calendar name. It can be just a calendar name,
+	 *						or a identified like 'user:calendar'. In that
+	 *						case, URL will be built using these values
+	 * @param	$href		Optional href, which will be appended to the URL
 	 */
-	function build_url($user, $calendar) {
+	function build_url($user, $calendar, $href = '') {
 		$base_url = $this->CI->config->item('caldav_url');
-		log_message('ERROR', $base_url);
 
 		$pieces = preg_split('/:/', $calendar);
 		if (count($pieces) == '1') {
@@ -737,7 +741,7 @@ class Caldav {
 		}
 
 		return preg_replace('/%u/', $use_principal, $base_url) .
-			$calendar;
+			$calendar . (!empty($href) ? '/' . $href : '');
 	}
 
 
