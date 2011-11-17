@@ -105,10 +105,6 @@ $(document).ready(function() {
 					}
 				},
 				position: {
-				/*
-					my: 'bottom center',
-					at: 'top center',
-					*/
 					target: 'mouse',
 					viewport: $("#calendar_view"),
 					adjust: {
@@ -122,7 +118,7 @@ $(document).ready(function() {
 					widget: true
 				},
 				show: {
-					event: false,
+					event: 'click',
 					solo: true
 				},
 				hide: {
@@ -153,8 +149,6 @@ $(document).ready(function() {
 		eventClick: function(event, jsEvent, view) {
 			// Store current event details
 			set_data('current_event', event);
-
-			$(this).qtip('show', jsEvent);
 		},
 
 		// Add new event by dragging. Click also triggers this event,
