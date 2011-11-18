@@ -124,12 +124,14 @@ $(document).ready(function() {
 						widget: true
 					},
 					show: {
-						event: 'click',
-						solo: true
+						event: false,
+						solo: true,
+						effect: false
 					},
 					hide: {
 						fixed: true,
-						event: 'unfocus'
+						event: 'unfocus',
+						effect: false
 					},
 
 					events: {
@@ -154,7 +156,14 @@ $(document).ready(function() {
 
 			eventClick: function(event, jsEvent, view) {
 				// Store current event details
-				set_data('current_event', event);
+				var current = get_data('current_event');
+				if (current === undefined || current.uid != event.uid) {
+					set_data('current_event', event);
+					$(this).qtip('show', jsEvent);
+				} else {
+					remove_data('current_event');
+					$(this).qtip('hide', jsEvent);
+				}
 			},
 
 			// Add new event by dragging. Click also triggers this event,
@@ -539,6 +548,13 @@ function get_data(name) {
  */
 function set_data(name, value) {
 	$('body').data(name, value);
+}
+
+/**
+ * Removes data from body
+ */
+function remove_data(name) {
+	$('body').removeData(name);
 }
 
 
