@@ -28,7 +28,7 @@ class Defs {
 			'libs/jquery.loadmask.min.js',
 			'libs/jquery.colorPicker.20091014.js',
 			'libs/tag-it.20110621.js',
-			'libs/jquery.qtip.20111022.min.js',
+			'libs/jquery.qtip.min.js',
 			'libs/jquery.colorhelpers.js',
 			'libs/jquery.timePicker.20110318.js',
 			'app.js',
@@ -37,7 +37,7 @@ class Defs {
 	static $cssfiles = array(
 			'Aristo_20110919.css',
 			'fullcalendar.1.5.2.css',
-			'jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
+			'jquery.qtip.min.css',
 			'timePicker.css',
 			'app.css',
 			);
