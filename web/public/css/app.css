@@ -367,7 +367,7 @@ li.selected_calendar {
 .view_event_details .description_value {
   margin-left: 2em;
   font-family: monospace;
-  max-height: 250px;
+  max-height: 150px;
   width: 90%;
   overflow: auto;
 }

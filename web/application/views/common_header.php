@@ -43,7 +43,19 @@ foreach ($printcss as $pcss) {
       </style>
     <![endif]-->
 </head>
-<body class="ui-form">
+<?php
+// Body classes
+$final_body_class = array('ui-form');
+if (isset($body_class)) {
+	if (is_string($body_class)) {
+		$final_body_class[]= $body_class;
+	} elseif (is_array($body_class)) {
+		array_push($final_body_class, $body_class);
+	}
+	// Ignore other type of values
+}
+?>
+<body class="<?php echo implode(' ', $final_body_class)?>">
 <div id="topbar">
  <div id="wrap_topbar">
   <div class="title">
