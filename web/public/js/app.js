@@ -18,11 +18,11 @@
  */
 
 // Useful names
-var ved = "div.view_event_details";
-var ced = "#com_event_dialog";
-var ccd = "#create_calendar_dialog";
-var mcd = "#modify_calendar_dialog";
-var dcd = "#delete_calendar_dialog";
+var ved = 'div.view_event_details';
+var ced = '#com_event_dialog';
+var ccd = '#create_calendar_dialog';
+var mcd = '#modify_calendar_dialog';
+var dcd = '#delete_calendar_dialog';
 
 $(document).ready(function() {
 	// Load i18n strings
@@ -44,7 +44,7 @@ $(document).ready(function() {
 	
 		// Enable full calendar
 		// TODO: configurable!
-		$("#calendar_view").fullCalendar({
+		$('#calendar_view').fullCalendar({
 			selectable: true,
 			editable: true,
 			firstDay: prefs_firstday,
@@ -94,10 +94,10 @@ $(document).ready(function() {
 			loading: function(bool) {
 				if (bool) {
 					// Now loading
-					$("#calendar_view").mask(_('messages', 'overlay_synchronizing'), 500);
+					$('#calendar_view').mask(_('messages', 'overlay_synchronizing'), 500);
 				} else {
 					// Finished loading
-					$("#calendar_view").unmask();
+					$('#calendar_view').unmask();
 				}
 			},
 
@@ -112,7 +112,7 @@ $(document).ready(function() {
 					},
 					position: {
 						target: 'mouse',
-						viewport: $("#calendar_view"),
+						viewport: $('#calendar_view'),
 						adjust: {
 							x: 10, y: 10,
 							mouse: false
@@ -171,7 +171,7 @@ $(document).ready(function() {
 				};
 
 				// Unselect every single day/slot
-				$("#calendar_view").fullCalendar('unselect');
+				$('#calendar_view').fullCalendar('unselect');
 				event_field_form('new', data);
 			},
 			
@@ -208,7 +208,7 @@ $(document).ready(function() {
 					});
 
 				if (get_data('formcreation') == 'ok') {
-					var thisform = $("#" + formid);
+					var thisform = $('#' + formid);
 
 					proceed_send_ajax_form(thisform,
 						function(data) {
@@ -249,7 +249,7 @@ $(document).ready(function() {
 					});
 
 				if (get_data('formcreation') == 'ok') {
-					var thisform = $("#" + formid);
+					var thisform = $('#' + formid);
 
 					proceed_send_ajax_form(thisform,
 						function(data) {
@@ -273,32 +273,32 @@ $(document).ready(function() {
 
 
 		// Refresh link
-		$("#calendar_view td.fc-header-right")
+		$('#calendar_view td.fc-header-right')
 			.append('<span class="fc-header-space"></span><span class="fc-button-refresh">' +_('labels', 'refresh') + '</span>');
-		$("#calendar_view span.fc-button-refresh")
+		$('#calendar_view span.fc-button-refresh')
 			.button() 
 			.click(function() {
-				$("#calendar_view").fullCalendar('refetchEvents');
+				$('#calendar_view').fullCalendar('refetchEvents');
 			});
 
 		// Date picker above calendar
-		$("#calendar_view span.fc-button-today").after('<span class="fc-header-space"></span><span class="fc-button-datepicker">'
+		$('#calendar_view span.fc-button-today').after('<span class="fc-header-space"></span><span class="fc-button-datepicker">'
 			+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
 			+ _('labels', 'choose_date') +'" />'
 			+'</span><input type="hidden" id="datepicker_fullcalendar" />');
 		
-		$("#datepicker_fullcalendar").datepicker({
+		$('#datepicker_fullcalendar').datepicker({
 			changeYear: true,
 			closeText: _('labels', 'cancel'),
 			onSelect: function(date, text) {
-				var d = $("#datepicker_fullcalendar").datepicker('getDate');	
-				$("#calendar_view").fullCalendar('gotoDate', d);
+				var d = $('#datepicker_fullcalendar').datepicker('getDate');	
+				$('#calendar_view').fullCalendar('gotoDate', d);
 			}
 		});
 
-		$("#calendar_view span.fc-button-datepicker").click(function() {
-			$("#datepicker_fullcalendar").datepicker('setDate', $("#calendar_view").fullCalendar('getDate'));
-			$("#datepicker_fullcalendar").datepicker('show');
+		$('#calendar_view span.fc-button-datepicker').click(function() {
+			$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
+			$('#datepicker_fullcalendar').datepicker('show');
 		});
 		
 		// Delete link
@@ -311,25 +311,25 @@ $(document).ready(function() {
 				return;
 			}
 
-			var ded = "#delete_event_dialog";
+			var ded = '#delete_event_dialog';
 
 			load_generated_dialog('dialog_generator/delete_event',
 				{},
 				function() {
 					// Show event fields
-					$(ded + " span.calendar").html(get_calendar_displayname(data.calendar));
-					$(ded + " p.title").html(data.title);
+					$(ded + ' span.calendar').html(get_calendar_displayname(data.calendar));
+					$(ded + ' p.title').html(data.title);
 
 					var rrule = data.rrule;
 					if (rrule === undefined) {
-						$(ded + " div.rrule").hide();
+						$(ded + ' div.rrule').hide();
 					}
 
-					var thisform = $("#delete_form");
-					thisform.find("input.uid").val(data.uid);
-					thisform.find("input.calendar").val(data.calendar);
-					thisform.find("input.href").val(data.href);
-					thisform.find("input.etag").val(data.etag);
+					var thisform = $('#delete_form');
+					thisform.find('input.uid').val(data.uid);
+					thisform.find('input.calendar').val(data.calendar);
+					thisform.find('input.href').val(data.href);
+					thisform.find('input.etag').val(data.etag);
 					
 				},
 				_('labels', 'deleteevent'),
@@ -338,10 +338,10 @@ $(document).ready(function() {
 						'text': _('labels', 'yes'),
 						'class': 'addicon btn-icon-event-delete',
 						'click': function() {
-							var thisform = $("#delete_form");
+							var thisform = $('#delete_form');
 							proceed_send_ajax_form(thisform,
 								function(data) {
-									$("#calendar_view").fullCalendar('removeEvents', get_data('current_event').id);
+									$('#calendar_view').fullCalendar('removeEvents', get_data('current_event').id);
 								},
 								function(data) {
 									show_error(_('messages', 'error_event_not_deleted'), data);
@@ -349,14 +349,14 @@ $(document).ready(function() {
 								function() {}); 
 
 							// Destroy dialog
-							destroy_dialog("#delete_event_dialog");
+							destroy_dialog('#delete_event_dialog');
 
 						}
 					},
 					{
 						'text': _('labels', 'cancel'),
 						'class': 'addicon btn-icon-cancel',
-						'click': function() { destroy_dialog("#delete_event_dialog"); }
+						'click': function() { destroy_dialog('#delete_event_dialog'); }
 					}
 				],
 				'delete_event_dialog', 400);
@@ -366,7 +366,7 @@ $(document).ready(function() {
 			return false;
 		});
 
-		$("#calendar_view").fullCalendar('renderEvent', 
+		$('#calendar_view').fullCalendar('renderEvent', 
 			{
 				title: 'Little portal',
 				start: '1985-02-15T00:00:00Z',
@@ -453,7 +453,7 @@ $(document).ready(function() {
 		 * Shortcuts
 		 *************************************************************/
 
-		$("#shortcut_add_event")
+		$('#shortcut_add_event')
 			.button({
 				icons: {
 					primary: 'ui-icon-plusthick'
@@ -469,7 +469,7 @@ $(document).ready(function() {
 				};
 
 				// Unselect every single day/slot
-				$("#calendar_view").fullCalendar('unselect');
+				$('#calendar_view').fullCalendar('unselect');
 				event_field_form('new', data);
 			});
 		}
@@ -480,7 +480,7 @@ $(document).ready(function() {
  * Used to calculate calendar view height
  */
 function calendar_height() {
-  var offset = $("#calendar_view").offset();
+  var offset = $('#calendar_view').offset();
   return $(window).height() - Math.ceil(offset.top) - 15;
 }
 
@@ -489,9 +489,9 @@ function calendar_height() {
  */
 
 function show_error(title, message) {
-	$("#popup").freeow(title, message,
+	$('#popup').freeow(title, message,
 		{
-			classes: ["popup_error"],
+			classes: ['popup_error'],
 			autoHide: false,
 			showStyle: {
 				opacity: 1,
@@ -499,7 +499,7 @@ function show_error(title, message) {
 			},
 			hideStyle: {
 				opacity: 0,
-				left: "400px"
+				left: '400px'
 			}
 		});
 }
@@ -510,9 +510,9 @@ function show_error(title, message) {
 
 
 function show_success(title, message) {
-	$("#popup").freeow(title, message,
+	$('#popup').freeow(title, message,
 		{
-			classes: ["popup_success"],
+			classes: ['popup_success'],
 			autoHide: true,
       autoHideDelay: 2000,
 			showStyle: {
@@ -521,7 +521,7 @@ function show_success(title, message) {
 			},
 			hideStyle: {
 				opacity: 0,
-				left: "400px"
+				left: '400px'
 			}
 		});
 }
@@ -559,17 +559,17 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		base_app_url + 'caldav2json/edit_event', data);
 
 	if (get_data('formcreation') == 'ok') {
-		var thisform = $("#" + newid);
-		var action = $(thisform).attr("action");
+		var thisform = $('#' + newid);
+		var action = $(thisform).attr('action');
 		var formdata = $(thisform).serialize();
 
 		$.ajax({
 			url: base_app_url + url,
 			beforeSend: function(jqXHR, settings) {
-				$("body").mask(_('messages', 'overlay_loading_dialog'), 500);
+				$('body').mask(_('messages', 'overlay_loading_dialog'), 500);
 			},
 			complete: function(jqXHR, textStatus) {
-				$("body").unmask();
+				$('body').unmask();
 			},
 			cache: false,
 			type: 'POST',
@@ -580,7 +580,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 					_('messages', 'error_oops') + ': ' + textStatus);
 			},
 			success: function(data, textStatus, jqXHR) {
-				$("body").append(data);
+				$('body').append(data);
 				$(divname).dialog({
 					autoOpen: true,
 					buttons: buttons,
@@ -614,16 +614,16 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
  */
 function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 		errorFunc) {
-	var url = $(formObj).attr("action");
+	var url = $(formObj).attr('action');
 	var data = $(formObj).serialize();
 
 	$.ajax({
 		url: url,
 		beforeSend: function(jqXHR, settings) {
-			$("body").mask(_('messages', 'overlay_sending_form'), 1000);
+			$('body').mask(_('messages', 'overlay_sending_form'), 1000);
 		},
 		complete: function(jqXHR, textStatus) {
-			$("body").unmask();
+			$('body').unmask();
 		},
 		cache: false,
 		type: 'POST',
@@ -639,16 +639,16 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 			// "ERROR", "EXCEPTION" or "SUCCESS"
 			var result = data.result;
 			var message = data.message;
-			if (result == "ERROR") {
+			if (result == 'ERROR') {
 				set_data('lastoperation', 'failed');
 				show_error(
 					_('messages', 'error_internal'),
 					message);
 				errorFunc();
-			} else if (result == "EXCEPTION") {
+			} else if (result == 'EXCEPTION') {
 				set_data('lastoperation', 'failed');
 				exceptionFunc(message);
-			} else if (result == "SUCCESS") {
+			} else if (result == 'SUCCESS') {
 				set_data('lastoperation', 'success');
 				successFunc(message);
 			} else {
@@ -664,9 +664,9 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
  * Defines each element in the second parameter as hidden fields
  */
 function generate_on_the_fly_form(action, data) {
-	var random_id = "";
+	var random_id = '';
 	var possible = 
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	for( var i=0; i < 10; i++ )
 		random_id += possible.charAt(Math.floor(Math.random() *
 					possible.length));
@@ -687,10 +687,10 @@ function generate_on_the_fly_form(action, data) {
 			set_data('formcreation', 'failed');
 		},
 		success: function(formdata, textStatus, jqXHR) {
-			$("body").append(formdata);
-			$("#" + random_id).attr('action', action);
+			$('body').append(formdata);
+			$('#' + random_id).attr('action', action);
 			$.each(data, function (i, v) {
-				$("#" + random_id).append('<input type="hidden" name="'+i
+				$('#' + random_id).append('<input type="hidden" name="'+i
 					+'" value="'+v+'" />');
 			});
 			set_data('formcreation', 'ok');
@@ -746,12 +746,12 @@ function set_end_minDate() {
 
 	var selected = $(elems).datepicker('getDate');
 
-	if ($(ced + " input.allday").is(":checked")) {
+	if ($(ced + ' input.allday').is(':checked')) {
 		selected.setTime(selected.getTime() + 86400000); // +1d
 	}
 
-	$(eleme).datepicker("option", "minDate", selected);
-	$(elemru).datepicker("option", "minDate", selected);
+	$(eleme).datepicker('option', 'minDate', selected);
+	$(elemru).datepicker('option', 'minDate', selected);
 
 }
 
@@ -759,17 +759,17 @@ function set_end_minDate() {
  * Sets recurrency options to be enabled or disabled
  */
 function update_recurrency_options(newval) {
-	if (newval == "none") {
-		$(ced + " input.recurrence_count").val("");
-		$(ced + " input.recurrence_until").val("");
+	if (newval == 'none') {
+		$(ced + ' input.recurrence_count').val('');
+		$(ced + ' input.recurrence_until').val('');
 
-		$(ced + " input.recurrence_count").attr('disabled', 'disabled');
-		$(ced + " input.recurrence_count").addClass('ui-state-disabled');
+		$(ced + ' input.recurrence_count').attr('disabled', 'disabled');
+		$(ced + ' input.recurrence_count').addClass('ui-state-disabled');
 		$(ced + ' label[for="recurrence_count"]').addClass('ui-state-disabled');
 
-		$(ced + " input.recurrence_until").attr('disabled', 'disabled');
-		$(ced + " input.recurrence_until").datepicker('disable');
-		$(ced + " input.recurrence_until").addClass('ui-state-disabled');
+		$(ced + ' input.recurrence_until').attr('disabled', 'disabled');
+		$(ced + ' input.recurrence_until').datepicker('disable');
+		$(ced + ' input.recurrence_until').addClass('ui-state-disabled');
 		$(ced + ' label[for="recurrence_until"]').addClass('ui-state-disabled');
 	} else {
 		enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
@@ -816,79 +816,79 @@ function event_field_form(type, data) {
 			};
 
 			// Tabs
-			$(ced + "_tabs").tabs();
+			$(ced + '_tabs').tabs();
 
 
-			$(ced + " input.start_time").timePicker(common_timepicker_opts);
-			$(ced + " input.end_time").timePicker(common_timepicker_opts);
-			$(ced + " input.start_date").datepicker(start_datepicker_opts);
-			$(ced + " input.end_date").datepicker();
-			$(ced + " input.recurrence_until").datepicker();
+			$(ced + ' input.start_time').timePicker(common_timepicker_opts);
+			$(ced + ' input.end_time').timePicker(common_timepicker_opts);
+			$(ced + ' input.start_date').datepicker(start_datepicker_opts);
+			$(ced + ' input.end_date').datepicker();
+			$(ced + ' input.recurrence_until').datepicker();
 
 			// Untouched value
-			$(ced + " input.end_time").data('untouched', true);
+			$(ced + ' input.end_time').data('untouched', true);
 
 			// First time datepicker is run we need to set minDate on end date
 			set_end_minDate();
 
 			// And recurrency options have to be enabled/disabled
-			update_recurrency_options($(ced + " select.recurrence_type").val());
+			update_recurrency_options($(ced + ' select.recurrence_type').val());
 
 			// All day checkbox
-			$(ced + " input.allday").change(function() {
+			$(ced + ' input.allday').change(function() {
 				// TODO: timepickers should update their values
 				var current = $(ced + " input.start_date").datepicker('getDate');
 				set_end_minDate();
 
-				if ($(this).is(":checked")) {
-					$(ced + " input.start_time").hide();
-					$(ced + " input.end_time").hide();
+				if ($(this).is(':checked')) {
+					$(ced + ' input.start_time').hide();
+					$(ced + ' input.end_time').hide();
 				} else {
-					$(ced + " input.end_date").removeAttr('disabled');
-					$(ced + " input.end_date").removeClass('ui-state-disabled');
-					$(ced + " input.end_date").datepicker('setDate', current);
+					$(ced + ' input.end_date').removeAttr('disabled');
+					$(ced + ' input.end_date').removeClass('ui-state-disabled');
+					$(ced + ' input.end_date').datepicker('setDate', current);
 
-					$(ced + " input.start_time").show();
-					$(ced + " input.end_time").show();
+					$(ced + ' input.start_time').show();
+					$(ced + ' input.end_time').show();
 				}
 			});
 
 			// Recurrence type
-			$(ced + " select.recurrence_type").change(function() {
+			$(ced + ' select.recurrence_type').change(function() {
 				var newval = $(this).val();
 
 				update_recurrency_options($(this).val());
 			});
 
 			// Avoid having a value in both recurrence options (count / until)
-			$(ced + " input.recurrence_count").change(function() {
+			$(ced + ' input.recurrence_count').change(function() {
 				enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
 			});
-			$(ced + " input.recurrence_until").change(function() {
+			$(ced + ' input.recurrence_until').change(function() {
 				enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
 			});
 
 			// Timepicker: keep 1h between start-end if on the same day
 			// and end_time hasn't been changed by hand
-			var origStart = $.timePicker(ced + " input.start_time").getTime();
-			var origDur = $.timePicker(ced + " input.end_time").getTime() - origStart.getTime();
+			var origStart = $.timePicker(ced + ' input.start_time').getTime();
+			var origDur = $.timePicker(ced + ' input.end_time').getTime() - origStart.getTime();
 
 
-			$(ced + " input.start_time").change(function() {
-				if ($(ced + " input.end_time").data('untouched')) { 
+			$(ced + ' input.start_time').change(function() {
+				if ($(ced + ' input.end_time').data('untouched')) { 
 
-					var start = $.timePicker(ced + " input.start_time").getTime();
+					var start = $.timePicker(ced + ' input.start_time').getTime();
 
-					var dur = $.timePicker(ced + " input.end_time").getTime() 
+					var dur = $.timePicker(ced + ' input.end_time').getTime() 
 						- origStart.getTime();
-					$.timePicker(ced + " input.end_time").setTime(new Date(start.getTime() + dur));
+					$.timePicker(ced + ' input.end_time').setTime(new Date(start.getTime() + dur));
 					origStart = start;
 				}
 			});
 
-			$(ced + " input.end_time").change(function() {
+			$(ced + ' input.end_time').change(function() {
 				var durn = $.timePicker(this).getTime() 
-					- $.timePicker(ced + " input.start_time").getTime();
+					- $.timePicker(ced + ' input.start_time').getTime();
 				if (durn != origDur) {
 					$(this).data('untouched', false);
 				}
@@ -906,7 +906,7 @@ function event_field_form(type, data) {
 				'text': _('labels', 'save'),
 				'class': 'addicon btn-icon-event-edit',
 				'click': function() {
-					var thisform = $("#com_form");
+					var thisform = $('#com_form');
 					proceed_send_ajax_form(thisform,
 						function(data) {
 							// Reload only affected calendars
@@ -944,7 +944,7 @@ function update_single_event(event, new_data) {
 			event[i] = v;
 			});
 
-	$("#calendar_view").fullCalendar('updateEvent', event);
+	$('#calendar_view').fullCalendar('updateEvent', event);
 }
 
 // Triggers a dialog for creating calendars
@@ -957,7 +957,7 @@ function calendar_create_form() {
 	load_generated_dialog(url_dialog,
 		{},
 		function() {
-			$("input.pick_color").colorPicker();
+			$('input.pick_color').colorPicker();
 		},
 		title,
 		[
@@ -965,7 +965,7 @@ function calendar_create_form() {
 				'text': _('labels', 'create'),
 				'class': 'addicon btn-icon-calendar-add',
 				'click': function() {
-					var thisform = $("#calendar_create_form");
+					var thisform = $('#calendar_create_form');
 					proceed_send_ajax_form(thisform,
 						function(data) {
 							destroy_dialog(ccd);
@@ -1026,7 +1026,7 @@ function calendar_modify_form(calendar_obj) {
 							'text': _('labels', 'yes'),
 							'class': 'addicon btn-icon-calendar-delete',
 							'click': function() {
-								var thisform = $("#delete_calendar_form");
+								var thisform = $('#delete_calendar_form');
 								proceed_send_ajax_form(thisform,
 										function(data) {
 											// Remove from calendar and UI
@@ -1064,7 +1064,7 @@ function calendar_modify_form(calendar_obj) {
 				'text': _('labels', 'save'),
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
-				var thisform = $("#modify_calendar_form");
+				var thisform = $('#modify_calendar_form');
 				proceed_send_ajax_form(thisform,
 					function(data) {
 						destroy_dialog(mcd);
@@ -1096,9 +1096,9 @@ function calendar_modify_form(calendar_obj) {
 	load_generated_dialog(url_dialog,
 		calendar_data,
 		function() {
-			$("input.pick_color").colorPicker();
-			$(mcd + "_tabs").tabs();
-			$("input.share_with").tagit({
+			$('input.pick_color').colorPicker();
+			$(mcd + '_tabs').tabs();
+			$('input.share_with').tagit({
 				'caseSensitive': false,
 				'removeConfirmation': true
 			});
@@ -1120,12 +1120,12 @@ function update_calendar_list(maskbody) {
 		async: false, // Let's wait
 		beforeSend: function(jqXHR, settings) {
 			if (maskbody) {
-				$("body").mask(_('messages', 'overlay_loading_calendar_list'), 500);
+				$('body').mask(_('messages', 'overlay_loading_calendar_list'), 500);
 			}
 		},
 		complete: function(jqXHR, textStatus) {
 			if (maskbody) {
-				$("body").unmask();
+				$('body').unmask();
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -1217,9 +1217,9 @@ function session_refresh(n) {
 			if (data !== '') {
 				// When data is not empty, it's usually JavaScript code
 				// TODO think about using dataType: script here
-				$("body").append(data);
+				$('body').append(data);
 			} else {
-				setTimeout("session_refresh(" + n + ")", n);
+				setTimeout('session_refresh(' + n + ')', n);
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -1233,7 +1233,7 @@ function session_refresh(n) {
  * Adds button icons
  */
 function add_button_icons(buttons) {
-	buttons.filter("button.addicon")
+	buttons.filter('button.addicon')
 		.removeClass('addicon')
 		.removeClass('ui-button-text-only')
 		.addClass('ui-button-text-icon-primary')
@@ -1272,10 +1272,10 @@ function generate_calendar_entry(data) {
 		border = border.add('rgb', 120).toString();
 	}
 
-	var li = $("<li></li>")
-		.addClass("calendar_color")
-		.addClass("available_calendar")
-		.attr("title", data.displayname)
+	var li = $('<li></li>')
+		.addClass('calendar_color')
+		.addClass('available_calendar')
+		.attr('title', data.displayname)
 		.css('background-color', data.color)
 		.css('border-color', border)
 		.css('color', fg)
@@ -1349,26 +1349,26 @@ function reload_event_source(cal) {
  * Enforces the use of only one recurrence fields
  */
 function enforce_exclusive_recurrence_field(current, other) {
-	if ($(ced + " input." + current).val() == '') {
-		$(ced + " input." + other).removeAttr('disabled');
-		$(ced + " input." + other).removeClass('ui-state-disabled');
+	if ($(ced + ' input.' + current).val() == '') {
+		$(ced + ' input.' + other).removeAttr('disabled');
+		$(ced + ' input.' + other).removeClass('ui-state-disabled');
 		$(ced + ' label[for="' + other + '"]').removeClass('ui-state-disabled');
 		if (other == 'recurrence_until') {
-			$(ced + " input." + other).datepicker('enable');
+			$(ced + ' input.' + other).datepicker('enable');
 		}
 	} else {
-		$(ced + " input." + other).attr('disabled', 'disabled');
-		$(ced + " input." + other).addClass('ui-state-disabled');
-		$(ced + " input." + other).val("");
+		$(ced + ' input.' + other).attr('disabled', 'disabled');
+		$(ced + ' input.' + other).addClass('ui-state-disabled');
+		$(ced + ' input.' + other).val('');
 		$(ced + ' label[for="' + other + '"]').addClass('ui-state-disabled');
 		if (other == 'recurrence_until') {
-			$(ced + " input." + other).datepicker('disable');
+			$(ced + ' input.' + other).datepicker('disable');
 		}
 	}
 }
 
 function event_bubble_content(event) {
-	var tmpl = $("#view_event_details_template").clone();
+	var tmpl = $('#view_event_details_template').clone();
 
 	// Calendar
 	tmpl.find('span.calendar_value').html(get_calendar_displayname(event.calendar));
@@ -1492,11 +1492,11 @@ function _(mtype, s, params) {
  * This method is called when a session has expired
  */
 function session_expired() {
-	$(".ui-dialog-content").dialog("close");
+	$('.ui-dialog-content').dialog('close');
 
 	show_error(_('messages', 'error_sessexpired'),
 			_('messages', 'error_loginagain'));
-	setTimeout( "window.location = '"+base_url+"';", 2000);
+	setTimeout( 'window.location = "'+base_url+'";', 2000);
 }
 
 // vim: sw=2 tabstop=2
