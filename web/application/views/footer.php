@@ -20,12 +20,6 @@ $js = (ENVIRONMENT == 'development' ?
 		array('jquery-base-' . AGENDAV_VERSION . '.js', 
 			'agendav-' .  AGENDAV_VERSION . '.js'));
 
-// Load all JS scripts?
-if (!isset($full_js_set) || $full_js_set === FALSE) {
-	$js = array_slice($js, 0,
-			(ENVIRONMENT == 'development') ? 2 : 1);
-}
-
 // Additional JS files
 $additional_js = $this->config->item('additional_js');
 if ($additional_js !== FALSE && is_array($additional_js)) {

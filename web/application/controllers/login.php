@@ -72,6 +72,7 @@ class Login extends CI_Controller {
 		if ($valid_auth === FALSE) {
             $data_header = array(
 					'title' => $this->config->item('site_title'),
+					'body_class' => array('loginpage'),
 					);
 			$this->load->view('common_header', $data_header);
 
@@ -87,8 +88,7 @@ class Login extends CI_Controller {
 			}
 
 			$this->load->view('login', $data);
-			$this->load->view('footer',
-					array('login_page' => TRUE));
+			$this->load->view('footer');
 		} else {
 			redirect("/calendar");
 		}

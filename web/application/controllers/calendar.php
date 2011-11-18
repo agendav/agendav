@@ -32,6 +32,7 @@ class Calendar extends CI_Controller {
 		$data_header = array(
 				'title' => $this->config->item('site_title'),
 				'logged_in' => TRUE,
+				'body_class' => array('calendarpage'),
 				);
 
 		// Calendar view
@@ -48,7 +49,6 @@ class Calendar extends CI_Controller {
 
 		$this->load->view('footer',
 				array(
-					'full_js_set' => TRUE,
 					'load_session_refresh' => TRUE,
 					'load_calendar_colors' => TRUE,
 					));
