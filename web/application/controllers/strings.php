@@ -24,7 +24,6 @@ class Strings extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 
-		define('SPECIAL_REQUEST', TRUE);
 		$this->output->set_content_type('application/json');
 	}
 

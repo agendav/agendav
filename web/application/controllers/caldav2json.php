@@ -30,8 +30,6 @@ class Caldav2json extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 
-		define('SPECIAL_REQUEST', TRUE);
-
 		if (!$this->auth->is_authenticated()) {
 			$this->extended_logs->message('INFO', 
 					'Anonymous access attempt to '

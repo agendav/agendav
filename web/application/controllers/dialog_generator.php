@@ -31,7 +31,6 @@ class Dialog_generator extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 
-		define('SPECIAL_REQUEST', TRUE);
 		$this->output->set_content_type('text/html');
 
 		if (!$this->auth->is_authenticated()) {

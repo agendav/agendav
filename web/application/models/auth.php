@@ -64,7 +64,7 @@ class Auth extends CI_Model {
 	/**
 	  */
 	function force_auth() {
-		if (!$this->is_authenticated() && !defined('SPECIAL_REQUEST')) {
+		if (!$this->is_authenticated()) {
 			redirect('/login');
 		}
 	}

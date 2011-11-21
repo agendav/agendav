@@ -29,8 +29,6 @@ class Js_generator extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 
-		define('SPECIAL_REQUEST', TRUE);
-
 		if (!in_array($this->uri->segment(2), $this->not_enforced) &&
 				!$this->auth->is_authenticated()) {
 			$this->extended_logs->message('INTERNALS', 
