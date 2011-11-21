@@ -116,7 +116,7 @@ $(document).ready(function() {
 						viewport: $('#calendar_view')
 					},
 					style: {
-						classes: 'view_event_details',
+						classes: 'view_event_details ui-tooltip-shadow',
 						tip: true,
 						widget: true
 					},
