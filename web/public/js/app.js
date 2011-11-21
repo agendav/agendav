@@ -1218,14 +1218,13 @@ function generate_event_source(calendar) {
 }
 
 /**
- * Refreshs session.
+ * Keeps session alive
  * 
  * n = refresh interval in miliseconds
  */
 function session_refresh(n) {
-	// Dumb AJAX call
 	$.ajax({
-		url: base_app_url + 'js_generator/dumb',
+		url: base_app_url + 'js_generator/keepalive',
 		cache: false,
 		method: 'GET',
 		dataType: 'html',
@@ -1239,8 +1238,7 @@ function session_refresh(n) {
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('messages', 'error_interfacefailure'), 
-			 _('messages', 'error_sessrefresh'));
+			session_expired();
 		}
 	});
 }

@@ -59,9 +59,9 @@ class Js_generator extends CI_Controller {
 	}
 
 	/**
-	 * Dumb function to allow session refresh
+	 * Keep session alive
 	 */
-	function dumb() {
+	function keepalive() {
 		$this->output->set_output('');
 	}
 
