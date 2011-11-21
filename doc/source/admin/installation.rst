@@ -71,6 +71,12 @@ Example using the Alias directive::
 
  Alias /agendav /path/to/agendav/web/public
 
+.. note::
+   Make sure that you have the following PHP settings *disabled*:
+
+   * ``magic_quotes_gpc``
+   * ``magic_quotes_runtime``
+
 Other web servers
 ^^^^^^^^^^^^^^^^^
 
