@@ -36,6 +36,8 @@ class Caldav2json extends CI_Controller {
 			$this->extended_logs->message('INFO', 
 					'Anonymous access attempt to '
 					. uri_string());
+			$this->output->set_status_header('401');
+			$this->output->_display();
 			die();
 		}
 

@@ -1205,13 +1205,18 @@ function generate_event_source(calendar) {
 			data: {
 				calendar: calendar
 				},
-			error: function() {
-				show_error(_('messages', 'error_interfacefailure'), 
-				_('messages', 
-					'error_loadevents', { '%cal' : calendar }));
+			error: function (jqXHR, textStatus, errorThrown) {
+				if (jqXHR.status !== undefined && jqXHR.status == 401) {
+					session_expired();
+				} else {
+					show_error(_('messages', 'error_interfacefailure'), 
+					_('messages', 
+						'error_loadevents', { '%cal' : calendar }));
+				}
 			},
-		       startParamUTC: true,
-		       endParamUTC: true
+
+			startParamUTC: true,
+			endParamUTC: true
 	};
 
 	return ajax_options;
