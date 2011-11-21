@@ -111,16 +111,13 @@ $(document).ready(function() {
 						}
 					},
 					position: {
-						target: 'mouse',
-						viewport: $('#calendar_view'),
-						adjust: {
-							x: 10, y: 10,
-							mouse: false
-						}
+						my: 'bottom center',
+						at: 'top center',
+						viewport: $('#calendar_view')
 					},
 					style: {
 						classes: 'view_event_details',
-						tip: false,
+						tip: true,
 						widget: true
 					},
 					show: {
