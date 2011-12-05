@@ -268,6 +268,19 @@ class Icshelper {
 		// Do we have DTEND?
 		if (!is_null($dtend)) {
 			$end = $dtend['result'];
+		} else {
+			$duration = $vevent->getProperty('duration',
+					false, false, true);
+
+			// Calculate dtend if not present
+			if ($duration !== FALSE) {
+				$end = $this->CI->dates->idt2datetime($duration,
+						$tz);
+			} else {
+				$this->CI->extended_logs->message('ERROR',
+						'Event with href=' . $href . ' has no '
+						. 'DTEND nor DURATION');
+			}
 		}
 
 		// Is this a recurrent event?
@@ -386,22 +399,6 @@ class Icshelper {
 		$this_event['id'] = $calendar . ':' . $this_event['uid'];
 
 
-		// Calculate dtend if not present
-		if (!isset($end) && isset($this_event['duration']) &&
-				!empty($this_event['duration'])) {
-			$end = clone $start;
-
-			// Avoid some problems with bogus DURATIONS (malformed events)
-			if (preg_match('/-/', $this_event['duration'])) {
-				$this->CI->extended_logs->message('ERROR',
-						'Event with uid=' . $this_event['id'] 
-						.' from calendar ' . $calendar. ' has a '
-						.'negative duration. Defaulting to 60 minutes');
-				$this_event['duration'] = 'PT60M';
-			}
-
-			$end->add($this->CI->dates->duration2di($this_event['duration']));
-		}
 
 
 		// Is this an all day event?
