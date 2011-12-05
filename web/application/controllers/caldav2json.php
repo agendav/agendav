@@ -903,6 +903,15 @@ class Caldav2json extends CI_Controller {
 				$arr_share_with = explode(',', $share_with);
 				$arr_share_with = array_unique($arr_share_with);
 				sort($arr_share_with);
+
+				// Remove current user from array
+				$pos_current_user = array_search($this->auth->get_user(),
+						$arr_share_with);
+				if ($pos_current_user !== FALSE) {
+					unset($arr_share_with[$pos_current_user]);
+					// Recalculate numeric indexes
+					$arr_share_with = array_values($arr_share_with);
+				}
 			}
 
 			$res = $this->caldav->setacl(
