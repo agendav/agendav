@@ -21,7 +21,7 @@
 class Defs {
 	// Leave jQuery and jQuery UI the two first scripts
 	static $jsfiles= array(
-			'libs/jquery-1.6.4.min.js',
+			'libs/jquery-1.7.1.min.js',
 			'libs/jquery-ui-1.8.16.min.js',
 			'libs/jquery.freeow.min.js',
 			'libs/fullcalendar.min.js',
