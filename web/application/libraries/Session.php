@@ -61,10 +61,12 @@ class CI_Session {
 		// create a new one.  If it does, we'll update it.
 		if ( ! $this->sess_read())
 		{
+			log_message('DEBUG', 'Creating new session');
 			$this->sess_create();
 		}
 		else
 		{
+			log_message('DEBUG', 'Using existing session');
 			$this->sess_update();
 		}
 
@@ -116,9 +118,13 @@ class CI_Session {
 
 		$query = $this->CI->db->get($this->sess_table_name);
 
+		log_message('debug', 'Last sessions query: ' .
+				$this->CI->db->last_query());
+
 		// No result?  Kill it!
 		if ($query->num_rows() == 0)
 		{
+			log_message('DEBUG', 'Killing session');
 			$this->sess_destroy();
 			return FALSE;
 		}
