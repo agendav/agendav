@@ -456,8 +456,11 @@ class Icshelper {
 
 		// Needed for some conversions (Fullcalendar timestamp and am/pm
 		// indicator)
-		$start->setTimeZone($this->tz_obj);
-		$end->setTimeZone($this->tz_obj);
+		if (!isset($this_event['allDay']) 
+				|| $this_event['allDay']  !== TRUE) {
+			$start->setTimeZone($this->tz_obj);
+			$end->setTimeZone($this->tz_obj);
+		}
 
 		// Expanded events
 		if (isset($orig_start)) {
@@ -468,8 +471,13 @@ class Icshelper {
 		}
 
 		// Readable dates for start and end
+
+		// Keep all day events as they are (UTC)
 		$system_tz = date_default_timezone_get();
-		date_default_timezone_set($this->tz);
+		if (!isset($this_event['allDay']) 
+				|| $this_event['allDay']  !== TRUE) {
+			date_default_timezone_set($this->tz);
+		}
 
 		$this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
 
