@@ -88,7 +88,6 @@ class Dates {
 		// Is createFromFormat available? (PHP >= 5.3.0)
 		self::$has_createfromformat = method_exists('DateTime',
 				'createFromFormat');
-		self::$has_createfromformat = FALSE;
 
 	}
 
