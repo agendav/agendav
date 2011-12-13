@@ -21,6 +21,8 @@
 
 class Dates {
 
+	static $has_createfromformat = TRUE;
+
 	// Possible time formats
 	static $timeformats = array(
 			'24' => array(
@@ -40,14 +42,17 @@ class Dates {
 			'ymd' => array(
 				'date' => 'Y-m-d',
 				'datepicker' => 'yy-mm-dd',
+				'strftime' => '%Y-%m-%d',
 				),
 			'dmy' => array(
 				'date' => 'd/m/Y',
 				'datepicker' => 'dd/mm/yy',
+				'strftime' => '%d/%m/%Y',
 				),
 			'mdy' => array(
 				'date' => 'm/d/Y',
 				'datepicker' => 'mm/dd/yy',
+				'strftime' => '%m/%d/%Y',
 				),
 			);
 
@@ -79,6 +84,11 @@ class Dates {
 		}  else {
 			$this->cfg_date = $cfg_date;
 		}
+
+		// Is createFromFormat available? (PHP >= 5.3.0)
+		self::$has_createfromformat = method_exists('DateTime',
+				'createFromFormat');
+		self::$has_createfromformat = FALSE;
 
 	}
 
@@ -128,20 +138,18 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format = $this->date_format_string('date') . ' '. $this->time_format_string('date');
-		$obj = DateTime::createFromFormat($format, $str, new
-				DateTimeZone($tz));
-		$err = DateTime::getLastErrors();
-		if (FALSE === $obj || $err['warning_count']>0) {
-			return FALSE;
-		}
+		$format_type = (self::$has_createfromformat ? 'date' : 'strftime');
+		$format = $this->date_format_string($format_type) . ' '.
+			$this->time_format_string($format_type);
+
+		$obj = $this->create_datetime($format, $str, $tz);
 
 		return $obj;
 	}
 
 	/**
 	 * Creates a DateTime object from a date formatted by Fullcalendar
-	 * events: yyymmddHHii).
+	 * events: yyyymmddHHii).
 	 *
 	 * Returns FALSE on date parsing error
 	 */
@@ -150,13 +158,10 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format = 'YmdHis';
-		$obj = DateTime::createFromFormat($format, $str, new
-				DateTimeZone($tz));
-		$err = DateTime::getLastErrors();
-		if (FALSE === $obj || $err['warning_count']>0) {
-			return FALSE;
-		}
+		$format = (self::$has_createfromformat ? 
+				'YmdHis' : '%Y%m%d%H%M%S');
+
+		$obj = $this->create_datetime($format, $str, $tz);
 
 		return $obj;
 	}
@@ -196,7 +201,8 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format = 'YmdHis';
+		$format = (self::$has_createfromformat ?
+				'YmdHis' : '%Y%m%d%H%M%S');
 
 		// $tz should be enough
 		unset($id_arr['tz']);
@@ -211,8 +217,7 @@ class Dates {
 			$str .= '000000';
 		}
 
-		$obj = DateTime::createFromFormat($format,
-				$str, new DateTimeZone($tz));
+		$obj = $this->create_datetime($format, $str, $tz);
 
 		return $obj;
 	}
@@ -324,11 +329,11 @@ class Dates {
 		// Timezone is ignored, we already have $tz
 		//$e = isset($matches[9]) ? $matches[9] : $tz;
 	
-		$format = 'dmY His';
+		$format = (self::$has_createfromformat ?
+				'dmY His' : '%d%m%Y %H%M%S');
 		$new_str = $d.$m.$y.' '.$h.$i.$s;
 
-		$dt = DateTime::createFromFormat($format, $new_str, 
-				new DateTimeZone($tz));
+		$dt = $this->create_datetime($format, $new_str, $tz);
 
 		if ($dt === FALSE) {
 			$this->CI->extended_logs->message('ERROR',
@@ -371,6 +376,7 @@ class Dates {
 		switch($type) {
 			case 'date':
 			case 'datepicker':
+			case 'strftime':
 				return Dates::$dateformats[$this->cfg_date][$type];
 				break;
 			default:
@@ -398,6 +404,46 @@ class Dates {
 		}
 		
 		return $result;
+	}
+
+	/**
+	 * Returns a DateTime object using createFromFormat or strptime
+	 *
+	 * @param	string	Format used to parse the given string
+	 * @param	string	String that contains date-time
+	 * @param	string	Timezone name
+	 * @return	DateTime/boolean	FALSE on error
+	 */
+	function create_datetime($format, $str, $tz) {
+		if (self::$has_createfromformat) {
+			$dt = DateTime::createFromFormat($format, $str, 
+					new DateTimeZone($tz));
+		} else {
+			$tmp = strptime($str, $format);
+			$dt = new DateTime('now', new DateTimeZone($tz));
+			$dt->setDate(
+					1900 + $tmp['tm_year'],
+					1 + $tmp['tm_mon'],
+					$tmp['tm_mday']);
+			$dt->setTime(
+					$tmp['tm_hour'],
+					$tmp['tm_min'],
+					$tmp['tm_sec']);
+
+			// Unparsed AM/PM indicators
+			if (isset($tmp['unparsed']) && $tmp['unparsed'] == ' PM') {
+				$dt->add(new DateInterval('PT12H'));
+			}
+		}
+
+		// Check for errors
+		$err = DateTime::getLastErrors();
+
+		if (FALSE === $dt || $err['warning_count']>0) {
+			$dt = FALSE;
+		}
+
+		return $dt;
 	}
 
 }
