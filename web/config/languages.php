@@ -23,5 +23,8 @@ $config['lang_rels'] = array(
 		'fr_FR' => array(
 			'codeigniter' => 'french',
 			),
+		'nl_NL' => array(
+			'codeigniter' => 'nl',
+			),
 		);
 
