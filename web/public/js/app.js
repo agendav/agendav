@@ -146,7 +146,6 @@ $(document).ready(function() {
 
 						hide: function (event, api) {
 							var current = get_data('current_event');
-							remove_data('current_event');
 							set_data('recently_hidden_event', current);
 							$(window).unbind('keydown.tooltipevents');
 						}
@@ -156,11 +155,13 @@ $(document).ready(function() {
 
 			eventClick: function(event, jsEvent, view) {
 				var recently_hidden_event = get_data('recently_hidden_event');
+				remove_data('current_event');
 
 				if (recently_hidden_event != event) {
 					set_data('current_event', event);
 					$(this).qtip('show', jsEvent);
 				} else {
+					// Consecutive three clicks should show again the event
 					remove_data('recently_hidden_event');
 				}
 			},
