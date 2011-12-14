@@ -21,8 +21,6 @@
 
 class Dates {
 
-	static $has_createfromformat = TRUE;
-
 	// Possible time formats
 	static $timeformats = array(
 			'24' => array(
@@ -85,10 +83,6 @@ class Dates {
 			$this->cfg_date = $cfg_date;
 		}
 
-		// Is createFromFormat available? (PHP >= 5.3.0)
-		self::$has_createfromformat = method_exists('DateTime',
-				'createFromFormat');
-
 	}
 
 	/**
@@ -137,9 +131,8 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format_type = (self::$has_createfromformat ? 'date' : 'strftime');
-		$format = $this->date_format_string($format_type) . ' '.
-			$this->time_format_string($format_type);
+		$format = $this->date_format_string('date') . ' '.
+			$this->time_format_string('date');
 
 		$obj = $this->create_datetime($format, $str, $tz);
 
@@ -157,8 +150,7 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format = (self::$has_createfromformat ? 
-				'YmdHis' : '%Y%m%d%H%M%S');
+		$format = 'YmdHis';
 
 		$obj = $this->create_datetime($format, $str, $tz);
 
@@ -200,8 +192,7 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format = (self::$has_createfromformat ?
-				'YmdHis' : '%Y%m%d%H%M%S');
+		$format = 'YmdHis';
 
 		// $tz should be enough
 		unset($id_arr['tz']);
@@ -328,8 +319,7 @@ class Dates {
 		// Timezone is ignored, we already have $tz
 		//$e = isset($matches[9]) ? $matches[9] : $tz;
 	
-		$format = (self::$has_createfromformat ?
-				'dmY His' : '%d%m%Y %H%M%S');
+		$format = 'dmY His';
 		$new_str = $d.$m.$y.' '.$h.$i.$s;
 
 		$dt = $this->create_datetime($format, $new_str, $tz);
@@ -406,7 +396,7 @@ class Dates {
 	}
 
 	/**
-	 * Returns a DateTime object using createFromFormat or strptime
+	 * Returns a DateTime object using createFromFormat
 	 *
 	 * @param	string	Format used to parse the given string
 	 * @param	string	String that contains date-time
@@ -414,26 +404,8 @@ class Dates {
 	 * @return	DateTime/boolean	FALSE on error
 	 */
 	function create_datetime($format, $str, $tz) {
-		if (self::$has_createfromformat) {
-			$dt = DateTime::createFromFormat($format, $str, 
-					new DateTimeZone($tz));
-		} else {
-			$tmp = strptime($str, $format);
-			$dt = new DateTime('now', new DateTimeZone($tz));
-			$dt->setDate(
-					1900 + $tmp['tm_year'],
-					1 + $tmp['tm_mon'],
-					$tmp['tm_mday']);
-			$dt->setTime(
-					$tmp['tm_hour'],
-					$tmp['tm_min'],
-					$tmp['tm_sec']);
-
-			// Unparsed AM/PM indicators
-			if (isset($tmp['unparsed']) && $tmp['unparsed'] == ' PM') {
-				$dt->add(new DateInterval('PT12H'));
-			}
-		}
+		$dt = DateTime::createFromFormat($format, $str, 
+				new DateTimeZone($tz));
 
 		// Check for errors
 		$err = DateTime::getLastErrors();
