@@ -740,8 +740,10 @@ class Caldav {
 			$calendar = $pieces[1];
 		}
 
-		return preg_replace('/%u/', $use_principal, $base_url) .
-			$calendar . (!empty($href) ? '/' . $href : '');
+		$built = preg_replace('/%u/', $use_principal, $base_url) .
+			$calendar . '/' . $href;
+		log_message('DEBUG', 'Built URL: ' . $built);
+		return $built;
 	}
 
 
