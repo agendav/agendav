@@ -361,7 +361,7 @@ class Caldav {
 			return array($usermsg, $params);
 		}
 
-		$url = $this->final_url . $calendar;
+		$url = $this->build_url($user, $calendar);
 
 		// Create XML body
 		$ns = array(
@@ -461,7 +461,7 @@ class Caldav {
 			return array($usermsg, $params);
 		}
 
-		$url = $this->final_url . $calendar;
+		$url = $this->build_url($user, $calendar);
 
 		// Create XML body
 		$ns = array(
