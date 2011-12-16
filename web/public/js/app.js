@@ -133,7 +133,7 @@ $(document).ready(function() {
 
 					events: {
 						show: function (event, api) {
-							$(window).bind('keydown.tooltipevents', function(e) {
+							$(window).on('keydown.tooltipevents', function(e) {
 								if(e.keyCode === 27) {
 									api.hide(e);
 								}
@@ -147,7 +147,7 @@ $(document).ready(function() {
 						hide: function (event, api) {
 							var current = get_data('current_event');
 							set_data('recently_hidden_event', current);
-							$(window).unbind('keydown.tooltipevents');
+							$(window).off('keydown.tooltipevents');
 						}
 					}
 				});
@@ -286,7 +286,7 @@ $(document).ready(function() {
 			.append('<span class="fc-header-space"></span><span class="fc-button-refresh">' +_('labels', 'refresh') + '</span>');
 		$('#calendar_view span.fc-button-refresh')
 			.button() 
-			.click(function() {
+			.on('click', function() {
 				$('#calendar_view').fullCalendar('refetchEvents');
 			});
 
@@ -305,14 +305,15 @@ $(document).ready(function() {
 			}
 		});
 
-		$('#calendar_view span.fc-button-datepicker').click(function() {
+		$('#calendar_view span.fc-button-datepicker').on('click', function() {
 			$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
 			$('#datepicker_fullcalendar').datepicker('show');
 		});
 		
 		// Delete link
 		// TODO: check for rrule/recurrence-id (EXDATE, etc)
-		$(ved + ' button.link_delete_event').live('click', function() {
+		$(document).on('click', 'button.link_delete_event', function() {
+			alert("caca");
 			var data = get_data('current_event');
 			if (data === undefined) {
 				show_error(_('messages', 'error_interfacefailure'), 
@@ -388,7 +389,7 @@ $(document).ready(function() {
 
 		// Edit/Modify link
 		// TODO: check for rrule/recurrence-id
-		$(ved + ' button.link_edit_event').live('click', function() {
+		$(document).on('click', 'button.link_edit_event', function() {
 			// Data about this event
 			var event_data = get_data('current_event');
 			if (event_data === undefined) {
@@ -430,14 +431,14 @@ $(document).ready(function() {
 		 *************************************************************/
 
 		// Choosing a calendar
-		$('li.available_calendar').live('click', function() {
+		$('#calendar_list').on('click', 'li.available_calendar', function() {
 			$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
 			$(this).addClass('selected_calendar');
 			$(this).css('color', $(this).data().eventsource.textColor);
 		});
 
 		// Editing a calendar
-		$('li.available_calendar').live('dblclick', function(e) {
+		$('#calendar_list').on('dblclick', 'li.available_calendar', function(e) {
 			e.preventDefault();
 			calendar_modify_form(this);
 		});
@@ -446,12 +447,12 @@ $(document).ready(function() {
 		update_calendar_list(true);
 
 		// Refresh calendar list
-		$('#calendar_list_refresh').click(function() {
+		$('#calendar_list').on('click', '#calendar_list_refresh', function() {
 			update_calendar_list(true);
 		});
 
 		// Create calendar
-		$('#calendar_add').click(calendar_create_form);
+		$('#calendar_list').on('click', '#calendar_add', calendar_create_form);
 		
 
 		/*************************************************************
@@ -468,7 +469,7 @@ $(document).ready(function() {
 					primary: 'ui-icon-plusthick'
 				}
 			})
-			.bind('click', function() {
+			.on('click', function() {
 				var start = fulldatetimestring($('#calendar_view').fullCalendar('getDate'));
 				var data = {
 						start: start,
@@ -851,7 +852,7 @@ function event_field_form(type, data) {
 			update_recurrency_options($(ced + ' select.recurrence_type').val());
 
 			// All day checkbox
-			$(ced + ' input.allday').change(function() {
+			$(ced).on('change', 'input.allday', function() {
 				// TODO: timepickers should update their values
 				var current = $(ced + " input.start_date").datepicker('getDate');
 				set_end_minDate();
@@ -870,17 +871,17 @@ function event_field_form(type, data) {
 			});
 
 			// Recurrence type
-			$(ced + ' select.recurrence_type').change(function() {
+			$(ced).on('change', 'select.recurrence_type', function() {
 				var newval = $(this).val();
 
 				update_recurrency_options($(this).val());
 			});
 
 			// Avoid having a value in both recurrence options (count / until)
-			$(ced + ' input.recurrence_count').change(function() {
+			$(ced).on('change', 'input.recurrence_count', function() {
 				enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
 			});
-			$(ced + ' input.recurrence_until').change(function() {
+			$(ced).on('change', 'input.recurrence_until', function() {
 				enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
 			});
 
@@ -890,7 +891,7 @@ function event_field_form(type, data) {
 			var origDur = $.timePicker(ced + ' input.end_time').getTime() - origStart.getTime();
 
 
-			$(ced + ' input.start_time').change(function() {
+			$(ced).on('change', 'input.start_time', function() {
 				if ($(ced + ' input.end_time').data('untouched')) { 
 
 					var start = $.timePicker(ced + ' input.start_time').getTime();
@@ -902,7 +903,7 @@ function event_field_form(type, data) {
 				}
 			});
 
-			$(ced + ' input.end_time').change(function() {
+			$(ced).on('change', 'input.end_time', function() {
 				var durn = $.timePicker(this).getTime() 
 					- $.timePicker(ced + ' input.start_time').getTime();
 				if (durn != origDur) {
