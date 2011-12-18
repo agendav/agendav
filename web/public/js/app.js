@@ -580,7 +580,7 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		var action = $(thisform).attr('action');
 		var formdata = $(thisform).serialize();
 
-		$.ajax({
+		var dialog_ajax_req = $.ajax({
 			url: base_app_url + url,
 			beforeSend: function(jqXHR, settings) {
 				$('body').mask(_('messages', 'overlay_loading_dialog'), 500);
@@ -591,28 +591,30 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 			cache: false,
 			type: 'POST',
 			data: formdata,
-			dataType: 'html',
-			error: function(jqXHR, textStatus, errorThrown) {
-				show_error(_('messages', 'error_loading_dialog'),
-					_('messages', 'error_oops') + ': ' + textStatus);
-			},
-			success: function(data, textStatus, jqXHR) {
-				$('body').append(data);
-				$(divname).dialog({
-					autoOpen: true,
-					buttons: buttons,
-					title: title,
-          minWidth: width,
-					modal: true,
-					open: function(event, ui) {
-						preDialogFunc();
-						$(divname).dialog('option', 'position', 'center');
-						var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
-						add_button_icons(buttons);
-					},
-					close: function(ev, ui) { $(this).remove(); }
-				})
-			} 
+			dataType: 'html'
+		});
+
+		dialog_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
+			show_error(_('messages', 'error_loading_dialog'),
+				_('messages', 'error_oops') + ': ' + textStatus);
+		});
+			
+		dialog_ajax_req.done(function(data, textStatus, jqxHR) {
+			$('body').append(data);
+			$(divname).dialog({
+				autoOpen: true,
+				buttons: buttons,
+				title: title,
+				minWidth: width,
+				modal: true,
+				open: function(event, ui) {
+					preDialogFunc();
+					$(divname).dialog('option', 'position', 'center');
+					var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
+					add_button_icons(buttons);
+				},
+				close: function(ev, ui) { $(this).remove(); }
+			})
 		});
 
 		// Remove generated form
@@ -634,46 +636,49 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 	var url = $(formObj).attr('action');
 	var data = $(formObj).serialize();
 
-	$.ajax({
+	// Mask body
+	$('body').mask(_('messages', 'overlay_sending_form'), 1000);
+
+	var sendform_ajax_req = $.ajax({
 		url: url,
-		beforeSend: function(jqXHR, settings) {
-			$('body').mask(_('messages', 'overlay_sending_form'), 1000);
-		},
-		complete: function(jqXHR, textStatus) {
-			$('body').unmask();
-		},
 		cache: false,
 		type: 'POST',
 		data: data,
-		dataType: 'json',
-		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('messages', 'error_interfacefailure'),
-				_('messages', 'error_oops') + ':' + textStatus);
+		dataType: 'json'
+	});
+
+	sendform_ajax_req.then(function() {
+		$('body').unmask();
+	});
+
+	sendform_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
+		show_error(_('messages', 'error_interfacefailure'),
+			_('messages', 'error_oops') + ':' + textStatus);
+		set_data('lastoperation', 'failed');
+		errorFunc();
+	});
+
+	sendform_ajax_req.done(function(data, textStatus, jqXHR) {
+		// "ERROR", "EXCEPTION" or "SUCCESS"
+		var result = data.result;
+		var message = data.message;
+		if (result == 'ERROR') {
 			set_data('lastoperation', 'failed');
+			show_error(
+				_('messages', 'error_internal'),
+				message);
 			errorFunc();
-		},
-		success: function(data, textStatus, jqXHR) {
-			// "ERROR", "EXCEPTION" or "SUCCESS"
-			var result = data.result;
-			var message = data.message;
-			if (result == 'ERROR') {
-				set_data('lastoperation', 'failed');
-				show_error(
-					_('messages', 'error_internal'),
-					message);
-				errorFunc();
-			} else if (result == 'EXCEPTION') {
-				set_data('lastoperation', 'failed');
-				exceptionFunc(message);
-			} else if (result == 'SUCCESS') {
-				set_data('lastoperation', 'success');
-				successFunc(message);
-			} else {
-				show_error(_('messages', 'error_internal'),
-						_('messages', 'error_oops') + ':' + result);
-			}
+		} else if (result == 'EXCEPTION') {
+			set_data('lastoperation', 'failed');
+			exceptionFunc(message);
+		} else if (result == 'SUCCESS') {
+			set_data('lastoperation', 'success');
+			successFunc(message);
+		} else {
+			show_error(_('messages', 'error_internal'),
+					_('messages', 'error_oops') + ':' + result);
 		}
-		});
+	});
 }
 
 /**
@@ -691,27 +696,29 @@ function generate_on_the_fly_form(action, data) {
 	// Now we have our random id
 	var form_gen = base_app_url + 'dialog_generator/on_the_fly_form/' +
 		random_id;
-	$.ajax({
+	var csrf_ajax_gen = $.ajax({
 		url: form_gen,
 		cache: false,
 		type: 'POST',
 		contentType: 'text',
 		dataType: 'text',
-		async: false, // Let's wait
-		error: function(jqXHR, textStatus, errorThrown) {
-			// This is generally caused by expired session
-			session_expired();
-			set_data('formcreation', 'failed');
-		},
-		success: function(formdata, textStatus, jqXHR) {
-			$('body').append(formdata);
-			$('#' + random_id).attr('action', action);
-			$.each(data, function (i, v) {
-				$('#' + random_id).append('<input type="hidden" name="'+i
-					+'" value="'+v+'" />');
-			});
-			set_data('formcreation', 'ok');
-		}
+		async: false // Let's wait
+	});
+
+	csrf_ajax_gen.fail(function(jqXHR, textStatus, errorThrown) {
+		// This is generally caused by expired session
+		session_expired();
+		set_data('formcreation', 'failed');
+	});
+
+	csrf_ajax_gen.done(function(formdata, textStatus, jqXHR) {
+		$('body').append(formdata);
+		$('#' + random_id).attr('action', action);
+		$.each(data, function (i, v) {
+			$('#' + random_id).append('<input type="hidden" name="'+i
+				+'" value="'+v+'" />');
+		});
+		set_data('formcreation', 'ok');
 	});
 
 	return random_id;
@@ -1130,65 +1137,67 @@ function calendar_modify_form(calendar_obj) {
  */
 
 function update_calendar_list(maskbody) {
-	$.ajax({
+	if (maskbody) {
+		$('body').mask(_('messages', 'overlay_loading_calendar_list'), 500);
+	}
+
+	var updcalendar_ajax_req = $.ajax({
 		url: base_app_url + 'caldav2json/calendar_list',
 		cache: false,
 		dataType: 'json',
 		async: false, // Let's wait
-		beforeSend: function(jqXHR, settings) {
-			if (maskbody) {
-				$('body').mask(_('messages', 'overlay_loading_calendar_list'), 500);
-			}
-		},
-		complete: function(jqXHR, textStatus) {
-			if (maskbody) {
-				$('body').unmask();
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			show_error(_('messages', 'error_loading_calendar_list'),
-				_('messages', 'error_oops') + textStatus);
-		},
-		success: function(data, textStatus, jqXHR) {
-			// Remove old eventSources and remove every list item
-			$('#calendar_list li.available_calendar').each(function(index) {
-				var data = $(this).data();
-				$('#calendar_view').fullCalendar('removeEventSource',
-					data.eventsource);
-				$(this).remove();
-			});
+	});
 
-			// Calendar count
-			var count = 0;
+	updcalendar_ajax_req.then(function() {
+		if (maskbody) {
+			$('body').unmask();
+		}
+	});
 
-			$.each(data, function(key, value) {
-				count++;
+	updcalendar_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
+		show_error(_('messages', 'error_loading_calendar_list'),
+			_('messages', 'error_oops') + textStatus);
+	});
 
-				var li = generate_calendar_entry(value);
+	updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
+		// Remove old eventSources and remove every list item
+		$('#calendar_list li.available_calendar').each(function(index) {
+			var data = $(this).data();
+			$('#calendar_view').fullCalendar('removeEventSource',
+				data.eventsource);
+			$(this).remove();
+		});
 
-				$('#calendar_list ul').append(li);
+		// Calendar count
+		var count = 0;
 
-				$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
-			});
+		$.each(data, function(key, value) {
+			count++;
 
-			// No calendars?
-			if (count == 0) {
-				// Some CalDAV servers (e.g. DAViCal) create first calendar on first
-				// login. Let's reload calendar list again
-				var last_calendar_count = get_data('last_calendar_count');
-				if (last_calendar_count === undefined ||
-					last_calendar_count != '0') {
-					set_data('last_calendar_count', 0);
-					setTimeout('update_calendar_list(false)', 1);
-				} else {
-					// Calendar list received empty twice
-					show_error(_('messages','notice_no_calendars'), '');
-				}
+			var li = generate_calendar_entry(value);
+
+			$('#calendar_list ul').append(li);
+
+			$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
+		});
+
+		// No calendars?
+		if (count == 0) {
+			// Some CalDAV servers (e.g. DAViCal) create first calendar on first
+			// login. Let's reload calendar list again
+			var last_calendar_count = get_data('last_calendar_count');
+			if (last_calendar_count === undefined ||
+				last_calendar_count != '0') {
+				set_data('last_calendar_count', 0);
+				setTimeout('update_calendar_list(false)', 1);
 			} else {
-				set_data('last_calendar_count', count);
-				// Select the first one by default
-				$('#calendar_list li.available_calendar:first').click();
+				// Calendar list received empty twice
+				show_error(_('messages','notice_no_calendars'), '');
 			}
+		} else {
+			set_data('last_calendar_count', count);
+			// Select the first one by default
+			$('#calendar_list li.available_calendar:first').click();
 		}
 	});
 }
@@ -1229,23 +1238,25 @@ function generate_event_source(calendar) {
  * n = refresh interval in miliseconds
  */
 function session_refresh(n) {
-	$.ajax({
+	var sessrefresh_ajax_req = $.ajax({
 		url: base_app_url + 'js_generator/keepalive',
 		cache: false,
 		method: 'GET',
-		dataType: 'html',
-		success: function(data, textStatus, jqXHR) {
-			if (data !== '') {
-				// When data is not empty, it's usually JavaScript code
-				// TODO think about using dataType: script here
-				$('body').append(data);
-			} else {
-				setTimeout('session_refresh(' + n + ')', n);
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			session_expired();
+		dataType: 'html'
+	});
+
+	sessrefresh_ajax_req.done(function(data, textStatus, jqXHR) {
+		if (data !== '') {
+			// When data is not empty, it's usually JavaScript code
+			// TODO think about using dataType: script here
+			$('body').append(data);
+		} else {
+			setTimeout('session_refresh(' + n + ')', n);
 		}
+	});
+
+	sessrefresh_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
+		session_expired();
 	});
 }
 
@@ -1469,21 +1480,22 @@ function fg_for_bg(color) {
  * Loads localized strings
  */
 function load_i18n_strings() {
-	$.ajax({
+	var i18n_ajax_req = $.ajax({
 		async: false,
 		url: base_app_url + 'strings/load/' + agendav_version,
 		dataType: 'json',
 		method: 'GET',
-		ifModified: false, // TODO set to true + cache
-		success: function(data, textStatus, jqXHR) {
-			i18n = data;
-		},
+		ifModified: false // TODO set to true + cache
+	});
+
+	i18n_ajax_req.done(function(data, textStatus, jqXHR) {
+		i18n = data;
+	});
 		
-		error: function(jqXHR, textStatus, errorThrown) {
-			show_error('Error loading translation',
-				'Please, contact your system administrator');
-		}
-		});
+	i18n_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
+		show_error('Error loading translation',
+			'Please, contact your system administrator');
+	});
 }
 
 /**
