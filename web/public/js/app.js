@@ -313,7 +313,6 @@ $(document).ready(function() {
 		// Delete link
 		// TODO: check for rrule/recurrence-id (EXDATE, etc)
 		$(document).on('click', 'button.link_delete_event', function() {
-			alert("caca");
 			var data = get_data('current_event');
 			if (data === undefined) {
 				show_error(_('messages', 'error_interfacefailure'), 
@@ -434,7 +433,6 @@ $(document).ready(function() {
 		$('#calendar_list').on('click', 'li.available_calendar', function() {
 			$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
 			$(this).addClass('selected_calendar');
-			$(this).css('color', $(this).data().eventsource.textColor);
 		});
 
 		// Editing a calendar
@@ -1303,14 +1301,16 @@ function generate_calendar_entry(data) {
 		border = border.add('rgb', 120).toString();
 	}
 
-	var li = $('<li></li>')
+	var color_square = $('<div></div>')
 		.addClass('calendar_color')
+		.css('background-color', data.color)
+		.css('border-color', border);
+
+	var li = $('<li></li>')
 		.addClass('available_calendar')
 		.attr('title', data.displayname)
-		.css('background-color', data.color)
-		.css('border-color', border)
-		.css('color', fg)
-		.html(data.shown_displayname);
+		.html(data.shown_displayname)
+		.prepend(color_square);
 
 	// Shared calendars
 	if (data.shared !== undefined && data.shared == true) {
