@@ -578,18 +578,18 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		var action = $(thisform).attr('action');
 		var formdata = $(thisform).serialize();
 
+		$('body').mask(_('messages', 'overlay_loading_dialog'), 500);
+
 		var dialog_ajax_req = $.ajax({
 			url: base_app_url + url,
-			beforeSend: function(jqXHR, settings) {
-				$('body').mask(_('messages', 'overlay_loading_dialog'), 500);
-			},
-			complete: function(jqXHR, textStatus) {
-				$('body').unmask();
-			},
 			cache: false,
 			type: 'POST',
 			data: formdata,
 			dataType: 'html'
+		});
+
+		dialog_ajax_req.then(function() {
+				$('body').unmask();
 		});
 
 		dialog_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
