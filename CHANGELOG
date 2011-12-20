@@ -5,6 +5,7 @@ Release 1.2.4 (2011-12-xx)
 	  - Current day cell is clearly highlighted
 	  - More vertical and horizontal space
 	  - Weekend days have a different background color
+	  - Changed calendar list style
 	* JavaScript and CSS compression and unification to make 
 	  AgenDAV load faster
 	* Fixed translations, were not working in IE7
