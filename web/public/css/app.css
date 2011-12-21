@@ -163,8 +163,10 @@ div.block div.links span.item {
 }
 
 #calendar_list li {
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
   padding: 4px 4px 4px 15px;
-  margin: 1px;
 }
 
 #calendar_list li:hover {

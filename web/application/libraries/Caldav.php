@@ -639,9 +639,6 @@ class Caldav {
 
 			// Shorten calendar displayname if needed
 			$dn = $result[$c->calendar]['displayname'];
-			$result[$c->calendar]['shown_displayname'] =
-				(strlen($dn) > 20) ? 
-				substr($dn, 0, 20) . '...' : $dn;
 
 			// Adapt color
 			$result[$c->calendar]['color'] =

@@ -1309,7 +1309,7 @@ function generate_calendar_entry(data) {
 	var li = $('<li></li>')
 		.addClass('available_calendar')
 		.attr('title', data.displayname)
-		.html(data.shown_displayname)
+		.html(data.displayname)
 		.prepend(color_square);
 
 	// Shared calendars
