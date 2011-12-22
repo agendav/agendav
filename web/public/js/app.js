@@ -1295,11 +1295,7 @@ function generate_calendar_entry(data) {
 	// Border color
 	//var border = $.color.parse(data.color).scale('rgb', 0.8).toString();
 	var border = $.color.parse(data.color);
-	if (fg == '#000000') {
-		border = border.scale('rgb', 0.8).toString();
-	} else {
-		border = border.add('rgb', 120).toString();
-	}
+	border = border.scale('rgb', (fg == '#000000' ? 0.8 : 1.8)).toString();
 
 	var color_square = $('<div></div>')
 		.addClass('calendar_color')
@@ -1309,7 +1305,7 @@ function generate_calendar_entry(data) {
 	var li = $('<li></li>')
 		.addClass('available_calendar')
 		.attr('title', data.displayname)
-		.html(data.displayname)
+		.html('<span class="text">' + data.displayname + '</span>')
 		.prepend(color_square);
 
 	// Shared calendars
