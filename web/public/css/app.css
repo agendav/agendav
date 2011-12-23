@@ -8,6 +8,10 @@ body {
 /* jQuery UI font override */
 .ui-widget { font-family: 'Trebuchet MS',Arial,sans-serif !important; font-size: 1.1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: 'Lucida Grande', 'Trebuchet MS', Arial,sans-serif !important; font-size: 1em; } 
+.ui-button, .ui-dialog .ui-dialog-buttonpane button,
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor: default !important;
+}
 
 a, a:visited {
   color: #002D5A;
@@ -162,6 +166,7 @@ div.block div.links span.item:hover {
 
 #calendar_list ul, #calendar_list li {
   list-style: none;
+  cursor: default;
 }
 
 #calendar_list li {
@@ -597,6 +602,10 @@ div.selecthelper {
 
 .fc-event-inner {
     padding: 0.2em 0 0.2em 0;
+}
+
+.fc-button {
+  cursor: default !important;
 }
 
 div.calendar_color {
