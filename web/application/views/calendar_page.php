@@ -38,23 +38,21 @@ $img_add = array(
         'src' => 'img/calendar_add.png',
         'alt' => $this->i18n->_('labels', 'create'),
         'title' => $this->i18n->_('labels', 'create'),
-		'id' => 'calendar_add',
         );
 
 $img_refresh = array(
         'src' => 'img/arrow_refresh.png',
         'alt' => $this->i18n->_('labels', 'refresh'),
         'title' => $this->i18n->_('labels', 'refresh'),
-		'id' => 'calendar_list_refresh',
         );
 
 $items = array(
-		img($img_add),
-		img($img_refresh),
+		'calendar_add' => img($img_add),
+		'calendar_list_refresh' => img($img_refresh),
 		);
 
-foreach ($items as $item) {
-	echo '<span class="item">' . $item . '</span>';
+foreach ($items as $id => $item) {
+	echo '<span class="item" id="'.$id.'">' . $item . '</span>';
 }
 
 ?> 

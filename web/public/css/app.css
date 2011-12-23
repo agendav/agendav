@@ -147,14 +147,18 @@ div#logo {
 
 div.block div.links {
   text-align: right;
-  margin-top: 1em;
-  margin-right: 1%;
 }
 
 div.block div.links span.item {
-  margin-left: 1%;
-  cursor:pointer;
+  display: inline-block;
+  padding: 10px;
 }
+
+div.block div.links span.item:hover {
+  background-color: #f0f0f0;
+}
+
+
 
 #calendar_list ul, #calendar_list li {
   list-style: none;
