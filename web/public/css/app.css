@@ -162,7 +162,6 @@ div.block div.links span.item:hover {
 
 #calendar_list ul, #calendar_list li {
   list-style: none;
-  cursor:pointer;
 }
 
 #calendar_list li {
