@@ -66,6 +66,9 @@ $(document).ready(function() {
 			aspectRatio: 1.2,
 			height: calendar_height(),
 			windowResize: function(view) {
+				// Adjust calendar names width
+				adjust_calendar_names_width();
+
 				$(this).fullCalendar('option', 'height', calendar_height());
 			},
 			header: {
@@ -1196,6 +1199,10 @@ function update_calendar_list(maskbody) {
 			set_data('last_calendar_count', count);
 			// Select the first one by default
 			$('#calendar_list li.available_calendar:first').click();
+
+			// Adjust text length
+			adjust_calendar_names_width();
+
 		}
 	});
 }
@@ -1527,4 +1534,21 @@ function session_expired() {
 	setTimeout( 'window.location = "'+base_url+'";', 2000);
 }
 
+/**
+ * Adjusts calendar text span width to parent container
+ */
+function adjust_calendar_names_width() {
+	$('#calendar_list li').each(function() {
+		var li = $(this);
+		var li_width = li.width();
+		var shared = li.find('span.shared');
+
+		var adjust = li_width - li.find('span.text').position().left + (li.outerWidth()-li_width);
+		if (shared.length == 1) {
+			adjust -= shared.outerWidth();
+		}
+
+		li.find('span.text').width(adjust);
+	});
+}
 // vim: sw=2 tabstop=2
