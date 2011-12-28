@@ -151,6 +151,7 @@ label.suboption {
 }
 
 div.block {
+  position: relative;
   margin: 0 auto 5% auto;
 }
 
@@ -547,10 +548,10 @@ div.public_url {
 }
 
 span.shared {
-  display: block;
+  display: inline-block;
   height: 16px;
   width: 16px;
-  float: right;
+  padding-left: 5px;
   background-image: url(../img/share.png);
   background-position: 95% 50%;
   background-repeat: no-repeat;
