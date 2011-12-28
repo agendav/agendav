@@ -10,7 +10,7 @@ AgenDAV |release| requires the following software to be installed:
 
 * A CalDAV server (developed mainly with `DAViCal <http://www.davical.org/>`_
 * A web server
-* PHP > 5.2
+* PHP >= 5.3.0
 * PHP mbstring extension
 * MySQL > 5.1
 

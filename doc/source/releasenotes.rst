@@ -1,6 +1,21 @@
 Release notes
 =============
 
+.. _v1.2.4:
+1.2.4 (2011-12-28)
+------------------
+
+This release requires no database changes. Contains a fix for localization
+support for IE7, and lots of aesthetical changes, besides upgraded libraries
+(jQuery 1.7.1, qTip2 and iCalcreator).
+
+Session cookies are now smaller and contain only session identifiers.
+``advanced.php`` configuration file has been updated, make sure you don't
+overwrite your own changes.
+
+Note that required PHP version is 5.3.0 and not 5.2, there was an error on
+the requisites list.
+
 .. _v1.2.3:
 
 1.2.3 (2011-11-08)
