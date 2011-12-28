@@ -591,11 +591,16 @@ div.share_info {
 td.fc-today {
   background-color: #FFFFCC !important;
   font-weight: bold;
-  border: 2px solid #777;
+  border: 2px solid #D2D267;
+  border-right-width: 1px;
 }
 
 td.fc-sat, td.fc-sun {
   background-color: #eaeaea;
+}
+
+td.fc-other-month {
+  background-color: #f9f9f9;
 }
 
 div.selecthelper {
