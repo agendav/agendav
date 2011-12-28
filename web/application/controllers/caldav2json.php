@@ -560,18 +560,32 @@ class Caldav2json extends CI_Controller {
 		if ($type == 'drag') {
 			// 4 Posibilities
 			if ($was_allday == 'true') {
-				$new_vevent = $this->icshelper->make_start($vevent, $tz,
-						null, $dur_string, 
-						($allday == 'true' ? 'DATE' : 'DATE-TIME'));
 				if ($allday == 'true') {
+					// From all day to all day
+					$tz = 'UTC';
+					$new_vevent = $this->icshelper->make_start($vevent,
+							$tz, null, $dur_string, 'DATE');
 					$new_vevent = $this->icshelper->make_end($new_vevent,
 							$tz, null, $dur_string, 'DATE');
 				} else {
-					// Get start date
-					$new_start = $this->icshelper->extract_date($new_vevent,
+					// From all day to normal event
+					// Use default timezone
+					$tz = $this->tz;
+
+					// Add VTIMEZONE
+					$this->icshelper->add_vtimezone($ical, $tz, $timezones);
+
+					// Set start date using default timezone instead of UTC
+					$start = $this->icshelper->extract_date($vevent,
 							'DTSTART', $tz);
+					$start_obj = $start['result'];
+					$start_obj->add($this->dates->duration2di($dur_string));
+					$new_vevent = $this->icshelper->make_start($vevent,
+							$tz, $start_obj, null, 'DATE-TIME',
+							$tz);
 					$new_vevent = $this->icshelper->make_end($new_vevent,
-							$tz, $new_start['result'], 'PT1H', 'DATE-TIME');
+							$tz, $start_obj, 'PT1H', 'DATE-TIME', 
+							$tz);
 				}
 			} else {
 				// was_allday = false

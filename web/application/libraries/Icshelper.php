@@ -655,11 +655,13 @@ class Icshelper {
 	 * @param DateTime $new_start
 	 * @param string $increment
 	 * @param string $force_new_value_type
+	 * @param string $force_new_tzid
 	 */
 	function make_start($component, $tz,
 			$new_start = null,
 			$increment = null,
-			$force_new_value_type = null) {
+			$force_new_value_type = null,
+			$force_new_tzid = null) {
 
 		$value = null;
 		$format = null;
@@ -686,6 +688,8 @@ class Icshelper {
 		// DATE values can't have TZID
 		if ($params['VALUE'] == 'DATE') {
 			unset($params['TZID']);
+		} else if (!is_null($force_new_tzid)) {
+			$params['TZID'] = $force_new_tzid;
 		}
 
 		$format = $this->CI->dates->format_for($params['VALUE'], $tz);
@@ -718,7 +722,8 @@ class Icshelper {
 	function make_end($component, $tz,
 			$new_end = null,
 			$increment = null,
-			$force_new_value_type = null) {
+			$force_new_value_type = null,
+			$force_new_tzid = null) {
 
 		$value = null;
 		$format = null;
@@ -784,7 +789,9 @@ class Icshelper {
 		// DATE values can't have TZID
 		if ($params['VALUE'] == 'DATE') {
 			unset($params['TZID']);
-		}
+		} else if (!is_null($force_new_tzid)) {
+			$params['TZID'] = $force_new_tzid;
+		} 
 
 		$format = $this->CI->dates->format_for($params['VALUE'], $tz);
 
