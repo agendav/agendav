@@ -2,7 +2,7 @@ Release notes
 =============
 
 .. _v1.2.4:
-1.2.4 (2011-12-28)
+1.2.4 (2011-12-xx)
 ------------------
 
 This release requires no database changes. Contains a fix for localization
