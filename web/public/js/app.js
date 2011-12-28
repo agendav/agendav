@@ -66,9 +66,6 @@ $(document).ready(function() {
 			aspectRatio: 1.2,
 			height: calendar_height(),
 			windowResize: function(view) {
-				// Adjust calendar names width
-				adjust_calendar_names_width();
-
 				$(this).fullCalendar('option', 'height', calendar_height());
 			},
 			header: {
