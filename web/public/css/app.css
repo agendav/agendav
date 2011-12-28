@@ -34,7 +34,6 @@ img {
 .logintitle {
   text-align: center;
   font-family: Ubuntu, Verdana, sans-serif;
-  margin-top: 5%
 }
 
 .logintitle img, .logintitle h1 {
@@ -77,7 +76,10 @@ img {
 #topbar {
   background: url(../img/bg_topbar.png) #f0f0f0 top left repeat-x;
   height: 25px;
-  min-height: 25px;
+  line-height: 25px;
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
   color: #808080;
   text-align: right;
 }
@@ -116,20 +118,32 @@ img {
 }
 
 #page_contents {
-  float: right;
-  width: 85%;
+  position: absolute;
+  top: 25px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin-top: 10px;
 }
 
 #left_frame {
-  float: left;
-  width: 15%;
-  padding-top: 1%;
+  padding: 10px 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  bottom: 0;
+  overflow: auto;
 }
 
 #calendar_view {
-  width: 99%;
-  margin: 0 auto 0 auto;
+  padding: 5px 15px;
+  position: absolute;
+  top: 0;
+  left: 160px;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 label.suboption {
@@ -138,7 +152,6 @@ label.suboption {
 
 div.block {
   margin: 0 auto 5% auto;
-  width: 90%;
 }
 
 div.block .ui-widget-header {

@@ -492,7 +492,7 @@ $(document).ready(function() {
  */
 function calendar_height() {
   var offset = $('#calendar_view').offset();
-  return $(window).height() - Math.ceil(offset.top) - 15;
+  return $(window).height() - Math.ceil(offset.top) - 10;
 }
 
 /**

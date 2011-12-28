@@ -1,7 +1,6 @@
 <div id="page_contents">
 	<div id="calendar_view">
 	</div>
-</div>
 
 <div id="left_frame">
 
@@ -70,6 +69,7 @@ foreach ($items as $id => $item) {
   <p><?php echo $this->config->item('footer')?></p>
  </div>
 </div>
+</div> <!-- page_contents -->
 
 <div id="popup" class="freeow freeow-top-right">
 </div>
