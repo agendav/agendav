@@ -79,16 +79,7 @@ class Icshelper {
 		}
 
 		// Add VTIMEZONE
-		if ($tz != 'UTC') {
-			$res = iCalUtilityFunctions::createTimezone($ical,
-					$tz, array( 'X-LIC-LOCATION' => $tz));
-			if ($res === FALSE) {
-				$this->CI->extended_logs->message('ERROR', 
-						"Couldn't use timezone " . $tz . ' to create '
-						. 'a new resource. Defaulting to UTC');
-				$tz = 'UTC';
-			}
-		}
+		$this->add_vtimezone($ical, $tz);
 
 		$vevent =& $ical->newComponent('vevent');
 
@@ -664,7 +655,6 @@ class Icshelper {
 	 * @param DateTime $new_start
 	 * @param string $increment
 	 * @param string $force_new_value_type
-	 * @param string $force_new_tzid
 	 */
 	function make_start($component, $tz,
 			$new_start = null,
@@ -922,6 +912,31 @@ class Icshelper {
 	function paramvalue($params, $name, $default_val = FALSE) {
 		$name = strtoupper($name);
 		return (isset($params[$name]) ? $params[$name] : $default_val);
+	}
+
+	/**
+	 * Add a VTIMEZONE using the specified TZID
+	 * If VTIMEZONE was already added, do nothing
+	 *
+	 * @param	iCalcomponent
+	 * @param	string	Timezone id to add
+	 * @param	array	(Optional) result from get_timezones()
+	 * @return	Used TZID, even when it was not added
+	 */
+
+	function add_vtimezone(&$resource, $tzid, $timezones = array()) {
+		if ($tzid != 'UTC' && !isset($timezones[$tzid])) {
+			$res = iCalUtilityFunctions::createTimezone($resource,
+					$tzid, array( 'X-LIC-LOCATION' => $tzid));
+			if ($res === FALSE) {
+				$this->CI->extended_logs->message('ERROR', 
+						"Couldn't create vtimezone with tzid=" . $tzid
+						.' Defaulting to UTC');
+				$tzid = 'UTC';
+			}
+		}
+
+		return $tzid;
 	}
 
 
