@@ -683,7 +683,7 @@ class Caldav {
 
 		// User which can access this calendar
 		foreach ($share_with as $user) {
-			$user_url = preg_replace('/%u/', $user, $rel_url_template);
+			$user_url = preg_replace('/%s/', $user, $rel_url_template);
 			$aces[] = $this->_ace_for($xml, $user_url, $share_perm);
 		}
 
@@ -737,7 +737,7 @@ class Caldav {
 			$calendar = $pieces[1];
 		}
 
-		$built = preg_replace('/%u/', $use_principal, $base_url) .
+		$built = preg_replace('/%s/', $use_principal, $base_url) .
 			$calendar . '/' . $href;
 		log_message('DEBUG', 'Built URL: ' . $built);
 		return $built;

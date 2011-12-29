@@ -1,8 +1,9 @@
 <?php
 
 // Internal CalDAV URL. Will not be shown
-// %u will be replaced by current username. Please, add trailing slash
-$config['caldav_url'] = 'https://caldav.server/caldav.php/%u/';
+// %s will be replaced by current username, current username + calendar or
+// current username + calendar + resource. Please, add trailing slash
+$config['caldav_url'] = 'https://caldav.server/caldav.php/%s/';
 
 // Public CalDAV URL
 // %s is a placeholder for the rest of the URL. Please, add trailing slash
