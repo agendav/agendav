@@ -121,8 +121,9 @@ $(document).ready(function() {
 						widget: true
 					},
 					show: {
+						target: $('#calendar_view'),
 						event: false,
-						solo: true,
+						solo: $('#calendar_view'),
 						effect: false
 					},
 					hide: {
