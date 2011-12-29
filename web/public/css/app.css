@@ -610,6 +610,10 @@ div.selecthelper {
   zoom: 1;
 }
 
+.fc-event-vert .fc-event-title {
+  font-size: 95%;
+}
+
 .fc-button {
   cursor: default !important;
 }
