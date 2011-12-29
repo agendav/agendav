@@ -232,17 +232,23 @@ Here you will configure every single aspect of your CalDAV server.
 .. confval:: caldav_url
 
    The _internal_ URL used by AgenDAV to connect to your CalDAV server. The
-   placeholder ``%u`` will be replaced by current user.
+   placeholder ``%u`` will be replaced by a username, username + calendar or
+   username + calendar + resource.
 
    Needs a trailing slash.
 
    Example::
 
-    $config['caldav_url'] = 'http://10.0.0.12/caldav.php/%u/';
+    $config['caldav_url'] = 'http://10.0.0.12/caldav.php/%s/';
    
-   For user4 Will become:
+   Principal URL for user4 will become:
 
     http://10.0.12/caldav.php/user4/
+
+   Resource with UID=aaa0001 on calendar 'work' for user3 will become:
+
+    http://10.0.12/caldav.php/user3/work/aaa0001/
+
 
 .. confval:: public_caldav_url
 

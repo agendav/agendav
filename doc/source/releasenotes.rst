@@ -7,14 +7,14 @@ Release notes
 
 This release requires no database changes. Contains a fix for localization
 support for IE7, and lots of aesthetical changes, besides upgraded libraries
-(jQuery 1.7.1, qTip2 and iCalcreator).
+(jQuery 1.7.1, qTip2 and iCalcreator). Session cookies are now smaller and
+contain only session identifiers.
 
-Session cookies are now smaller and contain only session identifiers.
-``advanced.php`` configuration file has been updated, make sure you don't
-overwrite your own changes.
+* :confval:`caldav_url` has changed: now the placeholder is ``%s`` instead of ``%u``, which was confusing. Update your configuration to replace ``%u`` by ``%s``.
 
-Note that required PHP version is 5.3.0 and not 5.2, there was an error on
-the requisites list.
+* ``advanced.php`` configuration file has been updated, make sure you don't overwrite your own changes.
+
+* Note that required PHP version is 5.3.0 and not 5.2, there was an error on the requisites list.
 
 .. _v1.2.3:
 
