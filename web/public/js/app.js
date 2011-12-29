@@ -135,7 +135,7 @@ $(document).ready(function() {
 					events: {
 						show: function (event, api) {
 							$(window).on('keydown.tooltipevents', function(e) {
-								if(e.keyCode === 27) {
+								if(e.keyCode === $.ui.keyCode.ESCAPE) {
 									api.hide(e);
 								}
 							})
