@@ -146,8 +146,21 @@ $(document).ready(function() {
 						},
 
 						hide: function (event, api) {
+							// Clicked on event?
+							var has_clicked_event;
+
+							if (event.originalEvent != undefined) {
+								var click_target = $(event.originalEvent.target).parents();
+								has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
+							} else {
+								has_clicked_event = false;
+							}
+
+							set_data('tooltip_hide_clicked_event', has_clicked_event);
+
 							var current = get_data('current_event');
 							set_data('recently_hidden_event', current);
+
 							$(window).off('keydown.tooltipevents');
 						}
 					}
@@ -156,15 +169,19 @@ $(document).ready(function() {
 
 			eventClick: function(event, jsEvent, view) {
 				var recently_hidden_event = get_data('recently_hidden_event');
+				var hide_clicked_event = get_data('tooltip_hide_clicked_event');
+
 				remove_data('current_event');
 
-				if (recently_hidden_event != event) {
+				if (recently_hidden_event != event ||
+						(hide_clicked_event === false && 
+					 	 recently_hidden_event == event)) {
 					set_data('current_event', event);
 					$(this).qtip('show', jsEvent);
-				} else {
-					// Consecutive three clicks should show again the event
-					remove_data('recently_hidden_event');
 				}
+
+				remove_data('recently_hidden_event');
+				remove_data('tooltip_hide_clicked_event');
 			},
 
 			// Add new event by dragging. Click also triggers this event,
