@@ -76,7 +76,6 @@ img {
 #topbar {
   background: url(../img/bg_topbar.png) #f0f0f0 top left repeat-x;
   height: 25px;
-  line-height: 25px;
   width: 100%;
   position: absolute;
   overflow: hidden;
