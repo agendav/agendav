@@ -49,4 +49,14 @@ class Defs {
 	function definitions() {
 		define('AGENDAV_VERSION', '1.2.3');
 	}
+
+	/**
+	 * Set PHP default timezone. date.timezone has to be set on php.ini, PHP
+	 * throws some warnings when it is not. Use configuration parameter
+	 * default_timezone
+	 */
+	function default_tz() {
+		$CI_config =& load_class('Config');
+		date_default_timezone_set($CI_config->item('default_timezone'));
+	}
 }
