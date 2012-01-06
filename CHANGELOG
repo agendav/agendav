@@ -14,6 +14,8 @@ Release 1.2.4 (2011-12-xx)
 	* Upgraded to latest git qTip2
 	* Upgraded to jQuery 1.7.1
 	* Session cookies are now smaller
+	* Added script (configtest.php) to check AgenDAV installation
+	  requisites and basic configuration
 	* Added fr_FR translation (thanks to Guillaume BF)
 	* Added nl_NL translation (thanks to Henry Verdonschot)
 	* More minor bugfixes
