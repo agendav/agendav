@@ -35,7 +35,7 @@ table schemas.
 
 Create an user in MySQL like this::
 
- $ mysql -uroot -p
+ $ mysql --default-character-set=utf8 -uroot -p
  Enter password: 
  [...]
  mysql> GRANT ALL PRIVILEGES ON agendav.* TO agendav@localhost IDENTIFIED BY 'yourpassword'
@@ -45,9 +45,12 @@ Create an user in MySQL like this::
 
 And then run the schema creation file::
 
- $ mysql -uagendav -p agendav < sql/schema.sql
+ $ mysql --default-character-set=utf8 -uagendav -p agendav < sql/schema.sql
  Enter password:
  $
+
+Note the UTF8 parts on the previous commands. If you don't specify them you
+will have some issues with special characters.
 
 Now your database is ready.
 
@@ -82,3 +85,9 @@ Other web servers
 
 AgenDAV should work on all other web server software if they support PHP
 scripts, but this is untested.
+
+Configure AgenDAV
+-----------------
+
+Now you can proceed to configure AgenDAV following the :doc:`configuration`
+section.

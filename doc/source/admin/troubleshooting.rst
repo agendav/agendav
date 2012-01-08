@@ -14,6 +14,23 @@ sure you include the following information:
 
 Try the following before writing:
 
+Check configuration and installation environment
+------------------------------------------------
+
+AgenDAV ships, since version 1.2.4, a simple script that checks installation
+environment and configuration files to make sure you meet all basic
+requisites.
+
+To run it, edit file :file:`web/public/configtest.php` to set the constant
+``ENABLE_SETUP_TESTS`` to ``TRUE``.
+
+Once you save the file with that change, point your browser to
+``http://host/path/agendav/configtest.php`` and look for red cells. You'll
+find some suggestions to fix the problems.
+
+Remember to set ``ENABLE_SETUP_TESTS`` back to ``FALSE`` inside
+``configtest.php``.
+
 More verbose logs
 -----------------
 

@@ -2,7 +2,7 @@ Release notes
 =============
 
 .. _v1.2.4:
-1.2.4 (2011-12-xx)
+1.2.4 (2012-01-xx)
 ------------------
 
 This release requires no database changes. Contains a fix for localization
@@ -10,11 +10,16 @@ support for IE7, and lots of aesthetical changes, besides upgraded libraries
 (jQuery 1.7.1, qTip2 and iCalcreator). Session cookies are now smaller and
 contain only session identifiers.
 
-* :confval:`caldav_url` has changed: now the placeholder is ``%s`` instead of ``%u``, which was confusing. Update your configuration to replace ``%u`` by ``%s``.
+* You have to create a new ``caldav.php`` config file using the provided template (``caldav.php.template``) because :confval:`caldav_url` has been split into two new configuration parameters. Some CalDAV servers use different URLs for principals and calendar collections/resources, and the previous model didn't work with them:
+
+ * :confval:`caldav_principal_url` will be used to generate principal URLs
+ * :confval:`caldav_calendar_url` will be used to generate calendar and resource URLs
 
 * ``advanced.php`` configuration file has been updated, make sure you don't overwrite your own changes.
 
 * Note that required PHP version is 5.3.0 and not 5.2, there was an error on the requisites list.
+
+* A setup test script has been included to check if your system meets some basic requisites. Follow the :doc:`admin/troubleshooting` section for more details.
 
 .. _v1.2.3:
 
