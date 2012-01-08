@@ -58,7 +58,7 @@ following line::
 
 	define('ENVIRONMENT', 'production');
 
-by::
+with::
 
 	define('ENVIRONMENT', 'development');
 
