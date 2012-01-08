@@ -9,7 +9,7 @@
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold);
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
 
-@import url(http://fonts.googleapis.com/css?family=Josefin+Sans+Std+Light);
+@import url(http://fonts.googleapis.com/css?family=Amaranth);
 /* -- page layout ----------------------------------------------------------- */
  
 body {
@@ -97,7 +97,7 @@ div.sphinxsidebarwrapper{
  
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: 'Josefin Sans Std Light', arial, serif;
+    font-family: Amaranth, arial, serif;
     color: #222;
     font-size: 1.6em;
     font-weight: normal;
@@ -216,7 +216,7 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: 'Josefin Sans Std Light', arial, serif;
+    font-family: Amaranth, arial, serif;
     font-weight: normal;
     color: #000;
     margin: 36px 0px 9px 0px;
