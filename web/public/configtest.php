@@ -55,7 +55,7 @@ $tests[] = array('PHP version', phpversion(),
 		($cmp >= 0) ? 'OK' : 'PHP 5.3.0 or later required');
 
 // PHP mbstring
-if (function_exists('mb_get_info')) {
+if (extension_loaded('mbstring')) {
 	$tests[] = array('mbstring extension', 'Available', 'OK');
 } else {
 	$tests[] = array('mbstring extension', 'Not installed', 
@@ -110,10 +110,10 @@ if ($keep_checking) {
 	// PHP + MySQL
 	switch ($db['default']['dbdriver']) {
 		case 'mysql':
-			$check_sql_function = 'mysql_connect';
+			$check_sql_ext = 'mysql';
 			break;
 		case 'mysqli':
-			$check_sql_function = 'mysqli_connect';
+			$check_sql_ext = 'mysqli';
 			break;
 		default:
 			$tests[] = array('SQL driver', 'Unsupported ' .
@@ -123,7 +123,7 @@ if ($keep_checking) {
 	}
 
 	if ($keep_checking) {
-		if (!function_exists($check_sql_function)) {
+		if (!extension_loaded($check_sql_ext)) {
 			$tests[] = array('PHP + MySQL', 'Not available', 
 					'Configured DB driver inside database.php (<tt>'
 						. $db['default']['dbdriver'] . '</tt>) is not'
