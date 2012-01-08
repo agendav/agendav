@@ -29,6 +29,7 @@ define('ENABLE_SETUP_TESTS', FALSE);
  * Checks:
  *
  * - PHP >= 5.3.0
+ * - magic_quotes_gpc and magic_quotes_runtime disabled
  * - php-mbstring available
  * - Correctly configured config.php, database.php and caldav.php 
  * - PHP MySQL extension available (or MySQLi)
@@ -53,6 +54,20 @@ $cmp = version_compare(phpversion(), '5.3.0');
 
 $tests[] = array('PHP version', phpversion(), 
 		($cmp >= 0) ? 'OK' : 'PHP 5.3.0 or later required');
+
+
+// magic_quotes_gpc
+$res_magic_quotes_gpc = (get_magic_quotes_gpc() == 0);
+$tests[] = array('magic_quotes_gpc', $res_magic_quotes_gpc ? 'Disabled' :
+		'Enabled', $res_magic_quotes_gpc ? 'OK' : 
+		'Disable it inside <tt>php.ini</tt>');
+
+// magic_quotes_runtime
+$res_magic_quotes_runtime = (get_magic_quotes_runtime() == 0);
+$tests[] = array('magic_quotes_runtime', 
+		$res_magic_quotes_runtime ? 'Disabled' : 'Enabled',
+		$res_magic_quotes_runtime ? 'OK' : 
+		'Disable it inside <tt>php.ini</tt>');
 
 // PHP mbstring
 if (extension_loaded('mbstring')) {
