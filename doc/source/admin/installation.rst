@@ -14,6 +14,12 @@ AgenDAV |release| requires the following software to be installed:
 * PHP mbstring extension
 * MySQL > 5.1
 
+.. note::
+   AgenDAV will only work with CalDAV servers that support HTTP Basic
+   Authentication, and will fail with those that only support HTTP Digest
+   Authentication. Please, refer to your CalDAV server for information about
+   how to enable Basic Authentication.
+
 Downloading AgenDAV and uncompressing
 -------------------------------------
 
