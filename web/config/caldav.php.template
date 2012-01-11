@@ -21,16 +21,16 @@ $config['caldav_principal_url'] = 'https://caldav.server/caldav.php/%u/';
  * CalDAV calendars URL template
  * =============================
  *
- * %u will be replaced by an username, and %s will be replaced by a calendar
- * name or a calendar name followed by a resource inside the calendar.
+ * %s will be replaced by the required string depending on the context (user
+ * name, username followed by a calendar or resource inside a calendar)
  * Please, add trailing slash
  * Some samples:
- * - DAViCal: https://host/caldav.php/%u/%s/
- * - SabreDAV: https://host/calendarserver.php/calendars/%u/%s/
- * - Apple Calendar Server: https://host/calendars/users/%u/ ¿?¿? XXX
+ * - DAViCal: https://host/caldav.php/%s/
+ * - SabreDAV: https://host/calendarserver.php/calendars/%s/
+ * - Apple Calendar Server: https://host/calendars/users/%s/
  */
 
-$config['caldav_calendar_url'] = 'https://caldav.server/caldav.php/%u/%s/';
+$config['caldav_calendar_url'] = 'https://caldav.server/caldav.php/%s/';
 
 /*
  * Public CalDAV URL for calendars

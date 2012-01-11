@@ -222,11 +222,7 @@ class Caldav {
 	 * Constructs the full CalDAV URL and client
 	 */
 	function prepare_client($user, $passwd, $calendar = 'home') {
-		if (empty($calendar)) {
-			$this->final_url = $this->build_principal_url($user);
-		} else {
-			$this->final_url = $this->build_calendar_url($user, $calendar);
-		}
+		$this->final_url = $this->build_calendar_url($user, $calendar);
 
 		$this->client = new MyCalDAV($this->final_url, $user, $passwd);
 		$this->client->SetCalendar($this->final_url);
@@ -746,10 +742,10 @@ class Caldav {
 			$calendar = $pieces[1];
 		}
 
-		$built = preg_replace(
-					array('/%u/', '/%s/'),
-					array($use_principal, $calendar),
-				$calendar_url) . $href;
+		$replacement = $use_principal 
+			. (empty($calendar) ? '' : '/' .  $calendar);
+		$built = preg_replace('/%s/', $replacement, $calendar_url) 
+			. $href;
 
 		log_message('DEBUG', 'Built calendar URL: ' . $built);
 		return $built;
