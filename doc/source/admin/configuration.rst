@@ -262,18 +262,21 @@ Here you will configure every single aspect of your CalDAV server.
 .. confval:: caldav_calendar_url
 
    Used by AgenDAV to generate a calendar collection URL or resource URL for
-   your CalDAV server. The placeholder ``%u`` will be replaced by an
-   username, and ``%s`` will become a internal calendar name followed by a
-   resource when needed by AgenDAV.
+   your CalDAV server. The placeholder ``%s`` will be replaced by AgenDAV
+   with required values.
 
    Example::
 
     // DAViCal
-    $config['caldav_calendar_url'] = 'http://10.0.0.12/caldav.php/%u/%s/';
+    $config['caldav_calendar_url'] = 'http://10.0.0.12/caldav.php/%s/';
    
    Resource with UID=aaa0001 on calendar 'work' for user3 will become:
 
     http://10.0.12/caldav.php/user3/work/aaa0001/
+
+   Calendar 'test' for user1 will become:
+
+    http://10.0.12/caldav.php/user3/test/
 
    .. seealso:: :confval:`caldav_principal_url`
 
