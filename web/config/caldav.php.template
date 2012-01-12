@@ -57,4 +57,3 @@ $config['share_permissions'] = array('read', 'write');
 // Authenticated users default permissions
 $config['default_permissions'] = array('C:read-free-busy');
 
-?>
