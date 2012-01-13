@@ -1,4 +1,5 @@
 <?php
+// vim: ft=php
 
 /*******************
  * CalDAV URLs     *
@@ -45,6 +46,16 @@ $config['public_caldav_url'] = 'https://public.server/caldav.php/%s/';
 /*******************
  * Share options   *
  *******************/
+
+/*
+ * Allow calendar sharing
+ * ======================
+ *
+ * You can enable or disable calendar sharing. If your CalDAV server does not
+ * support WebDAV ACLs disable sharing
+ */
+
+$config['enable_calendar_sharing'] = TRUE;
 
 // Default permissions for calendar owner
 $config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',

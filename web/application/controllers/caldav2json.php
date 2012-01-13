@@ -683,20 +683,22 @@ class Caldav2json extends CI_Controller {
 		$arr_calendars = $own_calendars;
 
 		// Look for shared calendars
-		$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
-				$this->auth->get_user());
+		if ($this->config->item('enable_calendar_sharing')) {
+			$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
+					$this->auth->get_user());
 
-		if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
-			$shared_calendars = $this->caldav->get_shared_calendars_info(
-					$this->auth->get_user(),
-					$this->auth->get_passwd(),
-					$tmp_shared_calendars);
-			if ($shared_calendars === FALSE) {
-				$this->extended_logs->message('ERROR', 
-						'Error reading shared calendars');
-			} else {
-				$arr_calendars = array_merge($arr_calendars,
-						$shared_calendars);
+			if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
+				$shared_calendars = $this->caldav->get_shared_calendars_info(
+						$this->auth->get_user(),
+						$this->auth->get_passwd(),
+						$tmp_shared_calendars);
+				if ($shared_calendars === FALSE) {
+					$this->extended_logs->message('ERROR', 
+							'Error reading shared calendars');
+				} else {
+					$arr_calendars = array_merge($arr_calendars,
+							$shared_calendars);
+				}
 			}
 		}
 
@@ -799,7 +801,8 @@ class Caldav2json extends CI_Controller {
 					array('%calendar' => $p['calendar'])));
 		}
 
-		// Delete calendar shares (if any)
+		// Delete calendar shares (if any), even if calendar sharing is not
+		// enabled
 		$shares =
 			$this->shared_calendars->get_shared_from($this->auth->get_user());
 
@@ -835,6 +838,8 @@ class Caldav2json extends CI_Controller {
 	 * Modifies a calendar
 	 */
 	function modify_calendar() {
+		$is_sharing_enabled =
+			$this->config->item('enable_calendar_sharing');
 		$calendar = $this->input->post('calendar');
 		$displayname = $this->input->post('displayname');
 		$calendar_color = $this->input->post('calendar_color');
@@ -844,14 +849,14 @@ class Caldav2json extends CI_Controller {
 		$share_with = $this->input->post('share_with');
 
 		if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
-				FALSE || $shared === FALSE || $shared === FALSE) {
+				FALSE || ($is_sharing_enabled && $shared === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
 						'error_interfacefailure'));
 		}
 
-		if ($shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
+		if ($is_sharing_enabled && $shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with shared calendar and incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
@@ -894,7 +899,7 @@ class Caldav2json extends CI_Controller {
 				$this->auth->get_passwd(),
 				$internal_calendar,
 				$props);
-		} else {
+		} else if ($is_sharing_enabled) {
 			// If this a shared calendar, store settings locally
 			$success = $this->shared_calendars->store($sid,
 					$user_from,
@@ -906,10 +911,16 @@ class Caldav2json extends CI_Controller {
 			} else {
 				$res = TRUE;
 			}
+		} else {
+			// Tried to modify a shared calendar when sharing is disabled
+			$this->extended_logs->message('ERROR',
+					'Tried to modify the shared calendar ' . $calendar
+					.' when calendar sharing is disabled');
+			$res = $this->i18n->_('messages', 'error_interfacefailure');
 		}
 
 		// Set ACLs
-		if ($res === TRUE && $shared != 'true') {
+		if ($is_sharing_enabled && $res === TRUE && $shared != 'true') {
 			if (empty($share_with)) {
 				$arr_share_with = array();
 			} else {

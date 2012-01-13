@@ -149,3 +149,17 @@ $config['calendar_colors'] = array(
 		'E6D5C1',
 		'3E4147',
 );
+
+// ==============================
+// Additional caldav.php options
+
+
+/*
+ * Allow calendar sharing
+ * ======================
+ *
+ * You can enable or disable calendar sharing. If your CalDAV server does not
+ * support WebDAV ACLs disable sharing
+ */
+
+$config['enable_calendar_sharing'] = TRUE;
