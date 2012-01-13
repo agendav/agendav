@@ -81,7 +81,7 @@ $autoload['helper'] = array('url', 'html');
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('caldav');
 
 
 /*

@@ -27,8 +27,6 @@ class Caldav {
 	function __construct($params) {
 
 		$this->CI =& get_instance();
-		// Load CalDAV settings
-		$this->CI->config->load('caldav');
 
 		// Light loading, for using some functions without loading the full
 		// stack
