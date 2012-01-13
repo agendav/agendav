@@ -296,6 +296,15 @@ Here you will configure every single aspect of your CalDAV server.
 
     https://public.caldav.tld/caldav.php/user2/myhomecalendar/
 
+.. confval:: enable_calendar_sharing
+
+   Enables an option to share calendars between users.
+   
+   Note that calendar sharing requires full WebDAV ACL support on your
+   CalDAV server. Some servers such as SabreDAV (at least on current
+   release, least, 1.5.6) don't support them, so you should set this option
+   to FALSE in these cases.
+
 .. confval:: owner_permissions
 
    List of DAV permissions used for the calendar owner when sharing a

@@ -15,6 +15,8 @@ contain only session identifiers.
  * :confval:`caldav_principal_url` will be used to generate principal URLs
  * :confval:`caldav_calendar_url` will be used to generate calendar and resource URLs
 
+* A new :confval:`enable_calendar_sharing` setting has been added to ``caldav.php`` to disable calendar sharing for those servers that don't support WebDAV ACLs
+
 * ``advanced.php`` configuration file has been updated, make sure you don't overwrite your own changes.
 
 * Note that required PHP version is 5.3.0 and not 5.2, there was an error on the requisites list.
