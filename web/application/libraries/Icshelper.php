@@ -154,6 +154,10 @@ class Icshelper {
 	function expand_and_parse_events($resources, $start, $end, $calendar) {
 		$result = array();
 
+		if (is_null($resources)) {
+			return $result;
+		}
+
 		// Dates
 		$utc = new DateTimeZone('UTC');
 		$date_start = new DateTime($start, $utc);
