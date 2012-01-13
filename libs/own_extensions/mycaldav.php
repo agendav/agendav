@@ -29,6 +29,8 @@ class MyCalDAV extends CalDAVClient {
 	 *
 	 */
 	function CheckValidCalDAV() {
+		// Clean headers
+		$this->headers = array();
 		$options = $this->DoOptionsRequest();
 		if (isset($options['REPORT']) && isset($options['PROPFIND'])) {
 			$this->valid_caldav_server = TRUE;
@@ -41,7 +43,11 @@ class MyCalDAV extends CalDAVClient {
 
 	function DoCalendarQuery( $filter, $url = null ) {
 		if (is_null($this->valid_caldav_server)) {
+			// Headers will be wiped by CheckValidCalDAV. Restore 
+			// ithem after this call
+			$current_headers = $this->headers;
 			$this->CheckValidCalDAV();
+			$this->headers = $current_headers;
 		}
 
 		if ($this->valid_caldav_server) {
@@ -147,6 +153,16 @@ class MyCalDAV extends CalDAVClient {
 		}
 
 		return $this->CalendarUrls($calendars);
+	}
+
+	/**
+	 * Fetch events in a time range. Uses DAViCal GetEvents function and
+	 * just adds "Depth: 1" header
+	 */
+
+	function GetEvents( $start = null, $finish = null, $relative_url = null ) {
+		$this->SetDepth('1');
+		parent::GetEvents($start, $finish, $relative_url);
 	}
 
 
