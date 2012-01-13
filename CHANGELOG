@@ -12,6 +12,8 @@ Release 1.2.4 (2012-01-xx)
 	* Fixed translations, were not working in IE7
 	* Now CalDAV URLs for principals and calendars can have different
 	  schemas
+	* Calendar sharing can be disabled for those servers that don't have
+	  ACL support
 	* Upgraded to iCalcreator 2.10.23
 	* Upgraded to latest git qTip2
 	* Upgraded to jQuery 1.7.1
