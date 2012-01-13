@@ -332,6 +332,8 @@ class Dialog_generator extends CI_Controller {
 	 * Calendar modification dialog
 	 */
 	function modify_calendar() {
+		$is_sharing_enabled =
+			$this->config->item('enable_calendar_sharing');
 		$calendar = $this->input->post('calendar');
 		$displayname = $this->input->post('displayname');
 		$color = $this->input->post('color');
@@ -352,6 +354,7 @@ class Dialog_generator extends CI_Controller {
 					'url' => $url,
 					'color' => $color,
 					);
+
 			// Public URL
 			if ($this->config->item('show_public_caldav_url') === TRUE) {
 				$this->load->library('caldav', array('light' => TRUE));
@@ -359,8 +362,8 @@ class Dialog_generator extends CI_Controller {
 						$calendar);
 			}
 
-			// Sharings
-			if ($shared !== FALSE && $shared == 'true') {
+			// Shares
+			if ($is_sharing_enabled && $shared !== FALSE && $shared == 'true') {
 				if ($sid === FALSE || $user_from === FALSE) {
 					$this->_throw_error('modify_calendar_dialog', 
 						$this->i18n->_('messages', 'error_oops'),
@@ -368,15 +371,18 @@ class Dialog_generator extends CI_Controller {
 							'error_interfacefailure'));
 
 				} else {
-					$data['shared'] = TRUE;
+					$data['is_shared_calendar'] = TRUE;
 					$data['sid'] = $sid;
 					$data['user_from'] = $user_from;
 				}
-			} else {
+			} else if ($is_sharing_enabled) {
 				// Users who can access this calendar
+				$data['is_shared_calendar'] = FALSE;
 				$data['share_with'] =
 					$this->shared_calendars->users_with_access_to($calendar,
 							TRUE);
+			} else {
+				$data['show_share_options'] = FALSE;
 			}
 
 			$this->load->view('dialogs/modify_calendar', $data);

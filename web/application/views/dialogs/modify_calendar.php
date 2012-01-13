@@ -7,17 +7,14 @@ $data_form = array(
 );
 echo form_open('caldav2json/modify_calendar', $data_form);
 
-// Shared calendar?
-if (isset($shared) && $shared === TRUE) {
-	$show_shared = TRUE;
-} else {
-	$show_shared = FALSE;
-}
+$show_share_options = (isset($show_share_options) ? $show_share_options :
+		TRUE);
+
 ?>
 <ul>
  <li><a href="#tabs-general"><?php echo
  $this->i18n->_('labels', 'generaloptions')?></a></li>
-<?php if (!$show_shared): ?>
+<?php if ($show_share_options && !$is_shared_calendar): ?>
  <li><a href="#tabs-share"><?php echo 
   $this->i18n->_('labels','shareoptions')?></a></li>
 <?php endif; ?>
@@ -31,11 +28,11 @@ if (isset($shared) && $shared === TRUE) {
 echo form_hidden('calendar', $calendar);
 
 
-echo form_hidden('shared', ($show_shared) ? 'true' : 'false');
-if ($show_shared) {
+echo form_hidden('shared', ($show_share_options && $is_shared_calendar) ? 'true' : 'false');
+if ($show_share_options && $is_shared_calendar) {
 	echo form_hidden('sid', isset($sid) ? $sid : '?');
 	echo form_hidden('user_from', isset($user_from) ? $user_from : '?');
-} else {
+} else if ($show_share_options) {
 	// Users who can access this calendar
 	$form_share_with = array(
 			'name' => 'share_with',
@@ -63,7 +60,7 @@ $form_color = array(
 		);
 
 // Shared calendars
-if ($show_shared):
+if ($show_share_options && $is_shared_calendar):
 ?>
 <div class="share_info ui-corner-all">
 <?php
@@ -98,7 +95,7 @@ endif;
 </div>
 
 <?php
-if (!$show_shared):
+if ($show_share_options && !$is_shared_calendar):
 ?>
 <div id="tabs-share">
 	<div class="share_info ui-corner-all">
