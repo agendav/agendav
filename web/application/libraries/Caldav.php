@@ -466,29 +466,23 @@ class Caldav {
 		$xml_text = $xml->Render('propertyupdate',
 				$set, null, 'http://apple.com/ns/ical/:calendar-color');
 
-		$res = $this->client->DoXMLRequest('PROPPATCH', 
-				$xml_text, $url);
+		$result = $this->client->DoPROPPATCH($xml_text, $url);
 
 		$success = FALSE;
 		$logmsg = '';
 		$usermsg = '';
 
-		switch ($this->client->GetHTTPResultCode()) {
-			case '200':
-				// OK
-				$success = TRUE;
-				break;
-			default:
-				$code = $this->client->GetHttpResultCode();
-				$logmsg = "HTTP code: " . $code;
-				$usermsg = 'error_unknownhttpcode'; 
-				$params = array('%res' => $code);
+		if ($result === TRUE) {
+			$success = TRUE;
+		} else {
+			$logmsg = $result;
+			$usermsg = 'error_modfailed';
 		}
 
 		if ($success === FALSE) {
 			$this->CI->extended_logs->message('INTERNALS',
 					'Calendar '.$calendar.' not modified.'
-					.' Reason: ' . $logmsg);
+					.' Found unexpected status on some properties: ' . $logmsg);
 			return array($usermsg, $params);
 		} else {
 			$this->CI->extended_logs->message('INTERNALS',
