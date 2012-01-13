@@ -301,9 +301,9 @@ Here you will configure every single aspect of your CalDAV server.
    Enables an option to share calendars between users.
    
    Note that calendar sharing requires full WebDAV ACL support on your
-   CalDAV server. Some servers such as SabreDAV (at least on current
-   release, least, 1.5.6) don't support them, so you should set this option
-   to FALSE in these cases.
+   CalDAV server. Some servers, such as SabreDAV (at least on current
+   release, 1.5.6), don't support them, so you should set this option
+   to FALSE if your server can't handle ACLs.
 
 .. confval:: owner_permissions
 
