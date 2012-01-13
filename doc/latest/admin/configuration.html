@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Configuration &mdash; AgenDAV v1.2.2 documentation</title>
-    <link rel="stylesheet" href="../_static/adctheme.css" type="text/css" />
+    <title>2. Configuration &mdash; AgenDAV v1.2.4 documentation</title>
+    <link rel="stylesheet" href="../_static/proBlue.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.2',
+        VERSION:     '1.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,63 +21,28 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="AgenDAV v1.2.2 documentation" href="../index.html" />
+    <link rel="top" title="AgenDAV v1.2.4 documentation" href="../index.html" />
     <link rel="up" title="Installation and configuration" href="index.html" />
     <link rel="next" title="3. Troubleshooting AgenDAV" href="troubleshooting.html" />
-    <link rel="prev" title="1. Installation" href="installation.html" />
-    <link media="only screen and (max-device-width: 480px)" href="../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+    <link rel="prev" title="1. Installation" href="installation.html" /> 
   </head>
   <body>
-<div id="docstitle">
-	<p>AgenDAV v1.2.2 documentation</p>
-</div>
-<div id="header">
-	<div id="title"><h1>2. Configuration</h1></div>
-	<ul id="headerButtons">
-		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
-		<li id="page_buttons">
-			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
-			<div class="headerButton"><a href="troubleshooting.html" title="3. Troubleshooting AgenDAV" accesskey="N">next</a></div>
-			<div class="headerButton"><a href="installation.html" title="1. Installation" accesskey="P">previous</a></div>
-		</li>
-	</ul>
-</div>
-
-<div id="sphinxsidebar">
-  <div class="sphinxsidebarwrapper">
-	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
-	<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation and configuration</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="installation.html">1. Installation</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">2. Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">3. Troubleshooting AgenDAV</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../translations.html">Translating AgenDAV</a></li>
-</ul>
-
-    <div id="searchbox" style="display: none">
-      
-        <form class="search" action="../search.html" method="get">
-			<div class="search-wrapper">
-			<span class="search-left"></span>
-			<input class="prettysearch" type="text" name="q" size="18" />
-			<span class="search-right">&nbsp;</span>
-			</div>
-          <input type="submit" value="Search" class="searchbutton" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-        </form>
-        <p class="searchtip" style="font-size: 90%">
-        Enter search terms or a module, class or function name.
-        </p>
-    </div>
-    <script type="text/javascript">$('#searchbox').show(0);</script>
-  </div>
-</div>
-
-
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="troubleshooting.html" title="3. Troubleshooting AgenDAV"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Installation and configuration</a> &raquo;</li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -290,7 +255,9 @@ configured timezone.</p>
 <dl class="confval">
 <dt id="confval-default_calendar_color">
 <tt class="descname">default_calendar_color</tt><a class="headerlink" href="#confval-default_calendar_color" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default background and foreground colors for calendars. Has to be
+<dd><p class="deprecated">
+<span class="versionmodified">Deprecated since version 1.2.3.</span></p>
+<p>Default background and foreground colors for calendars. Has to be
 specified as an associative array. Example:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="x">// Default background color: #B5C7EB</span>
 <span class="x">// Default foreground (text) color: #000000</span>
@@ -302,7 +269,9 @@ specified as an associative array. Example:</p>
 <dl class="confval">
 <dt id="confval-additional_calendar_colors">
 <tt class="descname">additional_calendar_colors</tt><a class="headerlink" href="#confval-additional_calendar_colors" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of selectable background and foreground color combinations. Specify
+<dd><p class="deprecated">
+<span class="versionmodified">Deprecated since version 1.2.3.</span></p>
+<p>List of selectable background and foreground color combinations. Specify
 them as an associative array. Example:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="x">// background color =&gt; foreground color</span>
 <span class="x">$config[&#39;additional_calendar_colors&#39;] = array(</span>
@@ -314,6 +283,30 @@ them as an associative array. Example:</p>
 <span class="x">        &#39;FFC48C&#39; =&gt; &#39;000000&#39;,</span>
 <span class="x">        &#39;DAF5FF&#39; =&gt; &#39;000000&#39;,</span>
 <span class="x">        &#39;C4C4BC&#39; =&gt; &#39;000000&#39;,</span>
+<span class="x">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-calendar_colors">
+<tt class="descname">calendar_colors</tt><a class="headerlink" href="#confval-calendar_colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of selectable background colors. Foreground color will be
+automatically calculated depending on the darkness of the color. Specify
+them as an array. Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;calendar_colors&#39;] = array(</span>
+<span class="x">        &#39;9CC4E4&#39;,</span>
+<span class="x">        &#39;3A89C9&#39;,</span>
+<span class="x">        &#39;107FC9&#39;,</span>
+<span class="x">        &#39;FAC5C0&#39;,</span>
+<span class="x">        &#39;FF4E50&#39;,</span>
+<span class="x">        &#39;BD3737&#39;,</span>
+<span class="x">        &#39;C9DF8A&#39;,</span>
+<span class="x">        &#39;77AB59&#39;,</span>
+<span class="x">        &#39;36802D&#39;,</span>
+<span class="x">        &#39;F8F087&#39;,</span>
+<span class="x">        &#39;E6D5C1&#39;,</span>
+<span class="x">        &#39;3E4147&#39;,</span>
 <span class="x">);</span>
 </pre></div>
 </div>
@@ -331,16 +324,61 @@ inline comments, it&#8217;s pretty straight forward.</p>
 <dl class="confval">
 <dt id="confval-caldav_url">
 <tt class="descname">caldav_url</tt><a class="headerlink" href="#confval-caldav_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>The _internal_ URL used by AgenDAV to connect to your CalDAV server. The
-placeholder <tt class="docutils literal"><span class="pre">%u</span></tt> will be replaced by current user.</p>
+<dd><p class="deprecated">
+<span class="versionmodified">Deprecated since version 1.2.4.</span></p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#confval-caldav_principal_url"><tt class="xref std std-confval docutils literal"><span class="pre">caldav_principal_url</span></tt></a> <a class="reference internal" href="#confval-caldav_calendar_url"><tt class="xref std std-confval docutils literal"><span class="pre">caldav_calendar_url</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-caldav_principal_url">
+<tt class="descname">caldav_principal_url</tt><a class="headerlink" href="#confval-caldav_principal_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used by AgenDAV to generate a principal URL for your CalDAV server. The
+placeholder <tt class="docutils literal"><span class="pre">%u</span></tt> will be replaced by an username.</p>
 <p>Needs a trailing slash.</p>
 <p>Example:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;caldav_url&#39;] = &#39;http://10.0.0.12/caldav.php/%u/&#39;;</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// Example 1: DAViCal</span>
+<span class="x">$config[&#39;caldav_principal_url&#39;] = &#39;http://10.0.0.12/caldav.php/%u/&#39;;</span>
+
+<span class="x">// Example 2: SabreDAV</span>
+<span class="x">$config[&#39;caldav_principal_url&#39;] = &#39;http://10.0.0.12/calendarserver.php/principals/%u/&#39;;</span>
+
+<span class="x">// Example 3: Calendar server</span>
+<span class="x">$config[&#39;caldav_principal_url&#39;] = &#39;http://10.0.0.12/calendars/users/%u/&#39;;</span>
 </pre></div>
 </div>
-<p>For user4 Will become:</p>
+<p>Principal URL for user <tt class="docutils literal"><span class="pre">my_user</span></tt> for example 2 will be:</p>
 <blockquote>
-<div><a class="reference external" href="http://10.0.12/caldav.php/user4/">http://10.0.12/caldav.php/user4/</a></div></blockquote>
+<div><a class="reference external" href="http://10.0.12/calendarserver.php/principals/my_user/">http://10.0.12/calendarserver.php/principals/my_user/</a></div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#confval-caldav_calendar_url"><tt class="xref std std-confval docutils literal"><span class="pre">caldav_calendar_url</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-caldav_calendar_url">
+<tt class="descname">caldav_calendar_url</tt><a class="headerlink" href="#confval-caldav_calendar_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used by AgenDAV to generate a calendar collection URL or resource URL for
+your CalDAV server. The placeholder <tt class="docutils literal"><span class="pre">%s</span></tt> will be replaced by AgenDAV
+with required values.</p>
+<p>Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// DAViCal</span>
+<span class="x">$config[&#39;caldav_calendar_url&#39;] = &#39;http://10.0.0.12/caldav.php/%s/&#39;;</span>
+</pre></div>
+</div>
+<p>Resource with UID=aaa0001 on calendar &#8216;work&#8217; for user3 will become:</p>
+<blockquote>
+<div><a class="reference external" href="http://10.0.12/caldav.php/user3/work/aaa0001/">http://10.0.12/caldav.php/user3/work/aaa0001/</a></div></blockquote>
+<p>Calendar &#8216;test&#8217; for user1 will become:</p>
+<blockquote>
+<div><a class="reference external" href="http://10.0.12/caldav.php/user3/test/">http://10.0.12/caldav.php/user3/test/</a></div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#confval-caldav_principal_url"><tt class="xref std std-confval docutils literal"><span class="pre">caldav_principal_url</span></tt></a></p>
+</div>
 </dd></dl>
 
 <dl class="confval">
@@ -357,6 +395,16 @@ be replaced by current username and calendar.</p>
 <p>Will become for user <tt class="docutils literal"><span class="pre">user2</span></tt> and calendar <tt class="docutils literal"><span class="pre">myhomecalendar</span></tt>:</p>
 <blockquote>
 <div><a class="reference external" href="https://public.caldav.tld/caldav.php/user2/myhomecalendar/">https://public.caldav.tld/caldav.php/user2/myhomecalendar/</a></div></blockquote>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-enable_calendar_sharing">
+<tt class="descname">enable_calendar_sharing</tt><a class="headerlink" href="#confval-enable_calendar_sharing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables an option to share calendars between users.</p>
+<p>Note that calendar sharing requires full WebDAV ACL support on your
+CalDAV server. Some servers such as SabreDAV (at least on current
+release, least, 1.5.6) don&#8217;t support them, so you should set this option
+to FALSE in these cases.</p>
 </dd></dl>
 
 <dl class="confval">
@@ -425,22 +473,70 @@ modify. It contains several options that make AgenDAV work by default.</p>
 </div>
 
 
-          </div> 
+          </div>
         </div>
       </div>
-    <div class="footer">
-    <p>
-      &copy; Copyright 2011, Jorge López Pérez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
-	</p>
-    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/agendav_160px.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Configuration</a><ul>
+<li><a class="reference internal" href="#general-configuration-config-php">2.1. General configuration (config.php)</a></li>
+<li><a class="reference internal" href="#database-configuration-database-php">2.2. Database configuration (database.php)</a></li>
+<li><a class="reference internal" href="#caldav-specific-options-caldav-php">2.3. CalDAV specific options (caldav.php)</a></li>
+<li><a class="reference internal" href="#other-configuration-files">2.4. Other configuration files</a><ul>
+<li><a class="reference internal" href="#advanced-options-advanced-php">2.4.1. Advanced options (advanced.php)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">1. Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="troubleshooting.html"
+                        title="next chapter">3. Troubleshooting AgenDAV</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
-	<div id="breadcrumbs">
-		<a href="index.html" accesskey="U">Installation and configuration</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
-		2. Configuration
-		</ul>
-	</div>
-	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="troubleshooting.html" title="3. Troubleshooting AgenDAV"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             >previous</a> |</li>
+        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Installation and configuration</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
   </body>
 </html>

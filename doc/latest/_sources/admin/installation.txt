@@ -10,9 +10,15 @@ AgenDAV |release| requires the following software to be installed:
 
 * A CalDAV server (developed mainly with `DAViCal <http://www.davical.org/>`_
 * A web server
-* PHP > 5.2
+* PHP >= 5.3.0
 * PHP mbstring extension
 * MySQL > 5.1
+
+.. note::
+   AgenDAV will only work with CalDAV servers that support HTTP Basic
+   Authentication, and will fail with those that only support HTTP Digest
+   Authentication. Please, refer to your CalDAV server for information about
+   how to enable Basic Authentication.
 
 Downloading AgenDAV and uncompressing
 -------------------------------------
@@ -35,7 +41,7 @@ table schemas.
 
 Create an user in MySQL like this::
 
- $ mysql -uroot -p
+ $ mysql --default-character-set=utf8 -uroot -p
  Enter password: 
  [...]
  mysql> GRANT ALL PRIVILEGES ON agendav.* TO agendav@localhost IDENTIFIED BY 'yourpassword'
@@ -45,9 +51,12 @@ Create an user in MySQL like this::
 
 And then run the schema creation file::
 
- $ mysql -uagendav -p agendav < sql/schema.sql
+ $ mysql --default-character-set=utf8 -uagendav -p agendav < sql/schema.sql
  Enter password:
  $
+
+Note the UTF8 parts on the previous commands. If you don't specify them you
+will have some issues with special characters.
 
 Now your database is ready.
 
@@ -71,8 +80,20 @@ Example using the Alias directive::
 
  Alias /agendav /path/to/agendav/web/public
 
+.. note::
+   Make sure that you have the following PHP settings *disabled*:
+
+   * ``magic_quotes_gpc``
+   * ``magic_quotes_runtime``
+
 Other web servers
 ^^^^^^^^^^^^^^^^^
 
 AgenDAV should work on all other web server software if they support PHP
 scripts, but this is untested.
+
+Configure AgenDAV
+-----------------
+
+Now you can proceed to configure AgenDAV following the :doc:`configuration`
+section.

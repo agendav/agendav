@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation and configuration &mdash; AgenDAV v1.2.2 documentation</title>
-    <link rel="stylesheet" href="../_static/adctheme.css" type="text/css" />
+    <title>Installation and configuration &mdash; AgenDAV v1.2.4 documentation</title>
+    <link rel="stylesheet" href="../_static/proBlue.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.2',
+        VERSION:     '1.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,62 +21,26 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="AgenDAV v1.2.2 documentation" href="../index.html" />
+    <link rel="top" title="AgenDAV v1.2.4 documentation" href="../index.html" />
     <link rel="next" title="1. Installation" href="installation.html" />
-    <link rel="prev" title="Release notes" href="../releasenotes.html" />
-    <link media="only screen and (max-device-width: 480px)" href="../_static/mobile.css" type="text/css" rel="stylesheet" /> 
+    <link rel="prev" title="AgenDAV 1.2.4 documentation" href="../index.html" /> 
   </head>
   <body>
-<div id="docstitle">
-	<p>AgenDAV v1.2.2 documentation</p>
-</div>
-<div id="header">
-	<div id="title"><h1>Installation and configuration</h1></div>
-	<ul id="headerButtons">
-		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
-		<li id="page_buttons">
-			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
-			<div class="headerButton"><a href="installation.html" title="1. Installation" accesskey="N">next</a></div>
-			<div class="headerButton"><a href="../releasenotes.html" title="Release notes" accesskey="P">previous</a></div>
-		</li>
-	</ul>
-</div>
-
-<div id="sphinxsidebar">
-  <div class="sphinxsidebarwrapper">
-	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
-	<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Installation and configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html">1. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html">2. Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">3. Troubleshooting AgenDAV</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../translations.html">Translating AgenDAV</a></li>
-</ul>
-
-    <div id="searchbox" style="display: none">
-      
-        <form class="search" action="../search.html" method="get">
-			<div class="search-wrapper">
-			<span class="search-left"></span>
-			<input class="prettysearch" type="text" name="q" size="18" />
-			<span class="search-right">&nbsp;</span>
-			</div>
-          <input type="submit" value="Search" class="searchbutton" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-        </form>
-        <p class="searchtip" style="font-size: 90%">
-        Enter search terms or a module, class or function name.
-        </p>
-    </div>
-    <script type="text/javascript">$('#searchbox').show(0);</script>
-  </div>
-</div>
-
-
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="AgenDAV 1.2.4 documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -95,6 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="installation.html#other-web-servers">1.4.1. Other web servers</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configure-agendav">1.5. Configure AgenDAV</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">2. Configuration</a><ul>
@@ -107,27 +72,68 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">3. Troubleshooting AgenDAV</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">3. Troubleshooting AgenDAV</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#check-configuration-and-installation-environment">3.1. Check configuration and installation environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#more-verbose-logs">3.2. More verbose logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#show-errors">3.3. Show errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#capture-traffic">3.4. Capture traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#debug-your-browser-status">3.5. Debug your browser status</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
 
-          </div> 
+          </div>
         </div>
       </div>
-    <div class="footer">
-    <p>
-      &copy; Copyright 2011, Jorge López Pérez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
-	</p>
-    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/agendav_160px.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">AgenDAV 1.2.4 documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">1. Installation</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
-	<div id="breadcrumbs">
-		Installation and configuration
-		</ul>
-	</div>
-	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="AgenDAV 1.2.4 documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
   </body>
 </html>

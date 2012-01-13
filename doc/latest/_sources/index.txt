@@ -15,6 +15,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   releasenotes
    admin/index
    translations
+   releasenotes
