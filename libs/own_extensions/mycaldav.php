@@ -162,7 +162,7 @@ class MyCalDAV extends CalDAVClient {
 
 	function GetEvents( $start = null, $finish = null, $relative_url = null ) {
 		$this->SetDepth('1');
-		parent::GetEvents($start, $finish, $relative_url);
+		return parent::GetEvents($start, $finish, $relative_url);
 	}
 
 
