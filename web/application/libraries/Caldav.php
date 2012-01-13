@@ -55,22 +55,6 @@ class Caldav {
 	 *
 	 * Returns FALSE on error
 	 */
-	function fetch_expanded_events( $user, $passwd, $start, $end,
-						$calendar = 'calendario') {
-		$this->prepare_client($user, $passwd, $calendar);
-
-		$events = $this->client->GetExpandedEvents($start, $end);
-
-		$this->CI->extended_logs->message('INTERNALS', 'There are ' 
-				.  count($events) . ' event(s)');
-
-		return $events;
-	}
-
-	/**
-	 *
-	 * Returns FALSE on error
-	 */
 	function fetch_events( $user, $passwd, $start, $end,
 						$calendar = 'calendario') {
 		$this->prepare_client($user, $passwd, $calendar);
