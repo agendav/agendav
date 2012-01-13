@@ -6,7 +6,7 @@ FILE=$4
 URL=$5
 DEPTH=$6
 
-curl -v --request $METHOD \
+curl --insecure -v --request $METHOD \
 	-H "Depth: $DEPTH" \
 	-H 'Content-Type: text/xml; charset="UTF-8"' \
 	--data-ascii @${FILE} -u $USR:$PASSWD \
