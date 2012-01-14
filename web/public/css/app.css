@@ -588,19 +588,34 @@ div.share_info {
   background-image: url(../img/button-icons/calendar_edit.png) !important;
 }
 
-td.fc-today {
-  background-color: #FFFFCC !important;
-  font-weight: bold;
-  border: 2px solid #D2D267;
-  border-right-width: 1px;
+.fc-border-separate td {
+  border-color: #cbcbcb !important;
+}
+
+.fc-border-separate th.fc-first,
+.fc-border-separate td.fc-first {
+  border-left: 1px solid #b6b6b6 !important;
+}
+
+.fc-border-separate th.fc-last,
+.fc-border-separate td.fc-last {
+  border-right: 1px solid #b6b6b6 !important;
+}
+
+td.fc-other-month {
+  background-color: #f9f9f9;
+  border-style: dotted;
+  border-color: #bfbfbf;
 }
 
 td.fc-sat, td.fc-sun {
   background-color: #eaeaea;
 }
 
-td.fc-other-month {
-  background-color: #f9f9f9;
+td.fc-today {
+  background-color: #FFFFCC !important;
+  font-weight: bold;
+  border: 2px solid #D2D267;
 }
 
 div.selecthelper {
