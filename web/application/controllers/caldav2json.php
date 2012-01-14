@@ -713,7 +713,6 @@ class Caldav2json extends CI_Controller {
 	 * Creates a calendar
 	 */
 	function create_calendar() {
-		$calendar = $this->input->post('calendar', TRUE);
 		$displayname = $this->input->post('displayname', TRUE);
 		$calendar_color = $this->input->post('calendar_color', TRUE);
 
@@ -735,20 +734,10 @@ class Caldav2json extends CI_Controller {
 				$this->auth->get_passwd()
 				);
 
-		// Was internal calendar name provided? FALSE and '' return TRUE for
-		// empty
-		if (!empty($calendar)) {
-			// Already exists?
-			$internal = $this->auth->get_user() . ':' . $calendar;
-			if (isset($current_calendars[$internal])) {
-				$this->_throw_exception($this->i18n->_('messages',
-							'error_internalcalnameinuse'));
-			}
-		} else {
-			do {
-				$calendar = $this->icshelper->generate_guid();
-			} while (isset($current_calendars[$calendar]));
-		}
+		// Generate internal calendar name
+		do {
+			$calendar = $this->icshelper->generate_guid();
+		} while (isset($current_calendars[$calendar]));
 
 		// Add transparency to color
 		$calendar_color = $this->caldav->_rgb2rgba($calendar_color);
