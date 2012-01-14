@@ -1161,7 +1161,7 @@ function update_calendar_list(maskbody) {
 		url: base_app_url + 'caldav2json/calendar_list',
 		cache: false,
 		dataType: 'json',
-		async: false, // Let's wait
+		async: false // Let's wait
 	});
 
 	updcalendar_ajax_req.then(function() {
