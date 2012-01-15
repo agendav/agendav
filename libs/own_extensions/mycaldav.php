@@ -16,7 +16,6 @@ class MyCalDAV extends CalDAVClient {
 
 	protected $valid_caldav_server = null;
 
-
 	function __construct( $base_url, $user, $pass ) {
 		parent::__construct($base_url, $user, $pass);
 	}
@@ -29,6 +28,8 @@ class MyCalDAV extends CalDAVClient {
 	 *
 	 */
 	function CheckValidCalDAV() {
+		// Clean headers
+		$this->headers = array();
 		$options = $this->DoOptionsRequest();
 		if (isset($options['REPORT']) && isset($options['PROPFIND'])) {
 			$this->valid_caldav_server = TRUE;
@@ -41,7 +42,11 @@ class MyCalDAV extends CalDAVClient {
 
 	function DoCalendarQuery( $filter, $url = null ) {
 		if (is_null($this->valid_caldav_server)) {
+			// Headers will be wiped by CheckValidCalDAV. Restore 
+			// ithem after this call
+			$current_headers = $this->headers;
 			$this->CheckValidCalDAV();
+			$this->headers = $current_headers;
 		}
 
 		if ($this->valid_caldav_server) {
@@ -149,5 +154,64 @@ class MyCalDAV extends CalDAVClient {
 		return $this->CalendarUrls($calendars);
 	}
 
+	/**
+	 * Fetch events in a time range. Uses DAViCal GetEvents function and
+	 * just adds "Depth: 1" header
+	 */
+
+	function GetEvents( $start = null, $finish = null, $relative_url = null ) {
+		$this->SetDepth('1');
+		return parent::GetEvents($start, $finish, $relative_url);
+	}
+
+	/**
+	 * Fetch a single event using Depth: 1
+	 */
+	function GetEntryByUid( $uid, $relative_url = null ) {
+		$this->SetDepth('1');
+		return parent::GetEntryByUid($uid, $relative_url);
+	}
+
+	/**
+	 * Issues a PROPPATCH on a resource
+	 *
+	 * @param string	XML request
+	 * @param string	URL
+	 * @return			TRUE on success, FALSE otherwise
+	 */
+	function DoPROPPATCH($xml_text, $url) {
+		$this->DoXMLRequest('PROPPATCH', $xml_text, $url);
+
+		$errmsg = '';
+
+		if ($this->httpResultCode == '207') {
+			$errmsg = $this->httpResultCode;
+			// Find propstat tag(s)
+			if (isset($this->xmltags['DAV::propstat'])) {
+				foreach ($this->xmltags['DAV::propstat'] as $i => $node) {
+					if ($this->xmlnodes[$node]['type'] == 'close') {
+						continue;
+					}
+					// propstat @ $i: open
+					// propstat @ $i + 1: close
+					// Search for prop and status
+					$level = $this->xmlnodes[$node]['level'];
+					$level++;
+
+					while ($this->xmlnodes[++$node]['level'] >= $level) {
+						if ($this->xmlnodes[$node]['tag'] == 'DAV::status'
+								&& $this->xmlnodes[$node]['value'] !=
+								'HTTP/1.1 200 OK') {
+							return $this->xmlnodes[$node]['value'];
+						}
+					}
+				}
+			}
+		} else if ($this->httpResultCode != 200) {
+			return 'Unknown HTTP code';
+		}
+
+		return TRUE;
+	}
 
 }

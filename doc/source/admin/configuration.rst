@@ -231,18 +231,54 @@ Here you will configure every single aspect of your CalDAV server.
 
 .. confval:: caldav_url
 
-   The _internal_ URL used by AgenDAV to connect to your CalDAV server. The
-   placeholder ``%u`` will be replaced by current user.
+   .. deprecated:: 1.2.4
+
+   .. seealso:: :confval:`caldav_principal_url` :confval:`caldav_calendar_url`
+
+.. confval:: caldav_principal_url
+
+   Used by AgenDAV to generate a principal URL for your CalDAV server. The
+   placeholder ``%u`` will be replaced by an username.
 
    Needs a trailing slash.
 
    Example::
 
-    $config['caldav_url'] = 'http://10.0.0.12/caldav.php/%u/';
-   
-   For user4 Will become:
+    // Example 1: DAViCal
+    $config['caldav_principal_url'] = 'http://10.0.0.12/caldav.php/%u/';
 
-    http://10.0.12/caldav.php/user4/
+    // Example 2: SabreDAV
+    $config['caldav_principal_url'] = 'http://10.0.0.12/calendarserver.php/principals/%u/';
+
+    // Example 3: Calendar server
+    $config['caldav_principal_url'] = 'http://10.0.0.12/calendars/users/%u/';
+
+   Principal URL for user ``my_user`` for example 2 will be:
+
+    http://10.0.12/calendarserver.php/principals/my_user/
+
+   .. seealso:: :confval:`caldav_calendar_url`
+
+.. confval:: caldav_calendar_url
+
+   Used by AgenDAV to generate a calendar collection URL or resource URL for
+   your CalDAV server. The placeholder ``%s`` will be replaced by AgenDAV
+   with required values.
+
+   Example::
+
+    // DAViCal
+    $config['caldav_calendar_url'] = 'http://10.0.0.12/caldav.php/%s/';
+   
+   Resource with UID=aaa0001 on calendar 'work' for user3 will become:
+
+    http://10.0.12/caldav.php/user3/work/aaa0001/
+
+   Calendar 'test' for user1 will become:
+
+    http://10.0.12/caldav.php/user3/test/
+
+   .. seealso:: :confval:`caldav_principal_url`
 
 .. confval:: public_caldav_url
 
@@ -259,6 +295,15 @@ Here you will configure every single aspect of your CalDAV server.
    Will become for user ``user2`` and calendar ``myhomecalendar``:
 
     https://public.caldav.tld/caldav.php/user2/myhomecalendar/
+
+.. confval:: enable_calendar_sharing
+
+   Enables an option to share calendars between users.
+   
+   Note that calendar sharing requires full WebDAV ACL support on your
+   CalDAV server. Some servers, such as SabreDAV (at least on current
+   release, 1.5.6), don't support them, so you should set this option
+   to FALSE if your server can't handle ACLs.
 
 .. confval:: owner_permissions
 

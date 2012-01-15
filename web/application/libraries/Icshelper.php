@@ -79,16 +79,7 @@ class Icshelper {
 		}
 
 		// Add VTIMEZONE
-		if ($tz != 'UTC') {
-			$res = iCalUtilityFunctions::createTimezone($ical,
-					$tz, array( 'X-LIC-LOCATION' => $tz));
-			if ($res === FALSE) {
-				$this->CI->extended_logs->message('ERROR', 
-						"Couldn't use timezone " . $tz . ' to create '
-						. 'a new resource. Defaulting to UTC');
-				$tz = 'UTC';
-			}
-		}
+		$this->add_vtimezone($ical, $tz);
 
 		$vevent =& $ical->newComponent('vevent');
 
@@ -268,6 +259,19 @@ class Icshelper {
 		// Do we have DTEND?
 		if (!is_null($dtend)) {
 			$end = $dtend['result'];
+		} else {
+			$duration = $vevent->getProperty('duration',
+					false, false, true);
+
+			// Calculate dtend if not present
+			if ($duration !== FALSE) {
+				$end = $this->CI->dates->idt2datetime($duration,
+						$tz);
+			} else {
+				$this->CI->extended_logs->message('ERROR',
+						'Event with href=' . $href . ' has no '
+						. 'DTEND nor DURATION');
+			}
 		}
 
 		// Is this a recurrent event?
@@ -386,22 +390,6 @@ class Icshelper {
 		$this_event['id'] = $calendar . ':' . $this_event['uid'];
 
 
-		// Calculate dtend if not present
-		if (!isset($end) && isset($this_event['duration']) &&
-				!empty($this_event['duration'])) {
-			$end = clone $start;
-
-			// Avoid some problems with bogus DURATIONS (malformed events)
-			if (preg_match('/-/', $this_event['duration'])) {
-				$this->CI->extended_logs->message('ERROR',
-						'Event with uid=' . $this_event['id'] 
-						.' from calendar ' . $calendar. ' has a '
-						.'negative duration. Defaulting to 60 minutes');
-				$this_event['duration'] = 'PT60M';
-			}
-
-			$end->add($this->CI->dates->duration2di($this_event['duration']));
-		}
 
 
 		// Is this an all day event?
@@ -459,8 +447,11 @@ class Icshelper {
 
 		// Needed for some conversions (Fullcalendar timestamp and am/pm
 		// indicator)
-		$start->setTimeZone($this->tz_obj);
-		$end->setTimeZone($this->tz_obj);
+		if (!isset($this_event['allDay']) 
+				|| $this_event['allDay']  !== TRUE) {
+			$start->setTimeZone($this->tz_obj);
+			$end->setTimeZone($this->tz_obj);
+		}
 
 		// Expanded events
 		if (isset($orig_start)) {
@@ -471,8 +462,13 @@ class Icshelper {
 		}
 
 		// Readable dates for start and end
+
+		// Keep all day events as they are (UTC)
 		$system_tz = date_default_timezone_get();
-		date_default_timezone_set($this->tz);
+		if (!isset($this_event['allDay']) 
+				|| $this_event['allDay']  !== TRUE) {
+			date_default_timezone_set($this->tz);
+		}
 
 		$this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
 
@@ -664,7 +660,8 @@ class Icshelper {
 	function make_start($component, $tz,
 			$new_start = null,
 			$increment = null,
-			$force_new_value_type = null) {
+			$force_new_value_type = null,
+			$force_new_tzid = null) {
 
 		$value = null;
 		$format = null;
@@ -691,6 +688,8 @@ class Icshelper {
 		// DATE values can't have TZID
 		if ($params['VALUE'] == 'DATE') {
 			unset($params['TZID']);
+		} else if (!is_null($force_new_tzid)) {
+			$params['TZID'] = $force_new_tzid;
 		}
 
 		$format = $this->CI->dates->format_for($params['VALUE'], $tz);
@@ -723,7 +722,8 @@ class Icshelper {
 	function make_end($component, $tz,
 			$new_end = null,
 			$increment = null,
-			$force_new_value_type = null) {
+			$force_new_value_type = null,
+			$force_new_tzid = null) {
 
 		$value = null;
 		$format = null;
@@ -789,7 +789,9 @@ class Icshelper {
 		// DATE values can't have TZID
 		if ($params['VALUE'] == 'DATE') {
 			unset($params['TZID']);
-		}
+		} else if (!is_null($force_new_tzid)) {
+			$params['TZID'] = $force_new_tzid;
+		} 
 
 		$format = $this->CI->dates->format_for($params['VALUE'], $tz);
 
@@ -917,6 +919,31 @@ class Icshelper {
 	function paramvalue($params, $name, $default_val = FALSE) {
 		$name = strtoupper($name);
 		return (isset($params[$name]) ? $params[$name] : $default_val);
+	}
+
+	/**
+	 * Add a VTIMEZONE using the specified TZID
+	 * If VTIMEZONE was already added, do nothing
+	 *
+	 * @param	iCalcomponent
+	 * @param	string	Timezone id to add
+	 * @param	array	(Optional) result from get_timezones()
+	 * @return	Used TZID, even when it was not added
+	 */
+
+	function add_vtimezone(&$resource, $tzid, $timezones = array()) {
+		if ($tzid != 'UTC' && !isset($timezones[$tzid])) {
+			$res = iCalUtilityFunctions::createTimezone($resource,
+					$tzid, array( 'X-LIC-LOCATION' => $tzid));
+			if ($res === FALSE) {
+				$this->CI->extended_logs->message('ERROR', 
+						"Couldn't create vtimezone with tzid=" . $tzid
+						.' Defaulting to UTC');
+				$tzid = 'UTC';
+			}
+		}
+
+		return $tzid;
 	}
 
 

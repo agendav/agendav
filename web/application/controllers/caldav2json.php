@@ -30,12 +30,12 @@ class Caldav2json extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 
-		define('SPECIAL_REQUEST', TRUE);
-
 		if (!$this->auth->is_authenticated()) {
 			$this->extended_logs->message('INFO', 
 					'Anonymous access attempt to '
 					. uri_string());
+			$this->output->set_status_header('401');
+			$this->output->_display();
 			die();
 		}
 
@@ -560,18 +560,32 @@ class Caldav2json extends CI_Controller {
 		if ($type == 'drag') {
 			// 4 Posibilities
 			if ($was_allday == 'true') {
-				$new_vevent = $this->icshelper->make_start($vevent, $tz,
-						null, $dur_string, 
-						($allday == 'true' ? 'DATE' : 'DATE-TIME'));
 				if ($allday == 'true') {
+					// From all day to all day
+					$tz = 'UTC';
+					$new_vevent = $this->icshelper->make_start($vevent,
+							$tz, null, $dur_string, 'DATE');
 					$new_vevent = $this->icshelper->make_end($new_vevent,
 							$tz, null, $dur_string, 'DATE');
 				} else {
-					// Get start date
-					$new_start = $this->icshelper->extract_date($new_vevent,
+					// From all day to normal event
+					// Use default timezone
+					$tz = $this->tz;
+
+					// Add VTIMEZONE
+					$this->icshelper->add_vtimezone($ical, $tz, $timezones);
+
+					// Set start date using default timezone instead of UTC
+					$start = $this->icshelper->extract_date($vevent,
 							'DTSTART', $tz);
+					$start_obj = $start['result'];
+					$start_obj->add($this->dates->duration2di($dur_string));
+					$new_vevent = $this->icshelper->make_start($vevent,
+							$tz, $start_obj, null, 'DATE-TIME',
+							$tz);
 					$new_vevent = $this->icshelper->make_end($new_vevent,
-							$tz, $new_start['result'], 'PT1H', 'DATE-TIME');
+							$tz, $start_obj, 'PT1H', 'DATE-TIME', 
+							$tz);
 				}
 			} else {
 				// was_allday = false
@@ -591,6 +605,20 @@ class Caldav2json extends CI_Controller {
 		} else {
 			$new_vevent = $this->icshelper->make_end($vevent,
 					$tz, null, $dur_string);
+
+			// Check if DTSTART == DTEND
+			$new_dtstart = $this->icshelper->extract_date($new_vevent,
+					'DTSTART', $tz);
+			$new_dtend = $this->icshelper->extract_date($new_vevent,
+					'DTEND', $tz);
+			if ($new_dtstart['result'] == $new_dtend['result']) {
+				// Avoid this
+				$new_vevent = $this->icshelper->make_end($vevent,
+						$tz, null, ($new_dtend['value'] == 'DATE' ? 'P1D' :
+							'PT60M'));
+			}
+
+
 		}
 
 		// Apply LAST-MODIFIED update
@@ -655,20 +683,22 @@ class Caldav2json extends CI_Controller {
 		$arr_calendars = $own_calendars;
 
 		// Look for shared calendars
-		$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
-				$this->auth->get_user());
+		if ($this->config->item('enable_calendar_sharing')) {
+			$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
+					$this->auth->get_user());
 
-		if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
-			$shared_calendars = $this->caldav->get_shared_calendars_info(
-					$this->auth->get_user(),
-					$this->auth->get_passwd(),
-					$tmp_shared_calendars);
-			if ($shared_calendars === FALSE) {
-				$this->extended_logs->message('ERROR', 
-						'Error reading shared calendars');
-			} else {
-				$arr_calendars = array_merge($arr_calendars,
-						$shared_calendars);
+			if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
+				$shared_calendars = $this->caldav->get_shared_calendars_info(
+						$this->auth->get_user(),
+						$this->auth->get_passwd(),
+						$tmp_shared_calendars);
+				if ($shared_calendars === FALSE) {
+					$this->extended_logs->message('ERROR', 
+							'Error reading shared calendars');
+				} else {
+					$arr_calendars = array_merge($arr_calendars,
+							$shared_calendars);
+				}
 			}
 		}
 
@@ -683,7 +713,6 @@ class Caldav2json extends CI_Controller {
 	 * Creates a calendar
 	 */
 	function create_calendar() {
-		$calendar = $this->input->post('calendar', TRUE);
 		$displayname = $this->input->post('displayname', TRUE);
 		$calendar_color = $this->input->post('calendar_color', TRUE);
 
@@ -705,20 +734,10 @@ class Caldav2json extends CI_Controller {
 				$this->auth->get_passwd()
 				);
 
-		// Was internal calendar name provided? FALSE and '' return TRUE for
-		// empty
-		if (!empty($calendar)) {
-			// Already exists?
-			$internal = $this->auth->get_user() . ':' . $calendar;
-			if (isset($current_calendars[$internal])) {
-				$this->_throw_exception($this->i18n->_('messages',
-							'error_internalcalnameinuse'));
-			}
-		} else {
-			do {
-				$calendar = $this->icshelper->generate_guid();
-			} while (isset($current_calendars[$calendar]));
-		}
+		// Generate internal calendar name
+		do {
+			$calendar = $this->icshelper->generate_guid();
+		} while (isset($current_calendars[$calendar]));
 
 		// Add transparency to color
 		$calendar_color = $this->caldav->_rgb2rgba($calendar_color);
@@ -771,7 +790,8 @@ class Caldav2json extends CI_Controller {
 					array('%calendar' => $p['calendar'])));
 		}
 
-		// Delete calendar shares (if any)
+		// Delete calendar shares (if any), even if calendar sharing is not
+		// enabled
 		$shares =
 			$this->shared_calendars->get_shared_from($this->auth->get_user());
 
@@ -807,6 +827,8 @@ class Caldav2json extends CI_Controller {
 	 * Modifies a calendar
 	 */
 	function modify_calendar() {
+		$is_sharing_enabled =
+			$this->config->item('enable_calendar_sharing');
 		$calendar = $this->input->post('calendar');
 		$displayname = $this->input->post('displayname');
 		$calendar_color = $this->input->post('calendar_color');
@@ -816,14 +838,14 @@ class Caldav2json extends CI_Controller {
 		$share_with = $this->input->post('share_with');
 
 		if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
-				FALSE || $shared === FALSE || $shared === FALSE) {
+				FALSE || ($is_sharing_enabled && $shared === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
 						'error_interfacefailure'));
 		}
 
-		if ($shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
+		if ($is_sharing_enabled && $shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with shared calendar and incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
@@ -866,7 +888,7 @@ class Caldav2json extends CI_Controller {
 				$this->auth->get_passwd(),
 				$internal_calendar,
 				$props);
-		} else {
+		} else if ($is_sharing_enabled) {
 			// If this a shared calendar, store settings locally
 			$success = $this->shared_calendars->store($sid,
 					$user_from,
@@ -878,10 +900,16 @@ class Caldav2json extends CI_Controller {
 			} else {
 				$res = TRUE;
 			}
+		} else {
+			// Tried to modify a shared calendar when sharing is disabled
+			$this->extended_logs->message('ERROR',
+					'Tried to modify the shared calendar ' . $calendar
+					.' when calendar sharing is disabled');
+			$res = $this->i18n->_('messages', 'error_interfacefailure');
 		}
 
 		// Set ACLs
-		if ($res === TRUE && $shared != 'true') {
+		if ($is_sharing_enabled && $res === TRUE && $shared != 'true') {
 			if (empty($share_with)) {
 				$arr_share_with = array();
 			} else {
@@ -889,6 +917,15 @@ class Caldav2json extends CI_Controller {
 				$arr_share_with = explode(',', $share_with);
 				$arr_share_with = array_unique($arr_share_with);
 				sort($arr_share_with);
+
+				// Remove current user from array
+				$pos_current_user = array_search($this->auth->get_user(),
+						$arr_share_with);
+				if ($pos_current_user !== FALSE) {
+					unset($arr_share_with[$pos_current_user]);
+					// Recalculate numeric indexes
+					$arr_share_with = array_values($arr_share_with);
+				}
 			}
 
 			$res = $this->caldav->setacl(

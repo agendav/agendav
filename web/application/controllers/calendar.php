@@ -32,51 +32,8 @@ class Calendar extends CI_Controller {
 		$data_header = array(
 				'title' => $this->config->item('site_title'),
 				'logged_in' => TRUE,
-				'js' => array(
-					'jquery-1.6.4.min.js',
-					'jquery-ui-1.8.16.min.js',
-					'freeow-1.0.1/jquery.freeow.min.js',
-					'fullcalendar-1.5.2/fullcalendar.min.js',
-					'jquery.timePicker.20110318.min.js',
-					'loadmask-0.4/jquery.loadmask.min.js',
-					'jquery.colorPicker.20091014.min.js',
-					'tag-it.20110621.min.js',
-					'jquery.qtip.20111022.min.js',
-					'jquery.colorhelpers.min.js',
-					),
-				'css' => array(
-					array(
-						'href' => 'css/style-1.2.3.print.css',
-						'rel' => 'stylesheet',
-						'type' => 'text/css',
-						'media' => 'print',
-						),
-					'css/fullcalendar.1.5.2.css',
-					array(
-						'href' => 'css/fullcalendar.print.1.5.2.css',
-						'rel' => 'stylesheet',
-						'type' => 'text/css',
-						'media' => 'print',
-						),
-					'css/timePicker.css',
-					'css/jquery.qtip.min.a318e5f2ce543ec10234407cd4006e9d1310582909.css',
-					'css/Aristo_20110919.css',
-					'css/style-1.2.3.css',
-					));
-
-		if (ENVIRONMENT == 'production') {
-			$data_header['js'][] = 'agendav-1.2.3.min.js';
-		} else {
-			$data_header['js'][] = 'agendav-1.2.3.js';
-		}
-
-		// Additional JS files
-		$additional_js = $this->config->item('additional_js');
-		if ($additional_js !== FALSE && is_array($additional_js)) {
-			foreach ($additional_js as $js) {
-				$data_header['js'][] = $js;
-			}
-		}
+				'body_class' => array('calendarpage'),
+				);
 
 		// Calendar view
 		$data_calendar = array();
@@ -86,17 +43,14 @@ class Calendar extends CI_Controller {
 			$data_calendar['title'] = $data_header['title'];
 		}
 
-		// Calendar colors
-		$calendar_colors = $this->config->item('calendar_colors');
-
 		$this->load->view('common_header', $data_header);
 		$this->load->view('calendar_page', $data_calendar);
 		$this->load->view('event_details_template');
-		$this->load->view('js_code/calendar_colors',
-			array('colors' => $calendar_colors));
+
 		$this->load->view('footer',
 				array(
 					'load_session_refresh' => TRUE,
+					'load_calendar_colors' => TRUE,
 					));
 	}
 

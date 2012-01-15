@@ -5,13 +5,6 @@ $data_form = array(
 		'class' => 'uniForm',
 		);
 echo form_open('caldav2json/create_calendar', $data_form);
-$form_internal = array(
-		'name' => 'calendar',
-		'value' => '',
-		'class' => 'calendar medium',
-		'maxlength' => '255',
-		'size' => '25',
-		);
 
 $form_displayname = array(
 		'name' => 'displayname',
@@ -33,11 +26,6 @@ $form_color = array(
 echo formelement(
 	  $this->i18n->_('labels', 'displayname'),
 	  form_input($form_displayname));
-
-echo formelement(
-	  $this->i18n->_('labels', 'internalname') . ' ' 
-	  . $this->i18n->_('labels', 'optional'),
-	  form_input($form_internal));
 
 echo formelement(
 	  $this->i18n->_('labels', 'color'),

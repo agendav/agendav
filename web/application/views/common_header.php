@@ -10,10 +10,30 @@ href="<?php echo base_url() . 'favicon.ico';?>" />
  
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <?php
-if (isset($css)) {
-	foreach ($css as $cssfile) {
-		echo link_tag($cssfile);
-	}
+if (ENVIRONMENT == 'development') {
+	$css = Defs::$cssfiles;
+	$printcss = Defs::$printcssfiles;
+} else {
+	$css = array(
+			'agendav-' . AGENDAV_VERSION . '.css',
+			);
+	$printcss = array(
+			'agendav-' . AGENDAV_VERSION . '.print.css',
+			);
+}
+
+foreach ($css as $cssfile) {
+	echo link_tag('css/' . $cssfile);
+}
+
+foreach ($printcss as $pcss) {
+	echo link_tag(array(
+				'href' => 'css/' . $pcss,
+				'type' => 'text/css',
+				'rel' => 'stylesheet',
+				'media' => 'print',
+				)
+			);
 }
 ?>
     <!--[if lte ie 7]>
@@ -22,35 +42,15 @@ if (isset($css)) {
         .uniForm, .uniForm .ctrlHolder, .uniForm .buttonHolder, .uniForm .ctrlHolder ul{ zoom:1; }
       </style>
     <![endif]-->
-
-
-<script language="JavaScript" type="text/javascript" src="<?php echo
-site_url('js_generator/i18n/' . AGENDAV_VERSION)?>"></script>
-<script language="JavaScript" type="text/javascript" src="<?php echo
-site_url('js_generator/prefs')?>"></script>
-
+</head>
 <?php
-if (isset($js)) {
-	foreach ($js as $jsfile) {
-		echo script_tag('js/' . $jsfile);
-	}
+// Body classes
+$final_body_class = array('ui-form');
+if (isset($body_class)) {
+	$final_body_class = array_merge($final_body_class, (array)$body_class);
 }
 ?>
-
-<?php
-$base = base_url();
-$relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
-?>
- 
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-var base_url = '<?php echo $base; ?>';
-var base_app_url = '<?php echo site_url(); ?>/';
-var relative_url = '<?php echo $relative; ?>';
-//]]>
-</script>
-</head>
-<body class="ui-form">
+<body class="<?php echo implode(' ', $final_body_class)?>">
 <div id="topbar">
  <div id="wrap_topbar">
   <div class="title">

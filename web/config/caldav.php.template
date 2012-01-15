@@ -1,12 +1,61 @@
 <?php
+// vim: ft=php
 
-// Internal CalDAV URL. Will not be shown
-// %u will be replaced by current username. Please, add trailing slash
-$config['caldav_url'] = 'https://caldav.server/caldav.php/%u/';
+/*******************
+ * CalDAV URLs     *
+ *******************/
 
-// Public CalDAV URL
-// %s is a placeholder for the rest of the URL. Please, add trailing slash
+/*
+ * CalDAV principal URL template
+ * =============================
+ *
+ * %u will be replaced by an username. Please, add trailing slash
+ * Some samples:
+ * - DAViCal: https://host/caldav.php/%u/
+ * - SabreDAV: https://host/calendarserver.php/principals/%u/
+ * - Apple Calendar Server: https://host/calendars/users/%u/
+ */
+
+$config['caldav_principal_url'] = 'https://caldav.server/caldav.php/%u/';
+
+/*
+ * CalDAV calendars URL template
+ * =============================
+ *
+ * %s will be replaced by the required string depending on the context (user
+ * name, username followed by a calendar or resource inside a calendar)
+ * Please, add trailing slash
+ * Some samples:
+ * - DAViCal: https://host/caldav.php/%s/
+ * - SabreDAV: https://host/calendarserver.php/calendars/%s/
+ * - Apple Calendar Server: https://host/calendars/users/%s/
+ */
+
+$config['caldav_calendar_url'] = 'https://caldav.server/caldav.php/%s/';
+
+/*
+ * Public CalDAV URL for calendars
+ * ===============================
+ *
+ * %s is a placeholder for the rest of the URL (user + calendar).
+ * Please, add trailing slash.
+ * Will be shown to users only when 'show_public_caldav_url' is enabled
+ */
 $config['public_caldav_url'] = 'https://public.server/caldav.php/%s/';
+
+/*******************
+ * Share options   *
+ *******************/
+
+/*
+ * Allow calendar sharing
+ * ======================
+ *
+ * You can enable or disable calendar sharing. If your CalDAV server does not
+ * support WebDAV ACLs disable sharing
+ */
+
+$config['enable_calendar_sharing'] = TRUE;
 
 // Default permissions for calendar owner
 $config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
@@ -19,4 +68,3 @@ $config['share_permissions'] = array('read', 'write');
 // Authenticated users default permissions
 $config['default_permissions'] = array('C:read-free-busy');
 
-?>

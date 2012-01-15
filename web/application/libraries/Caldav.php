@@ -27,8 +27,6 @@ class Caldav {
 	function __construct($params) {
 
 		$this->CI =& get_instance();
-		// Load CalDAV settings
-		$this->CI->config->load('caldav');
 
 		// Light loading, for using some functions without loading the full
 		// stack
@@ -49,22 +47,6 @@ class Caldav {
 			require_once('iCalendar.php');
 		}
 
-	}
-
-	/**
-	 *
-	 * Returns FALSE on error
-	 */
-	function fetch_expanded_events( $user, $passwd, $start, $end,
-						$calendar = 'calendario') {
-		$this->prepare_client($user, $passwd, $calendar);
-
-		$events = $this->client->GetExpandedEvents($start, $end);
-
-		$this->CI->extended_logs->message('INTERNALS', 'There are ' 
-				.  count($events) . ' event(s)');
-
-		return $events;
 	}
 
 	/**
@@ -124,7 +106,7 @@ class Caldav {
 
 		$this->prepare_client($user, $passwd, $calendar);
 
-		$resource = $this->final_url . $href;
+		$resource = $this->build_calendar_url($user, $calendar, $href);
 
 		$res = $this->client->DoDELETERequest($resource, $etag);
 
@@ -189,7 +171,7 @@ class Caldav {
 					.' attempt without href specified');
 			return FALSE;
 		}
-		$url = $this->final_url . $href;
+		$url = $this->build_calendar_url($user, $calendar, $href);
 		$ical_text = $icalendar->createCalendar();
 		$new_etag = $this->client->DoPUTRequest($url, $ical_text, $etag);
 
@@ -221,8 +203,8 @@ class Caldav {
 	/**
 	 * Constructs the full CalDAV URL and client
 	 */
-	function prepare_client($user, $passwd, $calendar = 'calendario') {
-		$this->final_url = $this->build_url($user, $calendar);
+	function prepare_client($user, $passwd, $calendar = 'home') {
+		$this->final_url = $this->build_calendar_url($user, $calendar);
 
 		$this->client = new MyCalDAV($this->final_url, $user, $passwd);
 		$this->client->SetCalendar($this->final_url);
@@ -235,7 +217,7 @@ class Caldav {
 	 */
 	function is_valid_calendar($user, $passwd, $calendar) {
 		$this->prepare_client($user, $passwd, $calendar);
-		$url = $this->build_url($user, $calendar);
+		$url = $this->build_calendar_url($user, $calendar);
 		$info = $this->client->GetCalendarDetailsByURL($url);
 
 		if ($this->client->GetHttpResultCode() != '207') {
@@ -294,7 +276,7 @@ class Caldav {
 		
 		$tmpcals = array();
 		foreach ($calendar_list as $calid => $contents) {
-			$url = $this->build_url($user, $calid);
+			$url = $this->build_calendar_url($user, $calid);
 			$info = $this->client->GetCalendarDetailsByURL($url);
 			//$info->color = ...
 
@@ -361,7 +343,7 @@ class Caldav {
 			return array($usermsg, $params);
 		}
 
-		$url = $this->final_url . $calendar;
+		$url = $this->build_calendar_url($user, $calendar);
 
 		// Create XML body
 		$ns = array(
@@ -461,7 +443,7 @@ class Caldav {
 			return array($usermsg, $params);
 		}
 
-		$url = $this->final_url . $calendar;
+		$url = $this->build_calendar_url($user, $calendar);
 
 		// Create XML body
 		$ns = array(
@@ -482,29 +464,23 @@ class Caldav {
 		$xml_text = $xml->Render('propertyupdate',
 				$set, null, 'http://apple.com/ns/ical/:calendar-color');
 
-		$res = $this->client->DoXMLRequest('PROPPATCH', 
-				$xml_text, $url);
+		$result = $this->client->DoPROPPATCH($xml_text, $url);
 
 		$success = FALSE;
 		$logmsg = '';
 		$usermsg = '';
 
-		switch ($this->client->GetHTTPResultCode()) {
-			case '200':
-				// OK
-				$success = TRUE;
-				break;
-			default:
-				$code = $this->client->GetHttpResultCode();
-				$logmsg = "HTTP code: " . $code;
-				$usermsg = 'error_unknownhttpcode'; 
-				$params = array('%res' => $code);
+		if ($result === TRUE) {
+			$success = TRUE;
+		} else {
+			$logmsg = $result;
+			$usermsg = 'error_modfailed';
 		}
 
 		if ($success === FALSE) {
 			$this->CI->extended_logs->message('INTERNALS',
 					'Calendar '.$calendar.' not modified.'
-					.' Reason: ' . $logmsg);
+					.' Found unexpected status on some properties: ' . $logmsg);
 			return array($usermsg, $params);
 		} else {
 			$this->CI->extended_logs->message('INTERNALS',
@@ -540,7 +516,7 @@ class Caldav {
 			return array($usermsg, $params);
 		}
 		
-		$url = $this->final_url . $calendar;
+		$url = $this->build_calendar_url($user, $calendar);
 
 		// Create XML body
 		$xmlbody = $this->generate_acl_xml($share_with);
@@ -639,9 +615,6 @@ class Caldav {
 
 			// Shorten calendar displayname if needed
 			$dn = $result[$c->calendar]['displayname'];
-			$result[$c->calendar]['shown_displayname'] =
-				(strlen($dn) > 20) ? 
-				substr($dn, 0, 20) . '...' : $dn;
 
 			// Adapt color
 			$result[$c->calendar]['color'] =
@@ -668,14 +641,6 @@ class Caldav {
 		$xml = new XMLDocument($ns);
 		$aces = array();
 
-		// Relative URL
-		$parsed = @parse_url($this->CI->config->item('caldav_url'));
-		if ($parsed === FALSE) {
-			return FALSE;
-		} else {
-			$rel_url_template = $parsed['path'];
-		}
-
 		// Permissions
 		$owner_perm = $this->CI->config->item('owner_permissions');
 		$share_perm = $this->CI->config->item('share_permissions');
@@ -686,7 +651,7 @@ class Caldav {
 
 		// User which can access this calendar
 		foreach ($share_with as $user) {
-			$user_url = preg_replace('/%u/', $user, $rel_url_template);
+			$user_url = $this->build_principal_url($user);
 			$aces[] = $this->_ace_for($xml, $user_url, $share_perm);
 		}
 
@@ -721,11 +686,29 @@ class Caldav {
 
 
 	/**
-	 * Builds an URL based on $user and $calendar.
-	 * $calendar can contain 'user:calendar'
+	 * Builds a principal URL for a given username
+	 *
+	 * @param	$user	Username
 	 */
-	function build_url($user, $calendar) {
-		$base_url = $this->CI->config->item('caldav_url');
+	function build_principal_url($user) {
+		$principal_url = $this->CI->config->item('caldav_principal_url');
+
+		$built = preg_replace('/%u/', $user, $principal_url);
+		return $built;
+	}
+
+	/**
+	 * Builds an URL for a calendar or a resource included in a calendar
+	 * collection
+	 *
+	 * @param	$user	Username
+	 * @param	$calendar	Calendar name. It can be just a calendar name,
+	 *						or a identified like 'user:calendar'. In that
+	 *						case, URL will be built using these values
+	 * @param	$href		Optional href, which will be appended to the URL
+	 */
+	function build_calendar_url($user, $calendar, $href = '') {
+		$calendar_url = $this->CI->config->item('caldav_calendar_url');
 
 		$pieces = preg_split('/:/', $calendar);
 		if (count($pieces) == '1') {
@@ -735,8 +718,13 @@ class Caldav {
 			$calendar = $pieces[1];
 		}
 
-		return preg_replace('/%u/', $use_principal, $base_url) .
-			$calendar . '/';
+		$replacement = $use_principal 
+			. (empty($calendar) ? '' : '/' .  $calendar);
+		$built = preg_replace('/%s/', $replacement, $calendar_url) 
+			. $href;
+
+		log_message('DEBUG', 'Built calendar URL: ' . $built);
+		return $built;
 	}
 
 

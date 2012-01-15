@@ -1,8 +1,8 @@
 <?php
 /**
- * iCalcreator class v2.10.5
+ * iCalcreator v2.10.23
  * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
- * www.kigkonsult.se/iCalcreator/index.php
+ * kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se
  *
  * This library is free software; you can redistribute it and/or
@@ -732,14 +732,14 @@ class iCalUtilityFunctions {
  * if missing, UNTIL is set 1 year from startdate (emergency break)
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.9.10 - 2011-07-07
+ * @since 2.10.19 - 2011-10-31
  * @param array $result, array to update, array([timestamp] => timestamp)
  * @param array $recur, pattern for recurrency (only value part, params ignored)
  * @param array $wdate, component start date
  * @param array $startdate, start date
  * @param array $enddate, optional
  * @return array of recurrence (start-)dates as index
- * @todo BYHOUR, BYMINUTE, BYSECOND, ev. BYSETPOS due to ambiguity, WEEKLY at year end/start
+ * @todo BYHOUR, BYMINUTE, BYSECOND, WEEKLY at year end/start
  */
   public static function _recur2date( & $result, $recur, $wdate, $startdate, $enddate=FALSE ) {
     foreach( $wdate as $k => $v ) if( ctype_digit( $v )) $wdate[$k] = (int) $v;
@@ -764,7 +764,7 @@ class iCalUtilityFunctions {
         $recur['UNTIL'] = iCalUtilityFunctions::_timestamp2date( $endDatets, 6 );
     }
     if( $wdatets > $endDatets ) {
-// echo "recur out of date ".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$wdatets),6))."<br />\n";//test
+// echo "recur out of date ".date('Y-m-d H:i:s',$wdatets)."<br />\n";//test
       return array(); // nothing to do.. .
     }
     if( !isset( $recur['FREQ'] )) // "MUST be specified.. ."
@@ -838,11 +838,13 @@ class iCalUtilityFunctions {
         $daycnts    = array();
         $yeardays   = $weekno = 0;
         $yeardaycnt = array();
+        foreach( $daynames as $dn )
+          $yeardaycnt[$dn] = 0;
         for( $m = 1; $m <= 12; $m++ ) { // count up and update up-counters
           $daycnts[$m] = array();
           $weekdaycnt = array();
           foreach( $daynames as $dn )
-            $yeardaycnt[$dn] = $weekdaycnt[$dn] = 0;
+            $weekdaycnt[$dn] = 0;
           $mcnt     = date( 't', mktime( 0, 0, 0, $m, 1, $wdate['year'] ));
           for( $d   = 1; $d <= $mcnt; $d++ ) {
             $daycnts[$m][$d] = array();
@@ -963,8 +965,9 @@ class iCalUtilityFunctions {
           if((  $daynoexists &&  $daynosw && $daynamesw ) ||
              ( !$daynoexists && !$daynosw && $daynamesw )) {
             $updateOK = TRUE;
+// echo "m=$m d=$d day=".$daycnts[$m][$d]['DAY']." yeardayno_up=".$daycnts[$m][$d]['yeardayno_up']." daynoexists:$daynoexists daynosw:$daynosw daynamesw:$daynamesw updateOK:$updateOK<br />\n"; // test ###
           }
-// echo "daynoexists:$daynoexists daynosw:$daynosw daynamesw:$daynamesw<br />\n"; // test ###
+//echo "m=$m d=$d day=".$daycnts[$m][$d]['DAY']." yeardayno_up=".$daycnts[$m][$d]['yeardayno_up']." daynoexists:$daynoexists daynosw:$daynosw daynamesw:$daynamesw updateOK:$updateOK<br />\n"; // test ###
         }
         else {
           foreach( $recur['BYDAY'] as $bydayvalue ) {
@@ -1014,11 +1017,11 @@ class iCalUtilityFunctions {
                                            (( $bysetposYold == $wdate['year'] )  &&
                                             ( $bysetposMold == $wdate['month'])  &&
                                             ( $bysetposDold == $wdate['day'] )))) {
-// echo "bysetposymd1[]=".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$wdatets),6))."<br />\n";//test
+// echo "bysetposymd1[]=".date('Y-m-d H:i:s',$wdatets)."<br />\n";//test
               $bysetposymd1[] = $wdatets;
             }
             else {
-// echo "bysetposymd2[]=".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$wdatets),6))."<br />\n";//test
+// echo "bysetposymd2[]=".date('Y-m-d H:i:s',$wdatets)."<br />\n";//test
               $bysetposymd2[] = $wdatets;
             }
           }
@@ -1028,9 +1031,9 @@ class iCalUtilityFunctions {
           $countcnt++;
           if( $startdatets <= $wdatets ) { // only output within period
             $result[$wdatets] = TRUE;
-// echo "recur ".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$wdatets),6))."<br />\n";//test
+// echo "recur ".date('Y-m-d H:i:s',$wdatets)."<br />\n";//test
           }
-// echo "recur undate ".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$wdatets),6))." okdatstart ".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$startdatets),6))."<br />\n";//test
+// echo "recur undate ".date('Y-m-d H:i:s',$wdatets)." okdatstart ".date('Y-m-d H:i:s',$startdatets)."<br />\n";//test
           $updateOK = FALSE;
         }
       }
@@ -1086,7 +1089,7 @@ class iCalUtilityFunctions {
 //                $testweekno = (int) date( 'W', mktime( 0, 0, $wkst, $testdate['month'], $testdate['day'], $testdate['year'] )); // test ###
 // echo " testYMD (weekno)=".$testdate['year'].':'.$testdate['month'].':'.$testdate['day']." ($testweekno)";   // test ###
                 $result[$bysetposarr1[$ix]] = TRUE;
-// echo " recur ".implode('-',iCalUtilityFunctions::_date_time_string(date('Y-m-d H:i:s',$bysetposarr1[$ix]),6)); // test ###
+// echo " recur ".date('Y-m-d H:i:s',$bysetposarr1[$ix]); // test ###
               }
               $countcnt++;
             }

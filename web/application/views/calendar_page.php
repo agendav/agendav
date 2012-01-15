@@ -1,7 +1,6 @@
 <div id="page_contents">
 	<div id="calendar_view">
 	</div>
-</div>
 
 <div id="left_frame">
 
@@ -38,33 +37,39 @@ $img_add = array(
         'src' => 'img/calendar_add.png',
         'alt' => $this->i18n->_('labels', 'create'),
         'title' => $this->i18n->_('labels', 'create'),
-		'id' => 'calendar_add',
         );
 
 $img_refresh = array(
         'src' => 'img/arrow_refresh.png',
         'alt' => $this->i18n->_('labels', 'refresh'),
         'title' => $this->i18n->_('labels', 'refresh'),
-		'id' => 'calendar_list_refresh',
         );
 
 $items = array(
-		img($img_add),
-		img($img_refresh),
+		'calendar_add' => img($img_add),
+		'calendar_list_refresh' => img($img_refresh),
 		);
 
-foreach ($items as $item) {
-	echo '<span class="item">' . $item . '</span>';
+foreach ($items as $id => $item) {
+	echo '<span class="item" id="'.$id.'">' . $item . '</span>';
 }
 
 ?> 
   </div>
   </div>
  </div>
+ <div id="footer">
+<?php
+ $img = array(
+		 'src' => 'img/agendav_small.png',
+		 'alt' => 'AgenDAV',
+		 );
+ echo img($img);
+?>
+  <p><?php echo $this->config->item('footer')?></p>
+ </div>
 </div>
+</div> <!-- page_contents -->
 
 <div id="popup" class="freeow freeow-top-right">
 </div>
-
-<div id="comm"></div>
-

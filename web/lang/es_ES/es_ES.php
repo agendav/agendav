@@ -104,7 +104,7 @@ $labels['workgroupoptions'] = 'Trabajo en grupo';
 $labels['shareoptions'] = 'Compartir';
 
 $labels['newcalendar'] = 'Nuevo calendario';
-$labels['modifycalendar'] = 'Modificar calendar';
+$labels['modifycalendar'] = 'Modificar calendario';
 
 $labels['createevent'] = 'Crear evento';
 $labels['editevent'] = 'Editar evento';

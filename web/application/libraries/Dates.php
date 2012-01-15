@@ -40,14 +40,17 @@ class Dates {
 			'ymd' => array(
 				'date' => 'Y-m-d',
 				'datepicker' => 'yy-mm-dd',
+				'strftime' => '%Y-%m-%d',
 				),
 			'dmy' => array(
 				'date' => 'd/m/Y',
 				'datepicker' => 'dd/mm/yy',
+				'strftime' => '%d/%m/%Y',
 				),
 			'mdy' => array(
 				'date' => 'm/d/Y',
 				'datepicker' => 'mm/dd/yy',
+				'strftime' => '%m/%d/%Y',
 				),
 			);
 
@@ -128,20 +131,17 @@ class Dates {
 			$tz = $this->CI->config->item('default_timezone');
 		}
 
-		$format = $this->date_format_string('date') . ' '. $this->time_format_string('date');
-		$obj = DateTime::createFromFormat($format, $str, new
-				DateTimeZone($tz));
-		$err = DateTime::getLastErrors();
-		if (FALSE === $obj || $err['warning_count']>0) {
-			return FALSE;
-		}
+		$format = $this->date_format_string('date') . ' '.
+			$this->time_format_string('date');
+
+		$obj = $this->create_datetime($format, $str, $tz);
 
 		return $obj;
 	}
 
 	/**
 	 * Creates a DateTime object from a date formatted by Fullcalendar
-	 * events: yyymmddHHii).
+	 * events: yyyymmddHHii).
 	 *
 	 * Returns FALSE on date parsing error
 	 */
@@ -151,12 +151,8 @@ class Dates {
 		}
 
 		$format = 'YmdHis';
-		$obj = DateTime::createFromFormat($format, $str, new
-				DateTimeZone($tz));
-		$err = DateTime::getLastErrors();
-		if (FALSE === $obj || $err['warning_count']>0) {
-			return FALSE;
-		}
+
+		$obj = $this->create_datetime($format, $str, $tz);
 
 		return $obj;
 	}
@@ -211,8 +207,7 @@ class Dates {
 			$str .= '000000';
 		}
 
-		$obj = DateTime::createFromFormat($format,
-				$str, new DateTimeZone($tz));
+		$obj = $this->create_datetime($format, $str, $tz);
 
 		return $obj;
 	}
@@ -327,8 +322,7 @@ class Dates {
 		$format = 'dmY His';
 		$new_str = $d.$m.$y.' '.$h.$i.$s;
 
-		$dt = DateTime::createFromFormat($format, $new_str, 
-				new DateTimeZone($tz));
+		$dt = $this->create_datetime($format, $new_str, $tz);
 
 		if ($dt === FALSE) {
 			$this->CI->extended_logs->message('ERROR',
@@ -371,6 +365,7 @@ class Dates {
 		switch($type) {
 			case 'date':
 			case 'datepicker':
+			case 'strftime':
 				return Dates::$dateformats[$this->cfg_date][$type];
 				break;
 			default:
@@ -398,6 +393,28 @@ class Dates {
 		}
 		
 		return $result;
+	}
+
+	/**
+	 * Returns a DateTime object using createFromFormat
+	 *
+	 * @param	string	Format used to parse the given string
+	 * @param	string	String that contains date-time
+	 * @param	string	Timezone name
+	 * @return	DateTime/boolean	FALSE on error
+	 */
+	function create_datetime($format, $str, $tz) {
+		$dt = DateTime::createFromFormat($format, $str, 
+				new DateTimeZone($tz));
+
+		// Check for errors
+		$err = DateTime::getLastErrors();
+
+		if (FALSE === $dt || $err['warning_count']>0) {
+			$dt = FALSE;
+		}
+
+		return $dt;
 	}
 
 }
