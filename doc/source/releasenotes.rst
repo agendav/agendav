@@ -3,7 +3,7 @@ Release notes
 
 .. _v1.2.4:
 
-1.2.4 (2012-01-xx)
+1.2.4 (2012-01-16)
 ------------------
 
 This release requires no database changes. Contains a fix for localization
