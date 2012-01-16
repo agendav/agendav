@@ -786,9 +786,7 @@ function set_end_minDate() {
 
 	var selected = $(elems).datepicker('getDate');
 
-	if ($(ced + ' input.allday').is(':checked')) {
-		selected.setTime(selected.getTime() + 86400000); // +1d
-	}
+	selected.setTime(selected.getTime()); // +1d
 
 	$(eleme).datepicker('option', 'minDate', selected);
 	$(elemru).datepicker('option', 'minDate', selected);

@@ -299,8 +299,6 @@ class Dialog_generator extends CI_Controller {
 
 			if ($allday == 'true') {
 				$data['allday'] = TRUE;
-				// Fullcalendar uses -1d on all day events
-				$end_obj->add(new DateInterval('P1D'));
 			}
 
 			$data['start_date'] = $start_obj->format($this->date_format);

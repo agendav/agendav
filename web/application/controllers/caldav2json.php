@@ -234,6 +234,8 @@ class Caldav2json extends CI_Controller {
 					. ' ' . date($this->time_format, mktime(0,0)), 'UTC');
 			$end = $this->dates->frontend2datetime($p['end_date'] 
 					. ' ' . date($this->time_format, mktime(0, 0)), 'UTC');
+			// Add 1 day (iCalendar needs this)
+			$end->add(new DateInterval('P1D'));
 		} else {
 			// Create new form validation rules
 			$this->form_validation
