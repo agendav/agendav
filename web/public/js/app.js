@@ -786,7 +786,7 @@ function set_end_minDate() {
 
 	var selected = $(elems).datepicker('getDate');
 
-	selected.setTime(selected.getTime()); // +1d
+	selected.setTime(selected.getTime());
 
 	$(eleme).datepicker('option', 'minDate', selected);
 	$(elemru).datepicker('option', 'minDate', selected);
