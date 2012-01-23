@@ -183,13 +183,13 @@ div.block div.links span.item:hover {
 }
 
 #calendar_list li {
+  width: inherit;
+  overflow: hidden;
   white-space: nowrap;
-  padding: 4px 4px 4px 4px;
+  padding: 4px;
 }
 
 #calendar_list li span.text {
-  overflow: hidden;
-  display: inline-block;
   font-size: 0.9em;
   letter-spacing: -0.1em;
 }
