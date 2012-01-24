@@ -175,26 +175,24 @@ div.block div.links span.item:hover {
   background-color: #f0f0f0;
 }
 
-
-
-#calendar_list ul, #calendar_list li {
+.calendar_list ul, #calendar_list li {
   list-style: none;
   cursor: default;
 }
 
-#calendar_list li {
+.calendar_list li {
   width: inherit;
   overflow: hidden;
   white-space: nowrap;
   padding: 4px;
 }
 
-#calendar_list li span.text {
+.calendar_list li span.text {
   font-size: 0.9em;
   letter-spacing: -0.1em;
 }
 
-#calendar_list li:hover {
+.calendar_list li:hover {
   background-color: #f0f0f0;
 }
 

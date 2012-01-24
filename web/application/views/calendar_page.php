@@ -1,7 +1,6 @@
 <div id="page_contents">
 	<div id="calendar_view">
 	</div>
-
 <div id="left_frame">
 
 <?php
@@ -24,7 +23,7 @@ if (isset($logo)):
 		   'createevent')?></div>
  </div>
 
- <div id="calendar_list" class="ui-widget block">
+ <div class="calendar_list ui-widget block" id="own_calendar_list">
   <div class="ui-widget-header ui-corner-all"><?php echo
   $this->i18n->_('labels', 'calendars')?></div>
   <div class="ui-widget-content">
@@ -56,8 +55,20 @@ foreach ($items as $id => $item) {
 
 ?> 
   </div>
+  </div><!-- block contents -->
+ </div><!-- block -->
+
+ <div class="calendar_list ui-widget block" id="shared_calendar_list">
+  <div class="ui-widget-header ui-corner-all">
+  <?php echo $this->i18n->_('labels', 'calendars')?>
+  <span class="shared"></span>
   </div>
- </div>
+  <div class="ui-widget-content">
+   <ul>
+   </ul>
+  </div>
+ </div><!-- block -->
+
  <div id="footer">
 <?php
  $img = array(
@@ -67,7 +78,7 @@ foreach ($items as $id => $item) {
  echo img($img);
 ?>
   <p><?php echo $this->config->item('footer')?></p>
- </div>
+ </div> <!-- footer -->
 </div>
 </div> <!-- page_contents -->
 

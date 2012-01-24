@@ -194,7 +194,7 @@ $(document).ready(function() {
 						end: fulldatetimestring(endDate),
 						allday: pass_allday,
 						view: view.name,
-						current_calendar: $('#calendar_list li.selected_calendar').data().calendar
+						current_calendar: $('.calendar_list li.selected_calendar').data().calendar
 				};
 
 				// Unselect every single day/slot
@@ -205,7 +205,7 @@ $(document).ready(function() {
 			// Useful for creating events in agenda view
 			selectHelper: function(start,end) {
 				var current_calendar_color = 
-					$('#calendar_list li.selected_calendar').data().color;
+					$('.calendar_list li.selected_calendar').data().color;
 
 				return $('<div style="background-color: '+current_calendar_color
 				+'" class="selecthelper"/>')
@@ -448,13 +448,13 @@ $(document).ready(function() {
 		 *************************************************************/
 
 		// Choosing a calendar
-		$('#calendar_list').on('click', 'li.available_calendar', function() {
-			$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
+		$('div.calendar_list').on('click', 'li.available_calendar', function() {
+			$('.calendar_list li.selected_calendar').removeClass('selected_calendar');
 			$(this).addClass('selected_calendar');
 		});
 
 		// Editing a calendar
-		$('#calendar_list').on('dblclick', 'li.available_calendar', function(e) {
+		$('div.calendar_list').on('dblclick', 'li.available_calendar', function(e) {
 			e.preventDefault();
 			calendar_modify_form(this);
 		});
@@ -463,12 +463,12 @@ $(document).ready(function() {
 		update_calendar_list(true);
 
 		// Refresh calendar list
-		$('#calendar_list').on('click', '#calendar_list_refresh', function() {
+		$('div.calendar_list').on('click', '#calendar_list_refresh', function() {
 			update_calendar_list(true);
 		});
 
 		// Create calendar
-		$('#calendar_list').on('click', '#calendar_add', calendar_create_form);
+		$('#own_calendar_list').on('click', '#calendar_add', calendar_create_form);
 		
 
 		/*************************************************************
@@ -491,7 +491,7 @@ $(document).ready(function() {
 						start: start,
 						allday: false,
 						view: 'month',
-						current_calendar: $('#calendar_list li.selected_calendar').data().calendar
+						current_calendar: $('.calendar_list li.selected_calendar').data().calendar
 				};
 
 				// Unselect every single day/slot
@@ -1074,7 +1074,7 @@ function calendar_modify_form(calendar_obj) {
 
 											// Select another calendar before removing this one
 											if ($(calendar_obj).hasClass('selected_calendar')) {
-												$('#calendar_list li.available_calendar:first').click();
+												$('.calendar_list li.available_calendar:first').click();
 											}
 
 											$(calendar_obj).remove();
@@ -1175,7 +1175,7 @@ function update_calendar_list(maskbody) {
 
 	updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
 		// Remove old eventSources and remove every list item
-		$('#calendar_list li.available_calendar').each(function(index) {
+		$('.calendar_list li.available_calendar').each(function(index) {
 			var data = $(this).data();
 			$('#calendar_view').fullCalendar('removeEventSource',
 				data.eventsource);
@@ -1183,14 +1183,20 @@ function update_calendar_list(maskbody) {
 		});
 
 		// Calendar count
-		var count = 0;
+		var count = 0,
+			count_shared = 0;
 
 		$.each(data, function(key, value) {
 			count++;
 
 			var li = generate_calendar_entry(value);
 
-			$('#calendar_list ul').append(li);
+			if (value.shared == true) {
+				count_shared++;
+				$('#shared_calendar_list ul').append(li);
+			} else {
+				$('#own_calendar_list ul').append(li);
+			}
 
 			$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
 		});
@@ -1210,8 +1216,17 @@ function update_calendar_list(maskbody) {
 			}
 		} else {
 			set_data('last_calendar_count', count);
+
+			// Hide unused block
+			if (count_shared == 0) {
+				$('#shared_calendar_list').hide();
+			} else {
+				$('#shared_calendar_list').show();
+			}
+
 			// Select the first one by default
-			$('#calendar_list li.available_calendar:first').click();
+			$('#own_calendar_list li.available_calendar:first').click();
+
 
 			// Adjust text length
 			adjust_calendar_names_width();
@@ -1330,7 +1345,6 @@ function generate_calendar_entry(data) {
 
 	// Shared calendars
 	if (data.shared !== undefined && data.shared == true) {
-		li.append('<span class="shared"></span>');
 		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
 	}
 
@@ -1357,7 +1371,7 @@ function generate_calendar_entry(data) {
 function get_calendar_displayname(c) {
 	var calname = undefined;
 
-	$('#calendar_list li.available_calendar').each(function(index) {
+	$('.calendar_list li.available_calendar').each(function(index) {
 		var thiscal = $(this).data();
 		if (thiscal.calendar == c) {
 			calname = thiscal.displayname;
@@ -1374,7 +1388,7 @@ function get_calendar_displayname(c) {
 function reload_event_source(cal) {
 	var eventsource = undefined;
 
-	$('#calendar_list li.available_calendar').each(function(index) {
+	$('.calendar_list li.available_calendar').each(function(index) {
 		var thiscal = $(this).data();
 		if (thiscal.calendar == cal) {
 			eventsource = thiscal.eventsource;
@@ -1551,7 +1565,7 @@ function session_expired() {
  * Adjusts calendar text span width to parent container
  */
 function adjust_calendar_names_width() {
-	$('#calendar_list li').each(function() {
+	$('.calendar_list li').each(function() {
 		var li = $(this);
 		var li_width = li.width();
 		var shared = li.find('span.shared');
