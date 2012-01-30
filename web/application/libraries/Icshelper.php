@@ -43,14 +43,6 @@ class Icshelper {
 				$this->CI->config->item('icalendar_unique_id'),
 				);
 
-		// Add required paths
-		$current_include_path = get_include_path();
-		set_include_path('.:'
-				. APPPATH . '../../libs/icalcreator:' 
-				. APPPATH . '../../libs/own_extensions:' 
-				. APPPATH . '../../libs/davical/inc:'
-				. $current_include_path);
-
 		require_once('iCalcreator.class.php');
 	}
 

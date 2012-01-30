@@ -48,6 +48,14 @@ class Defs {
 
 	function definitions() {
 		define('AGENDAV_VERSION', '1.2.4');
+		set_include_path(implode(PATH_SEPARATOR, array(
+						BASEPATH . '../../libs/icalcreator',
+						BASEPATH . '../../libs/own_extensions',
+						BASEPATH . '../../libs/caldav-client/awl',
+						BASEPATH . '../../libs/caldav-client',
+						get_include_path()
+						)));
+
 	}
 
 	/**

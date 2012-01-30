@@ -34,17 +34,8 @@ class Caldav {
 			// Load ICS helper library
 			$this->CI->load->library('icshelper');
 
-			// Add required paths
-			$current_include_path = get_include_path();
-			set_include_path('.:'
-					. APPPATH . '../../libs/awl/inc:' 
-					. APPPATH . '../../libs/own_extensions:' 
-					. APPPATH . '../../libs/davical/inc:'
-					. $current_include_path);
-
 			require_once('caldav-client-v2.php');
 			require_once('mycaldav.php');
-			require_once('iCalendar.php');
 		}
 
 	}
