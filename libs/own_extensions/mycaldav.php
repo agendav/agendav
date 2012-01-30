@@ -14,15 +14,13 @@ class CalendarExtendedInfo extends CalendarInfo {
 
 class MyCalDAV extends CalDAVClient {
 
-	protected $valid_caldav_server = null;
-
 	function __construct( $base_url, $user, $pass ) {
 		parent::__construct($base_url, $user, $pass);
 	}
 
 
 	/**
-	 * Check with OPTIONS if PROPFIND and REPORT are supported
+	 * Check with OPTIONS if calendar-access is enabled
 	 * 
 	 * Can be used to check authentication against server
 	 *
@@ -30,31 +28,46 @@ class MyCalDAV extends CalDAVClient {
 	function CheckValidCalDAV() {
 		// Clean headers
 		$this->headers = array();
-		$options = $this->DoOptionsRequest();
-		if (isset($options['REPORT']) && isset($options['PROPFIND'])) {
-			$this->valid_caldav_server = TRUE;
-		} else {
-			$this->valid_caldav_server = FALSE;
-		}
+		$dav_options = $this->DoOptionsRequestAndGetDAVHeader();
+		$valid_caldav_server = isset($dav_options['calendar-access']);
 
-		return $this->valid_caldav_server;
+		return $valid_caldav_server;
 	}
 
-	function DoCalendarQuery( $filter, $url = null ) {
-		if (is_null($this->valid_caldav_server)) {
-			// Headers will be wiped by CheckValidCalDAV. Restore 
-			// ithem after this call
-			$current_headers = $this->headers;
-			$this->CheckValidCalDAV();
-			$this->headers = $current_headers;
+	/**
+	 * Issues an OPTIONS request
+	 *
+	 * @param string $url The URL to make the request to
+	 *
+	 * @return array DAV options
+	 */
+	function DoOptionsRequestAndGetDAVHeader( $url = null ) {
+		$this->requestMethod = "OPTIONS";
+		$this->body = "";
+		$headers = $this->DoRequest($url);
+
+		$result = array();
+
+		$headers = preg_split('/\r?\n/', $headers);
+
+		// DAV header(s)
+		$dav_header = preg_grep('/^DAV:/', $headers);
+		if (is_array($dav_header)) {
+			$dav_header = array_values($dav_header);
+			$dav_header = preg_replace('/^DAV: /', '', $dav_header);
+
+			$dav_options = array();
+
+			foreach ($dav_header as $d) {
+				$dav_options = array_merge($dav_options,
+						array_flip(preg_split('/[, ]+/', $d)));
+			}
+
+			$result = $dav_options;
+
 		}
 
-		if ($this->valid_caldav_server) {
-			return parent::DoCalendarQuery($filter, $url);
-		} else {
-			log_message('ERROR', 'Invalid CalDAV server');
-			return FALSE;
-		}
+		return $result;
 	}
 
 	/*
