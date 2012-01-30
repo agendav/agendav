@@ -14,8 +14,30 @@ class CalendarExtendedInfo extends CalendarInfo {
 
 class MyCalDAV extends CalDAVClient {
 
-	function __construct( $base_url, $user, $pass ) {
+	// Requests timeout
+	private $timeout;
+
+	// cURL handle
+	private $ch;
+
+	function __construct( $base_url, $user, $pass, $timeout = 10 ) {
 		parent::__construct($base_url, $user, $pass);
+		$this->timeout = $timeout;
+		$this->ch = curl_init();
+		// TODO: proxy options, interface used, 
+		curl_setopt_array($this->ch, array(
+					CURLOPT_CONNECTTIMEOUT => $this->timeout,
+					CURLOPT_FAILONERROR => FALSE,
+					CURLOPT_FOLLOWLOCATION => TRUE,
+					CURLOPT_MAXREDIRS => 2,
+					CURLOPT_FORBID_REUSE => FALSE,
+					CURLOPT_RETURNTRANSFER => TRUE,
+					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					CURLOPT_HTTPAUTH => CURLAUTH_BASIC | CURLAUTH_DIGEST,
+					CURLOPT_USERAGENT => 'AgenDAV (cURL based)', 
+					CURLINFO_HEADER_OUT => TRUE,
+					CURLOPT_HEADER => TRUE,
+					));
 	}
 
 
@@ -32,6 +54,62 @@ class MyCalDAV extends CalDAVClient {
 		$valid_caldav_server = isset($dav_options['calendar-access']);
 
 		return $valid_caldav_server;
+	}
+
+	/**
+	 * Send a request to the server
+	 *
+	 * @param string $url The URL to make the request to
+	 *
+	 * @return string The content of the response from the server
+	 */
+	function DoRequest( $url = null ) {
+		if (is_null($url)) {
+			$url = $this->base_url;
+		}
+
+		$this->request_url = $url;
+
+		curl_setopt($this->ch, CURLOPT_URL, $this->protocol . '://' .
+				$this->server . ':' . $this->port . $this->request_url);
+
+		// Request method
+		curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, $this->requestMethod);
+
+		// Headers
+		if (!isset($this->headers['content-type'])) $this->headers['content-type'] = "Content-type: text/plain";
+		curl_setopt($this->ch, CURLOPT_HTTPHEADER,
+				array_values($this->headers));
+
+		curl_setopt($this->ch, CURLOPT_USERPWD, $this->user . ':' .
+				$this->pass);
+
+		// Request body
+		curl_setopt($this->ch, CURLOPT_POSTFIELDS, $this->body);
+
+		$response = curl_exec($this->ch);
+
+		if (FALSE === $response) {
+			// TODO better error handling
+			log_message('ERROR', curl_error($this->ch));
+			log_message('INTERNALS', $this->request_url);
+			return false;
+		}
+
+		$info = curl_getinfo($this->ch);
+
+		// Get headers (idea from SabreDAV WebDAV client)
+		$this->httpResponseHeaders = substr($response, 0, $info['header_size']);
+		$this->httpResponseBody = substr($response, $info['header_size']);
+
+        // Parse response
+		$this->ParseResponseHeaders($this->httpResponseHeaders);
+		$this->ParseResponse($this->httpResponseBody);
+
+		log_message('INTERNALS', var_export($info['request_header'], TRUE));
+		log_message('INTERNALS', var_export($this->body, TRUE));
+
+		return $response;
 	}
 
 	/**
