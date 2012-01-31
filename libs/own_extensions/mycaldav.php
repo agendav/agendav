@@ -33,7 +33,8 @@ class MyCalDAV extends CalDAVClient {
 					CURLOPT_FORBID_REUSE => FALSE,
 					CURLOPT_RETURNTRANSFER => TRUE,
 					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-					CURLOPT_HTTPAUTH => CURLAUTH_BASIC | CURLAUTH_DIGEST,
+					//CURLOPT_HTTPAUTH => CURLAUTH_BASIC | CURLAUTH_DIGEST,
+					CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
 					CURLOPT_USERAGENT => 'AgenDAV (cURL based)', 
 					CURLINFO_HEADER_OUT => TRUE,
 					CURLOPT_HEADER => TRUE,
@@ -70,11 +71,17 @@ class MyCalDAV extends CalDAVClient {
 
 		$this->request_url = $url;
 
-		curl_setopt($this->ch, CURLOPT_URL, $this->protocol . '://' .
-				$this->server . ':' . $this->port . $this->request_url);
+		curl_setopt($this->ch, CURLOPT_URL, $url);
 
 		// Request method
 		curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, $this->requestMethod);
+
+		// Empty body. If not used, cURL will spend ~5s on this request
+		if ($this->requestMethod == 'HEAD' || empty($this->body)) {
+			curl_setopt($this->ch, CURLOPT_NOBODY, TRUE);
+		} else {
+			curl_setopt($this->ch, CURLOPT_NOBODY, FALSE);
+		}
 
 		// Headers
 		if (!isset($this->headers['content-type'])) $this->headers['content-type'] = "Content-type: text/plain";
@@ -91,8 +98,8 @@ class MyCalDAV extends CalDAVClient {
 
 		if (FALSE === $response) {
 			// TODO better error handling
-			log_message('ERROR', curl_error($this->ch));
-			log_message('INTERNALS', $this->request_url);
+			log_message('ERROR', 'Error requesting ' . $url . ': ' 
+					. curl_error($this->ch));
 			return false;
 		}
 
@@ -106,8 +113,14 @@ class MyCalDAV extends CalDAVClient {
 		$this->ParseResponseHeaders($this->httpResponseHeaders);
 		$this->ParseResponse($this->httpResponseBody);
 
-		log_message('INTERNALS', var_export($info['request_header'], TRUE));
-		log_message('INTERNALS', var_export($this->body, TRUE));
+		/*
+		   //TODO debug
+
+		log_message('INTERNALS', 'REQh: ' . var_export($info['request_header'], TRUE));
+		log_message('INTERNALS', 'REQb: ' . var_export($this->body, TRUE));
+		log_message('INTERNALS', 'RPLh: ' . var_export($this->httpResponseHeaders, TRUE));
+		log_message('INTERNALS', 'RPLb: ' . var_export($this->httpResponseBody, TRUE));
+		*/
 
 		return $response;
 	}
