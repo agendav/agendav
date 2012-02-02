@@ -20,6 +20,9 @@ class MyCalDAV extends CalDAVClient {
 	// cURL handle
 	private $ch;
 
+	// Full URL
+	private $full_url;
+
 	function __construct( $base_url, $user, $pass, $timeout = 10 ) {
 		parent::__construct($base_url, $user, $pass);
 		$this->timeout = $timeout;
@@ -39,6 +42,8 @@ class MyCalDAV extends CalDAVClient {
 					CURLINFO_HEADER_OUT => TRUE,
 					CURLOPT_HEADER => TRUE,
 					));
+
+		$this->full_url = $base_url;
 	}
 
 
@@ -66,7 +71,7 @@ class MyCalDAV extends CalDAVClient {
 	 */
 	function DoRequest( $url = null ) {
 		if (is_null($url)) {
-			$url = $this->base_url;
+			$url = $this->full_url;
 		}
 
 		$this->request_url = $url;
