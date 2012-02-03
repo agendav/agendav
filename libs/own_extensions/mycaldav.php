@@ -23,11 +23,25 @@ class MyCalDAV extends CalDAVClient {
 	// Full URL
 	private $full_url;
 
-	function __construct( $base_url, $user, $pass, $timeout = 10 ) {
+
+	/**
+	 * Constructor
+	 *
+	 * Valid options are:
+	 *
+	 *  $options['user_agent'] : User agent used for requests. Default: cURL
+	 *  $options['auth'] : Auth type. Can be any of values for
+	 *   CURLOPT_HTTPAUTH (from
+	 *   http://www.php.net/manual/es/function.curl-setopt.php). Default:
+	 *   basic or digest
+	 */
+
+	// TODO: proxy options, interface used,
+	function __construct( $base_url, $user, $pass, $timeout = 10,
+			$options = array()) {
 		parent::__construct($base_url, $user, $pass);
 		$this->timeout = $timeout;
 		$this->ch = curl_init();
-		// TODO: proxy options, interface used, 
 		curl_setopt_array($this->ch, array(
 					CURLOPT_CONNECTTIMEOUT => $this->timeout,
 					CURLOPT_FAILONERROR => FALSE,
@@ -36,9 +50,14 @@ class MyCalDAV extends CalDAVClient {
 					CURLOPT_FORBID_REUSE => FALSE,
 					CURLOPT_RETURNTRANSFER => TRUE,
 					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-					//CURLOPT_HTTPAUTH => CURLAUTH_BASIC | CURLAUTH_DIGEST,
-					CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-					CURLOPT_USERAGENT => 'AgenDAV (cURL based)', 
+					CURLOPT_HTTPAUTH =>
+						isset($options['auth']) ?
+							$options['auth'] :
+							(CURLAUTH_BASIC | CURLAUTH_DIGEST),
+					CURLOPT_USERAGENT =>
+						isset($options['user_agent']) ?
+							$options['user_agent'] :
+							'cURL',
 					CURLINFO_HEADER_OUT => TRUE,
 					CURLOPT_HEADER => TRUE,
 					));
@@ -113,6 +132,11 @@ class MyCalDAV extends CalDAVClient {
 		// Get headers (idea from SabreDAV WebDAV client)
 		$this->httpResponseHeaders = substr($response, 0, $info['header_size']);
 		$this->httpResponseBody = substr($response, $info['header_size']);
+
+		// Get only last headers (needed when using unspecific HTTP auth
+		// method or request got redirected)
+		$this->httpResponseHeaders = preg_replace('/^.+\n\n/s', '',
+				$this->httpResponseHeaders);
 
         // Parse response
 		$this->ParseResponseHeaders($this->httpResponseHeaders);
