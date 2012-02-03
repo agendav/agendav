@@ -2255,6 +2255,9 @@ class calendarComponent {
             }
             break;
           default:
+			if (is_array($optparamvalue)) {
+				$optparamvalue = join('', $optparamvalue);
+			}
             if(( '"' == substr( $optparamvalue, 0, 1 )) &&
                ( '"' == substr( $optparamvalue, -1 )))
               $optparamvalue = substr( $optparamvalue, 1, ( strlen( $optparamvalue ) - 2 ));
