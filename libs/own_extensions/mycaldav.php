@@ -29,7 +29,6 @@ class MyCalDAV extends CalDAVClient {
 	 *
 	 * Valid options are:
 	 *
-	 *  $options['user_agent'] : User agent used for requests. Default: cURL
 	 *  $options['auth'] : Auth type. Can be any of values for
 	 *   CURLOPT_HTTPAUTH (from
 	 *   http://www.php.net/manual/es/function.curl-setopt.php). Default:
@@ -54,15 +53,20 @@ class MyCalDAV extends CalDAVClient {
 						isset($options['auth']) ?
 							$options['auth'] :
 							(CURLAUTH_BASIC | CURLAUTH_DIGEST),
-					CURLOPT_USERAGENT =>
-						isset($options['user_agent']) ?
-							$options['user_agent'] :
-							'cURL',
+					CURLOPT_USERAGENT => 'cURL based CalDAV client',
 					CURLINFO_HEADER_OUT => TRUE,
 					CURLOPT_HEADER => TRUE,
 					));
 
 		$this->full_url = $base_url;
+	}
+
+	/**
+	 * Sets User-Agent
+	 */
+	function SetUserAgent($user_agent) {
+		$this->user_agent = $user_agent;
+		curl_setopt($this->ch, CURLOPT_USERAGENT, $user_agent);
 	}
 
 
@@ -135,7 +139,7 @@ class MyCalDAV extends CalDAVClient {
 
 		// Get only last headers (needed when using unspecific HTTP auth
 		// method or request got redirected)
-		$this->httpResponseHeaders = preg_replace('/^.+\n\n/s', '',
+		$this->httpResponseHeaders = preg_replace('/^.+\r\n\r\n/sU', '',
 				$this->httpResponseHeaders);
 
         // Parse response
