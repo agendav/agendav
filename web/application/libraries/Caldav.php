@@ -198,6 +198,7 @@ class Caldav {
 		$this->final_url = $this->build_calendar_url($user, $calendar);
 
 		$this->client = new MyCalDAV($this->final_url, $user, $passwd);
+		$this->client->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
 		$this->client->SetCalendar($this->final_url);
 		$this->client->PrincipalURL($this->final_url);
 		$this->client->CalendarHomeSet($this->final_url);
