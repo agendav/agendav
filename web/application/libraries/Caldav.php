@@ -24,9 +24,19 @@ class Caldav {
 	private $CI;
 	private $client = null;
 
+	private $http_auth_method;
+
 	function __construct($params) {
 
 		$this->CI =& get_instance();
+
+		$this->http_auth_method =
+			$this->CI->config->item('caldav_http_auth_method');
+
+		// Empty string or FALSE
+		if (empty($this->http_auth_method)) {
+			$this->http_auth_method = CURLAUTH_BASIC | CURLAUTH_DIGEST;
+		}
 
 		// Light loading, for using some functions without loading the full
 		// stack
@@ -196,8 +206,8 @@ class Caldav {
 	 */
 	function prepare_client($user, $passwd, $calendar = 'home') {
 		$this->final_url = $this->build_calendar_url($user, $calendar);
-
-		$this->client = new MyCalDAV($this->final_url, $user, $passwd);
+		$this->client = new MyCalDAV($this->final_url, $user, $passwd,
+				array('auth' => $this->http_auth_method));
 		$this->client->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
 		$this->client->SetCalendar($this->final_url);
 		$this->client->PrincipalURL($this->final_url);

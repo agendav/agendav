@@ -33,13 +33,15 @@ class MyCalDAV extends CalDAVClient {
 	 *   CURLOPT_HTTPAUTH (from
 	 *   http://www.php.net/manual/es/function.curl-setopt.php). Default:
 	 *   basic or digest
+     *
+	 *  $options['timeout'] : Timeout in seconds
 	 */
 
 	// TODO: proxy options, interface used,
-	function __construct( $base_url, $user, $pass, $timeout = 10,
-			$options = array()) {
+	function __construct( $base_url, $user, $pass, $options = array()) {
 		parent::__construct($base_url, $user, $pass);
-		$this->timeout = $timeout;
+		$this->timeout = isset($options['timeout']) ? 
+			$options['timeout'] : 10;
 		$this->ch = curl_init();
 		curl_setopt_array($this->ch, array(
 					CURLOPT_CONNECTTIMEOUT => $this->timeout,
