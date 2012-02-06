@@ -15,7 +15,7 @@
  *
  * It is recommended to use a fixed value for this. If you don't set it,
  * CalDAV client will have to negotiate with server on each request and
- * perfomance will be worse.
+ * perfomance will be worse (mainly when Basic auth is used)
  *
  * Possible values can be found at
  * http://www.php.net/manual/es/function.curl-setopt.php (CURLOPT_HTTPAUTH)

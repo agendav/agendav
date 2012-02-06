@@ -244,8 +244,9 @@ Here you will configure every single aspect of your CalDAV server.
    http://www.php.net/manual/en/function.curl-setopt.php), or leave it empty
    to make AgenDAV auto-detect which authentication method to use.
 
-   Using the auto-detect feature will slow down requests, because they will
-   be sent twice.
+   Using the auto-detect feature will slow down requests when using Basic
+   auth. If you know which authentication method does your server use you're
+   advised to set the right value on this option.
 
    Example::
    
