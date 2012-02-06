@@ -58,6 +58,7 @@ class MyCalDAV extends CalDAVClient {
 					CURLOPT_USERAGENT => 'cURL based CalDAV client',
 					CURLINFO_HEADER_OUT => TRUE,
 					CURLOPT_HEADER => TRUE,
+					CURLOPT_SSL_VERIFYPEER => FALSE,
 					));
 
 		$this->full_url = $base_url;
