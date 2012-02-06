@@ -31,6 +31,7 @@ define('ENABLE_SETUP_TESTS', FALSE);
  * - PHP >= 5.3.0
  * - magic_quotes_gpc and magic_quotes_runtime disabled
  * - php-mbstring available
+ * - php-curl available
  * - Correctly configured config.php, database.php and caldav.php 
  * - PHP MySQL extension available (or MySQLi)
  * - Working database connection
@@ -68,6 +69,14 @@ $tests[] = array('magic_quotes_runtime',
 		$res_magic_quotes_runtime ? 'Disabled' : 'Enabled',
 		$res_magic_quotes_runtime ? 'OK' : 
 		'Disable it inside <tt>php.ini</tt>');
+
+// PHP cURL
+if (extension_loaded('curl')) {
+	$tests[] = array('cURL extension', 'Available', 'OK');
+} else {
+	$tests[] = array('cURL extension', 'Not installed', 
+			'cURL extension is needed by AgenDAV');
+}
 
 // PHP mbstring
 if (extension_loaded('mbstring')) {
