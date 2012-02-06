@@ -12,7 +12,7 @@ class CalendarExtendedInfo extends CalendarInfo {
 }
 
 
-class MyCalDAV extends CalDAVClient {
+class CURLCalDAVClient extends CalDAVClient {
 
 	// Requests timeout
 	private $timeout;
