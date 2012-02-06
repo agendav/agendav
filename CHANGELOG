@@ -1,5 +1,7 @@
 Release XXX ()
 	* Updated jQuery UI to 1.8.17
+	* CalDAV client rewritten to use cURL (HTTP Digest auth now
+	  supported)
 
 Release 1.2.4 (2012-01-16)
 	* Aesthetical changes: 

@@ -3,6 +3,16 @@ Release notes
 
 .. _v1.2.4:
 
+X.X.X (2012-XX-YY)
+------------------
+
+This release requires PHP cURL support. Make sure your PHP installation has
+the cURL module enabled.
+
+caldav.php rewrite (TODO)
+
+.. _v1.2.4:
+
 1.2.4 (2012-01-16)
 ------------------
 

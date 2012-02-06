@@ -12,6 +12,7 @@ Requisites
 * A web server
 * PHP >= 5.3.0
 * PHP mbstring extension
+* PHP cURL extension
 * MySQL > 5.1
 
 Thanks

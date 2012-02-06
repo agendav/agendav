@@ -235,6 +235,29 @@ Here you will configure every single aspect of your CalDAV server.
 
    .. seealso:: :confval:`caldav_principal_url` :confval:`caldav_calendar_url`
 
+.. confval:: caldav_http_auth_method
+
+   .. versionadded:: X.X.X
+
+   You can specify which HTTP authentication method does your CalDAV server
+   require. Use any of the cURL ``CURLOPT_HTTPAUTH`` valid values (see
+   http://www.php.net/manual/en/function.curl-setopt.php), or leave it empty
+   to make AgenDAV auto-detect which authentication method to use.
+
+   Using the auto-detect feature will slow down requests, because they will
+   be sent twice.
+
+   Example::
+   
+    // Automatic guess
+    $config['caldav_http_auth_method'] = '';
+
+    // SabreDAV
+    $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
+
+    // DAViCal
+    $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+
 .. confval:: caldav_principal_url
 
    Used by AgenDAV to generate a principal URL for your CalDAV server. The
