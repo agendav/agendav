@@ -117,7 +117,11 @@ class Dialog_generator extends CI_Controller {
 			}
 		} else {
 			$dstart->setTime(0, 0);
-			$dend = clone $dstart;
+			if ($end === FALSE) {
+				$dend = clone $dstart;
+			} else {
+				$dend = $this->dates->fullcalendar2datetime($end, 'UTC');
+			}
 		}
 
 		// Calendars
