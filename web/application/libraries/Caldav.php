@@ -562,6 +562,44 @@ class Caldav {
 	}
 
 	/**
+	 * Searchs a principal based on passed conditions.
+	 */
+	function principal_property_search($user, $passwd,
+			$dn = null, $user_address = null,
+			$use_or = TRUE) {
+
+		$this->prepare_client($user, $passwd, '');
+
+		if (is_null($dn) && is_null($user_address)) {
+			$this->CI->extended_logs->message('ERROR',
+					'Call to principal_property_search '
+					.'with null dn and user_address');
+			return array('err_invalidinput', array());
+		}
+
+		// Build XML
+		$xml = '<principal-property-search xmlns="DAV:"' .
+			($use_or ? ' test="anyof"' : '') . '>';
+		if (!is_null($dn)) {
+			$xml .= '<property-search>';
+			$xml .= '<prop><displayname/></prop>';
+			$xml .= '<match>' . $dn . '</match></property-search>';
+		}
+
+		if (!is_null($user_address)) {
+			$xml .= '<property-search><prop>';
+			$xml .= '<C:calendar-user-address-set '
+				.'xmlns:C="urn:ietf:params:xml:ns:caldav"/></prop>';
+			$xml .= '<match>'.$user_address.'</match></property-search>';
+		}
+
+		$xml .=
+			'<prop><displayname/><email/></prop></principal-property-search>';
+
+		log_message('INTERNALS', var_export($xml, TRUE));
+	}
+
+	/**
 	 * Returns the public CalDAV URL for a calendar
 	 *
 	 * @param	$calendar	String in the form 'user:calendar', or just
