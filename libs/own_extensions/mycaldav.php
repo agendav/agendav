@@ -142,7 +142,7 @@ class MyCalDAV extends CalDAVClient {
 
 		// Get only last headers (needed when using unspecific HTTP auth
 		// method or request got redirected)
-		$this->httpResponseHeaders = preg_replace('/^.+\r\n\r\n/sU', '',
+		$this->httpResponseHeaders = preg_replace('/^.+\r\n\r\n(.+)/sU', '$1',
 				$this->httpResponseHeaders);
 
         // Parse response
