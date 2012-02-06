@@ -118,7 +118,6 @@ class Dialog_generator extends CI_Controller {
 		} else {
 			$dstart->setTime(0, 0);
 			$dend = clone $dstart;
-			$dend->add(new DateInterval('P1D'));
 		}
 
 		// Calendars
