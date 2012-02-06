@@ -622,12 +622,16 @@ div.selecthelper {
   zoom: 1;
 }
 
-.fc-event-vert .fc-event-title {
-  font-size: 95%;
-}
-
 .fc-button {
   cursor: default !important;
+}
+
+.fc-event .fc-event-inner {
+  font-size: 1.1em !important;
+}
+
+.fc-event-hori .fc-event-inner {
+  padding: 0.1em 0 0.2em 0;
 }
 
 div.calendar_color {
