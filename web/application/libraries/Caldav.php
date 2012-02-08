@@ -759,7 +759,7 @@ class Caldav {
 		}
 
 		$replacement = $use_principal 
-			. (empty($calendar) ? '' : '/' .  $calendar);
+			. (empty($calendar) ? '' : '/' .  rawurlencode($calendar));
 		$built = preg_replace('/%s/', $replacement, $calendar_url) 
 			. $href;
 
