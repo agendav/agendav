@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
