@@ -226,8 +226,6 @@ class Icshelper {
 	function parse_vevent_fullcalendar($vevent, 
 			$href, $etag, $calendar = 'calendario', $tz) {
 
-		//log_message('INTERNALS', 'PARA MOSTRAR: ' . $vevent->createComponent($xxx));
-
 		$this_event = array(
 				'href' => $href,
 				'calendar' => $calendar,
@@ -260,9 +258,13 @@ class Icshelper {
 				$end = $this->CI->dates->idt2datetime($duration,
 						$tz);
 			} else {
-				$this->CI->extended_logs->message('ERROR',
-						'Event with href=' . $href . ' has no '
-						. 'DTEND nor DURATION');
+				// RFC 2445, p52
+				if ($dtstart['value'] == 'DATE-TIME') {
+					$end = clone $start;
+				} else {
+					$end = clone $start;
+					$end->add(new DateInterval('P1D'));
+				}
 			}
 		}
 

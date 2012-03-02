@@ -298,7 +298,12 @@ class Dialog_generator extends CI_Controller {
 			}
 
 			$start_obj = $this->dates->fullcalendar2datetime($start, 'UTC');
-			$end_obj = $this->dates->fullcalendar2datetime($end, 'UTC');
+			if ($end == 'undefined') {
+				// Maybe same date and time. Clone start
+				$end_obj = clone $start_obj;
+			} else {
+				$end_obj = $this->dates->fullcalendar2datetime($end, 'UTC');
+			}
 
 			if ($allday == 'true') {
 				$data['allday'] = TRUE;
