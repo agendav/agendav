@@ -1080,7 +1080,7 @@ function calendar_modify_form(calendar_obj) {
 											$(calendar_obj).remove();
 										},
 										function(data) {
-											show_error(_('labels', 'error_caldelete'), data);
+											show_error(_('messages', 'error_caldelete'), data);
 										},
 										function() {}); 
 
