@@ -385,8 +385,7 @@ class Dialog_generator extends CI_Controller {
 				// Users who can access this calendar
 				$data['is_shared_calendar'] = FALSE;
 				$data['share_with'] =
-					$this->shared_calendars->users_with_access_to($calendar,
-							TRUE);
+					$this->shared_calendars->users_with_access_to($calendar);
 			} else {
 				$data['show_share_options'] = FALSE;
 			}
