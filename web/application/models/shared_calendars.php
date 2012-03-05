@@ -42,6 +42,7 @@ class Shared_calendars extends CI_Model {
 			$result[$index] = array(
 					'sid' => $c['sid'],
 					'user_from' => $c['user_from'],
+					'write_access' => $c['write_access'],
 					);
 			$options = unserialize($c['options']);
 			if (is_array($options)) {
@@ -92,21 +93,19 @@ class Shared_calendars extends CI_Model {
 	 * Get a list of users who can access a calendar
 	 *
 	 * @param $calendar		Complete calendar name (user:calendar)
-	 * @param $as_string	Return results as a comma separated string
-	 * 						(user1,user2,...)
 	 * @return				Associative array of the form:
-	 *						 ('username' => sid, 'username2' => sid2, ...)
-	 *						If $as_string was set as TRUE, then a comma
-	 *						separated string just with the names is returned
+	 *						 ('username' => ['sid' => sid, 'write_access' => write_access], 
+	 *						 ('username2' => ['sid' => sid2, 'write_access'
+	 *						 => write_access2], 
 	 *
 	 */
 
-	function users_with_access_to($calendar, $as_string = FALSE) {
+	function users_with_access_to($calendar) {
 		$pieces = preg_split('/:/', $calendar);
 		if (count($pieces) != 2) {
 			log_message('ERROR', 'Call to users_with_access_to() '
 					.'without full calendar specified (' . $calendar .')');
-			return ($as_string ? '' : array());
+			return array();
 		}
 
 		$user_from = $pieces[0];
@@ -119,13 +118,16 @@ class Shared_calendars extends CI_Model {
 		if (count($tmp) > 0) {
 			$tmp = array_values($tmp);
 			foreach ($tmp[0] as $sid => $share) {
-				$users[$share['user_which']] = $share['sid'];
+				$users[$share['user_which']] = array(
+					'sid' => $share['sid'],
+					'write_access' => $share['write_access'],
+					);
 			}
 
 			ksort($users);
 		}
 
-		return ($as_string ? implode(',', array_keys($users)) : $users);
+		return $users;
 	}
 
 	/**
@@ -138,9 +140,11 @@ class Shared_calendars extends CI_Model {
 	 * @param $to	User id who's getting calendar rights
 	 * @param $options	Associative array with options for this calendar
 	 *   (color, displayname, ...)
+	 * @param $write_access	Use read+write profile on TRUE, read otherwise
 	 * @return boolean	FALSE on error, TRUE otherwise
 	 */
-	function store($sid = null, $from = '', $calendar = '', $to = '', $options = array()) {
+	function store($sid = null, $from = '', $calendar = '', $to = '',
+			$options = array(), $write_access = FALSE) {
 		if (empty($from) || empty($calendar) || empty($to)) {
 			log_message('ERROR', 
 					'Call to shared_calendars->store() with no enough parameters');
@@ -154,14 +158,12 @@ class Shared_calendars extends CI_Model {
 				'calendar' => $calendar,
 				'user_which' => $to,
 				'options' => serialize($options),
+				'write_access' => $write_access ? '1' : '0',
 				);
 
 		$res = false;
 		if (!is_null($sid)) {
-			$conditions = $data;
-			unset($conditions['options']);
-			$conditions['sid'] = $sid;
-			$data = array('options' => serialize($options));
+			$conditions = array('sid' => $sid);
 
 			$this->db->where($conditions);
 			$res = $this->db->update('shared', $data);
