@@ -14,6 +14,7 @@ CREATE TABLE `shared` (
   `calendar` varchar(255) NOT NULL,
   `user_which` varchar(255) NOT NULL,
   `options` mediumtext NOT NULL,
+  `write_access` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sid`),
   KEY `shareidx` (`user_from`,`calendar`),
   KEY `sharedwithidx` (`user_which`)
