@@ -596,7 +596,14 @@ class Caldav {
 		$xml .=
 			'<prop><displayname/><email/></prop></principal-property-search>';
 
-		log_message('INTERNALS', var_export($xml, TRUE));
+		// Do request
+		$url = $this->build_principal_url($user);
+
+		$res = $this->client->principal_property_search($xml, $url);
+
+		return array(
+				$this->client->GetHTTPResultCode(),
+				$res);
 	}
 
 	/**

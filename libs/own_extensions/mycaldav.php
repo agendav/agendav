@@ -354,4 +354,54 @@ class CURLCalDAVClient extends CalDAVClient {
 		return TRUE;
 	}
 
+	/**
+	 * Queries server using a principal-property search
+	 *
+	 * @param string	XML request
+	 * @param string	URL
+	 * @return			FALSE on error, array with results otherwise
+	 */
+	function principal_property_search($xml_text, $url) {
+		$result = array();
+		$this->DoXMLRequest('REPORT', $xml_text, $url);
+
+		if ($this->httpResultCode == '207') {
+			$errmsg = $this->httpResultCode;
+			// Find response tag(s)
+			if (isset($this->xmltags['DAV::response'])) {
+				foreach ($this->xmltags['DAV::response'] as $i => $node) {
+					if ($this->xmlnodes[$node]['type'] == 'close') {
+						continue;
+					}
+
+					$result[$i]['href'] =
+						$this->HrefForProp('DAV::response', $i+1);
+
+					$level = $this->xmlnodes[$node]['level'];
+					$level++;
+
+					$ok_props = $this->GetOKProps($node);
+
+					foreach ($ok_props as $v) {
+						switch($v['tag']) {
+							case 'DAV::displayname':
+								$result[$i]['displayname'] =
+									isset($v['value']) ? $v['value'] : '';
+								break;
+							case 'DAV::email':
+								$result[$i]['email'] = 
+									isset($v['value']) ? $v['value'] : '';
+								break;
+						}
+					}
+
+				}
+			}
+		} else if ($this->httpResultCode != 200) {
+			return 'Unknown HTTP code';
+		}
+
+		return $result;
+	}
+
 }
