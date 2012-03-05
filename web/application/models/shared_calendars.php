@@ -89,7 +89,7 @@ class Shared_calendars extends CI_Model {
 	}
 
 	/**
-	 * Get a list of users which an user can access
+	 * Get a list of users who can access a calendar
 	 *
 	 * @param $calendar		Complete calendar name (user:calendar)
 	 * @param $as_string	Return results as a comma separated string
