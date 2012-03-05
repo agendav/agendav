@@ -163,3 +163,19 @@ $config['calendar_colors'] = array(
  */
 
 $config['enable_calendar_sharing'] = TRUE;
+
+
+// Default permissions for calendar owner
+$config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
+		'read-current-user-privilege-set', 'write-acl', 'C:read-free-busy',
+		'write', 'write-properties', 'write-content', 'bind', 'unbind');
+
+// Permissions for sharing calendars using the 'read' profile
+$config['read_profile_permissions'] = array('C:read-free-busy', 'read');
+
+// Permissions for sharing calendars using the 'read+write' profile
+$config['read_write_profile_permissions'] = array('C:read-free-busy',
+		'read', 'write');
+
+// Authenticated users default permissions
+$config['default_permissions'] = array('C:read-free-busy');
