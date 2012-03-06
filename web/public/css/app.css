@@ -208,6 +208,19 @@ li.selected_calendar div.calendar_color {
   height: 10px !important;
 }
 
+table {
+  width: 100%;
+  max-width: 100%;
+}
+
+table th,
+table td {
+  padding: 8px;
+  vertical-align: top;
+  text-align: left;
+  line-height: 18px;
+}
+
 /* Loadmask starts */
 .loadmask {
     z-index: 100;
