@@ -208,13 +208,13 @@ li.selected_calendar div.calendar_color {
   height: 10px !important;
 }
 
-table {
+div.ui-dialog-content table {
   width: 100%;
   max-width: 100%;
 }
 
-table th,
-table td {
+div.ui-dialog-content table td,
+div.ui-dialog-content table th {
   padding: 4px;
   vertical-align: top;
   text-align: left;
