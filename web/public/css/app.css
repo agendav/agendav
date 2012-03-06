@@ -90,7 +90,7 @@ img {
   font-weight: bold;
 }
 
-#topbar div.current_username {
+div.username {
   font-style: italic;
   color: black;
   display: inline;

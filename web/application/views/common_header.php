@@ -65,7 +65,7 @@ $img_logout = array(
 		'id' => 'logoutbutton',
         );
 ?>
-<div class="current_username"><?php echo $this->auth->get_user(); ?></div> | <?php echo anchor('calendar/logout', img($img_logout))?>
+<div class="username"><?php echo $this->auth->get_user(); ?></div> | <?php echo anchor('calendar/logout', img($img_logout))?>
 <?php
 endif;
 ?>
