@@ -36,21 +36,25 @@ $img_add = array(
         'src' => 'img/calendar_add.png',
         'alt' => $this->i18n->_('labels', 'create'),
         'title' => $this->i18n->_('labels', 'create'),
+		'class' => 'pseudobutton',
+		'id' => 'calendar_add',
         );
 
 $img_refresh = array(
         'src' => 'img/arrow_refresh.png',
         'alt' => $this->i18n->_('labels', 'refresh'),
         'title' => $this->i18n->_('labels', 'refresh'),
+		'class' => 'pseudobutton',
+		'id' => 'calendar_list_refresh',
         );
 
 $items = array(
-		'calendar_add' => img($img_add),
-		'calendar_list_refresh' => img($img_refresh),
+		img($img_add),
+		img($img_refresh),
 		);
 
-foreach ($items as $id => $item) {
-	echo '<span class="item" id="'.$id.'">' . $item . '</span>';
+foreach ($items as $item) {
+	echo $item;
 }
 
 ?> 
