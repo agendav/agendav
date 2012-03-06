@@ -178,6 +178,8 @@ div.block div.links span.item:hover {
 .calendar_list ul, #calendar_list li {
   list-style: none;
   cursor: default;
+  padding: 0;
+  margin: 0;
 }
 
 .calendar_list li {

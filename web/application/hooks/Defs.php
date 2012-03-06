@@ -35,6 +35,7 @@ class Defs {
 			);
 
 	static $cssfiles = array(
+			'normalize.css',
 			'Aristo_20111229.css',
 			'fullcalendar.1.5.2.css',
 			'jquery.qtip.min.css',
