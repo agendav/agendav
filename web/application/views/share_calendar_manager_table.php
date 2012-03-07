@@ -18,6 +18,7 @@ foreach ($shares as $user => $data) {
 	$orig_sids[] = $data['sid'];
 	$this->load->view('share_calendar_manager_row',
 			array(
+				'sid' => $data['sid'],
 				'user' => $user,
 				'write_access' => $data['write_access'],
 				));
