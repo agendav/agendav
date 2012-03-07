@@ -382,7 +382,7 @@ div.ui-dialog-content table th {
 
 /* overlay starts */
 
-#view_event_details_template {
+#view_event_details_template, #share_calendar_manager_row_template {
   display: none;
 }
 

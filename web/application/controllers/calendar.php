@@ -46,6 +46,7 @@ class Calendar extends CI_Controller {
 		$this->load->view('common_header', $data_header);
 		$this->load->view('calendar_page', $data_calendar);
 		$this->load->view('event_details_template');
+		$this->load->view('share_calendar_manager_row_template');
 
 		$this->load->view('footer',
 				array(

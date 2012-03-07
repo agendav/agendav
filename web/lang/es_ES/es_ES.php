@@ -113,6 +113,7 @@ $labels['deletecalendar'] = 'Borrar calendario';
 $labels['calendars'] = 'Calendarios';
 $labels['refresh'] = 'Refrescar';
 $labels['delete'] = 'Borrar';
+$labels['add'] = 'Añadir';
 $labels['close'] = 'Cerrar';
 $labels['save'] = 'Guardar';
 $labels['create'] = 'Crear';
@@ -127,6 +128,9 @@ $labels['untitled'] = 'Sin título';
 
 $labels['sharewith'] = 'Compartir con';
 $labels['publicurl'] = 'URL para clientes de escritorio';
+
+$labels['readonly'] = 'Sólo lectura';
+$labels['readandwrite'] = 'Lectura y escritura';
 
 // Messages
 $messages['error_auth'] = 'Nombre de usuario o contraseña inválidos';

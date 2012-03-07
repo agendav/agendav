@@ -32,15 +32,6 @@ echo form_hidden('shared', ($show_share_options && $is_shared_calendar) ? 'true'
 if ($show_share_options && $is_shared_calendar) {
 	echo form_hidden('sid', isset($sid) ? $sid : '?');
 	echo form_hidden('user_from', isset($user_from) ? $user_from : '?');
-} else if ($show_share_options) {
-	// Users who can access this calendar
-	$form_share_with = array(
-			'name' => 'share_with',
-			'value' => $share_with,
-			'class' => 'share_with large',
-			'maxlength' => '255',
-			'size' => '25',
-			);
 }
 
 $form_displayname = array(
@@ -96,16 +87,18 @@ endif;
 
 <?php
 if ($show_share_options && !$is_shared_calendar):
+
 ?>
 <div id="tabs-share">
 	<div class="share_info ui-corner-all">
 	<?php echo $this->i18n->_('messages', 'info_shareexplanation');?>
 	</div>
+
 <?php
-echo formelement(
-		$this->i18n->_('labels', 'sharewith'),
-		form_input($form_share_with));
+	$this->load->view('share_calendar_manager_table',
+			array('shares' => $share_with));
 ?>
+
 </div>
 <?php
 endif;

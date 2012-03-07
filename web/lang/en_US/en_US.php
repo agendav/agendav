@@ -112,6 +112,7 @@ $labels['deletecalendar'] = 'Delete calendar';
 $labels['calendars'] = 'Calendars';
 $labels['refresh'] = 'Refresh';
 $labels['delete'] = 'Delete';
+$labels['add'] = 'Add';
 $labels['close'] = 'Close';
 $labels['save'] = 'Save';
 $labels['create'] = 'Create';
@@ -126,6 +127,9 @@ $labels['untitled'] = 'Untitled';
 
 $labels['sharewith'] = 'Share with';
 $labels['publicurl'] = 'URL for calendaring desktop applications';
+
+$labels['readonly'] = 'Read only';
+$labels['readandwrite'] = 'Read and write';
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';

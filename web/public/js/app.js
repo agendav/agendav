@@ -23,6 +23,7 @@ var ced = '#com_event_dialog';
 var ccd = '#create_calendar_dialog';
 var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
+var scmr = '#share_calendar_manager_row_template';
 
 $(document).ready(function() {
 	// Load i18n strings
@@ -1126,10 +1127,9 @@ function calendar_modify_form(calendar_obj) {
 		function() {
 			$('input.pick_color').colorPicker();
 			$(mcd + '_tabs').tabs();
-			$('input.share_with').tagit({
-				'caseSensitive': false,
-				'removeConfirmation': true
-			});
+
+			// Handle list events
+			share_manager($(mcd + ' .share_calendar_manager'));
 		},
 		title,
 		buttons_and_actions,
@@ -1566,6 +1566,52 @@ function adjust_calendar_names_width() {
 		}
 
 		li.find('span.text').width(adjust);
+	});
+}
+
+/**
+ * Handles events on share calendar dialog
+ */
+function share_manager(el) {
+	el.on('click', '.share_calendar_manager_delete', function(event) {
+		$(this).parent().parent().fadeOut('fast');
+	});
+
+	el.on('click', '.share_calendar_manager_add', function(event) {
+		var new_user = $(this).parent().parent()
+			.find('.share_calendar_manager_username_new').val();
+		var access = $(this).parent().parent()
+			.find('select').val();
+		if (new_user != '') {
+			// Check if new_user is already on list
+			var already_added = false;
+			$(this).parent().parent().parent().find('.share_data_username')
+				.each(function(index) {
+					if (!already_added && $(this).text() == new_user) {
+						already_added = true;
+						$(this).parent().parent().effect('highlight', {}, 'slow');
+
+					}
+				});
+
+			if (!already_added) {
+				var new_row = $(scmr).clone().find('tbody');
+
+				new_row
+						.find('.share_data_username')
+							.html(new_user).end()
+						.find('select')
+							.val(access).end();
+
+				$(this).parent().parent()
+					.before(new_row.html())
+					.find('.share_calendar_manager_username_new').val('');
+
+				// User chose this option
+				$(this).parent().parent().prev().find('select').val(access);
+			}
+		}
+
 	});
 }
 // vim: sw=2 tabstop=2
