@@ -12,7 +12,7 @@ $img_share_delete = array(
 		'title' => $this->i18n->_('labels', 'delete'),
 		);
 ?>
-<tr<?php echo (isset($sid)) ? ' class="sid-' . $sid . '"' : '';?>>
+<tr<?php echo (isset($sid)) ? ' id="sid-' . $sid . '"' : '';?>>
 <td><div class="username share_data_username"><?php echo $user ?></div></td>
 <td class="share_data_other">
 <?php
