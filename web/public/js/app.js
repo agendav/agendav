@@ -1094,6 +1094,11 @@ function calendar_modify_form(calendar_obj) {
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
 				var thisform = $('#modify_calendar_form');
+				// Add shares to form
+				// (remove first)
+				thisform.find('.generated_share').remove();
+				_generate_share_hidden_inputs(thisform);
+
 				proceed_send_ajax_form(thisform,
 					function(data) {
 						destroy_dialog(mcd);
@@ -1614,4 +1619,41 @@ function share_manager(el) {
 
 	});
 }
+
+/**
+ * Generates required hidden input fields for
+ * each row in the share calendar manager
+ */
+function _generate_share_hidden_inputs(el) {
+
+	$(mcd + ' .share_calendar_manager > tbody > tr:not(:last)').each(function(i) {
+		var list = {};
+
+		// Share ID
+		var sid = $(this).attr('id');
+		if (sid !== undefined) {
+			sid = sid.replace('sid-', '');
+			$.extend(list, { sid: sid });
+		}
+
+		// User and type of access
+		var username = $(this).find('.share_data_username:first').html();
+		var write_access = $(this).find('select').val();
+
+		$.extend(list, {
+			username: username,
+			write_access: write_access
+		});
+
+		$.each(list, function(index, value) {
+			// i is the index of the row,
+			// index is the name of the attribute
+			el.append($('<input type="hidden">')
+				.attr('name', 'share_with['+i+']['+index+']')
+				.val(value));
+		});
+
+	});
+}
+
 // vim: sw=2 tabstop=2

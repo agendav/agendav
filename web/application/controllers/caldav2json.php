@@ -837,6 +837,7 @@ class Caldav2json extends CI_Controller {
 		$sid = $this->input->post('sid');
 		$user_from = $this->input->post('user_from');
 		$share_with = $this->input->post('share_with');
+		$orig_sids = $this->input->post('orig_sids');
 
 		if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
 				FALSE || ($is_sharing_enabled && $shared === FALSE)) {
@@ -911,7 +912,7 @@ class Caldav2json extends CI_Controller {
 
 		// Set ACLs
 		if ($is_sharing_enabled && $res === TRUE && $shared != 'true') {
-			if (empty($share_with)) {
+			if (!is_array($share_with)) {
 				$arr_share_with = array();
 			} else {
 				$share_with = strtolower($share_with);
