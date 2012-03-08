@@ -161,6 +161,11 @@ class Shared_calendars extends CI_Model {
 				'write_access' => $write_access ? '1' : '0',
 				);
 
+		// Preserve options
+		if (is_null($options)) {
+			unset($data['options']);
+		}
+
 		$res = false;
 		if (!is_null($sid)) {
 			$conditions = array('sid' => $sid);
