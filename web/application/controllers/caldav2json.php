@@ -939,7 +939,7 @@ class Caldav2json extends CI_Controller {
 				foreach ($share_with as $share) {
 					if (!isset($share['username']) ||
 							!isset($share['write_access'])) {
-						$this->extended_logs->messages('ERROR', 
+						$this->extended_logs->message('ERROR', 
 								'Ignoring incomplete share row attributes'
 								.' on calendar modification: '
 								. serialize($share));
