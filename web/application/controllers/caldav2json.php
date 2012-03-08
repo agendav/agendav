@@ -464,6 +464,10 @@ class Caldav2json extends CI_Controller {
 								.' Repeated UID');
 					}
 					break;
+				case '403':
+					$this->_throw_error($this->i18n->_('messages',
+								'error_denied'));
+					break;
 				default:
 					$this->_throw_error( $this->i18n->_('messages',
 								'error_unknownhttpcode',
