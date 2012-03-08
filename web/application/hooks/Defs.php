@@ -27,7 +27,6 @@ class Defs {
 			'libs/fullcalendar.min.js',
 			'libs/jquery.loadmask.min.js',
 			'libs/jquery.colorPicker.20091014.js',
-			'libs/tag-it.20110621.js',
 			'libs/jquery.qtip.min.js',
 			'libs/jquery.colorhelpers.js',
 			'libs/jquery.timePicker.20110318.js',
