@@ -605,3 +605,8 @@ div.pseudobutton:hover,
 img.pseudobutton:hover {
   background-color: #f0f0f0;
 }
+
+table.share_calendar_manager tr td {
+  vertical-align: middle;
+}
+
