@@ -1654,7 +1654,7 @@ function share_manager_no_entries_placeholder() {
  */
 function _generate_share_hidden_inputs(el) {
 
-	$(mcd + ' .share_calendar_manager > tbody > tr:not(:last)').each(function(i) {
+	$(mcd + ' table.share_calendar_manager > tbody > tr').each(function(i) {
 		var list = {};
 
 		// Share ID
