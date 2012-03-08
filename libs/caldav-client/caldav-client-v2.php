@@ -428,9 +428,11 @@ class CalDAVClient {
       $save_http_result = $this->httpResultCode;
       $this->DoHEADRequest( $url );
       if ( preg_match( '{^Etag:\s+"([^"]*)"\s*$}im', $this->httpResponseHeaders, $matches ) ) $etag = $matches[1];
+	  /*
       if ( !isset($etag) || $etag == '' ) {
         printf( "Still No etag in:\n%s\n", $this->httpResponseHeaders );
       }
+	  */
       $this->httpRequest = $save_request;
       $this->httpResponseHeaders = $save_response_headers;
       $this->httpResultCode = $save_http_result;
