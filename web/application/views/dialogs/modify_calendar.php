@@ -90,10 +90,6 @@ if ($show_share_options && !$is_shared_calendar):
 
 ?>
 <div id="tabs-share">
-	<div class="share_info ui-corner-all">
-	<?php echo $this->i18n->_('messages', 'info_shareexplanation');?>
-	</div>
-
 <?php
 	$this->load->view('share_calendar_manager_table',
 			array('shares' => $share_with));
