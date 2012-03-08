@@ -58,5 +58,5 @@ $img_share_add = array(
 </table>
 <?php
 foreach ($orig_sids as $sid) {
-	echo form_hidden('orig_sids[]', $sid);
+	echo form_hidden('orig_sids['.$sid.']', '1');
 }
