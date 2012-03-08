@@ -41,7 +41,15 @@ $img_share_add = array(
 		'title' => $this->i18n->_('labels', 'add'),
 		);
 ?>
-<tr class="share_calendar_manager_new">
+<tr class="share_calendar_manager_empty">
+ <td colspan="3">This calendar is not being shared with anyone</td>
+</tr>
+</tbody>
+</table>
+
+<table class="share_calendar_manager_new">
+<tbody>
+<tr>
  <td><div class="username"><?php
  echo form_input($form_new_username_share);
  ?></div></td>

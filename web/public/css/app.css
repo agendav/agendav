@@ -606,7 +606,19 @@ img.pseudobutton:hover {
   background-color: #f0f0f0;
 }
 
-table.share_calendar_manager tr td {
+table.share_calendar_manager tr td,
+table.share_calendar_manager_new tr td {
   vertical-align: middle;
+}
+
+tr.share_calendar_manager_empty td {
+  text-align: center !important;
+  display: none;
+}
+
+table.share_calendar_manager_new {
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  background-color: #f6f6f6;
 }
 

@@ -1134,7 +1134,7 @@ function calendar_modify_form(calendar_obj) {
 			$(mcd + '_tabs').tabs();
 
 			// Handle list events
-			share_manager($(mcd + ' .share_calendar_manager'));
+			share_manager();
 		},
 		title,
 		buttons_and_actions,
@@ -1577,12 +1577,23 @@ function adjust_calendar_names_width() {
 /**
  * Handles events on share calendar dialog
  */
-function share_manager(el) {
-	el.on('click', '.share_calendar_manager_delete', function(event) {
-		$(this).parent().parent().fadeOut('fast', function() { $(this).remove() });
-	});
+function share_manager() {
+	var manager = $(mcd + ' table.share_calendar_manager');
+	var new_entry_form = $(mcd + ' table.share_calendar_manager_new');
 
-	el.on('click', '.share_calendar_manager_add', function(event) {
+	share_manager_no_entries_placeholder();
+
+	manager.on('click', 
+		'.share_calendar_manager_delete', function(event) {
+			$(this).parent().parent()
+				.fadeOut('fast', function() { 
+					$(this).remove();
+					share_manager_no_entries_placeholder();
+				});
+		});
+
+	new_entry_form.on('click', 
+		'.share_calendar_manager_add', function(event) {
 		var new_user = $(this).parent().parent()
 			.find('.share_calendar_manager_username_new').val();
 		var access = $(this).parent().parent()
@@ -1590,12 +1601,11 @@ function share_manager(el) {
 		if (new_user != '') {
 			// Check if new_user is already on list
 			var already_added = false;
-			$(this).parent().parent().parent().find('.share_data_username')
+			manager.find('.share_data_username')
 				.each(function(index) {
 					if (!already_added && $(this).text() == new_user) {
 						already_added = true;
 						$(this).parent().parent().effect('highlight', {}, 'slow');
-
 					}
 				});
 
@@ -1608,16 +1618,34 @@ function share_manager(el) {
 						.find('select')
 							.val(access).end();
 
+				manager.find('tbody').append(new_row.html());
+
+				// Reset form
 				$(this).parent().parent()
-					.before(new_row.html())
 					.find('.share_calendar_manager_username_new').val('');
 
 				// User chose this option
-				$(this).parent().parent().prev().find('select').val(access);
+				manager
+					.find('tbody tr:last select')
+					.val(access);
+
+				share_manager_no_entries_placeholder();
 			}
 		}
 
 	});
+}
+
+/**
+ * Shows the placeholder for empty share lists
+ */
+function share_manager_no_entries_placeholder() {
+	var manager = $(mcd + ' table.share_calendar_manager');
+	if (manager.find('tbody tr').length == 1) {
+		manager.find('tr.share_calendar_manager_empty td').show();
+	} else {
+		manager.find('tr.share_calendar_manager_empty td').hide();
+	}
 }
 
 /**
