@@ -1579,7 +1579,7 @@ function adjust_calendar_names_width() {
  */
 function share_manager(el) {
 	el.on('click', '.share_calendar_manager_delete', function(event) {
-		$(this).parent().parent().fadeOut('fast');
+		$(this).parent().parent().fadeOut('fast', function() { $(this).remove() });
 	});
 
 	el.on('click', '.share_calendar_manager_add', function(event) {
