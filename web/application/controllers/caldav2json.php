@@ -835,10 +835,6 @@ class Caldav2json extends CI_Controller {
 		$calendar_color = $this->input->post('calendar_color');
 
 		$is_shared_calendar = $this->input->post('is_shared_calendar');
-		// Calculate boolean value
-		$is_shared_calendar = ($is_shared_calendar === FALSE ? 
-				FALSE :
-				($is_shared_calendar == 'true'));
 
 		// If calendar is from another user, the following two variables
 		// contain the share id and user which shared it respectively
@@ -860,6 +856,11 @@ class Caldav2json extends CI_Controller {
 			$this->_throw_error($this->i18n->_('messages',
 						'error_interfacefailure'));
 		}
+
+		// Calculate boolean value for is_shared_calendar
+		$is_shared_calendar = ($is_shared_calendar === FALSE ?
+				FALSE :
+				($is_shared_calendar == 'true'));
 
 		if ($is_sharing_enabled && $is_shared_calendar && ($sid === FALSE || $user_from === FALSE)) {
 			$this->extended_logs->message('ERROR', 
@@ -926,21 +927,21 @@ class Caldav2json extends CI_Controller {
 
 		// Set ACLs
 		if ($is_sharing_enabled && $res === TRUE && !$is_shared_calendar) {
-			if (!is_array($share_with)) {
-				$arr_share_with = array();
-			} else {
-				$share_with = strtolower($share_with);
-				$arr_share_with = explode(',', $share_with);
-				$arr_share_with = array_unique($arr_share_with);
-				sort($arr_share_with);
+			$set_shares = array();
 
-				// Remove current user from array
-				$pos_current_user = array_search($this->auth->get_user(),
-						$arr_share_with);
-				if ($pos_current_user !== FALSE) {
-					unset($arr_share_with[$pos_current_user]);
-					// Recalculate numeric indexes
-					$arr_share_with = array_values($arr_share_with);
+			if (!is_array($share_with)) {
+				$share_with = array();
+			} else {
+				foreach ($share_with as $share) {
+					if (!isset($share['username']) ||
+							!isset($share['write_access'])) {
+						$this->extended_logs->messages('ERROR', 
+								'Ignoring incomplete share row attributes'
+								.' on calendar modification: '
+								. serialize($share));
+					} else {
+						$set_shares[] = $share;
+					}
 				}
 			}
 
@@ -948,30 +949,34 @@ class Caldav2json extends CI_Controller {
 					$this->auth->get_user(),
 					$this->auth->get_passwd(),
 					$internal_calendar,
-					$arr_share_with);
+					$set_shares);
 
 			// Update shares on database
 			if ($res === TRUE) {
-				$current =
-					$this->shared_calendars->users_with_access_to($calendar);
+				$orig_sids = (is_array($orig_sids) ? $orig_sids : array());
 
-				$current_uids = array_keys($current);
+				$updated_sids = array();
 
-				if ($current_uids != $arr_share_with) {
-					$remove = array_diff($current_uids, $arr_share_with);
-					$add = array_diff($arr_share_with, $current_uids);
+				foreach ($set_shares as $share) {
+					$this_sid = isset($share['sid']) ?
+								$share['sid'] : null;
 
-					// New users
-					foreach ($add as $added_user) {
-						$this->shared_calendars->store(null,
-								$this->auth->get_user(),
-								$internal_calendar,
-								$added_user);
+					$this->shared_calendars->store(
+							$this_sid,
+							$this->auth->get_user(),
+							$internal_calendar,
+							$share['username'],
+							null, 					// Preserve options
+							($share['write_access'] == 'rw' ? '1' : '0'));
+
+					if (!is_null($this_sid)) {
+						$updated_sids[$this_sid] = true;
 					}
+				}
 
-					// Removed users
-					foreach ($remove as $removed_user) {
-						$sid = $current[$removed_user];
+				// Removed users
+				foreach ($orig_sids as $sid) {
+					if (!isset($updated_sids[$sid])) {
 						$this->shared_calendars->remove($sid);
 					}
 				}
