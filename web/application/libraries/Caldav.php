@@ -675,8 +675,8 @@ class Caldav {
 	/**
 	 * Generates a complete ACL to be set on a calendar
 	 *
-	 * @param $share_with	Array of user identifiers who will have access
-	 * 						to this calendar
+	 * @param $share_with	Array of shares in the form:
+	 *						[ user => r, user2 => rw, ...]
 	 *
 	 * @return	boolean		TRUE if everything went ok, FALSE otherwise
 	 */
@@ -690,20 +690,22 @@ class Caldav {
 
 		// Permissions
 		$owner_perm = $this->CI->config->item('owner_permissions');
-		$share_perm = $this->CI->config->item('share_permissions');
+		$r_perm = $this->CI->config->item('read_profile_permissions');
+		$rw_perm = $this->CI->config->item('read_write_profile_permissions');
 		$other_perm = $this->CI->config->item('default_permissions');
 
 		// Owner permissions
-		$aces[] = $this->_ace_for($xml, FALSE, $owner_perm, TRUE);
+		$aces[] = $this->_ace_for($xml, null, $owner_perm, TRUE);
 
 		// User which can access this calendar
-		foreach ($share_with as $user) {
+		foreach ($share_with as $user => $share_profile) {
 			$user_url = $this->build_principal_url($user);
-			$aces[] = $this->_ace_for($xml, $user_url, $share_perm);
+			$aces[] = $this->_ace_for($xml, $user_url,
+					($share_profile == 'rw' ?  $rw_perm : $r_perm));
 		}
 
 		// Other users
-		$aces[] = $this->_ace_for($xml, FALSE, $other_perm, FALSE, TRUE);
+		$aces[] = $this->_ace_for($xml, null, $other_perm, FALSE);
 
 		return $xml->Render('acl', $aces);
 	}
@@ -711,13 +713,14 @@ class Caldav {
 	/**
 	 * Generates an ACE element
 	 */
-	function _ace_for(&$xmldoc, $user, $perms = array(), $owner = FALSE, $other =
-			FALSE) {
+	function _ace_for(&$xmldoc, $user = null, $perms = array(),
+			$is_owner = FALSE) {
 		$ace = $xmldoc->NewXMLElement('ace');
 		$principal = $ace->NewElement('principal');
-		if ($owner === TRUE) {
+
+		if ($is_owner === TRUE) {
 			$principal->NewElement('property')->NewElement('owner');
-		} elseif ($other === TRUE) {
+		} elseif (is_null($user)) {
 			$principal->NewElement('authenticated');
 		} else {
 			$principal->NewElement('href', $user);
