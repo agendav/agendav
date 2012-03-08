@@ -676,7 +676,8 @@ class Caldav {
 	 * Generates a complete ACL to be set on a calendar
 	 *
 	 * @param $share_with	Array of shares in the form:
-	 *						[ user => r, user2 => rw, ...]
+	 *						[ [sid?, username, write_access],
+	 *                        [sid2?, username2, write_access2] ..]
 	 *
 	 * @return	boolean		TRUE if everything went ok, FALSE otherwise
 	 */
@@ -698,10 +699,10 @@ class Caldav {
 		$aces[] = $this->_ace_for($xml, null, $owner_perm, TRUE);
 
 		// User which can access this calendar
-		foreach ($share_with as $user => $share_profile) {
-			$user_url = $this->build_principal_url($user);
+		foreach ($share_with as $share) {
+			$user_url = $this->build_principal_url($share['username']);
 			$aces[] = $this->_ace_for($xml, $user_url,
-					($share_profile == 'rw' ?  $rw_perm : $r_perm));
+					($share['write_access'] == 'rw' ?  $rw_perm : $r_perm));
 		}
 
 		// Other users
