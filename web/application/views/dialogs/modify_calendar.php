@@ -28,7 +28,7 @@ $show_share_options = (isset($show_share_options) ? $show_share_options :
 echo form_hidden('calendar', $calendar);
 
 
-echo form_hidden('shared', ($show_share_options && $is_shared_calendar) ? 'true' : 'false');
+echo form_hidden('is_shared_calendar', ($show_share_options && $is_shared_calendar) ? 'true' : 'false');
 if ($show_share_options && $is_shared_calendar) {
 	echo form_hidden('sid', isset($sid) ? $sid : '?');
 	echo form_hidden('user_from', isset($user_from) ? $user_from : '?');

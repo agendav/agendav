@@ -833,21 +833,35 @@ class Caldav2json extends CI_Controller {
 		$calendar = $this->input->post('calendar');
 		$displayname = $this->input->post('displayname');
 		$calendar_color = $this->input->post('calendar_color');
-		$shared = $this->input->post('shared');
+
+		$is_shared_calendar = $this->input->post('is_shared_calendar');
+		// Calculate boolean value
+		$is_shared_calendar = ($is_shared_calendar === FALSE ? 
+				FALSE :
+				($is_shared_calendar == 'true'));
+
+		// If calendar is from another user, the following two variables
+		// contain the share id and user which shared it respectively
 		$sid = $this->input->post('sid');
 		$user_from = $this->input->post('user_from');
+
+		// In case this calendar is owned by current user, this will contain
+		// a list of users he/she wants to share the calendar with
 		$share_with = $this->input->post('share_with');
+
+		// When modifying your own calendar, these share ids will help
+		// calculate needed database updates
 		$orig_sids = $this->input->post('orig_sids');
 
 		if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
-				FALSE || ($is_sharing_enabled && $shared === FALSE)) {
+				FALSE || ($is_sharing_enabled && $is_shared_calendar === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
 						'error_interfacefailure'));
 		}
 
-		if ($is_sharing_enabled && $shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
+		if ($is_sharing_enabled && $is_shared_calendar && ($sid === FALSE || $user_from === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with shared calendar and incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
@@ -881,7 +895,7 @@ class Caldav2json extends CI_Controller {
 
 
 		// Proceed to modify calendar
-		if ($shared != 'true') {
+		if (!$is_shared_calendar) {
 			$replace_pattern = '/^' . $this->auth->get_user() . ':/';
 			$internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
@@ -911,7 +925,7 @@ class Caldav2json extends CI_Controller {
 		}
 
 		// Set ACLs
-		if ($is_sharing_enabled && $res === TRUE && $shared != 'true') {
+		if ($is_sharing_enabled && $res === TRUE && !$is_shared_calendar) {
 			if (!is_array($share_with)) {
 				$arr_share_with = array();
 			} else {
