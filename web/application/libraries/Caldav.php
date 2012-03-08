@@ -702,7 +702,7 @@ class Caldav {
 		foreach ($share_with as $share) {
 			$user_url = $this->build_principal_url($share['username']);
 			$aces[] = $this->_ace_for($xml, $user_url,
-					($share['write_access'] == 'rw' ?  $rw_perm : $r_perm));
+					($share['write_access'] == '1' ?  $rw_perm : $r_perm));
 		}
 
 		// Other users

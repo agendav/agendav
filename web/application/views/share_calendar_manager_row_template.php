@@ -4,7 +4,7 @@
 $this->load->view('share_calendar_manager_row',
 		array(
 				'user' => '',
-				'write_access' => 'r',
+				'write_access' => '0',
 			));
 ?>
 </table>

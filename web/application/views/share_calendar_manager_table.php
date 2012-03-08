@@ -1,7 +1,7 @@
 <?php
-$access_options = array(
-		'r' => $this->i18n->_('labels', 'readonly'),
-		'rw' => $this->i18n->_('labels', 'readandwrite'),
+$write_access_options = array(
+		'0' => $this->i18n->_('labels', 'readonly'),
+		'1' => $this->i18n->_('labels', 'readandwrite'),
 		);
 
 $orig_sids = array();
@@ -47,7 +47,7 @@ $img_share_add = array(
  ?></div></td>
  <td>
  <?php 
-   echo form_dropdown('access', $access_options, 'r');
+   echo form_dropdown('write_access', $write_access_options, 'r');
  ?>
  </td>
  <td>

@@ -971,15 +971,15 @@ class Caldav2json extends CI_Controller {
 							$internal_calendar,
 							$share['username'],
 							null, 					// Preserve options
-							($share['write_access'] == 'rw' ? '1' : '0'));
+							($share['write_access'] == '1'));
 
 					if (!is_null($this_sid)) {
 						$updated_sids[$this_sid] = true;
 					}
 				}
 
-				// Removed users
-				foreach ($orig_sids as $sid) {
+				// Removed shares
+				foreach (array_keys($orig_sids) as $sid) {
 					if (!isset($updated_sids[$sid])) {
 						$this->shared_calendars->remove($sid);
 					}

@@ -1,8 +1,8 @@
 <?php
 // TODO i18n
-$access_options = array(
-		'r' => $this->i18n->_('labels', 'readonly'),
-		'rw' => $this->i18n->_('labels', 'readandwrite'),
+$write_access_options = array(
+		'0' => $this->i18n->_('labels', 'readonly'),
+		'1' => $this->i18n->_('labels', 'readandwrite'),
 		);
 
 $img_share_delete = array(
@@ -16,8 +16,8 @@ $img_share_delete = array(
 <td><div class="username share_data_username"><?php echo $user ?></div></td>
 <td class="share_data_other">
 <?php
-echo form_dropdown('access', $access_options, 
-		($write_access == '1' ? 'rw' : 'r'));
+echo form_dropdown('write_access', 
+		$write_access_options, $write_access);
 ?></td>
 <td>
 <?php echo img($img_share_delete); ?>
