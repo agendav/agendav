@@ -116,6 +116,9 @@ class CURLCalDAVClient extends CalDAVClient {
 
 		// Headers
 		if (!isset($this->headers['content-type'])) $this->headers['content-type'] = "Content-type: text/plain";
+
+		// Remove cURL generated 'Expect: 100-continue'
+		$this->headers['disable_expect'] = 'Expect:';
 		curl_setopt($this->ch, CURLOPT_HTTPHEADER,
 				array_values($this->headers));
 
