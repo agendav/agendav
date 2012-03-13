@@ -277,10 +277,9 @@ class Caldav {
 		$this->prepare_client($user, $passwd, '');
 		
 		$tmpcals = array();
-		foreach ($calendar_list as $calid => $contents) {
+		foreach ($calendar_list as $calid => $properties_on_db) {
 			$url = $this->build_calendar_url($user, $calid);
 			$info = $this->client->GetCalendarDetailsByURL($url);
-			//$info->color = ...
 
 			if (!is_array($info) || count($info) == 0) {
 				// Something went really wrong
@@ -289,18 +288,20 @@ class Caldav {
 				return FALSE;
 			}
 
+			$properties = $info[0];
+
 
 			// Give priority to previous data (user customizations?)
 			$preserve = array('sid', 'shared', 'user_from', 'color',
 					'displayname');
 			foreach ($preserve as $p) {
-				if (isset($contents[$p])) {
-					$info[0]->$p = $contents[$p];
+				if (isset($properties_on_db[$p])) {
+					$properties->$p = $properties_on_db[$p];
 				}
 			}
 
-			$info[0]->shared = TRUE;
-			$tmpcals[$calid] = $info[0];
+			$properties->shared = TRUE;
+			$tmpcals[$calid] = $properties;
 		}
 
 		return $this->prepare_calendar_data_for_browser($tmpcals);
