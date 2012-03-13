@@ -601,9 +601,20 @@ class Caldav {
 
 		$res = $this->client->principal_property_search($xml, $url);
 
+		// Extract usernames from $res
+		$return_results = array();
+		foreach ($res as $elem) {
+			$username = $this->extract_username_from_href($elem['href']);
+			$elem['username'] = $username;
+			$return_results[$username] = $elem;
+		}
+
+		// Sort by username
+		ksort($return_results);
+
 		return array(
 				$this->client->GetHTTPResultCode(),
-				$res);
+				$return_results);
 	}
 
 	/**
@@ -776,6 +787,37 @@ class Caldav {
 
 		log_message('DEBUG', 'Built calendar URL: ' . $built);
 		return $built;
+	}
+
+	/**
+	 * Extracts username from a principal URL
+	 */
+	function extract_username_from_href($href) {
+		$tmp_href = parse_url($href);
+		$href = $tmp_href['path'];
+
+		$tmp_pattern_parsed =
+			parse_url($this->CI->config->item('caldav_principal_url'));
+		$pattern_path = $tmp_pattern_parsed['path'];
+
+		// Build a pattern that matches href to extract just the %u part
+		$extract_pattern = preg_replace(
+				array(
+					'/\/%u\//', '/\//'),
+				array('/([^/]+)/',
+					'\/'),
+				$pattern_path);
+
+		$matches = preg_match('/' . $extract_pattern . '/',
+				$href, $fragments);
+		if ($matches == 0) {
+			$this->CI->extended_logs->message('ERROR',
+					'Trying to extract username from invalid '
+					.'href: ['.$href.']');
+			return '';
+		} else {
+			return $fragments[1];
+		}
 	}
 
 
