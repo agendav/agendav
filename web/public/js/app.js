@@ -1592,6 +1592,46 @@ function share_manager() {
 				});
 		});
 
+	// Autocomplete caching
+	var user_autocomplete_cache = {}, lastXhr;
+
+	new_entry_form.find('input.share_calendar_manager_username_new')
+		.autocomplete({
+			minLength: 3,
+			source: function(request, response) {
+				var term = request.term;
+
+				if (term in user_autocomplete_cache) {
+					response(user_autocomplete_cache[term]);
+					return;
+				}
+
+				lastXhr = $.getJSON(base_app_url + 'caldav2json/principal_search', 
+					request, function(data, status, xhr) {
+					user_autocomplete_cache[term] = data;
+					if (xhr === lastXhr) {
+						response(data);
+					}
+				});
+			},
+			focus: function( event, ui ) {
+				$(this).val(ui.item.username);
+				return false;
+			},
+			select: function( event, ui ) {
+				$(this).val(ui.item.username);
+				return false;
+			}
+		})
+		.data('autocomplete')._renderItem = function(ul, item) {
+			return $('<li></li>')
+				.data('item.autocomplete', item)
+				.append('<a>' + item.displayname 
+				+ '<span style="font-style: italic">'
+				+ ' &lt;' + item.email + '&gt;</span></a>')
+				.appendTo(ul);
+		};
+
 	new_entry_form.on('click', 
 		'.share_calendar_manager_add', function(event) {
 		var new_user = $(this).parent().parent()

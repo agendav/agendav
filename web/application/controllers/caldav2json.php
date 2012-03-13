@@ -996,6 +996,32 @@ class Caldav2json extends CI_Controller {
 		}
 	}
 
+	/**
+	 * Searchs a principal using provided data
+	 */
+	function principal_search() {
+		$result = array();
+		$term = $this->input->get('term');
+
+		if (!empty($term)) {
+			$caldav_res = $this->caldav->principal_property_search(
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
+					$term, $term);
+
+			if ($caldav_res[0] != '207') {
+				$this->extended_logs->message('ERROR',
+						'principal-property-search for '
+						. $term . ' answer was HTTP code '
+						. $caldav_res[0]);
+			} else {
+				$result = array_values($caldav_res[1]);
+			}
+		}
+
+		$this->output->set_output(json_encode($result));
+	}
+
 
 
 	/**
