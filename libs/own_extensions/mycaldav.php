@@ -1,6 +1,6 @@
 <?php
 class CalendarExtendedInfo extends CalendarInfo {
-	public $calendar, $order, $color, $shared, $shared_with;
+	public $calendar, $order, $color, $shared;
 
 	function __construct($url, $displayname = null, $getctag = null ) {
 		// Be consistent with iCalcreator

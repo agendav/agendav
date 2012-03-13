@@ -292,8 +292,7 @@ class Caldav {
 
 
 			// Give priority to previous data (user customizations?)
-			$preserve = array('sid', 'shared', 'user_from', 'color',
-					'displayname');
+			$preserve = array('sid', 'user_from', 'color', 'displayname');
 			foreach ($preserve as $p) {
 				if (isset($properties_on_db[$p])) {
 					$properties->$p = $properties_on_db[$p];
