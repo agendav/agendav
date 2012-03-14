@@ -1133,8 +1133,9 @@ function calendar_modify_form(calendar_obj) {
 			$('input.pick_color').colorPicker();
 			$(mcd + '_tabs').tabs();
 
-			// Handle list events
-			share_manager();
+			if (data.shared !== true) {
+				share_manager();
+			}
 		},
 		title,
 		buttons_and_actions,
