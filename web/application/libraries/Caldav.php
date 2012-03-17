@@ -609,6 +609,9 @@ class Caldav {
 			$return_results[$username] = $elem;
 		}
 
+		// Remove current user, if present
+		unset($return_results[$user]);
+
 		// Sort by username
 		ksort($return_results);
 
