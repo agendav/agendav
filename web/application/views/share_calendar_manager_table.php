@@ -9,7 +9,7 @@ $orig_sids = array();
 <table class="share_calendar_manager">
 <thead>
  <th><?php echo $this->i18n->_('labels', 'username')?></th>
- <th>Access</th>
+ <th><?php echo $this->i18n->_('labels', 'access')?></th>
  <th></th>
 </thead>
 <tbody>

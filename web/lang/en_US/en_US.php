@@ -161,6 +161,7 @@ $labels['untitled'] = 'Untitled';
 $labels['sharewith'] = 'Share with';
 $labels['publicurl'] = 'URL for calendaring desktop applications';
 
+$labels['access'] = 'Access';
 $labels['readonly'] = 'Read only';
 $labels['readandwrite'] = 'Read and write';
 

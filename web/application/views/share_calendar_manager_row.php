@@ -1,5 +1,4 @@
 <?php
-// TODO i18n
 $write_access_options = array(
 		'0' => $this->i18n->_('labels', 'readonly'),
 		'1' => $this->i18n->_('labels', 'readandwrite'),
