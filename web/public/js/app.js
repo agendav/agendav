@@ -47,6 +47,7 @@ $(document).ready(function() {
 		// TODO: configurable!
 		$('#calendar_view').fullCalendar({
 			selectable: true,
+			editable: true,
 			firstDay: prefs_firstday,
 			timeFormat: {
 				agenda: prefs_timeformat + '{ - ' + prefs_timeformat + '}',
