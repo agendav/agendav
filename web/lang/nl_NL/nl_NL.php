@@ -40,14 +40,48 @@ $labels['format_title_day'] = 'dddd d MMMM yyyy';
 
 $labels['username'] = 'Gebruikersnaam';
 $labels['password'] = 'Wachtwoord';
-$labels['months_long'] = array('januari', 'februari', 'maart', 'april',
-		'mei', 'juni', 'juli', 'augustus', 'september', 'october', 'november',
-		'december');
-$labels['months_short'] = array('jan', 'feb', 'mrt', 'apr', 'mei', 'jun',
-		'jul', 'aug', 'sep', 'oct', 'nov', 'dec');
-$labels['daynames_long'] = array('zondag', 'maandag', 'dinsdag', 'woensdag',
-		'donderdag', 'vrijdag', 'zaterdag');
-$labels['daynames_short'] = array('zo', 'ma', 'di', 'wo', 'do', 'vr', 'za');
+
+$labels['january'] = 'januari';
+$labels['february'] = 'februari';
+$labels['march'] = 'maart';
+$labels['april'] = 'april';
+$labels['may'] = 'mei';
+$labels['june'] = 'juni';
+$labels['july'] = 'juli';
+$labels['august'] = 'augustus';
+$labels['september'] = 'september';
+$labels['october'] = 'october';
+$labels['november'] = 'november';
+$labels['december'] = 'december';
+
+$labels['january_short'] = 'jan';
+$labels['february_short'] = 'feb';
+$labels['march_short'] = 'mrt';
+$labels['april_short'] = 'apr';
+$labels['may_short'] = 'mei';
+$labels['june_short'] = 'jun';
+$labels['july_short'] = 'jul';
+$labels['august_short'] = 'aug';
+$labels['september_short'] = 'sep';
+$labels['october_short'] = 'oct';
+$labels['november_short'] = 'nov';
+$labels['december_short'] = 'dec';
+
+$labels['sunday'] = 'zondag';
+$labels['monday'] = 'maandag';
+$labels['tuesday'] = 'dinsdag';
+$labels['wednesday'] = 'woensdag';
+$labels['thursday'] = 'donderdag';
+$labels['friday'] = 'vrijdag';
+$labels['saturday'] = 'zaterdag';
+
+$labels['sunday_short'] = 'zo';
+$labels['monday_short'] = 'ma';
+$labels['tuesday_short'] = 'di';
+$labels['wednesday_short'] = 'wo';
+$labels['thursday_short'] = 'do';
+$labels['friday_short'] = 'vr';
+$labels['saturday_short'] = 'za';
 
 $labels['today'] = 'Vandaag';
 $labels['month'] = 'maand';

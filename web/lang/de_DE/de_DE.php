@@ -40,15 +40,49 @@ $labels['format_title_day'] = 'dddd, MMM d yyyy';
 
 $labels['username'] = 'Benutzername';
 $labels['password'] = 'Passwort';
-$labels['months_long'] = array('Januar', 'Februar', 'März', 'April',
-		'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November',
-		'Dezember');
-$labels['months_short'] = array('Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
-		'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez');
-$labels['daynames_long'] = array('Sonntag', 'Montag', 'Dienstag', 'Mittwoch',
-		'Donnerstag', 'Freitag', 'Samstag');
-$labels['daynames_short'] = array('So', 'Mo', 'Di', 'Mi', 'Do', 'Fr',
-		'Sa');
+
+
+$labels['january'] = 'Januar';
+$labels['february'] = 'Februar';
+$labels['march'] = 'März';
+$labels['april'] = 'April';
+$labels['may'] = 'Mai';
+$labels['june'] = 'Juni';
+$labels['july'] = 'Juli';
+$labels['august'] = 'August';
+$labels['september'] = 'September';
+$labels['october'] = 'Oktober';
+$labels['november'] = 'November';
+$labels['december'] = 'Dezember';
+
+$labels['january_short'] = 'Jan';
+$labels['february_short'] = 'Feb';
+$labels['march_short'] = 'Mär';
+$labels['april_short'] = 'Apr';
+$labels['may_short'] = 'Mai';
+$labels['june_short'] = 'Jun';
+$labels['july_short'] = 'Jul';
+$labels['august_short'] = 'Aug';
+$labels['september_short'] = 'Sep';
+$labels['october_short'] = 'Okt';
+$labels['november_short'] = 'Nov';
+$labels['december_short'] = 'Dez';
+
+$labels['sunday'] = 'Sonntag';
+$labels['monday'] = 'Montag';
+$labels['tuesday'] = 'Dienstag';
+$labels['wednesday'] = 'Mittwoch';
+$labels['thursday'] = 'Donnerstag';
+$labels['friday'] = 'Freitag';
+$labels['saturday'] = 'Samstag';
+
+$labels['sunday_short'] = 'So';
+$labels['monday_short'] = 'Mo';
+$labels['tuesday_short'] = 'Di';
+$labels['wednesday_short'] = 'Mi';
+$labels['thursday_short'] = 'Do';
+$labels['friday_short'] = 'Fr';
+$labels['saturday_short'] = 'Sa';
 
 $labels['today'] = 'Heute';
 $labels['month'] = 'Monat';
