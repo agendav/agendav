@@ -37,8 +37,7 @@ $(document).ready(function() {
 		$('input:submit').button();
 		$('input[name="user"]').focus();
 	} else if ($('body').hasClass('calendarpage')) {
-		// Default datepicker options
-		set_default_datepicker_options();
+		// Default datepicker options are set inside i18n load strings
 
 		// Default colorpicker options
 		set_default_colorpicker_options();
@@ -74,10 +73,10 @@ $(document).ready(function() {
 				center: 'title',
 				right:  'today prev,next'
 			},
-			monthNames: _('labels', 'months_long'),
-			monthNamesShort: _('labels', 'months_short'),
-			dayNames: _('labels', 'daynames_long'),
-			dayNamesShort: _('labels', 'daynames_short'),
+			monthNames: month_names_long(),
+			monthNamesShort: month_names_short(),
+			dayNames: day_names_long(),
+			dayNamesShort: day_names_short(),
 			buttonText: {
 				today: _('labels', 'today'),
 				month: _('labels', 'month'),
@@ -761,11 +760,11 @@ $.datepicker.regional['custom'] = {
 	prevText: _('labels', 'previous'),
 	nextText: _('labels', 'next'),
 	currentText: _('labels', 'today'),
-	monthNames: _('labels', 'months_long'),
-	monthNamesShort: _('labels', 'months_short'),
-	dayNames: _('labels', 'daynames_long'),
-	dayNamesShort: _('labels', 'daynames_short'),
-	dayNamesMin: _('labels', 'daynames_short'),
+	monthNames: month_names_long(),
+	monthNamesShort: month_names_short(),
+	dayNames: day_names_long(),
+	dayNamesShort: day_names_short(),
+	dayNamesMin: day_names_short(),
 	weekHeader: 'Sm',
 	firstDay: prefs_firstday,
 	isRTL: false,
@@ -1528,49 +1527,6 @@ function fg_for_bg(color) {
 	return (is_dark) ? '#ffffff' : '#000000';
 }
 
-/**
- * Loads localized strings
- */
-function load_i18n_strings() {
-	var i18n_ajax_req = $.ajax({
-		async: false,
-		url: base_app_url + 'strings/load/' + agendav_version,
-		dataType: 'json',
-		method: 'GET',
-		ifModified: false // TODO set to true + cache
-	});
-
-	i18n_ajax_req.done(function(data, textStatus, jqXHR) {
-		i18n = data;
-	});
-		
-	i18n_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-		show_error('Error loading translation',
-			'Please, contact your system administrator');
-	});
-}
-
-/**
- * Function that translates a given label/message
- */
-function _(mtype, s, params) {
-	var ret = '[' + mtype + ':' + s + ']';
-
-	if (typeof(i18n)!= 'undefined' && (mtype == 'messages' 
-			|| mtype == 'labels')) {
-		if (mtype == 'labels' && i18n.labels[s]) {
-			ret = i18n.labels[s];
-		} else if (mtype == 'messages' && i18n.messages[s]) {
-			ret = i18n.messages[s];
-		}
-	}
-
-	for (var i in params) {
-		ret = ret.replace(i, params[i]);
-	}
-
-	return ret;
-}
 
 /**
  * This method is called when a session has expired
