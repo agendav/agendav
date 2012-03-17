@@ -47,7 +47,6 @@ $(document).ready(function() {
 		// TODO: configurable!
 		$('#calendar_view').fullCalendar({
 			selectable: true,
-			editable: true,
 			firstDay: prefs_firstday,
 			timeFormat: {
 				agenda: prefs_timeformat + '{ - ' + prefs_timeformat + '}',
@@ -1339,18 +1338,23 @@ function generate_calendar_entry(data) {
 		.html('<span class="text">' + data.displayname + '</span>')
 		.prepend(color_square);
 
-	// Shared calendars
-	if (data.shared !== undefined && data.shared == true) {
-		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
-	}
-
 	var eventsource = generate_event_source(data.calendar);
 	eventsource.ignoreTimezone = true; // Ignore UTC offsets
 	eventsource.color = data.color;
 	eventsource.textColor = fg;
-	data.eventsource = eventsource;
-
 	eventsource.borderColor = border;
+
+
+	// Shared calendars
+	if (data.shared !== undefined && data.shared == true) {
+		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
+
+		if (data.write_access == '0') {
+			eventsource.editable = false;
+		}
+	}
+
+	data.eventsource = eventsource;
 
 	// Associate data + eventsource to new list item
 	li.data(data);

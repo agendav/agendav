@@ -300,6 +300,7 @@ class Caldav {
 			}
 
 			$properties->shared = TRUE;
+			$properties->write_access = $properties_on_db['write_access'];
 			$tmpcals[$calid] = $properties;
 		}
 
