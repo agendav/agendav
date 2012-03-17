@@ -1366,20 +1366,33 @@ function generate_calendar_entry(data) {
 }
 
 /**
- * Gets calendar display name from its internal name
+ * Gets calendar data from its internal name
  */
-function get_calendar_displayname(c) {
-	var calname = undefined;
+function get_calendar_data(c) {
+	var data = undefined;
 
 	$('.calendar_list li.available_calendar').each(function(index) {
 		var thiscal = $(this).data();
 		if (thiscal.calendar == c) {
-			calname = thiscal.displayname;
+			data = thiscal;
 			return false; // stop looking for calendar
 		}
 	});
 
-	return (calname !== undefined ? calname : event.calendar + '(?)');;
+	return data;
+}
+
+/**
+ * Gets calendar display name from its internal name
+ */
+function get_calendar_displayname(c) {
+	var data = get_calendar_data(c);
+
+	if (data === undefined || data.displayname == undefined) {
+		return '(?)';
+	} else {
+		return data.displayname;
+	}
 }
 
 /*
@@ -1469,6 +1482,14 @@ function event_bubble_content(event) {
 		tmpl
 			.find('div.unparseable_rrule').hide().end()
 			.find('div.parseable_rrule').hide();
+	}
+
+	// Non editable calendar/event
+	// TODO: improve speed on this, index calendar list
+	var caldata = get_calendar_data(event.calendar);
+	if (caldata !== undefined && caldata.shared === true &&
+		caldata.write_access == '0') {
+		tmpl.find('div.actions').remove();
 	}
 
 	return tmpl.html();
