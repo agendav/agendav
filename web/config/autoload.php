@@ -53,7 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
-		'dates');
+		'timezonemanager', 'dates');
 
 
 /*
