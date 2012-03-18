@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Henry Verdonschot <henry@procura.nl>
+ * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -19,7 +19,7 @@
  */
 
 /*
- * Dutch master language file
+ * English master language file
  */
 
 $labels = array();
@@ -145,6 +145,7 @@ $labels['deletecalendar'] = 'Verwijder agenda';
 $labels['calendars'] = 'Agenda\'s';
 $labels['refresh'] = 'Verversen';
 $labels['delete'] = 'Verwijderen';
+$labels['add'] = 'Add';
 $labels['close'] = 'Sluiten';
 $labels['save'] = 'Opslaan';
 $labels['create'] = 'Aanmaken';
@@ -159,6 +160,10 @@ $labels['untitled'] = 'Naamloos';
 
 $labels['sharewith'] = 'Delen met';
 $labels['publicurl'] = 'URL voor kalenderapplicatie\'s';
+
+$labels['access'] = 'Access';
+$labels['readonly'] = 'Read only';
+$labels['readandwrite'] = 'Read and write';
 
 // Messages
 $messages['error_auth'] = 'Ongeldige gebruikersnaam of wachtwoord';
@@ -213,4 +218,3 @@ $messages['error_calname_missing'] = 'Agendanaam ontbreekt';
 $messages['error_calcolor_missing'] = 'Kleur moet worden opgegeven';
 $messages['error_mkcalendar'] = 'Server weigerde de agenda aan te maken. Controleer de parameters.';
 $messages['error_shareunknownusers'] = 'Sommige door u opgegeven gebruikers komen niet voor.';
-

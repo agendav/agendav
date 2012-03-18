@@ -19,7 +19,7 @@
  */
 
 /*
- * Spanish master language file
+ * English master language file
  */
 
 $labels = array();
@@ -28,7 +28,6 @@ $messages = array();
 // Labels
 
 $labels['format_date_strftime'] = '%a %e de %B de %Y'; // Just date with no time, strftime format
-
 // Fullcalendar labels 
 // (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
 $labels['format_column_month'] = 'ddd'; 
@@ -41,7 +40,6 @@ $labels['format_title_day'] = 'dddd d \'de\' MMMM \'de\' yyyy';
 
 $labels['username'] = 'Nombre de usuario';
 $labels['password'] = 'Contraseña';
-
 
 $labels['january'] = 'enero';
 $labels['february'] = 'febrero';
@@ -163,6 +161,7 @@ $labels['untitled'] = 'Sin título';
 $labels['sharewith'] = 'Compartir con';
 $labels['publicurl'] = 'URL para clientes de escritorio';
 
+$labels['access'] = 'Acceso';
 $labels['readonly'] = 'Sólo lectura';
 $labels['readandwrite'] = 'Lectura y escritura';
 

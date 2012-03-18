@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Andreas Stöckel andreas [dot] stoeckel [at] googlemail [dot] com
+ * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -19,7 +19,7 @@
  */
 
 /*
- * German master language file
+ * English master language file
  */
 
 $labels = array();
@@ -40,7 +40,6 @@ $labels['format_title_day'] = 'dddd, MMM d yyyy';
 
 $labels['username'] = 'Benutzername';
 $labels['password'] = 'Passwort';
-
 
 $labels['january'] = 'Januar';
 $labels['february'] = 'Februar';
@@ -146,6 +145,7 @@ $labels['deletecalendar'] = 'Kalender löschen';
 $labels['calendars'] = 'Kalender';
 $labels['refresh'] = 'Aktualisieren';
 $labels['delete'] = 'Löschen';
+$labels['add'] = 'Hinzufügen';
 $labels['close'] = 'Schließen';
 $labels['save'] = 'Speichern';
 $labels['create'] = 'Anlegen';
@@ -160,6 +160,10 @@ $labels['untitled'] = 'Unbenannt';
 
 $labels['sharewith'] = 'Teilen mit';
 $labels['publicurl'] = 'URL für Terminprogramme';
+
+$labels['access'] = 'Zugriff';
+$labels['readonly'] = 'Nur Lesen';
+$labels['readandwrite'] = 'Lesen und Schreiben';
 
 // Messages
 $messages['error_auth'] = 'Ungültiger Benutzername oder Passwort';

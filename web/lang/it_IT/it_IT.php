@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Lorenzo Novaro novalore [at] 19 [dot] coop
+ * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -19,7 +19,7 @@
  */
 
 /*
- * Italian master language file
+ * English master language file
  */
 
 $labels = array();
@@ -145,6 +145,7 @@ $labels['deletecalendar'] = 'Cancella calendario';
 $labels['calendars'] = 'Calendari';
 $labels['refresh'] = 'Aggiorna';
 $labels['delete'] = 'Cancella';
+$labels['add'] = 'Add';
 $labels['close'] = 'Chiudi';
 $labels['save'] = 'Salva';
 $labels['create'] = 'Crea';
@@ -159,6 +160,10 @@ $labels['untitled'] = 'Senza titolo';
 
 $labels['sharewith'] = 'Condividi con';
 $labels['publicurl'] = 'URL per applicazioni compatibili';
+
+$labels['access'] = 'Access';
+$labels['readonly'] = 'Read only';
+$labels['readandwrite'] = 'Read and write';
 
 // Messages
 $messages['error_auth'] = 'Nome utente o password non validi';
@@ -195,17 +200,17 @@ $messages['overlay_loading_calendar_list'] = 'Carico la lista dei calendari...';
 $messages['error_loading_dialog'] = 'Errore nel caricamento';
 
 $messages['error_oops'] = 'Oops. Errore inatteso';
-$messages['error_interfacefailure'] = "Errore dell'interfaccia";
-$messages['error_current_event_not_loaded'] = "L'evento corrente non è disponibile";
+$messages['error_interfacefailure'] = 'Errore dell\'interfaccia';
+$messages['error_current_event_not_loaded'] = 'L\'evento corrente non è disponibile';
 
-$messages['error_event_not_deleted'] = "Errore nella cancellazione dell'evento";
+$messages['error_event_not_deleted'] = 'Errore nella cancellazione dell\'evento';
 $messages['error_loading_calendar_list'] = 'Errore nella lettura della lista dei calendari';
 $messages['notice_no_calendars'] = 'Non ci sono calendari disponibili';
 $messages['info_repetition_human'] = 'Questo evento si ripete %explanation';
 $messages['info_repetition_unparseable'] = 'Ci sono delle regole di ricorrenza associate a questo evento che qesto programma non è ancora in grado di interpretare. Raw definition:';
 $messages['error_calendarnotfound'] = 'Calendario %calendar non valido';
 $messages['error_eventnotfound'] = 'Elemento non trovato';
-$messages['error_eventchanged'] = "L'Elemento è stato modificato da qualcun altro. Ricarica, per favore.";
+$messages['error_eventchanged'] = 'L\'Elemento è stato modificato da qualcun altro. Ricarica, per favore.';
 $messages['error_unknownhttpcode'] = 'Errore sconosciuto, HTTP code=%res';
 $messages['error_internalcalnamemissing'] = 'Nome interno per il calendario vuoto';
 $messages['error_calname_missing'] = 'Nome del calendario vuoto';

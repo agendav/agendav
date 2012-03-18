@@ -19,8 +19,7 @@
  */
 
 /*
- * French language file
- * 2011-12-05 Created by Guillaume BF
+ * English master language file
  */
 
 $labels = array();
@@ -146,6 +145,7 @@ $labels['deletecalendar'] = 'Supprimer l\'agenda';
 $labels['calendars'] = 'Agendas';
 $labels['refresh'] = 'Rafraîchir';
 $labels['delete'] = 'Supprimer';
+$labels['add'] = 'Ajouter';
 $labels['close'] = 'Fermer';
 $labels['save'] = 'Enregistrer';
 $labels['create'] = 'Créer';
@@ -159,7 +159,11 @@ $labels['yes'] = 'Oui';
 $labels['untitled'] = 'Sans titre';
 
 $labels['sharewith'] = 'Partager avec';
-$labels['publicurl'] = 'URL de l\'agenda'; 
+$labels['publicurl'] = 'URL de l\'agenda';
+
+$labels['access'] = 'Accès';
+$labels['readonly'] = 'Lecture seulement';
+$labels['readandwrite'] = 'Lecture et écriture';
 
 // Messages
 $messages['error_auth'] = 'Nom d\'utilisateur ou mot de passe invalide';
