@@ -11,6 +11,8 @@ the cURL module enabled.
 
 caldav.php rewrite (TODO)
 
+translation (TODO), default language -> en
+
 .. _v1.2.4:
 
 1.2.4 (2012-01-16)
