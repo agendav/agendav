@@ -163,10 +163,10 @@ $config['show_public_caldav_url'] = TRUE;
 |
 | This determines which language should be used by default. Make sure
 | there is an available translation if you intend to use something other
-| than en_US.
+| than en.
 |
 */
-$config['default_language']	= 'en_US';
+$config['default_language']	= 'en';
 
 /*
 |--------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 | -------------------------------------------------------------------
 */
 $config['lang_rels'] = array(
-		'en_US' => array(
+		'en' => array(
 			'codeigniter' => 'english',
 			),
 		'es_ES' => array(

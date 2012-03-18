@@ -47,7 +47,7 @@ class I18n extends CI_Model {
 		if (!isset($lang_rels[$this->langname])) {
 			log_message('ERROR', 'Language ' .
 					$this->langname . ' not registered');
-			$this->langname = 'en_US';
+			$this->langname = 'en';
 		}
 
 		$this->lang_relations = $lang_rels[$this->langname];
@@ -56,7 +56,7 @@ class I18n extends CI_Model {
 					$this->parse_language($this->langname))) {
 			$this->extended_logs->message('ERROR', 'Language '
 					. $this->langname . ' not found');
-			$this->langname = 'en_US';
+			$this->langname = 'en';
 			$this->lang_contents = $this->parse_language($this->langname);
 		}
 
