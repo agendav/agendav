@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
- *
  *  This file is part of AgenDAV.
  *
  *  AgenDAV is free software: you can redistribute it and/or modify
@@ -16,10 +14,6 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
- * English master language file
  */
 
 $labels = array();
