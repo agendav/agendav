@@ -178,6 +178,7 @@ $messages['info_sharedby'] = 'You have access to this calendar because %user sha
 $messages['info_shareexplanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
 by commas or spaces';
+$messages['info_notshared'] = 'This calendar is not being shared with anyone';
 $messages['error_sessexpired'] = 'Your session has expired';
 $messages['error_loginagain'] = 'Please, log in again';
 

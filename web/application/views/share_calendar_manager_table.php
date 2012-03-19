@@ -42,7 +42,7 @@ $img_share_add = array(
 		);
 ?>
 <tr class="share_calendar_manager_empty">
- <td colspan="3">This calendar is not being shared with anyone</td>
+ <td colspan="3"><?php echo $this->i18n->_('messages', 'info_notshared')?></td>
 </tr>
 </tbody>
 </table>
