@@ -23,7 +23,6 @@ class Icshelper {
 	private $config; // for iCalCreator
 
 	private $tz;
-	private $tz_obj;
 
 	private $date_format; // Date format given by lang file
 
@@ -32,8 +31,8 @@ class Icshelper {
 		$this->CI =& get_instance();
 
 		// Timezone
-		$this->tz = $this->CI->config->item('default_timezone');
-		$this->tz_obj = new DateTimeZone($this->tz);
+		$this->tz = $this->CI->timezonemanager->getTz(
+				$this->CI->config->item('default_timezone'));
 
 		$this->date_format = $this->CI->i18n->_('labels',
 				'format_date_strftime');
@@ -67,11 +66,11 @@ class Icshelper {
 
 		if ($allday) {
 			// Discard timezone
-			$tz = 'UTC';
+			$tz = $this->CI->timezonemanager->getTz('UTC');
 		}
 
 		// Add VTIMEZONE
-		$this->add_vtimezone($ical, $tz);
+		$this->add_vtimezone($ical, $tz->getName());
 
 		$vevent =& $ical->newComponent('vevent');
 
@@ -95,8 +94,8 @@ class Icshelper {
 
 				// Generate DTSTART/DTEND
 				if ($p == 'DTSTART' || $p == 'DTEND') {
-					if ($tz != 'UTC') {
-						$params = array('TZID' => $tz);
+					if ($tz->getName() != 'UTC') {
+						$params = array('TZID' => $tz->getName());
 					}
 					$properties[$p] = $this->CI->dates->datetime2idt(
 							$properties[$p], $tz);
@@ -147,7 +146,7 @@ class Icshelper {
 		$result = array();
 
 		// Dates
-		$utc = new DateTimeZone('UTC');
+		$utc = $this->CI->timezonemanager->getTz('UTC');
 		$date_start = new DateTime($start, $utc);
 		$date_end = new DateTime($end, $utc);
 
@@ -233,15 +232,12 @@ class Icshelper {
 				'disableDragging' => FALSE,
 				'disableResizing' => FALSE,
 				'ignoreTimezone' => TRUE,
-				'timezone' => $tz,
+				'timezone' => $tz->getName(),
 				);
 
 		// Start and end date
 		$dtstart = $this->extract_date($vevent, 'DTSTART', $tz);
 		$dtend = $this->extract_date($vevent, 'DTEND', $tz);
-
-		// Current event timezone
-		$tzcur = new DateTimeZone($tz);
 
 		// We have for sure DTSTART
 		$start = $dtstart['result'];
@@ -400,7 +396,7 @@ class Icshelper {
 			// Check using UTC and local time
 			if ($start->getTimeZone()->getName() == 'UTC') {
 				$test_start = clone $start;
-				$test_start->setTimeZone($this->tz_obj);
+				$test_start->setTimeZone($this->tz);
 				if ($test_start->format('Hi') == '0000') {
 					$this_event['allDay'] = TRUE;
 				}
@@ -443,14 +439,14 @@ class Icshelper {
 		// indicator)
 		if (!isset($this_event['allDay']) 
 				|| $this_event['allDay']  !== TRUE) {
-			$start->setTimeZone($this->tz_obj);
-			$end->setTimeZone($this->tz_obj);
+			$start->setTimeZone($this->tz);
+			$end->setTimeZone($this->tz);
 		}
 
 		// Expanded events
 		if (isset($orig_start)) {
-			$orig_start->setTimeZone($this->tz_obj);
-			$orig_end->setTimeZone($this->tz_obj);
+			$orig_start->setTimeZone($this->tz);
+			$orig_end->setTimeZone($this->tz);
 			$this_event['orig_start'] = $orig_start->format(DateTime::ISO8601);
 			$this_event['orig_end'] = $orig_end->format(DateTime::ISO8601);
 		}
@@ -461,7 +457,7 @@ class Icshelper {
 		$system_tz = date_default_timezone_get();
 		if (!isset($this_event['allDay']) 
 				|| $this_event['allDay']  !== TRUE) {
-			date_default_timezone_set($this->tz);
+			date_default_timezone_set($this->tz->getName());
 		}
 
 		$this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
@@ -515,7 +511,8 @@ class Icshelper {
 	/**
 	 * Collects all timezones (VTIMEZONE) present in a resource
 	 *
-	 * Returns an associative array with 'tzid' => 'real tz name'
+	 * Returns an associative array with 'tzid' => DateTimeZone('real tz
+	 * name')
 	 */
 	function get_timezones($icalendar) {
 		$result = array();
@@ -535,7 +532,7 @@ class Icshelper {
 
 			// Do we have tzval?
 			if ($tzval !== FALSE && !empty($tzval)) {
-				$result[$tzid] = $tzval;
+				$result[$tzid] = $this->CI->timezonemanager->getTz($tzval);
 			}
 		}
 
@@ -625,15 +622,16 @@ class Icshelper {
 		$value = $this->paramvalue($params, 'value');;
 		$used_tz = null;
 		if ($has_z || $value == 'DATE') {
-			$used_tz = 'UTC';
+			$used_tz = $this->CI->timezonemanager->getTz('UTC');
 		} else {
 			$tzid = $this->paramvalue($params, 'tzid');;
 
 			if ($tzid !== FALSE && isset($tzs[$tzid])) {
 				$used_tz = $tzs[$tzid];
 			} else {
-				// No UTC but no TZID/invalid TZID?!
-				$used_tz = $this->CI->config->item('default_timezone');
+				// Not UTC but no TZID/invalid TZID?!
+				$used_tz = $this->CI->timezonemanager->getTz(
+						$this->CI->config->item('default_timezone'));
 			}
 		}
 
@@ -645,7 +643,7 @@ class Icshelper {
 	 * Sets a component DTSTART value
 	 * 
 	 * @param iCalComponent	$component
-	 * @param string $tz		Used TZ
+	 * @param DateTimeZone $tz		Used TZ
 	 * @param DateTime $new_start
 	 * @param string $increment
 	 * @param string $force_new_value_type
@@ -666,7 +664,7 @@ class Icshelper {
 		if (is_null($info)) {
 			$params = array('VALUE' => (is_null($force_new_value_type) ?
 						'DATE-TIME' : $force_new_value_type));
-			$value = new DateTime("now", $tz);
+			$value = new DateTime('now', $tz);
 		} else {
 			$params = $info['property']['params'];
 			if (!is_null($force_new_value_type)) {
@@ -708,7 +706,7 @@ class Icshelper {
 	 * Sets a component end value
 	 * 
 	 * @param iCalComponent	$component
-	 * @param string $tz		Used TZ
+	 * @param DateTimeZone $tz		Used TZ
 	 * @param DateTime $new_start
 	 * @param string $increment
 	 * @param string $force_new_value_type

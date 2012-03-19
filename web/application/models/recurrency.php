@@ -27,7 +27,8 @@ class Recurrency extends CI_Model {
 	function __construct() {
 		parent::__construct();
 		$this->date_format = $this->dates->date_format_string('date');
-		$this->tz = $this->config->item('default_timezone');
+		$this->tz = $this->timezonemanager->getTz(
+				$this->config->item('default_timezone'));
 	}
 
 	/**
@@ -78,7 +79,7 @@ class Recurrency extends CI_Model {
 				case 'UNTIL':
 					$date = $this->dates->idt2datetime($v, 
 								'UTC');
-					$date->setTimeZone(new DateTimeZone($this->tz));
+					$date->setTimeZone($this->tz);
 					$explanation .= ', ' . $this->i18n->_('labels',
 							'expluntil',
 							array('%d' => $date->format($this->date_format)));
@@ -133,7 +134,7 @@ class Recurrency extends CI_Model {
 				!empty($opts['recurrence_until'])) {
 			$date =
 				$this->dates->frontend2datetime($opts['recurrence_until'],
-						'UTC');
+						$this->timezonemanager->getTz('UTC'));
 			if ($date === FALSE) {
 				$rrule_err = $this->i18n->_('messages',
 						'error_bogusrepeatrule');

@@ -25,6 +25,7 @@ class Caldav2json extends CI_Controller {
 	private $date_format;
 
 	private $tz;
+	private $tz_utc;
 	private $calendar_colors;
 
 	function __construct() {
@@ -42,7 +43,9 @@ class Caldav2json extends CI_Controller {
 		$this->date_format = $this->dates->date_format_string('date');
 		$this->time_format = $this->dates->time_format_string('date');
 
-		$this->tz = $this->config->item('default_timezone');
+		$this->tz = $this->timezonemanager->getTz(
+				$this->config->item('default_timezone'));
+		$this->tz_utc = $this->timezonemanager->getTz('UTC');
 
 		$this->calendar_colors = $this->config->item('calendar_colors');
 
@@ -84,7 +87,7 @@ class Caldav2json extends CI_Controller {
 				$this->dates->datetime2idt(
 						$this->dates->ts2datetime(
 							$start,
-							'UTC'));
+							$this->tz_utc));
 
 			if ($end === FALSE) {
 				$this->extended_logs->message('ERROR',
@@ -96,7 +99,7 @@ class Caldav2json extends CI_Controller {
 					$this->dates->datetime2idt(
 							$this->dates->ts2datetime(
 								$end,
-								'UTC'));
+								$this->tz_utc));
 
 				$returned_events = $this->caldav->fetch_events(
 						$this->auth->get_user(),
@@ -221,7 +224,10 @@ class Caldav2json extends CI_Controller {
 		$start = null;
 		$end = null;
 
-		$tz = isset($p['timezone']) ? $p['timezone'] : null;
+		$tz = isset($p['timezone']) ? 
+			$this->timezonemanager->getTz($p['timezone']) : 
+			$this->timezonemanager->getTz(
+					$this->config->item('default_timezone'));
 
 
 		// Additional validations
@@ -231,9 +237,11 @@ class Caldav2json extends CI_Controller {
 		if (isset($p['allday']) && $p['allday'] == 'true') {
 			// Start and end days, 00:00
 			$start = $this->dates->frontend2datetime($p['start_date'] 
-					. ' ' . date($this->time_format, mktime(0,0)), 'UTC');
+					. ' ' . date($this->time_format, mktime(0,0)), 
+					$this->tz_utc);
 			$end = $this->dates->frontend2datetime($p['end_date'] 
-					. ' ' . date($this->time_format, mktime(0, 0)), 'UTC');
+					. ' ' . date($this->time_format, mktime(0, 0)), 
+					$this->tz_utc);
 			// Add 1 day (iCalendar needs this)
 			$end->add(new DateInterval('P1D'));
 		} else {
@@ -568,7 +576,7 @@ class Caldav2json extends CI_Controller {
 			if ($was_allday == 'true') {
 				if ($allday == 'true') {
 					// From all day to all day
-					$tz = 'UTC';
+					$tz = $this->tz_utc;
 					$new_vevent = $this->icshelper->make_start($vevent,
 							$tz, null, $dur_string, 'DATE');
 					$new_vevent = $this->icshelper->make_end($new_vevent,
@@ -579,7 +587,8 @@ class Caldav2json extends CI_Controller {
 					$tz = $this->tz;
 
 					// Add VTIMEZONE
-					$this->icshelper->add_vtimezone($ical, $tz, $timezones);
+					$this->icshelper->add_vtimezone($ical, $tz->getName(), 
+							$timezones);
 
 					// Set start date using default timezone instead of UTC
 					$start = $this->icshelper->extract_date($vevent,
@@ -588,10 +597,10 @@ class Caldav2json extends CI_Controller {
 					$start_obj->add($this->dates->duration2di($dur_string));
 					$new_vevent = $this->icshelper->make_start($vevent,
 							$tz, $start_obj, null, 'DATE-TIME',
-							$tz);
+							$tz->getName());
 					$new_vevent = $this->icshelper->make_end($new_vevent,
 							$tz, $start_obj, 'PT1H', 'DATE-TIME', 
-							$tz);
+							$tz->getName());
 				}
 			} else {
 				// was_allday = false

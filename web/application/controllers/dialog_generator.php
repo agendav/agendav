@@ -28,6 +28,9 @@ class Dialog_generator extends CI_Controller {
 	// Timezone
 	private $tz;
 
+	// UTC timezone (used several times)
+	private $tz_utc;
+
 	function __construct() {
 		parent::__construct();
 
@@ -48,7 +51,9 @@ class Dialog_generator extends CI_Controller {
 			$this->time_format = $this->dates->time_format_string('date');
 
 			// Timezone
-			$this->tz = $this->config->item('default_timezone');
+			$this->tz = $this->timezonemanager->getTz(
+					$this->config->item('default_timezone'));
+			$this->tz_utc = $this->timezonemanager->getTz('UTC');
 		}
 	}
 
@@ -91,7 +96,7 @@ class Dialog_generator extends CI_Controller {
 		$dend = null;
 
 		// Base DateTime start
-		$dstart = $this->dates->fullcalendar2datetime($start, 'UTC');
+		$dstart = $this->dates->fullcalendar2datetime($start, $this->tz_utc);
 
 		// TODO make default duration configurable
 
@@ -104,7 +109,7 @@ class Dialog_generator extends CI_Controller {
 				$dend->add(new DateInterval('PT60M'));
 			} else {
 				$dend = $this->dates->
-					fullcalendar2datetime($end, 'UTC');
+					fullcalendar2datetime($end, $this->tz_utc);
 				$dend->setTime($dstart->format('H'), $dstart->format('i'));
 			}
 		} elseif ($allday === FALSE) {
@@ -113,14 +118,15 @@ class Dialog_generator extends CI_Controller {
 				$dend->add(new DateInterval('PT60M')); // 1h
 			} else {
 				$dend = $this->dates->
-					fullcalendar2datetime($end, 'UTC');
+					fullcalendar2datetime($end, $this->tz_utc);
 			}
 		} else {
 			$dstart->setTime(0, 0);
 			if ($end === FALSE) {
 				$dend = clone $dstart;
 			} else {
-				$dend = $this->dates->fullcalendar2datetime($end, 'UTC');
+				$dend = $this->dates->fullcalendar2datetime($end,
+						$this->tz_utc);
 			}
 		}
 
@@ -297,12 +303,14 @@ class Dialog_generator extends CI_Controller {
 
 			}
 
-			$start_obj = $this->dates->fullcalendar2datetime($start, 'UTC');
+			$start_obj = $this->dates->fullcalendar2datetime($start,
+					$this->tz_utc);
 			if ($end == 'undefined') {
 				// Maybe same date and time. Clone start
 				$end_obj = clone $start_obj;
 			} else {
-				$end_obj = $this->dates->fullcalendar2datetime($end, 'UTC');
+				$end_obj = $this->dates->fullcalendar2datetime($end,
+						$this->tz_utc);
 			}
 
 			if ($allday == 'true') {
