@@ -70,11 +70,14 @@ class Login extends CI_Controller {
 		}
 
 		if ($valid_auth === FALSE) {
+			$page_components = array();
+
             $data_header = array(
 					'title' => $this->config->item('site_title'),
 					'body_class' => array('loginpage'),
 					);
-			$this->load->view('common_header', $data_header);
+			$page_components['header'] = $this->load->view('common_header',
+					$data_header, TRUE);
 
 			$data = array();
 			if (!empty($err)) {
@@ -87,8 +90,11 @@ class Login extends CI_Controller {
 				$data['title'] = $data_header['title'];
 			}
 
-			$this->load->view('login', $data);
-			$this->load->view('footer');
+			$page_components['content'] = $this->load->view('login', $data, TRUE);
+			$page_components['footer'] = $this->load->view('footer', array(),
+					TRUE);
+
+			$this->load->view('layouts/plain', $page_components);
 		} else {
 			redirect("/calendar");
 		}
