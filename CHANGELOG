@@ -4,6 +4,7 @@ Release 1.2.5 (2012-?-?)
 	  supported)
 	* Rewritten share calendar interface
 	* Added support for read-only calendar sharing
+	* Improved memory usage by reusing DateTimeZone objects
 	* Added et (Estonian) translation (thanks to Rivo Zängov)
 
 Release 1.2.4 (2012-01-16)
