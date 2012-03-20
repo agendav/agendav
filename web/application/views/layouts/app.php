@@ -3,7 +3,7 @@ echo $header;
 ?>
 <div class="container-fluid">
  <div class="row-fluid">
-  <div class="span2">
+  <div class="span2" id="sidebar">
    <?php echo $sidebar; ?>
   </div>
 

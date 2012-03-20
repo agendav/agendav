@@ -1,6 +1,5 @@
 body {
   background: url(../img/bg_11.png) #c6c8cd top left repeat-x;
-  min-width: 930px;
 }
 
 /* jQuery UI font override */
@@ -74,6 +73,15 @@ img {
 span.username {
   padding-left: 20px;
   background: url(../img/user.png) transparent left center no-repeat;
+}
+
+#sidebar {
+  max-width: 200px;
+  min-width: 150px;
+}
+
+#calendar_view {
+  min-width: 800px;
 }
 
 #footer {

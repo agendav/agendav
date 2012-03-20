@@ -29,13 +29,14 @@ class Calendar extends CI_Controller {
 	}
 
 	function index() {
+		// Layout components
+		$components = array();
 		$data_header = array(
 				'title' => $this->config->item('site_title'),
 				'logged_in' => TRUE,
 				'body_class' => array('calendarpage'),
 				);
 
-		// Calendar view
 		$data_calendar = array();
 		$logo = $this->config->item('logo');
 		if ($logo !== FALSE) {
@@ -43,16 +44,21 @@ class Calendar extends CI_Controller {
 			$data_calendar['title'] = $data_header['title'];
 		}
 
-		$this->load->view('common_header', $data_header);
-		$this->load->view('calendar_page', $data_calendar);
-		$this->load->view('event_details_template');
-		$this->load->view('share_calendar_manager_row_template');
-
-		$this->load->view('footer',
+		$components['header'] = 
+			$this->load->view('common_header', $data_header, TRUE);
+		$components['sidebar'] = 
+			$this->load->view('sidebar', $data_calendar, TRUE);
+		$components['content'] = 
+			$this->load->view('center', array(), TRUE) .
+			$this->load->view('event_details_template', array(), TRUE) .
+			$this->load->view('share_calendar_manager_row_template', array(), TRUE);
+		$components['footer'] = $this->load->view('footer',
 				array(
 					'load_session_refresh' => TRUE,
 					'load_calendar_colors' => TRUE,
-					));
+					), TRUE);
+
+		$this->load->view('layouts/app.php', $components);
 	}
 
 	/**
