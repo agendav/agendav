@@ -1,17 +1,24 @@
 Release notes
 =============
 
-.. _v1.2.4:
+.. _v1.2.5:
 
-X.X.X (2012-XX-YY)
+1.2.5 (2012-MM-DD)
 ------------------
 
-This release requires PHP cURL support. Make sure your PHP installation has
-the cURL module enabled.
+* DB schema needs to be updated. Apply the changes that you'll find
+  inside the file ``sql/changes/1.1.1_to_1.2.mysql``
 
-caldav.php rewrite (TODO)
+* This release requires PHP cURL support. Make sure your PHP installation
+  has the cURL module enabled
 
-translation (TODO), default language -> en
+* Now you can share a calendar in read-only mode. You're advised to create a
+  new ``caldav.php`` configuration file using the provided template
+
+* Translations are now managed using `Transifex
+   <https://www.transifex.net/projects/p/agendav/>`_. Note that default
+   language has been renamed from ``en_US`` to ``en``, as I think it's a
+   neutral English
 
 .. _v1.2.4:
 
