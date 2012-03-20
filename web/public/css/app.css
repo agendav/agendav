@@ -1,7 +1,5 @@
-* {margin:0;padding:0;}
 body {
   background: url(../img/bg_11.png) #c6c8cd top left repeat-x;
-  font: normal 0.8em 'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
   min-width: 930px;
 }
 
@@ -73,76 +71,17 @@ img {
 .uniForm:after,
 .uniForm .ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
 
-#topbar {
-  background: url(../img/bg_topbar.png) #f0f0f0 top left repeat-x;
-  height: 25px;
-  width: 100%;
-  position: absolute;
-  overflow: hidden;
-  color: #808080;
-  text-align: right;
-}
-
-#topbar div.title {
-  display: inline;
-  float: left;
-  color: black;
-  font-weight: bold;
-}
-
-div.username {
-  font-style: italic;
-  color: black;
-  display: inline;
+span.username {
   padding-left: 20px;
   background: url(../img/user.png) transparent left center no-repeat;
 }
 
-#wrap_topbar {
-  padding: 3px 2px;
-}
-
-#logoutbutton {
-  vertical-align: middle;
-}
-
 #footer {
-  margin: 0 auto 0 auto;
   text-align: center;
-  width: 80%;
 }
 
 #footer p {
   color: #777777;
-}
-
-#page_contents {
-  position: absolute;
-  top: 25px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin-top: 10px;
-}
-
-#left_frame {
-  padding: 10px 15px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 150px;
-  bottom: 0;
-  overflow: auto;
-}
-
-#calendar_view {
-  padding: 5px 15px;
-  position: absolute;
-  top: 0;
-  left: 160px;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
 }
 
 label.suboption {

@@ -51,11 +51,10 @@ if (isset($body_class)) {
 }
 ?>
 <body class="<?php echo implode(' ', $final_body_class)?>">
-<div id="topbar">
- <div id="wrap_topbar">
-  <div class="title">
-   <?php echo $title; ?>
-  </div>
+<div class="navbar">
+ <div class="navbar-inner">
+  <div class="container">
+   <span class="brand"><?php echo $title ?></span>
 <?php 
 if (isset($logged_in)):
 $img_logout = array(
@@ -65,9 +64,17 @@ $img_logout = array(
 		'id' => 'logoutbutton',
         );
 ?>
-<div class="username"><?php echo $this->auth->get_user(); ?></div> | <?php echo anchor('calendar/logout', img($img_logout))?>
+   <ul class="nav pull-right">
+    <li><a><span class="username"><?php echo
+	$this->auth->get_user() ?></span></a></li>
+	<li class="divider-vertical"></li>
+	<li><?php echo anchor('calendar/logout', img($img_logout)) ?></li>
+   </ul>
 <?php
 endif;
 ?>
+  </div>
+ </div>
+</div>
  </div><!--wrap_topbar-->
 </div>
