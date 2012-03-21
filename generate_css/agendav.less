@@ -1,9 +1,10 @@
 @agendavbgImage: "../img/bg_11.png";
 @agendavbgColor: #c6c8cd;
+@agendavbgHoverPseudobutton: #CBDBF7;
 
 .fontoverride(@size: 1.1em) {
-	font-family: 'Trebuchet MS',Arial,sans-serif !important;
-	font-size: @size;
+  font-family: 'Trebuchet MS',Arial,sans-serif !important;
+  font-size: @size;
 }
 
 // ---8<-----
@@ -14,11 +15,11 @@ body {
 
 /* jQuery UI font override */
 .ui-widget { 
-	.fontoverride;
-	
-	input, select, textarea, button { 
-		.fontoverride(1em);
-	} 
+  .fontoverride;
+  
+  input, select, textarea, button { 
+    .fontoverride(1em);
+  } 
 }
 
 .ui-button, .ui-dialog .ui-dialog-buttonpane button,
@@ -43,20 +44,20 @@ body {
 }
 
 .uniForm {
-	.ctrlHolder{ padding: .3em; }
-	textarea    { height: 6em; }
-	label { float: left; width: 30%; }
-	.ultrasmall { width: 20% !important; }
-	.small { width: 30% !important; }
-	.medium{ width: 45% !important; }
-	.large { width: 60% !important; } 
-	.auto  { width: auto !important; height: auto !important; }
-	.small,
-	.ultrasmall,
-	.medium,
-	.auto{ margin-right: 4px; }
-	&:after,
-	.ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
+  .ctrlHolder{ padding: .3em; }
+  textarea    { height: 6em; }
+  label { float: left; width: 30%; }
+  .ultrasmall { width: 20% !important; }
+  .small { width: 30% !important; }
+  .medium{ width: 45% !important; }
+  .large { width: 60% !important; } 
+  .auto  { width: auto !important; height: auto !important; }
+  .small,
+  .ultrasmall,
+  .medium,
+  .auto{ margin-right: 4px; }
+  &:after,
+  .ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
 }
 
 span.username {
@@ -89,60 +90,60 @@ div.block {
   position: relative;
   margin: 0 auto 5% auto;
 
-	.ui-widget-header {
-		padding: 0.4em 1em 0.3em 1em;
-	}
+  .ui-widget-header {
+    padding: 0.4em 1em 0.3em 1em;
+  }
 
-	div.links {
-		text-align: right;
+  div.links {
+    text-align: right;
 
-		span.item {
-			display: inline-block;
-			padding: 10px;
+    span.item {
+      display: inline-block;
+      padding: 10px;
 
-			&:hover {
-				background-color: #f0f0f0;
-			}
-		}
-	}
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
 
 }
 
 
 .calendar_list {
-	ul, li {
-		list-style: none;
-		cursor: default;
-		padding: 0;
-		margin: 0;
-	}
+  ul, li {
+    list-style: none;
+    cursor: default;
+    padding: 0;
+    margin: 0;
+  }
 
-	li {
-		width: inherit;
-		overflow: hidden;
-		white-space: nowrap;
-		padding: 4px;
+  li {
+    width: inherit;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 4px;
 
-		span.text {
-			font-size: 0.9em;
-			letter-spacing: -0.1em;
-		}
+    span.text {
+      font-size: 0.9em;
+      letter-spacing: -0.1em;
+    }
 
-		&:hover {
-			background-color: #f0f0f0;
-		}
+    &:hover {
+      background-color: #f0f0f0;
+    }
 
-		&.selected_calendar {
-			font-weight: bold;
+    &.selected_calendar {
+      font-weight: bold;
 
-			div.calendar_color {
-				border: 2px solid red;
-				width: 10px !important;
-				height: 10px !important;
-			}
-		}
+      div.calendar_color {
+        border: 2px solid red;
+        width: 10px !important;
+        height: 10px !important;
+      }
+    }
 
-	}
+  }
 }
 
 /* overlay starts */
@@ -155,56 +156,56 @@ div.block {
   width: 400px !important;
   max-width: 400px !important;
 
-	.label {
-		font-weight: bold;
-	}
+  .label {
+    font-weight: bold;
+  }
 
-	p.start_and_finish {
-		font-style: italic;
-	}
+  p.start_and_finish {
+    font-style: italic;
+  }
 
-	.ui-tooltip-content div {
-		margin-bottom: 1.7em;
-		line-height: 1.5em;
-	}
+  .ui-tooltip-content div {
+    margin-bottom: 1.7em;
+    line-height: 1.5em;
+  }
 
-	.description_value {
-		margin-left: 2em;
-		font-family: monospace;
-		max-height: 150px;
-		width: 90%;
-		overflow: auto;
-	}
+  .description_value {
+    margin-left: 2em;
+    font-family: monospace;
+    max-height: 150px;
+    width: 90%;
+    overflow: auto;
+  }
 
-	span.rrule_raw_value {
-		font-family: monospace;
-	}
+  span.rrule_raw_value {
+    font-family: monospace;
+  }
 
-	.actions {
-		text-align: right;
-	}
+  .actions {
+    text-align: right;
+  }
 
-	.ui-tooltip-content {
-		line-height: 150%;
-		padding: 0.5em 2em 0.5em 2em !important;
-	}
+  .ui-tooltip-content {
+    line-height: 150%;
+    padding: 0.5em 2em 0.5em 2em !important;
+  }
 
-	.ui-tooltip-title {
-		font-size: 120%;
-	}
+  .ui-tooltip-title {
+    font-size: 120%;
+  }
 }
 
 /* overlay ends */
 
 #delete_event_dialog {
-	.title {
-		font-size: 120%;
-		font-style: italic;
-	}
+  .title {
+    font-size: 120%;
+    font-style: italic;
+  }
 
-	.calendar {
-		font-style: italic;
-	}
+  .calendar {
+    font-style: italic;
+  }
 }
 
 /* delete event dialog ends */
@@ -297,6 +298,7 @@ td.fc-today {
 }
 
 div.selecthelper {
+  filter: ~"alpha(opacity=50)";
   opacity: 0.5;
   zoom: 1;
 }
@@ -322,19 +324,11 @@ div.calendar_color {
   border-style: solid;
 }
 
-div.pseudobutton,
-img.pseudobutton {
-  padding: 10px;
-}
+.pseudobutton {
 
-div.pseudobutton:hover,
-img.pseudobutton:hover {
-  background-color: #f0f0f0;
-}
-
-table.share_calendar_manager tr td,
-table.share_calendar_manager_new tr td {
-  vertical-align: middle;
+  &:hover {
+    background-color: @agendavbgHoverPseudobutton;
+  }
 }
 
 tr.share_calendar_manager_empty td {

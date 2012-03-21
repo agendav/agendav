@@ -262,6 +262,7 @@ td.fc-today {
   border: 2px solid #D2D267;
 }
 div.selecthelper {
+  filter: alpha(opacity=50);
   opacity: 0.5;
   zoom: 1;
 }
@@ -282,17 +283,8 @@ div.calendar_color {
   border-width: 1px;
   border-style: solid;
 }
-div.pseudobutton,
-img.pseudobutton {
-  padding: 10px;
-}
-div.pseudobutton:hover,
-img.pseudobutton:hover {
-  background-color: #f0f0f0;
-}
-table.share_calendar_manager tr td,
-table.share_calendar_manager_new tr td {
-  vertical-align: middle;
+.pseudobutton:hover {
+  background-color: #cbdbf7;
 }
 tr.share_calendar_manager_empty td {
   text-align: center !important;

@@ -47,7 +47,7 @@ $img_share_add = array(
 </tbody>
 </table>
 
-<table class="share_calendar_manager_new">
+<table class="share_calendar_manager_new table">
 <tbody>
 <tr>
  <td><div class="username"><?php
