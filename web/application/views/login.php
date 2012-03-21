@@ -20,18 +20,9 @@ endif;
 
 <div class="loginform">
 <?php
-if (isset($logo)):
-	$img = array(
-        'src' => 'img/' . $logo,
-        'alt' => $title,
-        'title' => $title,
-			);
-	?>
- <div id="logo" class="block">
- <?php echo img($img); ?>
- </div>
- <?php
- endif;
+if (isset($logo)) {
+	echo $logo;
+}
 ?>
   <div class="ui-widget-content ui-corner-all">
 

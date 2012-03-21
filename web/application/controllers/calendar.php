@@ -31,18 +31,18 @@ class Calendar extends CI_Controller {
 	function index() {
 		// Layout components
 		$components = array();
+		$title = $this->config->item('site_title');
+
 		$data_header = array(
-				'title' => $this->config->item('site_title'),
+				'title' => $title,
 				'logged_in' => TRUE,
 				'body_class' => array('calendarpage'),
 				);
 
 		$data_calendar = array();
 		$logo = $this->config->item('logo');
-		if ($logo !== FALSE) {
-			$data_calendar['logo'] = $logo;
-			$data_calendar['title'] = $data_header['title'];
-		}
+		$data_calendar['logo'] = custom_logo($logo, $title);
+		$data_calendar['title'] = $title;
 
 		$components['header'] = 
 			$this->load->view('common_header', $data_header, TRUE);

@@ -77,8 +77,10 @@ class Login extends CI_Controller {
 
 		$page_components = array();
 
+		$title = $this->config->item('site_title');
+
 		$data_header = array(
-				'title' => $this->config->item('site_title'),
+				'title' => $title,
 				'body_class' => array('loginpage'),
 				);
 		$page_components['header'] = $this->load->view('common_header',
@@ -89,11 +91,9 @@ class Login extends CI_Controller {
 			$data['errors'] = $err;
 		}
 
-		$logo = $this->config->item('logo');
-		if ($logo !== FALSE) {
-			$data['logo'] = $logo;
-			$data['title'] = $data_header['title'];
-		}
+		$logoimg = $this->config->item('logo');
+		$data['logo'] = custom_logo($logoimg, $title);
+		$data['title'] = $title;
 
 		$page_components['content'] = $this->load->view('login', $data, TRUE);
 		$page_components['footer'] = $this->load->view('footer', array(),

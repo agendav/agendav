@@ -87,3 +87,31 @@ if ( ! function_exists('formelement'))
 		<?php
 	}
 }
+
+
+/*
+ * Returns small AgenDAV logo
+ */
+
+function agendav_small_logo() {
+	return '<div id="logo" class="block">'
+		. img(array(
+				'src' => 'img/agendav_small.png',
+				'alt' => 'AgenDAV',
+				))
+		. '</div>';
+}
+
+/*
+ * Returns app defined logo
+ */
+
+function custom_logo($filename, $title = '') {
+	return '<div id="logo" class="block">'
+		. img(array(
+				'src' => 'img/' . $filename,
+				'alt' => $title,
+				'title' => $title,
+				))
+		. '</div>';
+}
