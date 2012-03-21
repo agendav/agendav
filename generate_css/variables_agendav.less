@@ -18,6 +18,8 @@
 @grayLighter:           #eee;
 @white:                 #fff;
 
+@veryLightGray:		#eaeaea;
+
 
 // Accent colors
 // -------------------------
@@ -140,12 +142,12 @@
 // Navbar
 // -------------------------
 @navbarHeight:                    40px;
-@navbarBackground:                @grayDarker;
-@navbarBackgroundHighlight:       @grayDark;
+@navbarBackground:                @veryLightGray;
+@navbarBackgroundHighlight:       lighten(@navbarBackground, 15%);
 
 @navbarText:                      @grayDarker;
-@navbarLinkColor:                 @white;
-@navbarLinkColorHover:            @grayLighter;
+@navbarLinkColor:                 @grayDarker;
+@navbarLinkColorHover:            @linkColor;
 @navbarLinkColorActive:           @navbarLinkColorHover;
 @navbarLinkBackgroundHover:       transparent;
 @navbarLinkBackgroundActive:      @navbarBackground;
