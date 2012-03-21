@@ -37,7 +37,7 @@ class Defs {
 	static $cssfiles = array(
 			'bootstrap.agendav.css',
 			'Aristo_20111229.css',
-			'fullcalendar.1.5.2.css',
+			'fullcalendar.css',
 			'jquery.qtip.min.css',
 			'timePicker.css',
 			'loadmask.css',
@@ -46,7 +46,7 @@ class Defs {
 			'app.css',
 			);
 	static $printcssfiles = array(
-			'fullcalendar.print.1.5.2.css',
+			'fullcalendar.print.css',
 			'app.print.css',
 			);
 
