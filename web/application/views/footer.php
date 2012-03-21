@@ -1,3 +1,4 @@
+<div id="popup" class="freeow freeow-top-right"></div>
 <?php
 $base = base_url();
 $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
