@@ -1,157 +1,158 @@
+@agendavbgImage: "../img/bg_11.png";
+@agendavbgColor: #c6c8cd;
+
+.fontoverride(@size: 1.1em) {
+	font-family: 'Trebuchet MS',Arial,sans-serif !important;
+	font-size: @size;
+}
+
+// ---8<-----
+
 body {
-  background: url("../img/bg_11.png") #c6c8cd top left repeat-x;
+  background: url(@agendavbgImage) @agendavbgColor top left repeat-x;
 }
+
 /* jQuery UI font override */
-.ui-widget {
-  font-family: 'Trebuchet MS', Arial, sans-serif !important;
-  font-size: 1.1em;
+.ui-widget { 
+	.fontoverride;
+	
+	input, select, textarea, button { 
+		.fontoverride(1em);
+	} 
 }
-.ui-widget input,
-.ui-widget select,
-.ui-widget textarea,
-.ui-widget button {
-  font-family: 'Trebuchet MS', Arial, sans-serif !important;
-  font-size: 1em;
-}
-.ui-button,
-.ui-dialog .ui-dialog-buttonpane button,
-.ui-tabs .ui-tabs-nav li a,
-.ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+
+.ui-button, .ui-dialog .ui-dialog-buttonpane button,
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
   cursor: default !important;
 }
+
 .logintitle {
   text-align: center;
   font-family: Ubuntu, Verdana, sans-serif;
 }
-.logintitle img,
-.logintitle h1 {
+
+.logintitle img, .logintitle h1 {
   display: inline;
   vertical-align: bottom;
 }
+
+
 .loginform {
   margin: 5% auto;
   text-align: center;
   width: 430px;
 }
+
 .loginform .loginform_fields {
   margin: 0.7em;
   padding: 1em;
 }
+
 .loginerrors {
   width: 400px;
   margin: 5% auto 0 auto;
 }
-.uniForm .ctrlHolder {
-  padding: .3em;
-}
-.uniForm textarea {
-  height: 6em;
-}
-.uniForm label {
-  float: left;
-  width: 30%;
-}
-.uniForm .ultrasmall {
-  width: 20% !important;
-}
-.uniForm .small {
-  width: 30% !important;
-}
-.uniForm .medium {
-  width: 45% !important;
-}
-.uniForm .large {
-  width: 60% !important;
-}
-.uniForm .auto {
-  width: auto !important;
-  height: auto !important;
-}
+
+.uniForm .ctrlHolder{ padding: .3em; }
+.uniForm textarea    { height: 6em; }
+.uniForm label { float: left; width: 30%; }
+.uniForm .ultrasmall { width: 20% !important; }
+.uniForm .small { width: 30% !important; }
+.uniForm .medium{ width: 45% !important; }
+.uniForm .large { width: 60% !important; } 
+.uniForm .auto  { width: auto !important; height: auto !important; }
 .uniForm .small,
 .uniForm .ultrasmall,
 .uniForm .medium,
-.uniForm .auto {
-  margin-right: 4px;
-}
+.uniForm .auto{ margin-right: 4px; }
 .uniForm:after,
-.uniForm .ctrlHolder:after {
-  content: ".";
-  display: block;
-  height: 0;
-  line-height: 0;
-  font-size: 0;
-  clear: both;
-  min-height: 0;
-  visibility: hidden;
-}
+.uniForm .ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
+
 span.username {
   padding-left: 20px;
   background: url(../img/user.png) transparent left center no-repeat;
 }
+
 #sidebar {
   max-width: 200px;
 }
+
 #footer {
   text-align: center;
 }
+
 #footer p {
   color: #777777;
 }
+
 label.suboption {
   padding-left: 0.8em;
 }
+
 div.block {
   position: relative;
   margin: 0 auto 5% auto;
 }
+
 div.block .ui-widget-header {
   padding: 0.4em 1em 0.3em 1em;
 }
+
 div#logo {
   text-align: center;
 }
+
 div.block div.links {
   text-align: right;
 }
+
 div.block div.links span.item {
   display: inline-block;
   padding: 10px;
 }
+
 div.block div.links span.item:hover {
   background-color: #f0f0f0;
 }
-.calendar_list ul,
-#calendar_list li {
+
+.calendar_list ul, #calendar_list li {
   list-style: none;
   cursor: default;
   padding: 0;
   margin: 0;
 }
+
 .calendar_list li {
   width: inherit;
   overflow: hidden;
   white-space: nowrap;
   padding: 4px;
 }
+
 .calendar_list li span.text {
   font-size: 0.9em;
   letter-spacing: -0.1em;
 }
+
 .calendar_list li:hover {
   background-color: #f0f0f0;
 }
+
 li.selected_calendar {
   font-weight: bold;
 }
+
 li.selected_calendar div.calendar_color {
   border: 2px solid red;
   width: 10px !important;
   height: 10px !important;
 }
+
 div.ui-dialog-content table {
   width: 100%;
   max-width: 100%;
 }
+
 div.ui-dialog-content table td,
 div.ui-dialog-content table th {
   padding: 4px;
@@ -159,25 +160,31 @@ div.ui-dialog-content table th {
   text-align: left;
   line-height: 14px;
 }
+
 /* overlay starts */
-#view_event_details_template,
-#share_calendar_manager_row_template {
+
+#view_event_details_template, #share_calendar_manager_row_template {
   display: none;
 }
+
 .view_event_details {
   width: 400px !important;
   max-width: 400px !important;
 }
+
 .view_event_details .label {
   font-weight: bold;
 }
+
 .view_event_details p.start_and_finish {
   font-style: italic;
 }
+
 .view_event_details .ui-tooltip-content div {
   margin-bottom: 1.7em;
   line-height: 1.5em;
 }
+
 .view_event_details .description_value {
   margin-left: 2em;
   font-family: monospace;
@@ -185,43 +192,57 @@ div.ui-dialog-content table th {
   width: 90%;
   overflow: auto;
 }
+
 .view_event_details span.rrule_raw_value {
   font-family: monospace;
 }
+
+
 .view_event_details .actions {
   text-align: right;
 }
+
 .view_event_details .ui-tooltip-content {
   line-height: 150%;
   padding: 0.5em 2em 0.5em 2em !important;
 }
+
 .view_event_details .ui-tooltip-title {
   font-size: 120%;
 }
+
 /* overlay ends */
+
 #delete_event_dialog .title {
   font-size: 120%;
   font-style: italic;
 }
+
 #delete_event_dialog .calendar {
   font-style: italic;
 }
+
 /* delete event dialog ends */
+
 .time-picker {
   z-index: 9999 !important;
 }
+
 #ui-datepicker-div {
   z-index: 9999 !important;
 }
+
 div.public_url {
   width: 90%;
   text-align: right;
   font-size: 80%;
   margin-top: 1em;
 }
+
 #comm {
   display: none;
 }
+
 span.shared {
   display: inline-block;
   height: 16px;
@@ -231,6 +252,7 @@ span.shared {
   background-position: 95% 50%;
   background-repeat: no-repeat;
 }
+
 div.share_info {
   background: url(../img/share_big.png) #fafafa center left no-repeat;
   padding: 10px 10px 10px 40px;
@@ -238,6 +260,7 @@ div.share_info {
   width: 350px;
   margin: 0.5em auto 0 auto;
 }
+
 /* 
  * Dialog buttons
  * --------------
@@ -245,58 +268,70 @@ div.share_info {
 .btn-icon-cancel {
   background-image: url(../img/button-icons/cancel.png) !important;
 }
+
 .btn-icon-ok {
   background-image: url(../img/button-icons/ok.png) !important;
 }
-.btn-icon-event-delete,
-.btn-icon-calendar-delete {
+
+.btn-icon-event-delete, .btn-icon-calendar-delete {
   background-image: url(../img/button-icons/calendar_delete.png) !important;
 }
+
 .btn-icon-calendar-add {
   background-image: url(../img/button-icons/calendar_add.png) !important;
 }
-.btn-icon-event-edit,
-.btn-icon-calendar-edit {
+
+.btn-icon-event-edit, .btn-icon-calendar-edit {
   background-image: url(../img/button-icons/calendar_edit.png) !important;
 }
+
 .fc-border-separate td {
   border-color: #cbcbcb !important;
 }
+
 .fc-border-separate th.fc-first,
 .fc-border-separate td.fc-first {
   border-left: 1px solid #b6b6b6 !important;
 }
+
 .fc-border-separate th.fc-last,
 .fc-border-separate td.fc-last {
   border-right: 1px solid #b6b6b6 !important;
 }
+
 td.fc-other-month {
   background-color: #f9f9f9;
   border-style: dotted;
   border-color: #bfbfbf;
 }
-td.fc-sat,
-td.fc-sun {
+
+td.fc-sat, td.fc-sun {
   background-color: #eaeaea;
 }
+
 td.fc-today {
   background-color: #FFFFCC !important;
   font-weight: bold;
   border: 2px solid #D2D267;
 }
+
 div.selecthelper {
   opacity: 0.5;
   zoom: 1;
 }
+
 .fc-button {
   cursor: default !important;
 }
+
 .fc-event .fc-event-inner {
   font-size: 1.1em !important;
 }
+
 .fc-event-hori .fc-event-inner {
   padding: 0.1em 0 0.2em 0;
 }
+
 div.calendar_color {
   display: inline-block;
   width: 12px;
@@ -305,24 +340,31 @@ div.calendar_color {
   border-width: 1px;
   border-style: solid;
 }
+
 div.pseudobutton,
 img.pseudobutton {
   padding: 10px;
 }
+
 div.pseudobutton:hover,
 img.pseudobutton:hover {
   background-color: #f0f0f0;
 }
+
 table.share_calendar_manager tr td,
 table.share_calendar_manager_new tr td {
   vertical-align: middle;
 }
+
 tr.share_calendar_manager_empty td {
   text-align: center !important;
   display: none;
 }
+
 table.share_calendar_manager_new {
   margin-top: 10px;
   border: 1px solid #e0e0e0;
   background-color: #f6f6f6;
 }
+
+// vim: sw=2 tabstop=2
