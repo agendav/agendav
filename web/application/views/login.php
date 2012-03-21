@@ -1,4 +1,24 @@
-<div class="logintitle">
+<div class="page-header">
+<h1><?php echo $this->config->item('site_title')?></h1>
+</div>
+
+
+<?php
+if (!empty($errors)):
+?>
+<div class="ui-widget loginerrors">
+ <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+  <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+   <?php echo $errors?>
+  </p>
+  </div>
+</div>
+
+<?php
+endif;
+?>
+
+<div class="loginform">
 <?php
 if (isset($logo)):
 	$img = array(
@@ -13,31 +33,6 @@ if (isset($logo)):
  <?php
  endif;
 ?>
-<h1><?php echo $this->config->item('site_title')?></h1>
-</div>
-
-
-<?php
-$validation_errors = validation_errors();
-
-$final_errors = $validation_errors . (isset($custom_errors) ? $custom_errors
-		: '');
-
-if (!empty($final_errors)):
-?>
-<div class="ui-widget loginerrors">
- <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
-  <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
-   <?php echo $final_errors?>
-  </p>
-  </div>
-</div>
-
-<?php
-endif;
-?>
-
-<div class="loginform">
   <div class="ui-widget-content ui-corner-all">
 
   <div class="loginform_fields">
