@@ -13,6 +13,10 @@ body {
   background: url(@agendavbgImage) @agendavbgColor top left repeat-x;
 }
 
+body.calendarpage {
+  padding-top: 50px;
+}
+
 /* jQuery UI font override */
 .ui-widget { 
   .fontoverride;
@@ -325,7 +329,6 @@ div.calendar_color {
 }
 
 .pseudobutton {
-
   &:hover {
     background-color: @agendavbgHoverPseudobutton;
   }
@@ -342,4 +345,5 @@ table.share_calendar_manager_new {
   background-color: #f6f6f6;
 }
 
-// vim: sw=2 tabstop=2
+
+// vim: sw=2 tabstop=2 expandtab
