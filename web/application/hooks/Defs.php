@@ -35,11 +35,14 @@ class Defs {
 			);
 
 	static $cssfiles = array(
-			'bootstrap.agendav.min.css',
+			'bootstrap.agendav.css',
 			'Aristo_20111229.css',
 			'fullcalendar.1.5.2.css',
 			'jquery.qtip.min.css',
 			'timePicker.css',
+			'loadmask.css',
+			'freeow.css',
+			'colorpicker.css',
 			'app.css',
 			);
 	static $printcssfiles = array(
