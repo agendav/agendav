@@ -6,7 +6,7 @@ $write_access_options = array(
 
 $orig_sids = array();
 ?>
-<table class="share_calendar_manager">
+<table class="share_calendar_manager table table-striped">
 <thead>
  <th><?php echo $this->i18n->_('labels', 'username')?></th>
  <th><?php echo $this->i18n->_('labels', 'access')?></th>

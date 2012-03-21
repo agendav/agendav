@@ -1,5 +1,5 @@
 <div id="share_calendar_manager_row_template">
-<table>
+<table class="table table-striped">
 <?php
 $this->load->view('share_calendar_manager_row',
 		array(

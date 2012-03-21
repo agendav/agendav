@@ -42,20 +42,22 @@ body {
   margin: 5% auto 0 auto;
 }
 
-.uniForm .ctrlHolder{ padding: .3em; }
-.uniForm textarea    { height: 6em; }
-.uniForm label { float: left; width: 30%; }
-.uniForm .ultrasmall { width: 20% !important; }
-.uniForm .small { width: 30% !important; }
-.uniForm .medium{ width: 45% !important; }
-.uniForm .large { width: 60% !important; } 
-.uniForm .auto  { width: auto !important; height: auto !important; }
-.uniForm .small,
-.uniForm .ultrasmall,
-.uniForm .medium,
-.uniForm .auto{ margin-right: 4px; }
-.uniForm:after,
-.uniForm .ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
+.uniForm {
+	.ctrlHolder{ padding: .3em; }
+	textarea    { height: 6em; }
+	label { float: left; width: 30%; }
+	.ultrasmall { width: 20% !important; }
+	.small { width: 30% !important; }
+	.medium{ width: 45% !important; }
+	.large { width: 60% !important; } 
+	.auto  { width: auto !important; height: auto !important; }
+	.small,
+	.ultrasmall,
+	.medium,
+	.auto{ margin-right: 4px; }
+	&:after,
+	.ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
+}
 
 span.username {
   padding-left: 20px;
@@ -78,76 +80,69 @@ label.suboption {
   padding-left: 0.8em;
 }
 
-div.block {
-  position: relative;
-  margin: 0 auto 5% auto;
-}
-
-div.block .ui-widget-header {
-  padding: 0.4em 1em 0.3em 1em;
-}
-
 div#logo {
   text-align: center;
 }
 
-div.block div.links {
-  text-align: right;
+
+div.block {
+  position: relative;
+  margin: 0 auto 5% auto;
+
+	.ui-widget-header {
+		padding: 0.4em 1em 0.3em 1em;
+	}
+
+	div.links {
+		text-align: right;
+
+		span.item {
+			display: inline-block;
+			padding: 10px;
+
+			&:hover {
+				background-color: #f0f0f0;
+			}
+		}
+	}
+
 }
 
-div.block div.links span.item {
-  display: inline-block;
-  padding: 10px;
-}
 
-div.block div.links span.item:hover {
-  background-color: #f0f0f0;
-}
+.calendar_list {
+	ul, li {
+		list-style: none;
+		cursor: default;
+		padding: 0;
+		margin: 0;
+	}
 
-.calendar_list ul, #calendar_list li {
-  list-style: none;
-  cursor: default;
-  padding: 0;
-  margin: 0;
-}
+	li {
+		width: inherit;
+		overflow: hidden;
+		white-space: nowrap;
+		padding: 4px;
 
-.calendar_list li {
-  width: inherit;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 4px;
-}
+		span.text {
+			font-size: 0.9em;
+			letter-spacing: -0.1em;
+		}
 
-.calendar_list li span.text {
-  font-size: 0.9em;
-  letter-spacing: -0.1em;
-}
+		&:hover {
+			background-color: #f0f0f0;
+		}
 
-.calendar_list li:hover {
-  background-color: #f0f0f0;
-}
+		&.selected_calendar {
+			font-weight: bold;
 
-li.selected_calendar {
-  font-weight: bold;
-}
+			div.calendar_color {
+				border: 2px solid red;
+				width: 10px !important;
+				height: 10px !important;
+			}
+		}
 
-li.selected_calendar div.calendar_color {
-  border: 2px solid red;
-  width: 10px !important;
-  height: 10px !important;
-}
-
-div.ui-dialog-content table {
-  width: 100%;
-  max-width: 100%;
-}
-
-div.ui-dialog-content table td,
-div.ui-dialog-content table th {
-  padding: 4px;
-  vertical-align: top;
-  text-align: left;
-  line-height: 14px;
+	}
 }
 
 /* overlay starts */
@@ -159,56 +154,57 @@ div.ui-dialog-content table th {
 .view_event_details {
   width: 400px !important;
   max-width: 400px !important;
-}
 
-.view_event_details .label {
-  font-weight: bold;
-}
+	.label {
+		font-weight: bold;
+	}
 
-.view_event_details p.start_and_finish {
-  font-style: italic;
-}
+	p.start_and_finish {
+		font-style: italic;
+	}
 
-.view_event_details .ui-tooltip-content div {
-  margin-bottom: 1.7em;
-  line-height: 1.5em;
-}
+	.ui-tooltip-content div {
+		margin-bottom: 1.7em;
+		line-height: 1.5em;
+	}
 
-.view_event_details .description_value {
-  margin-left: 2em;
-  font-family: monospace;
-  max-height: 150px;
-  width: 90%;
-  overflow: auto;
-}
+	.description_value {
+		margin-left: 2em;
+		font-family: monospace;
+		max-height: 150px;
+		width: 90%;
+		overflow: auto;
+	}
 
-.view_event_details span.rrule_raw_value {
-  font-family: monospace;
-}
+	span.rrule_raw_value {
+		font-family: monospace;
+	}
 
+	.actions {
+		text-align: right;
+	}
 
-.view_event_details .actions {
-  text-align: right;
-}
+	.ui-tooltip-content {
+		line-height: 150%;
+		padding: 0.5em 2em 0.5em 2em !important;
+	}
 
-.view_event_details .ui-tooltip-content {
-  line-height: 150%;
-  padding: 0.5em 2em 0.5em 2em !important;
-}
-
-.view_event_details .ui-tooltip-title {
-  font-size: 120%;
+	.ui-tooltip-title {
+		font-size: 120%;
+	}
 }
 
 /* overlay ends */
 
-#delete_event_dialog .title {
-  font-size: 120%;
-  font-style: italic;
-}
+#delete_event_dialog {
+	.title {
+		font-size: 120%;
+		font-style: italic;
+	}
 
-#delete_event_dialog .calendar {
-  font-style: italic;
+	.calendar {
+		font-style: italic;
+	}
 }
 
 /* delete event dialog ends */
@@ -226,10 +222,6 @@ div.public_url {
   text-align: right;
   font-size: 80%;
   margin-top: 1em;
-}
-
-#comm {
-  display: none;
 }
 
 span.shared {

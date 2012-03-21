@@ -91,15 +91,15 @@ span.username {
 label.suboption {
   padding-left: 0.8em;
 }
+div#logo {
+  text-align: center;
+}
 div.block {
   position: relative;
   margin: 0 auto 5% auto;
 }
 div.block .ui-widget-header {
   padding: 0.4em 1em 0.3em 1em;
-}
-div#logo {
-  text-align: center;
 }
 div.block div.links {
   text-align: right;
@@ -112,7 +112,7 @@ div.block div.links span.item:hover {
   background-color: #f0f0f0;
 }
 .calendar_list ul,
-#calendar_list li {
+.calendar_list li {
   list-style: none;
   cursor: default;
   padding: 0;
@@ -131,24 +131,13 @@ div.block div.links span.item:hover {
 .calendar_list li:hover {
   background-color: #f0f0f0;
 }
-li.selected_calendar {
+.calendar_list li.selected_calendar {
   font-weight: bold;
 }
-li.selected_calendar div.calendar_color {
+.calendar_list li.selected_calendar div.calendar_color {
   border: 2px solid red;
   width: 10px !important;
   height: 10px !important;
-}
-div.ui-dialog-content table {
-  width: 100%;
-  max-width: 100%;
-}
-div.ui-dialog-content table td,
-div.ui-dialog-content table th {
-  padding: 4px;
-  vertical-align: top;
-  text-align: left;
-  line-height: 14px;
 }
 /* overlay starts */
 #view_event_details_template,
@@ -209,9 +198,6 @@ div.public_url {
   text-align: right;
   font-size: 80%;
   margin-top: 1em;
-}
-#comm {
-  display: none;
 }
 span.shared {
   display: inline-block;
