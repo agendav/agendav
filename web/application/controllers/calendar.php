@@ -46,6 +46,10 @@ class Calendar extends CI_Controller {
 
 		$components['header'] = 
 			$this->load->view('common_header', $data_header, TRUE);
+
+		$components['navbar'] = 
+			$this->load->view('navbar', $data_header, TRUE);
+
 		$components['sidebar'] = 
 			$this->load->view('sidebar', $data_calendar, TRUE);
 		$components['content'] = 
