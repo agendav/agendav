@@ -62,6 +62,7 @@ $(document).ready(function() {
 				week: prefs_format_title_week,
 				day: prefs_format_title_day
 			},
+			currentTimeIndicator: true,
 			weekMode: 'liquid',
 			aspectRatio: 1.2,
 			height: calendar_height(),
@@ -69,7 +70,7 @@ $(document).ready(function() {
 				$(this).fullCalendar('option', 'height', calendar_height());
 			},
 			header: {
-				left:   'month,agendaWeek,agendaDay',
+				left:   'month,agendaWeek,agendaDay,list,table',
 				center: 'title',
 				right:  'today prev,next'
 			},
@@ -81,7 +82,7 @@ $(document).ready(function() {
 				today: _('labels', 'today'),
 				month: _('labels', 'month'),
 				week: _('labels', 'week'),
-				day: _('labels', 'day')
+				day: _('labels', 'day'),
 			},
 			theme: true, // use jQuery UI themeing
 			allDayText: _('labels', 'allday'),
