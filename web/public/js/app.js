@@ -70,7 +70,7 @@ $(document).ready(function() {
 				$(this).fullCalendar('option', 'height', calendar_height());
 			},
 			header: {
-				left:   'month,agendaWeek,agendaDay,list,table',
+				left:   'month,agendaWeek,agendaDay table',
 				center: 'title',
 				right:  'today prev,next'
 			},
@@ -83,6 +83,7 @@ $(document).ready(function() {
 				month: _('labels', 'month'),
 				week: _('labels', 'week'),
 				day: _('labels', 'day'),
+				table: _('labels', 'tableview')
 			},
 			theme: true, // use jQuery UI themeing
 			allDayText: _('labels', 'allday'),

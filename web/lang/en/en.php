@@ -81,6 +81,7 @@ $labels['today'] = 'Today';
 $labels['month'] = 'month';
 $labels['week'] = 'week';
 $labels['day'] = 'day';
+$labels['tableview'] = 'agenda';
 $labels['allday'] = 'all day';
 $labels['choose_date'] = 'Choose date';
 
