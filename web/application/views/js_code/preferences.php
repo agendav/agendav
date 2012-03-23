@@ -19,6 +19,6 @@ $prefs = array(
 
 foreach($prefs as $pref) {
 	echo 'var prefs_' . $pref . " = '"
-		.addslashes($this->i18n->_('labels', $pref)) ."';";
+		.addslashes($this->config->item($pref)) ."';";
 }
 // vim: set ft=javascript

@@ -34,8 +34,7 @@ class Icshelper {
 		$this->tz = $this->CI->timezonemanager->getTz(
 				$this->CI->config->item('default_timezone'));
 
-		$this->date_format = $this->CI->i18n->_('labels',
-				'format_date_strftime');
+		$this->date_format = $this->CI->config->item('format_full_date');
 
 		$this->config = array(
 				'unique_id' =>

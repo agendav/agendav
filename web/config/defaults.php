@@ -102,6 +102,45 @@ $config['default_date_format'] = 'ymd';
 
 /*
 |--------------------------------------------------------------------------
+| Readable date format (strftime)
+|--------------------------------------------------------------------------
+|
+| This determines which date format should be used by default when showing a
+| date. It's not used in forms.
+|
+| Requires strftime syntax (http://php.net/strftime)
+|
+| Some examples:
+|
+|  * %a %e %B %Y : Mon 5 March 2012
+|  * %a %e de %B de %Y : Lun 5 de marzo de 2012 (great for es_ES)
+*/
+
+$config['format_full_date'] = '%a %e %B %Y';
+
+/*
+|--------------------------------------------------------------------------
+| Calendar titles and columns date formats
+|--------------------------------------------------------------------------
+|
+| Following options control how the web calendar should format dates on
+| titles and columns.
+|
+| Requires own Fullcalendar syntax
+| (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
+|
+*/
+
+$config['format_column_month'] = 'ddd'; 
+$config['format_column_week'] = 'ddd d'; 
+$config['format_column_day'] = 'ddd d MMMM'; 
+
+$config['format_title_month'] = 'MMMM yyyy';
+$config['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
+$config['format_title_day'] = 'dddd, MMM d yyyy';
+
+/*
+|--------------------------------------------------------------------------
 | Default first day of week
 |--------------------------------------------------------------------------
 |
