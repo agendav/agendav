@@ -15,6 +15,10 @@ Release notes
 * Now you can share a calendar in read-only mode. You're advised to create a
   new ``caldav.php`` configuration file using the provided template
 
+* Date and time format options have been moved inside ``config.php``. Prior
+  to this release they were set inside lang files, which didn't make much
+  sense
+
 * Translations are now managed using `Transifex
    <https://www.transifex.net/projects/p/agendav/>`_. Note that default
    language has been renamed from ``en_US`` to ``en``, as I think it's a
