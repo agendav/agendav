@@ -66,12 +66,19 @@ $labels['friday_short'] = 'Fri';
 $labels['saturday_short'] = 'Sat';
 
 $labels['today'] = 'Today';
+$labels['tomorrow'] = 'Tomorrow';
 $labels['month'] = 'month';
 $labels['week'] = 'week';
 $labels['day'] = 'day';
 $labels['tableview'] = 'agenda';
 $labels['allday'] = 'all day';
 $labels['choose_date'] = 'Choose date';
+
+$labels['thisweek'] = 'This week';
+$labels['nextweek'] = 'Next week';
+$labels['thismonth'] = 'This month';
+$labels['nextmonth'] = 'Next month';
+$labels['future'] = 'Future events';
 
 $labels['calendar'] = 'Calendar';
 $labels['location'] = 'Location';
@@ -147,6 +154,8 @@ $labels['publicurl'] = 'URL for calendaring desktop applications';
 $labels['access'] = 'Access';
 $labels['readonly'] = 'Read only';
 $labels['readandwrite'] = 'Read and write';
+
+$labels['pastevents'] = 'Past events';
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';

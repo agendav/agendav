@@ -74,6 +74,24 @@ $(document).ready(function() {
 				center: 'title',
 				right:  'today prev,next'
 			},
+
+			listTexts: {
+				until: _('labels', 'repeatuntil'),
+				past: _('labels', 'pastevents'),
+				today: _('labels', 'today'),
+				tomorrow: _('labels', 'tomorrow'),
+				thisWeek: _('labels', 'thisweek'),
+				nextWeek: _('labels', 'nextweek'),
+				thisMonth: _('labels', 'thismonth'),
+				nextMonth: _('labels', 'nextmonth'),
+				future: _('labels', 'future'),
+				week: 'W'
+			},
+			// list/table options
+			listSections: 'smart',
+			listRange: 30,
+			listPage: 7,
+
 			monthNames: month_names_long(),
 			monthNamesShort: month_names_short(),
 			dayNames: day_names_long(),
