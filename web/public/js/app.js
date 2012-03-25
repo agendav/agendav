@@ -1061,6 +1061,7 @@ function calendar_modify_form(calendar_obj) {
 		sid: data.sid,
 		shared: data.shared,
 		user_from: data.user_from,
+		write_access: data.write_access,
 		url: data.url
 	};
 

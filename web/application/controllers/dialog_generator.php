@@ -354,7 +354,10 @@ class Dialog_generator extends CI_Controller {
 		$shared = $this->input->post('shared');
 		$user_from = $this->input->post('user_from');
 		$sid = $this->input->post('sid');
+		$write_access = $this->input->post('write_access');
 		$url = $this->input->post('url');
+
+		$errors = FALSE;
 
 		if ($calendar === FALSE || $displayname === FALSE 
 				|| $color === FALSE || $url === FALSE) {
@@ -378,16 +381,18 @@ class Dialog_generator extends CI_Controller {
 
 			// Shares
 			if ($is_sharing_enabled && $shared !== FALSE && $shared == 'true') {
-				if ($sid === FALSE || $user_from === FALSE) {
+				if ($sid === FALSE || $user_from === FALSE || $write_access
+						=== FALSE) {
+					$errors = TRUE;
 					$this->_throw_error('modify_calendar_dialog', 
 						$this->i18n->_('messages', 'error_oops'),
 						$this->i18n->_('messages',
 							'error_interfacefailure'));
-
 				} else {
 					$data['is_shared_calendar'] = TRUE;
 					$data['sid'] = $sid;
 					$data['user_from'] = $user_from;
+					$data['write_access'] = ($write_access == '1');
 				}
 			} else if ($is_sharing_enabled) {
 				// Users who can access this calendar
@@ -398,7 +403,9 @@ class Dialog_generator extends CI_Controller {
 				$data['show_share_options'] = FALSE;
 			}
 
-			$this->load->view('dialogs/modify_calendar', $data);
+			if (FALSE === $errors) {
+				$this->load->view('dialogs/modify_calendar', $data);
+			}
 		}
 	}
 

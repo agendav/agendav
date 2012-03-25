@@ -57,7 +57,13 @@ if ($show_share_options && $is_shared_calendar):
 <?php
 echo $this->i18n->_('messages', 'info_sharedby',
 		array('%user' => '<span
-			class="show_user_name">'.$user_from.'</span>'))?>
+			class="username">'.$user_from.'</span>'));
+
+if (!isset($write_access) || $write_access === FALSE) {
+	echo ' (' . $this->i18n->_('labels', 'readonly') . ')';
+}
+?>
+
 </div>
 
 <?php
