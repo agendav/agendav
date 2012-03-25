@@ -168,7 +168,9 @@ class Shared_calendars extends CI_Model {
 
 		$res = false;
 		if (!is_null($sid)) {
-			$conditions = array('sid' => $sid);
+			$conditions = $data;
+			unset($conditions['options']);
+			unset($conditions['write_access']);
 
 			$this->db->where($conditions);
 			$res = $this->db->update('shared', $data);
