@@ -1419,7 +1419,7 @@ function get_calendar_displayname(c) {
 }
 
 /*
- * Reloads an event source by removing it and reenabling it
+ * Reloads an event source
  */
 function reload_event_source(cal) {
 	var eventsource = undefined;
@@ -1433,8 +1433,7 @@ function reload_event_source(cal) {
 	});
 
 	if (eventsource !== undefined) {
-		$('#calendar_view').fullCalendar('removeEventSource', eventsource);
-		$('#calendar_view').fullCalendar('addEventSource', eventsource);
+		$('#calendar_view').fullCalendar('refetchEvents', eventsource);
 	} else {
 		show_error(_('messages', 'error_interfacefailure'),
 				_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
