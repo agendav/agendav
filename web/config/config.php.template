@@ -218,7 +218,7 @@ $config['format_full_date'] = '%a %e %B %Y';
 |--------------------------------------------------------------------------
 |
 | Following options control how the web calendar should format dates on
-| titles and columns.
+| titles and columns for each type of view
 |
 | Requires own Fullcalendar syntax
 | (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
@@ -228,10 +228,12 @@ $config['format_full_date'] = '%a %e %B %Y';
 $config['format_column_month'] = 'ddd'; 
 $config['format_column_week'] = 'ddd d'; 
 $config['format_column_day'] = 'ddd d MMMM'; 
+$config['format_column_table'] = 'MMM d, yyyy';
 
 $config['format_title_month'] = 'MMMM yyyy';
 $config['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
 $config['format_title_day'] = 'dddd, MMM d yyyy';
+$config['format_title_table'] = 'dddd, MMM d yyyy';
 
 /*
 |--------------------------------------------------------------------------

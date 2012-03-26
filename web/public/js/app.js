@@ -55,12 +55,14 @@ $(document).ready(function() {
 			columnFormat: {
 				month: prefs_format_column_month,
 				week: prefs_format_column_week,
-				day: prefs_format_column_day
+				day: prefs_format_column_day,
+				table: prefs_format_column_table
 			},
 			titleFormat: {
 				month: prefs_format_title_month,
 				week: prefs_format_title_week,
-				day: prefs_format_title_day
+				day: prefs_format_title_day,
+				table: prefs_format_title_table
 			},
 			currentTimeIndicator: true,
 			weekMode: 'liquid',
