@@ -1089,8 +1089,16 @@ function calendar_modify_form(calendar_obj) {
 							'click': function() {
 								var thisform = $('#delete_calendar_form');
 								proceed_send_ajax_form(thisform,
-										function(data) {
-											update_calendar_list(false);
+										function(removed_calendar) {
+											// Just remove deleted calendar
+											$('.calendar_list li.available_calendar').each(function(index) {
+												var thiscal = $(this).data();
+												if (thiscal.calendar == removed_calendar) {
+													$('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
+													$(this).remove();
+													return false; // stop looking for calendar
+												}
+											});
 										},
 										function(data) {
 											show_error(_('messages', 'error_caldelete'), data);

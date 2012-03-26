@@ -829,7 +829,7 @@ class Caldav2json extends CI_Controller {
 			null);
 
 		if ($res === TRUE) {
-			$this->_throw_success();
+			$this->_throw_success($calendar);
 		} else {
 			// There was an error
 			$this->_throw_exception($this->i18n->_('messages', $res[0],
