@@ -8,6 +8,7 @@ Release 1.2.5 (2012-?-?)
 	* Applied some fullcalendar patches from pull request #48:
 	  - Now a line shows current time in week/day views
 	  - New view: 'agenda'
+	* Aesthetical changes
 	* Added et (Estonian) translation (thanks to Rivo Zängov)
 
 Release 1.2.4 (2012-01-16)
