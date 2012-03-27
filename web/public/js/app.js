@@ -523,9 +523,8 @@ $(document).ready(function() {
  * Used to calculate calendar view height
  */
 function calendar_height() {
-	return $('.span10').height();
   var offset = $('#calendar_view').offset();
-  return $(window).height() - Math.ceil(offset.top) - 10;
+  return $(window).height() - Math.ceil(offset.top) - 30;
 }
 
 /**
