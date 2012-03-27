@@ -133,6 +133,7 @@ $labels['editevent'] = 'Edit event';
 $labels['deleteevent'] = 'Delete event';
 $labels['deletecalendar'] = 'Delete calendar';
 $labels['calendars'] = 'Calendars';
+$labels['shared_calendars'] = 'Shared calendars';
 $labels['refresh'] = 'Refresh';
 $labels['delete'] = 'Delete';
 $labels['add'] = 'Add';
