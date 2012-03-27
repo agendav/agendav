@@ -1052,6 +1052,7 @@ function update_calendar_list(maskbody) {
 			} else {
 				// Calendar list received empty twice
 				show_error(_('messages','notice_no_calendars'), '');
+				$('#shortcut_add_event').button('disable');
 			}
 		} else {
 			set_data('last_calendar_count', count);
@@ -1069,6 +1070,8 @@ function update_calendar_list(maskbody) {
 
 			// Adjust text length
 			adjust_calendar_names_width();
+
+			$('#shortcut_add_event').button('enable');
 
 		}
 	});
