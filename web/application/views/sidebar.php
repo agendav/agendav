@@ -26,17 +26,8 @@ $img_add = array(
 		'id' => 'calendar_add',
         );
 
-$img_refresh = array(
-        'src' => 'img/arrow_refresh.png',
-        'alt' => $this->i18n->_('labels', 'refresh'),
-        'title' => $this->i18n->_('labels', 'refresh'),
-		'class' => 'pseudobutton',
-		'id' => 'calendar_list_refresh',
-        );
-
 $items = array(
 		img($img_add),
-		img($img_refresh),
 		);
 
 foreach ($items as $item) {

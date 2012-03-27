@@ -66,7 +66,6 @@ $(document).ready(function() {
 			},
 			currentTimeIndicator: true,
 			weekMode: 'liquid',
-			aspectRatio: 1.2,
 			height: calendar_height(),
 			windowResize: function(view) {
 				$(this).fullCalendar('option', 'height', calendar_height());
@@ -327,7 +326,7 @@ $(document).ready(function() {
 		$('#calendar_view span.fc-button-refresh')
 			.button() 
 			.on('click', function() {
-				$('#calendar_view').fullCalendar('refetchEvents');
+					update_calendar_list(true);
 			});
 
 		// Date picker above calendar
@@ -484,11 +483,6 @@ $(document).ready(function() {
 		// First time load: create calendar list
 		update_calendar_list(true);
 
-		// Refresh calendar list
-		$('div.calendar_list').on('click', '#calendar_list_refresh', function() {
-			update_calendar_list(true);
-		});
-
 		// Create calendar
 		$('#own_calendar_list').on('click', '#calendar_add', calendar_create_form);
 		
@@ -528,6 +522,7 @@ $(document).ready(function() {
  * Used to calculate calendar view height
  */
 function calendar_height() {
+	return $('.span10').height();
   var offset = $('#calendar_view').offset();
   return $(window).height() - Math.ceil(offset.top) - 10;
 }
