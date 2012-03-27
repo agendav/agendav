@@ -104,15 +104,11 @@ div.block {
 div.block .ui-widget-header {
   padding: 0.4em 1em 0.3em 1em;
 }
-div.block div.links {
+div.block .buttons {
   text-align: right;
 }
-div.block div.links span.item {
-  display: inline-block;
-  padding: 10px;
-}
-div.block div.links span.item:hover {
-  background-color: #f0f0f0;
+#calendar_add {
+  margin: 5px;
 }
 .calendar_list ul,
 .calendar_list li {
@@ -286,8 +282,12 @@ div.calendar_color {
   border-width: 1px;
   border-style: solid;
 }
+.pseudobutton {
+  display: inline-block;
+  padding: 5px;
+}
 .pseudobutton:hover {
-  background-color: #cbdbf7;
+  background-color: #a9d6ff;
 }
 tr.share_calendar_manager_empty td {
   text-align: center !important;

@@ -484,7 +484,8 @@ $(document).ready(function() {
 		update_calendar_list(true);
 
 		// Create calendar
-		$('#own_calendar_list').on('click', '#calendar_add', calendar_create_form);
+		$('#calendar_add')
+			.on('click', calendar_create_form);
 		
 
 		/*************************************************************

@@ -15,27 +15,15 @@ if (isset($logo)) {
   <div class="ui-widget-content">
    <ul>
    </ul>
-  <div class="links">
-<?php
-// Links
-$img_add = array(
-        'src' => 'img/calendar_add.png',
-        'alt' => $this->i18n->_('labels', 'create'),
-        'title' => $this->i18n->_('labels', 'create'),
-		'class' => 'pseudobutton',
-		'id' => 'calendar_add',
-        );
-
-$items = array(
-		img($img_add),
-		);
-
-foreach ($items as $item) {
-	echo $item;
-}
-
-?> 
-  </div>
+   <div class="buttons">
+    <?php echo img(array(
+				'id' => 'calendar_add',
+				'class' => 'pseudobutton',
+				'src' => 'img/calendar_add.png',
+				'alt' => $this->i18n->_('labels', 'create'),
+				'title' => $this->i18n->_('labels', 'create'),
+				)); ?>
+   </div>
   </div><!-- block contents -->
  </div><!-- block -->
 

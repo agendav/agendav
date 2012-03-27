@@ -1,6 +1,6 @@
 @agendavbgImage: "../img/bg_11.png";
 @agendavbgColor: #c6c8cd;
-@agendavbgHoverPseudobutton: #CBDBF7;
+@agendavbgHoverPseudobutton: #A9D6FF;
 
 .fontoverride(@size: 1.1em) {
   font-family: 'Trebuchet MS',Arial,sans-serif !important;
@@ -98,21 +98,14 @@ div.block {
     padding: 0.4em 1em 0.3em 1em;
   }
 
-  div.links {
+  .buttons {
     text-align: right;
-
-    span.item {
-      display: inline-block;
-      padding: 10px;
-
-      &:hover {
-        background-color: #f0f0f0;
-      }
-    }
   }
-
 }
 
+#calendar_add {
+  margin: 5px;
+}
 
 .calendar_list {
   ul, li {
@@ -329,6 +322,8 @@ div.calendar_color {
 }
 
 .pseudobutton {
+  display: inline-block;
+  padding: 5px;
   &:hover {
     background-color: @agendavbgHoverPseudobutton;
   }
