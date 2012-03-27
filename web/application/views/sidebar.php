@@ -51,7 +51,6 @@ foreach ($items as $item) {
  <div class="calendar_list ui-widget block" id="shared_calendar_list">
   <div class="ui-widget-header ui-corner-all">
   <?php echo $this->i18n->_('labels', 'shared_calendars')?>
-  <span class="shared"></span>
   </div>
   <div class="ui-widget-content">
    <ul>
