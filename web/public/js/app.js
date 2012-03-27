@@ -122,200 +122,19 @@ $(document).ready(function() {
 				}
 			},
 
-			eventRender: function(event, element) {
-				element.qtip({
-					content: {
-						text: event_bubble_content(event),
-						title: {
-							text: event.title,
-							button: true
-						}
-					},
-					position: {
-						my: 'bottom center',
-						at: 'top center',
-						viewport: $('#calendar_view')
-					},
-					style: {
-						classes: 'view_event_details ui-tooltip-shadow',
-						tip: true,
-						widget: true
-					},
-					show: {
-						target: $('#calendar_view'),
-						event: false,
-						solo: $('#calendar_view'),
-						effect: false
-					},
-					hide: {
-						fixed: true,
-						event: 'unfocus',
-						effect: false
-					},
-
-					events: {
-						show: function (event, api) {
-							$(window).on('keydown.tooltipevents', function(e) {
-								if(e.keyCode === $.ui.keyCode.ESCAPE) {
-									api.hide(e);
-								}
-							})
-
-							// Icons
-							var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
-							add_button_icons(links);
-						},
-
-						hide: function (event, api) {
-							// Clicked on event?
-							var has_clicked_event;
-
-							if (event.originalEvent != undefined) {
-								var click_target = $(event.originalEvent.target).parents();
-								has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
-							} else {
-								has_clicked_event = false;
-							}
-
-							set_data('tooltip_hide_clicked_event', has_clicked_event);
-
-							var current = get_data('current_event');
-							set_data('recently_hidden_event', current);
-
-							$(window).off('keydown.tooltipevents');
-						}
-					}
-				});
-			},
-
-			eventClick: function(event, jsEvent, view) {
-				var recently_hidden_event = get_data('recently_hidden_event');
-				var hide_clicked_event = get_data('tooltip_hide_clicked_event');
-
-				remove_data('current_event');
-
-				if (recently_hidden_event != event ||
-						(hide_clicked_event === false && 
-					 	 recently_hidden_event == event)) {
-					set_data('current_event', event);
-					$(this).qtip('show', jsEvent);
-				}
-
-				remove_data('recently_hidden_event');
-				remove_data('tooltip_hide_clicked_event');
-			},
+			eventRender: event_render_callback,
+			eventClick: event_click_callback,
 
 			// Add new event by dragging. Click also triggers this event,
 			// if you define dayClick and select there is some kind of
 			// collision between them.
-			select: function(startDate, endDate, allDay, jsEvent, view) {
-				var pass_allday = (view.name == 'month') ? false : allDay;
-				var data = {
-						start: fulldatetimestring(startDate),
-						end: fulldatetimestring(endDate),
-						allday: pass_allday,
-						view: view.name,
-						current_calendar: $('.calendar_list li.selected_calendar').data().calendar
-				};
-
-				// Unselect every single day/slot
-				$('#calendar_view').fullCalendar('unselect');
-				event_field_form('new', data);
-			},
+			select: slots_drag_callback,
 			
 			// Useful for creating events in agenda view
-			selectHelper: function(start,end) {
-				var current_calendar_color = 
-					$('.calendar_list li.selected_calendar').data().color;
+			selectHelper: select_helper,
 
-				return $('<div style="background-color: '+current_calendar_color
-				+'" class="selecthelper"/>')
-					.text(
-							$.fullCalendar.formatDates(start, end,
-								prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
-			},
-
-			// Event resizing
-			eventResize: function(event, dayDelta, minuteDelta, revertFunc,
-				jsEvent, ui, view ) {
-
-				// Generate on-the-fly form
-				var formid = generate_on_the_fly_form(
-					base_app_url + 'caldav2json/resize_or_drag_event',
-					{
-						uid: event.uid,
-						calendar: event.calendar,
-						etag: event.etag,
-						view: view.name,
-						dayDelta: dayDelta,
-						minuteDelta: minuteDelta,
-						allday: event.allDay,
-						was_allday: event.was_allday,
-						timezone: event.timezone,
-						type: 'resize'
-					});
-
-				if (get_data('formcreation') == 'ok') {
-					var thisform = $('#' + formid);
-
-					proceed_send_ajax_form(thisform,
-						function(data) {
-							// Users just want to know if something fails
-							update_single_event(event, data);
-						},
-						function(data) {
-							show_error(_('messages', 'error_modfailed'), data);
-							revertFunc();
-						},
-						function() {
-							revertFunc();
-						});
-					}
-
-				// Remove generated form
-				$(thisform).remove();
-			},
-
-			// Event dragging
-			eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc,
-										 jsEvent, ui, view) {
-
-				// Generate on-the-fly form
-				var formid = generate_on_the_fly_form(
-					base_app_url + 'caldav2json/resize_or_drag_event',
-					{
-						uid: event.uid,
-						calendar: event.calendar,
-						etag: event.etag,
-						view: view.name,
-						dayDelta: dayDelta,
-						minuteDelta: minuteDelta,
-						allday: event.allDay,
-						was_allday: event.orig_allday,
-						timezone: event.timezone,
-						type: 'drag'
-					});
-
-				if (get_data('formcreation') == 'ok') {
-					var thisform = $('#' + formid);
-
-					proceed_send_ajax_form(thisform,
-						function(data) {
-							// Users just want to know if something fails
-							update_single_event(event, data);
-						},
-						function(data) {
-							show_error(_('messages', 'error_modfailed'), data);
-							revertFunc();
-						},
-						function() {
-							revertFunc();
-						});
-					}
-
-				// Remove generated form
-				$(thisform).remove();
-			}
+			eventResize: event_resize_callback,
+			eventDrop: event_drop_callback,
 
 		});
 
@@ -1731,5 +1550,217 @@ function _generate_share_hidden_inputs(el) {
 
 	});
 }
+
+
+/**
+ * Event render
+ */
+var event_render_callback = function(event, element) {
+	element.qtip({
+		content: {
+			text: event_bubble_content(event),
+			title: {
+				text: event.title,
+				button: true
+			}
+		},
+		position: {
+			my: 'bottom center',
+			at: 'top center',
+			viewport: $('#calendar_view')
+		},
+		style: {
+			classes: 'view_event_details ui-tooltip-shadow',
+			tip: true,
+			widget: true
+		},
+		show: {
+			target: $('#calendar_view'),
+			event: false,
+			solo: $('#calendar_view'),
+			effect: false
+		},
+		hide: {
+			fixed: true,
+			event: 'unfocus',
+			effect: false
+		},
+
+		events: {
+			show: function (event, api) {
+				$(window).on('keydown.tooltipevents', function(e) {
+					if(e.keyCode === $.ui.keyCode.ESCAPE) {
+						api.hide(e);
+					}
+				})
+
+				// Icons
+				var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
+				add_button_icons(links);
+			},
+
+			hide: function (event, api) {
+				// Clicked on event?
+				var has_clicked_event;
+
+				if (event.originalEvent != undefined) {
+					var click_target = $(event.originalEvent.target).parents();
+					has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
+				} else {
+					has_clicked_event = false;
+				}
+
+				set_data('tooltip_hide_clicked_event', has_clicked_event);
+
+				var current = get_data('current_event');
+				set_data('recently_hidden_event', current);
+
+				$(window).off('keydown.tooltipevents');
+			}
+		}
+	});
+};
+
+/**
+ * Event click
+ */
+var event_click_callback = function(event, jsEvent, view) {
+	var recently_hidden_event = get_data('recently_hidden_event');
+	var hide_clicked_event = get_data('tooltip_hide_clicked_event');
+
+	remove_data('current_event');
+
+	if (recently_hidden_event != event ||
+			(hide_clicked_event === false && 
+			 recently_hidden_event == event)) {
+		set_data('current_event', event);
+		$(this).qtip('show', jsEvent);
+	}
+
+	remove_data('recently_hidden_event');
+	remove_data('tooltip_hide_clicked_event');
+};
+
+/**
+ * Calendar slots dragging
+ */
+var slots_drag_callback = function(startDate, endDate, allDay, jsEvent, view) {
+	var pass_allday = (view.name == 'month') ? false : allDay;
+	var data = {
+			start: fulldatetimestring(startDate),
+			end: fulldatetimestring(endDate),
+			allday: pass_allday,
+			view: view.name,
+			current_calendar: $('.calendar_list li.selected_calendar').data().calendar
+	};
+
+	// Unselect every single day/slot
+	$('#calendar_view').fullCalendar('unselect');
+	event_field_form('new', data);
+};
+
+/**
+ * Select helper
+ */
+
+var select_helper = function(start,end) {
+	var current_calendar_color = 
+		$('.calendar_list li.selected_calendar').data().color;
+
+	return $('<div style="background-color: '+current_calendar_color
+	+'" class="selecthelper"/>')
+		.text(
+				$.fullCalendar.formatDates(start, end,
+					prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
+};
+
+/**
+ * Event resizing
+ */
+
+var event_resize_callback = function(event, dayDelta, minuteDelta, revertFunc,
+	jsEvent, ui, view ) {
+
+	// Generate on-the-fly form
+	var formid = generate_on_the_fly_form(
+		base_app_url + 'caldav2json/resize_or_drag_event',
+		{
+			uid: event.uid,
+			calendar: event.calendar,
+			etag: event.etag,
+			view: view.name,
+			dayDelta: dayDelta,
+			minuteDelta: minuteDelta,
+			allday: event.allDay,
+			was_allday: event.was_allday,
+			timezone: event.timezone,
+			type: 'resize'
+		});
+
+	if (get_data('formcreation') == 'ok') {
+		var thisform = $('#' + formid);
+
+		proceed_send_ajax_form(thisform,
+			function(data) {
+				// Users just want to know if something fails
+				update_single_event(event, data);
+			},
+			function(data) {
+				show_error(_('messages', 'error_modfailed'), data);
+				revertFunc();
+			},
+			function() {
+				revertFunc();
+			});
+		}
+
+	// Remove generated form
+	$(thisform).remove();
+};
+
+/**
+ * Event drag and drop
+ */
+
+var event_drop_callback = function(event, dayDelta, minuteDelta, allDay,
+			revertFunc, jsEvent, ui, view) {
+
+	// Generate on-the-fly form
+	var formid = generate_on_the_fly_form(
+		base_app_url + 'caldav2json/resize_or_drag_event',
+		{
+			uid: event.uid,
+			calendar: event.calendar,
+			etag: event.etag,
+			view: view.name,
+			dayDelta: dayDelta,
+			minuteDelta: minuteDelta,
+			allday: event.allDay,
+			was_allday: event.orig_allday,
+			timezone: event.timezone,
+			type: 'drag'
+		});
+
+	if (get_data('formcreation') == 'ok') {
+		var thisform = $('#' + formid);
+
+		proceed_send_ajax_form(thisform,
+			function(data) {
+				// Users just want to know if something fails
+				update_single_event(event, data);
+			},
+			function(data) {
+				show_error(_('messages', 'error_modfailed'), data);
+				revertFunc();
+			},
+			function() {
+				revertFunc();
+			});
+		}
+
+	// Remove generated form
+	$(thisform).remove();
+};
+
 
 // vim: sw=2 tabstop=2
