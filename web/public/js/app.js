@@ -974,7 +974,6 @@ function event_field_form(type, data) {
 								reload_event_source(cal);
 							});
 
-							//$("#calendar_view").fullCalendar('refetchEvents');
 							destroy_dialog(ced);
 						},
 						function(data) {
@@ -1441,7 +1440,8 @@ function reload_event_source(cal) {
 	});
 
 	if (eventsource !== undefined) {
-		$('#calendar_view').fullCalendar('refetchEvents', eventsource);
+		$('#calendar_view').fullCalendar('removeEventSource', eventsource);
+		$('#calendar_view').fullCalendar('addEventSource', eventsource);
 	} else {
 		show_error(_('messages', 'error_interfacefailure'),
 				_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
