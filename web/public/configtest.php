@@ -23,7 +23,7 @@
  * Set this to TRUE to enable config test (disabled by default)
  * Remember to disable it again when finished
  */
-define('ENABLE_SETUP_TESTS', FALSE);
+define('ENABLE_SETUP_TESTS', TRUE);
 
 /*
  * Checks:
@@ -33,8 +33,7 @@ define('ENABLE_SETUP_TESTS', FALSE);
  * - php-mbstring available
  * - php-curl available
  * - Correctly configured config.php, database.php and caldav.php 
- * - PHP MySQL extension available (or MySQLi)
- * - Working database connection
+ * - PHP database module (mysql, mysqli or postgresql) 
  * - Existing log directory and writable by current user
  */
 
@@ -131,7 +130,7 @@ include($configdir .'/config.php');
 include($configdir .'/database.php');
 
 if ($keep_checking) {
-	// PHP + MySQL
+	// Database
 	switch ($db['default']['dbdriver']) {
 		case 'mysql':
 			$check_sql_ext = 'mysql';
@@ -139,46 +138,26 @@ if ($keep_checking) {
 		case 'mysqli':
 			$check_sql_ext = 'mysqli';
 			break;
+		case 'postgre':
+			$check_sql_ext = 'pgsql';
+			break;
 		default:
 			$tests[] = array('SQL driver', 'Unsupported ' .
 					$db['default']['dbdriver'], 
-					'AgenDAV requires a MySQL database');
+					'AgenDAV requires a MySQL or PostgreSQL database');
 			$keep_checking = FALSE;
 	}
 
 	if ($keep_checking) {
 		if (!extension_loaded($check_sql_ext)) {
-			$tests[] = array('PHP + MySQL', 'Not available', 
+			$tests[] = array('PHP supported database', 'Not available', 
 					'Configured DB driver inside database.php (<tt>'
 						. $db['default']['dbdriver'] . '</tt>) is not'
 						. ' available to PHP');
 	} else {
-		$tests[] = array('PHP + MySQL', 'Yes', 'OK');
+		$tests[] = array('PHP supported database', 
+				'Yes (<tt>'.$check_sql_ext.'</tt>)', 'OK');
 	}
-}
-
-
-
-// Database connection
-
-$db = $db['default'];
-$link = @mysql_connect($db['hostname'], $db['username'], 
-		$db['password']);
-
-$test_subj = 'Database connection';
-if (!$link) {
-	$tests[] = array($test_subj, 'Could not connect: <tt>' .
-			mysql_error() .'</tt>', 'Check database connection '
-			.' parameters (file <tt>database.php</tt>');
-} else {
-	$ret = @mysql_select_db($db['database'],$link);
-	if ($ret === FALSE) {
-		$tests[] = array($test_subj, 'Connection succeeded, but'
-				.' could not use database <tt>'.$db['database'].'</tt>');
-	} else {
-		$tests[] = array($test_subj, 'Working', 'OK');
-	}
-	@mysql_close($link);
 }
 
 // Log directory
