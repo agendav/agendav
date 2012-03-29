@@ -9,6 +9,7 @@ Release 1.2.5 (2012-?-?)
 	  - Now a line shows current time in week/day views
 	  - New view: 'agenda'
 	* Aesthetical changes
+	* Added PostgreSQL support
 	* Added et (Estonian) translation (thanks to Rivo Zängov)
 
 Release 1.2.4 (2012-01-16)
