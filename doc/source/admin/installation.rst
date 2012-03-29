@@ -12,13 +12,8 @@ AgenDAV |release| requires the following software to be installed:
 * A web server
 * PHP >= 5.3.0
 * PHP mbstring extension
-* MySQL > 5.1
-
-.. note::
-   AgenDAV will only work with CalDAV servers that support HTTP Basic
-   Authentication, and will fail with those that only support HTTP Digest
-   Authentication. Please, refer to your CalDAV server for information about
-   how to enable Basic Authentication.
+* PHP cURL extension
+* MySQL > 5.1 or PostgreSQL >= 8.1
 
 Downloading AgenDAV and uncompressing
 -------------------------------------
@@ -35,10 +30,16 @@ Uncompress it using ``tar``::
 Database and tables
 -------------------
 
-AgenDAV needs a MySQL database with several tables created. There is a file
-called ``schema.sql`` inside the directory ``sql/`` which contains the
-table schemas.
+AgenDAV requires a database to store some information. Supported RDBMs are
+MySQL and PostgreSQL.
 
+First of all you have to create a user and a database for that user.
+
+Second, you'll have to create AgenDAV tables using provided SQL files inside
+``sql/`` directory.
+
+MySQL
+*****
 Create an user in MySQL like this::
 
  $ mysql --default-character-set=utf8 -uroot -p
@@ -51,7 +52,8 @@ Create an user in MySQL like this::
 
 And then run the schema creation file::
 
- $ mysql --default-character-set=utf8 -uagendav -p agendav < sql/schema.sql
+ $ mysql --default-character-set=utf8 -uagendav \
+   -p agendav < sql/mysql.schema.sql
  Enter password:
  $
 
@@ -59,6 +61,33 @@ Note the UTF8 parts on the previous commands. If you don't specify them you
 will have some issues with special characters.
 
 Now your database is ready.
+
+PostgreSQL
+**********
+
+Use the special ``postgres`` system user to manage your installation. You
+can add a new user and a new database the following way::
+
+ # su postgres
+ $ psql
+ postgres=# CREATE USER agendav WITH PASSWORD 'somepassword';
+ postgres=# CREATE DATABASE agendav ENCODING 'UTF8';
+ postgres=# GRANT ALL PRIVILEGES ON DATABASE agendav TO agendav;
+ postgres=# \q
+ $ exit
+
+Then you have to edit the file ``pg_hba.conf``, which is usually located at
+``/var/lib/pgsql/``. Add the following line before other definitions::
+
+ # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+ local   agendav     agendav     trust
+
+After that just restart PostgreSQL and load the schema::
+
+ $ psql -U agendav agendav < sql/pgsql.schema.sql
+
+
+
 
 Configuring Apache web server
 -----------------------------
