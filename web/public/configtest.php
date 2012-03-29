@@ -23,7 +23,7 @@
  * Set this to TRUE to enable config test (disabled by default)
  * Remember to disable it again when finished
  */
-define('ENABLE_SETUP_TESTS', TRUE);
+define('ENABLE_SETUP_TESTS', FALSE);
 
 /*
  * Checks:
