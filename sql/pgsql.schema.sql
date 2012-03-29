@@ -20,3 +20,9 @@ CREATE TABLE shared (
 );
 CREATE INDEX shareidx ON shared (user_from,calendar);
 CREATE INDEX sharedwithidx ON shared (user_which);
+
+CREATE TABLE migrations (
+  version int NOT NULL
+);
+
+INSERT INTO migrations VALUES ('1');

@@ -20,3 +20,9 @@ CREATE TABLE `shared` (
   KEY `sharedwithidx` (`user_which`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `migrations` (
+  `version` int(3) NOT NULL
+  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO migrations VALUES ('1');
