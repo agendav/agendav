@@ -42,7 +42,8 @@ class Shared_calendars extends CI_Model {
 			$result[$index] = array(
 					'sid' => $c['sid'],
 					'user_from' => $c['user_from'],
-					'write_access' => $c['write_access'],
+					'write_access' =>
+						$this->_bool_to_int($c['write_access']),
 					);
 			$options = unserialize($c['options']);
 			if (is_array($options)) {
@@ -77,6 +78,8 @@ class Shared_calendars extends CI_Model {
 				$result[$index] = array();
 			}
 			$sid = $c['sid'];
+
+			$c['write_access'] = $this->_bool_to_int($c['write_access']);
 
 			$options = unserialize($c['options']);
 			if (is_array($options)) {
@@ -224,6 +227,27 @@ class Shared_calendars extends CI_Model {
 			return TRUE;
 		}
 				
+	}
+
+	/**
+	 * Translates a boolean from PostgreSQL to 1/0
+	 */
+	function _bool_to_int($value) {
+		$ret = 0;
+
+		switch ($value) {
+			case 't':
+				$ret=1;
+				break;
+			case 'f':
+				$ret=0;
+				break;
+			default:
+				$ret = $value;
+				break;
+		}
+
+		return $ret;
 	}
 
 }
