@@ -6,8 +6,7 @@ Release notes
 1.2.5 (2012-MM-DD)
 ------------------
 
-* DB schema needs to be updated. Apply the changes that you'll find
-  inside the file ``sql/changes/1.1.1_to_1.2.mysql``
+* DB schema needs to be updated. TODO new database update process
 
 * This release requires PHP cURL support. Make sure your PHP installation
   has the cURL module enabled
@@ -17,12 +16,13 @@ Release notes
 
 * Date and time format options have been moved inside ``config.php``. Prior
   to this release they were set inside lang files, which didn't make much
-  sense
+  sense. Have a look at new options :confval:`format_full_date`,
+  :confval:`format_column_month`, :confval:`format_column_week`,
+  :confval:`format_column_day`, :confval:`format_column_table`,
+  :confval:`format_title_month`, :confval:`format_title_week`,
+  :confval:`format_title_day` and :confval:`format_title_table`
 
-* Translations are now managed using `Transifex
-   <https://www.transifex.net/projects/p/agendav/>`_. Note that default
-   language has been renamed from ``en_US`` to ``en``, as I think it's a
-   neutral English
+* Translations are now managed using `Transifex <https://www.transifex.net/projects/p/agendav/>`_. Note that default language has been renamed from ``en_US`` to ``en``, as I think it's a neutral English
 
 .. _v1.2.4:
 
