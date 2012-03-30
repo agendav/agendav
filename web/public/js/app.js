@@ -341,16 +341,16 @@ $(document).ready(function() {
 /**
  * Used to calculate calendar view height
  */
-function calendar_height() {
+var calendar_height = function calendar_height() {
   var offset = $('#calendar_view').offset();
   return $(window).height() - Math.ceil(offset.top) - 30;
-}
+};
 
 /**
  * Used to show error messages
  */
 
-function show_error(title, message) {
+var show_error = function show_error(title, message) {
 	$('#popup').freeow(title, message,
 		{
 			classes: ['popup_error'],
@@ -364,14 +364,14 @@ function show_error(title, message) {
 				left: '400px'
 			}
 		});
-}
+};
 
 /**
  * Used to show success messages
  */
 
 
-function show_success(title, message) {
+var show_success = function show_success(title, message) {
 	$('#popup').freeow(title, message,
 		{
 			classes: ['popup_success'],
@@ -386,35 +386,35 @@ function show_success(title, message) {
 				left: '400px'
 			}
 		});
-}
+};
 
 
 /**
  * Gets data from body
  */
-function get_data(name) {
-	return $('body').data(name);
-}
+var get_data = function get_data(name) {
+	return $.data($('body')[0], name);
+};
 
 /**
  * Sets data on body
  */
-function set_data(name, value) {
-	$('body').data(name, value);
-}
+var set_data = function set_data(name, value) {
+	$.data($('body')[0], name, value);
+};
 
 /**
  * Removes data from body
  */
-function remove_data(name) {
-	$('body').removeData(name);
-}
+var remove_data = function remove_data(name) {
+	$.removeData($('body')[0], name);
+};
 
 
 /**
  * Loads a form (via AJAX) to a specified div
  */
-function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
+var load_generated_dialog = function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
 	
 	divname = '#' + divname;
 
@@ -476,14 +476,14 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		show_error(_('messages', 'error_interfacefailure'), 
 				_('messages', 'error_oops'));
 	}
-}
+};
 
 /**
  * Sends a form via AJAX.
  * 
  * This way we respect CodeIgniter CSRF tokens
  */
-function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
+var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 		errorFunc) {
 	var url = $(formObj).attr('action');
 	var data = $(formObj).serialize();
@@ -531,13 +531,13 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 					_('messages', 'error_oops') + ':' + result);
 		}
 	});
-}
+};
 
 /**
  * Creates a form with a random id in the document, and returns it.
  * Defines each element in the second parameter as hidden fields
  */
-function generate_on_the_fly_form(action, data) {
+var generate_on_the_fly_form = function generate_on_the_fly_form(action, data) {
 	var random_id = '';
 	var possible = 
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -574,22 +574,21 @@ function generate_on_the_fly_form(action, data) {
 	});
 
 	return random_id;
-}
+};
 
 /**
  * Destroys a dialog
  */
-function destroy_dialog(name) {
+var destroy_dialog = function destroy_dialog(name) {
 	$(name).dialog('close');
 	$(name).dialog('destroy');
 	$(name).remove();
-
-}
+};
 
 /**
  * Sets datepicker options
  */
-function set_default_datepicker_options() {
+var set_default_datepicker_options = function set_default_datepicker_options() {
 	// Localization (TODO: make this configurable!)
 $.datepicker.regional['custom'] = {
 	closeText: _('labels', 'close'),
@@ -610,12 +609,12 @@ $.datepicker.regional['custom'] = {
 $.datepicker.setDefaults($.datepicker.regional['custom']);
 $.datepicker.setDefaults({constrainInput: true});
 $.datepicker.setDefaults({dateFormat: prefs_dateformat});
-}
+};
 
 /**
  * Sets a minDate on end_date
  */
-function set_end_minDate() {
+var set_end_minDate = function set_end_minDate() {
 	var elems = ced + ' input.start_date';
 	var eleme = ced + ' input.end_date';
 	var elemru = ced + ' input.recurrence_until';
@@ -627,12 +626,12 @@ function set_end_minDate() {
 	$(eleme).datepicker('option', 'minDate', selected);
 	$(elemru).datepicker('option', 'minDate', selected);
 
-}
+};
 
 /**
  * Sets recurrency options to be enabled or disabled
  */
-function update_recurrency_options(newval) {
+var update_recurrency_options = function update_recurrency_options(newval) {
 	if (newval == 'none') {
 		$(ced + ' input.recurrence_count').val('');
 		$(ced + ' input.recurrence_until').val('');
@@ -650,7 +649,7 @@ function update_recurrency_options(newval) {
 		enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
 
 	}
-}
+};
 
 
 
@@ -659,7 +658,7 @@ function update_recurrency_options(newval) {
  */
 
 // Triggers a dialog for editing/creating events
-function event_field_form(type, data) {
+var event_field_form = function event_field_form(type, data) {
 
 	var url_dialog = 'dialog_generator/';
 	var title;
@@ -807,21 +806,21 @@ function event_field_form(type, data) {
 			}
 		],
 		'com_event_dialog', 500);
-}
+};
 
 /*
  * Updates a single event fetching it from server
  */
-function update_single_event(event, new_data) {
+var update_single_event = function update_single_event(event, new_data) {
 	$.each(new_data, function (i, v) {
 			event[i] = v;
 			});
 
 	$('#calendar_view').fullCalendar('updateEvent', event);
-}
+};
 
 // Triggers a dialog for creating calendars
-function calendar_create_form() {
+var calendar_create_form = function calendar_create_form() {
 
 	var url_dialog = 'dialog_generator/create_calendar';
 	var title = _('labels', 'newcalendar');
@@ -860,10 +859,10 @@ function calendar_create_form() {
 			}
 		],
 		'create_calendar_dialog', 500);
-}
-//
+};
+
 // Triggers a dialog for editing calendars
-function calendar_modify_form(calendar_obj) {
+var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 
 	var url_dialog = 'dialog_generator/modify_calendar';
 	var title = _('labels', 'modifycalendar');
@@ -983,13 +982,13 @@ function calendar_modify_form(calendar_obj) {
 		title,
 		buttons_and_actions,
 		'modify_calendar_dialog', 500);
-}
+};
 
 /*
  * Updates the calendar list and generates eventSources for fullcalendar
  */
 
-function update_calendar_list(maskbody) {
+var update_calendar_list = function update_calendar_list(maskbody) {
 	if (maskbody) {
 		$('body').mask(_('messages', 'overlay_loading_calendar_list'), 500);
 	}
@@ -1075,12 +1074,12 @@ function update_calendar_list(maskbody) {
 
 		}
 	});
-}
+};
 
 /**
  * Function used to query the server for events
  */
-function generate_event_source(calendar) {
+var generate_event_source = function generate_event_source(calendar) {
 	var ajax_options = {
 			// If #calendar is not used, Fullcalendar will be confused when
 			// calling removeEventSource, and will remove all calendars
@@ -1105,14 +1104,14 @@ function generate_event_source(calendar) {
 	};
 
 	return ajax_options;
-}
+};
 
 /**
  * Keeps session alive
  * 
  * n = refresh interval in miliseconds
  */
-function session_refresh(n) {
+var session_refresh = function session_refresh(n) {
 	var sessrefresh_ajax_req = $.ajax({
 		url: base_app_url + 'js_generator/keepalive',
 		cache: false,
@@ -1133,12 +1132,12 @@ function session_refresh(n) {
 	sessrefresh_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
 		session_expired();
 	});
-}
+};
 
 /**
  * Adds button icons
  */
-function add_button_icons(buttons) {
+var add_button_icons = function add_button_icons(buttons) {
 	buttons.filter('button.addicon')
 		.removeClass('addicon')
 		.removeClass('ui-button-text-only')
@@ -1153,12 +1152,12 @@ function add_button_icons(buttons) {
 				}
 			});
 		});
-}
+};
 
 /**
  * Generates a new calendar entry
  */
-function generate_calendar_entry(data) {
+var generate_calendar_entry = function generate_calendar_entry(data) {
 	// Default color
 	if (data.color === undefined || data.color === false) {
 		data.color = '#' + default_calendar_color;
@@ -1210,12 +1209,12 @@ function generate_calendar_entry(data) {
 	li.disableSelection();
 
 	return li;
-}
+};
 
 /**
  * Gets calendar data from its internal name
  */
-function get_calendar_data(c) {
+var get_calendar_data = function get_calendar_data(c) {
 	var data = undefined;
 
 	$('.calendar_list li.available_calendar').each(function(index) {
@@ -1227,12 +1226,12 @@ function get_calendar_data(c) {
 	});
 
 	return data;
-}
+};
 
 /**
  * Gets calendar display name from its internal name
  */
-function get_calendar_displayname(c) {
+var get_calendar_displayname = function get_calendar_displayname(c) {
 	var data = get_calendar_data(c);
 
 	if (data === undefined || data.displayname == undefined) {
@@ -1240,12 +1239,12 @@ function get_calendar_displayname(c) {
 	} else {
 		return data.displayname;
 	}
-}
+};
 
 /*
  * Reloads an event source
  */
-function reload_event_source(cal) {
+var reload_event_source = function reload_event_source(cal) {
 	var eventsource = undefined;
 
 	$('.calendar_list li.available_calendar').each(function(index) {
@@ -1264,12 +1263,12 @@ function reload_event_source(cal) {
 				_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
 	}
 
-}
+};
 
 /*
  * Enforces the use of only one recurrence fields
  */
-function enforce_exclusive_recurrence_field(current, other) {
+var enforce_exclusive_recurrence_field = function enforce_exclusive_recurrence_field(current, other) {
 	if ($(ced + ' input.' + current).val() == '') {
 		$(ced + ' input.' + other).removeAttr('disabled');
 		$(ced + ' input.' + other).removeClass('ui-state-disabled');
@@ -1286,9 +1285,9 @@ function enforce_exclusive_recurrence_field(current, other) {
 			$(ced + ' input.' + other).datepicker('disable');
 		}
 	}
-}
+};
 
-function event_bubble_content(event) {
+var event_bubble_content = function event_bubble_content(event) {
 	var tmpl = $('#view_event_details_template').clone();
 
 	// Calendar
@@ -1340,30 +1339,30 @@ function event_bubble_content(event) {
 	}
 
 	return tmpl.html();
-}
+};
 
 /*
  * Round a Date timestamp
  */
-function timestamp(d) {
+var timestamp = function timestamp(d) {
 	return Math.round(d.getTime()/1000);
-}
+};
 
 /*
  * Returns a full date+time string which is easily parseable
  */
-function fulldatetimestring(d) {
+var fulldatetimestring = function fulldatetimestring(d) {
 	if (d != null && d !== undefined) {
 		return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
 	} else {
 		return undefined;
 	}
-}
+};
 
 /**
  * Returns a foreground color for a given background
  */
-function fg_for_bg(color) {
+var fg_for_bg = function fg_for_bg(color) {
 	var colr = parseInt(color.substr(1), 16);
 
 	var is_dark = (colr >>> 16) // R
@@ -1372,24 +1371,24 @@ function fg_for_bg(color) {
 		< 500;
 
 	return (is_dark) ? '#ffffff' : '#000000';
-}
+};
 
 
 /**
  * This method is called when a session has expired
  */
-function session_expired() {
+var session_expired = function session_expired() {
 	$('.ui-dialog-content').dialog('close');
 
 	show_error(_('messages', 'error_sessexpired'),
 			_('messages', 'error_loginagain'));
 	setTimeout( 'window.location = "'+base_url+'";', 2000);
-}
+};
 
 /**
  * Adjusts calendar text span width to parent container
  */
-function adjust_calendar_names_width() {
+var adjust_calendar_names_width = function adjust_calendar_names_width() {
 	$('.calendar_list li').each(function() {
 		var li = $(this);
 		var li_width = li.width();
@@ -1402,12 +1401,12 @@ function adjust_calendar_names_width() {
 
 		li.find('span.text').width(adjust);
 	});
-}
+};
 
 /**
  * Handles events on share calendar dialog
  */
-function share_manager() {
+var share_manager = function share_manager() {
 	var manager = $(mcd + ' table.share_calendar_manager');
 	var new_entry_form = $(mcd + ' table.share_calendar_manager_new');
 
@@ -1504,25 +1503,25 @@ function share_manager() {
 		}
 
 	});
-}
+};
 
 /**
  * Shows the placeholder for empty share lists
  */
-function share_manager_no_entries_placeholder() {
+var share_manager_no_entries_placeholder = function share_manager_no_entries_placeholder() {
 	var manager = $(mcd + ' table.share_calendar_manager');
 	if (manager.find('tbody tr').length == 1) {
 		manager.find('tr.share_calendar_manager_empty td').show();
 	} else {
 		manager.find('tr.share_calendar_manager_empty td').hide();
 	}
-}
+};
 
 /**
  * Generates required hidden input fields for
  * each row in the share calendar manager
  */
-function _generate_share_hidden_inputs(el) {
+var _generate_share_hidden_inputs = function _generate_share_hidden_inputs(el) {
 
 	$(mcd + ' table.share_calendar_manager > tbody > tr:not(.share_calendar_manager_empty)').each(function(i) {
 		var list = {};
@@ -1552,13 +1551,13 @@ function _generate_share_hidden_inputs(el) {
 		});
 
 	});
-}
+};
 
 
 /**
  * Event render
  */
-var event_render_callback = function(event, element) {
+var event_render_callback = function event_render_callback(event, element) {
 	element.qtip({
 		content: {
 			text: event_bubble_content(event),
@@ -1627,7 +1626,8 @@ var event_render_callback = function(event, element) {
 /**
  * Event click
  */
-var event_click_callback = function(event, jsEvent, view) {
+var event_click_callback = function event_click_callback(event, 
+		jsEvent, view) {
 	var recently_hidden_event = get_data('recently_hidden_event');
 	var hide_clicked_event = get_data('tooltip_hide_clicked_event');
 
@@ -1647,7 +1647,7 @@ var event_click_callback = function(event, jsEvent, view) {
 /**
  * Calendar slots dragging
  */
-var slots_drag_callback = function(startDate, endDate, allDay, jsEvent, view) {
+var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDay, jsEvent, view) {
 	var pass_allday = (view.name == 'month') ? false : allDay;
 	var data = {
 			start: fulldatetimestring(startDate),
@@ -1666,7 +1666,7 @@ var slots_drag_callback = function(startDate, endDate, allDay, jsEvent, view) {
  * Select helper
  */
 
-var select_helper = function(start,end) {
+var select_helper = function select_helper(start,end) {
 	var current_calendar_color = 
 		$('.calendar_list li.selected_calendar').data().color;
 
@@ -1681,7 +1681,7 @@ var select_helper = function(start,end) {
  * Event resizing
  */
 
-var event_resize_callback = function(event, dayDelta, minuteDelta, revertFunc,
+var event_resize_callback = function event_resize_callback(event, dayDelta, minuteDelta, revertFunc,
 	jsEvent, ui, view ) {
 
 	// Generate on-the-fly form
@@ -1725,7 +1725,7 @@ var event_resize_callback = function(event, dayDelta, minuteDelta, revertFunc,
  * Event drag and drop
  */
 
-var event_drop_callback = function(event, dayDelta, minuteDelta, allDay,
+var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDelta, allDay,
 			revertFunc, jsEvent, ui, view) {
 
 	// Generate on-the-fly form
