@@ -120,11 +120,10 @@ setting.
 
    Language to be used in AgenDAV interface.
 
-   Currently available options (languages):
+   Have a look at directory ``web/lang`` for a list of available languages.
 
-   * ``de_DE``: German
-   * ``en_US``: English (United States)
-   * ``es_ES``: Spanish
+   Note that the value given to this setting will be used as application
+   locale with ``setlocale()``.
 
    .. versionadded:: 1.2
 
@@ -139,13 +138,78 @@ setting.
 
 .. confval:: default_date_format
 
-   Preferred date format to be used inside date fields. Possible values are:
+   Preferred date format to be used inside date fields (only in forms).
+   Possible values are:
 
    * ``ymd``: e.g. 2011/10/22
    * ``dmy``: e.g. 22/10/2011
    * ``mdy``: e.g. 10/22/2011
 
    .. versionadded:: 1.2
+
+.. confval:: format_full_date
+
+   Human readable format for dates, using ``strftime`` syntax
+   (http://php.net/strftime). Some examples:
+
+   * ``%a %e %B %Y``: Mon 5 March 2012
+   * ``%a %e de %B de %Y``: Lun 5 de marzo de 2012 (localized using ``es_ES`` as :confval:`default_language`)
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_column_month
+
+   Sets how the UI calendar should format the column header in month view. 
+   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_column_week
+
+   Sets how the UI calendar should format the column header in week view. 
+   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_column_day
+
+   Sets how the UI calendar should format the column header in day view. 
+   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_column_table
+
+   Sets how the UI calendar should format the column header in table (called *agenda*) view.  Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_title_month
+
+   Sets how the UI calendar should format the title in month view. 
+   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_title_week
+
+   Sets how the UI calendar should format the title in week view. 
+   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_title_day
+
+   Sets how the UI calendar should format the title in day view. 
+   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
+
+.. confval:: format_title_table
+
+   Sets how the UI calendar should format the title header in table (called *agenda*) view.  Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
+
+   .. versionadded:: 1.2.5
 
 .. confval:: default_first_day
    
@@ -237,8 +301,6 @@ Here you will configure every single aspect of your CalDAV server.
 
 .. confval:: caldav_http_auth_method
 
-   .. versionadded:: X.X.X
-
    You can specify which HTTP authentication method does your CalDAV server
    require. Use any of the cURL ``CURLOPT_HTTPAUTH`` valid values (see
    http://www.php.net/manual/en/function.curl-setopt.php), or leave it empty
@@ -258,6 +320,9 @@ Here you will configure every single aspect of your CalDAV server.
 
     // DAViCal
     $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+
+   .. versionadded:: 1.2.5
+
 
 .. confval:: caldav_principal_url
 
@@ -336,8 +401,9 @@ Here you will configure every single aspect of your CalDAV server.
    full ACL has to be built with the following structure:
 
    * Permissions given to the owner (this option)
-   * Permissions given to granted users (:confval:`share_permissions`)
-   * Permissions given to other users (:confval:`default_permissions`)
+   * Permissions given to users with read-only profile (:confval:`read_profile_permissions`)
+   * Permissions given to users with read and write profile (:confval:`read_write_profile_permissions`)
+   * Permissions given to the rest of users (:confval:`default_permissions`)
 
    Please, refer to your CalDAV server documentation to know which
    permissions does it support.
@@ -346,24 +412,26 @@ Here you will configure every single aspect of your CalDAV server.
    <http://wiki.davical.org/w/Permissions>`_. Default values of this option
    will work all right for DAViCal.
 
-   .. seealso:: Used in conjunction with options :confval:`share_permissions`
-      and :confval:`default_permissions`.
-
 .. confval:: share_permissions
 
-   List of DAV permissions used for granted users when another user shares a
-   calendar with them.
+   .. deprecated:: 1.2.5
 
-   Please, refer to your CalDAV server documentation to know which
-   permissions does it support.
+   .. seealso:: See :confval:`read_profile_permissions` and
+      :confval:`read_write_profile_permissions`
 
-   Default value lets users to read and write on shared calendars. AgenDAV
-   doesn't support at this moment to select whether you want read or shared
-   rights.
+.. confval:: read_profile_permissions
 
-   .. seealso:: Used in conjunction with options :confval:`owner_permissions`
-      and :confval:`default_permissions`.
+   List of DAV permissions used for users given read-only permission on a
+   calendar.
 
+   .. versionadded:: 1.2.5
+
+.. confval:: read_write_profile_permissions
+
+   List of DAV permissions used for users given read and write permission on
+   a calendar.
+
+   .. versionadded:: 1.2.5
 
 .. confval:: default_permissions
 
@@ -374,9 +442,6 @@ Here you will configure every single aspect of your CalDAV server.
    permissions does it support.
 
    Default value lets users just to make free/busy queries in DAViCal.
-
-   .. seealso:: Used in conjunction with options :confval:`owner_permissions`
-      and :confval:`share_permissions`.
 
 Other configuration files
 -------------------------
