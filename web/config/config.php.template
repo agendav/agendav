@@ -184,7 +184,8 @@ $config['default_time_format'] = '24';
 |--------------------------------------------------------------------------
 |
 | This determines which date format should be used by default in forms.
-| Dates will be formatted anywhere else as stated in locale file.
+| Dates will be formatted anywhere else as stated in format_full_date
+| option.
 | You can choose any of the following values:
 |
 | * ymd : YYYY-month-day will be used
