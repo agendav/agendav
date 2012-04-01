@@ -1234,7 +1234,7 @@ var get_calendar_data = function get_calendar_data(c) {
 var get_calendar_displayname = function get_calendar_displayname(c) {
 	var data = get_calendar_data(c);
 
-	if (data === undefined || data.displayname == undefined) {
+	if (data === undefined || data.displayname === undefined) {
 		return '(?)';
 	} else {
 		return data.displayname;
@@ -1605,7 +1605,7 @@ var event_render_callback = function event_render_callback(event, element) {
 				// Clicked on event?
 				var has_clicked_event;
 
-				if (event.originalEvent != undefined) {
+				if (event.originalEvent !== undefined) {
 					var click_target = $(event.originalEvent.target).parents();
 					has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
 				} else {
