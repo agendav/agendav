@@ -140,33 +140,40 @@ $(document).ready(function() {
 
 
 		// Refresh link
-		$('#calendar_view td.fc-header-right')
-			.append('<span class="fc-header-space"></span><span class="fc-button-refresh">' +_('labels', 'refresh') + '</span>');
-		$('#calendar_view span.fc-button-refresh')
-			.button() 
+		$('<span class="fc-button-refresh">' 
+			+_('labels', 'refresh') + '</span>')
+			.appendTo('#calendar_view td.fc-header-right')
+			.button()
 			.on('click', function() {
-					update_calendar_list(true);
-			});
+				update_calendar_list(true);
+			})
+			.before('<span class="fc-header-space">');
 
 		// Date picker above calendar
-		$('#calendar_view span.fc-button-today').after('<span class="fc-header-space"></span><span class="fc-button-datepicker">'
-			+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
-			+ _('labels', 'choose_date') +'" />'
-			+'</span><input type="hidden" id="datepicker_fullcalendar" />');
-		
-		$('#datepicker_fullcalendar').datepicker({
-			changeYear: true,
-			closeText: _('labels', 'cancel'),
-			onSelect: function(date, text) {
-				var d = $('#datepicker_fullcalendar').datepicker('getDate');	
-				$('#calendar_view').fullCalendar('gotoDate', d);
-			}
-		});
-
-		$('#calendar_view span.fc-button-datepicker').on('click', function() {
-			$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
-			$('#datepicker_fullcalendar').datepicker('show');
-		});
+		$('#calendar_view span.fc-button-today')
+			.after('<span class="fc-button-datepicker">'
+				+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
+				+ _('labels', 'choose_date') +'" />'
+				+'</span>')
+			.after('<input type="hidden" id="datepicker_fullcalendar" />')
+			.after('<span class="fc-header-space" />')
+			.nextUntil('#datepicker_fullcalendar')
+			.next()
+			.datepicker({
+				changeYear: true,
+				closeText: _('labels', 'cancel'),
+				onSelect: function(date, text) {
+					var d = $('#datepicker_fullcalendar').datepicker('getDate');	
+					$('#calendar_view').fullCalendar('gotoDate', d);
+				}
+			})
+			.end()
+			.nextUntil('span.fc-button-datepicker')
+			.next()
+			.on('click', function() {
+				$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
+				$('#datepicker_fullcalendar').datepicker('show');
+			});
 		
 		// Delete link
 		// TODO: check for rrule/recurrence-id (EXDATE, etc)
