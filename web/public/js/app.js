@@ -175,70 +175,6 @@ $(document).ready(function() {
 				$('#datepicker_fullcalendar').datepicker('show');
 			});
 		
-		// Delete link
-		// TODO: check for rrule/recurrence-id (EXDATE, etc)
-		$(document).on('click', 'button.link_delete_event', function() {
-			var data = get_data('current_event');
-			if (data === undefined) {
-				show_error(_('messages', 'error_interfacefailure'), 
-					_('messages', 'error_current_event_not_loaded'));
-				return;
-			}
-
-			var ded = '#delete_event_dialog';
-
-			load_generated_dialog('dialog_generator/delete_event',
-				{},
-				function() {
-					// Show event fields
-					$(ded + ' span.calendar').html(get_calendar_displayname(data.calendar));
-					$(ded + ' p.title').html(data.title);
-
-					var rrule = data.rrule;
-					if (rrule === undefined) {
-						$(ded + ' div.rrule').hide();
-					}
-
-					var thisform = $('#delete_form');
-					thisform.find('input.uid').val(data.uid);
-					thisform.find('input.calendar').val(data.calendar);
-					thisform.find('input.href').val(data.href);
-					thisform.find('input.etag').val(data.etag);
-					
-				},
-				_('labels', 'deleteevent'),
-				[ 
-					{
-						'text': _('labels', 'yes'),
-						'class': 'addicon btn-icon-event-delete',
-						'click': function() {
-							var thisform = $('#delete_form');
-							proceed_send_ajax_form(thisform,
-								function(data) {
-									$('#calendar_view').fullCalendar('removeEvents', get_data('current_event').id);
-								},
-								function(data) {
-									show_error(_('messages', 'error_event_not_deleted'), data);
-								},
-								function() {}); 
-
-							// Destroy dialog
-							destroy_dialog('#delete_event_dialog');
-
-						}
-					},
-					{
-						'text': _('labels', 'cancel'),
-						'class': 'addicon btn-icon-cancel',
-						'click': function() { destroy_dialog('#delete_event_dialog'); }
-					}
-				],
-				'delete_event_dialog', 400);
-				
-				// Close tooltip
-				$(this).parents(ved).qtip('hide');
-			return false;
-		});
 
 		$('#calendar_view').fullCalendar('renderEvent', 
 			{
@@ -251,44 +187,6 @@ $(document).ready(function() {
 			},
 			true);
 
-		// Edit/Modify link
-		// TODO: check for rrule/recurrence-id
-		$(document).on('click', 'button.link_edit_event', function() {
-			// Data about this event
-			var event_data = get_data('current_event');
-			if (event_data === undefined) {
-				show_error(_('messages', 'error_interfacefailure'), 
-					_('messages', 'error_current_event_not_loaded'));
-				return;
-			}
-
-			var data = {
-				uid: event_data.uid,
-				calendar: event_data.calendar,
-				href: event_data.href,
-				etag: event_data.etag,
-				start: fulldatetimestring(event_data.start),
-				end: fulldatetimestring(event_data.end),
-				summary: event_data.title,
-				location: event_data.location,
-				allday: event_data.allDay,
-				description: event_data.description,
-				rrule: event_data.rrule,
-				rrule_serialized: event_data.rrule_serialized,
-				rrule_explained: event_data.rrule_explained,
-				icalendar_class: event_data.icalendar_class,
-				transp: event_data.transp,
-				recurrence_id: event_data.recurrence_id,
-				orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
-				orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
-			};
-			// Close tooltip
-			$(this).parents(ved).qtip('hide');
-
-			event_field_form('modify', data);
-
-			return false;
-		});
 
 		/*************************************************************
 		 * Calendar list events
@@ -1603,6 +1501,20 @@ var event_render_callback = function event_render_callback(event, element) {
 
 		events: {
 			show: function (event, api) {
+				// Attach modify and delete events
+				$(this)
+				.find('button.link_delete_event')
+				.off('click')
+				.on('click', function() {
+					delete_event_handler();
+				})
+				.end()
+				.find('button.link_modify_event')
+				.off('click')
+				.on('click', function() {
+					modify_event_handler();
+				});
+
 				$(window).on('keydown.tooltipevents', function(e) {
 					if(e.keyCode === $.ui.keyCode.ESCAPE) {
 						api.hide(e);
@@ -1618,7 +1530,8 @@ var event_render_callback = function event_render_callback(event, element) {
 				// Clicked on event?
 				var has_clicked_event;
 
-				if (event.originalEvent !== undefined) {
+				if (event.originalEvent !== undefined
+						&& event.originalEvent !== null) {
 					var click_target = $(event.originalEvent.target).parents();
 					has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
 				} else {
@@ -1778,5 +1691,107 @@ var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDe
 	$(thisform).remove();
 };
 
+// Delete link
+// TODO: check for rrule/recurrence-id (EXDATE, etc)
+var delete_event_handler = function delete_event_handler() {
+	var data = get_data('current_event'),
+			ded = '#delete_event_dialog';
+
+	if (data === undefined) {
+		show_error(_('messages', 'error_interfacefailure'),
+			_('messages', 'error_current_event_not_loaded'));
+		return;
+	}
+
+	load_generated_dialog('dialog_generator/delete_event',
+		{},
+		function() {
+			// Show event fields
+			$(ded + ' span.calendar').html(get_calendar_displayname(data.calendar));
+			$(ded + ' p.title').html(data.title);
+
+			var rrule = data.rrule;
+			if (rrule === undefined) {
+				$(ded + ' div.rrule').hide();
+			}
+
+			var thisform = $('#delete_form');
+			thisform.find('input.uid').val(data.uid);
+			thisform.find('input.calendar').val(data.calendar);
+			thisform.find('input.href').val(data.href);
+			thisform.find('input.etag').val(data.etag);
+		},
+		_('labels', 'deleteevent'),
+		[
+			{
+				'text': _('labels', 'yes'),
+				'class': 'addicon btn-icon-event-delete',
+				'click': function() {
+					var thisform = $('#delete_form');
+					proceed_send_ajax_form(thisform,
+						function(data) {
+							$('#calendar_view').fullCalendar('removeEvents', get_data('current_event').id);
+						},
+						function(data) {
+							show_error(_('messages', 'error_event_not_deleted'), data);
+						},
+						function() {});
+
+					// Destroy dialog
+					destroy_dialog('#delete_event_dialog');
+
+				}
+			},
+			{
+				'text': _('labels', 'cancel'),
+				'class': 'addicon btn-icon-cancel',
+				'click': function() { destroy_dialog('#delete_event_dialog'); }
+			}
+		],
+		'delete_event_dialog', 400);
+
+		// Close tooltip
+		$(ved).qtip('hide');
+	return false;
+};
+
+// Edit/Modify link
+var modify_event_handler = function modify_event_handler() {
+	// TODO: check for rrule/recurrence-id
+	// Data about this event
+	var event_data = get_data('current_event');
+	if (event_data === undefined) {
+		show_error(_('messages', 'error_interfacefailure'),
+			_('messages', 'error_current_event_not_loaded'));
+		return;
+	}
+
+	var data = {
+		uid: event_data.uid,
+		calendar: event_data.calendar,
+		href: event_data.href,
+		etag: event_data.etag,
+		start: fulldatetimestring(event_data.start),
+		end: fulldatetimestring(event_data.end),
+		summary: event_data.title,
+		location: event_data.location,
+		allday: event_data.allDay,
+		description: event_data.description,
+		rrule: event_data.rrule,
+		rrule_serialized: event_data.rrule_serialized,
+		rrule_explained: event_data.rrule_explained,
+		icalendar_class: event_data.icalendar_class,
+		transp: event_data.transp,
+		recurrence_id: event_data.recurrence_id,
+		orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
+		orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
+	};
+	// Close tooltip
+	$(ved).qtip('hide');
+
+	event_field_form('modify', data);
+
+	return false;
+};
 
 // vim: sw=2 tabstop=2
