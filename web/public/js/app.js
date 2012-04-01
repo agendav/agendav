@@ -469,12 +469,18 @@ var generate_on_the_fly_form = function generate_on_the_fly_form(action, data) {
 	});
 
 	csrf_ajax_gen.done(function(formdata, textStatus, jqXHR) {
-		$('body').append(formdata);
-		$('#' + random_id).attr('action', action);
+		var hidden_fields = '';
+
 		$.each(data, function (i, v) {
-			$('#' + random_id).append('<input type="hidden" name="'+i
-				+'" value="'+v+'" />');
+			hidden_fields += '<input type="hidden" name="'+i
+				+'" value="'+v+'" />';
 		});
+
+		$(formdata)
+			.append(hidden_fields)
+			.attr('action' , action)
+			.appendTo(document.body);
+
 		set_data('formcreation', 'ok');
 	});
 
