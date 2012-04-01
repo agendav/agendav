@@ -925,9 +925,11 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 			$(this).remove();
 		});
 
-		// Calendar count
 		var count = 0,
-			count_shared = 0;
+			count_shared = 0,
+			own_calendars = document.createDocumentFragment(),
+			shared_calendars = document.createDocumentFragment(),
+			collected_event_sources = [];
 
 		$.each(data, function(key, value) {
 			count++;
@@ -936,12 +938,12 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
 			if (value.shared == true) {
 				count_shared++;
-				$('#shared_calendar_list ul').append(li);
+				shared_calendars.appendChild(li[0]);
 			} else {
-				$('#own_calendar_list ul').append(li);
+				own_calendars.appendChild(li[0]);
 			}
 
-			$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
+			collected_event_sources.push($(li).data().eventsource);
 		});
 
 		// No calendars?
@@ -963,10 +965,15 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 		} else {
 			set_data('last_calendar_count', count);
 
+			$('#own_calendar_list ul')[0]
+				.appendChild(own_calendars);
+
 			// Hide unused block
 			if (count_shared == 0) {
 				$('#shared_calendar_list').hide();
 			} else {
+				$('#shared_calendar_list ul')[0]
+					.appendChild(shared_calendars);
 				$('#shared_calendar_list').show();
 			}
 
@@ -976,6 +983,12 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
 			// Adjust text length
 			adjust_calendar_names_width();
+
+			// Add event sources
+			while (count--) {
+				$('#calendar_view').fullCalendar('addEventSource',
+					collected_event_sources[count]);
+			}
 
 			$('#shortcut_add_event').button('enable');
 
