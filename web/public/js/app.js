@@ -1047,7 +1047,9 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 			if (last_calendar_count === undefined ||
 				last_calendar_count != '0') {
 				set_data('last_calendar_count', 0);
-				setTimeout('update_calendar_list(false)', 1);
+				setTimeout(function() {
+					update_calendar_list(false);
+				}, 1);
 			} else {
 				// Calendar list received empty twice
 				show_error(_('messages','notice_no_calendars'), '');
@@ -1125,7 +1127,9 @@ var session_refresh = function session_refresh(n) {
 			// TODO think about using dataType: script here
 			$('body').append(data);
 		} else {
-			setTimeout('session_refresh(' + n + ')', n);
+			setTimeout(function() {
+				session_refresh(n);
+			}, n);
 		}
 	});
 
@@ -1382,7 +1386,9 @@ var session_expired = function session_expired() {
 
 	show_error(_('messages', 'error_sessexpired'),
 			_('messages', 'error_loginagain'));
-	setTimeout( 'window.location = "'+base_url+'";', 2000);
+	setTimeout(function() {
+		window.location = base_url;
+	}, 2000);
 };
 
 /**
