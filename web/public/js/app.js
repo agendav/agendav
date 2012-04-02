@@ -1280,7 +1280,7 @@ var timestamp = function timestamp(d) {
  * Returns a full date+time string which is easily parseable
  */
 var fulldatetimestring = function fulldatetimestring(d) {
-	if (d != null && d !== undefined) {
+	if (d != undefined) {
 		return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
 	} else {
 		return undefined;
@@ -1549,8 +1549,7 @@ var event_render_callback = function event_render_callback(event, element) {
 				// Clicked on event?
 				var has_clicked_event;
 
-				if (event.originalEvent !== undefined
-						&& event.originalEvent !== null) {
+				if (event.originalEvent != undefined) {
 					var click_target = $(event.originalEvent.target).parents();
 					has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
 				} else {
