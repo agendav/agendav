@@ -35,11 +35,13 @@ MySQL and PostgreSQL.
 
 First of all you have to create a user and a database for that user.
 
-Second, you'll have to create AgenDAV tables using provided SQL files inside
-``sql/`` directory.
+Second, you'll have to create initial AgenDAV tables using provided SQL
+files inside ``sql/`` directory.
 
-MySQL
-*****
+Last step is applying database updates to initial database tables.
+
+Steps 1&2: MySQL
+****************
 Create an user in MySQL like this::
 
  $ mysql --default-character-set=utf8 -uroot -p
@@ -62,8 +64,8 @@ will have some issues with special characters.
 
 Now your database is ready.
 
-PostgreSQL
-**********
+Steps 1&2: PostgreSQL
+*********************
 
 Use the special ``postgres`` system user to manage your installation. You
 can add a new user and a new database the following way::
@@ -87,6 +89,12 @@ After that just restart PostgreSQL and load the schema::
  $ psql -U agendav agendav < sql/pgsql.schema.sql
 
 
+Step 3: Update database
+***********************
+
+Initial database structure created with `*.sql` files provides only a base
+structure for AgenDAV. It has to be modified to apply latest release
+changes. To do this, follow instructions on :ref:`dbupdate`.
 
 
 Configuring Apache web server
@@ -116,7 +124,7 @@ Example using the Alias directive::
    * ``magic_quotes_runtime``
 
 Other web servers
-^^^^^^^^^^^^^^^^^
+*****************
 
 AgenDAV should work on all other web server software if they support PHP
 scripts, but this is untested.
