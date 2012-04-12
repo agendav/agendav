@@ -10,10 +10,19 @@ $img_logout = array(
         'title' => 'Logout',
 		'id' => 'logoutbutton',
         );
+
+$img_settings = array(
+        'src' => 'img/setting_tools.png',
+        'alt' => 'Settings',
+        'title' => 'Settings',
+		'id' => 'settingsbutton',
+        );
 ?>
    <ul class="nav pull-right">
     <li><a><span class="username"><?php echo
 	$this->auth->get_user() ?></span></a></li>
+	<li class="divider-vertical"></li>
+	<li><?php echo anchor('calendar/settings', img($img_settings)) ?></li>
 	<li class="divider-vertical"></li>
 	<li><?php echo anchor('calendar/logout', img($img_logout)) ?></li>
    </ul>
