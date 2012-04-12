@@ -22,7 +22,7 @@ $img_settings = array(
     <li><a><span class="username"><?php echo
 	$this->auth->get_user() ?></span></a></li>
 	<li class="divider-vertical"></li>
-	<li><?php echo anchor('calendar/settings', img($img_settings)) ?></li>
+	<li><?php echo anchor('prefs', img($img_settings)) ?></li>
 	<li class="divider-vertical"></li>
 	<li><?php echo anchor('calendar/logout', img($img_logout)) ?></li>
    </ul>
