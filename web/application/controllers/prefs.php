@@ -36,7 +36,7 @@ class Prefs extends CI_Controller {
 		$data_header = array(
 				'title' => $title,
 				'logged_in' => TRUE,
-				'body_class' => array('settingspage'),
+				'body_class' => array('prefspage'),
 				);
 
 		$data_calendar = array();

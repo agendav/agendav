@@ -36,6 +36,8 @@ $(document).ready(function() {
 	if ($('body').hasClass('loginpage')) {
 		$('input:submit').button();
 		$('input[name="user"]').focus();
+	} else if ($('body').hasClass('prefspage')) {
+		$('#prefs_tabs').tabs();
 	} else if ($('body').hasClass('calendarpage')) {
 		// Default datepicker options are set inside i18n load strings
 

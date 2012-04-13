@@ -2,7 +2,7 @@ body {
   background: url("../img/bg_11.png") #c6c8cd top left repeat-x;
 }
 body.calendarpage,
-body.settingspage {
+body.prefspage {
   padding-top: 50px;
 }
 /* jQuery UI font override */

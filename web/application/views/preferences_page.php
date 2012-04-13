@@ -1,7 +1,9 @@
-<div id="preferences_tabs">
+<div id="prefs_tabs">
 <ul>
- <li><a href="#tabs-general">General</a></li>
- <li><a href="#tabs-calendars">Calendars</a></li>
+ <li><a href="#tabs-general"><?php echo $this->i18n->_('labels',
+		 'generaloptions')?></a></li>
+ <li><a href="#tabs-calendars"><?php echo $this->i18n->_('labels',
+		 'calendars')?></a></li>
 </ul>
 
 <div id="tabs-general">
