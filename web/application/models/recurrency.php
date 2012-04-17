@@ -77,8 +77,8 @@ class Recurrency extends CI_Model {
 							array('%n' => $v));
 					break;
 				case 'UNTIL':
-					$date = $this->dates->idt2datetime($v, 
-								'UTC');
+					$date = $this->dates->idt2datetime($v,
+								$this->timezonemanager->getTz('UTC'));
 					$date->setTimeZone($this->tz);
 					$explanation .= ', ' . $this->i18n->_('labels',
 							'expluntil',
