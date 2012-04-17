@@ -158,6 +158,9 @@ $labels['readandwrite'] = 'Read and write';
 
 $labels['pastevents'] = 'Past events';
 
+$labels['preferences'] = 'Preferences';
+$labels['return'] = 'Return';
+
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
 $messages['error_invaliddate'] = 'Invalid date on field %s';

@@ -13,9 +13,9 @@ $img_logout = array(
 
 $img_settings = array(
         'src' => 'img/setting_tools.png',
-        'alt' => 'Settings',
-        'title' => 'Settings',
-		'id' => 'settingsbutton',
+        'alt' => $this->i18n->_('labels', 'preferences'),
+        'title' => $this->i18n->_('labels', 'preferences'),
+		'id' => 'prefsbutton',
         );
 ?>
    <ul class="nav pull-right">
