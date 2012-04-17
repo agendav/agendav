@@ -161,6 +161,8 @@ $labels['pastevents'] = 'Past events';
 $labels['preferences'] = 'Preferences';
 $labels['return'] = 'Return';
 
+$labels['hidelist'] = 'Hide from list';
+
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
 $messages['error_invaliddate'] = 'Invalid date on field %s';
