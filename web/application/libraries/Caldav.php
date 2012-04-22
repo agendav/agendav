@@ -825,5 +825,37 @@ class Caldav {
 	}
 
 
+	/**
+	 * Loads full list of calendars for current user
+	 */
+	function all_user_calendars($user, $passwd) {
+		$ret = array();
+
+		// TODO order
+		$own_calendars = $this->get_own_calendars($user, $passwd);
+		$ret = $own_calendars;
+
+		// Look for shared calendars
+		if ($this->CI->config->item('enable_calendar_sharing')) {
+			$tmp_shared_calendars =
+				$this->CI->shared_calendars->get_shared_with($user);
+
+			if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
+				$shared_calendars = $this->get_shared_calendars_info($user,
+						$passwd, $tmp_shared_calendars);
+				if ($shared_calendars === FALSE) {
+					$this->CI->extended_logs->message('ERROR', 
+							'Error reading shared calendars');
+				} else {
+					$ret = array_merge($ret, $shared_calendars);
+				}
+			}
+		}
+
+		return $ret;
+	}
+
+
+
 }
 

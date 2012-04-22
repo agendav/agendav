@@ -690,32 +690,9 @@ class Caldav2json extends CI_Controller {
 	 * other users with the current one)
 	 */
 	function calendar_list() {
-		// TODO order
-		$own_calendars = $this->caldav->get_own_calendars(
+		$arr_calendars = $this->caldav->all_user_calendars(
 				$this->auth->get_user(),
-				$this->auth->get_passwd()
-				);
-		$arr_calendars = $own_calendars;
-
-		// Look for shared calendars
-		if ($this->config->item('enable_calendar_sharing')) {
-			$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
-					$this->auth->get_user());
-
-			if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
-				$shared_calendars = $this->caldav->get_shared_calendars_info(
-						$this->auth->get_user(),
-						$this->auth->get_passwd(),
-						$tmp_shared_calendars);
-				if ($shared_calendars === FALSE) {
-					$this->extended_logs->message('ERROR', 
-							'Error reading shared calendars');
-				} else {
-					$arr_calendars = array_merge($arr_calendars,
-							$shared_calendars);
-				}
-			}
-		}
+				$this->auth->get_passwd());
 
 		// Save calendars into session (avoid multiple CalDAV queries when
 		// editing/adding events)
