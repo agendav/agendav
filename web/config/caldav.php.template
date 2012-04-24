@@ -21,12 +21,12 @@
  * http://www.php.net/manual/es/function.curl-setopt.php (CURLOPT_HTTPAUTH)
  *
  * Examples:
- *  Automatic guess: $config['caldav_http_auth_method'] = '';
+ *  Automatic guess: $config['caldav_http_auth_method'] = null;
  *  SabreDAV: $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
  *  DAViCal: $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
  */
 
-$config['caldav_http_auth_method'] = '';
+$config['caldav_http_auth_method'] = null;
 
 
 /*******************

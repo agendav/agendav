@@ -34,7 +34,8 @@ class Caldav {
 			$this->CI->config->item('caldav_http_auth_method');
 
 		// Empty string or FALSE
-		if (empty($this->http_auth_method)) {
+		if ($this->http_auth_method != CURLAUTH_BASIC &&
+				 $this->http_auth_method != CURLAUTH_DIGEST) {
 			$this->http_auth_method = CURLAUTH_BASIC | CURLAUTH_DIGEST;
 		}
 
