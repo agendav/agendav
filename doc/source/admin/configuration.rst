@@ -313,7 +313,7 @@ Here you will configure every single aspect of your CalDAV server.
    Example::
    
     // Automatic guess
-    $config['caldav_http_auth_method'] = '';
+    $config['caldav_http_auth_method'] = null;
 
     // SabreDAV
     $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
