@@ -39,6 +39,14 @@ $(document).ready(function() {
 	} else if ($('body').hasClass('prefspage')) {
 		$('#prefs_tabs').tabs();
 		$('#prefs_buttons button').button();
+		$('#return_button').on('click', function() {
+			window.location = base_app_url;
+			return false;
+		});
+		$('#save_button').on('click', function() {
+			show_error('Still not implemented',
+				'This feature is not ready yet');
+		});
 	} else if ($('body').hasClass('calendarpage')) {
 		// Default datepicker options are set inside i18n load strings
 

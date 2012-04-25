@@ -5,13 +5,23 @@
  <th></th>
 </thead>
 <tbody>
+<?php
+$i=1;
+foreach ($calendar_list as $c => $data):
+?>
  <tr>
   <td>
-   This is just a placeholder, not done
+  <?php echo $data['displayname'] ?>
   </td>
   <td>
-    <input id="show_1" type="checkbox" name="show_1" value="">
+    <input type="hidden" name="calendar[<?php echo $i ?>][name]" value="<?php echo
+	$c?>" />
+    <input type="checkbox" name="calendar[<?php echo $i ?>][hide]" value="">
   </td>
  </tr>
+<?php
+$i++;
+endforeach;
+?>
 </tbody>
 </table>

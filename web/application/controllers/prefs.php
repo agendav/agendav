@@ -52,8 +52,24 @@ class Prefs extends CI_Controller {
 
 		// Empty sidebar
 		$components['sidebar'] = '';
+
+
+
+		// Calendar list
+		$calendar_list = $this->session->userdata('available_calendars');
+		if (FALSE === $calendar_list) {
+			$this->load->library('caldav');
+			$calendar_list = $this->caldav->all_user_calendars(
+					$this->auth->get_user(),
+					$this->auth->get_passwd());
+		}
+
+		$data_prefs = array(
+				'calendar_list' => $calendar_list,
+				);
+
 		$components['content'] = $this->load->view('preferences_page',
-				array(), TRUE);
+				$data_prefs, TRUE);
 		$components['footer'] = $this->load->view('footer',
 				array(
 					'load_session_refresh' => TRUE,

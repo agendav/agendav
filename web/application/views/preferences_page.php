@@ -30,7 +30,8 @@ $img_save = array(
 </ul>
 
 <div id="tabs-calendars">
-<?php $this->load->view('preferences_calendars'); ?>
+<?php $this->load->view('preferences_calendars', array(
+			'calendar_list' => $calendar_list)); ?>
 </div>
 
 </div>
