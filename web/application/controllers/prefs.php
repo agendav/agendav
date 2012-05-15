@@ -64,8 +64,11 @@ class Prefs extends CI_Controller {
 					$this->auth->get_passwd());
 		}
 
+		$prefs = $this->session->userdata('prefs');
+
 		$data_prefs = array(
 				'calendar_list' => $calendar_list,
+				'hidden_calendars' => $prefs['hidden_calendars'],
 				);
 
 		$components['content'] = $this->load->view('preferences_page',
@@ -79,4 +82,79 @@ class Prefs extends CI_Controller {
 		$this->load->view('layouts/app.php', $components);
 	}
 
+	/**
+	 * Settings currently processed by this action:
+	 *  - calendar@form: hidden_calendars
+	 */
+	function save() {
+		$calendar = $this->input->post('calendar');
+
+		if (!is_array($calendar)) {
+			$this->extended_logs->message('ERROR',
+				'Preferences save attempt with invalid calendars array');
+			$this->_throw_error($this->i18n->_('messages', 
+						'error_interfacefailure'));
+		}
+
+		$current_user = $this->auth->get_user();
+		$current_prefs = $this->userpref->load_prefs($current_user);
+
+		// Calendar processing
+		$hidden_calendars = array();
+
+		foreach ($calendar as $c) {
+			if (!isset($c['name'])) {
+				$this->extended_logs->message('ERROR',
+						'Skipping invalid calendar when saving preferences, '
+						.'name not found');
+			} else {
+				if (isset($c['hide']) && $c['hide'] == '1') {
+					$hidden_calendars[$c['name']] = TRUE;
+				}
+			}
+		}
+
+		$current_prefs->hidden_calendars = $hidden_calendars;
+
+		// Save preferences
+		$this->userpref->save_prefs($current_user,
+				$current_prefs);
+
+		$this->session->set_userdata('prefs', $current_prefs->getAll());
+		$this->_throw_success();
+	}
+
+	// TODO: refactor these methods and caldav2json ones into a single library
+	/**
+	 * Throws an exception message
+	 */
+	function _throw_exception($message) {
+		$this->output->set_output(json_encode(array(
+						'result' => 'EXCEPTION',
+						'message' => $message)));
+		$this->output->_display();
+		die();
+	}
+
+	/**
+	 * Throws an error message
+	 */
+	function _throw_error($message) {
+		$this->output->set_output(json_encode(array(
+						'result' => 'ERROR',
+						'message' => $message)));
+		$this->output->_display();
+		die();
+	}
+
+	/**
+	 * Throws a success message
+	 */
+	function _throw_success($message = '') {
+		$this->output->set_output(json_encode(array(
+						'result' => 'SUCCESS',
+						'message' => $message)));
+		$this->output->_display();
+		die();
+	}
 }

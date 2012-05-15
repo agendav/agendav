@@ -33,7 +33,8 @@ $img_save = array(
 
 <div id="tabs-calendars">
 <?php $this->load->view('preferences_calendars', array(
-			'calendar_list' => $calendar_list)); ?>
+			'calendar_list' => $calendar_list,
+			'hidden_calendars' => $hidden_calendars)); ?>
 </div>
 
 <?php echo form_close(); ?>

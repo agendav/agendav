@@ -44,8 +44,17 @@ $(document).ready(function() {
 			return false;
 		});
 		$('#save_button').on('click', function() {
-			show_error('Still not implemented',
-				'This feature is not ready yet');
+			var thisform = $('#prefs_form');
+			proceed_send_ajax_form(thisform,
+				function(data) {
+					show_success(
+						_('messages', 'info_prefssaved'),
+						'');
+				},
+				function(data) {
+					show_error(_('messages', 'error_invalidinput'), data);
+				},
+				function(data) { });
 		});
 	} else if ($('body').hasClass('calendarpage')) {
 		// Default datepicker options are set inside i18n load strings

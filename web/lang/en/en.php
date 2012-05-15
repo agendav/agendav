@@ -218,3 +218,5 @@ $messages['error_calname_missing'] = 'Empty calendar name';
 $messages['error_calcolor_missing'] = 'Color must be supplied';
 $messages['error_mkcalendar'] = 'Server refused to create calendar. Please, check your creation parameters';
 $messages['error_shareunknownusers'] = 'Some of the users you specified do not exist';
+
+$messages['info_prefssaved'] = 'Preferences saved';

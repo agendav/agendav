@@ -16,7 +16,8 @@ foreach ($calendar_list as $c => $data):
   <td>
     <input type="hidden" name="calendar[<?php echo $i ?>][name]" value="<?php echo
 	$c?>" />
-    <input type="checkbox" name="calendar[<?php echo $i ?>][hide]" value="1">
+    <input type="checkbox" name="calendar[<?php echo $i ?>][hide]"
+	value="1"<?php echo (isset($hidden_calendars[$c])) ? ' checked="checked"' : ''?>>
   </td>
  </tr>
 <?php
