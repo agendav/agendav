@@ -62,6 +62,8 @@ class Login extends CI_Controller {
 				$data = array(
 						'user' => $user,
 						'passwd' => $passwd,
+						'prefs' =>
+							$this->userpref->load_prefs($user)->getAll(),
 						);
 				$this->auth->new_session($data);
 				redirect("/calendar");
