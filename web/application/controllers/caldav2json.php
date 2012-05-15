@@ -694,9 +694,21 @@ class Caldav2json extends CI_Controller {
 				$this->auth->get_user(),
 				$this->auth->get_passwd());
 
+		// Hide calendars user don't want to be shown
+		$prefs = $this->session->userdata('prefs');
+		$hidden_calendars = $prefs['hidden_calendars'];
+		if ($hidden_calendars !== null) {
+			foreach ($arr_calendars as $c => $data) {
+				if (isset($hidden_calendars[$c])) {
+					unset($arr_calendars[$c]);
+				}
+			}
+		}
+
 		// Save calendars into session (avoid multiple CalDAV queries when
 		// editing/adding events)
 		$this->session->set_userdata('available_calendars', $arr_calendars);
+
 
 		$this->output->set_output(json_encode($arr_calendars));
 	}
