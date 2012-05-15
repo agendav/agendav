@@ -29,9 +29,13 @@ $img_save = array(
 		 'calendars')?></a></li>
 </ul>
 
+<?php echo form_open('prefs/save', array('id' => 'prefs_form')); ?>
+
 <div id="tabs-calendars">
 <?php $this->load->view('preferences_calendars', array(
 			'calendar_list' => $calendar_list)); ?>
 </div>
+
+<?php echo form_close(); ?>
 
 </div>
