@@ -139,6 +139,10 @@ div.block .buttons {
   width: 10px !important;
   height: 10px !important;
 }
+.calendar_list li.transparent div.calendar_color {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+}
 /* overlay starts */
 #view_event_details_template,
 #share_calendar_manager_row_template {
