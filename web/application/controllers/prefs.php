@@ -56,13 +56,10 @@ class Prefs extends CI_Controller {
 
 
 		// Calendar list
-		$calendar_list = $this->session->userdata('available_calendars');
-		if (FALSE === $calendar_list) {
-			$this->load->library('caldav');
-			$calendar_list = $this->caldav->all_user_calendars(
-					$this->auth->get_user(),
-					$this->auth->get_passwd());
-		}
+		$this->load->library('caldav');
+		$calendar_list = $this->caldav->all_user_calendars(
+				$this->auth->get_user(),
+				$this->auth->get_passwd());
 
 		$prefs = $this->session->userdata('prefs');
 
