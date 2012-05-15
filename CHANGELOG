@@ -1,5 +1,6 @@
 Release 1.2.5 (2012-?-?)
-	* Updated jQuery UI to 1.8.17
+	* Updated jQuery to 1.7.2
+	* Updated jQuery UI to 1.8.20
 	* CalDAV client rewritten to use cURL (HTTP Digest auth now
 	  supported)
 	* Rewritten share calendar interface
