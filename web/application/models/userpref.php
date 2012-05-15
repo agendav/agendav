@@ -43,5 +43,28 @@ class Userpref extends CI_Model {
 
 		return $prefs;
 	}
+
+	/**
+	 * Saves user preferences
+	 */
+	function save_prefs($username, Preferences $prefs) {
+		$data = array(
+				'options' => $prefs->to_json(),
+				);
+
+		log_message('DEBUG', 'Storing user prefs ['.
+				$prefs->to_json() .']'
+				.' for user ' . $username);
+
+		$query = $this->db->get_where('prefs',
+				array('username' => $username));
+		if ($query->num_rows() == 1) {
+			$this->db->update('prefs',
+					$data, array('username' => $username));
+		} else {
+			$data['username'] = $username;
+			$this->db->insert('prefs', $data);
+		}
+	}
 }
 
