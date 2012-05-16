@@ -28,6 +28,8 @@ class Caldav2json extends CI_Controller {
 	private $tz_utc;
 	private $calendar_colors;
 
+	private $prefs;
+
 	function __construct() {
 		parent::__construct();
 
@@ -48,6 +50,9 @@ class Caldav2json extends CI_Controller {
 		$this->tz_utc = $this->timezonemanager->getTz('UTC');
 
 		$this->calendar_colors = $this->config->item('calendar_colors');
+
+		$this->prefs =
+			Preferences::singleton($this->session->userdata('prefs'));
 
 		$this->load->library('caldav');
 
@@ -695,8 +700,7 @@ class Caldav2json extends CI_Controller {
 				$this->auth->get_passwd());
 
 		// Hide calendars user don't want to be shown
-		$prefs = $this->session->userdata('prefs');
-		$hidden_calendars = $prefs['hidden_calendars'];
+		$hidden_calendars = $this->prefs->hidden_calendars;
 		if ($hidden_calendars !== null) {
 			foreach ($arr_calendars as $c => $data) {
 				if (isset($hidden_calendars[$c])) {

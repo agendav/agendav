@@ -21,11 +21,17 @@
 
 class Prefs extends CI_Controller {
 
+	private $prefs;
+
 	function __construct() {
 		parent::__construct();
 
 		// Force authentication
 		$this->auth->force_auth();
+
+		// Preferences
+		$this->prefs =
+			Preferences::singleton($this->session->userdata('prefs'));
 	}
 
 	function index() {
@@ -61,11 +67,14 @@ class Prefs extends CI_Controller {
 				$this->auth->get_user(),
 				$this->auth->get_passwd());
 
-		$prefs = $this->session->userdata('prefs');
+		$hidden_calendars = $this->prefs->hidden_calendars;
+		if ($hidden_calendars === null) {
+			$hidden_calendars = array();
+		}
 
 		$data_prefs = array(
 				'calendar_list' => $calendar_list,
-				'hidden_calendars' => $prefs['hidden_calendars'],
+				'hidden_calendars' => $hidden_calendars,
 				);
 
 		$components['content'] = $this->load->view('preferences_page',
