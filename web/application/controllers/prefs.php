@@ -56,10 +56,6 @@ class Prefs extends CI_Controller {
 		$components['navbar'] = 
 			$this->load->view('navbar', $data_header, TRUE);
 
-		// Empty sidebar
-		$components['sidebar'] = '';
-
-
 
 		// Calendar list
 		$this->load->library('caldav');
@@ -85,7 +81,7 @@ class Prefs extends CI_Controller {
 					'load_calendar_colors' => TRUE,
 					), TRUE);
 
-		$this->load->view('layouts/app.php', $components);
+		$this->load->view('layouts/plain.php', $components);
 	}
 
 	/**
