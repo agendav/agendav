@@ -141,6 +141,7 @@ $labels['close'] = 'Close';
 $labels['save'] = 'Save';
 $labels['create'] = 'Create';
 $labels['login'] = 'Log in';
+$labels['logout'] = 'Log out';
 $labels['modify'] = 'Modify';
 $labels['cancel'] = 'Cancel';
 $labels['next'] = 'next';
