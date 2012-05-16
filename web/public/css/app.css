@@ -306,3 +306,40 @@ table.share_calendar_manager_new {
 #prefs_buttons {
   margin-bottom: 10px;
 }
+.agendav-menu .ui-tooltip-content {
+  padding: 0;
+}
+#usermenu_content {
+  display: none;
+}
+#usermenu_content ul {
+  list-style: none;
+  background: #fff;
+  margin: 0;
+  padding: 5px 0;
+}
+#usermenu_content ul:hover {
+  cursor: default !important;
+}
+#usermenu_content ul li {
+  font-size: 14px;
+  list-style: none;
+}
+#usermenu_content ul li  > a {
+  display: block;
+  line-height: 28px;
+  padding: 0 5px 5px 30px;
+  background-position: 8px center;
+  background-repeat: no-repeat;
+}
+#usermenu_content ul li  > a.prefs {
+  background-image: url(../img/setting_tools.png);
+}
+#usermenu_content ul li  > a.logout {
+  background-image: url(../img/exit.png);
+}
+#usermenu_content ul li  > a:hover {
+  background-color: #08c;
+  color: #fff !important;
+  text-decoration: none;
+}

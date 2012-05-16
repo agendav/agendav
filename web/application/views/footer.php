@@ -70,5 +70,16 @@ $img = array(
 		'alt' => 'AgenDAV',
 		);
 ?>
+
+<div id="usermenu_content">
+ <ul>
+  <li><?php echo anchor('prefs', 
+		  $this->i18n->_('labels', 'preferences'),
+		  array('class' => 'prefs'))?></li>
+  <li><?php echo anchor('calendar/logout',
+		  $this->i18n->_('labels', 'logout'),
+		  array('class' => 'logout'))?></li>
+ </ul>
+</div>
 </body>
 </html>

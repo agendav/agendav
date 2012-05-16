@@ -267,6 +267,23 @@ $(document).ready(function() {
 				event_field_form('new', data);
 			});
 		}
+
+		// User menu
+		$('#usermenu').qtip({
+			content: $('#usermenu_content'),
+			position: { my: 'top right', at: 'bottom center' },
+			style: {
+				tip: true,
+				classes: 'ui-tooltip-bootstrap agendav-menu'
+			},
+			show: {
+				event: 'click',
+				delay: 0
+			},
+			hide: {
+				event: 'unfocus'
+			}
+		});
 });
 
 
@@ -1529,9 +1546,8 @@ var event_render_callback = function event_render_callback(event, element) {
 			viewport: $('#calendar_view')
 		},
 		style: {
-			classes: 'view_event_details ui-tooltip-shadow',
-			tip: true,
-			widget: true
+			classes: 'view_event_details ui-tooltip-bootstrap',
+			tip: true
 		},
 		show: {
 			target: $('#calendar_view'),
