@@ -307,7 +307,7 @@ table.share_calendar_manager_new {
   margin-bottom: 10px;
 }
 .agendav-menu .ui-tooltip-content {
-  padding: 0;
+  padding: 0 3px;
 }
 #usermenu_content {
   display: none;

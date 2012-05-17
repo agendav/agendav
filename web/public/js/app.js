@@ -271,7 +271,7 @@ $(document).ready(function() {
 		// User menu
 		$('#usermenu').qtip({
 			content: $('#usermenu_content'),
-			position: { my: 'top right', at: 'bottom center' },
+			position: { my: 'top center', at: 'bottom center' },
 			style: {
 				tip: true,
 				classes: 'ui-tooltip-bootstrap agendav-menu'
