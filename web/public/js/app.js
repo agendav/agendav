@@ -232,7 +232,7 @@ $(document).ready(function() {
 			.on('click', calendar_create_form);
 
 		// Calendar checkbox
-		$('div.calendar_color').on('click', function(e) {
+		$(document).on('click', 'div.calendar_color', function(e) {
 			e.stopPropagation();
 			var calendar_obj = $(this).parent();
 			toggle_calendar(calendar_obj);
@@ -1856,7 +1856,7 @@ var modify_event_handler = function modify_event_handler() {
 };
 
 // Toggles calendar visibility
-var toggle_calendar= function toggle_calendar(calendar_obj) {
+var toggle_calendar = function toggle_calendar(calendar_obj) {
 	if (calendar_obj.hasClass('transparent')) {
 		calendar_obj.removeClass('transparent');
 		// TODO eventsource
