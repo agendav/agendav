@@ -78,10 +78,10 @@ if ( ! function_exists('formelement'))
 {
     function formelement($label, $input) {
 		?>
-			<div class="ctrlHolder">
+			<div class="control-group">
 			<?php 
-			echo form_label($label);
-			echo $input;
+			echo form_label($label, '', array('class' => 'control-label'));
+			echo '<div class="controls">' . $input . '</div>';
 			?>
 			</div>
 		<?php
