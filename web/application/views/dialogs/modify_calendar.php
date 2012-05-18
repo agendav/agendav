@@ -3,7 +3,7 @@
 <?php
 $data_form = array(
 	'id' => 'modify_calendar_form',
-	'class' => 'uniForm',
+	'class' => 'form-horizontal',
 );
 echo form_open('caldav2json/modify_calendar', $data_form);
 
@@ -37,7 +37,7 @@ if ($show_share_options && $is_shared_calendar) {
 $form_displayname = array(
 		'name' => 'displayname',
 		'value' => $displayname,
-		'class' => 'displayname medium',
+		'class' => 'displayname input-medium',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -45,7 +45,7 @@ $form_displayname = array(
 $form_color = array(
 		'name' => 'calendar_color',
 		'value' => $color,
-		'class' => 'calendar_color pick_color ultrasmall',
+		'class' => 'calendar_color pick_color input-mini',
 		'maxlength' => '7',
 		'size' => '7',
 		);

@@ -28,7 +28,7 @@ foreach ($shares as $user => $data) {
 
 $form_new_username_share = array(
 		'name' => 'autocomplete_username',
-		'class' => 'share_calendar_manager_username_new',
+		'class' => 'share_calendar_manager_username_new input-medium',
 		'value' => '',
 		'maxlength' => '255',
 		'size' => '10',
@@ -55,7 +55,8 @@ $img_share_add = array(
  ?></div></td>
  <td>
  <?php 
-   echo form_dropdown('write_access', $write_access_options, 'r');
+   echo form_dropdown('write_access', $write_access_options, 'r',
+		   'class="input-medium"');
  ?>
  </td>
  <td>
