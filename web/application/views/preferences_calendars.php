@@ -1,7 +1,7 @@
 <?php
 echo formelement(
 		$this->i18n->_('labels', 'defaultcalendar'),
-		form_dropdown('calendar', $calendar_ids_and_dn, false,
+		form_dropdown('default_calendar', $calendar_ids_and_dn, false,
 			'class="medium"'));
 
 ?>

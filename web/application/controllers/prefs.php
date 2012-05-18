@@ -93,9 +93,11 @@ class Prefs extends CI_Controller {
 	/**
 	 * Settings currently processed by this action:
 	 *  - calendar@form: hidden_calendars
+	 *  - default_calendar@form: default_calendar
 	 */
 	function save() {
 		$calendar = $this->input->post('calendar');
+		$default_calendar = $this->input->post('default_calendar');
 
 		if (!is_array($calendar)) {
 			$this->extended_logs->message('ERROR',
@@ -104,8 +106,18 @@ class Prefs extends CI_Controller {
 						'error_interfacefailure'));
 		}
 
+		if ($default_calendar === FALSE) {
+			$this->extended_logs->message('ERROR',
+				'Preferences save attempt with default_calendar not set');
+			$this->_throw_error($this->i18n->_('messages', 
+						'error_interfacefailure'));
+		}
+
 		$current_user = $this->auth->get_user();
 		$current_prefs = $this->userpref->load_prefs($current_user);
+
+		// Default calendar
+		$current_prefs->default_calendar = $default_calendar;
 
 		// Calendar processing
 		$hidden_calendars = array();
