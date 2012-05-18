@@ -68,8 +68,14 @@ class Prefs extends CI_Controller {
 			$hidden_calendars = array();
 		}
 
+		$calendar_ids_and_dn = array();
+		foreach ($calendar_list as $c => $data) {
+			$calendar_ids_and_dn[$c] = $data['displayname'];
+		}
+
 		$data_prefs = array(
 				'calendar_list' => $calendar_list,
+				'calendar_ids_and_dn' => $calendar_ids_and_dn,
 				'hidden_calendars' => $hidden_calendars,
 				);
 

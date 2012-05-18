@@ -1,3 +1,10 @@
+<?php
+echo formelement(
+		$this->i18n->_('labels', 'defaultcalendar'),
+		form_dropdown('calendar', $calendar_ids_and_dn, false,
+			'class="medium"'));
+
+?>
 <table id="preferences_calendar_manager" class="table table-striped">
 <thead>
  <th><?php echo $this->i18n->_('labels', 'calendar')?></th>

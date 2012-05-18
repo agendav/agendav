@@ -163,6 +163,7 @@ $labels['preferences'] = 'Preferences';
 $labels['return'] = 'Return';
 
 $labels['hidelist'] = 'Hide from list';
+$labels['defaultcalendar'] = 'Default calendar';
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
