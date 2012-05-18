@@ -216,6 +216,10 @@ $(document).ready(function() {
 		$('div.calendar_list').on('dblclick', 'li.available_calendar', function(e) {
 			e.preventDefault();
 			calendar_modify_form(this);
+		})
+		.on('click', 'li.available_calendar', function(e) {
+			// Make calendar transparent
+			toggle_calendar($(this));
 		});
 
 		// First time load: create calendar list
@@ -224,14 +228,6 @@ $(document).ready(function() {
 		// Create calendar
 		$('#calendar_add')
 			.on('click', calendar_create_form);
-
-		// Calendar checkbox
-		$(document).on('click', 'div.calendar_color', function(e) {
-			e.stopPropagation();
-			var calendar_obj = $(this).parent();
-			toggle_calendar(calendar_obj);
-		});
-		
 
 		/*************************************************************
 		 * End of calendar list events
@@ -1850,13 +1846,15 @@ var modify_event_handler = function modify_event_handler() {
 
 // Toggles calendar visibility
 var toggle_calendar = function toggle_calendar(calendar_obj) {
+	var eventsource = calendar_obj.data().eventsource;
+
 	if (calendar_obj.hasClass('transparent')) {
+		$('#calendar_view').fullCalendar('addEventSource', eventsource);
 		calendar_obj.removeClass('transparent');
-		// TODO eventsource
 		// TODO prefs
 	} else {
 		calendar_obj.addClass('transparent');
-		// TODO eventsource
+		$('#calendar_view').fullCalendar('removeEventSource', eventsource);
 		// TODO prefs
 	}
 }
