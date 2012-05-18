@@ -63,10 +63,13 @@ class Prefs extends CI_Controller {
 				$this->auth->get_user(),
 				$this->auth->get_passwd());
 
+		// TODO refactor this part
 		$hidden_calendars = $this->prefs->hidden_calendars;
 		if ($hidden_calendars === null) {
 			$hidden_calendars = array();
 		}
+
+		$default_calendar = $this->prefs->default_calendar;
 
 		$calendar_ids_and_dn = array();
 		foreach ($calendar_list as $c => $data) {
@@ -76,6 +79,7 @@ class Prefs extends CI_Controller {
 		$data_prefs = array(
 				'calendar_list' => $calendar_list,
 				'calendar_ids_and_dn' => $calendar_ids_and_dn,
+				'default_calendar' => $default_calendar,
 				'hidden_calendars' => $hidden_calendars,
 				);
 

@@ -146,8 +146,12 @@ class Dialog_generator extends CI_Controller {
 		// this event is placed on)
 		$calendar = $this->input->post('current_calendar');
 		if ($calendar === FALSE) {
-			// Use first one if no calendar is selected
-			$calendar = array_shift(array_keys($calendars));
+			// Use the calendar specified in preferences
+			$prefs = Preferences::singleton($this->session->userdata('prefs'));
+			$calendar = $prefs->default_calendar;
+			if ($calendar === FALSE) {
+				$calendar = array_shift(array_keys($calendars));
+			}
 		}
 
 		$data = array(
