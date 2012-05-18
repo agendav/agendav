@@ -110,7 +110,6 @@ div.block .buttons {
   font-style: italic;
 }
 .view_event_details .ui-tooltip-content div {
-  margin-bottom: 1.7em;
   line-height: 1.5em;
 }
 .view_event_details .description_value {
@@ -128,7 +127,6 @@ div.block .buttons {
 }
 .view_event_details .ui-tooltip-content {
   line-height: 150%;
-  padding: 0.5em 2em 0.5em 2em !important;
 }
 .view_event_details .ui-tooltip-title {
   font-size: 120%;
