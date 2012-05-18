@@ -63,13 +63,23 @@ class Prefs extends CI_Controller {
 				$this->auth->get_user(),
 				$this->auth->get_passwd());
 
+		// TODO refactor this part
 		$hidden_calendars = $this->prefs->hidden_calendars;
 		if ($hidden_calendars === null) {
 			$hidden_calendars = array();
 		}
 
+		$default_calendar = $this->prefs->default_calendar;
+
+		$calendar_ids_and_dn = array();
+		foreach ($calendar_list as $c => $data) {
+			$calendar_ids_and_dn[$c] = $data['displayname'];
+		}
+
 		$data_prefs = array(
 				'calendar_list' => $calendar_list,
+				'calendar_ids_and_dn' => $calendar_ids_and_dn,
+				'default_calendar' => $default_calendar,
 				'hidden_calendars' => $hidden_calendars,
 				);
 
@@ -87,9 +97,11 @@ class Prefs extends CI_Controller {
 	/**
 	 * Settings currently processed by this action:
 	 *  - calendar@form: hidden_calendars
+	 *  - default_calendar@form: default_calendar
 	 */
 	function save() {
 		$calendar = $this->input->post('calendar');
+		$default_calendar = $this->input->post('default_calendar');
 
 		if (!is_array($calendar)) {
 			$this->extended_logs->message('ERROR',
@@ -98,8 +110,18 @@ class Prefs extends CI_Controller {
 						'error_interfacefailure'));
 		}
 
+		if ($default_calendar === FALSE) {
+			$this->extended_logs->message('ERROR',
+				'Preferences save attempt with default_calendar not set');
+			$this->_throw_error($this->i18n->_('messages', 
+						'error_interfacefailure'));
+		}
+
 		$current_user = $this->auth->get_user();
 		$current_prefs = $this->userpref->load_prefs($current_user);
+
+		// Default calendar
+		$current_prefs->default_calendar = $default_calendar;
 
 		// Calendar processing
 		$hidden_calendars = array();

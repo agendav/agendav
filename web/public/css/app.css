@@ -82,13 +82,8 @@ div.block .buttons {
 .calendar_list li:hover {
   background-color: #f0f0f0;
 }
-.calendar_list li.selected_calendar {
+.calendar_list li.default_calendar {
   font-weight: bold;
-}
-.calendar_list li.selected_calendar div.calendar_color {
-  border: 2px solid red;
-  width: 10px !important;
-  height: 10px !important;
 }
 .calendar_list li.transparent div.calendar_color {
   background-color: #ffffff !important;
