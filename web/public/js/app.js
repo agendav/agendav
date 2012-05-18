@@ -813,7 +813,7 @@ var calendar_create_form = function calendar_create_form() {
 				'click': function() { destroy_dialog(ccd); }
 			}
 		],
-		'create_calendar_dialog', 500);
+		'create_calendar_dialog', 400);
 };
 
 // Triggers a dialog for editing calendars

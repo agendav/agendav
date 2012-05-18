@@ -18,17 +18,15 @@ if (!empty($errors)):
 endif;
 ?>
 
-<div class="loginform">
 <?php
 if (isset($logo)) {
 	echo $logo;
 }
 ?>
-  <div class="ui-widget-content ui-corner-all">
+<div class="loginform ui-corner-all">
 
-  <div class="loginform_fields">
   <?php
-  echo form_open('login/', array('class' => 'uniForm'));
+  echo form_open('login/', array('class' => 'form-horizontal'));
   ?>
 <?php
 
@@ -38,6 +36,7 @@ if (isset($logo)) {
 		  'value' => set_value('user'),
 		  'maxlength' => '40',
 		  'size' => '15',
+		  'class' => 'input-medium',
 		  'autofocus' => 'autofocus',
 		  );
   echo formelement(
@@ -50,19 +49,13 @@ if (isset($logo)) {
 		  'id' => 'login_passwd',
 		  'value' => '',
 		  'maxlength' => '40',
+		  'class' => 'input-medium',
 		  'size' => '15',
 		  );
   echo formelement(
 		  $this->i18n->_('labels', 'password'),
 		  form_password($password));
-  ?>
-	<div class="buttonHolder">
-  <?php
   echo form_submit('login', $this->i18n->_('labels', 'login'));
   echo form_close();
-
  ?>
-  </div>
- </div>
- </div>
 </div>

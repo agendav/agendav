@@ -13,11 +13,6 @@ body {
   background: url(@agendavbgImage) @agendavbgColor top left repeat-x;
 }
 
-body.calendarpage,
-body.prefspage {
-  padding-top: 50px;
-}
-
 /* jQuery UI font override */
 .ui-widget { 
   .fontoverride;
@@ -33,36 +28,16 @@ body.prefspage {
 }
 
 .loginform {
+  background-color: #fff;
+  padding: 20px;
   margin: 5% auto;
   text-align: center;
   width: 430px;
 }
 
-.loginform .loginform_fields {
-  margin: 0.7em;
-  padding: 1em;
-}
-
 .loginerrors {
   width: 400px;
   margin: 5% auto 0 auto;
-}
-
-.uniForm {
-  .ctrlHolder{ padding: .3em; }
-  textarea    { height: 6em; }
-  label { float: left; width: 30%; }
-  .ultrasmall { width: 20% !important; }
-  .small { width: 30% !important; }
-  .medium{ width: 45% !important; }
-  .large { width: 60% !important; } 
-  .auto  { width: auto !important; height: auto !important; }
-  .small,
-  .ultrasmall,
-  .medium,
-  .auto{ margin-right: 4px; }
-  &:after,
-  .ctrlHolder:after {content: "."; display: block; height: 0; line-height: 0; font-size: 0; clear: both; min-height: 0; visibility: hidden; }
 }
 
 span.username {
@@ -167,7 +142,6 @@ div.block {
   }
 
   .ui-tooltip-content div {
-    margin-bottom: 1.7em;
     line-height: 1.5em;
   }
 
@@ -189,7 +163,6 @@ div.block {
 
   .ui-tooltip-content {
     line-height: 150%;
-    padding: 0.5em 2em 0.5em 2em !important;
   }
 
   .ui-tooltip-title {
@@ -242,7 +215,7 @@ div.share_info {
   padding: 10px 10px 10px 40px;
   border: 1px solid #e0e0e0;
   width: 350px;
-  margin: 0.5em auto 0 auto;
+  margin: 0.5em auto 0.5em auto;
 }
 
 /* 

@@ -16,7 +16,8 @@ $img_share_delete = array(
 <td class="share_data_other">
 <?php
 echo form_dropdown('write_access', 
-		$write_access_options, $write_access);
+		$write_access_options, $write_access,
+		'class="input-medium"');
 ?></td>
 <td>
 <?php echo img($img_share_delete); ?>

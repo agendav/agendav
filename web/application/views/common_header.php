@@ -36,12 +36,6 @@ foreach ($printcss as $pcss) {
 			);
 }
 ?>
-    <!--[if lte ie 7]>
-      <style type="text/css" media="screen">
-        /* Move these to your IE6/7 specific stylesheet if possible */
-        .uniForm, .uniForm .ctrlHolder, .uniForm .buttonHolder, .uniForm .ctrlHolder ul{ zoom:1; }
-      </style>
-    <![endif]-->
 </head>
 <?php
 // Body classes

@@ -1,10 +1,6 @@
 body {
   background: url("../img/bg_11.png") #c6c8cd top left repeat-x;
 }
-body.calendarpage,
-body.prefspage {
-  padding-top: 50px;
-}
 /* jQuery UI font override */
 .ui-widget {
   font-family: 'Trebuchet MS', Arial, sans-serif !important;
@@ -24,60 +20,15 @@ body.prefspage {
   cursor: default !important;
 }
 .loginform {
+  background-color: #fff;
+  padding: 20px;
   margin: 5% auto;
   text-align: center;
   width: 430px;
 }
-.loginform .loginform_fields {
-  margin: 0.7em;
-  padding: 1em;
-}
 .loginerrors {
   width: 400px;
   margin: 5% auto 0 auto;
-}
-.uniForm .ctrlHolder {
-  padding: .3em;
-}
-.uniForm textarea {
-  height: 6em;
-}
-.uniForm label {
-  float: left;
-  width: 30%;
-}
-.uniForm .ultrasmall {
-  width: 20% !important;
-}
-.uniForm .small {
-  width: 30% !important;
-}
-.uniForm .medium {
-  width: 45% !important;
-}
-.uniForm .large {
-  width: 60% !important;
-}
-.uniForm .auto {
-  width: auto !important;
-  height: auto !important;
-}
-.uniForm .small,
-.uniForm .ultrasmall,
-.uniForm .medium,
-.uniForm .auto {
-  margin-right: 4px;
-}
-.uniForm:after,
-.uniForm .ctrlHolder:after {
-  content: ".";
-  display: block;
-  height: 0;
-  line-height: 0;
-  font-size: 0;
-  clear: both;
-  min-height: 0;
-  visibility: hidden;
 }
 span.username {
   padding-left: 20px;
@@ -159,7 +110,6 @@ div.block .buttons {
   font-style: italic;
 }
 .view_event_details .ui-tooltip-content div {
-  margin-bottom: 1.7em;
   line-height: 1.5em;
 }
 .view_event_details .description_value {
@@ -177,7 +127,6 @@ div.block .buttons {
 }
 .view_event_details .ui-tooltip-content {
   line-height: 150%;
-  padding: 0.5em 2em 0.5em 2em !important;
 }
 .view_event_details .ui-tooltip-title {
   font-size: 120%;
@@ -217,7 +166,7 @@ div.share_info {
   padding: 10px 10px 10px 40px;
   border: 1px solid #e0e0e0;
   width: 350px;
-  margin: 0.5em auto 0 auto;
+  margin: 0.5em auto 0.5em auto;
 }
 /* 
  * Dialog buttons
