@@ -212,12 +212,6 @@ $(document).ready(function() {
 		 * Calendar list events
 		 *************************************************************/
 
-		// Choosing a calendar
-		$('div.calendar_list').on('click', 'li.available_calendar', function() {
-			$('.calendar_list li.selected_calendar').removeClass('selected_calendar');
-			$(this).addClass('selected_calendar');
-		});
-
 		// Editing a calendar
 		$('div.calendar_list').on('dblclick', 'li.available_calendar', function(e) {
 			e.preventDefault();
@@ -258,8 +252,7 @@ $(document).ready(function() {
 				var data = {
 						start: start,
 						allday: false,
-						view: 'month',
-						current_calendar: $('.calendar_list li.selected_calendar').data().calendar
+						view: 'month'
 				};
 
 				// Unselect every single day/slot
@@ -1172,6 +1165,11 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 		}
 	}
 
+	// Default calendar
+	if (data.default === true) {
+		li.addClass('default_calendar');
+	}
+
 	data.eventsource = eventsource;
 
 	// Associate data + eventsource to new list item
@@ -1640,8 +1638,7 @@ var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDa
 			start: fulldatetimestring(startDate),
 			end: fulldatetimestring(endDate),
 			allday: pass_allday,
-			view: view.name,
-			current_calendar: $('.calendar_list li.selected_calendar').data().calendar
+			view: view.name
 	};
 
 	// Unselect every single day/slot
@@ -1654,11 +1651,7 @@ var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDa
  */
 
 var select_helper = function select_helper(start,end) {
-	var current_calendar_color = 
-		$('.calendar_list li.selected_calendar').data().color;
-
-	return $('<div style="background-color: '+current_calendar_color
-	+'" class="selecthelper"/>')
+	return $('<div style="border: 1px solid black; background-color: #f0f0f0;" class="selecthelper"/>')
 		.text(
 				$.fullCalendar.formatDates(start, end,
 					prefs_timeformat + '{ - ' + prefs_timeformat + '}'));

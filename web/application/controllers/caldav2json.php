@@ -713,6 +713,13 @@ class Caldav2json extends CI_Controller {
 		// editing/adding events)
 		$this->session->set_userdata('available_calendars', $arr_calendars);
 
+		// Default calendar
+		$default_calendar = $this->prefs->default_calendar;
+		if ($default_calendar !== null &&
+				isset($arr_calendars[$default_calendar])) {
+			$arr_calendars[$default_calendar]['default'] = true;
+		}
+
 
 		$this->output->set_output(json_encode($arr_calendars));
 	}
