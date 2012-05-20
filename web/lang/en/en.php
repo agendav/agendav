@@ -165,6 +165,8 @@ $labels['return'] = 'Return';
 $labels['hidelist'] = 'Hide from list';
 $labels['defaultcalendar'] = 'Default calendar';
 
+$labels['toggleallcalendars'] = 'Show/hide all';
+
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
 $messages['error_invaliddate'] = 'Invalid date on field %s';

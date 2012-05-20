@@ -225,6 +225,28 @@ $(document).ready(function() {
 		// First time load: create calendar list
 		update_calendar_list(true);
 
+		$('#sidebar').on('click', '#toggle_all_shared_calendars', function(e) {
+			var shared_cals = $('#shared_calendar_list').find('ul').children();
+			if ($(this).hasClass('hide_all')) {
+				$.map(shared_cals, function(e, i) {
+					hide_calendar($(e));
+				});
+				$(this)
+					.removeClass('hide_all')
+					.addClass('show_all')
+					.attr('src', base_url + 'img/color_swatch.png');
+			} else {
+				$.map(shared_cals, function(e, i) {
+					show_calendar($(e));
+				});
+				$(this)
+					.removeClass('show_all')
+					.addClass('hide_all')
+					.attr('src', base_url + 'img/color_swatch_empty.png');
+			}
+		});
+
+
 		// Create calendar
 		$('#calendar_add')
 			.on('click', calendar_create_form);
@@ -1840,19 +1862,25 @@ var modify_event_handler = function modify_event_handler() {
 	return false;
 };
 
+// Shows a calendar
+var show_calendar = function show_calendar(calendar_obj) {
+	$('#calendar_view').fullCalendar('addEventSource', calendar_obj.data().eventsource);
+	calendar_obj.removeClass('transparent');
+};
+
+// Hides a calendar
+var hide_calendar = function hide_calendar(calendar_obj) {
+	$('#calendar_view').fullCalendar('removeEventSource', calendar_obj.data().eventsource);
+	calendar_obj.addClass('transparent');
+};
+
 // Toggles calendar visibility
 var toggle_calendar = function toggle_calendar(calendar_obj) {
-	var eventsource = calendar_obj.data().eventsource;
-
 	if (calendar_obj.hasClass('transparent')) {
-		$('#calendar_view').fullCalendar('addEventSource', eventsource);
-		calendar_obj.removeClass('transparent');
-		// TODO prefs
+		show_calendar(calendar_obj);
 	} else {
-		calendar_obj.addClass('transparent');
-		$('#calendar_view').fullCalendar('removeEventSource', eventsource);
-		// TODO prefs
+		hide_calendar(calendar_obj);
 	}
-}
+};
 
 // vim: sw=2 tabstop=2
