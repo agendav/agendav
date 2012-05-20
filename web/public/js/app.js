@@ -1016,10 +1016,6 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 				$('#shared_calendar_list').show();
 			}
 
-			// Select the first one by default
-			$('#own_calendar_list li.available_calendar:first').click();
-
-
 			// Adjust text length
 			adjust_calendar_names_width();
 
