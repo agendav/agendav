@@ -97,6 +97,14 @@ div.block {
     white-space: nowrap;
     padding: 4px;
 
+    img.cfg {
+      display: none;
+      background-color: #fff;
+      position: absolute;
+      right: 5px;
+      padding: 1px;
+    }
+
     span.text {
       font-size: 0.9em;
       letter-spacing: -0.1em;
@@ -104,6 +112,14 @@ div.block {
 
     &:hover {
       background-color: #f0f0f0;
+
+      > img.cfg {
+        display: inline;
+        
+        &:hover {
+          background-color: @agendavbgHoverPseudobutton !important;
+        }
+      }
     }
 
     &.default_calendar {

@@ -75,12 +75,25 @@ div.block .buttons {
   white-space: nowrap;
   padding: 4px;
 }
+.calendar_list li img.cfg {
+  display: none;
+  background-color: #fff;
+  position: absolute;
+  right: 5px;
+  padding: 1px;
+}
 .calendar_list li span.text {
   font-size: 0.9em;
   letter-spacing: -0.1em;
 }
 .calendar_list li:hover {
   background-color: #f0f0f0;
+}
+.calendar_list li:hover > img.cfg {
+  display: inline;
+}
+.calendar_list li:hover > img.cfg:hover {
+  background-color: #a9d6ff !important;
 }
 .calendar_list li.default_calendar {
   font-weight: bold;

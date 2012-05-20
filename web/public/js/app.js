@@ -213,9 +213,10 @@ $(document).ready(function() {
 		 *************************************************************/
 
 		// Editing a calendar
-		$('div.calendar_list').on('dblclick', 'li.available_calendar', function(e) {
-			e.preventDefault();
-			calendar_modify_form(this);
+		$('div.calendar_list').on('click', 'img.cfg', function(e) {
+			e.stopPropagation();
+			var calentry = $(this).parent();
+			calendar_modify_form(calentry[0]);
 		})
 		.on('click', 'li.available_calendar', function(e) {
 			// Make calendar transparent
@@ -1191,6 +1192,8 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
 	// Disable text selection on this (useful for dblclick)
 	li.disableSelection();
+
+	li.append('<img class="cfg" src="'+base_url+'img/gear_in.png" />');
 
 	return li;
 };
