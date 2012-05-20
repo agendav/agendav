@@ -1193,7 +1193,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 	// Disable text selection on this (useful for dblclick)
 	li.disableSelection();
 
-	li.append('<img class="cfg" src="'+base_url+'img/gear_in.png" />');
+	li.append('<img class="cfg pseudobutton" src="'+base_url+'img/gear_in.png" />');
 
 	return li;
 };

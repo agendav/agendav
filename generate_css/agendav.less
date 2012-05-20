@@ -102,7 +102,6 @@ div.block {
       background-color: #fff;
       position: absolute;
       right: 5px;
-      padding: 1px;
     }
 
     span.text {
@@ -115,10 +114,6 @@ div.block {
 
       > img.cfg {
         display: inline;
-        
-        &:hover {
-          background-color: @agendavbgHoverPseudobutton !important;
-        }
       }
     }
 
@@ -316,9 +311,10 @@ div.calendar_color {
 
 .pseudobutton {
   display: inline-block;
-  padding: 5px;
+  padding: 2px;
   &:hover {
-    background-color: @agendavbgHoverPseudobutton;
+    cursor: pointer;
+    background-color: @agendavbgHoverPseudobutton !important;
   }
 }
 

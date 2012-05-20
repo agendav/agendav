@@ -80,7 +80,6 @@ div.block .buttons {
   background-color: #fff;
   position: absolute;
   right: 5px;
-  padding: 1px;
 }
 .calendar_list li span.text {
   font-size: 0.9em;
@@ -91,9 +90,6 @@ div.block .buttons {
 }
 .calendar_list li:hover > img.cfg {
   display: inline;
-}
-.calendar_list li:hover > img.cfg:hover {
-  background-color: #a9d6ff !important;
 }
 .calendar_list li.default_calendar {
   font-weight: bold;
@@ -250,10 +246,11 @@ div.calendar_color {
 }
 .pseudobutton {
   display: inline-block;
-  padding: 5px;
+  padding: 2px;
 }
 .pseudobutton:hover {
-  background-color: #a9d6ff;
+  cursor: pointer;
+  background-color: #a9d6ff !important;
 }
 tr.share_calendar_manager_empty td {
   text-align: center !important;

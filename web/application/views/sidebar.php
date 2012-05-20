@@ -32,7 +32,7 @@ if (isset($logo)) {
   <?php echo $this->i18n->_('labels', 'shared_calendars')?>
     <?php echo img(array(
 				'id' => 'toggle_all_shared_calendars',
-				'class' => 'hide_all',
+				'class' => 'hide_all pseudobutton',
 				'src' => 'img/color_swatch_empty.png',
 				'alt' => $this->i18n->_('labels', 'toggleallcalendars'),
 				'title' => $this->i18n->_('labels', 'toggleallcalendars'),
