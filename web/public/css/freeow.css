@@ -104,11 +104,11 @@
 }
 
 .freeow .popup_error .icon {
-    background: transparent url(../img/freeow-notice.png) no-repeat 0 0;
+    background: transparent url(../img/popup_error.png) no-repeat 0 0;
 }
 
 .freeow .popup_success .icon {
-    background: transparent url(../img/Ok.png) no-repeat 0 0;
+    background: transparent url(../img/popup_ok.png) no-repeat 0 0;
 }
 
 /* Freeow ends */
