@@ -9,7 +9,7 @@ echo formelement(
 <table id="preferences_calendar_manager" class="table table-striped">
 <thead>
  <th><?php echo $this->i18n->_('labels', 'calendar')?></th>
- <th><?php echo $this->i18n->_('labels', 'hidelist')?></th>
+ <th style="text-align: center"><?php echo $this->i18n->_('labels', 'hidelist')?></th>
  <th></th>
 </thead>
 <tbody>
@@ -21,7 +21,7 @@ foreach ($calendar_list as $c => $data):
   <td>
   <?php echo $data['displayname'] ?>
   </td>
-  <td>
+  <td style="text-align: center">
     <input type="hidden" name="calendar[<?php echo $i ?>][name]" value="<?php echo
 	$c?>" />
     <input type="checkbox" name="calendar[<?php echo $i ?>][hide]"
