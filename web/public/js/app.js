@@ -701,10 +701,11 @@ var event_field_form = function event_field_form(type, data) {
 			});
 
 			// Avoid having a value in both recurrence options (count / until)
-			$(ced).on('change', 'input.recurrence_count', function() {
+			$(ced)
+			.on('keyup', 'input.recurrence_count', function() {
 				enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
-			});
-			$(ced).on('change', 'input.recurrence_until', function() {
+			})
+			.on('keyup change', 'input.recurrence_until', function() {
 				enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
 			});
 
