@@ -154,8 +154,7 @@ $(document).ready(function() {
 			selectHelper: select_helper,
 
 			eventResize: event_resize_callback,
-			eventDrop: event_drop_callback,
-
+			eventDrop: event_drop_callback
 		});
 
 
