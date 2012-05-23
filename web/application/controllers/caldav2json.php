@@ -717,10 +717,10 @@ class Caldav2json extends CI_Controller {
 		$default_calendar = $this->prefs->default_calendar;
 		if ($default_calendar !== null &&
 				isset($arr_calendars[$default_calendar])) {
-			$arr_calendars[$default_calendar]['default'] = TRUE;
+			$arr_calendars[$default_calendar]['default_calendar'] = TRUE;
 		} elseif (count($arr_calendars) > 0) {
 			$first = array_shift(array_keys($arr_calendars));
-			$arr_calendars[$first]['default'] = TRUE;
+			$arr_calendars[$first]['default_calendar'] = TRUE;
 		}
 
 

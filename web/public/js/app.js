@@ -1181,7 +1181,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 	}
 
 	// Default calendar
-	if (data.default === true) {
+	if (data.default_calendar === true) {
 		li.addClass('default_calendar');
 	}
 
