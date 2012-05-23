@@ -278,7 +278,7 @@ class Caldav2json extends CI_Controller {
 		$p['dtstart'] = $start;
 		$p['dtend'] = $end;
 
-		// Recurrency checks
+		// Recurrence checks
 		unset($p['rrule']);
 
 		if (isset($p['recurrence_type'])) {
@@ -289,7 +289,7 @@ class Caldav2json extends CI_Controller {
 							mktime(0, 0)); // Tricky
 				}
 
-				$rrule = $this->recurrency->build($p, $rrule_err);
+				$rrule = $this->recurrence->build($p, $rrule_err);
 				if (FALSE === $rrule) {
 					// Couldn't build rrule
 					$this->extended_logs->message('ERROR', 

@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Recurrency {
+class Recurrence {
 
 	private $date_format;
 	private $tz;

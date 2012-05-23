@@ -596,9 +596,9 @@ var set_end_minDate = function set_end_minDate() {
 };
 
 /**
- * Sets recurrency options to be enabled or disabled
+ * Sets recurrence options to be enabled or disabled
  */
-var update_recurrency_options = function update_recurrency_options(newval) {
+var update_recurrence_options = function update_recurrence_options(newval) {
 	if (newval == 'none') {
 		$(ced + ' input.recurrence_count').val('');
 		$(ced + ' input.recurrence_until').val('');
@@ -671,8 +671,8 @@ var event_field_form = function event_field_form(type, data) {
 			// First time datepicker is run we need to set minDate on end date
 			set_end_minDate();
 
-			// And recurrency options have to be enabled/disabled
-			update_recurrency_options($(ced + ' select.recurrence_type').val());
+			// And recurrence options have to be enabled/disabled
+			update_recurrence_options($(ced + ' select.recurrence_type').val());
 
 			// All day checkbox
 			$(ced).on('change', 'input.allday', function() {
@@ -697,7 +697,7 @@ var event_field_form = function event_field_form(type, data) {
 			$(ced).on('change', 'select.recurrence_type', function() {
 				var newval = $(this).val();
 
-				update_recurrency_options($(this).val());
+				update_recurrence_options($(this).val());
 			});
 
 			// Avoid having a value in both recurrence options (count / until)
@@ -1300,7 +1300,7 @@ var event_bubble_content = function event_bubble_content(event) {
 		tmpl.find('p.description').hide();
 	}
 
-	// Recurrency rule
+	// Recurrence rule
 	if (event.rrule !== undefined) {
 		if (event.rrule_explained !== undefined) {
 			tmpl

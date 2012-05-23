@@ -340,7 +340,7 @@ class Icshelper {
 					$this_event['rrule'] = $new_val;
 
 					$explanation =
-						$this->CI->recurrency->rrule_explain($val,
+						$this->CI->recurrence->rrule_explain($val,
 								$unused);
 					if ($explanation !== FALSE) {
 						$this_event['rrule_explained'] = $explanation;
