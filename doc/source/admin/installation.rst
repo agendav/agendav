@@ -38,7 +38,7 @@ First of all you have to create a user and a database for that user.
 Second, you'll have to create initial AgenDAV tables using provided SQL
 files inside ``sql/`` directory.
 
-Last step is applying database updates to initial database tables.
+Last step is applying database upgrades to initial database tables.
 
 Steps 1&2: MySQL
 ****************
@@ -89,12 +89,12 @@ After that just restart PostgreSQL and load the schema::
  $ psql -U agendav agendav < sql/pgsql.schema.sql
 
 
-Step 3: Update database
-***********************
+Step 3: Apply latest database schema
+************************************
 
 Initial database structure created with `*.sql` files provides only a base
 structure for AgenDAV. It has to be modified to apply latest release
-changes. To do this, follow instructions on :ref:`dbupdate`.
+changes. To do this, follow instructions on :ref:`dbupgrade`.
 
 
 Configuring Apache web server

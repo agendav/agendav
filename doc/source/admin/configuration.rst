@@ -53,7 +53,7 @@ setting.
 
     $config['log_path'] = '/var/log/agendav/';
 
-   Make sure the user that runs your web server has write rights on that
+   Make sure the user that runs your web server has write permission on that
    directory.
 
 .. confval:: encryption_key
