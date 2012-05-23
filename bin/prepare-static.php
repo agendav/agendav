@@ -40,6 +40,7 @@ foreach ($compilers as $path => $url) {
 }
 
 // Load file list
+define('BASEPATH', $app_dir);
 require_once($app_dir . 'hooks/Defs.php');
 
 $defs = new Defs();
