@@ -19,16 +19,17 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Recurrency extends CI_Model {
+class Recurrency {
 
 	private $date_format;
 	private $tz;
+	private $CI;
 
 	function __construct() {
-		parent::__construct();
-		$this->date_format = $this->dates->date_format_string('date');
-		$this->tz = $this->timezonemanager->getTz(
-				$this->config->item('default_timezone'));
+		$this->CI =& get_instance();
+		$this->date_format = $this->CI->dates->date_format_string('date');
+		$this->tz = $this->CI->timezonemanager->getTz(
+				$this->CI->config->item('default_timezone'));
 	}
 
 	/**
@@ -50,19 +51,19 @@ class Recurrency extends CI_Model {
 				case 'FREQ':
 					switch ($v) {
 						case 'DAILY':
-							$explanation = $this->i18n->_('labels',
+							$explanation = $this->CI->i18n->_('labels',
 									'repeatdaily');
 							break;
 						case 'WEEKLY':
-							$explanation = $this->i18n->_('labels',
+							$explanation = $this->CI->i18n->_('labels',
 									'repeatweekly');
 							break;
 						case 'MONTHLY':
-							$explanation = $this->i18n->_('labels',
+							$explanation = $this->CI->i18n->_('labels',
 									'repeatmonthly');
 							break;
 						case 'YEARLY':
-							$explanation = $this->i18n->_('labels',
+							$explanation = $this->CI->i18n->_('labels',
 									'repeatyearly');
 							break;
 						default:
@@ -72,15 +73,15 @@ class Recurrency extends CI_Model {
 					}
 					break;
 				case 'COUNT':
-					$explanation .= ', ' . $this->i18n->_('labels',
+					$explanation .= ', ' . $this->CI->i18n->_('labels',
 							'explntimes',
 							array('%n' => $v));
 					break;
 				case 'UNTIL':
-					$date = $this->dates->idt2datetime($v,
-								$this->timezonemanager->getTz('UTC'));
+					$date = $this->CI->dates->idt2datetime($v,
+								$this->CI->timezonemanager->getTz('UTC'));
 					$date->setTimeZone($this->tz);
-					$explanation .= ', ' . $this->i18n->_('labels',
+					$explanation .= ', ' . $this->CI->i18n->_('labels',
 							'expluntil',
 							array('%d' => $date->format($this->date_format)));
 					break;
@@ -105,7 +106,7 @@ class Recurrency extends CI_Model {
 
 	function build($opts, &$rrule_err) {
 		if (!isset($opts['recurrence_type'])) {
-			$rrule_err = $this->i18n->_('messages',
+			$rrule_err = $this->CI->i18n->_('messages',
 					'error_bogusrepeatrule');
 			return FALSE;
 		}
@@ -121,7 +122,7 @@ class Recurrency extends CI_Model {
 				break;
 			default:
 				// Oops
-				$rrule_err = $this->i18n->_('messages',
+				$rrule_err = $this->CI->i18n->_('messages',
 						'error_bogusrepeatrule');
 				return FALSE;
 				break;
@@ -133,14 +134,14 @@ class Recurrency extends CI_Model {
 		} else if (isset($opts['recurrence_until']) &&
 				!empty($opts['recurrence_until'])) {
 			$date =
-				$this->dates->frontend2datetime($opts['recurrence_until'],
-						$this->timezonemanager->getTz('UTC'));
+				$this->CI->dates->frontend2datetime($opts['recurrence_until'],
+						$this->CI->timezonemanager->getTz('UTC'));
 			if ($date === FALSE) {
-				$rrule_err = $this->i18n->_('messages',
+				$rrule_err = $this->CI->i18n->_('messages',
 						'error_bogusrepeatrule');
 				return FALSE;
 			} else {
-				$res['UNTIL'] = $this->dates->datetime2idt($date);
+				$res['UNTIL'] = $this->CI->dates->datetime2idt($date);
 			}
 		}
 

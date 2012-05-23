@@ -53,7 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
-		'timezonemanager', 'dates', 'preferences');
+		'timezonemanager', 'dates', 'preferences', 'recurrency');
 
 
 /*
@@ -110,7 +110,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('auth', 'recurrency', 'shared_calendars', 'i18n',
+$autoload['model'] = array('auth', 'shared_calendars', 'i18n',
 		'userpref');
 
 
