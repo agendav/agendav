@@ -76,12 +76,16 @@ if ( ! function_exists('script_tag'))
 
 if ( ! function_exists('formelement'))
 {
-    function formelement($label, $input) {
+    function formelement($label, $input, $help = '') {
 		?>
 			<div class="control-group">
 			<?php 
 			echo form_label($label, '', array('class' => 'control-label'));
-			echo '<div class="controls">' . $input . '</div>';
+			echo '<div class="controls">' . $input;
+			if (!empty($help)) {
+				echo '<p class="help-block">'.$help.'</p>';
+			}
+			echo '</div>';
 			?>
 			</div>
 		<?php
