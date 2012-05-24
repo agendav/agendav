@@ -8,7 +8,7 @@ Release notes
 1.2.5 (2012-MM-DD)
 ------------------
 
-* DB schema needs to be updated. TODO new database update process
+* DB schema needs to be updated, but a new database upgrade process is now available. No more ``*.sql`` files, just read :ref:`dbupgrade` section.
 
 * This release requires PHP cURL support. Make sure your PHP installation
   has the cURL module enabled
