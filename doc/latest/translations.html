@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Translating AgenDAV &mdash; AgenDAV v1.2.4 documentation</title>
+    <title>Translating AgenDAV &mdash; AgenDAV v1.2.5 documentation</title>
     <link rel="stylesheet" href="_static/proBlue.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.2.4',
+        VERSION:     '1.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="AgenDAV v1.2.4 documentation" href="index.html" />
+    <link rel="top" title="AgenDAV v1.2.5 documentation" href="index.html" />
     <link rel="next" title="Release notes" href="releasenotes.html" />
     <link rel="prev" title="3. Troubleshooting AgenDAV" href="admin/troubleshooting.html" /> 
   </head>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="admin/troubleshooting.html" title="3. Troubleshooting AgenDAV"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -54,17 +54,11 @@ full sentences/paragraphs. They can contain placeholders which get replaced
 by the system depending on the context.</p>
 <div class="section" id="how-to-add-a-translation">
 <h2>How to add a translation<a class="headerlink" href="#how-to-add-a-translation" title="Permalink to this headline">¶</a></h2>
-<p>Consider the <tt class="docutils literal"><span class="pre">en_US</span></tt> language to be the master reference language file.</p>
 <ol class="arabic">
-<li><p class="first">Copy the directory <tt class="docutils literal"><span class="pre">web/lang/en_US</span></tt> to a new directory inside
-<tt class="docutils literal"><span class="pre">web/lang</span></tt> with the name of the locale of the new language. For example:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="x">$ cp -R web/lang/en_US web/lang/fr_FR</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Rename <tt class="docutils literal"><span class="pre">en_US.php</span></tt> inside <tt class="docutils literal"><span class="pre">fr_FR/</span></tt> directory to <tt class="docutils literal"><span class="pre">fr_FR.php</span></tt></p>
-</li>
-<li><p class="first">Edit all strings on the file. Make sure you save it using UTF-8 encoding.</p>
+<li><p class="first">Access <a class="reference external" href="https://www.transifex.net/projects/p/agendav/">AgenDAV project in Transifex</a> and use the
+<em>Create language_</em> to add the missing language. You&#8217;ll have to wait
+until I approve the request. Once you have it created, you&#8217;ll be able
+to use Transifex interface to translate AgenDAV strings.</p>
 </li>
 <li><p class="first">Search the corresponding <a class="reference external" href="http://mygengo.com/string/p/codeigniter-2-1">CodeIgniter translation</a> and download its zip file.</p>
 </li>
@@ -80,7 +74,7 @@ by the system depending on the context.</p>
 in a directory called <tt class="docutils literal"><span class="pre">french/</span></tt></p>
 </li>
 </ol>
-<p>7. You&#8217;re done! Set <a class="reference internal" href="admin/configuration.html#confval-default_language"><tt class="xref std std-confval docutils literal"><span class="pre">default_language</span></tt></a> to your new language name
+<p>5. You&#8217;re done! Set <a class="reference internal" href="admin/configuration.html#confval-default_language"><tt class="xref std std-confval docutils literal"><span class="pre">default_language</span></tt></a> to your new language name
 (<tt class="docutils literal"><span class="pre">fr_FR</span></tt> in our example)</p>
 </div>
 </div>
@@ -137,7 +131,7 @@ in a directory called <tt class="docutils literal"><span class="pre">french/</sp
         <li class="right" >
           <a href="admin/troubleshooting.html" title="3. Troubleshooting AgenDAV"
              >previous</a> |</li>
-        <li><a href="index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

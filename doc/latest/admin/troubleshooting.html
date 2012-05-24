@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Troubleshooting AgenDAV &mdash; AgenDAV v1.2.4 documentation</title>
+    <title>4. Troubleshooting AgenDAV &mdash; AgenDAV v1.2.5 documentation</title>
     <link rel="stylesheet" href="../_static/proBlue.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.4',
+        VERSION:     '1.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,10 +21,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="AgenDAV v1.2.4 documentation" href="../index.html" />
+    <link rel="top" title="AgenDAV v1.2.5 documentation" href="../index.html" />
     <link rel="up" title="Installation and configuration" href="index.html" />
     <link rel="next" title="Translating AgenDAV" href="../translations.html" />
-    <link rel="prev" title="2. Configuration" href="configuration.html" /> 
+    <link rel="prev" title="3. Configuration" href="configuration.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,9 +37,9 @@
           <a href="../translations.html" title="Translating AgenDAV"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="configuration.html" title="2. Configuration"
+          <a href="configuration.html" title="3. Configuration"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li>
+        <li><a href="../index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Installation and configuration</a> &raquo;</li> 
       </ul>
     </div>  
@@ -50,7 +50,7 @@
           <div class="body">
             
   <div class="section" id="troubleshooting-agendav">
-<h1>3. Troubleshooting AgenDAV<a class="headerlink" href="#troubleshooting-agendav" title="Permalink to this headline">¶</a></h1>
+<h1>4. Troubleshooting AgenDAV<a class="headerlink" href="#troubleshooting-agendav" title="Permalink to this headline">¶</a></h1>
 <p>If you are having problems with AgenDAV, check you have met all the
 requisites and search AgenDAV logs/web server logs for error lines.</p>
 <p>You can write to <a class="reference external" href="http://groups.google.com/group/agendav-general">AgenDAV general list</a> asking for help. Make
@@ -62,7 +62,7 @@ sure you include the following information:</p>
 </ul>
 <p>Try the following before writing:</p>
 <div class="section" id="check-configuration-and-installation-environment">
-<h2>3.1. Check configuration and installation environment<a class="headerlink" href="#check-configuration-and-installation-environment" title="Permalink to this headline">¶</a></h2>
+<h2>4.1. Check configuration and installation environment<a class="headerlink" href="#check-configuration-and-installation-environment" title="Permalink to this headline">¶</a></h2>
 <p>AgenDAV ships, since version 1.2.4, a simple script that checks installation
 environment and configuration files to make sure you meet all basic
 requisites.</p>
@@ -75,7 +75,7 @@ find some suggestions to fix the problems.</p>
 <tt class="docutils literal"><span class="pre">configtest.php</span></tt>.</p>
 </div>
 <div class="section" id="more-verbose-logs">
-<h2>3.2. More verbose logs<a class="headerlink" href="#more-verbose-logs" title="Permalink to this headline">¶</a></h2>
+<h2>4.2. More verbose logs<a class="headerlink" href="#more-verbose-logs" title="Permalink to this headline">¶</a></h2>
 <p>Edit <tt class="docutils literal"><span class="pre">web/config/config.php</span></tt> and add the value <tt class="docutils literal"><span class="pre">INTERNALS</span></tt> inside
 <tt class="docutils literal"><span class="pre">show_in_log</span></tt> variable. For example:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;show_in_log&#39;]= array(&#39;ERROR&#39;,&#39;INFO&#39;,&#39;AUTHERR&#39;, &#39;AUTHOK&#39;,&#39;INTERNALS&#39;);</span>
@@ -88,7 +88,7 @@ the webserver has writing access to it) and your webserver logs.</p>
 some more lines.</p>
 </div>
 <div class="section" id="show-errors">
-<h2>3.3. Show errors<a class="headerlink" href="#show-errors" title="Permalink to this headline">¶</a></h2>
+<h2>4.3. Show errors<a class="headerlink" href="#show-errors" title="Permalink to this headline">¶</a></h2>
 <p>You can switch to <tt class="docutils literal"><span class="pre">development</span></tt> environment to force PHP to print errors
 on generated pages. By default AgenDAV is configured to hide errors to
 users.</p>
@@ -103,7 +103,7 @@ following line:</p>
 </div>
 </div>
 <div class="section" id="capture-traffic">
-<h2>3.4. Capture traffic<a class="headerlink" href="#capture-traffic" title="Permalink to this headline">¶</a></h2>
+<h2>4.4. Capture traffic<a class="headerlink" href="#capture-traffic" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes CalDAV servers send unexpected data to AgenDAV or AgenDAV tries to
 do an unsupported operation on your CalDAV server. When this happens it&#8217;s a
 good idea to run a traffic capture tool (like <tt class="docutils literal"><span class="pre">tcpdump</span></tt> or <tt class="docutils literal"><span class="pre">Wireshark</span></tt>)
@@ -111,7 +111,7 @@ to see what&#8217;s happening under the hood. This is only possible if you use
 plain HTTP on your AgenDAV&lt;-&gt;CalDAV server communication.</p>
 </div>
 <div class="section" id="debug-your-browser-status">
-<h2>3.5. Debug your browser status<a class="headerlink" href="#debug-your-browser-status" title="Permalink to this headline">¶</a></h2>
+<h2>4.5. Debug your browser status<a class="headerlink" href="#debug-your-browser-status" title="Permalink to this headline">¶</a></h2>
 <p>Most browsers can show you network activity and JavaScript errors using its
 own interfaces. They can be very handful if you happen to find a bug on
 AgenDAV. Some examples of browser which include this support are:</p>
@@ -133,26 +133,26 @@ AgenDAV. Some examples of browser which include this support are:</p>
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">3. Troubleshooting AgenDAV</a><ul>
-<li><a class="reference internal" href="#check-configuration-and-installation-environment">3.1. Check configuration and installation environment</a></li>
-<li><a class="reference internal" href="#more-verbose-logs">3.2. More verbose logs</a></li>
-<li><a class="reference internal" href="#show-errors">3.3. Show errors</a></li>
-<li><a class="reference internal" href="#capture-traffic">3.4. Capture traffic</a></li>
-<li><a class="reference internal" href="#debug-your-browser-status">3.5. Debug your browser status</a></li>
+<li><a class="reference internal" href="#">4. Troubleshooting AgenDAV</a><ul>
+<li><a class="reference internal" href="#check-configuration-and-installation-environment">4.1. Check configuration and installation environment</a></li>
+<li><a class="reference internal" href="#more-verbose-logs">4.2. More verbose logs</a></li>
+<li><a class="reference internal" href="#show-errors">4.3. Show errors</a></li>
+<li><a class="reference internal" href="#capture-traffic">4.4. Capture traffic</a></li>
+<li><a class="reference internal" href="#debug-your-browser-status">4.5. Debug your browser status</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="configuration.html"
-                        title="previous chapter">2. Configuration</a></p>
+                        title="previous chapter">3. Configuration</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../translations.html"
                         title="next chapter">Translating AgenDAV</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -176,15 +176,15 @@ AgenDAV. Some examples of browser which include this support are:</p>
           <a href="../translations.html" title="Translating AgenDAV"
              >next</a> |</li>
         <li class="right" >
-          <a href="configuration.html" title="2. Configuration"
+          <a href="configuration.html" title="3. Configuration"
              >previous</a> |</li>
-        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li>
+        <li><a href="../index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li>
           <li><a href="index.html" >Installation and configuration</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Jorge López Pérez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
   </body>
 </html>

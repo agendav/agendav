@@ -1,9 +1,34 @@
+.. _releasenotes:
+
 Release notes
 =============
 
+.. _v1.2.5:
+
+1.2.5 (2012-MM-DD)
+------------------
+
+* DB schema needs to be updated, but a new database upgrade process is now available. No more ``*.sql`` files, just read :ref:`dbupgrade` section.
+
+* This release requires PHP cURL support. Make sure your PHP installation
+  has the cURL module enabled
+
+* Now you can share a calendar in read-only mode. You're advised to create a
+  new ``caldav.php`` configuration file using the provided template
+
+* Date and time format options have been moved inside ``config.php``. Prior
+  to this release they were set inside lang files, which didn't make much
+  sense. Have a look at new options :confval:`format_full_date`,
+  :confval:`format_column_month`, :confval:`format_column_week`,
+  :confval:`format_column_day`, :confval:`format_column_table`,
+  :confval:`format_title_month`, :confval:`format_title_week`,
+  :confval:`format_title_day` and :confval:`format_title_table`
+
+* Translations are now managed using `Transifex <https://www.transifex.net/projects/p/agendav/>`_. Note that default language has been renamed from ``en_US`` to ``en``, as I think it's a neutral English
+
 .. _v1.2.4:
 
-1.2.4 (2012-01-xx)
+1.2.4 (2012-01-16)
 ------------------
 
 This release requires no database changes. Contains a fix for localization

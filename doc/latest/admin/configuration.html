@@ -6,13 +6,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Configuration &mdash; AgenDAV v1.2.4 documentation</title>
+    <title>3. Configuration &mdash; AgenDAV v1.2.5 documentation</title>
     <link rel="stylesheet" href="../_static/proBlue.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.4',
+        VERSION:     '1.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,10 +21,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="AgenDAV v1.2.4 documentation" href="../index.html" />
+    <link rel="top" title="AgenDAV v1.2.5 documentation" href="../index.html" />
     <link rel="up" title="Installation and configuration" href="index.html" />
-    <link rel="next" title="3. Troubleshooting AgenDAV" href="troubleshooting.html" />
-    <link rel="prev" title="1. Installation" href="installation.html" /> 
+    <link rel="next" title="4. Troubleshooting AgenDAV" href="troubleshooting.html" />
+    <link rel="prev" title="2. Upgrading" href="upgrading.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,12 +34,12 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="troubleshooting.html" title="3. Troubleshooting AgenDAV"
+          <a href="troubleshooting.html" title="4. Troubleshooting AgenDAV"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="installation.html" title="1. Installation"
+          <a href="upgrading.html" title="2. Upgrading"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li>
+        <li><a href="../index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Installation and configuration</a> &raquo;</li> 
       </ul>
     </div>  
@@ -50,7 +50,7 @@
           <div class="body">
             
   <div class="section" id="configuration">
-<h1>2. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<h1>3. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <p>Configuring AgenDAV requires modifying some PHP text files located in the
 <tt class="docutils literal"><span class="pre">web/config/</span></tt> directory.</p>
 <p>The following files are usually found as <tt class="docutils literal"><span class="pre">filename.php.template</span></tt>, so make
@@ -60,7 +60,7 @@ a copy of them with the correct file name to make them work.</p>
 <p class="last"><tt class="docutils literal"><span class="pre">ldap.php</span></tt> was removed in AgenDAV 1.1.1</p>
 </div>
 <div class="section" id="general-configuration-config-php">
-<h2>2.1. General configuration (config.php)<a class="headerlink" href="#general-configuration-config-php" title="Permalink to this headline">¶</a></h2>
+<h2>3.1. General configuration (config.php)<a class="headerlink" href="#general-configuration-config-php" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">config.php</span></tt> file specifies general options about AgenDAV environment. It
 loads a set of default option values from <tt class="docutils literal"><span class="pre">defaults.php</span></tt>, but it is
 recommended to configure all of the following variables.</p>
@@ -105,7 +105,7 @@ what you are doing</li>
 <div class="highlight-php"><div class="highlight"><pre><span class="x">$config[&#39;log_path&#39;] = &#39;/var/log/agendav/&#39;;</span>
 </pre></div>
 </div>
-<p>Make sure the user that runs your web server has write rights on that
+<p>Make sure the user that runs your web server has write permission on that
 directory.</p>
 </dd></dl>
 
@@ -198,12 +198,9 @@ page. They have to be placed inside <tt class="docutils literal"><span class="pr
 <dt id="confval-default_language">
 <tt class="descname">default_language</tt><a class="headerlink" href="#confval-default_language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Language to be used in AgenDAV interface.</p>
-<p>Currently available options (languages):</p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">de_DE</span></tt>: German</li>
-<li><tt class="docutils literal"><span class="pre">en_US</span></tt>: English (United States)</li>
-<li><tt class="docutils literal"><span class="pre">es_ES</span></tt>: Spanish</li>
-</ul>
+<p>Have a look at directory <tt class="docutils literal"><span class="pre">web/lang</span></tt> for a list of available languages.</p>
+<p>Note that the value given to this setting will be used as application
+locale with <tt class="docutils literal"><span class="pre">setlocale()</span></tt>.</p>
 <p class="versionadded">
 <span class="versionmodified">New in version 1.2.</span></p>
 </dd></dl>
@@ -221,7 +218,8 @@ page. They have to be placed inside <tt class="docutils literal"><span class="pr
 <dl class="confval">
 <dt id="confval-default_date_format">
 <tt class="descname">default_date_format</tt><a class="headerlink" href="#confval-default_date_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Preferred date format to be used inside date fields. Possible values are:</p>
+<dd><p>Preferred date format to be used inside date fields (only in forms).
+Possible values are:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">ymd</span></tt>: e.g. 2011/10/22</li>
 <li><tt class="docutils literal"><span class="pre">dmy</span></tt>: e.g. 22/10/2011</li>
@@ -229,6 +227,89 @@ page. They have to be placed inside <tt class="docutils literal"><span class="pr
 </ul>
 <p class="versionadded">
 <span class="versionmodified">New in version 1.2.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_full_date">
+<tt class="descname">format_full_date</tt><a class="headerlink" href="#confval-format_full_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Human readable format for dates, using <tt class="docutils literal"><span class="pre">strftime</span></tt> syntax
+(<a class="reference external" href="http://php.net/strftime">http://php.net/strftime</a>). Some examples:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">%a</span> <span class="pre">%e</span> <span class="pre">%B</span> <span class="pre">%Y</span></tt>: Mon 5 March 2012</li>
+<li><tt class="docutils literal"><span class="pre">%a</span> <span class="pre">%e</span> <span class="pre">de</span> <span class="pre">%B</span> <span class="pre">de</span> <span class="pre">%Y</span></tt>: Lun 5 de marzo de 2012 (localized using <tt class="docutils literal"><span class="pre">es_ES</span></tt> as <a class="reference internal" href="#confval-default_language"><tt class="xref std std-confval docutils literal"><span class="pre">default_language</span></tt></a>)</li>
+</ul>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_column_month">
+<tt class="descname">format_column_month</tt><a class="headerlink" href="#confval-format_column_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the column header in month view.
+Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_column_week">
+<tt class="descname">format_column_week</tt><a class="headerlink" href="#confval-format_column_week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the column header in week view.
+Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_column_day">
+<tt class="descname">format_column_day</tt><a class="headerlink" href="#confval-format_column_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the column header in day view.
+Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_column_table">
+<tt class="descname">format_column_table</tt><a class="headerlink" href="#confval-format_column_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the column header in table (called <em>agenda</em>) view.  Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_title_month">
+<tt class="descname">format_title_month</tt><a class="headerlink" href="#confval-format_title_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the title in month view.
+Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_title_week">
+<tt class="descname">format_title_week</tt><a class="headerlink" href="#confval-format_title_week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the title in week view.
+Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_title_day">
+<tt class="descname">format_title_day</tt><a class="headerlink" href="#confval-format_title_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the title in day view.
+Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-format_title_table">
+<tt class="descname">format_title_table</tt><a class="headerlink" href="#confval-format_title_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets how the UI calendar should format the title header in table (called <em>agenda</em>) view.  Uses <a class="reference external" href="http://arshaw.com/fullcalendar/docs/utilities/formatDate/">FullCalendar own syntax</a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
 </dd></dl>
 
 <dl class="confval">
@@ -314,12 +395,12 @@ them as an array. Example:</p>
 
 </div>
 <div class="section" id="database-configuration-database-php">
-<h2>2.2. Database configuration (database.php)<a class="headerlink" href="#database-configuration-database-php" title="Permalink to this headline">¶</a></h2>
+<h2>3.2. Database configuration (database.php)<a class="headerlink" href="#database-configuration-database-php" title="Permalink to this headline">¶</a></h2>
 <p><tt class="docutils literal"><span class="pre">database.php</span></tt> contains how to connect to your MySQL database. Just follow
 inline comments, it&#8217;s pretty straight forward.</p>
 </div>
 <div class="section" id="caldav-specific-options-caldav-php">
-<h2>2.3. CalDAV specific options (caldav.php)<a class="headerlink" href="#caldav-specific-options-caldav-php" title="Permalink to this headline">¶</a></h2>
+<h2>3.3. CalDAV specific options (caldav.php)<a class="headerlink" href="#caldav-specific-options-caldav-php" title="Permalink to this headline">¶</a></h2>
 <p>Here you will configure every single aspect of your CalDAV server.</p>
 <dl class="confval">
 <dt id="confval-caldav_url">
@@ -330,6 +411,31 @@ inline comments, it&#8217;s pretty straight forward.</p>
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#confval-caldav_principal_url"><tt class="xref std std-confval docutils literal"><span class="pre">caldav_principal_url</span></tt></a> <a class="reference internal" href="#confval-caldav_calendar_url"><tt class="xref std std-confval docutils literal"><span class="pre">caldav_calendar_url</span></tt></a></p>
 </div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-caldav_http_auth_method">
+<tt class="descname">caldav_http_auth_method</tt><a class="headerlink" href="#confval-caldav_http_auth_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>You can specify which HTTP authentication method does your CalDAV server
+require. Use any of the cURL <tt class="docutils literal"><span class="pre">CURLOPT_HTTPAUTH</span></tt> valid values (see
+<a class="reference external" href="http://www.php.net/manual/en/function.curl-setopt.php">http://www.php.net/manual/en/function.curl-setopt.php</a>), or leave it empty
+to make AgenDAV auto-detect which authentication method to use.</p>
+<p>Using the auto-detect feature will slow down requests when using Basic
+auth. If you know which authentication method does your server use you&#8217;re
+advised to set the right value on this option.</p>
+<p>Example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// Automatic guess</span>
+<span class="x">$config[&#39;caldav_http_auth_method&#39;] = null;</span>
+
+<span class="x">// SabreDAV</span>
+<span class="x">$config[&#39;caldav_http_auth_method&#39;] = CURLAUTH_DIGEST;</span>
+
+<span class="x">// DAViCal</span>
+<span class="x">$config[&#39;caldav_http_auth_method&#39;] = CURLAUTH_BASIC;</span>
+</pre></div>
+</div>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
 </dd></dl>
 
 <dl class="confval">
@@ -415,35 +521,44 @@ calendar. As DAV ACLs are used, when editing a calendar sharing options a
 full ACL has to be built with the following structure:</p>
 <ul class="simple">
 <li>Permissions given to the owner (this option)</li>
-<li>Permissions given to granted users (<a class="reference internal" href="#confval-share_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">share_permissions</span></tt></a>)</li>
-<li>Permissions given to other users (<a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>)</li>
+<li>Permissions given to users with read-only profile (<a class="reference internal" href="#confval-read_profile_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">read_profile_permissions</span></tt></a>)</li>
+<li>Permissions given to users with read and write profile (<a class="reference internal" href="#confval-read_write_profile_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">read_write_profile_permissions</span></tt></a>)</li>
+<li>Permissions given to the rest of users (<a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>)</li>
 </ul>
 <p>Please, refer to your CalDAV server documentation to know which
 permissions does it support.</p>
 <p>For DAViCal you can follow <a class="reference external" href="http://wiki.davical.org/w/Permissions">Permissions page on DAViCal wiki</a>. Default values of this option
 will work all right for DAViCal.</p>
-<div class="admonition-see-also admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Used in conjunction with options <a class="reference internal" href="#confval-share_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">share_permissions</span></tt></a>
-and <a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>.</p>
-</div>
 </dd></dl>
 
 <dl class="confval">
 <dt id="confval-share_permissions">
 <tt class="descname">share_permissions</tt><a class="headerlink" href="#confval-share_permissions" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of DAV permissions used for granted users when another user shares a
-calendar with them.</p>
-<p>Please, refer to your CalDAV server documentation to know which
-permissions does it support.</p>
-<p>Default value lets users to read and write on shared calendars. AgenDAV
-doesn&#8217;t support at this moment to select whether you want read or shared
-rights.</p>
+<dd><p class="deprecated">
+<span class="versionmodified">Deprecated since version 1.2.5.</span></p>
 <div class="admonition-see-also admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last">Used in conjunction with options <a class="reference internal" href="#confval-owner_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">owner_permissions</span></tt></a>
-and <a class="reference internal" href="#confval-default_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">default_permissions</span></tt></a>.</p>
+<p class="last">See <a class="reference internal" href="#confval-read_profile_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">read_profile_permissions</span></tt></a> and
+<a class="reference internal" href="#confval-read_write_profile_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">read_write_profile_permissions</span></tt></a></p>
 </div>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-read_profile_permissions">
+<tt class="descname">read_profile_permissions</tt><a class="headerlink" href="#confval-read_profile_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of DAV permissions used for users given read-only permission on a
+calendar.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-read_write_profile_permissions">
+<tt class="descname">read_write_profile_permissions</tt><a class="headerlink" href="#confval-read_write_profile_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of DAV permissions used for users given read and write permission on
+a calendar.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.5.</span></p>
 </dd></dl>
 
 <dl class="confval">
@@ -454,18 +569,13 @@ granted users when some user shares a calendar with other ones.</p>
 <p>Please, refer to your CalDAV server documentation to know which
 permissions does it support.</p>
 <p>Default value lets users just to make free/busy queries in DAViCal.</p>
-<div class="admonition-see-also admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Used in conjunction with options <a class="reference internal" href="#confval-owner_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">owner_permissions</span></tt></a>
-and <a class="reference internal" href="#confval-share_permissions"><tt class="xref std std-confval docutils literal"><span class="pre">share_permissions</span></tt></a>.</p>
-</div>
 </dd></dl>
 
 </div>
 <div class="section" id="other-configuration-files">
-<h2>2.4. Other configuration files<a class="headerlink" href="#other-configuration-files" title="Permalink to this headline">¶</a></h2>
+<h2>3.4. Other configuration files<a class="headerlink" href="#other-configuration-files" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="advanced-options-advanced-php">
-<h3>2.4.1. Advanced options (advanced.php)<a class="headerlink" href="#advanced-options-advanced-php" title="Permalink to this headline">¶</a></h3>
+<h3>3.4.1. Advanced options (advanced.php)<a class="headerlink" href="#advanced-options-advanced-php" title="Permalink to this headline">¶</a></h3>
 <p>This file should be kept untouched unless you know what you are trying to
 modify. It contains several options that make AgenDAV work by default.</p>
 </div>
@@ -483,12 +593,12 @@ modify. It contains several options that make AgenDAV work by default.</p>
             </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Configuration</a><ul>
-<li><a class="reference internal" href="#general-configuration-config-php">2.1. General configuration (config.php)</a></li>
-<li><a class="reference internal" href="#database-configuration-database-php">2.2. Database configuration (database.php)</a></li>
-<li><a class="reference internal" href="#caldav-specific-options-caldav-php">2.3. CalDAV specific options (caldav.php)</a></li>
-<li><a class="reference internal" href="#other-configuration-files">2.4. Other configuration files</a><ul>
-<li><a class="reference internal" href="#advanced-options-advanced-php">2.4.1. Advanced options (advanced.php)</a></li>
+<li><a class="reference internal" href="#">3. Configuration</a><ul>
+<li><a class="reference internal" href="#general-configuration-config-php">3.1. General configuration (config.php)</a></li>
+<li><a class="reference internal" href="#database-configuration-database-php">3.2. Database configuration (database.php)</a></li>
+<li><a class="reference internal" href="#caldav-specific-options-caldav-php">3.3. CalDAV specific options (caldav.php)</a></li>
+<li><a class="reference internal" href="#other-configuration-files">3.4. Other configuration files</a><ul>
+<li><a class="reference internal" href="#advanced-options-advanced-php">3.4.1. Advanced options (advanced.php)</a></li>
 </ul>
 </li>
 </ul>
@@ -496,15 +606,15 @@ modify. It contains several options that make AgenDAV work by default.</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="installation.html"
-                        title="previous chapter">1. Installation</a></p>
+  <p class="topless"><a href="upgrading.html"
+                        title="previous chapter">2. Upgrading</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="troubleshooting.html"
-                        title="next chapter">3. Troubleshooting AgenDAV</a></p>
+                        title="next chapter">4. Troubleshooting AgenDAV</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -525,18 +635,18 @@ modify. It contains several options that make AgenDAV work by default.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="troubleshooting.html" title="3. Troubleshooting AgenDAV"
+          <a href="troubleshooting.html" title="4. Troubleshooting AgenDAV"
              >next</a> |</li>
         <li class="right" >
-          <a href="installation.html" title="1. Installation"
+          <a href="upgrading.html" title="2. Upgrading"
              >previous</a> |</li>
-        <li><a href="../index.html">AgenDAV v1.2.4 documentation</a> &raquo;</li>
+        <li><a href="../index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li>
           <li><a href="index.html" >Installation and configuration</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Jorge López Pérez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
   </body>
 </html>
