@@ -942,7 +942,7 @@ var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 			$('input.pick_color').colorPicker();
 			$(mcd + '_tabs').tabs();
 
-			if (data.shared !== true) {
+			if (enable_calendar_sharing === true && data.shared !== true) {
 				share_manager();
 			}
 		},
