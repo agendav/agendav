@@ -290,10 +290,16 @@ class Icshelper {
 
 			$current_dtend = $vevent->getProperty('x-current-dtend');
 			if ($current_dtend !== FALSE) {
+
+				if (!isset($current_dtend['property']['value']['hour'])) {
+					$current_dtend[1] .= ' 00:00:00';
+				}
+
 				$orig_end = clone $end;
 				$end =
 					$this->CI->dates->x_current2datetime($current_dtend[1],
 							$tz);
+
 			}
 		}
 
@@ -411,17 +417,14 @@ class Icshelper {
 			$start->setTime(0, 0, 0);
 			$end->setTime(0, 0, 0);
 
-			if (!isset($this_event['expanded'])) {
-				$end->sub(new DateInterval('P1D'))->add(new
-						DateInterval('PT1H'));
-			} else {
-				$end->add(new DateInterval('PT1H'));
-			}
+			$end->sub(new DateInterval('P1D'))->add(new
+					DateInterval('PT1H'));
 
 			if (isset($this_event['expanded'])) {
 				$orig_start = clone $start;
 				$orig_end = clone $end;
 			}
+
 
 			$this_event['orig_allday'] = TRUE;
 
