@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
- *
  *  This file is part of AgenDAV.
  *
  *  AgenDAV is free software: you can redistribute it and/or modify
@@ -18,26 +16,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * English master language file
- */
-
 $labels = array();
 $messages = array();
 
 // Labels
-
-$labels['format_date_strftime'] = '%a %e %B %Y'; // Just date with no time, strftime format
-// Fullcalendar labels 
-// (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
-$labels['format_column_month'] = 'ddd'; 
-$labels['format_column_week'] = 'ddd d'; 
-$labels['format_column_day'] = 'ddd d MMMM'; 
-
-$labels['format_title_month'] = 'MMMM yyyy';
-$labels['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
-$labels['format_title_day'] = 'dddd, MMM d yyyy';
-
 $labels['username'] = 'Nome Utente';
 $labels['password'] = 'Password';
 
@@ -84,11 +66,19 @@ $labels['friday_short'] = 'Ven';
 $labels['saturday_short'] = 'Sab';
 
 $labels['today'] = 'Oggi';
+$labels['tomorrow'] = 'Domani';
 $labels['month'] = 'Mese';
 $labels['week'] = 'Settimana';
 $labels['day'] = 'Giorno';
+$labels['tableview'] = 'agenda';
 $labels['allday'] = 'Tutto il giorno';
 $labels['choose_date'] = 'Scegli la data';
+
+$labels['thisweek'] = 'Questa settimana';
+$labels['nextweek'] = 'Prossima settimana';
+$labels['thismonth'] = 'Questo mese';
+$labels['nextmonth'] = 'Prossimo mese';
+$labels['future'] = 'Eventi futuri';
 
 $labels['calendar'] = 'Calendario';
 $labels['location'] = 'Luogo';
@@ -143,13 +133,15 @@ $labels['editevent'] = 'Modifica evento';
 $labels['deleteevent'] = 'Cancella evento';
 $labels['deletecalendar'] = 'Cancella calendario';
 $labels['calendars'] = 'Calendari';
+$labels['shared_calendars'] = 'Calendari condivisi';
 $labels['refresh'] = 'Aggiorna';
 $labels['delete'] = 'Cancella';
-$labels['add'] = 'Add';
+$labels['add'] = 'Aggiungi';
 $labels['close'] = 'Chiudi';
 $labels['save'] = 'Salva';
 $labels['create'] = 'Crea';
 $labels['login'] = 'Login';
+$labels['logout'] = 'Logout';
 $labels['modify'] = 'Modifica';
 $labels['cancel'] = 'Annulla';
 $labels['next'] = 'successivo';
@@ -161,9 +153,19 @@ $labels['untitled'] = 'Senza titolo';
 $labels['sharewith'] = 'Condividi con';
 $labels['publicurl'] = 'URL per applicazioni compatibili';
 
-$labels['access'] = 'Access';
-$labels['readonly'] = 'Read only';
-$labels['readandwrite'] = 'Read and write';
+$labels['access'] = 'Accesso';
+$labels['readonly'] = 'Sola lettura';
+$labels['readandwrite'] = 'Lettura e scrittura';
+
+$labels['pastevents'] = 'Eventi passati';
+
+$labels['preferences'] = 'Preferenze';
+$labels['return'] = 'Indietro';
+
+$labels['hidelist'] = 'Nascondi dalla lista';
+$labels['defaultcalendar'] = 'Calendario predefinito';
+
+$labels['toggleallcalendars'] = 'Nascondi/Mostra tutti';
 
 // Messages
 $messages['error_auth'] = 'Nome utente o password non validi';
@@ -182,6 +184,7 @@ $messages['info_permanentremoval'] = 'I dati verranno cancellati in modo definit
 $messages['info_repetitivedeleteall'] = 'Tutte le ripetizioni di questo evento verranno cancellate';
 $messages['info_sharedby'] = 'Puoi accedere a questo calendario perché %user lo ha condiviso con te';
 $messages['info_shareexplanation'] = 'Puoi condividere questo calendario con altri utenti e permettere loro di modificarlo. Indicane i nomi qui sotto separati da virgole o spazi';
+$messages['info_notshared'] = 'Il calendario non è condiviso';
 $messages['error_sessexpired'] = 'La sessione è scaduta';
 $messages['error_loginagain'] = 'Esegui nuovamente la login';
 
@@ -217,3 +220,7 @@ $messages['error_calname_missing'] = 'Nome del calendario vuoto';
 $messages['error_calcolor_missing'] = 'Bisogna inserire un colore';
 $messages['error_mkcalendar'] = 'Il server si è rifiutato di creare il calendario. Controllare i parametri di creazione.';
 $messages['error_shareunknownusers'] = 'Alcuni degli utenti specificati non esistono';
+
+$messages['help_defaultcalendar'] = 'I nuovi eventi verranno automaticamente memorizzati in questo calendario. Inserire qui il calendario più utilizzato.';
+
+$messages['info_prefssaved'] = 'Preferenze salvate';

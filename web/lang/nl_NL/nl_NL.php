@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
- *
  *  This file is part of AgenDAV.
  *
  *  AgenDAV is free software: you can redistribute it and/or modify
@@ -18,26 +16,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * English master language file
- */
-
 $labels = array();
 $messages = array();
 
 // Labels
-
-$labels['format_date_strftime'] = '%a %e %B %Y'; // Just date with no time, strftime format
-// Fullcalendar labels 
-// (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
-$labels['format_column_month'] = 'ddd'; 
-$labels['format_column_week'] = 'ddd d MMM'; 
-$labels['format_column_day'] = 'ddd d MMM'; 
-
-$labels['format_title_month'] = 'MMMM yyyy';
-$labels['format_title_week'] = "d [ MMMM][ yyyy]{ '&#8212;' d MMMM yyyy}";
-$labels['format_title_day'] = 'dddd d MMMM yyyy';
-
 $labels['username'] = 'Gebruikersnaam';
 $labels['password'] = 'Wachtwoord';
 
@@ -84,11 +66,19 @@ $labels['friday_short'] = 'vr';
 $labels['saturday_short'] = 'za';
 
 $labels['today'] = 'Vandaag';
+$labels['tomorrow'] = 'Morgen';
 $labels['month'] = 'maand';
 $labels['week'] = 'week';
 $labels['day'] = 'dag';
+$labels['tableview'] = 'agenda';
 $labels['allday'] = 'Hele dag';
 $labels['choose_date'] = 'Kies datum';
+
+$labels['thisweek'] = 'Deze week';
+$labels['nextweek'] = 'Volgende week';
+$labels['thismonth'] = 'Deze maand';
+$labels['nextmonth'] = 'Volgende maand';
+$labels['future'] = 'Toekomstige gebeurtenissen';
 
 $labels['calendar'] = 'Agenda';
 $labels['location'] = 'Locatie';
@@ -143,13 +133,15 @@ $labels['editevent'] = 'Gebeurtenis aanpassen';
 $labels['deleteevent'] = 'Verwijder gebeurtenis';
 $labels['deletecalendar'] = 'Verwijder agenda';
 $labels['calendars'] = 'Agenda\'s';
+$labels['shared_calendars'] = 'Gedeelde agenda\'s';
 $labels['refresh'] = 'Verversen';
 $labels['delete'] = 'Verwijderen';
-$labels['add'] = 'Add';
+$labels['add'] = 'Toevoegen';
 $labels['close'] = 'Sluiten';
 $labels['save'] = 'Opslaan';
 $labels['create'] = 'Aanmaken';
 $labels['login'] = 'Inloggen';
+$labels['logout'] = 'Uitloggen';
 $labels['modify'] = 'Aanpassen';
 $labels['cancel'] = 'Annuleren';
 $labels['next'] = 'volgende';
@@ -159,11 +151,21 @@ $labels['yes'] = 'Ja';
 $labels['untitled'] = 'Naamloos';
 
 $labels['sharewith'] = 'Delen met';
-$labels['publicurl'] = 'URL voor kalenderapplicatie\'s';
+$labels['publicurl'] = 'URL voor agenda applicaties';
 
-$labels['access'] = 'Access';
-$labels['readonly'] = 'Read only';
-$labels['readandwrite'] = 'Read and write';
+$labels['access'] = 'Toegang';
+$labels['readonly'] = 'Alleen lezen';
+$labels['readandwrite'] = 'Lezen en schrijven';
+
+$labels['pastevents'] = 'Gebeurtenissen in het verleden';
+
+$labels['preferences'] = 'Voorkeuren';
+$labels['return'] = 'Terug';
+
+$labels['hidelist'] = 'Verberg in de lijst';
+$labels['defaultcalendar'] = 'Standaard agenda';
+
+$labels['toggleallcalendars'] = 'Toon/verberg alles';
 
 // Messages
 $messages['error_auth'] = 'Ongeldige gebruikersnaam of wachtwoord';
@@ -183,6 +185,7 @@ $messages['info_repetitivedeleteall'] = 'Alle herhalingen van deze gebeurtenis w
 $messages['info_sharedby'] = 'U heeft toegang tot deze agenda omdat gebruiker %user deze met u heeft gedeeld';
 $messages['info_shareexplanation'] = 'U kunt deze agenda met andere gebruikers delen en laten aanpassen.
 Geef de gebruikersnamen in, gescheiden door komma\'s of spaties';
+$messages['info_notshared'] = 'Deze agenda wordt niet gedeeld';
 $messages['error_sessexpired'] = 'Uw sessie is verlopen';
 $messages['error_loginagain'] = 'Log a.u.b. opnieuw in';
 
@@ -218,3 +221,7 @@ $messages['error_calname_missing'] = 'Agendanaam ontbreekt';
 $messages['error_calcolor_missing'] = 'Kleur moet worden opgegeven';
 $messages['error_mkcalendar'] = 'Server weigerde de agenda aan te maken. Controleer de parameters.';
 $messages['error_shareunknownusers'] = 'Sommige door u opgegeven gebruikers komen niet voor.';
+
+$messages['help_defaultcalendar'] = 'Nieuwe gebeurtenissen worden standaard in deze agenda geplaatst. Geef hier je meest gebruikte agenda aan.';
+
+$messages['info_prefssaved'] = 'Voorkeuren opgeslagen';
