@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
- *
  *  This file is part of AgenDAV.
  *
  *  AgenDAV is free software: you can redistribute it and/or modify
@@ -18,26 +16,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * English master language file
- */
-
 $labels = array();
 $messages = array();
 
 // Labels
-
-$labels['format_date_strftime'] = '%a %e %B %Y'; // Just date with no time, strftime format
-// Fullcalendar labels 
-// (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
-$labels['format_column_month'] = 'ddd'; 
-$labels['format_column_week'] = 'ddd d'; 
-$labels['format_column_day'] = 'ddd d MMMM'; 
-
-$labels['format_title_month'] = 'MMMM yyyy';
-$labels['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
-$labels['format_title_day'] = 'dddd, MMM d yyyy';
-
 $labels['username'] = 'Kasutajanimi';
 $labels['password'] = 'Parool';
 
@@ -84,11 +66,19 @@ $labels['friday_short'] = 'R';
 $labels['saturday_short'] = 'L';
 
 $labels['today'] = 'Täna';
+$labels['tomorrow'] = 'Homme';
 $labels['month'] = 'kuu';
 $labels['week'] = 'nädal';
 $labels['day'] = 'päev';
+$labels['tableview'] = 'päevakava';
 $labels['allday'] = 'kogu päev';
 $labels['choose_date'] = 'Vali kuupäev';
+
+$labels['thisweek'] = 'Sel nädalal';
+$labels['nextweek'] = 'Eelmine nädal';
+$labels['thismonth'] = 'See kuu';
+$labels['nextmonth'] = 'Järgmine kuu';
+$labels['future'] = 'Tulevased sündmused';
 
 $labels['calendar'] = 'Kalender';
 $labels['location'] = 'Asukoht';
@@ -143,6 +133,7 @@ $labels['editevent'] = 'Muuda sündmust';
 $labels['deleteevent'] = 'Kustuta sündmus';
 $labels['deletecalendar'] = 'Kustuta kalender';
 $labels['calendars'] = 'Kalendrid';
+$labels['shared_calendars'] = 'Jagatud kalendrid';
 $labels['refresh'] = 'Värskenda';
 $labels['delete'] = 'Kustuta';
 $labels['add'] = 'Lisa';
@@ -150,6 +141,7 @@ $labels['close'] = 'Sule';
 $labels['save'] = 'Salvesta';
 $labels['create'] = 'Loo';
 $labels['login'] = 'Logi sisse';
+$labels['logout'] = 'Logi välja';
 $labels['modify'] = 'Muuda';
 $labels['cancel'] = 'Loobu';
 $labels['next'] = 'järgmine';
@@ -164,6 +156,16 @@ $labels['publicurl'] = 'URL kalendri töölaua rakendustele';
 $labels['access'] = 'Ligipääs';
 $labels['readonly'] = 'Ainult loetav';
 $labels['readandwrite'] = 'Loetav ja kirjutatav';
+
+$labels['pastevents'] = 'Minueviku sündmused';
+
+$labels['preferences'] = 'Eelistused';
+$labels['return'] = 'Tagasi';
+
+$labels['hidelist'] = 'Peida nimekirjast';
+$labels['defaultcalendar'] = 'Vaikimisi kalender';
+
+$labels['toggleallcalendars'] = 'Näita/Peida kõiki';
 
 // Messages
 $messages['error_auth'] = 'Vigane kasutajanimi või parool';
@@ -183,6 +185,7 @@ $messages['info_repetitivedeleteall'] = 'Kõik selle sündmuse kordused kustutat
 $messages['info_sharedby'] = 'Sul on ligipääs sellele kalendrile, kuna %user jagas seda sinuga';
 $messages['info_shareexplanation'] = 'Sa saad seda kalendrit teiste
 kasutajatega jagada ja lasta neil seda. Sisesta nende kasutajanimed alla ja eralda need omavahel komade või tühikutega';
+$messages['info_notshared'] = 'Seda kalendrit ei jagata kellegagi';
 $messages['error_sessexpired'] = 'Sinu sessioon on aegunud';
 $messages['error_loginagain'] = 'Palun logi uuesti sisse';
 
@@ -218,3 +221,7 @@ $messages['error_calname_missing'] = 'Tühi kalendri nimi';
 $messages['error_calcolor_missing'] = 'Värv peab olema valitud';
 $messages['error_mkcalendar'] = 'Server keeldus kalendrit loomast. Palun kontrolli oma loomise parameetreid';
 $messages['error_shareunknownusers'] = 'Mõningaid sinu poolt määratud kasutajaid pole olemas';
+
+$messages['help_defaultcalendar'] = 'Uued sündmused pannakse vaikimisi sellesse kalendrisse. Määra siin oma kõige rohkemkasutatav kalender';
+
+$messages['info_prefssaved'] = 'Eelistused on salvestatud';
