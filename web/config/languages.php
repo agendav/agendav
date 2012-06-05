@@ -26,5 +26,8 @@ $config['lang_rels'] = array(
 		'nl_NL' => array(
 			'codeigniter' => 'nl',
 			),
+		'et' => array(
+			'codeigniter' => 'et',
+			),
 		);
 
