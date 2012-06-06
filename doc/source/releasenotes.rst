@@ -5,7 +5,7 @@ Release notes
 
 .. _v1.2.5:
 
-1.2.5 (2012-MM-DD)
+1.2.5 (2012-06-06)
 ------------------
 
 * DB schema needs to be updated, but a new database upgrade process is now available. No more ``*.sql`` files, just read :ref:`dbupgrade` section.
