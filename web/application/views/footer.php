@@ -1,4 +1,6 @@
+<div id="popup" class="freeow freeow-top-right"></div>
 <?php
+$enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
 $base = base_url();
 $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
 ?>
@@ -9,6 +11,8 @@ var base_url = '<?php echo $base; ?>';
 var base_app_url = '<?php echo site_url(); ?>/';
 var relative_url = '<?php echo $relative; ?>';
 var agendav_version = '<?php echo AGENDAV_VERSION; ?>';
+var enable_calendar_sharing = <?php echo ($enable_calendar_sharing ? 'true' :
+'false') ?>;
 //]]>
 </script>
 <script language="JavaScript" type="text/javascript" src="<?php echo
@@ -69,5 +73,16 @@ $img = array(
 		'alt' => 'AgenDAV',
 		);
 ?>
+
+<div id="usermenu_content">
+ <ul>
+  <li><?php echo anchor('prefs', 
+		  $this->i18n->_('labels', 'preferences'),
+		  array('class' => 'prefs'))?></li>
+  <li><?php echo anchor('calendar/logout',
+		  $this->i18n->_('labels', 'logout'),
+		  array('class' => 'logout'))?></li>
+ </ul>
+</div>
 </body>
 </html>

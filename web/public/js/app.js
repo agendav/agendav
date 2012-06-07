@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,6 +23,7 @@ var ced = '#com_event_dialog';
 var ccd = '#create_calendar_dialog';
 var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
+var scmr = '#share_calendar_manager_row_template';
 
 $(document).ready(function() {
 	// Load i18n strings
@@ -35,9 +36,28 @@ $(document).ready(function() {
 	if ($('body').hasClass('loginpage')) {
 		$('input:submit').button();
 		$('input[name="user"]').focus();
+	} else if ($('body').hasClass('prefspage')) {
+		$('#prefs_tabs').tabs();
+		$('#prefs_buttons button').button();
+		$('#return_button').on('click', function() {
+			window.location = base_app_url;
+			return false;
+		});
+		$('#save_button').on('click', function() {
+			var thisform = $('#prefs_form');
+			proceed_send_ajax_form(thisform,
+				function(data) {
+					show_success(
+						_('messages', 'info_prefssaved'),
+						'');
+				},
+				function(data) {
+					show_error(_('messages', 'error_invalidinput'), data);
+				},
+				function(data) { });
+		});
 	} else if ($('body').hasClass('calendarpage')) {
-		// Default datepicker options
-		set_default_datepicker_options();
+		// Default datepicker options are set inside i18n load strings
 
 		// Default colorpicker options
 		set_default_colorpicker_options();
@@ -55,33 +75,54 @@ $(document).ready(function() {
 			columnFormat: {
 				month: prefs_format_column_month,
 				week: prefs_format_column_week,
-				day: prefs_format_column_day
+				day: prefs_format_column_day,
+				table: prefs_format_column_table
 			},
 			titleFormat: {
 				month: prefs_format_title_month,
 				week: prefs_format_title_week,
-				day: prefs_format_title_day
+				day: prefs_format_title_day,
+				table: prefs_format_title_table
 			},
+			currentTimeIndicator: true,
 			weekMode: 'liquid',
-			aspectRatio: 1.2,
 			height: calendar_height(),
 			windowResize: function(view) {
 				$(this).fullCalendar('option', 'height', calendar_height());
 			},
 			header: {
-				left:   'month,agendaWeek,agendaDay',
+				left:   'month,agendaWeek,agendaDay table',
 				center: 'title',
 				right:  'today prev,next'
 			},
-			monthNames: _('labels', 'months_long'),
-			monthNamesShort: _('labels', 'months_short'),
-			dayNames: _('labels', 'daynames_long'),
-			dayNamesShort: _('labels', 'daynames_short'),
+
+			listTexts: {
+				until: _('labels', 'repeatuntil'),
+				past: _('labels', 'pastevents'),
+				today: _('labels', 'today'),
+				tomorrow: _('labels', 'tomorrow'),
+				thisWeek: _('labels', 'thisweek'),
+				nextWeek: _('labels', 'nextweek'),
+				thisMonth: _('labels', 'thismonth'),
+				nextMonth: _('labels', 'nextmonth'),
+				future: _('labels', 'future'),
+				week: 'W'
+			},
+			// list/table options
+			listSections: 'smart',
+			listRange: 30,
+			listPage: 7,
+
+			monthNames: month_names_long(),
+			monthNamesShort: month_names_short(),
+			dayNames: day_names_long(),
+			dayNamesShort: day_names_short(),
 			buttonText: {
 				today: _('labels', 'today'),
 				month: _('labels', 'month'),
 				week: _('labels', 'week'),
-				day: _('labels', 'day')
+				day: _('labels', 'day'),
+				table: _('labels', 'tableview')
 			},
 			theme: true, // use jQuery UI themeing
 			allDayText: _('labels', 'allday'),
@@ -101,297 +142,58 @@ $(document).ready(function() {
 				}
 			},
 
-			eventRender: function(event, element) {
-				element.qtip({
-					content: {
-						text: event_bubble_content(event),
-						title: {
-							text: event.title,
-							button: true
-						}
-					},
-					position: {
-						my: 'bottom center',
-						at: 'top center',
-						viewport: $('#calendar_view')
-					},
-					style: {
-						classes: 'view_event_details ui-tooltip-shadow',
-						tip: true,
-						widget: true
-					},
-					show: {
-						target: $('#calendar_view'),
-						event: false,
-						solo: $('#calendar_view'),
-						effect: false
-					},
-					hide: {
-						fixed: true,
-						event: 'unfocus',
-						effect: false
-					},
-
-					events: {
-						show: function (event, api) {
-							$(window).on('keydown.tooltipevents', function(e) {
-								if(e.keyCode === $.ui.keyCode.ESCAPE) {
-									api.hide(e);
-								}
-							})
-
-							// Icons
-							var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
-							add_button_icons(links);
-						},
-
-						hide: function (event, api) {
-							// Clicked on event?
-							var has_clicked_event;
-
-							if (event.originalEvent != undefined) {
-								var click_target = $(event.originalEvent.target).parents();
-								has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
-							} else {
-								has_clicked_event = false;
-							}
-
-							set_data('tooltip_hide_clicked_event', has_clicked_event);
-
-							var current = get_data('current_event');
-							set_data('recently_hidden_event', current);
-
-							$(window).off('keydown.tooltipevents');
-						}
-					}
-				});
-			},
-
-			eventClick: function(event, jsEvent, view) {
-				var recently_hidden_event = get_data('recently_hidden_event');
-				var hide_clicked_event = get_data('tooltip_hide_clicked_event');
-
-				remove_data('current_event');
-
-				if (recently_hidden_event != event ||
-						(hide_clicked_event === false && 
-					 	 recently_hidden_event == event)) {
-					set_data('current_event', event);
-					$(this).qtip('show', jsEvent);
-				}
-
-				remove_data('recently_hidden_event');
-				remove_data('tooltip_hide_clicked_event');
-			},
+			eventRender: event_render_callback,
+			eventClick: event_click_callback,
 
 			// Add new event by dragging. Click also triggers this event,
 			// if you define dayClick and select there is some kind of
 			// collision between them.
-			select: function(startDate, endDate, allDay, jsEvent, view) {
-				var pass_allday = (view.name == 'month') ? false : allDay;
-				var data = {
-						start: fulldatetimestring(startDate),
-						end: fulldatetimestring(endDate),
-						allday: pass_allday,
-						view: view.name,
-						current_calendar: $('#calendar_list li.selected_calendar').data().calendar
-				};
-
-				// Unselect every single day/slot
-				$('#calendar_view').fullCalendar('unselect');
-				event_field_form('new', data);
-			},
+			select: slots_drag_callback,
 			
 			// Useful for creating events in agenda view
-			selectHelper: function(start,end) {
-				var current_calendar_color = 
-					$('#calendar_list li.selected_calendar').data().color;
+			selectHelper: select_helper,
 
-				return $('<div style="background-color: '+current_calendar_color
-				+'" class="selecthelper"/>')
-					.text(
-							$.fullCalendar.formatDates(start, end,
-								prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
-			},
-
-			// Event resizing
-			eventResize: function(event, dayDelta, minuteDelta, revertFunc,
-				jsEvent, ui, view ) {
-
-				// Generate on-the-fly form
-				var formid = generate_on_the_fly_form(
-					base_app_url + 'caldav2json/resize_or_drag_event',
-					{
-						uid: event.uid,
-						calendar: event.calendar,
-						etag: event.etag,
-						view: view.name,
-						dayDelta: dayDelta,
-						minuteDelta: minuteDelta,
-						allday: event.allDay,
-						was_allday: event.was_allday,
-						timezone: event.timezone,
-						type: 'resize'
-					});
-
-				if (get_data('formcreation') == 'ok') {
-					var thisform = $('#' + formid);
-
-					proceed_send_ajax_form(thisform,
-						function(data) {
-							// Users just want to know if something fails
-							update_single_event(event, data);
-						},
-						function(data) {
-							show_error(_('messages', 'error_modfailed'), data);
-							revertFunc();
-						},
-						function() {
-							revertFunc();
-						});
-					}
-
-				// Remove generated form
-				$(thisform).remove();
-			},
-
-			// Event dragging
-			eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc,
-										 jsEvent, ui, view) {
-
-				// Generate on-the-fly form
-				var formid = generate_on_the_fly_form(
-					base_app_url + 'caldav2json/resize_or_drag_event',
-					{
-						uid: event.uid,
-						calendar: event.calendar,
-						etag: event.etag,
-						view: view.name,
-						dayDelta: dayDelta,
-						minuteDelta: minuteDelta,
-						allday: event.allDay,
-						was_allday: event.orig_allday,
-						timezone: event.timezone,
-						type: 'drag'
-					});
-
-				if (get_data('formcreation') == 'ok') {
-					var thisform = $('#' + formid);
-
-					proceed_send_ajax_form(thisform,
-						function(data) {
-							// Users just want to know if something fails
-							update_single_event(event, data);
-						},
-						function(data) {
-							show_error(_('messages', 'error_modfailed'), data);
-							revertFunc();
-						},
-						function() {
-							revertFunc();
-						});
-					}
-
-				// Remove generated form
-				$(thisform).remove();
-			}
-
+			eventResize: event_resize_callback,
+			eventDrop: event_drop_callback
 		});
 
 
 		// Refresh link
-		$('#calendar_view td.fc-header-right')
-			.append('<span class="fc-header-space"></span><span class="fc-button-refresh">' +_('labels', 'refresh') + '</span>');
-		$('#calendar_view span.fc-button-refresh')
-			.button() 
+		$('<span class="fc-button-refresh">' 
+			+_('labels', 'refresh') + '</span>')
+			.appendTo('#calendar_view td.fc-header-right')
+			.button()
 			.on('click', function() {
-				$('#calendar_view').fullCalendar('refetchEvents');
-			});
+				update_calendar_list(true);
+			})
+			.before('<span class="fc-header-space">');
 
 		// Date picker above calendar
-		$('#calendar_view span.fc-button-today').after('<span class="fc-header-space"></span><span class="fc-button-datepicker">'
-			+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
-			+ _('labels', 'choose_date') +'" />'
-			+'</span><input type="hidden" id="datepicker_fullcalendar" />');
+		$('#calendar_view span.fc-button-today')
+			.after('<span class="fc-button-datepicker">'
+				+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
+				+ _('labels', 'choose_date') +'" />'
+				+'</span>')
+			.after('<input type="hidden" id="datepicker_fullcalendar" />')
+			.after('<span class="fc-header-space" />')
+			.nextUntil('#datepicker_fullcalendar')
+			.next()
+			.datepicker({
+				changeYear: true,
+				closeText: _('labels', 'cancel'),
+				onSelect: function(date, text) {
+					var d = $('#datepicker_fullcalendar').datepicker('getDate');	
+					$('#calendar_view').fullCalendar('gotoDate', d);
+				}
+			})
+			.end()
+			.nextUntil('span.fc-button-datepicker')
+			.next()
+			.on('click', function() {
+				$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
+				$('#datepicker_fullcalendar').datepicker('show');
+			});
 		
-		$('#datepicker_fullcalendar').datepicker({
-			changeYear: true,
-			closeText: _('labels', 'cancel'),
-			onSelect: function(date, text) {
-				var d = $('#datepicker_fullcalendar').datepicker('getDate');	
-				$('#calendar_view').fullCalendar('gotoDate', d);
-			}
-		});
-
-		$('#calendar_view span.fc-button-datepicker').on('click', function() {
-			$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
-			$('#datepicker_fullcalendar').datepicker('show');
-		});
-		
-		// Delete link
-		// TODO: check for rrule/recurrence-id (EXDATE, etc)
-		$(document).on('click', 'button.link_delete_event', function() {
-			var data = get_data('current_event');
-			if (data === undefined) {
-				show_error(_('messages', 'error_interfacefailure'), 
-					_('messages', 'error_current_event_not_loaded'));
-				return;
-			}
-
-			var ded = '#delete_event_dialog';
-
-			load_generated_dialog('dialog_generator/delete_event',
-				{},
-				function() {
-					// Show event fields
-					$(ded + ' span.calendar').html(get_calendar_displayname(data.calendar));
-					$(ded + ' p.title').html(data.title);
-
-					var rrule = data.rrule;
-					if (rrule === undefined) {
-						$(ded + ' div.rrule').hide();
-					}
-
-					var thisform = $('#delete_form');
-					thisform.find('input.uid').val(data.uid);
-					thisform.find('input.calendar').val(data.calendar);
-					thisform.find('input.href').val(data.href);
-					thisform.find('input.etag').val(data.etag);
-					
-				},
-				_('labels', 'deleteevent'),
-				[ 
-					{
-						'text': _('labels', 'yes'),
-						'class': 'addicon btn-icon-event-delete',
-						'click': function() {
-							var thisform = $('#delete_form');
-							proceed_send_ajax_form(thisform,
-								function(data) {
-									$('#calendar_view').fullCalendar('removeEvents', get_data('current_event').id);
-								},
-								function(data) {
-									show_error(_('messages', 'error_event_not_deleted'), data);
-								},
-								function() {}); 
-
-							// Destroy dialog
-							destroy_dialog('#delete_event_dialog');
-
-						}
-					},
-					{
-						'text': _('labels', 'cancel'),
-						'class': 'addicon btn-icon-cancel',
-						'click': function() { destroy_dialog('#delete_event_dialog'); }
-					}
-				],
-				'delete_event_dialog', 400);
-				
-				// Close tooltip
-				$(this).parents(ved).qtip('hide');
-			return false;
-		});
 
 		$('#calendar_view').fullCalendar('renderEvent', 
 			{
@@ -404,72 +206,50 @@ $(document).ready(function() {
 			},
 			true);
 
-		// Edit/Modify link
-		// TODO: check for rrule/recurrence-id
-		$(document).on('click', 'button.link_edit_event', function() {
-			// Data about this event
-			var event_data = get_data('current_event');
-			if (event_data === undefined) {
-				show_error(_('messages', 'error_interfacefailure'), 
-					_('messages', 'error_current_event_not_loaded'));
-				return;
-			}
-
-			var data = {
-				uid: event_data.uid,
-				calendar: event_data.calendar,
-				href: event_data.href,
-				etag: event_data.etag,
-				start: fulldatetimestring(event_data.start),
-				end: fulldatetimestring(event_data.end),
-				summary: event_data.title,
-				location: event_data.location,
-				allday: event_data.allDay,
-				description: event_data.description,
-				rrule: event_data.rrule,
-				rrule_serialized: event_data.rrule_serialized,
-				rrule_explained: event_data.rrule_explained,
-				icalendar_class: event_data.icalendar_class,
-				transp: event_data.transp,
-				recurrence_id: event_data.recurrence_id,
-				orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
-				orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
-			};
-			// Close tooltip
-			$(this).parents(ved).qtip('hide');
-
-			event_field_form('modify', data);
-
-			return false;
-		});
 
 		/*************************************************************
 		 * Calendar list events
 		 *************************************************************/
 
-		// Choosing a calendar
-		$('#calendar_list').on('click', 'li.available_calendar', function() {
-			$('#calendar_list li.selected_calendar').removeClass('selected_calendar');
-			$(this).addClass('selected_calendar');
-		});
-
 		// Editing a calendar
-		$('#calendar_list').on('dblclick', 'li.available_calendar', function(e) {
-			e.preventDefault();
-			calendar_modify_form(this);
+		$('div.calendar_list').on('click', 'img.cfg', function(e) {
+			e.stopPropagation();
+			var calentry = $(this).parent();
+			calendar_modify_form(calentry[0]);
+		})
+		.on('click', 'li.available_calendar', function(e) {
+			// Make calendar transparent
+			toggle_calendar($(this));
 		});
 
 		// First time load: create calendar list
 		update_calendar_list(true);
 
-		// Refresh calendar list
-		$('#calendar_list').on('click', '#calendar_list_refresh', function() {
-			update_calendar_list(true);
+		$('#sidebar').on('click', '#toggle_all_shared_calendars', function(e) {
+			var shared_cals = $('#shared_calendar_list').find('ul').children();
+			if ($(this).hasClass('hide_all')) {
+				$.map(shared_cals, function(e, i) {
+					hide_calendar($(e));
+				});
+				$(this)
+					.removeClass('hide_all')
+					.addClass('show_all')
+					.attr('src', base_url + 'img/color_swatch.png');
+			} else {
+				$.map(shared_cals, function(e, i) {
+					show_calendar($(e));
+				});
+				$(this)
+					.removeClass('show_all')
+					.addClass('hide_all')
+					.attr('src', base_url + 'img/color_swatch_empty.png');
+			}
 		});
 
+
 		// Create calendar
-		$('#calendar_list').on('click', '#calendar_add', calendar_create_form);
-		
+		$('#calendar_add')
+			.on('click', calendar_create_form);
 
 		/*************************************************************
 		 * End of calendar list events
@@ -490,8 +270,7 @@ $(document).ready(function() {
 				var data = {
 						start: start,
 						allday: false,
-						view: 'month',
-						current_calendar: $('#calendar_list li.selected_calendar').data().calendar
+						view: 'month'
 				};
 
 				// Unselect every single day/slot
@@ -499,22 +278,39 @@ $(document).ready(function() {
 				event_field_form('new', data);
 			});
 		}
+
+		// User menu
+		$('#usermenu').qtip({
+			content: $('#usermenu_content'),
+			position: { my: 'top center', at: 'bottom center' },
+			style: {
+				tip: true,
+				classes: 'ui-tooltip-bootstrap agendav-menu'
+			},
+			show: {
+				event: 'click',
+				delay: 0
+			},
+			hide: {
+				event: 'unfocus'
+			}
+		});
 });
 
 
 /**
  * Used to calculate calendar view height
  */
-function calendar_height() {
+var calendar_height = function calendar_height() {
   var offset = $('#calendar_view').offset();
-  return $(window).height() - Math.ceil(offset.top) - 10;
-}
+  return $(window).height() - Math.ceil(offset.top) - 30;
+};
 
 /**
  * Used to show error messages
  */
 
-function show_error(title, message) {
+var show_error = function show_error(title, message) {
 	$('#popup').freeow(title, message,
 		{
 			classes: ['popup_error'],
@@ -528,14 +324,14 @@ function show_error(title, message) {
 				left: '400px'
 			}
 		});
-}
+};
 
 /**
  * Used to show success messages
  */
 
 
-function show_success(title, message) {
+var show_success = function show_success(title, message) {
 	$('#popup').freeow(title, message,
 		{
 			classes: ['popup_success'],
@@ -550,35 +346,35 @@ function show_success(title, message) {
 				left: '400px'
 			}
 		});
-}
+};
 
 
 /**
  * Gets data from body
  */
-function get_data(name) {
-	return $('body').data(name);
-}
+var get_data = function get_data(name) {
+	return $.data($('body')[0], name);
+};
 
 /**
  * Sets data on body
  */
-function set_data(name, value) {
-	$('body').data(name, value);
-}
+var set_data = function set_data(name, value) {
+	$.data($('body')[0], name, value);
+};
 
 /**
  * Removes data from body
  */
-function remove_data(name) {
-	$('body').removeData(name);
-}
+var remove_data = function remove_data(name) {
+	$.removeData($('body')[0], name);
+};
 
 
 /**
  * Loads a form (via AJAX) to a specified div
  */
-function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
+var load_generated_dialog = function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
 	
 	divname = '#' + divname;
 
@@ -640,14 +436,14 @@ function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname
 		show_error(_('messages', 'error_interfacefailure'), 
 				_('messages', 'error_oops'));
 	}
-}
+};
 
 /**
  * Sends a form via AJAX.
  * 
  * This way we respect CodeIgniter CSRF tokens
  */
-function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
+var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 		errorFunc) {
 	var url = $(formObj).attr('action');
 	var data = $(formObj).serialize();
@@ -695,13 +491,13 @@ function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
 					_('messages', 'error_oops') + ':' + result);
 		}
 	});
-}
+};
 
 /**
  * Creates a form with a random id in the document, and returns it.
  * Defines each element in the second parameter as hidden fields
  */
-function generate_on_the_fly_form(action, data) {
+var generate_on_the_fly_form = function generate_on_the_fly_form(action, data) {
 	var random_id = '';
 	var possible = 
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -728,43 +524,48 @@ function generate_on_the_fly_form(action, data) {
 	});
 
 	csrf_ajax_gen.done(function(formdata, textStatus, jqXHR) {
-		$('body').append(formdata);
-		$('#' + random_id).attr('action', action);
+		var hidden_fields = '';
+
 		$.each(data, function (i, v) {
-			$('#' + random_id).append('<input type="hidden" name="'+i
-				+'" value="'+v+'" />');
+			hidden_fields += '<input type="hidden" name="'+i
+				+'" value="'+v+'" />';
 		});
+
+		$(formdata)
+			.append(hidden_fields)
+			.attr('action' , action)
+			.appendTo(document.body);
+
 		set_data('formcreation', 'ok');
 	});
 
 	return random_id;
-}
+};
 
 /**
  * Destroys a dialog
  */
-function destroy_dialog(name) {
+var destroy_dialog = function destroy_dialog(name) {
 	$(name).dialog('close');
 	$(name).dialog('destroy');
 	$(name).remove();
-
-}
+};
 
 /**
  * Sets datepicker options
  */
-function set_default_datepicker_options() {
+var set_default_datepicker_options = function set_default_datepicker_options() {
 	// Localization (TODO: make this configurable!)
 $.datepicker.regional['custom'] = {
 	closeText: _('labels', 'close'),
 	prevText: _('labels', 'previous'),
 	nextText: _('labels', 'next'),
 	currentText: _('labels', 'today'),
-	monthNames: _('labels', 'months_long'),
-	monthNamesShort: _('labels', 'months_short'),
-	dayNames: _('labels', 'daynames_long'),
-	dayNamesShort: _('labels', 'daynames_short'),
-	dayNamesMin: _('labels', 'daynames_short'),
+	monthNames: month_names_long(),
+	monthNamesShort: month_names_short(),
+	dayNames: day_names_long(),
+	dayNamesShort: day_names_short(),
+	dayNamesMin: day_names_short(),
 	weekHeader: 'Sm',
 	firstDay: prefs_firstday,
 	isRTL: false,
@@ -774,31 +575,29 @@ $.datepicker.regional['custom'] = {
 $.datepicker.setDefaults($.datepicker.regional['custom']);
 $.datepicker.setDefaults({constrainInput: true});
 $.datepicker.setDefaults({dateFormat: prefs_dateformat});
-}
+};
 
 /**
  * Sets a minDate on end_date
  */
-function set_end_minDate() {
+var set_end_minDate = function set_end_minDate() {
 	var elems = ced + ' input.start_date';
 	var eleme = ced + ' input.end_date';
 	var elemru = ced + ' input.recurrence_until';
 
 	var selected = $(elems).datepicker('getDate');
 
-	if ($(ced + ' input.allday').is(':checked')) {
-		selected.setTime(selected.getTime() + 86400000); // +1d
-	}
+	selected.setTime(selected.getTime());
 
 	$(eleme).datepicker('option', 'minDate', selected);
 	$(elemru).datepicker('option', 'minDate', selected);
 
-}
+};
 
 /**
- * Sets recurrency options to be enabled or disabled
+ * Sets recurrence options to be enabled or disabled
  */
-function update_recurrency_options(newval) {
+var update_recurrence_options = function update_recurrence_options(newval) {
 	if (newval == 'none') {
 		$(ced + ' input.recurrence_count').val('');
 		$(ced + ' input.recurrence_until').val('');
@@ -816,7 +615,7 @@ function update_recurrency_options(newval) {
 		enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
 
 	}
-}
+};
 
 
 
@@ -825,7 +624,7 @@ function update_recurrency_options(newval) {
  */
 
 // Triggers a dialog for editing/creating events
-function event_field_form(type, data) {
+var event_field_form = function event_field_form(type, data) {
 
 	var url_dialog = 'dialog_generator/';
 	var title;
@@ -871,8 +670,8 @@ function event_field_form(type, data) {
 			// First time datepicker is run we need to set minDate on end date
 			set_end_minDate();
 
-			// And recurrency options have to be enabled/disabled
-			update_recurrency_options($(ced + ' select.recurrence_type').val());
+			// And recurrence options have to be enabled/disabled
+			update_recurrence_options($(ced + ' select.recurrence_type').val());
 
 			// All day checkbox
 			$(ced).on('change', 'input.allday', function() {
@@ -897,14 +696,15 @@ function event_field_form(type, data) {
 			$(ced).on('change', 'select.recurrence_type', function() {
 				var newval = $(this).val();
 
-				update_recurrency_options($(this).val());
+				update_recurrence_options($(this).val());
 			});
 
 			// Avoid having a value in both recurrence options (count / until)
-			$(ced).on('change', 'input.recurrence_count', function() {
+			$(ced)
+			.on('keyup', 'input.recurrence_count', function() {
 				enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
-			});
-			$(ced).on('change', 'input.recurrence_until', function() {
+			})
+			.on('keyup change', 'input.recurrence_until', function() {
 				enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
 			});
 
@@ -954,7 +754,6 @@ function event_field_form(type, data) {
 								reload_event_source(cal);
 							});
 
-							//$("#calendar_view").fullCalendar('refetchEvents');
 							destroy_dialog(ced);
 						},
 						function(data) {
@@ -974,21 +773,21 @@ function event_field_form(type, data) {
 			}
 		],
 		'com_event_dialog', 500);
-}
+};
 
 /*
  * Updates a single event fetching it from server
  */
-function update_single_event(event, new_data) {
+var update_single_event = function update_single_event(event, new_data) {
 	$.each(new_data, function (i, v) {
 			event[i] = v;
 			});
 
 	$('#calendar_view').fullCalendar('updateEvent', event);
-}
+};
 
 // Triggers a dialog for creating calendars
-function calendar_create_form() {
+var calendar_create_form = function calendar_create_form() {
 
 	var url_dialog = 'dialog_generator/create_calendar';
 	var title = _('labels', 'newcalendar');
@@ -1026,11 +825,11 @@ function calendar_create_form() {
 				'click': function() { destroy_dialog(ccd); }
 			}
 		],
-		'create_calendar_dialog', 500);
-}
-//
+		'create_calendar_dialog', 400);
+};
+
 // Triggers a dialog for editing calendars
-function calendar_modify_form(calendar_obj) {
+var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 
 	var url_dialog = 'dialog_generator/modify_calendar';
 	var title = _('labels', 'modifycalendar');
@@ -1043,6 +842,7 @@ function calendar_modify_form(calendar_obj) {
 		sid: data.sid,
 		shared: data.shared,
 		user_from: data.user_from,
+		write_access: data.write_access,
 		url: data.url
 	};
 
@@ -1068,21 +868,19 @@ function calendar_modify_form(calendar_obj) {
 							'click': function() {
 								var thisform = $('#delete_calendar_form');
 								proceed_send_ajax_form(thisform,
-										function(data) {
-											// Remove from calendar and UI
-											var es = $(calendar_obj).data().eventsource;
-											$('#calendar_view').fullCalendar('removeEventSource',
-												$(calendar_obj).data().eventsource);
-
-											// Select another calendar before removing this one
-											if ($(calendar_obj).hasClass('selected_calendar')) {
-												$('#calendar_list li.available_calendar:first').click();
-											}
-
-											$(calendar_obj).remove();
+										function(removed_calendar) {
+											// Just remove deleted calendar
+											$('.calendar_list li.available_calendar').each(function(index) {
+												var thiscal = $(this).data();
+												if (thiscal.calendar == removed_calendar) {
+													$('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
+													$(this).remove();
+													return false; // stop looking for calendar
+												}
+											});
 										},
 										function(data) {
-											show_error(_('labels', 'error_caldelete'), data);
+											show_error(_('messages', 'error_caldelete'), data);
 										},
 										function() {}); 
 
@@ -1105,6 +903,11 @@ function calendar_modify_form(calendar_obj) {
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
 				var thisform = $('#modify_calendar_form');
+				// Add shares to form
+				// (remove first)
+				thisform.find('.generated_share').remove();
+				_generate_share_hidden_inputs(thisform);
+
 				proceed_send_ajax_form(thisform,
 					function(data) {
 						destroy_dialog(mcd);
@@ -1138,21 +941,21 @@ function calendar_modify_form(calendar_obj) {
 		function() {
 			$('input.pick_color').colorPicker();
 			$(mcd + '_tabs').tabs();
-			$('input.share_with').tagit({
-				'caseSensitive': false,
-				'removeConfirmation': true
-			});
+
+			if (enable_calendar_sharing === true && data.shared !== true) {
+				share_manager();
+			}
 		},
 		title,
 		buttons_and_actions,
 		'modify_calendar_dialog', 500);
-}
+};
 
 /*
  * Updates the calendar list and generates eventSources for fullcalendar
  */
 
-function update_calendar_list(maskbody) {
+var update_calendar_list = function update_calendar_list(maskbody) {
 	if (maskbody) {
 		$('body').mask(_('messages', 'overlay_loading_calendar_list'), 500);
 	}
@@ -1177,24 +980,32 @@ function update_calendar_list(maskbody) {
 
 	updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
 		// Remove old eventSources and remove every list item
-		$('#calendar_list li.available_calendar').each(function(index) {
+		$('.calendar_list li.available_calendar').each(function(index) {
 			var data = $(this).data();
 			$('#calendar_view').fullCalendar('removeEventSource',
 				data.eventsource);
 			$(this).remove();
 		});
 
-		// Calendar count
-		var count = 0;
+		var count = 0,
+			count_shared = 0,
+			own_calendars = document.createDocumentFragment(),
+			shared_calendars = document.createDocumentFragment(),
+			collected_event_sources = [];
 
 		$.each(data, function(key, value) {
 			count++;
 
 			var li = generate_calendar_entry(value);
 
-			$('#calendar_list ul').append(li);
+			if (value.shared == true) {
+				count_shared++;
+				shared_calendars.appendChild(li[0]);
+			} else {
+				own_calendars.appendChild(li[0]);
+			}
 
-			$('#calendar_view').fullCalendar('addEventSource', $(li).data().eventsource);
+			collected_event_sources.push($(li).data().eventsource);
 		});
 
 		// No calendars?
@@ -1205,27 +1016,48 @@ function update_calendar_list(maskbody) {
 			if (last_calendar_count === undefined ||
 				last_calendar_count != '0') {
 				set_data('last_calendar_count', 0);
-				setTimeout('update_calendar_list(false)', 1);
+				setTimeout(function() {
+					update_calendar_list(false);
+				}, 1);
 			} else {
 				// Calendar list received empty twice
 				show_error(_('messages','notice_no_calendars'), '');
+				$('#shortcut_add_event').button('disable');
 			}
 		} else {
 			set_data('last_calendar_count', count);
-			// Select the first one by default
-			$('#calendar_list li.available_calendar:first').click();
+
+			$('#own_calendar_list ul')[0]
+				.appendChild(own_calendars);
+
+			// Hide unused block
+			if (count_shared == 0) {
+				$('#shared_calendar_list').hide();
+			} else {
+				$('#shared_calendar_list ul')[0]
+					.appendChild(shared_calendars);
+				$('#shared_calendar_list').show();
+			}
 
 			// Adjust text length
 			adjust_calendar_names_width();
 
+			// Add event sources
+			while (count--) {
+				$('#calendar_view').fullCalendar('addEventSource',
+					collected_event_sources[count]);
+			}
+
+			$('#shortcut_add_event').button('enable');
+
 		}
 	});
-}
+};
 
 /**
  * Function used to query the server for events
  */
-function generate_event_source(calendar) {
+var generate_event_source = function generate_event_source(calendar) {
 	var ajax_options = {
 			// If #calendar is not used, Fullcalendar will be confused when
 			// calling removeEventSource, and will remove all calendars
@@ -1250,14 +1082,14 @@ function generate_event_source(calendar) {
 	};
 
 	return ajax_options;
-}
+};
 
 /**
  * Keeps session alive
  * 
  * n = refresh interval in miliseconds
  */
-function session_refresh(n) {
+var session_refresh = function session_refresh(n) {
 	var sessrefresh_ajax_req = $.ajax({
 		url: base_app_url + 'js_generator/keepalive',
 		cache: false,
@@ -1271,19 +1103,21 @@ function session_refresh(n) {
 			// TODO think about using dataType: script here
 			$('body').append(data);
 		} else {
-			setTimeout('session_refresh(' + n + ')', n);
+			setTimeout(function() {
+				session_refresh(n);
+			}, n);
 		}
 	});
 
 	sessrefresh_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
 		session_expired();
 	});
-}
+};
 
 /**
  * Adds button icons
  */
-function add_button_icons(buttons) {
+var add_button_icons = function add_button_icons(buttons) {
 	buttons.filter('button.addicon')
 		.removeClass('addicon')
 		.removeClass('ui-button-text-only')
@@ -1298,12 +1132,12 @@ function add_button_icons(buttons) {
 				}
 			});
 		});
-}
+};
 
 /**
  * Generates a new calendar entry
  */
-function generate_calendar_entry(data) {
+var generate_calendar_entry = function generate_calendar_entry(data) {
 	// Default color
 	if (data.color === undefined || data.color === false) {
 		data.color = '#' + default_calendar_color;
@@ -1330,19 +1164,28 @@ function generate_calendar_entry(data) {
 		.html('<span class="text">' + data.displayname + '</span>')
 		.prepend(color_square);
 
-	// Shared calendars
-	if (data.shared !== undefined && data.shared == true) {
-		li.append('<span class="shared"></span>');
-		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
-	}
-
 	var eventsource = generate_event_source(data.calendar);
 	eventsource.ignoreTimezone = true; // Ignore UTC offsets
 	eventsource.color = data.color;
 	eventsource.textColor = fg;
-	data.eventsource = eventsource;
-
 	eventsource.borderColor = border;
+
+
+	// Shared calendars
+	if (data.shared !== undefined && data.shared == true) {
+		li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
+
+		if (data.write_access == '0') {
+			eventsource.editable = false;
+		}
+	}
+
+	// Default calendar
+	if (data.default_calendar === true) {
+		li.addClass('default_calendar');
+	}
+
+	data.eventsource = eventsource;
 
 	// Associate data + eventsource to new list item
 	li.data(data);
@@ -1350,33 +1193,48 @@ function generate_calendar_entry(data) {
 	// Disable text selection on this (useful for dblclick)
 	li.disableSelection();
 
+	li.append('<img class="cfg pseudobutton" src="'+base_url+'img/gear_in.png" />');
+
 	return li;
-}
+};
 
 /**
- * Gets calendar display name from its internal name
+ * Gets calendar data from its internal name
  */
-function get_calendar_displayname(c) {
-	var calname = undefined;
+var get_calendar_data = function get_calendar_data(c) {
+	var data = undefined;
 
-	$('#calendar_list li.available_calendar').each(function(index) {
+	$('.calendar_list li.available_calendar').each(function(index) {
 		var thiscal = $(this).data();
 		if (thiscal.calendar == c) {
-			calname = thiscal.displayname;
+			data = thiscal;
 			return false; // stop looking for calendar
 		}
 	});
 
-	return (calname !== undefined ? calname : event.calendar + '(?)');;
-}
+	return data;
+};
+
+/**
+ * Gets calendar display name from its internal name
+ */
+var get_calendar_displayname = function get_calendar_displayname(c) {
+	var data = get_calendar_data(c);
+
+	if (data === undefined || data.displayname === undefined) {
+		return '(?)';
+	} else {
+		return data.displayname;
+	}
+};
 
 /*
- * Reloads an event source by removing it and reenabling it
+ * Reloads an event source
  */
-function reload_event_source(cal) {
+var reload_event_source = function reload_event_source(cal) {
 	var eventsource = undefined;
 
-	$('#calendar_list li.available_calendar').each(function(index) {
+	$('.calendar_list li.available_calendar').each(function(index) {
 		var thiscal = $(this).data();
 		if (thiscal.calendar == cal) {
 			eventsource = thiscal.eventsource;
@@ -1392,12 +1250,12 @@ function reload_event_source(cal) {
 				_('messages', 'error_calendarnotfound', {'%calendar' : cal }));
 	}
 
-}
+};
 
 /*
  * Enforces the use of only one recurrence fields
  */
-function enforce_exclusive_recurrence_field(current, other) {
+var enforce_exclusive_recurrence_field = function enforce_exclusive_recurrence_field(current, other) {
 	if ($(ced + ' input.' + current).val() == '') {
 		$(ced + ' input.' + other).removeAttr('disabled');
 		$(ced + ' input.' + other).removeClass('ui-state-disabled');
@@ -1414,9 +1272,9 @@ function enforce_exclusive_recurrence_field(current, other) {
 			$(ced + ' input.' + other).datepicker('disable');
 		}
 	}
-}
+};
 
-function event_bubble_content(event) {
+var event_bubble_content = function event_bubble_content(event) {
 	var tmpl = $('#view_event_details_template').clone();
 
 	// Calendar
@@ -1441,7 +1299,7 @@ function event_bubble_content(event) {
 		tmpl.find('p.description').hide();
 	}
 
-	// Recurrency rule
+	// Recurrence rule
 	if (event.rrule !== undefined) {
 		if (event.rrule_explained !== undefined) {
 			tmpl
@@ -1459,31 +1317,39 @@ function event_bubble_content(event) {
 			.find('div.parseable_rrule').hide();
 	}
 
+	// Non editable calendar/event
+	// TODO: improve speed on this, index calendar list
+	var caldata = get_calendar_data(event.calendar);
+	if (caldata !== undefined && caldata.shared === true &&
+		caldata.write_access == '0') {
+		tmpl.find('div.actions').remove();
+	}
+
 	return tmpl.html();
-}
+};
 
 /*
  * Round a Date timestamp
  */
-function timestamp(d) {
+var timestamp = function timestamp(d) {
 	return Math.round(d.getTime()/1000);
-}
+};
 
 /*
  * Returns a full date+time string which is easily parseable
  */
-function fulldatetimestring(d) {
-	if (d != null && d !== undefined) {
+var fulldatetimestring = function fulldatetimestring(d) {
+	if (d != undefined) {
 		return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
 	} else {
 		return undefined;
 	}
-}
+};
 
 /**
  * Returns a foreground color for a given background
  */
-function fg_for_bg(color) {
+var fg_for_bg = function fg_for_bg(color) {
 	var colr = parseInt(color.substr(1), 16);
 
 	var is_dark = (colr >>> 16) // R
@@ -1492,68 +1358,27 @@ function fg_for_bg(color) {
 		< 500;
 
 	return (is_dark) ? '#ffffff' : '#000000';
-}
+};
 
-/**
- * Loads localized strings
- */
-function load_i18n_strings() {
-	var i18n_ajax_req = $.ajax({
-		async: false,
-		url: base_app_url + 'strings/load/' + agendav_version,
-		dataType: 'json',
-		method: 'GET',
-		ifModified: false // TODO set to true + cache
-	});
-
-	i18n_ajax_req.done(function(data, textStatus, jqXHR) {
-		i18n = data;
-	});
-		
-	i18n_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-		show_error('Error loading translation',
-			'Please, contact your system administrator');
-	});
-}
-
-/**
- * Function that translates a given label/message
- */
-function _(mtype, s, params) {
-	var ret = '[' + mtype + ':' + s + ']';
-
-	if (typeof(i18n)!= 'undefined' && (mtype == 'messages' 
-			|| mtype == 'labels')) {
-		if (mtype == 'labels' && i18n.labels[s]) {
-			ret = i18n.labels[s];
-		} else if (mtype == 'messages' && i18n.messages[s]) {
-			ret = i18n.messages[s];
-		}
-	}
-
-	for (var i in params) {
-		ret = ret.replace(i, params[i]);
-	}
-
-	return ret;
-}
 
 /**
  * This method is called when a session has expired
  */
-function session_expired() {
+var session_expired = function session_expired() {
 	$('.ui-dialog-content').dialog('close');
 
 	show_error(_('messages', 'error_sessexpired'),
 			_('messages', 'error_loginagain'));
-	setTimeout( 'window.location = "'+base_url+'";', 2000);
-}
+	setTimeout(function() {
+		window.location = base_url;
+	}, 2000);
+};
 
 /**
  * Adjusts calendar text span width to parent container
  */
-function adjust_calendar_names_width() {
-	$('#calendar_list li').each(function() {
+var adjust_calendar_names_width = function adjust_calendar_names_width() {
+	$('.calendar_list li').each(function() {
 		var li = $(this);
 		var li_width = li.width();
 		var shared = li.find('span.shared');
@@ -1565,5 +1390,500 @@ function adjust_calendar_names_width() {
 
 		li.find('span.text').width(adjust);
 	});
-}
+};
+
+/**
+ * Handles events on share calendar dialog
+ */
+var share_manager = function share_manager() {
+	var manager = $(mcd + ' table.share_calendar_manager');
+	var new_entry_form = $(mcd + ' table.share_calendar_manager_new');
+
+	share_manager_no_entries_placeholder();
+
+	manager.on('click', 
+		'.share_calendar_manager_delete', function(event) {
+			$(this).parent().parent()
+				.fadeOut('fast', function() { 
+					$(this).remove();
+					share_manager_no_entries_placeholder();
+				});
+		});
+
+	// Autocomplete caching
+	var user_autocomplete_cache = {}, lastXhr;
+
+	new_entry_form.find('input.share_calendar_manager_username_new')
+		.autocomplete({
+			minLength: 3,
+			source: function(request, response) {
+				var term = request.term;
+
+				if (term in user_autocomplete_cache) {
+					response(user_autocomplete_cache[term]);
+					return;
+				}
+
+				lastXhr = $.getJSON(base_app_url + 'caldav2json/principal_search', 
+					request, function(data, status, xhr) {
+					user_autocomplete_cache[term] = data;
+					if (xhr === lastXhr) {
+						response(data);
+					}
+				});
+			},
+			focus: function( event, ui ) {
+				$(this).val(ui.item.username);
+				return false;
+			},
+			select: function( event, ui ) {
+				$(this).val(ui.item.username);
+				return false;
+			}
+		})
+		.data('autocomplete')._renderItem = function(ul, item) {
+			return $('<li></li>')
+				.data('item.autocomplete', item)
+				.append('<a>' + item.displayname 
+				+ '<span style="font-style: italic">'
+				+ ' &lt;' + item.email + '&gt;</span></a>')
+				.appendTo(ul);
+		};
+
+	new_entry_form.on('click', 
+		'.share_calendar_manager_add', function(event) {
+		var new_user = $(this).parent().parent()
+			.find('.share_calendar_manager_username_new').val();
+		var access = $(this).parent().parent()
+			.find('select').val();
+		if (new_user != '') {
+			// Check if new_user is already on list
+			var already_added = false;
+			manager.find('.share_data_username')
+				.each(function(index) {
+					if (!already_added && $(this).text() == new_user) {
+						already_added = true;
+						$(this).parent().parent().effect('highlight', {}, 'slow');
+					}
+				});
+
+			if (!already_added) {
+				var new_row = $(scmr).clone().find('tbody');
+
+				new_row
+						.find('.share_data_username')
+							.html(new_user).end()
+						.find('select')
+							.val(access).end();
+
+				manager.find('tbody').append(new_row.html());
+
+				// Reset form
+				$(this).parent().parent()
+					.find('.share_calendar_manager_username_new').val('');
+
+				// User chose this option
+				manager
+					.find('tbody tr:last select')
+					.val(access);
+
+				share_manager_no_entries_placeholder();
+			}
+		}
+
+	});
+};
+
+/**
+ * Shows the placeholder for empty share lists
+ */
+var share_manager_no_entries_placeholder = function share_manager_no_entries_placeholder() {
+	var manager = $(mcd + ' table.share_calendar_manager');
+	if (manager.find('tbody tr').length == 1) {
+		manager.find('tr.share_calendar_manager_empty td').show();
+	} else {
+		manager.find('tr.share_calendar_manager_empty td').hide();
+	}
+};
+
+/**
+ * Generates required hidden input fields for
+ * each row in the share calendar manager
+ */
+var _generate_share_hidden_inputs = function _generate_share_hidden_inputs(el) {
+
+	$(mcd + ' table.share_calendar_manager > tbody > tr:not(.share_calendar_manager_empty)').each(function(i) {
+		var list = {};
+
+		// Share ID
+		var sid = $(this).attr('id');
+		if (sid !== undefined) {
+			sid = sid.replace('sid-', '');
+			$.extend(list, { sid: sid });
+		}
+
+		// User and type of access
+		var username = $(this).find('.share_data_username:first').html();
+		var write_access = $(this).find('select').val();
+
+		$.extend(list, {
+			username: username,
+			write_access: write_access
+		});
+
+		$.each(list, function(index, value) {
+			// i is the index of the row,
+			// index is the name of the attribute
+			el.append($('<input type="hidden">')
+				.attr('name', 'share_with['+i+']['+index+']')
+				.val(value));
+		});
+
+	});
+};
+
+
+/**
+ * Event render
+ */
+var event_render_callback = function event_render_callback(event, element) {
+	element.qtip({
+		content: {
+			text: event_bubble_content(event),
+			title: {
+				text: event.title,
+				button: true
+			}
+		},
+		position: {
+			my: 'bottom center',
+			at: 'top center',
+			viewport: $('#calendar_view')
+		},
+		style: {
+			classes: 'view_event_details ui-tooltip-bootstrap',
+			tip: true
+		},
+		show: {
+			target: $('#calendar_view'),
+			event: false,
+			solo: $('#calendar_view'),
+			effect: false
+		},
+		hide: {
+			fixed: true,
+			event: 'unfocus',
+			effect: false
+		},
+
+		events: {
+			show: function (event, api) {
+				// Attach modify and delete events
+				$(this)
+				.find('button.link_delete_event')
+				.off('click')
+				.on('click', function() {
+					delete_event_handler();
+				})
+				.end()
+				.find('button.link_modify_event')
+				.off('click')
+				.on('click', function() {
+					modify_event_handler();
+				});
+
+				$(window).on('keydown.tooltipevents', function(e) {
+					if(e.keyCode === $.ui.keyCode.ESCAPE) {
+						api.hide(e);
+					}
+				})
+
+				// Icons
+				var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
+				add_button_icons(links);
+			},
+
+			hide: function (event, api) {
+				// Clicked on event?
+				var has_clicked_event;
+
+				if (event.originalEvent != undefined) {
+					var click_target = $(event.originalEvent.target).parents();
+					has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
+				} else {
+					has_clicked_event = false;
+				}
+
+				set_data('tooltip_hide_clicked_event', has_clicked_event);
+
+				var current = get_data('current_event');
+				set_data('recently_hidden_event', current);
+
+				$(window).off('keydown.tooltipevents');
+			}
+		}
+	});
+};
+
+/**
+ * Event click
+ */
+var event_click_callback = function event_click_callback(event, 
+		jsEvent, view) {
+	var recently_hidden_event = get_data('recently_hidden_event');
+	var hide_clicked_event = get_data('tooltip_hide_clicked_event');
+
+	remove_data('current_event');
+
+	if (recently_hidden_event != event ||
+			(hide_clicked_event === false && 
+			 recently_hidden_event == event)) {
+		set_data('current_event', event);
+		$(this).qtip('show', jsEvent);
+	}
+
+	remove_data('recently_hidden_event');
+	remove_data('tooltip_hide_clicked_event');
+};
+
+/**
+ * Calendar slots dragging
+ */
+var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDay, jsEvent, view) {
+	var pass_allday = (view.name == 'month') ? false : allDay;
+	var data = {
+			start: fulldatetimestring(startDate),
+			end: fulldatetimestring(endDate),
+			allday: pass_allday,
+			view: view.name
+	};
+
+	// Unselect every single day/slot
+	$('#calendar_view').fullCalendar('unselect');
+	event_field_form('new', data);
+};
+
+/**
+ * Select helper
+ */
+
+var select_helper = function select_helper(start,end) {
+	return $('<div style="border: 1px solid black; background-color: #f0f0f0;" class="selecthelper"/>')
+		.text(
+				$.fullCalendar.formatDates(start, end,
+					prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
+};
+
+/**
+ * Event resizing
+ */
+
+var event_resize_callback = function event_resize_callback(event, dayDelta, minuteDelta, revertFunc,
+	jsEvent, ui, view ) {
+
+	// Generate on-the-fly form
+	var formid = generate_on_the_fly_form(
+		base_app_url + 'caldav2json/resize_or_drag_event',
+		{
+			uid: event.uid,
+			calendar: event.calendar,
+			etag: event.etag,
+			view: view.name,
+			dayDelta: dayDelta,
+			minuteDelta: minuteDelta,
+			allday: event.allDay,
+			was_allday: event.was_allday,
+			timezone: event.timezone,
+			type: 'resize'
+		});
+
+	if (get_data('formcreation') == 'ok') {
+		var thisform = $('#' + formid);
+
+		proceed_send_ajax_form(thisform,
+			function(data) {
+				// Users just want to know if something fails
+				update_single_event(event, data);
+			},
+			function(data) {
+				show_error(_('messages', 'error_modfailed'), data);
+				revertFunc();
+			},
+			function() {
+				revertFunc();
+			});
+		}
+
+	// Remove generated form
+	$(thisform).remove();
+};
+
+/**
+ * Event drag and drop
+ */
+
+var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDelta, allDay,
+			revertFunc, jsEvent, ui, view) {
+
+	// Generate on-the-fly form
+	var formid = generate_on_the_fly_form(
+		base_app_url + 'caldav2json/resize_or_drag_event',
+		{
+			uid: event.uid,
+			calendar: event.calendar,
+			etag: event.etag,
+			view: view.name,
+			dayDelta: dayDelta,
+			minuteDelta: minuteDelta,
+			allday: event.allDay,
+			was_allday: event.orig_allday,
+			timezone: event.timezone,
+			type: 'drag'
+		});
+
+	if (get_data('formcreation') == 'ok') {
+		var thisform = $('#' + formid);
+
+		proceed_send_ajax_form(thisform,
+			function(data) {
+				// Users just want to know if something fails
+				update_single_event(event, data);
+			},
+			function(data) {
+				show_error(_('messages', 'error_modfailed'), data);
+				revertFunc();
+			},
+			function() {
+				revertFunc();
+			});
+		}
+
+	// Remove generated form
+	$(thisform).remove();
+};
+
+// Delete link
+// TODO: check for rrule/recurrence-id (EXDATE, etc)
+var delete_event_handler = function delete_event_handler() {
+	var data = get_data('current_event'),
+			ded = '#delete_event_dialog';
+
+	if (data === undefined) {
+		show_error(_('messages', 'error_interfacefailure'),
+			_('messages', 'error_current_event_not_loaded'));
+		return;
+	}
+
+	load_generated_dialog('dialog_generator/delete_event',
+		{},
+		function() {
+			// Show event fields
+			$(ded + ' span.calendar').html(get_calendar_displayname(data.calendar));
+			$(ded + ' p.title').html(data.title);
+
+			var rrule = data.rrule;
+			if (rrule === undefined) {
+				$(ded + ' div.rrule').hide();
+			}
+
+			var thisform = $('#delete_form');
+			thisform.find('input.uid').val(data.uid);
+			thisform.find('input.calendar').val(data.calendar);
+			thisform.find('input.href').val(data.href);
+			thisform.find('input.etag').val(data.etag);
+		},
+		_('labels', 'deleteevent'),
+		[
+			{
+				'text': _('labels', 'yes'),
+				'class': 'addicon btn-icon-event-delete',
+				'click': function() {
+					var thisform = $('#delete_form');
+					proceed_send_ajax_form(thisform,
+						function(data) {
+							$('#calendar_view').fullCalendar('removeEvents', get_data('current_event').id);
+						},
+						function(data) {
+							show_error(_('messages', 'error_event_not_deleted'), data);
+						},
+						function() {});
+
+					// Destroy dialog
+					destroy_dialog('#delete_event_dialog');
+
+				}
+			},
+			{
+				'text': _('labels', 'cancel'),
+				'class': 'addicon btn-icon-cancel',
+				'click': function() { destroy_dialog('#delete_event_dialog'); }
+			}
+		],
+		'delete_event_dialog', 400);
+
+		// Close tooltip
+		$(ved).qtip('hide');
+	return false;
+};
+
+// Edit/Modify link
+var modify_event_handler = function modify_event_handler() {
+	// TODO: check for rrule/recurrence-id
+	// Data about this event
+	var event_data = get_data('current_event');
+	if (event_data === undefined) {
+		show_error(_('messages', 'error_interfacefailure'),
+			_('messages', 'error_current_event_not_loaded'));
+		return;
+	}
+
+	var data = {
+		uid: event_data.uid,
+		calendar: event_data.calendar,
+		href: event_data.href,
+		etag: event_data.etag,
+		start: fulldatetimestring(event_data.start),
+		end: fulldatetimestring(event_data.end),
+		summary: event_data.title,
+		location: event_data.location,
+		allday: event_data.allDay,
+		description: event_data.description,
+		rrule: event_data.rrule,
+		rrule_serialized: event_data.rrule_serialized,
+		rrule_explained: event_data.rrule_explained,
+		icalendar_class: event_data.icalendar_class,
+		transp: event_data.transp,
+		recurrence_id: event_data.recurrence_id,
+		orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
+		orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
+	};
+	// Close tooltip
+	$(ved).qtip('hide');
+
+	event_field_form('modify', data);
+
+	return false;
+};
+
+// Shows a calendar
+var show_calendar = function show_calendar(calendar_obj) {
+	$('#calendar_view').fullCalendar('addEventSource', calendar_obj.data().eventsource);
+	calendar_obj.removeClass('transparent');
+};
+
+// Hides a calendar
+var hide_calendar = function hide_calendar(calendar_obj) {
+	$('#calendar_view').fullCalendar('removeEventSource', calendar_obj.data().eventsource);
+	calendar_obj.addClass('transparent');
+};
+
+// Toggles calendar visibility
+var toggle_calendar = function toggle_calendar(calendar_obj) {
+	if (calendar_obj.hasClass('transparent')) {
+		show_calendar(calendar_obj);
+	} else {
+		hide_calendar(calendar_obj);
+	}
+};
+
 // vim: sw=2 tabstop=2

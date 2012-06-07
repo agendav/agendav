@@ -23,7 +23,7 @@ if (isset($recurrence)) {
 
 $data_form = array(
 	'id' => 'com_form',
-	'class' => 'uniForm',
+	'class' => 'form-horizontal',
 );
 echo form_open('caldav2json/com_event', $data_form);
 
@@ -31,7 +31,7 @@ echo form_open('caldav2json/com_event', $data_form);
 $form_summary = array(
 		'name' => 'summary',
 		'value' => (isset($summary) && $summary !== FALSE) ? $summary : '',
-		'class' => 'summary large required',
+		'class' => 'summary input-large',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -39,7 +39,7 @@ $form_summary = array(
 $form_location = array(
 		'name' => 'location',
 		'value' => (isset($location) && $location !== FALSE) ? $location : '',
-		'class' => 'location large',
+		'class' => 'location input-large',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -49,7 +49,7 @@ $form_calendar = $calendars;
 $form_startdate = array(
 		'name' => 'start_date',
 		'value' => $start_date,
-		'class' => 'start_date required small',
+		'class' => 'start_date input-small',
 		'maxlength' => '10',
 		'size' => '15',
 		);
@@ -57,14 +57,14 @@ $form_startdate = array(
 $form_enddate = array(
 		'name' => 'end_date',
 		'value' => $end_date,
-		'class' => 'end_date small',
+		'class' => 'end_date input-small',
 		'maxlength' => '10',
 		'size' => '15',
 		);
 
 $form_starttime = array(
 		'name' => 'start_time',
-		'class' => 'time start_time ultrasmall',
+		'class' => 'time start_time input-mini',
 		'maxlength' => '10',
 		'value' => $start_time,
 		'size' => '15',
@@ -72,7 +72,7 @@ $form_starttime = array(
 
 $form_endtime = array(
 		'name' => 'end_time',
-		'class' => 'time end_time ultrasmall',
+		'class' => 'time end_time input-mini',
 		'maxlength' => '10',
 		'value' => $end_time,
 		'size' => '15',
@@ -93,9 +93,8 @@ $form_allday = array(
 
 $form_description = array(
 		'name' => 'description',
-		'class' => 'description large',
+		'class' => 'description input-large',
 		'rows' => '4',
-		'cols' => '25',
 		'value' => (isset($description) && $description !== FALSE) ? $description : '',
 		);
 
@@ -112,7 +111,7 @@ $form_recurrence_count = array(
 		'name' => 'recurrence_count',
 		'value' => (isset($recurrence_count) && $recurrence_count !== FALSE)
 			? $recurrence_count : '',
-		'class' => 'recurrence_count ultrasmall',
+		'class' => 'recurrence_count input-mini',
 		'maxlength' => '20',
 		'size' => '3',
 		);
@@ -120,7 +119,7 @@ $form_recurrence_until = array(
 		'name' => 'recurrence_until',
 		'value' => (isset($recurrence_until) && $recurrence_until !== FALSE)
 			? $recurrence_until : '',
-		'class' => 'recurrence_until small',
+		'class' => 'recurrence_until input-small',
 		'maxlength' => '10',
 		'size' => '15',
 		);
@@ -204,7 +203,7 @@ if (!isset($unparseable_rrule)) {
 			form_dropdown('recurrence_type',
 				$form_recurrence_type, (isset($recurrence_type) ?
 					$recurrence_type : 'none'),
-				'class="recurrence_type"'));
+				'class="recurrence_type input-medium"'));
 
 	echo formelement(
 			$this->i18n->_('labels', 'repeatcount'),
@@ -228,12 +227,14 @@ if (!isset($unparseable_rrule)) {
 echo formelement(
 		 $this->i18n->_('labels', 'privacy'),
 		 form_dropdown('class', $form_class, 
-			 (isset($class) ? $class : 'PUBLIC')));
+			 (isset($class) ? $class : 'PUBLIC'),
+			 'class="input-medium"'));
    
 echo formelement(
     $this->i18n->_('labels', 'transp'),
 	form_dropdown('transp', $form_transp, 
-		(isset($transp) ? $transp : 'OPAQUE')));
+		(isset($transp) ? $transp : 'OPAQUE'),
+			'class="input-medium"'));
    
 ?>
  </div>

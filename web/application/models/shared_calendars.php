@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -42,6 +42,8 @@ class Shared_calendars extends CI_Model {
 			$result[$index] = array(
 					'sid' => $c['sid'],
 					'user_from' => $c['user_from'],
+					'write_access' =>
+						$this->_bool_to_int($c['write_access']),
 					);
 			$options = unserialize($c['options']);
 			if (is_array($options)) {
@@ -77,6 +79,8 @@ class Shared_calendars extends CI_Model {
 			}
 			$sid = $c['sid'];
 
+			$c['write_access'] = $this->_bool_to_int($c['write_access']);
+
 			$options = unserialize($c['options']);
 			if (is_array($options)) {
 				$c = array_merge($c, $options);
@@ -89,24 +93,22 @@ class Shared_calendars extends CI_Model {
 	}
 
 	/**
-	 * Get a list of users which an user can access
+	 * Get a list of users who can access a calendar
 	 *
 	 * @param $calendar		Complete calendar name (user:calendar)
-	 * @param $as_string	Return results as a comma separated string
-	 * 						(user1,user2,...)
 	 * @return				Associative array of the form:
-	 *						 ('username' => sid, 'username2' => sid2, ...)
-	 *						If $as_string was set as TRUE, then a comma
-	 *						separated string just with the names is returned
+	 *						 ('username' => ['sid' => sid, 'write_access' => write_access], 
+	 *						 ('username2' => ['sid' => sid2, 'write_access'
+	 *						 => write_access2], 
 	 *
 	 */
 
-	function users_with_access_to($calendar, $as_string = FALSE) {
+	function users_with_access_to($calendar) {
 		$pieces = preg_split('/:/', $calendar);
 		if (count($pieces) != 2) {
 			log_message('ERROR', 'Call to users_with_access_to() '
 					.'without full calendar specified (' . $calendar .')');
-			return ($as_string ? '' : array());
+			return array();
 		}
 
 		$user_from = $pieces[0];
@@ -119,13 +121,16 @@ class Shared_calendars extends CI_Model {
 		if (count($tmp) > 0) {
 			$tmp = array_values($tmp);
 			foreach ($tmp[0] as $sid => $share) {
-				$users[$share['user_which']] = $share['sid'];
+				$users[$share['user_which']] = array(
+					'sid' => $share['sid'],
+					'write_access' => $share['write_access'],
+					);
 			}
 
 			ksort($users);
 		}
 
-		return ($as_string ? implode(',', array_keys($users)) : $users);
+		return $users;
 	}
 
 	/**
@@ -138,9 +143,11 @@ class Shared_calendars extends CI_Model {
 	 * @param $to	User id who's getting calendar rights
 	 * @param $options	Associative array with options for this calendar
 	 *   (color, displayname, ...)
+	 * @param $write_access	Use read+write profile on TRUE, read otherwise
 	 * @return boolean	FALSE on error, TRUE otherwise
 	 */
-	function store($sid = null, $from = '', $calendar = '', $to = '', $options = array()) {
+	function store($sid = null, $from = '', $calendar = '', $to = '',
+			$options = array(), $write_access = FALSE) {
 		if (empty($from) || empty($calendar) || empty($to)) {
 			log_message('ERROR', 
 					'Call to shared_calendars->store() with no enough parameters');
@@ -154,14 +161,19 @@ class Shared_calendars extends CI_Model {
 				'calendar' => $calendar,
 				'user_which' => $to,
 				'options' => serialize($options),
+				'write_access' => $write_access ? '1' : '0',
 				);
+
+		// Preserve options
+		if (is_null($options)) {
+			unset($data['options']);
+		}
 
 		$res = false;
 		if (!is_null($sid)) {
 			$conditions = $data;
 			unset($conditions['options']);
-			$conditions['sid'] = $sid;
-			$data = array('options' => serialize($options));
+			unset($conditions['write_access']);
 
 			$this->db->where($conditions);
 			$res = $this->db->update('shared', $data);
@@ -215,6 +227,27 @@ class Shared_calendars extends CI_Model {
 			return TRUE;
 		}
 				
+	}
+
+	/**
+	 * Translates a boolean from PostgreSQL to 1/0
+	 */
+	function _bool_to_int($value) {
+		$ret = 0;
+
+		switch ($value) {
+			case 't':
+				$ret=1;
+				break;
+			case 'f':
+				$ret=0;
+				break;
+			default:
+				$ret = $value;
+				break;
+		}
+
+		return $ret;
 	}
 
 }

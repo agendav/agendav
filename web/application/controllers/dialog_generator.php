@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -28,6 +28,9 @@ class Dialog_generator extends CI_Controller {
 	// Timezone
 	private $tz;
 
+	// UTC timezone (used several times)
+	private $tz_utc;
+
 	function __construct() {
 		parent::__construct();
 
@@ -48,7 +51,9 @@ class Dialog_generator extends CI_Controller {
 			$this->time_format = $this->dates->time_format_string('date');
 
 			// Timezone
-			$this->tz = $this->config->item('default_timezone');
+			$this->tz = $this->timezonemanager->getTz(
+					$this->config->item('default_timezone'));
+			$this->tz_utc = $this->timezonemanager->getTz('UTC');
 		}
 	}
 
@@ -91,7 +96,7 @@ class Dialog_generator extends CI_Controller {
 		$dend = null;
 
 		// Base DateTime start
-		$dstart = $this->dates->fullcalendar2datetime($start, 'UTC');
+		$dstart = $this->dates->fullcalendar2datetime($start, $this->tz_utc);
 
 		// TODO make default duration configurable
 
@@ -104,7 +109,7 @@ class Dialog_generator extends CI_Controller {
 				$dend->add(new DateInterval('PT60M'));
 			} else {
 				$dend = $this->dates->
-					fullcalendar2datetime($end, 'UTC');
+					fullcalendar2datetime($end, $this->tz_utc);
 				$dend->setTime($dstart->format('H'), $dstart->format('i'));
 			}
 		} elseif ($allday === FALSE) {
@@ -113,12 +118,16 @@ class Dialog_generator extends CI_Controller {
 				$dend->add(new DateInterval('PT60M')); // 1h
 			} else {
 				$dend = $this->dates->
-					fullcalendar2datetime($end, 'UTC');
+					fullcalendar2datetime($end, $this->tz_utc);
 			}
 		} else {
 			$dstart->setTime(0, 0);
-			$dend = clone $dstart;
-			$dend->add(new DateInterval('P1D'));
+			if ($end === FALSE) {
+				$dend = clone $dstart;
+			} else {
+				$dend = $this->dates->fullcalendar2datetime($end,
+						$this->tz_utc);
+			}
 		}
 
 		// Calendars
@@ -137,8 +146,12 @@ class Dialog_generator extends CI_Controller {
 		// this event is placed on)
 		$calendar = $this->input->post('current_calendar');
 		if ($calendar === FALSE) {
-			// Use first one if no calendar is selected
-			$calendar = array_shift(array_keys($calendars));
+			// Use the calendar specified in preferences
+			$prefs = Preferences::singleton($this->session->userdata('prefs'));
+			$calendar = $prefs->default_calendar;
+			if ($calendar === FALSE) {
+				$calendar = array_shift(array_keys($calendars));
+			}
 		}
 
 		$data = array(
@@ -294,13 +307,18 @@ class Dialog_generator extends CI_Controller {
 
 			}
 
-			$start_obj = $this->dates->fullcalendar2datetime($start, 'UTC');
-			$end_obj = $this->dates->fullcalendar2datetime($end, 'UTC');
+			$start_obj = $this->dates->fullcalendar2datetime($start,
+					$this->tz_utc);
+			if ($end == 'undefined') {
+				// Maybe same date and time. Clone start
+				$end_obj = clone $start_obj;
+			} else {
+				$end_obj = $this->dates->fullcalendar2datetime($end,
+						$this->tz_utc);
+			}
 
 			if ($allday == 'true') {
 				$data['allday'] = TRUE;
-				// Fullcalendar uses -1d on all day events
-				$end_obj->add(new DateInterval('P1D'));
 			}
 
 			$data['start_date'] = $start_obj->format($this->date_format);
@@ -340,7 +358,10 @@ class Dialog_generator extends CI_Controller {
 		$shared = $this->input->post('shared');
 		$user_from = $this->input->post('user_from');
 		$sid = $this->input->post('sid');
+		$write_access = $this->input->post('write_access');
 		$url = $this->input->post('url');
+
+		$errors = FALSE;
 
 		if ($calendar === FALSE || $displayname === FALSE 
 				|| $color === FALSE || $url === FALSE) {
@@ -364,28 +385,31 @@ class Dialog_generator extends CI_Controller {
 
 			// Shares
 			if ($is_sharing_enabled && $shared !== FALSE && $shared == 'true') {
-				if ($sid === FALSE || $user_from === FALSE) {
+				if ($sid === FALSE || $user_from === FALSE || $write_access
+						=== FALSE) {
+					$errors = TRUE;
 					$this->_throw_error('modify_calendar_dialog', 
 						$this->i18n->_('messages', 'error_oops'),
 						$this->i18n->_('messages',
 							'error_interfacefailure'));
-
 				} else {
 					$data['is_shared_calendar'] = TRUE;
 					$data['sid'] = $sid;
 					$data['user_from'] = $user_from;
+					$data['write_access'] = ($write_access == '1');
 				}
 			} else if ($is_sharing_enabled) {
 				// Users who can access this calendar
 				$data['is_shared_calendar'] = FALSE;
 				$data['share_with'] =
-					$this->shared_calendars->users_with_access_to($calendar,
-							TRUE);
+					$this->shared_calendars->users_with_access_to($calendar);
 			} else {
 				$data['show_share_options'] = FALSE;
 			}
 
-			$this->load->view('dialogs/modify_calendar', $data);
+			if (FALSE === $errors) {
+				$this->load->view('dialogs/modify_calendar', $data);
+			}
 		}
 	}
 

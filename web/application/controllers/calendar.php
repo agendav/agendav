@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -29,29 +29,40 @@ class Calendar extends CI_Controller {
 	}
 
 	function index() {
+		// Layout components
+		$components = array();
+		$title = $this->config->item('site_title');
+
 		$data_header = array(
-				'title' => $this->config->item('site_title'),
+				'title' => $title,
 				'logged_in' => TRUE,
 				'body_class' => array('calendarpage'),
 				);
 
-		// Calendar view
 		$data_calendar = array();
 		$logo = $this->config->item('logo');
-		if ($logo !== FALSE) {
-			$data_calendar['logo'] = $logo;
-			$data_calendar['title'] = $data_header['title'];
-		}
+		$data_calendar['logo'] = custom_logo($logo, $title);
+		$data_calendar['title'] = $title;
 
-		$this->load->view('common_header', $data_header);
-		$this->load->view('calendar_page', $data_calendar);
-		$this->load->view('event_details_template');
+		$components['header'] = 
+			$this->load->view('common_header', $data_header, TRUE);
 
-		$this->load->view('footer',
+		$components['navbar'] = 
+			$this->load->view('navbar', $data_header, TRUE);
+
+		$components['sidebar'] = 
+			$this->load->view('sidebar', $data_calendar, TRUE);
+		$components['content'] = 
+			$this->load->view('center', array(), TRUE) .
+			$this->load->view('event_details_template', array(), TRUE) .
+			$this->load->view('share_calendar_manager_row_template', array(), TRUE);
+		$components['footer'] = $this->load->view('footer',
 				array(
 					'load_session_refresh' => TRUE,
 					'load_calendar_colors' => TRUE,
-					));
+					), TRUE);
+
+		$this->load->view('layouts/app.php', $components);
 	}
 
 	/**

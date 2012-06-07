@@ -1,3 +1,23 @@
+Release 1.2.5 (2012-06-07)
+	* Updated jQuery to 1.7.2
+	* Updated jQuery UI to 1.8.20
+	* Updated iCalcreator to 2.12
+	* Added PostgreSQL support
+	* CalDAV client rewritten to use cURL (HTTP Digest auth now
+	  supported)
+	* Rewritten calendar sharing interface with autocomplete (using
+	  principal-property-search)
+	* Added support for read-only calendar sharing
+	* Improved memory usage by reusing DateTimeZone objects
+	* Applied some fullcalendar patches from pull request #48:
+	  - Now a line shows current time in week/day views
+	  - New view: 'agenda'
+	* Lots of aesthetical changes
+	* New automated database upgrade process (migrations like)
+	* Users can now configure their default calendar, hide calendars
+	  from list and temporarily hide events from selected calendars
+	* Added et (Estonian) translation (thanks to Rivo Zängov)
+
 Release 1.2.4 (2012-01-16)
 	* Aesthetical changes: 
 	  - Event box padding

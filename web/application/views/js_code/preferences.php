@@ -12,13 +12,15 @@ $prefs = array(
 		'format_column_month',
 		'format_column_week',
 		'format_column_day',
+		'format_column_table',
 		'format_title_month',
 		'format_title_week',
 		'format_title_day',
+		'format_title_table',
 		);
 
 foreach($prefs as $pref) {
 	echo 'var prefs_' . $pref . " = '"
-		.addslashes($this->i18n->_('labels', $pref)) ."';";
+		.addslashes($this->config->item($pref)) ."';";
 }
 // vim: set ft=javascript

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -24,9 +24,20 @@ class Caldav {
 	private $CI;
 	private $client = null;
 
+	private $http_auth_method;
+
 	function __construct($params) {
 
 		$this->CI =& get_instance();
+
+		$this->http_auth_method =
+			$this->CI->config->item('caldav_http_auth_method');
+
+		// Empty string or FALSE
+		if ($this->http_auth_method != CURLAUTH_BASIC &&
+				 $this->http_auth_method != CURLAUTH_DIGEST) {
+			$this->http_auth_method = CURLAUTH_BASIC | CURLAUTH_DIGEST;
+		}
 
 		// Light loading, for using some functions without loading the full
 		// stack
@@ -34,17 +45,8 @@ class Caldav {
 			// Load ICS helper library
 			$this->CI->load->library('icshelper');
 
-			// Add required paths
-			$current_include_path = get_include_path();
-			set_include_path('.:'
-					. APPPATH . '../../libs/awl/inc:' 
-					. APPPATH . '../../libs/own_extensions:' 
-					. APPPATH . '../../libs/davical/inc:'
-					. $current_include_path);
-
 			require_once('caldav-client-v2.php');
 			require_once('mycaldav.php');
-			require_once('iCalendar.php');
 		}
 
 	}
@@ -205,8 +207,9 @@ class Caldav {
 	 */
 	function prepare_client($user, $passwd, $calendar = 'home') {
 		$this->final_url = $this->build_calendar_url($user, $calendar);
-
-		$this->client = new MyCalDAV($this->final_url, $user, $passwd);
+		$this->client = new CURLCalDAVClient($this->final_url, $user, $passwd,
+				array('auth' => $this->http_auth_method));
+		$this->client->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
 		$this->client->SetCalendar($this->final_url);
 		$this->client->PrincipalURL($this->final_url);
 		$this->client->CalendarHomeSet($this->final_url);
@@ -275,10 +278,9 @@ class Caldav {
 		$this->prepare_client($user, $passwd, '');
 		
 		$tmpcals = array();
-		foreach ($calendar_list as $calid => $contents) {
+		foreach ($calendar_list as $calid => $properties_on_db) {
 			$url = $this->build_calendar_url($user, $calid);
 			$info = $this->client->GetCalendarDetailsByURL($url);
-			//$info->color = ...
 
 			if (!is_array($info) || count($info) == 0) {
 				// Something went really wrong
@@ -287,18 +289,20 @@ class Caldav {
 				return FALSE;
 			}
 
+			$properties = $info[0];
+
 
 			// Give priority to previous data (user customizations?)
-			$preserve = array('sid', 'shared', 'user_from', 'color',
-					'displayname');
+			$preserve = array('sid', 'user_from', 'color', 'displayname');
 			foreach ($preserve as $p) {
-				if (isset($contents[$p])) {
-					$info[0]->$p = $contents[$p];
+				if (isset($properties_on_db[$p])) {
+					$properties->$p = $properties_on_db[$p];
 				}
 			}
 
-			$info[0]->shared = TRUE;
-			$tmpcals[$calid] = $info[0];
+			$properties->shared = TRUE;
+			$properties->write_access = $properties_on_db['write_access'];
+			$tmpcals[$calid] = $properties;
 		}
 
 		return $this->prepare_calendar_data_for_browser($tmpcals);
@@ -560,6 +564,65 @@ class Caldav {
 	}
 
 	/**
+	 * Searchs a principal based on passed conditions.
+	 */
+	function principal_property_search($user, $passwd,
+			$dn = null, $user_address = null,
+			$use_or = TRUE) {
+
+		$this->prepare_client($user, $passwd, '');
+
+		if (is_null($dn) && is_null($user_address)) {
+			$this->CI->extended_logs->message('ERROR',
+					'Call to principal_property_search '
+					.'with null dn and user_address');
+			return array('err_invalidinput', array());
+		}
+
+		// Build XML
+		$xml = '<principal-property-search xmlns="DAV:"' .
+			($use_or ? ' test="anyof"' : '') . '>';
+		if (!is_null($dn)) {
+			$xml .= '<property-search>';
+			$xml .= '<prop><displayname/></prop>';
+			$xml .= '<match>' . $dn . '</match></property-search>';
+		}
+
+		if (!is_null($user_address)) {
+			$xml .= '<property-search><prop>';
+			$xml .= '<C:calendar-user-address-set '
+				.'xmlns:C="urn:ietf:params:xml:ns:caldav"/></prop>';
+			$xml .= '<match>'.$user_address.'</match></property-search>';
+		}
+
+		$xml .=
+			'<prop><displayname/><email/></prop></principal-property-search>';
+
+		// Do request
+		$url = $this->build_principal_url($user);
+
+		$res = $this->client->principal_property_search($xml, $url);
+
+		// Extract usernames from $res
+		$return_results = array();
+		foreach ($res as $elem) {
+			$username = $this->extract_username_from_href($elem['href']);
+			$elem['username'] = $username;
+			$return_results[$username] = $elem;
+		}
+
+		// Remove current user, if present
+		unset($return_results[$user]);
+
+		// Sort by username
+		ksort($return_results);
+
+		return array(
+				$this->client->GetHTTPResultCode(),
+				$return_results);
+	}
+
+	/**
 	 * Returns the public CalDAV URL for a calendar
 	 *
 	 * @param	$calendar	String in the form 'user:calendar', or just
@@ -628,8 +691,9 @@ class Caldav {
 	/**
 	 * Generates a complete ACL to be set on a calendar
 	 *
-	 * @param $share_with	Array of user identifiers who will have access
-	 * 						to this calendar
+	 * @param $share_with	Array of shares in the form:
+	 *						[ [sid?, username, write_access],
+	 *                        [sid2?, username2, write_access2] ..]
 	 *
 	 * @return	boolean		TRUE if everything went ok, FALSE otherwise
 	 */
@@ -643,20 +707,22 @@ class Caldav {
 
 		// Permissions
 		$owner_perm = $this->CI->config->item('owner_permissions');
-		$share_perm = $this->CI->config->item('share_permissions');
+		$r_perm = $this->CI->config->item('read_profile_permissions');
+		$rw_perm = $this->CI->config->item('read_write_profile_permissions');
 		$other_perm = $this->CI->config->item('default_permissions');
 
 		// Owner permissions
-		$aces[] = $this->_ace_for($xml, FALSE, $owner_perm, TRUE);
+		$aces[] = $this->_ace_for($xml, null, $owner_perm, TRUE);
 
 		// User which can access this calendar
-		foreach ($share_with as $user) {
-			$user_url = $this->build_principal_url($user);
-			$aces[] = $this->_ace_for($xml, $user_url, $share_perm);
+		foreach ($share_with as $share) {
+			$user_url = $this->build_principal_url($share['username']);
+			$aces[] = $this->_ace_for($xml, $user_url,
+					($share['write_access'] == '1' ?  $rw_perm : $r_perm));
 		}
 
 		// Other users
-		$aces[] = $this->_ace_for($xml, FALSE, $other_perm, FALSE, TRUE);
+		$aces[] = $this->_ace_for($xml, null, $other_perm, FALSE);
 
 		return $xml->Render('acl', $aces);
 	}
@@ -664,13 +730,14 @@ class Caldav {
 	/**
 	 * Generates an ACE element
 	 */
-	function _ace_for(&$xmldoc, $user, $perms = array(), $owner = FALSE, $other =
-			FALSE) {
+	function _ace_for(&$xmldoc, $user = null, $perms = array(),
+			$is_owner = FALSE) {
 		$ace = $xmldoc->NewXMLElement('ace');
 		$principal = $ace->NewElement('principal');
-		if ($owner === TRUE) {
+
+		if ($is_owner === TRUE) {
 			$principal->NewElement('property')->NewElement('owner');
-		} elseif ($other === TRUE) {
+		} elseif (is_null($user)) {
 			$principal->NewElement('authenticated');
 		} else {
 			$principal->NewElement('href', $user);
@@ -719,13 +786,76 @@ class Caldav {
 		}
 
 		$replacement = $use_principal 
-			. (empty($calendar) ? '' : '/' .  $calendar);
+			. (empty($calendar) ? '' : '/' .  rawurlencode($calendar));
 		$built = preg_replace('/%s/', $replacement, $calendar_url) 
 			. $href;
 
 		log_message('DEBUG', 'Built calendar URL: ' . $built);
 		return $built;
 	}
+
+	/**
+	 * Extracts username from a principal URL
+	 */
+	function extract_username_from_href($href) {
+		$tmp_href = parse_url($href);
+		$href = $tmp_href['path'];
+
+		$tmp_pattern_parsed =
+			parse_url($this->CI->config->item('caldav_principal_url'));
+		$pattern_path = $tmp_pattern_parsed['path'];
+
+		// Build a pattern that matches href to extract just the %u part
+		$extract_pattern = preg_replace(
+				array(
+					'/\/%u\//', '/\//'),
+				array('/([^/]+)/',
+					'\/'),
+				$pattern_path);
+
+		$matches = preg_match('/' . $extract_pattern . '/',
+				$href, $fragments);
+		if ($matches == 0) {
+			$this->CI->extended_logs->message('ERROR',
+					'Trying to extract username from invalid '
+					.'href: ['.$href.']');
+			return '';
+		} else {
+			return $fragments[1];
+		}
+	}
+
+
+	/**
+	 * Loads full list of calendars for current user
+	 */
+	function all_user_calendars($user, $passwd) {
+		$ret = array();
+
+		// TODO order
+		$own_calendars = $this->get_own_calendars($user, $passwd);
+		$ret = $own_calendars;
+
+		// Look for shared calendars
+		if ($this->CI->config->item('enable_calendar_sharing')) {
+			$tmp_shared_calendars =
+				$this->CI->shared_calendars->get_shared_with($user);
+
+			if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
+				$shared_calendars = $this->get_shared_calendars_info($user,
+						$passwd, $tmp_shared_calendars);
+				if ($shared_calendars === FALSE) {
+					$this->CI->extended_logs->message('ERROR', 
+							'Error reading shared calendars');
+				} else {
+					$ret = array_merge($ret, $shared_calendars);
+				}
+			}
+		}
+
+		return $ret;
+	}
+
 
 
 }

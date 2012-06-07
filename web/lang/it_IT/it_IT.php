@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Lorenzo Novaro novalore [at] 19 [dot] coop
- *
  *  This file is part of AgenDAV.
  *
  *  AgenDAV is free software: you can redistribute it and/or modify
@@ -18,39 +16,69 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Italian master language file
- */
-
 $labels = array();
 $messages = array();
 
 // Labels
-
-$labels['format_date_strftime'] = '%a %e %B %Y'; // Just date with no time, strftime format
-// Fullcalendar labels 
-// (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
-$labels['format_column_month'] = 'ddd'; 
-$labels['format_column_week'] = 'ddd d'; 
-$labels['format_column_day'] = 'ddd d MMMM'; 
-
-$labels['format_title_month'] = 'MMMM yyyy';
-$labels['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
-$labels['format_title_day'] = 'dddd, MMM d yyyy';
-
 $labels['username'] = 'Nome Utente';
 $labels['password'] = 'Password';
-$labels['months_long'] = array('Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre');
-$labels['months_short'] = array('Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic');
-$labels['daynames_long'] = array('Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato');
-$labels['daynames_short'] = array('Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab');
+
+$labels['january'] = 'Gennaio';
+$labels['february'] = 'Febbraio';
+$labels['march'] = 'Marzo';
+$labels['april'] = 'Aprile';
+$labels['may'] = 'Maggio';
+$labels['june'] = 'Giugno';
+$labels['july'] = 'Luglio';
+$labels['august'] = 'Agosto';
+$labels['september'] = 'Settembre';
+$labels['october'] = 'Ottobre';
+$labels['november'] = 'Novembre';
+$labels['december'] = 'Dicembre';
+
+$labels['january_short'] = 'Gen';
+$labels['february_short'] = 'Feb';
+$labels['march_short'] = 'Mar';
+$labels['april_short'] = 'Apr';
+$labels['may_short'] = 'Mag';
+$labels['june_short'] = 'Giu';
+$labels['july_short'] = 'Lug';
+$labels['august_short'] = 'Ago';
+$labels['september_short'] = 'Set';
+$labels['october_short'] = 'Ott';
+$labels['november_short'] = 'Nov';
+$labels['december_short'] = 'Dic';
+
+$labels['sunday'] = 'Domenica';
+$labels['monday'] = 'Lunedì';
+$labels['tuesday'] = 'Martedì';
+$labels['wednesday'] = 'Mercoledì';
+$labels['thursday'] = 'Giovedì';
+$labels['friday'] = 'Venerdì';
+$labels['saturday'] = 'Sabato';
+
+$labels['sunday_short'] = 'Dom';
+$labels['monday_short'] = 'Lun';
+$labels['tuesday_short'] = 'Mar';
+$labels['wednesday_short'] = 'Mer';
+$labels['thursday_short'] = 'Gio';
+$labels['friday_short'] = 'Ven';
+$labels['saturday_short'] = 'Sab';
 
 $labels['today'] = 'Oggi';
+$labels['tomorrow'] = 'Domani';
 $labels['month'] = 'Mese';
 $labels['week'] = 'Settimana';
 $labels['day'] = 'Giorno';
+$labels['tableview'] = 'agenda';
 $labels['allday'] = 'Tutto il giorno';
 $labels['choose_date'] = 'Scegli la data';
+
+$labels['thisweek'] = 'Questa settimana';
+$labels['nextweek'] = 'Prossima settimana';
+$labels['thismonth'] = 'Questo mese';
+$labels['nextmonth'] = 'Prossimo mese';
+$labels['future'] = 'Eventi futuri';
 
 $labels['calendar'] = 'Calendario';
 $labels['location'] = 'Luogo';
@@ -105,12 +133,15 @@ $labels['editevent'] = 'Modifica evento';
 $labels['deleteevent'] = 'Cancella evento';
 $labels['deletecalendar'] = 'Cancella calendario';
 $labels['calendars'] = 'Calendari';
+$labels['shared_calendars'] = 'Calendari condivisi';
 $labels['refresh'] = 'Aggiorna';
 $labels['delete'] = 'Cancella';
+$labels['add'] = 'Aggiungi';
 $labels['close'] = 'Chiudi';
 $labels['save'] = 'Salva';
 $labels['create'] = 'Crea';
 $labels['login'] = 'Login';
+$labels['logout'] = 'Logout';
 $labels['modify'] = 'Modifica';
 $labels['cancel'] = 'Annulla';
 $labels['next'] = 'successivo';
@@ -121,6 +152,20 @@ $labels['untitled'] = 'Senza titolo';
 
 $labels['sharewith'] = 'Condividi con';
 $labels['publicurl'] = 'URL per applicazioni compatibili';
+
+$labels['access'] = 'Accesso';
+$labels['readonly'] = 'Sola lettura';
+$labels['readandwrite'] = 'Lettura e scrittura';
+
+$labels['pastevents'] = 'Eventi passati';
+
+$labels['preferences'] = 'Preferenze';
+$labels['return'] = 'Indietro';
+
+$labels['hidelist'] = 'Nascondi dalla lista';
+$labels['defaultcalendar'] = 'Calendario predefinito';
+
+$labels['toggleallcalendars'] = 'Nascondi/Mostra tutti';
 
 // Messages
 $messages['error_auth'] = 'Nome utente o password non validi';
@@ -139,6 +184,7 @@ $messages['info_permanentremoval'] = 'I dati verranno cancellati in modo definit
 $messages['info_repetitivedeleteall'] = 'Tutte le ripetizioni di questo evento verranno cancellate';
 $messages['info_sharedby'] = 'Puoi accedere a questo calendario perché %user lo ha condiviso con te';
 $messages['info_shareexplanation'] = 'Puoi condividere questo calendario con altri utenti e permettere loro di modificarlo. Indicane i nomi qui sotto separati da virgole o spazi';
+$messages['info_notshared'] = 'Il calendario non è condiviso';
 $messages['error_sessexpired'] = 'La sessione è scaduta';
 $messages['error_loginagain'] = 'Esegui nuovamente la login';
 
@@ -157,20 +203,24 @@ $messages['overlay_loading_calendar_list'] = 'Carico la lista dei calendari...';
 $messages['error_loading_dialog'] = 'Errore nel caricamento';
 
 $messages['error_oops'] = 'Oops. Errore inatteso';
-$messages['error_interfacefailure'] = "Errore dell'interfaccia";
-$messages['error_current_event_not_loaded'] = "L'evento corrente non è disponibile";
+$messages['error_interfacefailure'] = 'Errore dell\'interfaccia';
+$messages['error_current_event_not_loaded'] = 'L\'evento corrente non è disponibile';
 
-$messages['error_event_not_deleted'] = "Errore nella cancellazione dell'evento";
+$messages['error_event_not_deleted'] = 'Errore nella cancellazione dell\'evento';
 $messages['error_loading_calendar_list'] = 'Errore nella lettura della lista dei calendari';
 $messages['notice_no_calendars'] = 'Non ci sono calendari disponibili';
 $messages['info_repetition_human'] = 'Questo evento si ripete %explanation';
 $messages['info_repetition_unparseable'] = 'Ci sono delle regole di ricorrenza associate a questo evento che qesto programma non è ancora in grado di interpretare. Raw definition:';
 $messages['error_calendarnotfound'] = 'Calendario %calendar non valido';
 $messages['error_eventnotfound'] = 'Elemento non trovato';
-$messages['error_eventchanged'] = "L'Elemento è stato modificato da qualcun altro. Ricarica, per favore.";
+$messages['error_eventchanged'] = 'L\'Elemento è stato modificato da qualcun altro. Ricarica, per favore.';
 $messages['error_unknownhttpcode'] = 'Errore sconosciuto, HTTP code=%res';
 $messages['error_internalcalnamemissing'] = 'Nome interno per il calendario vuoto';
 $messages['error_calname_missing'] = 'Nome del calendario vuoto';
 $messages['error_calcolor_missing'] = 'Bisogna inserire un colore';
 $messages['error_mkcalendar'] = 'Il server si è rifiutato di creare il calendario. Controllare i parametri di creazione.';
 $messages['error_shareunknownusers'] = 'Alcuni degli utenti specificati non esistono';
+
+$messages['help_defaultcalendar'] = 'I nuovi eventi verranno automaticamente memorizzati in questo calendario. Inserire qui il calendario più utilizzato.';
+
+$messages['info_prefssaved'] = 'Preferenze salvate';

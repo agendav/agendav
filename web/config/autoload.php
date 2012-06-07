@@ -53,7 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
-		'dates');
+		'timezonemanager', 'dates', 'preferences', 'recurrence');
 
 
 /*
@@ -65,7 +65,7 @@ $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'html');
+$autoload['helper'] = array('url', 'html', 'form');
 
 
 /*
@@ -110,7 +110,8 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('auth', 'recurrency', 'shared_calendars', 'i18n');
+$autoload['model'] = array('auth', 'shared_calendars', 'i18n',
+		'userpref');
 
 
 /* End of file autoload.php */

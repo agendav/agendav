@@ -1,6 +1,34 @@
 <?php
 // vim: ft=php
 
+/**********************
+ * Connection options *
+ **********************/
+
+/*
+ * HTTP auth method
+ * ================
+ *
+ * Specify which HTTP authentication method does your server need. Most
+ * CalDAV servers support Basic Authentication, but you should check your
+ * server documentation.
+ *
+ * It is recommended to use a fixed value for this. If you don't set it,
+ * CalDAV client will have to negotiate with server on each request and
+ * perfomance will be worse (mainly when Basic auth is used)
+ *
+ * Possible values can be found at
+ * http://www.php.net/manual/es/function.curl-setopt.php (CURLOPT_HTTPAUTH)
+ *
+ * Examples:
+ *  Automatic guess: $config['caldav_http_auth_method'] = null;
+ *  SabreDAV: $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
+ *  DAViCal: $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+ */
+
+$config['caldav_http_auth_method'] = null;
+
+
 /*******************
  * CalDAV URLs     *
  *******************/
@@ -62,8 +90,12 @@ $config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
 		'read-current-user-privilege-set', 'write-acl', 'C:read-free-busy',
 		'write', 'write-properties', 'write-content', 'bind', 'unbind');
 
-// Permissions given to users who have access to another user calendars
-$config['share_permissions'] = array('read', 'write');
+// Permissions for sharing calendars using the 'read' profile
+$config['read_profile_permissions'] = array('C:read-free-busy', 'read');
+
+// Permissions for sharing calendars using the 'read+write' profile
+$config['read_write_profile_permissions'] = array('C:read-free-busy',
+		'read', 'write');
 
 // Authenticated users default permissions
 $config['default_permissions'] = array('C:read-free-busy');

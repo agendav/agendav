@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -62,36 +62,46 @@ class Login extends CI_Controller {
 				$data = array(
 						'user' => $user,
 						'passwd' => $passwd,
+						'prefs' =>
+							$this->userpref->load_prefs($user)->getAll(),
 						);
 				$this->auth->new_session($data);
+				redirect("/calendar");
+				$this->output->_display();
+				die();
 			} else {
 				$err = $this->i18n->_('messages', 'error_auth');
 			}
-		}
-
-		if ($valid_auth === FALSE) {
-            $data_header = array(
-					'title' => $this->config->item('site_title'),
-					'body_class' => array('loginpage'),
-					);
-			$this->load->view('common_header', $data_header);
-
-			$data = array();
-			if (!empty($err)) {
-				$data['custom_errors'] = $err;
-			}
-
-			$logo = $this->config->item('logo');
-			if ($logo !== FALSE) {
-				$data['logo'] = $logo;
-				$data['title'] = $data_header['title'];
-			}
-
-			$this->load->view('login', $data);
-			$this->load->view('footer');
 		} else {
-			redirect("/calendar");
+			$err = validation_errors();
 		}
+
+
+		$page_components = array();
+
+		$title = $this->config->item('site_title');
+
+		$data_header = array(
+				'title' => $title,
+				'body_class' => array('loginpage'),
+				);
+		$page_components['header'] = $this->load->view('common_header',
+				$data_header, TRUE);
+
+		$data = array();
+		if (!empty($err)) {
+			$data['errors'] = $err;
+		}
+
+		$logoimg = $this->config->item('logo');
+		$data['logo'] = custom_logo($logoimg, $title);
+		$data['title'] = $title;
+
+		$page_components['content'] = $this->load->view('login', $data, TRUE);
+		$page_components['footer'] = $this->load->view('footer', array(),
+				TRUE);
+
+		$this->load->view('layouts/plain', $page_components);
 
 	}
 }

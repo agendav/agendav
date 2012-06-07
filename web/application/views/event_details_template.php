@@ -38,7 +38,7 @@
 
 <div class="actions">
 <button type="button" href="#" class="addicon btn-icon-calendar-edit
-link_edit_event"><?php echo $this->i18n->_('labels','modify')?></button>
+link_modify_event"><?php echo $this->i18n->_('labels','modify')?></button>
 <button type="button" href="#" class="addicon btn-icon-calendar-delete
 link_delete_event"><?php echo $this->i18n->_('labels','delete')?></button>
 </div>

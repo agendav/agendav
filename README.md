@@ -12,7 +12,8 @@ Requisites
 * A web server
 * PHP >= 5.3.0
 * PHP mbstring extension
-* MySQL > 5.1
+* PHP cURL extension
+* MySQL > 5.1 or PostgreSQL >= 8.1
 
 Thanks
 ------
@@ -31,6 +32,5 @@ AgenDAV is possible thanks to the following projects:
 * [qTip2](http://craigsworks.com/projects/qtip2/)
 * [timePicker](https://github.com/perifer/timePicker)
 * [LoadMask](http://code.google.com/p/jquery-loadmask/)
-* [Tag-it!](http://aehlke.github.com/tag-it/)
 * [FatCow.com free icons](http://www.fatcow.com/free-icons)
 * And other projects I may forget (please, ask for credit!)

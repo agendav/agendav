@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.net
+
+[agendav.labels-and-messages]
+file_filter = web/lang/<lang>/<lang>.php
+source_file = web/lang/en/en.php
+source_lang = en
+type = PHP_ALT_ARRAY
+

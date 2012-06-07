@@ -76,14 +76,46 @@ if ( ! function_exists('script_tag'))
 
 if ( ! function_exists('formelement'))
 {
-    function formelement($label, $input) {
+    function formelement($label, $input, $help = '') {
 		?>
-			<div class="ctrlHolder">
+			<div class="control-group">
 			<?php 
-			echo form_label($label);
-			echo $input;
+			echo form_label($label, '', array('class' => 'control-label'));
+			echo '<div class="controls">' . $input;
+			if (!empty($help)) {
+				echo '<p class="help-block">'.$help.'</p>';
+			}
+			echo '</div>';
 			?>
 			</div>
 		<?php
 	}
+}
+
+
+/*
+ * Returns small AgenDAV logo
+ */
+
+function agendav_small_logo() {
+	return '<div id="logo" class="block">'
+		. img(array(
+				'src' => 'img/agendav_small.png',
+				'alt' => 'AgenDAV',
+				))
+		. '</div>';
+}
+
+/*
+ * Returns app defined logo
+ */
+
+function custom_logo($filename, $title = '') {
+	return '<div id="logo" class="block">'
+		. img(array(
+				'src' => 'img/' . $filename,
+				'alt' => $title,
+				'title' => $title,
+				))
+		. '</div>';
 }

@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
- *
  *  This file is part of AgenDAV.
  *
  *  AgenDAV is free software: you can redistribute it and/or modify
@@ -18,45 +16,69 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Spanish master language file
- */
-
 $labels = array();
 $messages = array();
 
 // Labels
-
-$labels['format_date_strftime'] = '%a %e de %B de %Y'; // Just date with no time, strftime format
-
-// Fullcalendar labels 
-// (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
-$labels['format_column_month'] = 'ddd'; 
-$labels['format_column_week'] = 'ddd d'; 
-$labels['format_column_day'] = 'ddd d \'de\' MMMM'; 
-
-$labels['format_title_month'] = 'MMMM yyyy';
-$labels['format_title_week'] = "d[ MMM][ yyyy]{ '&#8212;'d MMM yyyy}";
-$labels['format_title_day'] = 'dddd d \'de\' MMMM \'de\' yyyy';
-
 $labels['username'] = 'Nombre de usuario';
 $labels['password'] = 'Contraseña';
-$labels['months_long'] = array('enero', 'febrero', 'marzo', 'abril',
-		'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre',
-		'noviembre', 'diciembre');
-$labels['months_short'] = array('ene', 'feb', 'mar', 'abr', 'may', 'jun',
-		'jul', 'ago', 'sep', 'oct', 'nov', 'dic');
-$labels['daynames_long'] = array('domingo', 'lunes', 'martes', 'miércoles',
-		'jueves', 'viernes', 'sábado');
-$labels['daynames_short'] = array('dom', 'lun', 'mar', 'mié', 'jue', 'vie',
-		'sáb');
+
+$labels['january'] = 'enero';
+$labels['february'] = 'febrero';
+$labels['march'] = 'marzo';
+$labels['april'] = 'abril';
+$labels['may'] = 'mayo';
+$labels['june'] = 'junio';
+$labels['july'] = 'julio';
+$labels['august'] = 'agosto';
+$labels['september'] = 'septiembre';
+$labels['october'] = 'octubre';
+$labels['november'] = 'noviembre';
+$labels['december'] = 'diciembre';
+
+$labels['january_short'] = 'ene';
+$labels['february_short'] = 'feb';
+$labels['march_short'] = 'mar';
+$labels['april_short'] = 'abr';
+$labels['may_short'] = 'may';
+$labels['june_short'] = 'jun';
+$labels['july_short'] = 'jul';
+$labels['august_short'] = 'ago';
+$labels['september_short'] = 'sep';
+$labels['october_short'] = 'oct';
+$labels['november_short'] = 'nov';
+$labels['december_short'] = 'dic';
+
+$labels['sunday'] = 'domingo';
+$labels['monday'] = 'lunes';
+$labels['tuesday'] = 'martes';
+$labels['wednesday'] = 'miércoles';
+$labels['thursday'] = 'jueves';
+$labels['friday'] = 'viernes';
+$labels['saturday'] = 'sábado';
+
+$labels['sunday_short'] = 'dom';
+$labels['monday_short'] = 'lun';
+$labels['tuesday_short'] = 'mar';
+$labels['wednesday_short'] = 'mié';
+$labels['thursday_short'] = 'jue';
+$labels['friday_short'] = 'vie';
+$labels['saturday_short'] = 'sáb';
 
 $labels['today'] = 'Hoy';
+$labels['tomorrow'] = 'Mañana';
 $labels['month'] = 'mes';
 $labels['week'] = 'semana';
 $labels['day'] = 'día';
+$labels['tableview'] = 'Agenda';
 $labels['allday'] = 'día completo';
 $labels['choose_date'] = 'Elegir una fecha';
+
+$labels['thisweek'] = 'Esta semana';
+$labels['nextweek'] = 'Próxima semana';
+$labels['thismonth'] = 'Este mes';
+$labels['nextmonth'] = 'El mes que viene';
+$labels['future'] = 'Eventos futuros';
 
 $labels['calendar'] = 'Calendario';
 $labels['location'] = 'Lugar';
@@ -111,12 +133,15 @@ $labels['editevent'] = 'Editar evento';
 $labels['deleteevent'] = 'Borrar evento';
 $labels['deletecalendar'] = 'Borrar calendario';
 $labels['calendars'] = 'Calendarios';
+$labels['shared_calendars'] = 'Calendarios compartidos';
 $labels['refresh'] = 'Refrescar';
 $labels['delete'] = 'Borrar';
+$labels['add'] = 'Añadir';
 $labels['close'] = 'Cerrar';
 $labels['save'] = 'Guardar';
 $labels['create'] = 'Crear';
 $labels['login'] = 'Acceder';
+$labels['logout'] = 'Salir';
 $labels['modify'] = 'Modificar';
 $labels['cancel'] = 'Cancelar';
 $labels['next'] = 'siguiente';
@@ -127,6 +152,20 @@ $labels['untitled'] = 'Sin título';
 
 $labels['sharewith'] = 'Compartir con';
 $labels['publicurl'] = 'URL para clientes de escritorio';
+
+$labels['access'] = 'Acceso';
+$labels['readonly'] = 'Sólo lectura';
+$labels['readandwrite'] = 'Lectura y escritura';
+
+$labels['pastevents'] = 'Eventos pasados';
+
+$labels['preferences'] = 'Preferencias';
+$labels['return'] = 'Volver';
+
+$labels['hidelist'] = 'Ocultar de la lista';
+$labels['defaultcalendar'] = 'Calendario por defecto';
+
+$labels['toggleallcalendars'] = 'Ver/ocultar todos';
 
 // Messages
 $messages['error_auth'] = 'Nombre de usuario o contraseña inválidos';
@@ -148,6 +187,7 @@ $messages['info_sharedby'] = 'Tiene acceso a este calendario porque %user lo com
 $messages['info_shareexplanation'] = 'Puede compartir este calendario con
 otros usuarios para que ellos también puedan modificarlo. Separe con
 espacios o comas los nombres de los usuarios. ';
+$messages['info_notshared'] = 'Este calendario no se está compartiendo con nadie';
 $messages['error_sessexpired'] = 'Su sesión ha caducado';
 $messages['error_loginagain'] = 'Por favor, autentíquese de nuevo';
 
@@ -187,3 +227,7 @@ $messages['error_mkcalendar'] = 'El servidor rechazó la petición de creación
 del calendario. Por favor, revise los parámetros';
 $messages['error_shareunknownusers'] = 'Alguno de los usuarios que indicó no
 existen';
+
+$messages['help_defaultcalendar'] = 'Los eventos nuevos serán colocados en este calendario por defecto. Elija el calendario que más use';
+
+$messages['info_prefssaved'] = 'Preferencias guardadas';

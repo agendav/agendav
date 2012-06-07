@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -21,33 +21,45 @@
 class Defs {
 	// Leave jQuery and jQuery UI the two first scripts
 	static $jsfiles= array(
-			'libs/jquery-1.7.1.min.js',
-			'libs/jquery-ui-1.8.16.min.js',
+			'libs/jquery-1.7.2.min.js',
+			'libs/jquery-ui-1.8.20.min.js',
 			'libs/jquery.freeow.min.js',
 			'libs/fullcalendar.min.js',
 			'libs/jquery.loadmask.min.js',
 			'libs/jquery.colorPicker.20091014.js',
-			'libs/tag-it.20110621.js',
 			'libs/jquery.qtip.min.js',
 			'libs/jquery.colorhelpers.js',
 			'libs/jquery.timePicker.20110318.js',
+			'translation.js',
 			'app.js',
 			);
 
 	static $cssfiles = array(
+			'bootstrap.agendav.css',
 			'Aristo_20111229.css',
-			'fullcalendar.1.5.2.css',
+			'fullcalendar.css',
 			'jquery.qtip.min.css',
 			'timePicker.css',
+			'loadmask.css',
+			'freeow.css',
+			'colorpicker.css',
 			'app.css',
 			);
 	static $printcssfiles = array(
-			'fullcalendar.print.1.5.2.css',
+			'fullcalendar.print.css',
 			'app.print.css',
 			);
 
 	function definitions() {
-		define('AGENDAV_VERSION', '1.2.4');
+		define('AGENDAV_VERSION', '1.2.5');
+		set_include_path(implode(PATH_SEPARATOR, array(
+						BASEPATH . '../../libs/icalcreator',
+						BASEPATH . '../../libs/own_extensions',
+						BASEPATH . '../../libs/caldav-client/awl',
+						BASEPATH . '../../libs/caldav-client',
+						get_include_path()
+						)));
+
 	}
 
 	/**

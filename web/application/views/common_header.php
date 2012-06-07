@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -36,12 +36,6 @@ foreach ($printcss as $pcss) {
 			);
 }
 ?>
-    <!--[if lte ie 7]>
-      <style type="text/css" media="screen">
-        /* Move these to your IE6/7 specific stylesheet if possible */
-        .uniForm, .uniForm .ctrlHolder, .uniForm .buttonHolder, .uniForm .ctrlHolder ul{ zoom:1; }
-      </style>
-    <![endif]-->
 </head>
 <?php
 // Body classes
@@ -51,23 +45,3 @@ if (isset($body_class)) {
 }
 ?>
 <body class="<?php echo implode(' ', $final_body_class)?>">
-<div id="topbar">
- <div id="wrap_topbar">
-  <div class="title">
-   <?php echo $title; ?>
-  </div>
-<?php 
-if (isset($logged_in)):
-$img_logout = array(
-        'src' => 'img/exit.png',
-        'alt' => 'Logout',
-        'title' => 'Logout',
-		'id' => 'logoutbutton',
-        );
-?>
-<div class="current_username"><?php echo $this->auth->get_user(); ?></div> | <?php echo anchor('calendar/logout', img($img_logout))?>
-<?php
-endif;
-?>
- </div><!--wrap_topbar-->
-</div>

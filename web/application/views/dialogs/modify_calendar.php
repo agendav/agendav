@@ -3,7 +3,7 @@
 <?php
 $data_form = array(
 	'id' => 'modify_calendar_form',
-	'class' => 'uniForm',
+	'class' => 'form-horizontal',
 );
 echo form_open('caldav2json/modify_calendar', $data_form);
 
@@ -28,25 +28,16 @@ $show_share_options = (isset($show_share_options) ? $show_share_options :
 echo form_hidden('calendar', $calendar);
 
 
-echo form_hidden('shared', ($show_share_options && $is_shared_calendar) ? 'true' : 'false');
+echo form_hidden('is_shared_calendar', ($show_share_options && $is_shared_calendar) ? 'true' : 'false');
 if ($show_share_options && $is_shared_calendar) {
 	echo form_hidden('sid', isset($sid) ? $sid : '?');
 	echo form_hidden('user_from', isset($user_from) ? $user_from : '?');
-} else if ($show_share_options) {
-	// Users who can access this calendar
-	$form_share_with = array(
-			'name' => 'share_with',
-			'value' => $share_with,
-			'class' => 'share_with large',
-			'maxlength' => '255',
-			'size' => '25',
-			);
 }
 
 $form_displayname = array(
 		'name' => 'displayname',
 		'value' => $displayname,
-		'class' => 'displayname medium',
+		'class' => 'displayname input-medium',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -54,7 +45,7 @@ $form_displayname = array(
 $form_color = array(
 		'name' => 'calendar_color',
 		'value' => $color,
-		'class' => 'calendar_color pick_color ultrasmall',
+		'class' => 'calendar_color pick_color input-mini',
 		'maxlength' => '7',
 		'size' => '7',
 		);
@@ -66,7 +57,13 @@ if ($show_share_options && $is_shared_calendar):
 <?php
 echo $this->i18n->_('messages', 'info_sharedby',
 		array('%user' => '<span
-			class="show_user_name">'.$user_from.'</span>'))?>
+			class="username">'.$user_from.'</span>'));
+
+if (!isset($write_access) || $write_access === FALSE) {
+	echo ' (' . $this->i18n->_('labels', 'readonly') . ')';
+}
+?>
+
 </div>
 
 <?php
@@ -96,16 +93,14 @@ endif;
 
 <?php
 if ($show_share_options && !$is_shared_calendar):
+
 ?>
 <div id="tabs-share">
-	<div class="share_info ui-corner-all">
-	<?php echo $this->i18n->_('messages', 'info_shareexplanation');?>
-	</div>
 <?php
-echo formelement(
-		$this->i18n->_('labels', 'sharewith'),
-		form_input($form_share_with));
+	$this->load->view('share_calendar_manager_table',
+			array('shares' => $share_with));
 ?>
+
 </div>
 <?php
 endif;

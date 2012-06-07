@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PHP=`which php`
+
+# Find path to web/public dir
+realpath() {
+	[[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+PUBLIC_DIR=`realpath "$0"|sed 's_agendavcli\$__g'`../web/public
+
+$PHP "${PUBLIC_DIR}"/index.php cli ${1-}

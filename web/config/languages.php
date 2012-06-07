@@ -5,16 +5,13 @@
 | -------------------------------------------------------------------
 */
 $config['lang_rels'] = array(
-		'en_US' => array(
+		'en' => array(
 			'codeigniter' => 'english',
 			),
 		'es_ES' => array(
 			'codeigniter' => 'spanish',
 			),
 		'de_DE' => array(
-			'codeigniter' => 'german',
-			),
-		'de_AT' => array(
 			'codeigniter' => 'german',
 			),
 		'it_IT' => array(
@@ -25,6 +22,9 @@ $config['lang_rels'] = array(
 			),
 		'nl_NL' => array(
 			'codeigniter' => 'nl',
+			),
+		'et' => array(
+			'codeigniter' => 'et',
 			),
 		);
 

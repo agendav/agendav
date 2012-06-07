@@ -70,10 +70,10 @@ $config['show_public_caldav_url'] = TRUE;
 |
 | This determines which language should be used by default. Make sure
 | there is an available translation if you intend to use something other
-| than en_US.
+| than en.
 |
 */
-$config['default_language']	= 'en_US';
+$config['default_language']	= 'en';
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +99,47 @@ $config['default_time_format'] = '24';
 | * mdy: month-day-YYYY will be used
 */
 $config['default_date_format'] = 'ymd';
+
+/*
+|--------------------------------------------------------------------------
+| Readable date format (strftime)
+|--------------------------------------------------------------------------
+|
+| This determines which date format should be used by default when showing a
+| date. It's not used in forms.
+|
+| Requires strftime syntax (http://php.net/strftime)
+|
+| Some examples:
+|
+|  * %a %e %B %Y : Mon 5 March 2012
+|  * %a %e de %B de %Y : Lun 5 de marzo de 2012 (great for es_ES)
+*/
+
+$config['format_full_date'] = '%a %e %B %Y';
+
+/*
+|--------------------------------------------------------------------------
+| Calendar titles and columns date formats
+|--------------------------------------------------------------------------
+|
+| Following options control how the web calendar should format dates on
+| titles and columns for each type of view
+|
+| Requires own Fullcalendar syntax
+| (http://arshaw.com/fullcalendar/docs/utilities/formatDate/)
+|
+*/
+
+$config['format_column_month'] = 'ddd'; 
+$config['format_column_week'] = 'ddd d'; 
+$config['format_column_day'] = 'ddd d MMMM'; 
+$config['format_column_table'] = 'MMM d, yyyy';
+
+$config['format_title_month'] = 'MMMM yyyy';
+$config['format_title_week'] = "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}";
+$config['format_title_day'] = 'dddd, MMM d yyyy';
+$config['format_title_table'] = 'dddd, MMM d yyyy';
 
 /*
 |--------------------------------------------------------------------------
@@ -163,3 +204,19 @@ $config['calendar_colors'] = array(
  */
 
 $config['enable_calendar_sharing'] = TRUE;
+
+
+// Default permissions for calendar owner
+$config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
+		'read-current-user-privilege-set', 'write-acl', 'C:read-free-busy',
+		'write', 'write-properties', 'write-content', 'bind', 'unbind');
+
+// Permissions for sharing calendars using the 'read' profile
+$config['read_profile_permissions'] = array('C:read-free-busy', 'read');
+
+// Permissions for sharing calendars using the 'read+write' profile
+$config['read_write_profile_permissions'] = array('C:read-free-busy',
+		'read', 'write');
+
+// Authenticated users default permissions
+$config['default_permissions'] = array('C:read-free-busy');

@@ -2,14 +2,14 @@
 <?php
 $data_form = array(
 		'id' => 'calendar_create_form',
-		'class' => 'uniForm',
+		'class' => 'form-horizontal',
 		);
 echo form_open('caldav2json/create_calendar', $data_form);
 
 $form_displayname = array(
 		'name' => 'displayname',
 		'value' => '',
-		'class' => 'displayname medium',
+		'class' => 'displayname input-medium',
 		'maxlength' => '255',
 		'size' => '25',
 		);
@@ -17,7 +17,7 @@ $form_displayname = array(
 $form_color = array(
 		'name' => 'calendar_color',
 		'value' => $default_calendar_color,
-		'class' => 'calendar_color pick_color ultrasmall',
+		'class' => 'calendar_color pick_color input-mini',
 		'maxlength' => '7',
 		'size' => '7',
 		);

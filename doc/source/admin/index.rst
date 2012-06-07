@@ -5,5 +5,6 @@ Installation and configuration
    :numbered:
 
    installation
+   upgrading
    configuration
    troubleshooting

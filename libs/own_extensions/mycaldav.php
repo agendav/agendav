@@ -1,6 +1,6 @@
 <?php
 class CalendarExtendedInfo extends CalendarInfo {
-	public $calendar, $order, $color, $shared, $shared_with;
+	public $calendar, $order, $color, $shared;
 
 	function __construct($url, $displayname = null, $getctag = null ) {
 		// Be consistent with iCalcreator
@@ -12,17 +12,69 @@ class CalendarExtendedInfo extends CalendarInfo {
 }
 
 
-class MyCalDAV extends CalDAVClient {
+class CURLCalDAVClient extends CalDAVClient {
 
-	protected $valid_caldav_server = null;
+	// Requests timeout
+	private $timeout;
 
-	function __construct( $base_url, $user, $pass ) {
+	// cURL handle
+	private $ch;
+
+	// Full URL
+	private $full_url;
+
+
+	/**
+	 * Constructor
+	 *
+	 * Valid options are:
+	 *
+	 *  $options['auth'] : Auth type. Can be any of values for
+	 *   CURLOPT_HTTPAUTH (from
+	 *   http://www.php.net/manual/es/function.curl-setopt.php). Default:
+	 *   basic or digest
+     *
+	 *  $options['timeout'] : Timeout in seconds
+	 */
+
+	// TODO: proxy options, interface used,
+	function __construct( $base_url, $user, $pass, $options = array()) {
 		parent::__construct($base_url, $user, $pass);
+		$this->timeout = isset($options['timeout']) ? 
+			$options['timeout'] : 10;
+		$this->ch = curl_init();
+		curl_setopt_array($this->ch, array(
+					CURLOPT_CONNECTTIMEOUT => $this->timeout,
+					CURLOPT_FAILONERROR => FALSE,
+					CURLOPT_FOLLOWLOCATION => TRUE,
+					CURLOPT_MAXREDIRS => 2,
+					CURLOPT_FORBID_REUSE => FALSE,
+					CURLOPT_RETURNTRANSFER => TRUE,
+					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					CURLOPT_HTTPAUTH =>
+						isset($options['auth']) ?
+							$options['auth'] :
+							(CURLAUTH_BASIC | CURLAUTH_DIGEST),
+					CURLOPT_USERAGENT => 'cURL based CalDAV client',
+					CURLINFO_HEADER_OUT => TRUE,
+					CURLOPT_HEADER => TRUE,
+					CURLOPT_SSL_VERIFYPEER => FALSE,
+					));
+
+		$this->full_url = $base_url;
+	}
+
+	/**
+	 * Sets User-Agent
+	 */
+	function SetUserAgent($user_agent) {
+		$this->user_agent = $user_agent;
+		curl_setopt($this->ch, CURLOPT_USERAGENT, $user_agent);
 	}
 
 
 	/**
-	 * Check with OPTIONS if PROPFIND and REPORT are supported
+	 * Check with OPTIONS if calendar-access is enabled
 	 * 
 	 * Can be used to check authentication against server
 	 *
@@ -30,31 +82,122 @@ class MyCalDAV extends CalDAVClient {
 	function CheckValidCalDAV() {
 		// Clean headers
 		$this->headers = array();
-		$options = $this->DoOptionsRequest();
-		if (isset($options['REPORT']) && isset($options['PROPFIND'])) {
-			$this->valid_caldav_server = TRUE;
-		} else {
-			$this->valid_caldav_server = FALSE;
-		}
+		$dav_options = $this->DoOptionsRequestAndGetDAVHeader();
+		$valid_caldav_server = isset($dav_options['calendar-access']);
 
-		return $this->valid_caldav_server;
+		return $valid_caldav_server;
 	}
 
-	function DoCalendarQuery( $filter, $url = null ) {
-		if (is_null($this->valid_caldav_server)) {
-			// Headers will be wiped by CheckValidCalDAV. Restore 
-			// ithem after this call
-			$current_headers = $this->headers;
-			$this->CheckValidCalDAV();
-			$this->headers = $current_headers;
+	/**
+	 * Send a request to the server
+	 *
+	 * @param string $url The URL to make the request to
+	 *
+	 * @return string The content of the response from the server
+	 */
+	function DoRequest( $url = null ) {
+		if (is_null($url)) {
+			$url = $this->full_url;
 		}
 
-		if ($this->valid_caldav_server) {
-			return parent::DoCalendarQuery($filter, $url);
+		$this->request_url = $url;
+
+		curl_setopt($this->ch, CURLOPT_URL, $url);
+
+		// Request method
+		curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, $this->requestMethod);
+
+		// Empty body. If not used, cURL will spend ~5s on this request
+		if ($this->requestMethod == 'HEAD' || empty($this->body)) {
+			curl_setopt($this->ch, CURLOPT_NOBODY, TRUE);
 		} else {
-			log_message('ERROR', 'Invalid CalDAV server');
-			return FALSE;
+			curl_setopt($this->ch, CURLOPT_NOBODY, FALSE);
 		}
+
+		// Headers
+		if (!isset($this->headers['content-type'])) $this->headers['content-type'] = "Content-type: text/plain";
+
+		// Remove cURL generated 'Expect: 100-continue'
+		$this->headers['disable_expect'] = 'Expect:';
+		curl_setopt($this->ch, CURLOPT_HTTPHEADER,
+				array_values($this->headers));
+
+		curl_setopt($this->ch, CURLOPT_USERPWD, $this->user . ':' .
+				$this->pass);
+
+		// Request body
+		curl_setopt($this->ch, CURLOPT_POSTFIELDS, $this->body);
+
+		$response = curl_exec($this->ch);
+
+		if (FALSE === $response) {
+			// TODO better error handling
+			log_message('ERROR', 'Error requesting ' . $url . ': ' 
+					. curl_error($this->ch));
+			return false;
+		}
+
+		$info = curl_getinfo($this->ch);
+
+		// Get headers (idea from SabreDAV WebDAV client)
+		$this->httpResponseHeaders = substr($response, 0, $info['header_size']);
+		$this->httpResponseBody = substr($response, $info['header_size']);
+
+		// Get only last headers (needed when using unspecific HTTP auth
+		// method or request got redirected)
+		$this->httpResponseHeaders = preg_replace('/^.+\r\n\r\n(.+)/sU', '$1',
+				$this->httpResponseHeaders);
+
+        // Parse response
+		$this->ParseResponseHeaders($this->httpResponseHeaders);
+		$this->ParseResponse($this->httpResponseBody);
+
+		/*
+		   //TODO debug
+
+		log_message('INTERNALS', 'REQh: ' . var_export($info['request_header'], TRUE));
+		log_message('INTERNALS', 'REQb: ' . var_export($this->body, TRUE));
+		log_message('INTERNALS', 'RPLh: ' . var_export($this->httpResponseHeaders, TRUE));
+		log_message('INTERNALS', 'RPLb: ' . var_export($this->httpResponseBody, TRUE));
+		*/
+
+		return $response;
+	}
+
+	/**
+	 * Issues an OPTIONS request
+	 *
+	 * @param string $url The URL to make the request to
+	 *
+	 * @return array DAV options
+	 */
+	function DoOptionsRequestAndGetDAVHeader( $url = null ) {
+		$this->requestMethod = "OPTIONS";
+		$this->body = "";
+		$headers = $this->DoRequest($url);
+
+		$result = array();
+
+		$headers = preg_split('/\r?\n/', $headers);
+
+		// DAV header(s)
+		$dav_header = preg_grep('/^DAV:/', $headers);
+		if (is_array($dav_header)) {
+			$dav_header = array_values($dav_header);
+			$dav_header = preg_replace('/^DAV: /', '', $dav_header);
+
+			$dav_options = array();
+
+			foreach ($dav_header as $d) {
+				$dav_options = array_merge($dav_options,
+						array_flip(preg_split('/[, ]+/', $d)));
+			}
+
+			$result = $dav_options;
+
+		}
+
+		return $result;
 	}
 
 	/*
@@ -212,6 +355,56 @@ class MyCalDAV extends CalDAVClient {
 		}
 
 		return TRUE;
+	}
+
+	/**
+	 * Queries server using a principal-property search
+	 *
+	 * @param string	XML request
+	 * @param string	URL
+	 * @return			FALSE on error, array with results otherwise
+	 */
+	function principal_property_search($xml_text, $url) {
+		$result = array();
+		$this->DoXMLRequest('REPORT', $xml_text, $url);
+
+		if ($this->httpResultCode == '207') {
+			$errmsg = $this->httpResultCode;
+			// Find response tag(s)
+			if (isset($this->xmltags['DAV::response'])) {
+				foreach ($this->xmltags['DAV::response'] as $i => $node) {
+					if ($this->xmlnodes[$node]['type'] == 'close') {
+						continue;
+					}
+
+					$result[$i]['href'] =
+						$this->HrefForProp('DAV::response', $i+1);
+
+					$level = $this->xmlnodes[$node]['level'];
+					$level++;
+
+					$ok_props = $this->GetOKProps($node);
+
+					foreach ($ok_props as $v) {
+						switch($v['tag']) {
+							case 'DAV::displayname':
+								$result[$i]['displayname'] =
+									isset($v['value']) ? $v['value'] : '';
+								break;
+							case 'DAV::email':
+								$result[$i]['email'] = 
+									isset($v['value']) ? $v['value'] : '';
+								break;
+						}
+					}
+
+				}
+			}
+		} else if ($this->httpResultCode != 200) {
+			return 'Unknown HTTP code';
+		}
+
+		return $result;
 	}
 
 }

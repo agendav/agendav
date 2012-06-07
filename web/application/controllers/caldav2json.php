@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -25,7 +25,10 @@ class Caldav2json extends CI_Controller {
 	private $date_format;
 
 	private $tz;
+	private $tz_utc;
 	private $calendar_colors;
+
+	private $prefs;
 
 	function __construct() {
 		parent::__construct();
@@ -42,9 +45,14 @@ class Caldav2json extends CI_Controller {
 		$this->date_format = $this->dates->date_format_string('date');
 		$this->time_format = $this->dates->time_format_string('date');
 
-		$this->tz = $this->config->item('default_timezone');
+		$this->tz = $this->timezonemanager->getTz(
+				$this->config->item('default_timezone'));
+		$this->tz_utc = $this->timezonemanager->getTz('UTC');
 
 		$this->calendar_colors = $this->config->item('calendar_colors');
+
+		$this->prefs =
+			Preferences::singleton($this->session->userdata('prefs'));
 
 		$this->load->library('caldav');
 
@@ -84,7 +92,7 @@ class Caldav2json extends CI_Controller {
 				$this->dates->datetime2idt(
 						$this->dates->ts2datetime(
 							$start,
-							'UTC'));
+							$this->tz_utc));
 
 			if ($end === FALSE) {
 				$this->extended_logs->message('ERROR',
@@ -96,7 +104,7 @@ class Caldav2json extends CI_Controller {
 					$this->dates->datetime2idt(
 							$this->dates->ts2datetime(
 								$end,
-								'UTC'));
+								$this->tz_utc));
 
 				$returned_events = $this->caldav->fetch_events(
 						$this->auth->get_user(),
@@ -221,7 +229,10 @@ class Caldav2json extends CI_Controller {
 		$start = null;
 		$end = null;
 
-		$tz = isset($p['timezone']) ? $p['timezone'] : null;
+		$tz = isset($p['timezone']) ? 
+			$this->timezonemanager->getTz($p['timezone']) : 
+			$this->timezonemanager->getTz(
+					$this->config->item('default_timezone'));
 
 
 		// Additional validations
@@ -231,9 +242,13 @@ class Caldav2json extends CI_Controller {
 		if (isset($p['allday']) && $p['allday'] == 'true') {
 			// Start and end days, 00:00
 			$start = $this->dates->frontend2datetime($p['start_date'] 
-					. ' ' . date($this->time_format, mktime(0,0)), 'UTC');
+					. ' ' . date($this->time_format, mktime(0,0)), 
+					$this->tz_utc);
 			$end = $this->dates->frontend2datetime($p['end_date'] 
-					. ' ' . date($this->time_format, mktime(0, 0)), 'UTC');
+					. ' ' . date($this->time_format, mktime(0, 0)), 
+					$this->tz_utc);
+			// Add 1 day (iCalendar needs this)
+			$end->add(new DateInterval('P1D'));
 		} else {
 			// Create new form validation rules
 			$this->form_validation
@@ -263,7 +278,7 @@ class Caldav2json extends CI_Controller {
 		$p['dtstart'] = $start;
 		$p['dtend'] = $end;
 
-		// Recurrency checks
+		// Recurrence checks
 		unset($p['rrule']);
 
 		if (isset($p['recurrence_type'])) {
@@ -274,7 +289,7 @@ class Caldav2json extends CI_Controller {
 							mktime(0, 0)); // Tricky
 				}
 
-				$rrule = $this->recurrency->build($p, $rrule_err);
+				$rrule = $this->recurrence->build($p, $rrule_err);
 				if (FALSE === $rrule) {
 					// Couldn't build rrule
 					$this->extended_logs->message('ERROR', 
@@ -462,6 +477,10 @@ class Caldav2json extends CI_Controller {
 								.' Repeated UID');
 					}
 					break;
+				case '403':
+					$this->_throw_error($this->i18n->_('messages',
+								'error_denied'));
+					break;
 				default:
 					$this->_throw_error( $this->i18n->_('messages',
 								'error_unknownhttpcode',
@@ -562,7 +581,7 @@ class Caldav2json extends CI_Controller {
 			if ($was_allday == 'true') {
 				if ($allday == 'true') {
 					// From all day to all day
-					$tz = 'UTC';
+					$tz = $this->tz_utc;
 					$new_vevent = $this->icshelper->make_start($vevent,
 							$tz, null, $dur_string, 'DATE');
 					$new_vevent = $this->icshelper->make_end($new_vevent,
@@ -573,7 +592,8 @@ class Caldav2json extends CI_Controller {
 					$tz = $this->tz;
 
 					// Add VTIMEZONE
-					$this->icshelper->add_vtimezone($ical, $tz, $timezones);
+					$this->icshelper->add_vtimezone($ical, $tz->getName(), 
+							$timezones);
 
 					// Set start date using default timezone instead of UTC
 					$start = $this->icshelper->extract_date($vevent,
@@ -582,10 +602,10 @@ class Caldav2json extends CI_Controller {
 					$start_obj->add($this->dates->duration2di($dur_string));
 					$new_vevent = $this->icshelper->make_start($vevent,
 							$tz, $start_obj, null, 'DATE-TIME',
-							$tz);
+							$tz->getName());
 					$new_vevent = $this->icshelper->make_end($new_vevent,
 							$tz, $start_obj, 'PT1H', 'DATE-TIME', 
-							$tz);
+							$tz->getName());
 				}
 			} else {
 				// was_allday = false
@@ -675,29 +695,16 @@ class Caldav2json extends CI_Controller {
 	 * other users with the current one)
 	 */
 	function calendar_list() {
-		// TODO order
-		$own_calendars = $this->caldav->get_own_calendars(
+		$arr_calendars = $this->caldav->all_user_calendars(
 				$this->auth->get_user(),
-				$this->auth->get_passwd()
-				);
-		$arr_calendars = $own_calendars;
+				$this->auth->get_passwd());
 
-		// Look for shared calendars
-		if ($this->config->item('enable_calendar_sharing')) {
-			$tmp_shared_calendars = $this->shared_calendars->get_shared_with(
-					$this->auth->get_user());
-
-			if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
-				$shared_calendars = $this->caldav->get_shared_calendars_info(
-						$this->auth->get_user(),
-						$this->auth->get_passwd(),
-						$tmp_shared_calendars);
-				if ($shared_calendars === FALSE) {
-					$this->extended_logs->message('ERROR', 
-							'Error reading shared calendars');
-				} else {
-					$arr_calendars = array_merge($arr_calendars,
-							$shared_calendars);
+		// Hide calendars user don't want to be shown
+		$hidden_calendars = $this->prefs->hidden_calendars;
+		if ($hidden_calendars !== null) {
+			foreach ($arr_calendars as $c => $data) {
+				if (isset($hidden_calendars[$c])) {
+					unset($arr_calendars[$c]);
 				}
 			}
 		}
@@ -705,6 +712,17 @@ class Caldav2json extends CI_Controller {
 		// Save calendars into session (avoid multiple CalDAV queries when
 		// editing/adding events)
 		$this->session->set_userdata('available_calendars', $arr_calendars);
+
+		// Default calendar
+		$default_calendar = $this->prefs->default_calendar;
+		if ($default_calendar !== null &&
+				isset($arr_calendars[$default_calendar])) {
+			$arr_calendars[$default_calendar]['default_calendar'] = TRUE;
+		} elseif (count($arr_calendars) > 0) {
+			$first = array_shift(array_keys($arr_calendars));
+			$arr_calendars[$first]['default_calendar'] = TRUE;
+		}
+
 
 		$this->output->set_output(json_encode($arr_calendars));
 	}
@@ -718,7 +736,6 @@ class Caldav2json extends CI_Controller {
 
 		// Display name
 		if (empty($displayname)) {
-			log_message('ERROR', var_export($displayname));
 			$this->_throw_exception($this->i18n->_('messages',
 						'error_calname_missing'));
 		}
@@ -815,7 +832,7 @@ class Caldav2json extends CI_Controller {
 			null);
 
 		if ($res === TRUE) {
-			$this->_throw_success();
+			$this->_throw_success($calendar);
 		} else {
 			// There was an error
 			$this->_throw_exception($this->i18n->_('messages', $res[0],
@@ -832,20 +849,36 @@ class Caldav2json extends CI_Controller {
 		$calendar = $this->input->post('calendar');
 		$displayname = $this->input->post('displayname');
 		$calendar_color = $this->input->post('calendar_color');
-		$shared = $this->input->post('shared');
+
+		$is_shared_calendar = $this->input->post('is_shared_calendar');
+
+		// If calendar is from another user, the following two variables
+		// contain the share id and user which shared it respectively
 		$sid = $this->input->post('sid');
 		$user_from = $this->input->post('user_from');
+
+		// In case this calendar is owned by current user, this will contain
+		// a list of users he/she wants to share the calendar with
 		$share_with = $this->input->post('share_with');
 
+		// When modifying your own calendar, these share ids will help
+		// calculate needed database updates
+		$orig_sids = $this->input->post('orig_sids');
+
 		if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
-				FALSE || ($is_sharing_enabled && $shared === FALSE)) {
+				FALSE || ($is_sharing_enabled && $is_shared_calendar === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
 						'error_interfacefailure'));
 		}
 
-		if ($is_sharing_enabled && $shared == 'true' && ($sid === FALSE || $user_from === FALSE)) {
+		// Calculate boolean value for is_shared_calendar
+		$is_shared_calendar = ($is_shared_calendar === FALSE ?
+				FALSE :
+				($is_shared_calendar == 'true'));
+
+		if ($is_sharing_enabled && $is_shared_calendar && ($sid === FALSE || $user_from === FALSE)) {
 			$this->extended_logs->message('ERROR', 
 					'Call to modify_calendar() with shared calendar and incomplete parameters');
 			$this->_throw_error($this->i18n->_('messages',
@@ -879,7 +912,7 @@ class Caldav2json extends CI_Controller {
 
 
 		// Proceed to modify calendar
-		if ($shared != 'true') {
+		if (!$is_shared_calendar) {
 			$replace_pattern = '/^' . $this->auth->get_user() . ':/';
 			$internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
@@ -909,22 +942,22 @@ class Caldav2json extends CI_Controller {
 		}
 
 		// Set ACLs
-		if ($is_sharing_enabled && $res === TRUE && $shared != 'true') {
-			if (empty($share_with)) {
-				$arr_share_with = array();
-			} else {
-				$share_with = strtolower($share_with);
-				$arr_share_with = explode(',', $share_with);
-				$arr_share_with = array_unique($arr_share_with);
-				sort($arr_share_with);
+		if ($is_sharing_enabled && $res === TRUE && !$is_shared_calendar) {
+			$set_shares = array();
 
-				// Remove current user from array
-				$pos_current_user = array_search($this->auth->get_user(),
-						$arr_share_with);
-				if ($pos_current_user !== FALSE) {
-					unset($arr_share_with[$pos_current_user]);
-					// Recalculate numeric indexes
-					$arr_share_with = array_values($arr_share_with);
+			if (!is_array($share_with)) {
+				$share_with = array();
+			} else {
+				foreach ($share_with as $share) {
+					if (!isset($share['username']) ||
+							!isset($share['write_access'])) {
+						$this->extended_logs->message('ERROR', 
+								'Ignoring incomplete share row attributes'
+								.' on calendar modification: '
+								. serialize($share));
+					} else {
+						$set_shares[] = $share;
+					}
 				}
 			}
 
@@ -932,30 +965,34 @@ class Caldav2json extends CI_Controller {
 					$this->auth->get_user(),
 					$this->auth->get_passwd(),
 					$internal_calendar,
-					$arr_share_with);
+					$set_shares);
 
 			// Update shares on database
 			if ($res === TRUE) {
-				$current =
-					$this->shared_calendars->users_with_access_to($calendar);
+				$orig_sids = (is_array($orig_sids) ? $orig_sids : array());
 
-				$current_uids = array_keys($current);
+				$updated_sids = array();
 
-				if ($current_uids != $arr_share_with) {
-					$remove = array_diff($current_uids, $arr_share_with);
-					$add = array_diff($arr_share_with, $current_uids);
+				foreach ($set_shares as $share) {
+					$this_sid = isset($share['sid']) ?
+								$share['sid'] : null;
 
-					// New users
-					foreach ($add as $added_user) {
-						$this->shared_calendars->store(null,
-								$this->auth->get_user(),
-								$internal_calendar,
-								$added_user);
+					$this->shared_calendars->store(
+							$this_sid,
+							$this->auth->get_user(),
+							$internal_calendar,
+							$share['username'],
+							null, 					// Preserve options
+							($share['write_access'] == '1'));
+
+					if (!is_null($this_sid)) {
+						$updated_sids[$this_sid] = true;
 					}
+				}
 
-					// Removed users
-					foreach ($remove as $removed_user) {
-						$sid = $current[$removed_user];
+				// Removed shares
+				foreach (array_keys($orig_sids) as $sid) {
+					if (!isset($updated_sids[$sid])) {
 						$this->shared_calendars->remove($sid);
 					}
 				}
@@ -969,6 +1006,32 @@ class Caldav2json extends CI_Controller {
 			$this->_throw_exception($this->i18n->_('messages', $res[0],
 						$res[1]));
 		}
+	}
+
+	/**
+	 * Searchs a principal using provided data
+	 */
+	function principal_search() {
+		$result = array();
+		$term = $this->input->get('term');
+
+		if (!empty($term)) {
+			$caldav_res = $this->caldav->principal_property_search(
+					$this->auth->get_user(),
+					$this->auth->get_passwd(),
+					$term, $term);
+
+			if ($caldav_res[0] != '207') {
+				$this->extended_logs->message('ERROR',
+						'principal-property-search for '
+						. $term . ' answer was HTTP code '
+						. $caldav_res[0]);
+			} else {
+				$result = array_values($caldav_res[1]);
+			}
+		}
+
+		$this->output->set_output(json_encode($result));
 	}
 
 

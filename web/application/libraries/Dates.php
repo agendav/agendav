@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -96,7 +96,9 @@ class Dates {
 		}
 
 		if (is_null($tz)) {
-			$tz = $this->CI->config->item('default_timezone');
+			$tz =
+				$this->CI->timezonemanager->getTz(
+						$this->CI->config->item('default_timezone'));
 		}
 
 		$rounded = (round($time/$factor))*$factor;
@@ -106,16 +108,17 @@ class Dates {
 
 	/**
 	 * Creates a DateTime object from an UNIX timestamp using the specified
-	 * Timezone. If not TZ is specified then default one is used
+	 * Timezone. If no TZ is specified then default one is used
 	 */
 	function ts2datetime($ts, $tz = null) {
 		if (is_null($tz)) {
-			$tz = $this->CI->config->item('default_timezone');
+			$tz = $this->CI->timezonemanager->getTz(
+					$this->CI->config->item('default_timezone'));
 		}
 
 		$obj = new DateTime('@' . $ts);
 		// When creating by timestamp, DateTime ignores current timezone
-		$obj->setTimeZone(new DateTimeZone($tz));
+		$obj->setTimeZone($tz);
 
 		return $obj;
 	}
@@ -128,7 +131,8 @@ class Dates {
 	 */
 	function frontend2datetime($str, $tz = null) {
 		if (is_null($tz)) {
-			$tz = $this->CI->config->item('default_timezone');
+			$tz = $this->CI->timezonemanager->getTz(
+					$this->CI->config->item('default_timezone'));
 		}
 
 		$format = $this->date_format_string('date') . ' '.
@@ -147,7 +151,8 @@ class Dates {
 	 */
 	function fullcalendar2datetime($str, $tz = null) {
 		if (is_null($tz)) {
-			$tz = $this->CI->config->item('default_timezone');
+			$tz = $this->CI->timezonemanager->getTz(
+					$this->CI->config->item('default_timezone'));
 		}
 
 		$format = 'YmdHis';
@@ -163,12 +168,16 @@ class Dates {
 	 *
 	 * If no object is passed, current time is used
 	 */
-	function datetime2idt($dt = null, $tz = 'UTC', $format = '') {
+	function datetime2idt($dt = null, $tz = null, $format = '') {
+
+		if (is_null($tz)) {
+			$tz = $this->CI->timezonemanager->getTz('UTC');
+		}
 
 		if (is_null($dt)) {
-			$dt = new DateTime('now', new DateTimeZone($tz));
+			$dt = new DateTime('now', $tz);
 		} else {
-			$dt->setTimeZone(new DateTimeZone($tz));
+			$dt->setTimeZone($tz);
 		}
 
 		if (empty($format)) {
@@ -187,9 +196,8 @@ class Dates {
 	 * Default timezone is used if not specified
 	 */
 	function idt2datetime($id_arr, $tz = null) {
-		if ($tz == null) {
-			// Suppose current timezone
-			$tz = $this->CI->config->item('default_timezone');
+		if (is_null($tz)) {
+			$tz = $this->CI->timezonemanager->getTz('UTC');
 		}
 
 		$format = 'YmdHis';
@@ -219,8 +227,12 @@ class Dates {
 	 * Defaults to UTC
 	 */
 
-	function format_for($type = 'DATE-TIME', $tz = 'UTC') {
+	function format_for($type = 'DATE-TIME', $tz = null) {
 		$format = '';
+
+		if (is_null($tz)) {
+			$tz = $this->CI->timezonemanager->getTz('UTC');
+		}
 
 		if ($type == 'DATE') {
 			$format = 'Ymd';
@@ -228,7 +240,7 @@ class Dates {
 			$format = 'Ymd\THis';
 		}
 
-		if ($tz == 'UTC' && $type != 'DATE') {
+		if ($tz->getName() == 'UTC' && $type != 'DATE') {
 			$format .= '\Z';
 		}
 
@@ -400,12 +412,11 @@ class Dates {
 	 *
 	 * @param	string	Format used to parse the given string
 	 * @param	string	String that contains date-time
-	 * @param	string	Timezone name
+	 * @param	DateTimeZone	Timezone
 	 * @return	DateTime/boolean	FALSE on error
 	 */
 	function create_datetime($format, $str, $tz) {
-		$dt = DateTime::createFromFormat($format, $str, 
-				new DateTimeZone($tz));
+		$dt = DateTime::createFromFormat($format, $str, $tz);
 
 		// Check for errors
 		$err = DateTime::getLastErrors();
