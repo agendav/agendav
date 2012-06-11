@@ -2,11 +2,6 @@
 
 class Migration_Prefs_no_eav extends CI_Migration {
 	public function up() {
-		echo "Dropping table field and userpref...\n";
-
-		$this->dbforge->drop_table('userpref');
-		$this->dbforge->drop_table('field');
-
 		// New user preferences table
 		echo "Creating table prefs...\n";
 
@@ -36,8 +31,6 @@ PGSQL;
 	}
 
 	public function down() {
-		// Create field and userpref tables again? No way
-
 		$this->dbforge->drop_table('prefs');
 	}
 }
