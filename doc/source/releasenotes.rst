@@ -3,6 +3,14 @@
 Release notes
 =============
 
+.. _v1.2.5.1:
+
+1.2.5.1 (2012-06-11)
+--------------------
+
+* This release fixes some invalid SQL queries included in the database
+update process
+
 .. _v1.2.5:
 
 1.2.5 (2012-06-07)
