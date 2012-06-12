@@ -190,6 +190,17 @@ $config['calendar_colors'] = array(
 		'E6D5C1',
 		'3E4147',
 );
+// advanced.php
+
+/*
+|--------------------------------------------------------------------------
+| Log permissions
+|--------------------------------------------------------------------------
+|
+| Use a full octal permission.
+| Example: 0644, 0666
+*/
+$config['log_create_permissions'] = 0640;
 
 // ==============================
 // Additional caldav.php options

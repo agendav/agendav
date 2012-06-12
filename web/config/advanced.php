@@ -272,3 +272,13 @@ $config['sess_table_name']		= 'sessions';
 $config['sess_match_ip']		= TRUE;
 $config['sess_match_useragent']	= TRUE;
 $config['sess_time_to_update']	= 300;
+
+/*
+|--------------------------------------------------------------------------
+| Log permissions
+|--------------------------------------------------------------------------
+|
+| Use a full octal permission.
+| Example: 0644, 0666
+*/
+$config['log_create_permissions'] = 0640;

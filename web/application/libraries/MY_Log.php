@@ -125,7 +125,7 @@ class MY_Log extends CI_Log {
         flock($fp, LOCK_UN);
         fclose($fp);
     
-        @chmod($filepath, FILE_WRITE_MODE);         
+        @chmod($filepath, $this->config->item('log_create_permissions'));         
         return TRUE;
     }
 
