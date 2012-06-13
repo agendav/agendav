@@ -30,6 +30,9 @@
 * @author        ExpressionEngine Dev Team. Mod by Chris Newton
 */
 class MY_Log extends CI_Log {
+
+	private $config;
+
     /**
      * Constructor
      *
@@ -42,16 +45,16 @@ class MY_Log extends CI_Log {
     function __construct()
     {
         parent::__construct();
-        $config =& get_config();
-        if (isset ($config['show_in_log']))
+        $this->config =& get_config();
+        if (isset ($this->config['show_in_log']))
         {
-            $show_in_log=$config['show_in_log'];
+            $show_in_log=$this->config['show_in_log'];
         }
         else
         {
             $show_in_log="";
         }
-        $this->log_path = ($config['log_path'] != '') ? $config['log_path'] : BASEPATH.'logs/';
+        $this->log_path = ($this->config['log_path'] != '') ? $this->config['log_path'] : BASEPATH.'logs/';
         
         if ( ! is_dir($this->log_path) OR ! is_really_writable($this->log_path))
         {
@@ -61,13 +64,13 @@ class MY_Log extends CI_Log {
         {
             $this->_logging_array = $show_in_log;
         }
-        if (is_numeric($config['log_threshold']))
+        if (is_numeric($this->config['log_threshold']))
         {
-            $this->_threshold = $config['log_threshold'];
+            $this->_threshold = $this->config['log_threshold'];
         }    
-        if ($config['log_date_format'] != '')
+        if ($this->config['log_date_format'] != '')
         {
-            $this->_date_fmt = $config['log_date_format'];
+            $this->_date_fmt = $this->config['log_date_format'];
         }
     }
     // --------------------------------------------------------------------
@@ -125,7 +128,7 @@ class MY_Log extends CI_Log {
         flock($fp, LOCK_UN);
         fclose($fp);
     
-        @chmod($filepath, $this->config->item('log_create_permissions'));         
+        @chmod($filepath, $this->config['log_create_permissions']);
         return TRUE;
     }
 
