@@ -265,6 +265,12 @@ class CI_DB_driver {
 			$sql = preg_replace("/(\W)".$this->swap_pre."(\S+?)/", "\\1".$this->dbprefix."\\2", $sql);
 		}
 
+		// Compile binds if needed
+		if ($binds !== FALSE)
+		{
+			$sql = $this->compile_binds($sql, $binds);
+		}
+
 		// Is query caching enabled?  If the query is a "read type"
 		// we will load the caching class and return the previously
 		// cached query if it exists
@@ -278,12 +284,6 @@ class CI_DB_driver {
 					return $cache;
 				}
 			}
-		}
-
-		// Compile binds if needed
-		if ($binds !== FALSE)
-		{
-			$sql = $this->compile_binds($sql, $binds);
 		}
 
 		// Save the  query for debugging
@@ -1015,8 +1015,14 @@ class CI_DB_driver {
 		else
 		{
 			$args = (func_num_args() > 1) ? array_splice(func_get_args(), 1) : null;
-
-			return call_user_func_array($function, $args);
+			if (is_null($args))
+			{
+				return call_user_func($function);
+			}
+			else
+			{
+				return call_user_func_array($function, $args);
+			}
 		}
 	}
 
@@ -1257,15 +1263,20 @@ class CI_DB_driver {
 		}
 
 		// Convert tabs or multiple spaces into single spaces
-		$item = preg_replace('/[\t ]+/', ' ', $item);
+		$item = preg_replace('/\s+/', ' ', $item);
 
 		// If the item has an alias declaration we remove it and set it aside.
 		// Basically we remove everything to the right of the first space
-		$alias = '';
-		if (strpos($item, ' ') !== FALSE)
+		if (preg_match('/^([^\s]+) (AS )*(.+)$/i', $item, $matches))
 		{
-			$alias = strstr($item, " ");
-			$item = substr($item, 0, - strlen($alias));
+			$item = $matches[1];
+
+			// Escape the alias
+			$alias = ' '.$matches[2].$this->_escape_identifiers($matches[3]);
+		}
+		else
+		{
+			$alias = '';
 		}
 
 		// This is basically a bug fix for queries that use MAX, MIN, etc.
@@ -1382,9 +1393,20 @@ class CI_DB_driver {
 		return $item.$alias;
 	}
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Dummy method that allows Active Record class to be disabled
+	 *
+	 * This function is used extensively by every db driver.
+	 *
+	 * @return	void
+	 */
+	protected function _reset_select()
+	{
+	}
 
 }
-
 
 /* End of file DB_driver.php */
 /* Location: ./system/database/DB_driver.php */
