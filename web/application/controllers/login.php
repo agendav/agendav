@@ -93,7 +93,7 @@ class Login extends CI_Controller {
 			$data['errors'] = $err;
 		}
 
-		$logoimg = $this->config->item('logo');
+		$logoimg = $this->config->item('login_page_logo');
 		$data['logo'] = custom_logo($logoimg, $title);
 		$data['title'] = $title;
 
