@@ -95,6 +95,14 @@ setting.
    Image filename which will be used as a logo. Has to be a valid filename
    placed inside ``web/public/img/`` directory.
 
+.. confval:: login_page_logo
+
+   Image filename which will be used as a logo only for login page. It's
+   usually bigger than the normal logo. Has to be a valid filename placed
+   inside ``web/public/img/`` directory.
+
+   .. versionadded:: 1.2.6
+
 .. confval:: footer
 
    Text to be placed in the footer.
