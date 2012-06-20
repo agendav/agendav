@@ -31,6 +31,7 @@ class Defs {
 			'libs/jquery.colorhelpers.js',
 			'libs/jquery.timePicker.20110318.js',
 			'translation.js',
+			'libs/dust-core-0.6.0.js',
 			'app.js',
 			);
 
