@@ -1,0 +1,3 @@
+<form action="{action}"{?form_method} method="{form_method}"{/form_method}{?form_class} class="{form_class}"{/form_class}
+ {?form_id} id="{form_id}"{/form_id} accept-charset="utf-8">
+ <input type="hidden" name="csrf_test_name" value="{csrf}" />

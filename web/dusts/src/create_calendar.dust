@@ -1,0 +1,4 @@
+<div id="create_calendar_dialog">
+ {>form_open action=final_url form_method=form_method csrf=csrf form_class="form-horizontal" form_id="calendar_crate_form" /}
+ {>form_close/}
+</div>

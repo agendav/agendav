@@ -1,0 +1,1 @@
+(function(){dust.register("create_calendar",body_0);function body_0(chk,ctx){return chk.write("<div id=\"create_calendar_dialog\">").partial("form_open",ctx,{"action":ctx.get("final_url"),"form_method":ctx.get("form_method"),"csrf":ctx.get("csrf"),"form_class":"form-horizontal","form_id":"calendar_crate_form"}).partial("form_close",ctx,null).write("</div>");}return body_0;})();
