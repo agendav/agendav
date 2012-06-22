@@ -8,7 +8,15 @@ Release notes
 1.2.5.1 (2012-06-11)
 --------------------
 
+.. note::
+
+   This version has a bug that will make :ref:`dbupgrade` to fail if you
+   have AgenDAV configured to use a language other than English. Please, set
+   :confval:`default_language` to ``en`` before running ``agendav
+   dbupdate``
+
 * This release fixes some invalid SQL queries included in the database update process
+
 
 .. _v1.2.5:
 
