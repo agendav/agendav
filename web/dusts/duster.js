@@ -17,22 +17,20 @@ var regexpSwp = new RegExp(/\.swp/);
 watcher.onChange(function(path, prev, curr, action) {
   if (!path.match(regexpSwp)) {
 	console.log('Something changed');
-  	setTimeout(compilar, 400, path);
+  	setTimeout(compile_templates, 400, path);
   }
 });
 
 
-var compilar = function compilar(path) {
+var compile_templates = function compilar(path) {
     var files = fs.readdirSync(src_path);
     var result = '';
 
     for (var i=0;i<files.length;i++) {
         if (!files[i].match(regexpSwp)) {
-		fs.readFile(src_path + files[i], 'utf8', function(err, data) {
-		    if (err) throw err;
-		    var filename = files[i].replace(".dust","");
-		    result += dust.compile(data, filename);
-		});
+		var filename = files[i].replace(".dust","");
+		var contents = fs.readFileSync(src_path + files[i], 'utf8');
+		result += dust.compile(contents, filename);
 	}
     }
 
