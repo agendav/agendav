@@ -25,11 +25,17 @@ var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
 var scmr = '#share_calendar_manager_row_template';
 
+
 $(document).ready(function() {
 	// Load i18n strings
 	var i18n = undefined;
 	// TODO: language
 	load_i18n_strings();
+
+	// Dust.js i18n helper
+	dust.helpers.i18n = function i18n(chunk, context, bodies, params) {
+		return chunk.write(_(params.type, params.name));
+	};
 
 
 	// Login page: focus first input field
@@ -493,6 +499,38 @@ var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFun
 	});
 };
 
+
+/**
+ * Generates a dialog
+ */
+
+var show_dialog = function show_dialog(template, data, title, buttons,
+	divname, width, pre_func) {
+
+	dust.render(template, data, function(err, out) {
+		if (err != null) {
+			show_error(_('messages', 'error_interfacefailure'),
+				err.message);
+		} else {
+			$('body').append(out);
+			$('#' + divname).dialog({
+				autoOpen: true,
+				buttons: buttons,
+				title: title,
+				minWidth: width,
+				modal: true,
+				open: function(event, ui) {
+					pre_func();
+					$(divname).dialog('option', 'position', 'center');
+					var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
+					add_button_icons(buttons);
+				},
+				close: function(ev, ui) { $(this).remove(); }
+			})
+		}
+	});
+};
+
 /**
  * Creates a form with a random id in the document, and returns it.
  * Defines each element in the second parameter as hidden fields
@@ -789,15 +827,17 @@ var update_single_event = function update_single_event(event, new_data) {
 // Triggers a dialog for creating calendars
 var calendar_create_form = function calendar_create_form() {
 
-	var url_dialog = 'dialog_generator/create_calendar';
+	var form_url = base_app_url + 'caldav2json/create_calendar';
 	var title = _('labels', 'newcalendar');
 
+	var data = {
+		final_url: base_app_url + 'caldav2json/create_calendar',
+		form_method: 'post',
+		csrf: 'dumb'
+	};
 
-	load_generated_dialog(url_dialog,
-		{},
-		function() {
-			$('input.pick_color').colorPicker();
-		},
+	show_dialog('create_calendar',
+		data,
 		title,
 		[
 			{
@@ -825,7 +865,11 @@ var calendar_create_form = function calendar_create_form() {
 				'click': function() { destroy_dialog(ccd); }
 			}
 		],
-		'create_calendar_dialog', 400);
+		'create_calendar_dialog',
+		400,
+		function() {
+			$('input.pick_color').colorPicker();
+		});
 };
 
 // Triggers a dialog for editing calendars

@@ -1,0 +1,8 @@
+<div class="control-group">
+<label {?input_for}for="{input_for}"{/input_for}
+class="control-label">{@i18n type="labels" name=form_label}{/i18n}</label>
+<div class="controls">
+{input_contents}
+{?input_help}<p class="help-block">{input_help}</p>{/input_help}
+</div>
+</div>
