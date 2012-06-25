@@ -1,6 +1,10 @@
 <div id="create_calendar_dialog">
-{>form_open action=final_url form_method=form_method csrf=csrf form_class="form-horizontal" form_id="calendar_crate_form" /}
-{>form_element input_for="displayname" form_label="displayname" input_contents="bla bla bla" /}
-{>form_element input_for="color" form_label="color" input_contents="bla bla bla" /}
+{>form_open applyclass="form-horizontal" applyid="calendar_crate_form" /}
+{>form_element_start for="displayname" label="displayname" /}
+Jijij
+{>form_element_end/}
+{>form_element_start for="color" label="color" /}
+Jojojo
+{>form_element_end/}
 {>form_close/}
 </div>

@@ -831,9 +831,11 @@ var calendar_create_form = function calendar_create_form() {
 	var title = _('labels', 'newcalendar');
 
 	var data = {
-		final_url: base_app_url + 'caldav2json/create_calendar',
-		form_method: 'post',
-		csrf: 'dumb'
+		frm: {
+			action: base_app_url + 'caldav2json/create_calendar',
+			method: 'post',
+			csrf: 'dumb'
+		}
 	};
 
 	show_dialog('create_calendar',
