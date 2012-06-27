@@ -24,6 +24,7 @@ var ccd = '#create_calendar_dialog';
 var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
 var scmr = '#share_calendar_manager_row_template';
+var dustbase;
 
 
 $(document).ready(function() {
@@ -36,6 +37,11 @@ $(document).ready(function() {
 	dust.helpers.i18n = function i18n(chunk, context, bodies, params) {
 		return chunk.write(_(params.type, params.name));
 	};
+
+	// Dust.js base context
+	dustbase = dust.makeBase({
+		default_calendar_color: default_calendar_color
+	});
 
 
 	// Login page: focus first input field
@@ -507,7 +513,7 @@ var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFun
 var show_dialog = function show_dialog(template, data, title, buttons,
 	divname, width, pre_func) {
 
-	dust.render(template, data, function(err, out) {
+	dust.render(template, dustbase.push(data), function(err, out) {
 		if (err != null) {
 			show_error(_('messages', 'error_interfacefailure'),
 				err.message);

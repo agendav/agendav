@@ -1,10 +1,5 @@
 <div id="create_calendar_dialog">
 {>form_open applyclass="form-horizontal" applyid="calendar_crate_form" /}
-{>form_element_start for="displayname" label="displayname" /}
-Jijij
-{>form_element_end/}
-{>form_element_start for="color" label="color" /}
-Jojojo
-{>form_element_end/}
+{>form_calendar_basic_options/}
 {>form_close/}
 </div>
