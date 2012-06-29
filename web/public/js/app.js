@@ -24,7 +24,7 @@ var ccd = '#create_calendar_dialog';
 var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
 var scmr = '#share_calendar_manager_row_template';
-var dustbase;
+var dustbase = {};
 
 
 $(document).ready(function() {
@@ -38,10 +38,6 @@ $(document).ready(function() {
 		return chunk.write(_(params.type, params.name));
 	};
 
-	// Dust.js base context
-	dustbase = dust.makeBase({
-		default_calendar_color: default_calendar_color
-	});
 
 
 	// Login page: focus first input field
@@ -69,7 +65,10 @@ $(document).ready(function() {
 				function(data) { });
 		});
 	} else if ($('body').hasClass('calendarpage')) {
-		// Default datepicker options are set inside i18n load strings
+		// Dust.js base context
+		dustbase = dust.makeBase({
+			default_calendar_color: default_calendar_color
+		});
 
 		// Default colorpicker options
 		set_default_colorpicker_options();
