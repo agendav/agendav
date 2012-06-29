@@ -30,6 +30,7 @@ class Defs {
 			'libs/jquery.qtip.min.js',
 			'libs/jquery.colorhelpers.js',
 			'libs/jquery.timePicker.20110318.js',
+			'libs/jquery.cookie.js',
 			'translation.js',
 			'libs/dust-core-0.6.0.js',
 			'templates/templates.js',
