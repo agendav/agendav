@@ -30,7 +30,13 @@ var compile_templates = function compilar(path) {
         if (!files[i].match(regexpSwp)) {
 		var filename = files[i].replace(".dust","");
 		var contents = fs.readFileSync(src_path + files[i], 'utf8');
-		result += dust.compile(contents, filename);
+		try {
+			result += dust.compile(contents, filename);
+		} catch (err) {
+			console.log('Oops! There was an error compiling: ');
+			console.log(err);
+			return;
+		}
 	}
     }
 
