@@ -34,7 +34,10 @@ $(document).ready(function() {
 
 	// Dust.js i18n helper
 	dust.helpers.i18n = function i18n(chunk, context, bodies, params) {
-		return chunk.write(_(params.type, params.name));
+		if (params.params === undefined) {
+			params.params = {};
+		}
+		return chunk.write(_(params.type, params.name, params.params));
 	};
 
 
