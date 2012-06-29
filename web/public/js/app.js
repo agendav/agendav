@@ -1337,60 +1337,6 @@ var enforce_exclusive_recurrence_field = function enforce_exclusive_recurrence_f
 	}
 };
 
-var event_bubble_content = function event_bubble_content(event) {
-	var tmpl = $('#view_event_details_template').clone();
-
-	// Calendar
-	tmpl.find('span.calendar_value').html(get_calendar_displayname(event.calendar));
-
-	// Location
-	if (event.location !== undefined) {
-		tmpl.find('span.location_value').html(event.location);
-	} else {
-		tmpl.find('p.location').hide();
-	}
-
-	// Dates
-	tmpl
-		.find('span.start_value').html(event.formatted_start + ' - ').end()
-		.find('span.end_value').html(event.formatted_end + '');
-
-	// Description
-	if (event.formatted_description !== undefined) {
-		tmpl.find('p.description_value').html(event.formatted_description);
-	} else {
-		tmpl.find('p.description').hide();
-	}
-
-	// Recurrence rule
-	if (event.rrule !== undefined) {
-		if (event.rrule_explained !== undefined) {
-			tmpl
-				.find('div.unparseable_rrule').hide().end()
-				.find('span.rrule_explained_value').html(event.rrule_explained);
-
-		} else {
-			tmpl
-				.find('div.parseable_rrule').hide().end()
-				.find('span.rrule_raw_value').html(event.rrule).end();
-		}
-	} else {
-		tmpl
-			.find('div.unparseable_rrule').hide().end()
-			.find('div.parseable_rrule').hide();
-	}
-
-	// Non editable calendar/event
-	// TODO: improve speed on this, index calendar list
-	var caldata = get_calendar_data(event.calendar);
-	if (caldata !== undefined && caldata.shared === true &&
-		caldata.write_access == '0') {
-		tmpl.find('div.actions').remove();
-	}
-
-	return tmpl.html();
-};
-
 /*
  * Round a Date timestamp
  */
@@ -1610,80 +1556,97 @@ var _generate_share_hidden_inputs = function _generate_share_hidden_inputs(el) {
  * Event render
  */
 var event_render_callback = function event_render_callback(event, element) {
-	element.qtip({
-		content: {
-			text: event_bubble_content(event),
-			title: {
-				text: event.title,
-				button: true
-			}
-		},
-		position: {
-			my: 'bottom center',
-			at: 'top center',
-			viewport: $('#calendar_view')
-		},
-		style: {
-			classes: 'view_event_details ui-tooltip-bootstrap',
-			tip: true
-		},
-		show: {
-			target: $('#calendar_view'),
-			event: false,
-			solo: $('#calendar_view'),
-			effect: false
-		},
-		hide: {
-			fixed: true,
-			event: 'unfocus',
-			effect: false
-		},
+	var data = $.extend({},
+		event,
+		{ formatted_calendar: get_calendar_displayname(event.calendar) });
 
-		events: {
-			show: function (event, api) {
-				// Attach modify and delete events
-				$(this)
-				.find('button.link_delete_event')
-				.off('click')
-				.on('click', function() {
-					delete_event_handler();
-				})
-				.end()
-				.find('button.link_modify_event')
-				.off('click')
-				.on('click', function() {
-					modify_event_handler();
-				});
+	var caldata = get_calendar_data(event.calendar);
+	if (caldata !== undefined && caldata.shared === true &&
+		caldata.write_access == '0') {
+		$.extend(data, { disable_actions: true });
+	}
 
-				$(window).on('keydown.tooltipevents', function(e) {
-					if(e.keyCode === $.ui.keyCode.ESCAPE) {
-						api.hide(e);
+	dust.render('event_details_popup', dustbase.push(data), function(err, out) {
+		if (err != null) {
+			show_error(_('messages', 'error_interfacefailure'),
+				err.message);
+		} else {
+			element.qtip({
+				content: {
+					text: out,
+					title: {
+						text: event.title,
+						button: true
 					}
-				})
+				},
+				position: {
+					my: 'bottom center',
+					at: 'top center',
+					viewport: $('#calendar_view')
+				},
+				style: {
+					classes: 'view_event_details ui-tooltip-bootstrap',
+					tip: true
+				},
+				show: {
+					target: $('#calendar_view'),
+					event: false,
+					solo: $('#calendar_view'),
+					effect: false
+				},
+				hide: {
+					fixed: true,
+					event: 'unfocus',
+					effect: false
+				},
 
-				// Icons
-				var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
-				add_button_icons(links);
-			},
+				events: {
+					show: function (event, api) {
+						// Attach modify and delete events
+						$(this)
+						.find('button.link_delete_event')
+						.off('click')
+						.on('click', function() {
+							delete_event_handler();
+						})
+						.end()
+						.find('button.link_modify_event')
+						.off('click')
+						.on('click', function() {
+							modify_event_handler();
+						});
 
-			hide: function (event, api) {
-				// Clicked on event?
-				var has_clicked_event;
+						$(window).on('keydown.tooltipevents', function(e) {
+							if(e.keyCode === $.ui.keyCode.ESCAPE) {
+								api.hide(e);
+							}
+						})
 
-				if (event.originalEvent != undefined) {
-					var click_target = $(event.originalEvent.target).parents();
-					has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
-				} else {
-					has_clicked_event = false;
+						// Icons
+						var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
+						add_button_icons(links);
+					},
+
+					hide: function (event, api) {
+						// Clicked on event?
+						var has_clicked_event;
+
+						if (event.originalEvent != undefined) {
+							var click_target = $(event.originalEvent.target).parents();
+							has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
+						} else {
+							has_clicked_event = false;
+						}
+
+						set_data('tooltip_hide_clicked_event', has_clicked_event);
+
+						var current = get_data('current_event');
+						set_data('recently_hidden_event', current);
+
+						$(window).off('keydown.tooltipevents');
+					}
 				}
-
-				set_data('tooltip_hide_clicked_event', has_clicked_event);
-
-				var current = get_data('current_event');
-				set_data('recently_hidden_event', current);
-
-				$(window).off('keydown.tooltipevents');
-			}
+			});
 		}
 	});
 };

@@ -54,7 +54,6 @@ class Calendar extends CI_Controller {
 			$this->load->view('sidebar', $data_calendar, TRUE);
 		$components['content'] = 
 			$this->load->view('center', array(), TRUE) .
-			$this->load->view('event_details_template', array(), TRUE) .
 			$this->load->view('share_calendar_manager_row_template', array(), TRUE);
 		$components['footer'] = $this->load->view('footer',
 				array(
