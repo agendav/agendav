@@ -20,7 +20,6 @@
 // Useful names
 var ved = 'div.view_event_details';
 var ced = '#com_event_dialog';
-var ccd = '#create_calendar_dialog';
 var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
 var scmr = '#share_calendar_manager_row_template';
@@ -260,7 +259,7 @@ $(document).ready(function() {
 
 		// Create calendar
 		$('#calendar_add')
-			.on('click', calendar_create_form);
+			.on('click', calendar_create_dialog);
 
 		/*************************************************************
 		 * End of calendar list events
@@ -830,7 +829,7 @@ var update_single_event = function update_single_event(event, new_data) {
 };
 
 // Triggers a dialog for creating calendars
-var calendar_create_form = function calendar_create_form() {
+var calendar_create_dialog = function calendar_create_dialog() {
 
 	var form_url = base_app_url + 'caldav2json/create_calendar';
 	var title = _('labels', 'newcalendar');
@@ -843,7 +842,7 @@ var calendar_create_form = function calendar_create_form() {
 		}
 	};
 
-	show_dialog('create_calendar',
+	show_dialog('calendar_create_dialog',
 		data,
 		title,
 		[
@@ -854,7 +853,7 @@ var calendar_create_form = function calendar_create_form() {
 					var thisform = $('#calendar_create_form');
 					proceed_send_ajax_form(thisform,
 						function(data) {
-							destroy_dialog(ccd);
+							destroy_dialog('#calendar_create_dialog');
 							update_calendar_list(false);
 						},
 						function(data) {
@@ -869,10 +868,10 @@ var calendar_create_form = function calendar_create_form() {
 			{
 				'text': _('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
-				'click': function() { destroy_dialog(ccd); }
+				'click': function() { destroy_dialog('#calendar_create_dialog'); }
 			}
 		],
-		'create_calendar_dialog',
+		'calendar_create_dialog',
 		400,
 		function() {
 			$('input.pick_color').colorPicker();
