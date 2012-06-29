@@ -839,7 +839,7 @@ var calendar_create_form = function calendar_create_form() {
 		frm: {
 			action: base_app_url + 'caldav2json/create_calendar',
 			method: 'post',
-			csrf: 'dumb'
+			csrf: get_csrf_token()
 		}
 	};
 
@@ -1936,5 +1936,10 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
 		hide_calendar(calendar_obj);
 	}
 };
+
+// Gets csrf token value
+var get_csrf_token = function get_csrf_token() {
+	return $.cookie('csrf_cookie_name');
+}
 
 // vim: sw=2 tabstop=2
