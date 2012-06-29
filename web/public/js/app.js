@@ -34,10 +34,20 @@ $(document).ready(function() {
 
 	// Dust.js i18n helper
 	dust.helpers.i18n = function i18n(chunk, context, bodies, params) {
-		if (params.params === undefined) {
-			params.params = {};
+		var i18n_params = {};
+		var i18n_name = params.name;
+		var i18n_type = params.type;
+
+		delete params.name;
+		delete params.type;
+
+		for (var key in params) {
+			if (params.hasOwnProperty(key)) {
+				var param_name = '%' + key;
+				i18n_params[param_name] = params[key];
+			}
 		}
-		return chunk.write(_(params.type, params.name, params.params));
+		return chunk.write(_(i18n_type, i18n_name, i18n_params));
 	};
 
 
