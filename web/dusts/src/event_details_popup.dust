@@ -1,38 +1,25 @@
-<p class="start_and_finish">
-<span class="start_value">{formatted_start}</span><span class="end_value">{formatted_end}</span>
-</p>
-
-<p>
-<span class="label calendar_label">{@i18n type="labels" name="calendar"}{/i18n}</span> 
-<span class="calendar_value">{formatted_calendar}</span>
-</p>
-
+<p class="start_and_finish">{formatted_start} {formatted_end}</p>
+<dl class="dl-horizontal">
+<dt>{@i18n type="labels" name="calendar"}{/i18n}</dt>
+<dd>{formatted_calendar}</dd>
 
 {?location}
-<p class="location">
-<span class="label location_label">{@i18n type="labels" name="location"}{/i18n}</span>
-<span class="location_value">{location}</span>
-</p>
+<dt>{@i18n type="labels" name="location"}{/i18n}</dt>
+<dd>{location}</dd>
 {/location}
 
 {?description}
-<p class="description">
-<span class="label label_description">{@i18n type="labels" name="description"}{/i18n}</span>
-<p class="description_value">{formatted_description}</p>
-</p>
+<dt>{@i18n type="labels" name="description"}{/i18n}</dt>
+<dd>{formatted_description}</dd>
 {/description}
 
 {?rrule}
+<dt>{@i18n type="labels" name="repeat"}{/i18n}</dt>
 {?rrule_explained}
-<div class="parseable_rrule">
-<span class="label label_rrule">{@i18n type="labels" name="repeat"}{/i18n}</span>
-<span class="rrule_explained_value">{@i18n type="messages" name="info_repetition_human" explanation=rrule_explained}{/i18n}</span>
-</div>
+<dd>{@i18n type="messages" name="info_repetition_human" explanation=rrule_explained}{/i18n}</dd>
  {:else}
-<div class="unparseable_rrule">
-<span class="label label_rrule">{@i18n type="labels" name="repeat"}{/i18n}</span>
-<span class="unparseable_rrule">{@i18n type="messages" name="info_repetition_unparseable"}{/i18n} <span class="rrule_raw_value">{rrule}</span></span>
-</div>
+<dd>{@i18n type="messages" name="info_repetition_unparseable"}{/i18n} <span
+class="rrule_raw_value">{rrule}</span></dd>
  {/rrule_explained}
 {/rrule}
 
@@ -43,5 +30,5 @@ class="addicon btn-icon-calendar-edit link_modify_event">{@i18n type="labels" na
 class="addicon btn-icon-calendar-delete link_delete_event">{@i18n type="labels" name="delete"}{/i18n}</button>
 </div>
 
-</div>
+</dl>
 

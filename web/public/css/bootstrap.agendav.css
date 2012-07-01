@@ -2180,3 +2180,15 @@ table .span24 {
 .navbar .brand {
   color: #333333;
 }
+.dl-horizontal dt {
+  float: left;
+  width: 70px;
+  clear: left;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dl-horizontal dd {
+  margin-left: 80px;
+}

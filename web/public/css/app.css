@@ -111,9 +111,6 @@ div.block .buttons {
   width: 400px !important;
   max-width: 400px !important;
 }
-.view_event_details .label {
-  font-weight: bold;
-}
 .view_event_details p.start_and_finish {
   font-style: italic;
 }
