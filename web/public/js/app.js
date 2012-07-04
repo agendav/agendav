@@ -844,12 +844,12 @@ var update_single_event = function update_single_event(event, new_data) {
 // Triggers a dialog for creating calendars
 var calendar_create_dialog = function calendar_create_dialog() {
 
-	var form_url = base_app_url + 'caldav2json/create_calendar';
+	var form_url = base_app_url + 'calendar/create';
 	var title = _('labels', 'newcalendar');
 
 	var data = {
 		frm: {
-			action: base_app_url + 'caldav2json/create_calendar',
+			action: form_url,
 			method: 'post',
 			csrf: get_csrf_token()
 		}
@@ -1024,7 +1024,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 	}
 
 	var updcalendar_ajax_req = $.ajax({
-		url: base_app_url + 'caldav2json/calendar_list',
+		url: base_app_url + 'calendar/all',
 		cache: false,
 		dataType: 'json',
 		async: false // Let's wait

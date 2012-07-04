@@ -5,7 +5,7 @@ $data_form = array(
 	'id' => 'modify_calendar_form',
 	'class' => 'form-horizontal',
 );
-echo form_open('caldav2json/modify_calendar', $data_form);
+echo form_open('calendar/modify', $data_form);
 
 $show_share_options = (isset($show_share_options) ? $show_share_options :
 		TRUE);
