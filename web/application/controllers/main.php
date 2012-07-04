@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Calendar extends CI_Controller {
+class Main extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();

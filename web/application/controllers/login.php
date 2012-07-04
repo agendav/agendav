@@ -24,7 +24,7 @@ class Login extends CI_Controller {
 	public function index() {
 		// Already authenticated?
 		if ($this->auth->is_authenticated()) {
-			redirect('/calendar');
+			redirect('/main');
 		}
 
 		$this->load->helper('form');
@@ -66,7 +66,7 @@ class Login extends CI_Controller {
 							$this->userpref->load_prefs($user)->getAll(),
 						);
 				$this->auth->new_session($data);
-				redirect("/calendar");
+				redirect("/main");
 				$this->output->_display();
 				die();
 			} else {

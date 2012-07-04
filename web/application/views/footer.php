@@ -79,7 +79,7 @@ $img = array(
   <li><?php echo anchor('prefs', 
 		  $this->i18n->_('labels', 'preferences'),
 		  array('class' => 'prefs'))?></li>
-  <li><?php echo anchor('calendar/logout',
+  <li><?php echo anchor('main/logout',
 		  $this->i18n->_('labels', 'logout'),
 		  array('class' => 'logout'))?></li>
  </ul>
