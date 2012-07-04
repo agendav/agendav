@@ -16,7 +16,7 @@ $data_form = array(
 );
 
 // CSRF implies using form_open()
-echo form_open('caldav2json/delete_event', $data_form);
+echo form_open('event/delete', $data_form);
 ?>
 <input type="hidden" name="uid" class="uid" value="" />
 <input type="hidden" name="calendar" class="calendar" value="" />

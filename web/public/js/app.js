@@ -408,7 +408,7 @@ var load_generated_dialog = function load_generated_dialog(url, data, preDialogF
 
 	// Do it via POST
 	var newid = generate_on_the_fly_form(
-		base_app_url + 'caldav2json/edit_event', data);
+		base_app_url + 'event/modify', data);
 
 	if (get_data('formcreation') == 'ok') {
 		var thisform = $('#' + newid);
@@ -1124,7 +1124,7 @@ var generate_event_source = function generate_event_source(calendar) {
 	var ajax_options = {
 			// If #calendar is not used, Fullcalendar will be confused when
 			// calling removeEventSource, and will remove all calendars
-			url: base_app_url + 'caldav2json/events#' + calendar,
+			url: base_app_url + 'event/all#' + calendar,
 			cache: false,
 			// TODO make timezone configurable
 			data: {
@@ -1709,7 +1709,7 @@ var event_resize_callback = function event_resize_callback(event, dayDelta, minu
 
 	// Generate on-the-fly form
 	var formid = generate_on_the_fly_form(
-		base_app_url + 'caldav2json/resize_or_drag_event',
+		base_app_url + 'event/alter',
 		{
 			uid: event.uid,
 			calendar: event.calendar,
@@ -1753,7 +1753,7 @@ var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDe
 
 	// Generate on-the-fly form
 	var formid = generate_on_the_fly_form(
-		base_app_url + 'caldav2json/resize_or_drag_event',
+		base_app_url + 'event/alter',
 		{
 			uid: event.uid,
 			calendar: event.calendar,

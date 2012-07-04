@@ -25,7 +25,7 @@ $data_form = array(
 	'id' => 'com_form',
 	'class' => 'form-horizontal',
 );
-echo form_open('caldav2json/com_event', $data_form);
+echo form_open('event/modify', $data_form);
 
 // Define all form fields
 $form_summary = array(
