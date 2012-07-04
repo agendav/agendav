@@ -62,3 +62,17 @@
 .navbar .brand {
     color: @grayDark;
 }
+
+// Custom horizontal layout 
+.dl-horizontal {
+  dt {
+    float: left;
+    width: 70px;
+    clear: left;
+    text-align: right;
+    .text-overflow();
+  }
+  dd {
+    margin-left: 80px;
+  }
+}

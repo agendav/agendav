@@ -1,0 +1,5 @@
+<div id="calendar_create_dialog">
+{>form_open applyclass="form-horizontal" applyid="calendar_create_form" /}
+{>calendar_basic_form_part/}
+{>form_close/}
+</div>

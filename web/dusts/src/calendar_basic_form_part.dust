@@ -1,0 +1,8 @@
+{>form_element_start for="displayname" label="displayname" /}
+<input name="displayname" type="text" size="25" maxlength="255" value="{?displayname}{displayname}{/displayname}" class="displayname input-medium" />
+{>form_element_end/}
+{>form_element_start for="color" label="color" /}
+<input name="calendar_color"
+value="#{?color}{color}{:else}{default_calendar_color}{/color}" 
+class="calendar_color pick_color input-mini" maxlength="7" size="7" />
+{>form_element_end/}
