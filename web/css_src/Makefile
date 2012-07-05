@@ -1,5 +1,5 @@
-BOOTSTRAP_DIR = ../libs/twitter-bootstrap
-PUBLIC_DIR = ../web/public
+BOOTSTRAP_DIR = ../../libs/twitter-bootstrap
+PUBLIC_DIR = ../public
 CUSTOM_BOOTSTRAP_LESS = custom_bootstrap.less
 AGENDAV_LESS = agendav.less
 LESS_COMPRESSOR ?= `which lessc`
