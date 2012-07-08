@@ -264,6 +264,7 @@ class CalDAVClient {
     $headers = array();
 
     if ( !isset($url) ) $url = $this->base_url;
+    $url = str_replace(" ","%20",$url);
     $this->request_url = $url;
     $url = preg_replace('{^https?://[^/]+}', '', $url);
     // URLencode if it isn't already
@@ -677,11 +678,18 @@ class CalDAVClient {
   /**
   * Find the calendars, from the calendar_home_set
   */
-  function FindCalendars( $recursed=false ) {
+  function FindCalendars( $recursed=false,$url=null ) {
     if ( !isset($this->calendar_home_set[0]) ) {
       $this->FindCalendarHome();
     }
-    $this->DoPROPFINDRequest( $this->calendar_home_set[0], array('resourcetype','displayname','http://calendarserver.org/ns/:getctag'), 1);
+    if ($url === null)
+      $url = $this->calendar_home_set[0];
+    $this->DoPROPFINDRequest( $url, array('resourcetype','displayname','http://calendarserver.org/ns/:getctag'
+                                         ,'http://calendarserver.org/ns/:calendar-proxy-write'
+                                         ,'http://calendarserver.org/ns/:calendar-proxy-write-for'
+                                         ,'http://calendarserver.org/ns/:calendar-proxy-read'
+                                         ,'http://calendarserver.org/ns/:calendar-proxy-read-for'
+					 ), 1);
 
     $calendars = array();
     if ( isset($this->xmltags['urn:ietf:params:xml:ns:caldav:calendar']) ) {
@@ -713,6 +721,32 @@ class CalDAVClient {
         $calendars[] = $calendar;
       }
     }
+		if ( $recurse and isset($this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for']) ) {
+			$calendar_urls = array();
+			for($i = 0; $i < count($this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for']); $i+=2) {
+			        $range_begin = $this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for'][$i];
+			        $range_end = $this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for'][$i+1];
+				for ($j = $range_begin + 1; $j < $range_end; $j++) {
+					if ($this->xmlnodes[$j]['tag'] == 'DAV::href' ) {
+						$href = $this->xmlnodes[$j]['value'];
+						$calendar_urls[$href] = 1;
+					}
+				}
+			}
+			$query_urls = array();
+			foreach( $this->xmltags['DAV::href'] AS $i => $hnode ) {
+				$href = $this->xmlnodes[$hnode]['value'];
+
+				if ( !isset($calendar_urls[$href]) ) continue;
+				if ( $href == $url ) continue;
+				$query_urls[] = $href;
+			}
+			foreach (array_unique ($query_urls) as $i => $href) {
+			        $href = parse_url($this->request_url, PHP_URL_SCHEME).'://'.parse_url($this->request_url, PHP_URL_HOST).$href;
+				$new_calendars = $this->FindCalendars(true, $href);
+				$calendars = array_merge($calendars, $new_calendars);
+			}
+		}
 
     return $this->CalendarUrls($calendars);
   }
