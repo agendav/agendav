@@ -180,7 +180,7 @@ $messages['error_internalcalnameinuse'] = 'Ce nom de calendrier est déjà utili
 
 $messages['info_confirmcaldelete'] = 'Êtes-vous sûr(e) de vouloir suppimer le calendrier suivant?';
 $messages['info_confirmeventdelete'] = 'Êtes-vous sûr(e) de vouloir supprimer l\'événement suivant?';
-$messages['info_permanentremoval'] = 'Votre information sera définitivement perdue';
+$messages['info_permanentremoval'] = 'Vos données seront définitivement perdues';
 $messages['info_repetitivedeleteall'] = 'Toutes les instances de cet événement récurrent vont être supprimées';
 $messages['info_sharedby'] = 'Vous avez accès à ce calendrier car %user vous l\'a partagé';
 $messages['info_shareexplanation'] = 'Vous pouvez partager ce calendrier avec
