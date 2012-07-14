@@ -32,7 +32,7 @@ class Defs {
 			'libs/jquery.timePicker.20110318.js',
 			'libs/jquery.cookie.js',
 			'translation.js',
-			'libs/dust-core-0.6.0.js',
+			'libs/dust-core-1.0.0.js',
 			'templates/templates.js',
 			'app.js',
 			);
