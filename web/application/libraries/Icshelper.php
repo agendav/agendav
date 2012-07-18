@@ -188,7 +188,7 @@ class Icshelper {
 						foreach( $month_arr as $day => $day_arr ) {
 							foreach( $day_arr as $event ) {
 								$tz = $this->detect_tz($event, $timezones);
-								$result[] =
+								$result[] = 
 									$this->parse_vevent_fullcalendar($event,
 										$event_href, $event_etag, $calendar,
 										$tz);
@@ -276,12 +276,6 @@ class Icshelper {
 
 			$this_event['expanded'] = TRUE;
 
-			// Format depends on DTSTART
-			$format = 'Y-m-d H:i:s e';
-			if (!isset($dtstart['property']['value']['hour'])) {
-				$current_dtstart[1] .= ' 00:00:00';
-			}
-
 			// Keep a copy
 			$orig_start = clone $start;
 
@@ -291,15 +285,10 @@ class Icshelper {
 			$current_dtend = $vevent->getProperty('x-current-dtend');
 			if ($current_dtend !== FALSE) {
 
-				if (!isset($current_dtend['property']['value']['hour'])) {
-					$current_dtend[1] .= ' 00:00:00';
-				}
-
 				$orig_end = clone $end;
 				$end =
 					$this->CI->dates->x_current2datetime($current_dtend[1],
 							$tz);
-
 			}
 		}
 
