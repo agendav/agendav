@@ -46,7 +46,6 @@ class CURLCalDAVClient extends CalDAVClient {
 		curl_setopt_array($this->ch, array(
 					CURLOPT_CONNECTTIMEOUT => $this->timeout,
 					CURLOPT_FAILONERROR => FALSE,
-					CURLOPT_FOLLOWLOCATION => TRUE,
 					CURLOPT_MAXREDIRS => 2,
 					CURLOPT_FORBID_REUSE => FALSE,
 					CURLOPT_RETURNTRANSFER => TRUE,
