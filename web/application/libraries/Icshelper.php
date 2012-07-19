@@ -277,7 +277,6 @@ class Icshelper {
 			$this_event['expanded'] = TRUE;
 
 			// Format depends on DTSTART
-			$format = 'Y-m-d H:i:s e';
 			if (!isset($dtstart['property']['value']['hour'])) {
 				$current_dtstart[1] .= ' 00:00:00';
 			}
@@ -290,8 +289,7 @@ class Icshelper {
 
 			$current_dtend = $vevent->getProperty('x-current-dtend');
 			if ($current_dtend !== FALSE) {
-
-				if (!isset($current_dtend['property']['value']['hour'])) {
+				if (!isset($dtstart['property']['value']['hour'])) {
 					$current_dtend[1] .= ' 00:00:00';
 				}
 
