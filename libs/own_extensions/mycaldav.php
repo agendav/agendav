@@ -99,6 +99,7 @@ class CURLCalDAVClient extends CalDAVClient {
 			$url = $this->full_url;
 		}
 
+		$url = str_replace(" ","%20",$url);
 		$this->request_url = $url;
 
 		curl_setopt($this->ch, CURLOPT_URL, $url);
@@ -202,7 +203,7 @@ class CURLCalDAVClient extends CalDAVClient {
 	/*
 	 * Find own calendars
 	 */
-	function FindCalendars( $recursed=false ) {
+	function FindCalendars( $recursed=false,$url=null ) {
 		if ( !isset($this->calendar_home_set[0]) ) {
 			$this->FindCalendarHome();
 		}
@@ -213,10 +214,15 @@ class CURLCalDAVClient extends CalDAVClient {
 					'http://calendarserver.org/ns/:getctag',
 					'http://apple.com/ns/ical/:calendar-color',
 					'http://apple.com/ns/ical/:calendar-order',
+    					'http://calendarserver.org/ns/:calendar-proxy-read',
+    					'http://calendarserver.org/ns/:calendar-proxy-write',
+    					'http://calendarserver.org/ns/:calendar-proxy-read-for',
+    					'http://calendarserver.org/ns/:calendar-proxy-write-for',
 				 );
-		$this->DoPROPFINDRequest( $this->calendar_home_set[0], $properties, 1);
-
-		return $this->parse_calendar_info();
+		if ($url === null)
+			$url = $this->calendar_home_set[0];
+		$this->DoPROPFINDRequest( $url, $properties, 1);
+		return $this->parse_calendar_info( ! $recursed );
 	}
 
 	/**
@@ -233,13 +239,13 @@ class CURLCalDAVClient extends CalDAVClient {
 				 );
 		$this->DoPROPFINDRequest($url, $properties, 0);
 
-		return $this->parse_calendar_info();
+		return $this->parse_calendar_info( false );
 	}
 
 	/**
 	 * Get calendar info after a PROPFIND
 	 */
-	function parse_calendar_info() {
+	function parse_calendar_info( $recurse ) {
 
 		$calendars = array();
 		if ( isset($this->xmltags['urn:ietf:params:xml:ns:caldav:calendar']) ) {
@@ -252,6 +258,7 @@ class CURLCalDAVClient extends CalDAVClient {
 				$href = rawurldecode($this->xmlnodes[$hnode]['value']);
 
 				if ( !isset($calendar_urls[$href]) ) continue;
+				unset ( $calendar_urls[$href]);
 
 				//        printf("Seems '%s' is a calendar.\n", $href );
 
@@ -290,6 +297,32 @@ class CURLCalDAVClient extends CalDAVClient {
 					}
 				}
 				$calendars[] = $calendar;
+			}
+		}
+		if ( $recurse and isset($this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for']) ) {
+			$calendar_urls = array();
+			for($i = 0; $i < count($this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for']); $i+=2) {
+			        $range_begin = $this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for'][$i];
+			        $range_end = $this->xmltags['http://calendarserver.org/ns/:calendar-proxy-write-for'][$i+1];
+				for ($j = $range_begin + 1; $j < $range_end; $j++) {
+					if ($this->xmlnodes[$j]['tag'] == 'DAV::href' ) {
+						$href = $this->xmlnodes[$j]['value'];
+						$calendar_urls[$href] = 1;
+					}
+				}
+			}
+			$query_urls = array();
+			foreach( $this->xmltags['DAV::href'] AS $i => $hnode ) {
+				$href = $this->xmlnodes[$hnode]['value'];
+
+				if ( !isset($calendar_urls[$href]) ) continue;
+				if ( $href == $url ) continue;
+				$query_urls[] = $href;
+			}
+			foreach (array_unique ($query_urls) as $i => $href) {
+			        $href = parse_url($this->request_url, PHP_URL_SCHEME).'://'.parse_url($this->request_url, PHP_URL_HOST).$href;
+				$new_calendars = $this->FindCalendars(true, $href);
+				$calendars = array_merge($calendars, $new_calendars);
 			}
 		}
 
