@@ -1,0 +1,13 @@
+<table class="reminder_table table table-striped">
+ <thead>
+  <th>{@i18n type="labels" name="remindertype"}{/i18n}</th>
+  <th></th>
+  <th></th>
+ </thead>
+ <tbody>
+ {#reminders}
+ {:else}
+ {>reminder_row/}
+ {/reminders}
+ </tbody>
+</table>
