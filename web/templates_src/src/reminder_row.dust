@@ -1,4 +1,4 @@
-<tr>
+<tr{^qty} class="reminder_add"{/qty}>
  <td>
  <select class="input-small" name="reminder_type[]">
   <option value="popup">{@i18n type="labels" name="popup"}{/i18n}</option>
@@ -15,7 +15,12 @@
  </select>
  </td>
  <td>
+ {?qty}
  <img src="{base_url}/img/delete.png" 
  alt="{@i18n type="labels" name="delete"}{/i18n}" class="pseudobutton" />
+ {:else}
+ <img src="{base_url}/img/add.png" 
+ alt="{@i18n type="labels" name="add"}{/i18n}" class="pseudobutton" />
+ {/qty}
  </td>
 </tr>

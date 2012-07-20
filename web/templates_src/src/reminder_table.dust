@@ -6,8 +6,17 @@
  </thead>
  <tbody>
  {#reminders}
- {:else}
  {>reminder_row/}
+ {:else}
+ <td colspan="3">
+  {@i18n type="messages" name="info_noreminders"}{/i18n}
+ </td>
  {/reminders}
  </tbody>
+</table>
+
+<table class="reminder_create">
+<tbody>
+{>reminder_row/}
+</tbody>
 </table>
