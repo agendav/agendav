@@ -194,30 +194,29 @@ $(document).ready(function() {
 			.before('<span class="fc-header-space">');
 
 		// Date picker above calendar
-		$('#calendar_view span.fc-button-today')
-			.after('<span class="fc-button-datepicker">'
-				+'<img src="' + base_url + '/img/datepicker.gif" alt="' 
-				+ _('labels', 'choose_date') +'" />'
-				+'</span>')
-			.after('<input type="hidden" id="datepicker_fullcalendar" />')
-			.after('<span class="fc-header-space" />')
-			.nextUntil('#datepicker_fullcalendar')
-			.next()
-			.datepicker({
-				changeYear: true,
-				closeText: _('labels', 'cancel'),
-				onSelect: function(date, text) {
-					var d = $('#datepicker_fullcalendar').datepicker('getDate');	
-					$('#calendar_view').fullCalendar('gotoDate', d);
-				}
-			})
-			.end()
-			.nextUntil('span.fc-button-datepicker')
-			.next()
-			.on('click', function() {
-				$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
-				$('#datepicker_fullcalendar').datepicker('show');
-			});
+		dust.render('datepicker_button', dustbase, function(err, out) {
+			if (err != null) {
+			show_error(_('messages', 'error_interfacefailure'),
+				err.message);
+			} else {
+				$('#calendar_view span.fc-button-today')
+					.after(out);
+				$('#datepicker_fullcalendar')
+				.datepicker({
+					changeYear: true,
+					closeText: _('labels', 'cancel'),
+					onSelect: function(date, text) {
+						var d = $('#datepicker_fullcalendar').datepicker('getDate');	
+						$('#calendar_view').fullCalendar('gotoDate', d);
+					}
+				})
+				.prev()
+				.on('click', function() {
+					$('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
+					$('#datepicker_fullcalendar').datepicker('show');
+				});
+			}
+		});
 		
 
 		$('#calendar_view').fullCalendar('renderEvent', 
