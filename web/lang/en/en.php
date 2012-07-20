@@ -167,6 +167,16 @@ $labels['defaultcalendar'] = 'Default calendar';
 
 $labels['toggleallcalendars'] = 'Show/hide all';
 
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'Minutes';
+$labels['hours'] = 'Hours';
+$labels['weeks'] = 'Weeks';
+$labels['years'] = 'Years';
+
+$labels['remindertype'] = 'Reminder type';
+
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
 $messages['error_invaliddate'] = 'Invalid date on field %s';
