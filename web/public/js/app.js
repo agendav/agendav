@@ -79,7 +79,9 @@ $(document).ready(function() {
 	} else if ($('body').hasClass('calendarpage')) {
 		// Dust.js base context
 		dustbase = dust.makeBase({
-			default_calendar_color: default_calendar_color
+			default_calendar_color: default_calendar_color,
+			base_url: base_url,
+			base_app_url: base_app_url
 		});
 
 		// Default colorpicker options
