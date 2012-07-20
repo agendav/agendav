@@ -146,6 +146,8 @@ $form_transp = array(
 		 'generaloptions')?></a></li>
  <li><a href="#tabs-recurrence"><?php echo $this->i18n->_('labels',
 		 'repeatoptions')?></a></li>
+ <li><a href="#tabs-reminders"><?php echo $this->i18n->_('labels',
+		 'remindersoptions')?></a></li>
  <li><a href="#tabs-workgroup"><?php echo $this->i18n->_('labels',
 		 'workgroupoptions')?></a></li>
 </ul>
@@ -221,6 +223,8 @@ if (!isset($unparseable_rrule)) {
 }
 ?>
 	
+ </div>
+ <div id="tabs-reminders">
  </div>
  <div id="tabs-workgroup">
  <?php

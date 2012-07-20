@@ -175,6 +175,7 @@ $labels['hours'] = 'Hours';
 $labels['weeks'] = 'Weeks';
 $labels['years'] = 'Years';
 
+$labels['remindersoptions'] = 'Reminders';
 $labels['remindertype'] = 'Reminder type';
 
 // Messages
