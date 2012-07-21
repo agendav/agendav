@@ -1,13 +1,13 @@
 <tr{^qty} class="reminder_add"{/qty}>
  <td>
- <select class="input-small" name="reminder_type[]">
+ <select class="input-small" name="reminder_type{?qty}[]{/qty}">
   <option value="popup">{@i18n type="labels" name="popup"}{/i18n}</option>
   <option value="email">{@i18n type="labels" name="email"}{/i18n}</option>
  </select>
  </td>
  <td>
-  <input class="input-mini" name="reminder_qty[]" value="{qty}" />
- <select class="input-small" name="reminder_unit[]">
+  <input class="input-mini" name="reminder_qty{?qty}[]{/qty}" value="{qty}" />
+ <select class="input-small" name="reminder_unit{?qty}[]{/qty}">
   <option value="minutes">{@i18n type="labels" name="minutes"}{/i18n}</option>
   <option value="hours">{@i18n type="labels" name="hours"}{/i18n}</option>
   <option value="weeks">{@i18n type="labels" name="weeks"}{/i18n}</option>
