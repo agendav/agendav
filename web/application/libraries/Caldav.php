@@ -264,7 +264,6 @@ class Caldav {
 		$this->prepare_client($user, $passwd, '');
 
 		$tmpcals =  $this->client->FindCalendars();
-		$result = array();
 
 		return $this->prepare_calendar_data_for_browser($tmpcals);
 	}
@@ -289,7 +288,7 @@ class Caldav {
 				return FALSE;
 			}
 
-			$properties = $info[0];
+			$properties = $info[$calid];
 
 
 			// Give priority to previous data (user customizations?)
@@ -654,17 +653,6 @@ class Caldav {
 		}
 	}
 
-	/**
-	 * Converts a RGBA hexadecimal string (#rrggbbXX) to RGB
- 	 */
-	function _rgba2rgb($s) {
-		if (strlen($s) == '9') {
-			return substr($s, 0, 7);
-		} else {
-			// Unknown string
-			return $s;
-		}
-	}
 
 	/**
 	 * Parses calendar information to be sent to the browser
@@ -672,16 +660,10 @@ class Caldav {
 	 * $calendars is an array of CalendarExtendedInfo objects
 	 */
 	function prepare_calendar_data_for_browser($calendars) {
+
 		$result = array();
 		foreach ($calendars as $c) {
 			$result[$c->calendar] = get_object_vars($c);
-
-			// Shorten calendar displayname if needed
-			$dn = $result[$c->calendar]['displayname'];
-
-			// Adapt color
-			$result[$c->calendar]['color'] =
-				$this->_rgba2rgb($c->color);
 		}
 
 		return $result;

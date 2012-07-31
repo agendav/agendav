@@ -1,11 +1,11 @@
 <?php
 class CalendarExtendedInfo extends CalendarInfo {
-	public $calendar, $order, $color, $shared;
+	public $calendar, $order, $color, $shared, $rgba_color;
 
 	function __construct($url, $displayname = null, $getctag = null ) {
 		// Be consistent with iCalcreator
 		$this->order = FALSE;
-		$this->color = FALSE;
+		$this->rgba_color = FALSE;
 
 		parent::__construct($url, $displayname, $getctag);
 	}
@@ -280,8 +280,11 @@ class CURLCalDAVClient extends CalDAVClient {
 								$v['value'] : 'calendar';
 							break;
 						case 'http://apple.com/ns/ical/:calendar-color':
-							$calendar->color = isset($v['value']) ?
+							$rgba_color = isset($v['value']) ?
 								$v['value'] : '#ffffffff';
+							$calendar->rgba_color = $rgba_color;
+							$calendar->color =
+								$this->_rgba2rgb($rgba_color);
 							break;
 						case 'http://apple.com/ns/ical/:calendar-order':
 							$calendar->order = isset($v['value']) ?
@@ -289,11 +292,11 @@ class CURLCalDAVClient extends CalDAVClient {
 							break;
 					}
 				}
-				$calendars[] = $calendar;
+				$calendars[$calendar_id] = $calendar;
 			}
 		}
 
-		return $this->CalendarUrls($calendars);
+		return $calendars;
 	}
 
 	/**
@@ -404,6 +407,18 @@ class CURLCalDAVClient extends CalDAVClient {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Converts a RGBA hexadecimal string (#rrggbbXX) to RGB
+ 	 */
+	private function _rgba2rgb($s) {
+		if (strlen($s) == '9') {
+			return substr($s, 0, 7);
+		} else {
+			// Unknown string
+			return $s;
+		}
 	}
 
 }

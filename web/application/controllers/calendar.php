@@ -59,7 +59,7 @@ class Calendar extends CI_Controller {
 				$this->auth->get_user(),
 				$this->auth->get_passwd());
 
-		// Hide calendars user don't want to be shown
+		// Hide calendars user doesn't want to be shown
 		$hidden_calendars = $this->prefs->hidden_calendars;
 		if ($hidden_calendars !== null) {
 			foreach ($arr_calendars as $c => $data) {
