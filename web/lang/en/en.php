@@ -167,6 +167,17 @@ $labels['defaultcalendar'] = 'Default calendar';
 
 $labels['toggleallcalendars'] = 'Show/hide all';
 
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'Minutes';
+$labels['hours'] = 'Hours';
+$labels['weeks'] = 'Weeks';
+$labels['years'] = 'Years';
+
+$labels['remindersoptions'] = 'Reminders';
+$labels['remindertype'] = 'Reminder type';
+
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
 $messages['error_invaliddate'] = 'Invalid date on field %s';
@@ -187,6 +198,7 @@ $messages['info_shareexplanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
 by commas or spaces';
 $messages['info_notshared'] = 'This calendar is not being shared with anyone';
+$messages['info_noreminders'] = 'This event has no configured reminders';
 $messages['error_sessexpired'] = 'Your session has expired';
 $messages['error_loginagain'] = 'Please, log in again';
 

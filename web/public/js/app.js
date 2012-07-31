@@ -794,6 +794,17 @@ var event_field_form = function event_field_form(type, data) {
 			if (type == 'new') {
 				$('input[name="summary"]').focus();
 			}
+
+			// Show 'Reminders' tab contents
+			dust.render('reminder_table', dustbase, function(err, out) {
+				if (err != null) {
+					show_error(_('messages', 'error_interfacefailure'),
+						err.message);
+				} else {
+					$('#tabs-reminders').html(out);
+				}
+			});
+
 			
 		},
 		title,

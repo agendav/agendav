@@ -1,0 +1,22 @@
+<table class="reminder_table table table-striped">
+ <thead>
+  <th>{@i18n type="labels" name="remindertype"}{/i18n}</th>
+  <th></th>
+  <th></th>
+ </thead>
+ <tbody>
+ {#reminders}
+ {>reminder_row/}
+ {:else}
+ <td colspan="3">
+  {@i18n type="messages" name="info_noreminders"}{/i18n}
+ </td>
+ {/reminders}
+ </tbody>
+</table>
+
+<table class="reminder_create">
+<tbody>
+{>reminder_row/}
+</tbody>
+</table>
