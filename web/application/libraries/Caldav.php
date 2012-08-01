@@ -262,9 +262,7 @@ class Caldav {
 	function get_own_calendars($user, $passwd) {
 		$this->prepare_client($user, $passwd, '');
 
-		$tmpcals =  $this->client->FindCalendars();
-
-		return $this->prepare_calendar_data_for_browser($tmpcals);
+		return $this->client->FindCalendars();
 	}
 
 	/**
@@ -303,7 +301,7 @@ class Caldav {
 			$tmpcals[$calid] = $properties;
 		}
 
-		return $this->prepare_calendar_data_for_browser($tmpcals);
+		return $tmpcals;
 	}
 
 	/**
@@ -650,22 +648,6 @@ class Caldav {
 			// Unknown string
 			return $s;
 		}
-	}
-
-
-	/**
-	 * Parses calendar information to be sent to the browser
-	 *
-	 * $calendars is an array of CalendarExtendedInfo objects
-	 */
-	function prepare_calendar_data_for_browser($calendars) {
-
-		$result = array();
-		foreach ($calendars as $c) {
-			$result[$c->calendar] = get_object_vars($c);
-		}
-
-		return $result;
 	}
 
 
