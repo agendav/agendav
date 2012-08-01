@@ -114,5 +114,12 @@ $autoload['model'] = array('auth', 'shared_calendars', 'i18n',
 		'userpref');
 
 
+/**
+ * AgenDAV additional classes
+ */
+
+require_once('../application/libraries/CalendarInfo.php');
+
+
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

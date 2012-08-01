@@ -58,7 +58,7 @@ class Defs {
 		set_include_path(implode(PATH_SEPARATOR, array(
 						BASEPATH . '../../libs/icalcreator',
 						BASEPATH . '../../libs/own_extensions',
-						BASEPATH . '../../libs/caldav-client/awl',
+						BASEPATH . '../../libs/awl',
 						BASEPATH . '../../libs/caldav-client',
 						get_include_path()
 						)));
