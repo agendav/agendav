@@ -426,27 +426,9 @@ class Event extends CI_Controller {
 
 			// Moving event between calendars
 			if ($original_calendar != $calendar) {
-				$res = $this->caldav->delete_resource(
-						$this->auth->get_user(),
-						$this->auth->get_passwd(),
-						$href,
-						$original_calendar,
-						$etag);
-				if ($res === TRUE) {
-					$this->extended_logs->message('INTERNALS', 
-							'Deleted event with uid=' . $uid 
-							.' from calendar ' .  $original_calendar);
-				} else {
-					// There was an error
-					$this->extended_logs->message('INTERNALS',
-							'Error deleting event with uid=' . $uid
-							.' from calendar ' . $original_calendar . ': '
-							. $res);
-					$this->_throw_exception($res);
-				}
-
-				// Generate new resource uid
-				$etag = '*';
+                // We will need this etag later
+                $original_etag = $etag;
+                $etag = '*';
 			}
 		}
 
@@ -485,6 +467,28 @@ class Event extends CI_Controller {
 					break;
 			}
 		} else {
+            // Remove original event
+            if (isset($p['modification']) && $original_calendar != $calendar) {
+                $res = $this->caldav->delete_resource(
+                        $this->auth->get_user(),
+                        $this->auth->get_passwd(),
+                        $href,
+                        $original_calendar,
+                        $original_etag);
+                if ($res === TRUE) {
+                    $this->extended_logs->message('INTERNALS', 
+                            'Deleted event (moved) with uid=' . $uid 
+                            .' from calendar ' .  $original_calendar);
+                } else {
+                    // There was an error
+                    $this->extended_logs->message('INTERNALS',
+                            'Error deleting event (moved) with uid=' . $uid
+                            .' from calendar ' . $original_calendar . ': '
+                            . $res);
+                    $this->_throw_exception($res);
+                }
+            }
+
 			// Return a list of affected calendars (original_calendar, new
 			// calendar)
 			$affected_calendars = array($calendar);
