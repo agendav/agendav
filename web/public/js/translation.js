@@ -26,7 +26,7 @@ function load_i18n_strings() {
 /**
  * Function that translates a given label/message
  */
-function _(mtype, s, params) {
+function t(mtype, s, params) {
 	var ret = '[' + mtype + ':' + s + ']';
 
 	if (typeof(i18n)!= 'undefined' && (mtype == 'messages' 
