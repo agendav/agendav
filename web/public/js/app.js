@@ -1214,7 +1214,7 @@ var add_button_icons = function add_button_icons(buttons) {
  */
 var generate_calendar_entry = function generate_calendar_entry(data) {
 	// Default color
-	if (data.color === undefined || data.color === false) {
+	if (data.color === undefined || data.color === false || data.color == null) {
 		data.color = '#' + default_calendar_color;
 	} else {
 		// Remove alpha channel from color
