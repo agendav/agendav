@@ -30,6 +30,7 @@ class CalendarInfo {
 		$this->is_default = FALSE;
 		$this->order = FALSE;
 		$this->rgba_color = FALSE;
+		$this->shared = FALSE;
 	}
 
 	public function __toString() {
