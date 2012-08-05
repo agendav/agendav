@@ -22,6 +22,7 @@
 class CalendarInfo {
 	public $url, $displayname, $getctag;
 	public $calendar, $order, $color, $shared, $rgba_color, $is_default;
+    public $share_with = array();
 
 	public function __construct($url, $displayname = null, $getctag = null ) {
 		$this->url = $url;

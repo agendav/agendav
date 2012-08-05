@@ -799,8 +799,14 @@ class Caldav {
 		$own_calendars = $this->get_own_calendars($user, $passwd);
 		$ret = $own_calendars;
 
-		// Look for shared calendars
 		if ($this->CI->config->item('enable_calendar_sharing')) {
+            // Add sharing information for this calendar
+            foreach ($ret as $calendar) {
+                $calendar->share_with =
+                    $this->CI->shared_calendars->users_with_access_to($calendar->calendar);
+            }
+
+            // Look for shared calendars
 			$tmp_shared_calendars =
 				$this->CI->shared_calendars->get_shared_with($user);
 
