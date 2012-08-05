@@ -1,9 +1,9 @@
 <tr>
-<td><span class="username share_data_username">{username}</span></td>
-<td class="share_data_other">
-<input type="hidden" name="shares[][sid]" value="{sid}"/>
-<input type="hidden" name="shares[][user]" value="{username}"/>
-<select name="shares[][write_access]" class="input-medium">
+<td><span class="username">{username}</span></td>
+<td>
+<input type="hidden" name="share_with[][sid]" value="{sid}"/>
+<input type="hidden" name="share_with[][user]" value="{username}"/>
+<select name="share_with[][write_access]" class="input-medium">
  <option value="0"{@eq key="{write_access}" value="0"} selected="true"{/eq}>{@i18n type="labels" name="readonly"/}</option>
  <option value="1"{@eq key="{write_access}" value="1"} selected="true"{/eq}>{@i18n type="labels" name="readandwrite"/}</option>
 </select>

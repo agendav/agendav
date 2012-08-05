@@ -1,0 +1,39 @@
+<div id="calendar_modify_dialog">
+<div id="calendar_modify_dialog_tabs">
+ <ul>
+ <li><a href="#tabs-general">
+ {@i18n type="labels" name="generaloptions"/}</a></li>
+ {@eq key="{enable_calendar_sharing}" value=true}
+  {@eq key="{shared}" value=false}
+   <li><a href="#tabs-share">
+    {@i18n type="labels" name="shareoptions"/}</a></li>
+  {/eq}
+ {/eq}
+ </ul>
+{>form_open applyclass="form-horizontal" applyid="calendar_modify_form" /}
+<div id="tabs-general">
+
+{?user_from}
+<div class="share_info ui-corner-all">
+{@i18n type="messages" name="info_sharedby" user="{user_from}"/}
+{@eq key="{write_access}" value="0"}
+ ({@i18n type="labels" name="readonly" /})
+{/eq}
+</div>
+{/user_from}
+
+{>calendar_basic_form_part/}
+</div>
+
+
+{@eq key="{enable_calendar_sharing}" value=true}
+ {@eq key="{shared}" value=false}
+  <div id="tabs-share">
+   jjjj
+  </div>
+ {/eq}
+{/eq}
+
+
+{>form_close/}
+</div>
