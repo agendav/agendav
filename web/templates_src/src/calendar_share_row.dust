@@ -1,0 +1,17 @@
+<tr>
+<td><span class="username share_data_username">{username}</span></td>
+<td class="share_data_other">
+<input type="hidden" name="shares[][sid]" value="{sid}"/>
+<input type="hidden" name="shares[][user]" value="{username}"/>
+<select name="shares[][write_access]" class="input-medium">
+ <option value="0"{@eq key="{write_access}" value="0"} selected="true"{/eq}>{@i18n type="labels" name="readonly"/}</option>
+ <option value="1"{@eq key="{write_access}" value="1"} selected="true"{/eq}>{@i18n type="labels" name="readandwrite"/}</option>
+</select>
+</td>
+<td>
+<img src="{base_url}img/delete.png" 
+class="share_calendar_manager_delete pseudobutton" 
+alt="{@i18n type="labels" name="delete"/}"
+title="{@i18n type="labels" name="delete"/}" />
+</td>
+</tr>
