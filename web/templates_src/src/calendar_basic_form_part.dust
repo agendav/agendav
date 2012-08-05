@@ -14,11 +14,10 @@ class="calendar_color pick_color input-mini" maxlength="7" size="7" />
 {?public_url}
  <div class="public_url">
   {@i18n type="labels" name="publicurl"/}
-  <a href="{public_url}>
+  <a href="{public_url}">
    <img src="{base_url}img/calendar_link.png"
     alt="{@i18n type="labels" name="publicurl"/}"
     title="{@i18n type="labels" name="publicurl"/}" />
   </a>
  </div>
 {/public_url}
-{@contextDump/}
