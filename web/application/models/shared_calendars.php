@@ -96,10 +96,10 @@ class Shared_calendars extends CI_Model {
 	 * Get a list of users who can access a calendar
 	 *
 	 * @param $calendar		Complete calendar name (user:calendar)
-	 * @return				Associative array of the form:
-	 *						 ('username' => ['sid' => sid, 'write_access' => write_access], 
-	 *						 ('username2' => ['sid' => sid2, 'write_access'
-	 *						 => write_access2], 
+	 * @return				Array of the form:
+	 *						 [ [ 'username' => username, 'sid' => sid, 'write_access' => write_access], 
+	 *						 ['username' => username2, 'sid' => sid2, 'write_access'
+	 *						 => write_access2], ...], 
 	 *
 	 */
 
@@ -121,13 +121,12 @@ class Shared_calendars extends CI_Model {
 		if (count($tmp) > 0) {
 			$tmp = array_values($tmp);
 			foreach ($tmp[0] as $sid => $share) {
-				$users[$share['user_which']] = array(
+				$users[] = array(
+                    'username' => $share['user_which'],
 					'sid' => $share['sid'],
 					'write_access' => $share['write_access'],
 					);
 			}
-
-			ksort($users);
 		}
 
 		return $users;
