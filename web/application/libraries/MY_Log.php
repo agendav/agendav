@@ -31,7 +31,7 @@
 */
 class MY_Log extends CI_Log {
 
-	private $config;
+    private $config;
 
     /**
      * Constructor

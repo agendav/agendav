@@ -25,27 +25,27 @@
  */
 
 class Timezonemanager {
-	private $timezones;
+    private $timezones;
 
-	function __construct() {
-		$this->timezones = array();
-	}
+    function __construct() {
+        $this->timezones = array();
+    }
 
-	public function getTz($name) {
-		return (isset($this->timezones[$name])) ?
-			$this->timezones[$name] :
-			$this->createTz($name);
-	}
+    public function getTz($name) {
+        return (isset($this->timezones[$name])) ?
+            $this->timezones[$name] :
+            $this->createTz($name);
+    }
 
-	private function createTz($name) {
-		try {
-			$tz = new DateTimeZone($name);
-		} catch (Exception $e) {
-			// Invalid timezone
-			return FALSE;
-		}
+    private function createTz($name) {
+        try {
+            $tz = new DateTimeZone($name);
+        } catch (Exception $e) {
+            // Invalid timezone
+            return FALSE;
+        }
 
-		$this->timezones[$name] = $tz;
-		return $tz;
-	}
+        $this->timezones[$name] = $tz;
+        return $tz;
+    }
 }

@@ -20,120 +20,120 @@
  */
 
 class I18n extends CI_Model {
-	private $langname;
-	
-	private $lang_path;
+    private $langname;
+    
+    private $lang_path;
 
-	private $lang_contents;
+    private $lang_contents;
 
-	private $lang_relations;
+    private $lang_relations;
 
-	function __construct() {
-		parent::__construct();
+    function __construct() {
+        parent::__construct();
 
-		// Load language relations file
-		$this->config->load('languages');
+        // Load language relations file
+        $this->config->load('languages');
 
-		$this->lang_path = APPPATH . '../lang';
-		$this->langname = $this->config->item('default_language');
+        $this->lang_path = APPPATH . '../lang';
+        $this->langname = $this->config->item('default_language');
 
-		if (!is_dir($this->lang_path)) {
-			log_message('ERROR', 'Language path is not a directory');
-			die();
-		}
+        if (!is_dir($this->lang_path)) {
+            log_message('ERROR', 'Language path is not a directory');
+            die();
+        }
 
-		// Defined language?
-		$lang_rels = $this->config->item('lang_rels');
-		if (!isset($lang_rels[$this->langname])) {
-			log_message('ERROR', 'Language ' .
-					$this->langname . ' not registered');
-			$this->langname = 'en';
-		}
+        // Defined language?
+        $lang_rels = $this->config->item('lang_rels');
+        if (!isset($lang_rels[$this->langname])) {
+            log_message('ERROR', 'Language ' .
+                    $this->langname . ' not registered');
+            $this->langname = 'en';
+        }
 
-		$this->lang_relations = $lang_rels[$this->langname];
+        $this->lang_relations = $lang_rels[$this->langname];
 
-		if (FALSE === ($this->lang_contents =
-					$this->parse_language($this->langname))) {
-			$this->extended_logs->message('ERROR', 'Language '
-					. $this->langname . ' not found');
-			$this->langname = 'en';
-			$this->lang_contents = $this->parse_language($this->langname);
-		}
+        if (FALSE === ($this->lang_contents =
+                    $this->parse_language($this->langname))) {
+            $this->extended_logs->message('ERROR', 'Language '
+                    . $this->langname . ' not found');
+            $this->langname = 'en';
+            $this->lang_contents = $this->parse_language($this->langname);
+        }
 
-		// Locale
-		$this->setlocale();
+        // Locale
+        $this->setlocale();
 
-		// Set CodeIgniter language
-		$this->set_ci_language();
-	}
+        // Set CodeIgniter language
+        $this->set_ci_language();
+    }
 
-	/**
-	 * Loads a language file and returns it
-	 *
-	 * @param	string	Language to load
-	 * @return	array	Array with labels and messages, FALSE on error
-	 */
-	private function parse_language($lang) {
-		$file = $this->lang_path . '/' . $lang . '/' . $lang . '.php';
+    /**
+     * Loads a language file and returns it
+     *
+     * @param   string  Language to load
+     * @return  array   Array with labels and messages, FALSE on error
+     */
+    private function parse_language($lang) {
+        $file = $this->lang_path . '/' . $lang . '/' . $lang . '.php';
 
-		if (!is_file($file)) {
-			return FALSE;
-		} else {
-			$messages = array();
-			$labels = array();
-			$js_messages = array();
+        if (!is_file($file)) {
+            return FALSE;
+        } else {
+            $messages = array();
+            $labels = array();
+            $js_messages = array();
 
-			@include($file);
+            @include($file);
 
-			return array(
-				'messages' => $messages,
-				'labels' => $labels,
-				'js_messages' => $js_messages,
-				);
-		}
-	}
+            return array(
+                'messages' => $messages,
+                'labels' => $labels,
+                'js_messages' => $js_messages,
+                );
+        }
+    }
 
-	/**
-	 * Translates a string from current language
-	 *
-	 * @param	string	Type (label or message)
-	 * @param	string	Label/message id
-	 * @param	array	Associative array of parameters
-	 * @return	string	Translated string
-	 */
-	public function _($type, $id, $params = array()) {
-		$contents = $this->lang_contents;
-		$raw = (isset($contents[$type][$id])) ? 
-			$contents[$type][$id] : 
-			'[' . $type . ':' . $id . ']';
+    /**
+     * Translates a string from current language
+     *
+     * @param   string  Type (label or message)
+     * @param   string  Label/message id
+     * @param   array   Associative array of parameters
+     * @return  string  Translated string
+     */
+    public function _($type, $id, $params = array()) {
+        $contents = $this->lang_contents;
+        $raw = (isset($contents[$type][$id])) ? 
+            $contents[$type][$id] : 
+            '[' . $type . ':' . $id . ']';
 
-		foreach ($params as $key => $replacement) {
-			$raw = mb_ereg_replace($key, $replacement, $raw);
-		}
+        foreach ($params as $key => $replacement) {
+            $raw = mb_ereg_replace($key, $replacement, $raw);
+        }
 
-		return $raw;
-	}
+        return $raw;
+    }
 
-	/**
-	 * Sets current locale
-	 */
-	private function setlocale() {
-		setlocale(LC_ALL, $this->langname . '.utf8');
-	}
+    /**
+     * Sets current locale
+     */
+    private function setlocale() {
+        setlocale(LC_ALL, $this->langname . '.utf8');
+    }
 
-	/**
-	 * Sets CodeIgniter language
-	 */
-	private function set_ci_language() {
-		$this->config->set_item('language',
-				$this->lang_relations['codeigniter']);
-	}
+    /**
+     * Sets CodeIgniter language
+     */
+    private function set_ci_language() {
+        $this->config->set_item('language',
+                $this->lang_relations['codeigniter']);
+    }
 
-	/**
-	 * Dumps language contents 
-	 */
+    /**
+     * Dumps language contents 
+     */
 
-	public function dump() {
-		return $this->lang_contents;
-	}
+    public function dump() {
+        return $this->lang_contents;
+    }
 }

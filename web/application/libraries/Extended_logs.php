@@ -21,24 +21,24 @@
 
 class Extended_logs {
 
-	private $CI;
+    private $CI;
 
-	function __construct() {
-		$this->CI = get_instance();
-	}
+    function __construct() {
+        $this->CI = get_instance();
+    }
 
-	/**
-	  */
-	function message($level, $message) {
-		$ip = $this->CI->input->ip_address();
-		// TODO X-Forwarded-for?
-		$username = $this->CI->auth->get_user();
+    /**
+      */
+    function message($level, $message) {
+        $ip = $this->CI->input->ip_address();
+        // TODO X-Forwarded-for?
+        $username = $this->CI->auth->get_user();
 
-		// Include URL on errors
-		if ($level == 'ERROR') {
-			$message .= ' ['.$this->CI->uri->uri_string().']';
-		}
+        // Include URL on errors
+        if ($level == 'ERROR') {
+            $message .= ' ['.$this->CI->uri->uri_string().']';
+        }
 
-		log_message($level, $username . '@' . $ip . ' ' . $message);
-	}
+        log_message($level, $username . '@' . $ip . ' ' . $message);
+    }
 }

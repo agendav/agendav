@@ -20,22 +20,22 @@
  */
 
 class CalendarInfo {
-	public $url, $displayname, $getctag;
-	public $calendar, $order, $color, $shared, $rgba_color, $is_default;
+    public $url, $displayname, $getctag;
+    public $calendar, $order, $color, $shared, $rgba_color, $is_default;
     public $share_with = array();
 
-	public function __construct($url, $displayname = null, $getctag = null ) {
-		$this->url = $url;
-		$this->displayname = $displayname;
-		$this->getctag = $getctag;
-		$this->is_default = FALSE;
-		$this->order = FALSE;
-		$this->rgba_color = FALSE;
-		$this->shared = FALSE;
-	}
+    public function __construct($url, $displayname = null, $getctag = null ) {
+        $this->url = $url;
+        $this->displayname = $displayname;
+        $this->getctag = $getctag;
+        $this->is_default = FALSE;
+        $this->order = FALSE;
+        $this->rgba_color = FALSE;
+        $this->shared = FALSE;
+    }
 
-	public function __toString() {
-		return( '(URL: '.$this->url.'   Ctag: '.$this->getctag.'   Displayname: '.$this->displayname .')'. "\n" );
-	}
+    public function __toString() {
+        return( '(URL: '.$this->url.'   Ctag: '.$this->getctag.'   Displayname: '.$this->displayname .')'. "\n" );
+    }
 }
 

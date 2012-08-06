@@ -21,60 +21,60 @@
 
 class Js_generator extends CI_Controller {
 
-	// Special methods that do should not enforce authentication
-	private $not_enforced = array(
-			'prefs',
-			);
+    // Special methods that do should not enforce authentication
+    private $not_enforced = array(
+            'prefs',
+            );
 
-	function __construct() {
-		parent::__construct();
+    function __construct() {
+        parent::__construct();
 
-		if (!in_array($this->uri->segment(2), $this->not_enforced) &&
-				!$this->auth->is_authenticated()) {
-			$this->extended_logs->message('INTERNALS', 
-					'Anonymous access attempt to '
-					. uri_string());
+        if (!in_array($this->uri->segment(2), $this->not_enforced) &&
+                !$this->auth->is_authenticated()) {
+            $this->extended_logs->message('INTERNALS', 
+                    'Anonymous access attempt to '
+                    . uri_string());
 
-			$expire = $this->load->view('js_code/session_expired', '', true);
-			echo $expire;
-			die();
-		}
+            $expire = $this->load->view('js_code/session_expired', '', true);
+            echo $expire;
+            die();
+        }
 
-		$this->output->set_content_type('text/javascript');
-	}
+        $this->output->set_content_type('text/javascript');
+    }
 
-	function index() {
-	}
+    function index() {
+    }
 
-	/**
-	 * Session refresh code
-	 */
-	function session_refresh() {
-		$seconds = $this->config->item('sess_time_to_update');
-		$seconds++; // Give a margin of 1s to update
-		$this->load->view('js_code/session_refresh',
-				array('every' => $seconds));
-	}
+    /**
+     * Session refresh code
+     */
+    function session_refresh() {
+        $seconds = $this->config->item('sess_time_to_update');
+        $seconds++; // Give a margin of 1s to update
+        $this->load->view('js_code/session_refresh',
+                array('every' => $seconds));
+    }
 
-	/**
-	 * Keep session alive
-	 */
-	function keepalive() {
-		$this->output->set_output('');
-	}
+    /**
+     * Keep session alive
+     */
+    function keepalive() {
+        $this->output->set_output('');
+    }
 
-	/**
-	 * Loads app preferences
-	 */
-	function prefs() {
-		$this->output->set_header(
-				'Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		$this->output->set_header(
-				'Cache-Control: no-store, no-cache, must-revalidate');
-		$this->output->set_header(
-				'Cache-Control: post-check=0, pre-check=0');
-		$this->output->set_header('Pragma: no-cache'); 
-		$this->load->view('js_code/preferences');
-	}
+    /**
+     * Loads app preferences
+     */
+    function prefs() {
+        $this->output->set_header(
+                'Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        $this->output->set_header(
+                'Cache-Control: no-store, no-cache, must-revalidate');
+        $this->output->set_header(
+                'Cache-Control: post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache'); 
+        $this->load->view('js_code/preferences');
+    }
 
 }

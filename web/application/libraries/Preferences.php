@@ -20,44 +20,44 @@
  */
 
 class Preferences {
-	private static $instance;
-	private $options = array();
+    private static $instance;
+    private $options = array();
 
-	function __construct($arr_values = array()) {
-		foreach($arr_values as $name => $value) {
-			$this->options[$name] = $value;
-		}
-	}
+    function __construct($arr_values = array()) {
+        foreach($arr_values as $name => $value) {
+            $this->options[$name] = $value;
+        }
+    }
 
-	public static function singleton($options = array()) {
-		if (!isset(self::$instance)) {
-			self::$instance = new Preferences($options);
-		}
+    public static function singleton($options = array()) {
+        if (!isset(self::$instance)) {
+            self::$instance = new Preferences($options);
+        }
 
-		return self::$instance;
-	}
+        return self::$instance;
+    }
 
-	function __set($name, $value) {
-		$this->options[$name] = $value;
-	}
+    function __set($name, $value) {
+        $this->options[$name] = $value;
+    }
 
-	function __get($name) {
-		if (array_key_exists($name, $this->options)) {
-			return $this->options[$name];
-		} else {
-			return null;
-		}
-	}
+    function __get($name) {
+        if (array_key_exists($name, $this->options)) {
+            return $this->options[$name];
+        } else {
+            return null;
+        }
+    }
 
-	function getAll() {
-		return $this->options;
-	}
+    function getAll() {
+        return $this->options;
+    }
 
-	function setAll($options) {
-		$this->options = $options;
-	}
+    function setAll($options) {
+        $this->options = $options;
+    }
 
-	function to_json() {
-		return json_encode($this->options);
-	}
+    function to_json() {
+        return json_encode($this->options);
+    }
 }

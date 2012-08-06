@@ -21,61 +21,61 @@
 
 class Main extends CI_Controller {
 
-	function __construct() {
-		parent::__construct();
+    function __construct() {
+        parent::__construct();
 
-		// Force authentication
-		$this->auth->force_auth();
-	}
+        // Force authentication
+        $this->auth->force_auth();
+    }
 
-	function index() {
-		// Layout components
-		$components = array();
-		$title = $this->config->item('site_title');
+    function index() {
+        // Layout components
+        $components = array();
+        $title = $this->config->item('site_title');
 
-		$data_header = array(
-				'title' => $title,
-				'logged_in' => TRUE,
-				'body_class' => array('calendarpage'),
-				);
+        $data_header = array(
+                'title' => $title,
+                'logged_in' => TRUE,
+                'body_class' => array('calendarpage'),
+                );
 
-		$data_calendar = array();
-		$logo = $this->config->item('logo');
-		$data_calendar['logo'] = custom_logo($logo, $title);
-		$data_calendar['title'] = $title;
+        $data_calendar = array();
+        $logo = $this->config->item('logo');
+        $data_calendar['logo'] = custom_logo($logo, $title);
+        $data_calendar['title'] = $title;
 
-		$components['header'] = 
-			$this->load->view('common_header', $data_header, TRUE);
+        $components['header'] = 
+            $this->load->view('common_header', $data_header, TRUE);
 
-		$components['navbar'] = 
-			$this->load->view('navbar', $data_header, TRUE);
+        $components['navbar'] = 
+            $this->load->view('navbar', $data_header, TRUE);
 
-		$components['sidebar'] = 
-			$this->load->view('sidebar', $data_calendar, TRUE);
-		$components['content'] = 
-			$this->load->view('center', array(), TRUE); 
-		$components['footer'] = $this->load->view('footer',
-				array(
-					'load_session_refresh' => TRUE,
-					'load_calendar_colors' => TRUE,
-					), TRUE);
+        $components['sidebar'] = 
+            $this->load->view('sidebar', $data_calendar, TRUE);
+        $components['content'] = 
+            $this->load->view('center', array(), TRUE); 
+        $components['footer'] = $this->load->view('footer',
+                array(
+                    'load_session_refresh' => TRUE,
+                    'load_calendar_colors' => TRUE,
+                    ), TRUE);
 
-		$this->load->view('layouts/app.php', $components);
-	}
+        $this->load->view('layouts/app.php', $components);
+    }
 
-	/**
-	 * Closes user session
-	 */
-	function logout() {
-		$this->auth->delete_session();
+    /**
+     * Closes user session
+     */
+    function logout() {
+        $this->auth->delete_session();
 
-		// Configured redirection
-		$logout_url = $this->config->item('logout_redirect_to');
-		if ($logout_url === FALSE || empty($logout_url)) {
-			$logout_url = 'login';
-		}
+        // Configured redirection
+        $logout_url = $this->config->item('logout_redirect_to');
+        if ($logout_url === FALSE || empty($logout_url)) {
+            $logout_url = 'login';
+        }
 
-		redirect($logout_url);
-	}
+        redirect($logout_url);
+    }
 
 }

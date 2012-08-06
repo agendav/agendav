@@ -20,78 +20,78 @@
  */
 
 class Auth extends CI_Model {
-	private $user, $passwd, $name, $mail;
+    private $user, $passwd, $name, $mail;
 
-	function __construct() {
-		parent::__construct();
+    function __construct() {
+        parent::__construct();
 
-		$this->user = $this->session->userdata('user');
-		$this->passwd = $this->session->userdata('passwd');
-		if ($this->passwd !== FALSE) {
-			$this->passwd = $this->encrypt->decode($this->passwd);
-		}
-		$this->name = $this->session->userdata('name');
-		$this->mail = $this->session->userdata('mail');
-	}
+        $this->user = $this->session->userdata('user');
+        $this->passwd = $this->session->userdata('passwd');
+        if ($this->passwd !== FALSE) {
+            $this->passwd = $this->encrypt->decode($this->passwd);
+        }
+        $this->name = $this->session->userdata('name');
+        $this->mail = $this->session->userdata('mail');
+    }
 
-	/**
-	  */
-	function new_session($data) {
-		$data['passwd'] = isset($data['passwd']) ? 
-			$this->encrypt->encode($data['passwd']) : '';
-		$this->session->set_userdata($data);
-	}
+    /**
+      */
+    function new_session($data) {
+        $data['passwd'] = isset($data['passwd']) ? 
+            $this->encrypt->encode($data['passwd']) : '';
+        $this->session->set_userdata($data);
+    }
 
-	/**
-	 */
-	function delete_session() {
-		$this->session->unset_userdata(
-				array(
-					'user' => '',
-					'passwd' => '',
-					'name' => '',
-					'mail' => '',
-					));
-		$this->session->sess_destroy();
-	}
+    /**
+     */
+    function delete_session() {
+        $this->session->unset_userdata(
+                array(
+                    'user' => '',
+                    'passwd' => '',
+                    'name' => '',
+                    'mail' => '',
+                    ));
+        $this->session->sess_destroy();
+    }
 
-	/**
-	  */
-	function is_authenticated() {
-		return ($this->user === FALSE) ? FALSE : TRUE;
-	}
+    /**
+      */
+    function is_authenticated() {
+        return ($this->user === FALSE) ? FALSE : TRUE;
+    }
 
-	/**
-	  */
-	function force_auth() {
-		if (!$this->is_authenticated()) {
-			redirect('/login');
-		}
-	}
+    /**
+      */
+    function force_auth() {
+        if (!$this->is_authenticated()) {
+            redirect('/login');
+        }
+    }
 
 
-	/**
-	  */
-	function get_user() {
-		return $this->user;
-	}
+    /**
+      */
+    function get_user() {
+        return $this->user;
+    }
 
-	/**
-	  */
-	function get_passwd() {
-		return $this->passwd;
-	}
+    /**
+      */
+    function get_passwd() {
+        return $this->passwd;
+    }
 
-	/**
-	  */
-	function get_name() {
-		return $this->name;
-	}
+    /**
+      */
+    function get_name() {
+        return $this->name;
+    }
 
-	/**
-	  */
-	function get_mail() {
-		return $this->mail;
-	}
+    /**
+      */
+    function get_mail() {
+        return $this->mail;
+    }
 }
 

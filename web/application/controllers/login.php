@@ -21,88 +21,88 @@
 
 class Login extends CI_Controller {
 
-	public function index() {
-		// Already authenticated?
-		if ($this->auth->is_authenticated()) {
-			redirect('/main');
-		}
+    public function index() {
+        // Already authenticated?
+        if ($this->auth->is_authenticated()) {
+            redirect('/main');
+        }
 
-		$this->load->helper('form');
-		$this->load->library('form_validation');
+        $this->load->helper('form');
+        $this->load->library('form_validation');
 
-		$this->form_validation->set_rules(
-				array(
-					array(
-						'field' => 'user',
-						'label' => $this->i18n->_('labels', 'username'),
-						'rules' => 'required',
-						),
-					array(
-						'field' => 'passwd',
-						'label' => $this->i18n->_('labels', 'password'),
-						'rules' => 'required',
-						),
-					));
+        $this->form_validation->set_rules(
+                array(
+                    array(
+                        'field' => 'user',
+                        'label' => $this->i18n->_('labels', 'username'),
+                        'rules' => 'required',
+                        ),
+                    array(
+                        'field' => 'passwd',
+                        'label' => $this->i18n->_('labels', 'password'),
+                        'rules' => 'required',
+                        ),
+                    ));
 
-		// Required fields missing?
-		$valid_auth = FALSE;
-		$validation = $this->form_validation->run();
-		$err = '';
+        // Required fields missing?
+        $valid_auth = FALSE;
+        $validation = $this->form_validation->run();
+        $err = '';
 
-		if ($validation !== FALSE) {
-			// Check authentication against server
-			$this->load->library('caldav');
-			
-			$user = $this->input->post('user');
-			$passwd = $this->input->post('passwd');
+        if ($validation !== FALSE) {
+            // Check authentication against server
+            $this->load->library('caldav');
+            
+            $user = $this->input->post('user');
+            $passwd = $this->input->post('passwd');
 
-			$valid_auth = $this->caldav->check_server_authentication($user, $passwd);
-			if ($valid_auth !== FALSE) {
-				// TODO load user prefs
-				$data = array(
-						'user' => $user,
-						'passwd' => $passwd,
-						'prefs' =>
-							$this->userpref->load_prefs($user)->getAll(),
-						);
-				$this->auth->new_session($data);
-				redirect("/main");
-				$this->output->_display();
-				die();
-			} else {
-				$err = $this->i18n->_('messages', 'error_auth');
-			}
-		} else {
-			$err = validation_errors();
-		}
+            $valid_auth = $this->caldav->check_server_authentication($user, $passwd);
+            if ($valid_auth !== FALSE) {
+                // TODO load user prefs
+                $data = array(
+                        'user' => $user,
+                        'passwd' => $passwd,
+                        'prefs' =>
+                            $this->userpref->load_prefs($user)->getAll(),
+                        );
+                $this->auth->new_session($data);
+                redirect("/main");
+                $this->output->_display();
+                die();
+            } else {
+                $err = $this->i18n->_('messages', 'error_auth');
+            }
+        } else {
+            $err = validation_errors();
+        }
 
 
-		$page_components = array();
+        $page_components = array();
 
-		$title = $this->config->item('site_title');
+        $title = $this->config->item('site_title');
 
-		$data_header = array(
-				'title' => $title,
-				'body_class' => array('loginpage'),
-				);
-		$page_components['header'] = $this->load->view('common_header',
-				$data_header, TRUE);
+        $data_header = array(
+                'title' => $title,
+                'body_class' => array('loginpage'),
+                );
+        $page_components['header'] = $this->load->view('common_header',
+                $data_header, TRUE);
 
-		$data = array();
-		if (!empty($err)) {
-			$data['errors'] = $err;
-		}
+        $data = array();
+        if (!empty($err)) {
+            $data['errors'] = $err;
+        }
 
-		$logoimg = $this->config->item('login_page_logo');
-		$data['logo'] = custom_logo($logoimg, $title);
-		$data['title'] = $title;
+        $logoimg = $this->config->item('login_page_logo');
+        $data['logo'] = custom_logo($logoimg, $title);
+        $data['title'] = $title;
 
-		$page_components['content'] = $this->load->view('login', $data, TRUE);
-		$page_components['footer'] = $this->load->view('footer', array(),
-				TRUE);
+        $page_components['content'] = $this->load->view('login', $data, TRUE);
+        $page_components['footer'] = $this->load->view('footer', array(),
+                TRUE);
 
-		$this->load->view('layouts/plain', $page_components);
+        $this->load->view('layouts/plain', $page_components);
 
-	}
+    }
 }
 
