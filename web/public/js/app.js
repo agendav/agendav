@@ -185,6 +185,7 @@ $(document).ready(function() {
 
     // Refresh link
     $('<span class="fc-button-refresh">' 
+      +'<i class="icon-refresh"></i> '
       +t('labels', 'refresh') + '</span>')
       .appendTo('#calendar_view td.fc-header-right')
       .button()
@@ -1246,6 +1247,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
     if (data.write_access == '0') {
       eventsource.editable = false;
+      li.find('span.text').prepend('<i class="icon-lock"></i>');
     }
   }
 

@@ -10,7 +10,9 @@ if (isset($logo)) {
  </div>
 
  <div class="calendar_list ui-widget block" id="own_calendar_list">
-  <div class="ui-widget-header ui-corner-all"><?php echo
+  <div class="ui-widget-header ui-corner-all">
+  <i class="icon-calendar"></i>
+  <?php echo
   $this->i18n->_('labels', 'calendars')?></div>
   <div class="ui-widget-content">
    <ul>
@@ -29,6 +31,7 @@ if (isset($logo)) {
 
  <div class="calendar_list ui-widget block" id="shared_calendar_list">
   <div class="ui-widget-header ui-corner-all">
+  <i class="icon-group"></i>
   <?php echo $this->i18n->_('labels', 'shared_calendars')?>
     <?php echo img(array(
 				'id' => 'toggle_all_shared_calendars',
