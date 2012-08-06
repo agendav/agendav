@@ -164,10 +164,6 @@ class Shared_calendars extends CI_Model {
                 'write_access' => $write_access ? '1' : '0',
                 );
 
-        // Preserve options
-        if (is_null($options)) {
-            unset($data['options']);
-        }
 
         $res = false;
         if (!is_null($sid)) {
@@ -176,6 +172,12 @@ class Shared_calendars extends CI_Model {
                     'write_access' => $data['write_access'],
                     'options' => $data['options'],
                     );
+
+            // Preserve options
+            if (is_null($options)) {
+                unset($data['options']);
+            }
+
             $this->db->where($conditions);
             $res = $this->db->update('shared', $data);
         } else {
