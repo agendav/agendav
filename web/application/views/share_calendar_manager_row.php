@@ -12,7 +12,7 @@ $img_share_delete = array(
 		);
 ?>
 <tr<?php echo (isset($sid)) ? ' id="sid-' . $sid . '"' : '';?>>
-<td><span class="username share_data_username"><?php echo $user ?></div></td>
+<td><span class="username share_data_username"><?php echo $user ?></span></td>
 <td class="share_data_other">
 <?php
 echo form_dropdown('write_access', 

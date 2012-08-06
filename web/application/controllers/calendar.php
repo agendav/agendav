@@ -219,18 +219,12 @@ class Calendar extends CI_Controller {
 
 		$is_shared_calendar = $this->input->post('is_shared_calendar');
 
-		// If calendar is from another user, the following two variables
-		// contain the share id and user which shared it respectively
-		$sid = $this->input->post('sid');
-		$user_from = $this->input->post('user_from');
+        // Will be only used for shared calendars
+        $sid = null;
 
 		// In case this calendar is owned by current user, this will contain
 		// a list of users he/she wants to share the calendar with
 		$share_with = $this->input->post('share_with');
-
-		// When modifying your own calendar, these share ids will help
-		// calculate needed database updates
-		$orig_sids = $this->input->post('orig_sids');
 
 		if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
 				FALSE || ($is_sharing_enabled && $is_shared_calendar === FALSE)) {
@@ -245,13 +239,6 @@ class Calendar extends CI_Controller {
 				FALSE :
 				($is_shared_calendar == 'true'));
 
-		if ($is_sharing_enabled && $is_shared_calendar && ($sid === FALSE || $user_from === FALSE)) {
-			$this->extended_logs->message('ERROR', 
-					'Call to modify_calendar() with shared calendar and incomplete parameters');
-			$this->_throw_error($this->i18n->_('messages',
-						'error_interfacefailure'));
-		}
-
 		// Check if calendar is valid
 		if (!$this->caldav->is_valid_calendar(
 					$this->auth->get_user(),
@@ -265,6 +252,28 @@ class Calendar extends CI_Controller {
 			$this->_throw_exception(
 				$this->i18n->_('messages', 'error_calendarnotfound', 
 					array('%calendar' => $calendar)));
+		}
+
+        // Retrieve ID on shared calendars table
+		if ($is_sharing_enabled && $is_shared_calendar) {
+            $current_calendar_shares =
+                $this->shared_calendars->users_with_access_to($calendar);
+            $current_user = $this->auth->get_user();
+            foreach ($current_calendar_shares as $sh) {
+                if ($sh['username'] == $current_user) {
+                    $sid = $sh['sid'];
+                    break;
+                }
+            }
+
+            if ($sid === null) {
+                $this->extended_logs->message('ERROR', 
+                        'Call to modify_calendar() with shared calendar, '
+                        .'but no sid was found');
+                $this->_throw_error($this->i18n->_('messages',
+                            'error_interfacefailure'));
+            }
+
 		}
 
 
@@ -291,12 +300,13 @@ class Calendar extends CI_Controller {
 		} else if ($is_sharing_enabled) {
 			// If this a shared calendar, store settings locally
 			$success = $this->shared_calendars->store($sid,
-					$user_from,
+					null,
 					$calendar,
 					$this->auth->get_user(),
 					$props);
 			if ($success === FALSE) {
-				$res = $this->i18n->_('messages', 'error_internal');
+				$this->_throw_exception($this->i18n->_('messages',
+                            'error_internal'));
 			} else {
 				$res = TRUE;
 			}
@@ -305,25 +315,39 @@ class Calendar extends CI_Controller {
 			$this->extended_logs->message('ERROR',
 					'Tried to modify the shared calendar ' . $calendar
 					.' when calendar sharing is disabled');
-			$res = $this->i18n->_('messages', 'error_interfacefailure');
+			$this->_throw_exception($this->i18n->_('messages',
+                        'error_interfacefailure'));
 		}
 
 		// Set ACLs
 		if ($is_sharing_enabled && $res === TRUE && !$is_shared_calendar) {
 			$set_shares = array();
 
-			if (!is_array($share_with)) {
-				$share_with = array();
-			} else {
-				foreach ($share_with as $share) {
-					if (!isset($share['username']) ||
-							!isset($share['write_access'])) {
+			if (is_array($share_with) && isset($share_with['sid']) 
+                    && isset($share_with['username'])
+                    && isset($share_with['write_access'])) {
+                $num_shares = count($share_with['sid']);
+                for ($i=0;$i<$num_shares;$i++) {
+                    $exists_username =
+                        isset($share_with['username'][$i]);
+                    $exists_write_access =
+                        isset($share_with['write_access'][$i]);
+                    if (!$exists_username || !$exists_write_access) {
 						$this->extended_logs->message('ERROR', 
-								'Ignoring incomplete share row attributes'
+								'Ignoring incomplete share row ('.$i.') attributes'
 								.' on calendar modification: '
-								. serialize($share));
+								. serialize($share_with));
 					} else {
-						$set_shares[] = $share;
+                        $new_share = array(
+                                'username' => $share_with['username'][$i],
+                                'write_access' => $share_with['write_access'][$i],
+                                );
+
+                        if (!empty($share_with['sid'][$i])) {
+                            $new_share['sid'] = $share_with['sid'][$i];
+                        }
+
+                        $set_shares[] = $new_share;
 					}
 				}
 			}
@@ -336,10 +360,14 @@ class Calendar extends CI_Controller {
 
 			// Update shares on database
 			if ($res === TRUE) {
-				$orig_sids = (is_array($orig_sids) ? $orig_sids : array());
+				$current_shares =
+                    $this->shared_calendars->users_with_access_to($calendar);
+                $orig_sids = array();
+                foreach ($current_shares as $db_share_row) {
+                    $orig_sids[$db_share_row['sid']] = TRUE;
+                }
 
 				$updated_sids = array();
-
 				foreach ($set_shares as $share) {
 					$this_sid = isset($share['sid']) ?
 								$share['sid'] : null;

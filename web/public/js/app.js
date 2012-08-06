@@ -20,9 +20,7 @@
 // Useful names
 var ved = 'div.view_event_details';
 var ced = '#com_event_dialog';
-var mcd = '#modify_calendar_dialog';
 var dcd = '#delete_calendar_dialog';
-var scmr = '#share_calendar_manager_row_template';
 var dustbase = {};
 
 
@@ -44,7 +42,8 @@ $(document).ready(function() {
 		for (var key in params) {
 			if (params.hasOwnProperty(key)) {
 				var param_name = '%' + key;
-				i18n_params[param_name] = params[key];
+				i18n_params[param_name] = dust.helpers.tap(params[key],
+          chunk, context);
 			}
 		}
 		return chunk.write(t(i18n_type, i18n_name, i18n_params));
@@ -81,7 +80,8 @@ $(document).ready(function() {
 		dustbase = dust.makeBase({
 			default_calendar_color: default_calendar_color,
 			base_url: base_url,
-			base_app_url: base_app_url
+			base_app_url: base_app_url,
+      enable_calendar_sharing: enable_calendar_sharing
 		});
 
 		// Default colorpicker options
@@ -239,7 +239,7 @@ $(document).ready(function() {
 		$('div.calendar_list').on('click', 'img.cfg', function(e) {
 			e.stopPropagation();
 			var calentry = $(this).parent();
-			calendar_modify_form(calentry[0]);
+			calendar_modify_dialog($(calentry[0]).data());
 		})
 		.on('click', 'li.available_calendar', function(e) {
 			// Make calendar transparent
@@ -904,22 +904,19 @@ var calendar_create_dialog = function calendar_create_dialog() {
 };
 
 // Triggers a dialog for editing calendars
-var calendar_modify_form = function calendar_modify_form(calendar_obj) {
+var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
 
-	var url_dialog = 'dialog_generator/modify_calendar';
+	var form_url = base_app_url + 'calendar/modify';
 	var title = t('labels', 'modifycalendar');
-	var data = $(calendar_obj).data();
 
-	var calendar_data = {
-		calendar: data.calendar,
-		color: data.color,
-		displayname: data.displayname,
-		sid: data.sid,
-		shared: data.shared,
-		user_from: data.user_from,
-		write_access: data.write_access,
-		url: data.url
-	};
+  var data = calendar_obj;
+  $.extend(data, { 
+    frm: {
+      action: form_url,
+      method: 'post',
+      csrf: get_csrf_token()
+    },
+  });
 
 	// Buttons for modification dialog
 	var buttons_and_actions = 
@@ -928,11 +925,11 @@ var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 				'text': t('labels', 'deletecalendar'),
 				'class': 'addicon btn-icon-calendar-delete',
 				'click': function() { 
-					destroy_dialog(mcd);
+					destroy_dialog('#calendar_modify_dialog');
 					load_generated_dialog('dialog_generator/delete_calendar',
 						{
-							calendar: $(calendar_obj).data().calendar,
-							displayname: $(calendar_obj).data().displayname
+							calendar: calendar_obj.calendar,
+							displayname: calendar_obj.displayname
 						},
 						function() {},
 						t('labels', 'delete'),
@@ -977,15 +974,11 @@ var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 				'text': t('labels', 'save'),
 				'class': 'addicon btn-icon-calendar-edit',
 				'click': function() {
-				var thisform = $('#modify_calendar_form');
-				// Add shares to form
-				// (remove first)
-				thisform.find('.generated_share').remove();
-				_generate_share_hidden_inputs(thisform);
+				var thisform = $('#calendar_modify_form');
 
 				proceed_send_ajax_form(thisform,
 					function(data) {
-						destroy_dialog(mcd);
+						destroy_dialog('#calendar_modify_dialog');
 						// TODO remove specific calendar and update only its events
 						update_calendar_list(false);
 					},
@@ -1001,7 +994,7 @@ var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 			{
 				'text': t('labels', 'cancel'),
 				'class': 'addicon btn-icon-cancel',
-				'click': function() { destroy_dialog(mcd); }
+				'click': function() { destroy_dialog('#calendar_modify_dialog'); }
 			}
 		];
 	
@@ -1011,19 +1004,20 @@ var calendar_modify_form = function calendar_modify_form(calendar_obj) {
 	}
 
 
-	load_generated_dialog(url_dialog,
-		calendar_data,
+  show_dialog('calendar_modify_dialog',
+    data,
+    title,
+    buttons_and_actions,
+    'calendar_modify_dialog',
+    500,
 		function() {
 			$('input.pick_color').colorPicker();
-			$(mcd + '_tabs').tabs();
+			$('#calendar_modify_dialog_tabs').tabs();
 
 			if (enable_calendar_sharing === true && data.shared !== true) {
 				share_manager();
 			}
-		},
-		title,
-		buttons_and_actions,
-		'modify_calendar_dialog', 500);
+		});
 };
 
 /*
@@ -1417,13 +1411,13 @@ var adjust_calendar_names_width = function adjust_calendar_names_width() {
  * Handles events on share calendar dialog
  */
 var share_manager = function share_manager() {
-	var manager = $(mcd + ' table.share_calendar_manager');
-	var new_entry_form = $(mcd + ' table.share_calendar_manager_new');
+	var manager = $('#calendar_share_table');
+	var new_entry_form = $('#calendar_share_add');
 
 	share_manager_no_entries_placeholder();
 
 	manager.on('click', 
-		'.share_calendar_manager_delete', function(event) {
+		'.calendar_share_delete', function(event) {
 			$(this).parent().parent()
 				.fadeOut('fast', function() { 
 					$(this).remove();
@@ -1434,7 +1428,7 @@ var share_manager = function share_manager() {
 	// Autocomplete caching
 	var user_autocomplete_cache = {}, lastXhr;
 
-	new_entry_form.find('input.share_calendar_manager_username_new')
+	new_entry_form.find('#calendar_share_add_username')
 		.autocomplete({
 			minLength: 3,
 			source: function(request, response) {
@@ -1472,15 +1466,13 @@ var share_manager = function share_manager() {
 		};
 
 	new_entry_form.on('click', 
-		'.share_calendar_manager_add', function(event) {
-		var new_user = $(this).parent().parent()
-			.find('.share_calendar_manager_username_new').val();
-		var access = $(this).parent().parent()
-			.find('select').val();
+		'#calendar_share_add_button', function(event) {
+		var new_user = $('#calendar_share_add_username').val();
+		var access = $('#calendar_share_add_write_access').val();
 		if (new_user != '') {
 			// Check if new_user is already on list
 			var already_added = false;
-			manager.find('.share_data_username')
+			manager.find('span.username')
 				.each(function(index) {
 					if (!already_added && $(this).text() == new_user) {
 						already_added = true;
@@ -1489,27 +1481,28 @@ var share_manager = function share_manager() {
 				});
 
 			if (!already_added) {
-				var new_row = $(scmr).clone().find('tbody');
+        var new_row_data = {
+          username: new_user,
+          write_access: access
+        };
 
-				new_row
-						.find('.share_data_username')
-							.html(new_user).end()
-						.find('select')
-							.val(access).end();
+        dust.render('calendar_share_row',
+            dustbase.push(new_row_data), 
+            function(err, out) {
+              if (err != null) {
+                show_error(t('messages', 'error_interfacefailure'),
+                  err.message);
+              } else {
+                manager.find('tbody').append(out);
 
-				manager.find('tbody').append(new_row.html());
+                // Reset form
+                $('#calendar_share_add_username').val('');
+                $('#calendar_share_add_write_access').val('0');
 
-				// Reset form
-				$(this).parent().parent()
-					.find('.share_calendar_manager_username_new').val('');
-
-				// User chose this option
-				manager
-					.find('tbody tr:last select')
-					.val(access);
-
-				share_manager_no_entries_placeholder();
-			}
+                share_manager_no_entries_placeholder();
+              }
+        });
+      }
 		}
 
 	});
@@ -1519,48 +1512,12 @@ var share_manager = function share_manager() {
  * Shows the placeholder for empty share lists
  */
 var share_manager_no_entries_placeholder = function share_manager_no_entries_placeholder() {
-	var manager = $(mcd + ' table.share_calendar_manager');
+	var manager = $('#calendar_share_table');
 	if (manager.find('tbody tr').length == 1) {
-		manager.find('tr.share_calendar_manager_empty td').show();
+		$('#calendar_share_no_rows').show();
 	} else {
-		manager.find('tr.share_calendar_manager_empty td').hide();
+		$('#calendar_share_no_rows').hide();
 	}
-};
-
-/**
- * Generates required hidden input fields for
- * each row in the share calendar manager
- */
-var _generate_share_hidden_inputs = function _generate_share_hidden_inputs(el) {
-
-	$(mcd + ' table.share_calendar_manager > tbody > tr:not(.share_calendar_manager_empty)').each(function(i) {
-		var list = {};
-
-		// Share ID
-		var sid = $(this).attr('id');
-		if (sid !== undefined) {
-			sid = sid.replace('sid-', '');
-			$.extend(list, { sid: sid });
-		}
-
-		// User and type of access
-		var username = $(this).find('.share_data_username:first').html();
-		var write_access = $(this).find('select').val();
-
-		$.extend(list, {
-			username: username,
-			write_access: write_access
-		});
-
-		$.each(list, function(index, value) {
-			// i is the index of the row,
-			// index is the name of the attribute
-			el.append($('<input type="hidden">')
-				.attr('name', 'share_with['+i+']['+index+']')
-				.val(value));
-		});
-
-	});
 };
 
 

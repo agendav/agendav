@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table id="calendar_share_table" class="table table-striped">
  <thead>
   <th>{@i18n type="labels" name="username"/}</th>
   <th>{@i18n type="labels" name="access"/}</th>
@@ -8,28 +8,30 @@
  {#share_with}
   {>calendar_share_row/}
  {/share_with}
-  <tr class="share_calendar_manager_empty">
+  <tr id="calendar_share_no_rows">
    <td colspan="3">{@i18n type="messages" name="info_notshared"/}</td>
   </tr>
  </tbody>
 </table>
 
-<table class="share_calendar_manager_new table">
+<table id="calendar_share_add" class="table">
 <tbody>
 <tr>
  <td><div class="username">
  <input name="autocomplete_username"
- class="share_calendar_manager_username_new input-medium"
+ class="input-medium" id="calendar_share_add_username"
  value="" maxlength="255" size="10" />
  </div></td>
  <td>
- <select name="write-access" class="input-medium">
+ <select name="write-access" id="calendar_share_add_write_access"
+ class="input-medium">
   {>calendar_share_access_options/}
  </select>
  </td>
  <td>
   <img src="{base_url}img/add.png" 
-  class="share_calendar_manager_add pseudobutton"
+  id="calendar_share_add_button"
+  class="pseudobutton"
   alt="{@i18n type="labels" name="add"/}
   title="{@i18n type="labels" name="add"/} />
  </td>
