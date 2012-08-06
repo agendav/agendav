@@ -1,4 +1,5 @@
 BOOTSTRAP_DIR = ../../libs/twitter-bootstrap
+FONTAWESOME_DIR = ../../libs/font-awesome/less
 PUBLIC_DIR = ../public
 CUSTOM_BOOTSTRAP_LESS = custom_bootstrap.less
 AGENDAV_LESS = agendav.less
@@ -12,9 +13,11 @@ WATCHR ?= `which watchr`
 
 css:
 	cp ${BOOTSTRAP_DIR}/img/* ${PUBLIC_DIR}/img
-	${LESS_COMPRESSOR} --include-path=${BOOTSTRAP_DIR}/less \
+	${LESS_COMPRESSOR} \
+		--include-path=${BOOTSTRAP_DIR}/less:${FONTAWESOME_DIR} \
 		${CUSTOM_BOOTSTRAP_LESS} > ${PUBLIC_DIR}/css/bootstrap.agendav.css 
-	${LESS_COMPRESSOR} --include-path=${BOOTSTRAP_DIR}/less \
+	${LESS_COMPRESSOR} \
+		--include-path=${BOOTSTRAP_DIR}/less:${FONTAWESOME_DIR} \
 		${AGENDAV_LESS} > ${PUBLIC_DIR}/css/app.css 
 
 #
