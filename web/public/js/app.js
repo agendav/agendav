@@ -200,7 +200,7 @@ $(document).ready(function() {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
       } else {
-        $('#calendar_view span.fc-button-today')
+        $('#calendar_view span.fc-button-next')
           .after(out);
         $('#datepicker_fullcalendar')
         .datepicker({
@@ -212,6 +212,7 @@ $(document).ready(function() {
           }
         })
         .prev()
+        .button()
         .on('click', function() {
           $('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
           $('#datepicker_fullcalendar').datepicker('show');

@@ -1,5 +1,5 @@
 <span class="fc-header-space" />
 <span class="fc-button-datepicker">
- <img src="{base_url}img/datepicker.gif"
- alt="{@i18n type="label" name="choose_date"}{/i18n}" /></span>
+ <i class="icon-calendar" title="{@i18n type="labels" name="choose_date"/}"></i>
+ </span>
 <input type="hidden" id="datepicker_fullcalendar" />
