@@ -103,10 +103,6 @@ div.block .buttons {
   right: 5px;
 }
 /* overlay starts */
-#view_event_details_template,
-#share_calendar_manager_row_template {
-  display: none;
-}
 .view_event_details {
   width: 400px !important;
   max-width: 400px !important;
