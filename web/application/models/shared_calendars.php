@@ -147,13 +147,14 @@ class Shared_calendars extends CI_Model {
 	 */
 	function store($sid = null, $from = '', $calendar = '', $to = '',
 			$options = array(), $write_access = FALSE) {
-		if (empty($from) || empty($calendar) || empty($to)) {
+		if ($sid === null && (empty($from) || empty($calendar) ||
+                    empty($to))) {
 			log_message('ERROR', 
 					'Call to shared_calendars->store() with no enough parameters');
 			return FALSE;
 		}
 
-		$calendar = preg_replace('/^'.$from.':/', '', $calendar);
+		$calendar = preg_replace('/^[^:]+:/', '', $calendar);
 
 		$data = array(
 				'user_from' => $from,
