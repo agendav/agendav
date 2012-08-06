@@ -72,8 +72,8 @@ class Prefs extends CI_Controller {
         $default_calendar = $this->prefs->default_calendar;
 
         $calendar_ids_and_dn = array();
-        foreach ($calendar_list as $c => $data) {
-            $calendar_ids_and_dn[$c] = $data['displayname'];
+        foreach ($calendar_list as $cal) {
+            $calendar_ids_and_dn[$cal->calendar] = $cal->displayname;
         }
 
         $data_prefs = array(
