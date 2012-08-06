@@ -171,6 +171,9 @@ class Shared_calendars extends CI_Model {
 		$res = false;
 		if (!is_null($sid)) {
 			$conditions = $data;
+            // user_from doesn't need to be update
+            unset($conditions['user_from']);
+            unset($data['user_from']);
 			unset($conditions['options']);
 			unset($conditions['write_access']);
 
