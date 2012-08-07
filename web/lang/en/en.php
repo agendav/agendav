@@ -170,10 +170,10 @@ $labels['toggleallcalendars'] = 'Show/hide all';
 $labels['popup'] = 'Pop-up';
 $labels['email'] = 'Email';
 
-$labels['minutes'] = 'Minutes';
-$labels['hours'] = 'Hours';
-$labels['weeks'] = 'Weeks';
-$labels['years'] = 'Years';
+$labels['minutes'] = 'minutes';
+$labels['hours'] = 'hours';
+$labels['weeks'] = 'weeks';
+$labels['years'] = 'years';
 
 $labels['remindersoptions'] = 'Reminders';
 $labels['remindertype'] = 'Reminder type';
