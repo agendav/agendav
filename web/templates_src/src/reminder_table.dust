@@ -1,4 +1,4 @@
-<table class="reminder_table table table-striped">
+<table id="reminders_table" class="table table-striped">
  <thead>
   <th>{@i18n type="labels" name="remindertype"}{/i18n}</th>
   <th></th>
@@ -7,15 +7,16 @@
  <tbody>
  {#reminders}
  {>reminder_row/}
- {:else}
+ {/reminders}
+ <tr id="reminders_no_rows">
  <td colspan="3">
   {@i18n type="messages" name="info_noreminders"}{/i18n}
  </td>
- {/reminders}
+ </tr>
  </tbody>
 </table>
 
-<table class="reminder_create">
+<table id="reminder_add">
 <tbody>
 {>reminder_row/}
 </tbody>

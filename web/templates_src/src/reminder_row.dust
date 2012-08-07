@@ -1,26 +1,36 @@
-<tr{^qty} class="reminder_add"{/qty}>
+<tr>
  <td>
- <select class="input-small" name="reminder_type{?qty}[]{/qty}">
-  <option value="popup">{@i18n type="labels" name="popup"}{/i18n}</option>
-  <option value="email">{@i18n type="labels" name="email"}{/i18n}</option>
+ <select class="input-small"
+ {^qty}id="reminder_add_type"{/qty}
+ name="{?qty}reminders[][type]{:else}reminder_type{/qty}">
+  <option value="popup"{@eq key="{type}" value="popup"} selected="true"{/eq}>{@i18n type="labels" name="popup"}{/i18n}</option>
+  <option value="email"{@eq key="{type}" value="email"} selected="true"{/eq}>{@i18n type="labels" name="email"}{/i18n}</option>
  </select>
  </td>
  <td>
-  <input class="input-mini" name="reminder_qty{?qty}[]{/qty}" value="{qty}" />
- <select class="input-small" name="reminder_unit{?qty}[]{/qty}">
-  <option value="minutes">{@i18n type="labels" name="minutes"}{/i18n}</option>
-  <option value="hours">{@i18n type="labels" name="hours"}{/i18n}</option>
-  <option value="weeks">{@i18n type="labels" name="weeks"}{/i18n}</option>
-  <option value="years">{@i18n type="labels" name="years"}{/i18n}</option>
+  <input class="input-mini" 
+ {^qty}id="reminder_add_qty"{/qty}
+  name="{?qty}reminders[][qty]{:else}reminder_qty{/qty}"
+  value="{qty}" />
+ <select class="input-small"
+ {^qty}id="reminder_add_interval"{/qty}
+ name="{?qty}reminders[][interval]{:else}reminder_interval{/qty}">
+  <option value="minutes"{@eq key="{interval}" value="minutes"} selected="true"{/eq}>{@i18n type="labels" name="minutes"}{/i18n}</option>
+  <option value="hours"{@eq key="{interval}" value="hours"} selected="true"{/eq}>{@i18n type="labels" name="hours"}{/i18n}</option>
+  <option value="weeks"{@eq key="{interval}" value="weeks"} selected="true"{/eq}>{@i18n type="labels" name="weeks"}{/i18n}</option>
+  <option value="years"{@eq key="{interval}" value="years"} selected="true"{/eq}>{@i18n type="labels" name="years"}{/i18n}</option>
  </select>
  </td>
  <td>
  {?qty}
  <img src="{base_url}/img/delete.png" 
- alt="{@i18n type="labels" name="delete"}{/i18n}" class="pseudobutton" />
+ alt="{@i18n type="labels" name="delete"/}"
+ class="reminder_delete pseudobutton" />
  {:else}
  <img src="{base_url}/img/add.png" 
- alt="{@i18n type="labels" name="add"}{/i18n}" class="pseudobutton" />
+ alt="{@i18n type="labels" name="add"/}"
+ id="reminder_add_button"
+ class="pseudobutton" />
  {/qty}
  </td>
 </tr>

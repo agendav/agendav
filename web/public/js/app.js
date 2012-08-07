@@ -803,6 +803,7 @@ var event_field_form = function event_field_form(type, data) {
             err.message);
         } else {
           $('#tabs-reminders').html(out);
+          reminders_manager();
         }
       });
 
@@ -1541,6 +1542,78 @@ var share_manager_no_entries_placeholder = function share_manager_no_entries_pla
     $('#calendar_share_no_rows').hide();
   }
 };
+
+
+/*
+ * Reminders manager
+ */
+
+var reminders_manager = function reminders_manager() {
+  var manager = $('#reminders_table');
+  var new_entry_form = $('#reminder_add');
+
+  reminders_manager_no_entries_placeholder();
+
+  manager.on('click', 
+    '.reminder_delete', function(event) {
+      $(this).parent().parent()
+        .fadeOut('fast', function() { 
+          $(this).remove();
+          reminders_manager_no_entries_placeholder();
+        });
+    });
+
+  new_entry_form.on('click', 
+    '#reminder_add_button', function(event) {
+    var reminder_type = $('#reminder_add_type').val();
+    var qty = $('#reminder_add_qty').val();
+    var interval = $('#reminder_add_interval').val();
+
+    if (qty != '') {
+      var re = /^[0-9]+$/;
+      if (!re.test(qty)) {
+        qty = '0';
+      }
+
+      var new_row_data = {
+        type: reminder_type,
+        qty: qty,
+        interval: interval
+      };
+
+      dust.render('reminder_row',
+        dustbase.push(new_row_data), function(err, out) {
+        if (err != null) {
+          show_error(t('messages', 'error_interfacefailure'),
+            err.message);
+        } else {
+          manager.find('tbody').append(out);
+
+          // Reset form
+          $('#reminder_add_type').val('popup');
+          $('#reminder_add_qty').val('');
+          $('#reminder_add_interval').val('minutes');
+
+          reminders_manager_no_entries_placeholder();
+        }
+      });
+    }
+  });
+};
+
+/*
+ * Shows/hides reminders placeholder when no reminders are set up
+ */
+
+var reminders_manager_no_entries_placeholder = function reminders_manager_no_entries_placeholder() {
+  var manager = $('#reminders_table');
+  if (manager.find('tbody tr').length == 1) {
+    $('#reminders_no_rows').show();
+  } else {
+    $('#reminders_no_rows').hide();
+  }
+}
+
 
 
 /**
