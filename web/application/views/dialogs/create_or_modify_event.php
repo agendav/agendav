@@ -142,14 +142,22 @@ $form_transp = array(
 
 ?>
 <ul>
- <li><a href="#tabs-general"><?php echo $this->i18n->_('labels',
-		 'generaloptions')?></a></li>
- <li><a href="#tabs-recurrence"><?php echo $this->i18n->_('labels',
-		 'repeatoptions')?></a></li>
- <li><a href="#tabs-reminders"><?php echo $this->i18n->_('labels',
-		 'remindersoptions')?></a></li>
- <li><a href="#tabs-workgroup"><?php echo $this->i18n->_('labels',
-		 'workgroupoptions')?></a></li>
+ <li><a href="#tabs-general">
+ <i class="tab-icon icon-tag"></i>
+ <?php echo $this->i18n->_('labels', 'generaloptions')?></a>
+ </li>
+ <li><a href="#tabs-recurrence">
+ <i class="tab-icon icon-repeat"></i>
+ <?php echo $this->i18n->_('labels', 'repeatoptions')?></a>
+ </li>
+ <li><a href="#tabs-reminders">
+ <i class="tab-icon icon-bell"></i>
+ <?php echo $this->i18n->_('labels', 'remindersoptions')?></a>
+ </li>
+ <li><a href="#tabs-workgroup">
+ <i class="tab-icon icon-group"></i>
+ <?php echo $this->i18n->_('labels', 'workgroupoptions')?></a>
+ </li>
 </ul>
 <div id="tabs-general">
 <?php if (isset($modification) && $modification === TRUE): ?>

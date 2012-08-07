@@ -2,11 +2,14 @@
 <div id="calendar_modify_dialog_tabs">
  <ul>
  <li><a href="#tabs-general">
+  <i class="tab-icon icon-tag"></i>
  {@i18n type="labels" name="generaloptions"/}</a></li>
  {?enable_calendar_sharing}
   {^shared}
    <li><a href="#tabs-share">
-    {@i18n type="labels" name="shareoptions"/}</a></li>
+    <i class="tab-icon icon-group"></i>
+    {@i18n type="labels" name="shareoptions"/}
+    </a></li>
   {/shared}
  {/enable_calendar_sharing}
  </ul>

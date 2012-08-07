@@ -300,3 +300,6 @@ table.share_calendar_manager_new {
   color: #fff !important;
   text-decoration: none;
 }
+i.tab-icon {
+  margin-right: 4px;
+}
