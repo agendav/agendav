@@ -85,11 +85,13 @@ class Calendar extends CI_Controller {
 
 
         // Add public URL
-        foreach ($arr_calendars as $calendar) {
-                $calendar->public_url =
-                    $this->caldav->build_calendar_url(
-                            $this->auth->get_user(),
-                            $calendar->calendar);
+        if ($this->config->item('show_public_caldav_url')) {
+            foreach ($arr_calendars as $calendar) {
+                    $calendar->public_url =
+                        $this->caldav->build_calendar_url(
+                                $this->auth->get_user(),
+                                $calendar->calendar);
+            }
         }
         $this->output->set_output(json_encode($arr_calendars));
     }
