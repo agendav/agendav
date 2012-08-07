@@ -20,7 +20,6 @@
 // Useful names
 var ved = 'div.view_event_details';
 var ced = '#com_event_dialog';
-var dcd = '#delete_calendar_dialog';
 var dustbase = {};
 
 
@@ -862,6 +861,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
   var title = t('labels', 'newcalendar');
 
   var data = {
+    applyid: 'calendar_create_form',
     frm: {
       action: form_url,
       method: 'post',
@@ -913,11 +913,12 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
 
   var data = calendar_obj;
   $.extend(data, { 
+    applyid: 'calendar_modify_form',
     frm: {
       action: form_url,
       method: 'post',
       csrf: get_csrf_token()
-    },
+    }
   });
 
   // Buttons for modification dialog
@@ -926,50 +927,8 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
       {
         'text': t('labels', 'deletecalendar'),
         'class': 'addicon btn-icon-calendar-delete',
-        'click': function() { 
-          destroy_dialog('#calendar_modify_dialog');
-          load_generated_dialog('dialog_generator/delete_calendar',
-            {
-              calendar: calendar_obj.calendar,
-              displayname: calendar_obj.displayname
-            },
-            function() {},
-            t('labels', 'delete'),
-            [ 
-            {
-              'text': t('labels', 'yes'),
-              'class': 'addicon btn-icon-calendar-delete',
-              'click': function() {
-                var thisform = $('#delete_calendar_form');
-                proceed_send_ajax_form(thisform,
-                    function(removed_calendar) {
-                      // Just remove deleted calendar
-                      $('.calendar_list li.available_calendar').each(function(index) {
-                        var thiscal = $(this).data();
-                        if (thiscal.calendar == removed_calendar) {
-                          $('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
-                          $(this).remove();
-                          return false; // stop looking for calendar
-                        }
-                      });
-                    },
-                    function(data) {
-                      show_error(t('messages', 'error_caldelete'), data);
-                    },
-                    function() {}); 
-
-                // Destroy dialog
-                destroy_dialog(dcd);
-
-              }
-            },
-            {
-              'text': t('labels', 'cancel'),
-              'class': 'addicon btn-icon-cancel',
-              'click': function() { destroy_dialog(dcd); }
-            }
-          ],
-          'delete_calendar_dialog', 500);
+        'click': function() {
+          calendar_delete_dialog(calendar_obj);
         }
       },
       {
@@ -1021,6 +980,66 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
       }
     });
 };
+
+
+/**
+ * Shows the 'Delete calendar' dialog
+ */
+var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
+  destroy_dialog('#calendar_modify_dialog');
+  var form_url = base_app_url + 'calendar/delete';
+  var title = t('labels', 'deletecalendar');
+
+  var data = calendar_obj;
+  $.extend(data, {
+    applyid: 'calendar_delete_form',
+    frm: {
+      action: form_url,
+      method: 'post',
+      csrf: get_csrf_token()
+    }
+  });
+
+  show_dialog('calendar_delete_dialog',
+    data,
+    title,
+    [ 
+    {
+      'text': t('labels', 'yes'),
+      'class': 'addicon btn-icon-calendar-delete',
+      'click': function() {
+        var thisform = $('#calendar_delete_form');
+        proceed_send_ajax_form(thisform,
+            function(removed_calendar) {
+              // Just remove deleted calendar
+              $('.calendar_list li.available_calendar').each(function(index) {
+                var thiscal = $(this).data();
+                if (thiscal.calendar == removed_calendar) {
+                  $('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
+                  $(this).remove();
+                  return false; // stop looking for calendar
+                }
+              });
+            },
+            function(data) {
+              show_error(t('messages', 'error_caldelete'), data);
+            },
+            function() {}); 
+
+        // Destroy dialog
+        destroy_dialog('#calendar_delete_dialog');
+      }
+    },
+    {
+      'text': t('labels', 'cancel'),
+      'class': 'addicon btn-icon-cancel',
+      'click': function() { destroy_dialog('#calendar_delete_dialog'); }
+    }
+  ],
+  'calendar_delete_dialog',
+  500,
+  function() { });
+}
 
 /*
  * Updates the calendar list and generates eventSources for fullcalendar

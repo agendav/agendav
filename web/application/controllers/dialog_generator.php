@@ -347,26 +347,6 @@ class Dialog_generator extends CI_Controller {
     }
 
     /**
-     * Delete calendar
-     */
-    function delete_calendar() {
-        $calendar = $this->input->post('calendar');
-        $displayname = $this->input->post('displayname');
-
-        if ($calendar === FALSE || $displayname === FALSE) {
-            $this->_throw_error('delete_calendar_dialog', 
-                $this->i18n->_('messages', 'error_oops'),
-                $this->i18n->_('messages', 'error_interfacefailure'));
-        } else {
-            $data = array(
-                    'calendar' => $calendar,
-                    'displayname' => $displayname,
-                    );
-            $this->load->view('dialogs/delete_calendar', $data);
-        }
-    }
-
-    /**
      * Creates an empty form
      */
     function on_the_fly_form($random_id) {

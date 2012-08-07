@@ -1,0 +1,17 @@
+<div id="calendar_delete_dialog">
+{>form_open/}
+<input type="hidden" name="calendar" value="{calendar}" />
+<p>
+{@i18n type="messages" name="info_confirmcaldelete" /}
+</p>
+
+<p class="title">
+ {displayname}
+</p>
+
+<p>
+{@i18n type="messages" name="info_permanentremoval" /}
+</p>
+
+{>form_close/}
+</div>
