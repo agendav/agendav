@@ -797,7 +797,7 @@ var event_field_form = function event_field_form(type, data) {
       }
 
       // Show 'Reminders' tab contents
-      dust.render('reminder_table', dustbase, function(err, out) {
+      dust.render('reminder_table', dustbase.push(data), function(err, out) {
         if (err != null) {
           show_error(t('messages', 'error_interfacefailure'),
             err.message);
@@ -1944,6 +1944,7 @@ var modify_event_handler = function modify_event_handler() {
     icalendar_class: event_data.icalendar_class,
     transp: event_data.transp,
     recurrence_id: event_data.recurrence_id,
+    reminders: event_data.reminders,
     orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
     orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
   };
