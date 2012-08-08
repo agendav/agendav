@@ -1,5 +1,8 @@
 <tr>
  <td>
+ {?qty}
+ <input type="hidden" name="reminders[][order]" value="{order}" />
+ {/qty}
  <select class="input-small"
  {^qty}id="reminder_add_type"{/qty}
  name="{?qty}reminders[][type]{:else}reminder_type{/qty}">
@@ -17,8 +20,8 @@
  name="{?qty}reminders[][interval]{:else}reminder_interval{/qty}">
   <option value="minutes"{@eq key="{interval}" value="minutes"} selected="true"{/eq}>{@i18n type="labels" name="minutes"}{/i18n}</option>
   <option value="hours"{@eq key="{interval}" value="hours"} selected="true"{/eq}>{@i18n type="labels" name="hours"}{/i18n}</option>
+  <option value="days"{@eq key="{interval}" value="days"} selected="true"{/eq}>{@i18n type="labels" name="days"}{/i18n}</option>
   <option value="weeks"{@eq key="{interval}" value="weeks"} selected="true"{/eq}>{@i18n type="labels" name="weeks"}{/i18n}</option>
-  <option value="years"{@eq key="{interval}" value="years"} selected="true"{/eq}>{@i18n type="labels" name="years"}{/i18n}</option>
  </select>
  </td>
  <td>

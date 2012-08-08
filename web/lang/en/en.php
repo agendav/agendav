@@ -173,7 +173,7 @@ $labels['email'] = 'Email';
 $labels['minutes'] = 'minutes';
 $labels['hours'] = 'hours';
 $labels['weeks'] = 'weeks';
-$labels['years'] = 'years';
+$labels['weeks'] = 'weeks';
 
 $labels['remindersoptions'] = 'Reminders';
 $labels['remindertype'] = 'Reminder type';
