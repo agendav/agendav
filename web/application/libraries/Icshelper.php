@@ -531,10 +531,10 @@ class Icshelper {
                         $datetime->format($this->date_frontend_format);
                     $reminder->ttime =
                         $datetime->format($this->time_frontend_format);
-
                 }
 
                 if ($reminder !== null) {
+                    $reminder->order = $order;
                     $this_event['reminders'][] = $reminder;
                 }
             }
