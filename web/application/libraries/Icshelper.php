@@ -26,6 +26,9 @@ class Icshelper {
 
     private $date_format; // Date format given by lang file
 
+    private $date_frontend_format, $time_frontend_format;
+
+
     function __construct() {
 
         $this->CI =& get_instance();
@@ -35,6 +38,8 @@ class Icshelper {
                 $this->CI->config->item('default_timezone'));
 
         $this->date_format = $this->CI->config->item('format_full_date');
+        $this->date_frontend_format = $this->CI->dates->date_format_string('date');
+        $this->time_frontend_format = $this->CI->dates->time_format_string('date');
 
         $this->config = array(
                 'unique_id' =>
@@ -191,7 +196,7 @@ class Icshelper {
                                 $result[] =
                                     $this->parse_vevent_fullcalendar($event,
                                         $event_href, $event_etag, $calendar,
-                                        $tz);
+                                        $tz, $timezones);
                             }
                         }
                     }
@@ -208,7 +213,7 @@ class Icshelper {
                         $result[] =
                             $this->parse_vevent_fullcalendar($event,
                                     $event_href, $event_etag, $calendar,
-                                    $tz);
+                                    $tz, $timezones);
                     }
                 }
             }
@@ -222,7 +227,7 @@ class Icshelper {
      * Parses an VEVENT for Fullcalendar
      */
     function parse_vevent_fullcalendar($vevent, 
-            $href, $etag, $calendar = 'calendario', $tz) {
+            $href, $etag, $calendar = 'calendario', $tz, $timezones) {
 
         $this_event = array(
                 'href' => $href,
@@ -497,6 +502,44 @@ class Icshelper {
 
         $this_event['start'] = $start->format(DateTime::ISO8601);
         $this_event['end'] = $end->format(DateTime::ISO8601);
+
+        // Reminders for this event
+        $this_event['reminders'] = array();
+
+        $order = 0;
+        while ($valarm = $vevent->getComponent('valarm')) {
+            $order++;
+            // TODO parse more actions
+            $action = $valarm->getProperty('action');
+            if ($action == 'DISPLAY') {
+                $trigger = $valarm->getProperty('trigger');
+                $reminder = null;
+
+                if (isset($trigger['before']) 
+                        && $trigger['relatedStart'] === TRUE) {
+                    // Related to event start/end
+                    $reminder = Reminder::createFrom($trigger);
+                } else {
+                    // Absolute date-time trigger
+                    $tz = $this->detect_tz($valarm, $timezones, 'trigger');
+                    $datetime = $this->CI->dates->idt2datetime($trigger, $tz);
+                    // Use default timezone
+                    $datetime->setTimezone($this->tz);
+
+                    $reminder = Reminder::createFrom($datetime);
+                    $reminder->tdate =
+                        $datetime->format($this->date_frontend_format);
+                    $reminder->ttime =
+                        $datetime->format($this->time_frontend_format);
+
+                }
+
+                if ($reminder !== null) {
+                    $this_event['reminders'][] = $reminder;
+                }
+            }
+        }
+
         return $this_event;
     }
 
@@ -614,11 +657,11 @@ class Icshelper {
     }
 
     /**
-     * Gets DTSTART timezone from a component
+     * Gets DTSTART/other property timezone from a component
      *
      */
-    function detect_tz($component, $tzs) {
-        $dtstart = $component->getProperty('dtstart', FALSE, TRUE);
+    function detect_tz($component, $tzs, $prop = 'dtstart') {
+        $dtstart = $component->getProperty($prop, FALSE, TRUE);
         $val = $dtstart['value'];
         $params = $dtstart['params'];
         $has_z = isset($val['tz']) ? ($val['tz']=='Z') : FALSE;
