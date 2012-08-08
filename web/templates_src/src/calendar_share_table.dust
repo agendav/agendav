@@ -14,7 +14,9 @@
  </tbody>
 </table>
 
-<table id="calendar_share_add" class="table">
+<span class="table_title">{@i18n type="labels" name="sharewith"/}</span>
+
+<table id="calendar_share_add" class="table-condensed">
 <tbody>
 <tr>
  <td><div class="username">

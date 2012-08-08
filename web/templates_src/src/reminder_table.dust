@@ -16,7 +16,9 @@
  </tbody>
 </table>
 
-<table id="reminder_add">
+<span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
+
+<table id="reminder_add" class="table-condensed">
 <tbody>
 {>reminder_row/}
 </tbody>
