@@ -75,12 +75,18 @@ class Reminder {
             }
         }
 
-        // Decide a measure
-        $use_unit = '';
-        foreach (self::$intervals as $unit => $q) { 
-            if ($minutes % $q == 0) {
-                $use_unit = $unit;
-                break;
+        if ($minutes == 0) {
+            $use_unit = 'minutes';
+            // Fix 'before'
+            $this->before = TRUE;
+        } else {
+            // Decide a measure
+            $use_unit = '';
+            foreach (self::$intervals as $unit => $q) {
+                if ($minutes % $q == 0) {
+                    $use_unit = $unit;
+                    break;
+                }
             }
         }
 
