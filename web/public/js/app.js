@@ -80,6 +80,7 @@ $(document).ready(function() {
       default_calendar_color: default_calendar_color,
       base_url: base_url,
       base_app_url: base_app_url,
+      csrf_token_name: prefs_csrf_token_name,
       enable_calendar_sharing: enable_calendar_sharing
     });
 
@@ -1990,7 +1991,7 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
 
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
-  return $.cookie('csrf_cookie_name');
+  return $.cookie(prefs_csrf_cookie_name);
 }
 
 // vim: sw=2 tabstop=2

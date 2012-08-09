@@ -6,6 +6,11 @@ var prefs_dateformat = '<?php
 echo addslashes($this->dates->date_format_string('datepicker'))?>';
 var prefs_firstday = <?php 
 echo $this->config->item('default_first_day')?>;
+var prefs_csrf_cookie_name = '<?php echo
+$this->config->item('cookie_prefix') .
+$this->config->item('csrf_cookie_name') ?>';
+var prefs_csrf_token_name = '<?php echo
+$this->config->item('csrf_token_name') ?>';
 <?php
 // Locale dependent format
 $prefs = array(
