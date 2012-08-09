@@ -1,6 +1,6 @@
 <table id="reminders_table" class="table table-striped">
  <thead>
-  <th>{@i18n type="labels" name="remindertype"}{/i18n}</th>
+  <th></th>
   <th></th>
   <th></th>
  </thead>
@@ -17,9 +17,16 @@
 </table>
 
 <span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
-
-<table id="reminder_add" class="table-condensed">
+<table class="table reminder_add">
 <tbody>
-{>reminder_row/}
+{>reminder_row add="true" /}
 </tbody>
 </table>
+
+<span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
+<table class="table reminder_add">
+<tbody>
+{>reminder_row add="true" is_absolute="true"/}
+</tbody>
+</table>
+

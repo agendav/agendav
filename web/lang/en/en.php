@@ -176,10 +176,14 @@ $labels['days'] = 'days';
 $labels['weeks'] = 'weeks';
 
 $labels['remindersoptions'] = 'Reminders';
-$labels['remindertype'] = 'Reminder type';
+$labels[''] = 'Reminders';
 
 $labels['sharewith'] = 'Share with:';
 $labels['newreminder'] = 'New reminder:';
+
+$labels['before'] = 'before';
+$labels['after'] = 'after';
+
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
