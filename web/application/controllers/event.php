@@ -685,7 +685,8 @@ class Event extends CI_Controller {
             // Send new information about this event
 
             $info = $this->icshelper->parse_vevent_fullcalendar(
-                    $new_vevent, $href, $new_etag, $calendar, $tz);
+                    $new_vevent, $href, $new_etag, $calendar, $tz,
+                    $timezones);
             $this->_throw_success($info);
         }
     }
