@@ -1575,13 +1575,13 @@ var reminders_manager = function reminders_manager() {
     var regexp_num = /^[0-9]+$/;
 
     if (formdata.is_absolute === false) {
-      if (formdata.qty != '' && regexp_num.test(formdata.qty) &&
-        formdata.interval != '' && formdata.before != '') {
+      if (formdata.qty !== '' && regexp_num.test(formdata.qty) &&
+        formdata.interval !== '' && formdata.before !== '') {
 
         proceed = true;
       }
     } else {
-      if (formdata.tdate != '' && formdata.ttime != '') {
+      if (formdata.tdate !== '' && formdata.ttime !== '') {
         proceed = true;
       }
     }
