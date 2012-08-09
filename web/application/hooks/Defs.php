@@ -31,6 +31,7 @@ class Defs {
             'libs/jquery.colorhelpers.js',
             'libs/jquery.timePicker.20110318.js',
             'libs/jquery.cookie.js',
+            'libs/jquery.serializeobject.js',
             'translation.js',
             'libs/dust-core-1.0.0.js',
             'templates/templates.js',

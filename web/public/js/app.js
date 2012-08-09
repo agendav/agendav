@@ -802,7 +802,12 @@ var event_field_form = function event_field_form(type, data) {
           show_error(t('messages', 'error_interfacefailure'),
             err.message);
         } else {
-          $('#tabs-reminders').html(out);
+          $('#tabs-reminders').html(out)
+            /*
+             * TODO: initialize datepickers and timepickers
+            .find('input.needs-datepicker').datepicker().end()
+            .find('input.needs-timepicker').timePicker(common_timepicker_opts);
+            */
           reminders_manager();
         }
       });
@@ -1549,8 +1554,8 @@ var share_manager_no_entries_placeholder = function share_manager_no_entries_pla
  */
 
 var reminders_manager = function reminders_manager() {
+
   var manager = $('#reminders_table');
-  var new_entry_form = $('#reminder_add');
 
   reminders_manager_no_entries_placeholder();
 
@@ -1563,40 +1568,46 @@ var reminders_manager = function reminders_manager() {
         });
     });
 
-  new_entry_form.on('click', 
-    '#reminder_add_button', function(event) {
-    var reminder_type = $('#reminder_add_type').val();
-    var qty = $('#reminder_add_qty').val();
-    var interval = $('#reminder_add_interval').val();
+  manager.parent().on('click', 'img.reminder_add_button', function(event) {
+    var formdata = $(this).closest('tbody').serializeObject();
+    // Basic validations
+    var proceed = false;
+    var regexp_num = /^[0-9]+$/;
 
-    if (qty != '') {
-      var re = /^[0-9]+$/;
-      if (!re.test(qty)) {
-        qty = '0';
+    if (formdata.is_absolute === false) {
+      if (formdata.qty != '' && regexp_num.test(formdata.qty) &&
+        formdata.interval != '' && formdata.before != '') {
+
+        proceed = true;
       }
+    } else {
+      if (formdata.tdate != '' && formdata.ttime != '') {
+        proceed = true;
+      }
+    }
 
-      var new_row_data = {
-        type: reminder_type,
-        qty: qty,
-        interval: interval
-      };
+    if (proceed === true) {
 
       dust.render('reminder_row',
-        dustbase.push(new_row_data), function(err, out) {
+        dustbase.push(formdata), function(err, out) {
         if (err != null) {
           show_error(t('messages', 'error_interfacefailure'),
             err.message);
         } else {
           manager.find('tbody').append(out);
+          var $new_row = manager.find('tr:last');
+          $new_row.find('.needs-datepicker').datepicker();
+          $new_row.find('.needs-timepicker').timepicker();
 
+
+          // TODO
           // Reset form
-          $('#reminder_add_type').val('popup');
-          $('#reminder_add_qty').val('');
-          $('#reminder_add_interval').val('minutes');
+          // Initialize datepickers and timepickers
 
           reminders_manager_no_entries_placeholder();
         }
       });
+
     }
   });
 };

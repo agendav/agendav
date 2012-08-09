@@ -17,14 +17,14 @@
 </table>
 
 <span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
-<table class="table reminder_add">
+<table class="table">
 <tbody>
 {>reminder_row add="true" /}
 </tbody>
 </table>
 
 <span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
-<table class="table reminder_add">
+<table class="table">
 <tbody>
 {>reminder_row add="true" is_absolute="true"/}
 </tbody>

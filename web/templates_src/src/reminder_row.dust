@@ -1,12 +1,11 @@
+<tr>
+<td>
+
+<input type="hidden" name="is_absolute" value="{?is_absolute}true{:else}false{/is_absolute}" />
 {?order}
 <input type="hidden" name="reminders[][order]" value="{order}" />
 {/order}
 
-<input type="hidden" name="is_absolute"
-value="{?is_absolute}true{:else}false{/is_absolute}" />
-
-<tr>
-<td>
 {?is_absolute}
 <i class="icon-calendar icon-large"></i>
 {:else}
@@ -16,45 +15,31 @@ value="{?is_absolute}true{:else}false{/is_absolute}" />
 <td class="form-inline">
 {?is_absolute}
 <input type="text" 
-name="{^add}reminders[][tdate]{:else}tdate{/add}"
-class="input-small needs-datepicker" maxlength="10"
-value="{tdate}" />
+name="{^add}reminders[][tdate]{:else}tdate{/add}" class="input-small needs-datepicker" maxlength="10" value="{tdate}" />
 
-<input type="text" 
-name="{^add}reminders[][ttime]{:else}ttime{/add}"
-class="input-mini needs-timepicker" maxlength="10" 
-value="{ttime}" />
+<input type="text" name="{^add}reminders[][ttime]{:else}ttime{/add}" class="input-mini needs-timepicker" maxlength="10" value="{ttime}" />
 
 
 {:else}
-<input name="{^add}reminders[][qty]{:else}qty{/add}" class="input-mini"
-maxlength="4" value="{qty}" />
-<select class="input-small"
-name="{^add}reminders[][interval]{:else}interval{/add}">
+<input name="{^add}reminders[][qty]{:else}qty{/add}" class="input-mini" maxlength="4" value="{qty}" />
+<select class="input-small" name="{^add}reminders[][interval]{:else}interval{/add}">
  <option value="minutes"{@eq key="{interval}" value="minutes"} selected="true"{/eq}>{@i18n type="labels" name="minutes"/}</option>
  <option value="hours"{@eq key="{interval}" value="hours"} selected="true"{/eq}>{@i18n type="labels" name="hours"/}</option>
  <option value="days"{@eq key="{interval}" value="days"} selected="true"{/eq}>{@i18n type="labels" name="days"/}</option>
  <option value="weeks"{@eq key="{interval}" value="weeks"} selected="true"{/eq}>{@i18n type="labels" name="weeks"/}</option>
 </select>
 
-<select class="input-small"
-name="{^add}reminders[][before]{:else}before{/add}">
- <option value="false"{?before} selected="true"{/before}>{@i18n type="labels" name="before"/}</option>
- <option value="true"{^before}{^add} selected="true"{/add}{/before}>{@i18n type="labels" name="after"/}</option>
+<select class="input-small" name="{^add}reminders[][before]{:else}before{/add}">
+ <option value="true"{?before} selected="true"{/before}>{@i18n type="labels" name="before"/}</option>
+ <option value="false"{^before}{^add} selected="true"{/add}{/before}>{@i18n type="labels" name="after"/}</option>
 </select>
 {/is_absolute}
 </td>
 <td>
 {?add}
-<img src="{base_url}img/add.png" 
-class="reminder_add pseudobutton" 
-alt="{@i18n type="labels" name="add"/}"
-title="{@i18n type="labels" name="add"/}" />
+<img src="{base_url}img/add.png" class="reminder_add_button pseudobutton" alt="{@i18n type="labels" name="add"/}" title="{@i18n type="labels" name="add"/}" />
 {:else}
-<img src="{base_url}img/delete.png" 
-class="reminder_delete pseudobutton" 
-alt="{@i18n type="labels" name="delete"/}"
-title="{@i18n type="labels" name="delete"/}" />
+<img src="{base_url}img/delete.png" class="reminder_delete pseudobutton" alt="{@i18n type="labels" name="delete"/}" title="{@i18n type="labels" name="delete"/}" />
 {/add}
 </td>
 
