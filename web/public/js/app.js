@@ -797,7 +797,7 @@ var event_field_form = function event_field_form(type, data) {
       }
 
       // Show 'Reminders' tab contents
-      dust.render('reminder_table', dustbase.push(data), function(err, out) {
+      dust.render('reminders_table', dustbase.push(data), function(err, out) {
         if (err != null) {
           show_error(t('messages', 'error_interfacefailure'),
             err.message);
