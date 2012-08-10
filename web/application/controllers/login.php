@@ -60,7 +60,7 @@ class Login extends CI_Controller {
             if ($valid_auth !== FALSE) {
                 // TODO load user prefs
                 $data = array(
-                        'user' => $user,
+                        'user' => mb_strtolower($user),
                         'passwd' => $passwd,
                         'prefs' =>
                             $this->userpref->load_prefs($user)->getAll(),

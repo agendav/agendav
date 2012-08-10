@@ -122,7 +122,7 @@ class Shared_calendars extends CI_Model {
             $tmp = array_values($tmp);
             foreach ($tmp[0] as $sid => $share) {
                 $users[] = array(
-                    'username' => $share['user_which'],
+                    'username' => mb_strtolower($share['user_which']),
                     'sid' => $share['sid'],
                     'write_access' => $share['write_access'],
                     );
@@ -155,6 +155,8 @@ class Shared_calendars extends CI_Model {
         }
 
         $calendar = preg_replace('/^[^:]+:/', '', $calendar);
+        $from = mb_strtolower($from);
+        $to = mb_strtolower($to);
 
         $data = array(
                 'user_from' => $from,
