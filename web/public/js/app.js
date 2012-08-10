@@ -25,7 +25,6 @@ var dustbase = {};
 
 $(document).ready(function() {
   // Load i18n strings
-  var i18n = undefined;
   // TODO: language
   load_i18n_strings();
 
