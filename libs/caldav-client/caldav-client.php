@@ -145,6 +145,8 @@ class CalDAVClient {
       // Clean headers
       $this->headers = array();
       $dav_options = $this->DoOptionsRequestAndGetDAVHeader();
+      $ppal = $this->FindPrincipal();
+      log_message('INTERNALS', 'ppal_url=' . var_export($ppal, TRUE));
       $valid_caldav_server = isset($dav_options['calendar-access']);
 
       return $valid_caldav_server;
@@ -686,7 +688,7 @@ class CalDAVClient {
    *
    * @param string $url The URL to find the principal-URL from
    */
-  function FindPrincipal( $url ) {
+  function FindPrincipal( $url = null ) {
       $xml = $this->DoPROPFINDRequest( $url, array('resourcetype', 'current-user-principal', 'owner', 'principal-URL',
                   'urn:ietf:params:xml:ns:caldav:calendar-home-set'), 1);
 
