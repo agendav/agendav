@@ -74,6 +74,8 @@ div.block .buttons {
   overflow: hidden;
   white-space: nowrap;
   padding: 4px;
+  display: block;
+  text-overflow: ellipsis;
 }
 .calendar_list li img.cfg {
   display: none;
@@ -87,6 +89,7 @@ div.block .buttons {
 }
 .calendar_list li:hover {
   background-color: #f0f0f0;
+  padding-right: 20px;
 }
 .calendar_list li:hover > img.cfg {
   display: inline;

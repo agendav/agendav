@@ -1130,9 +1130,6 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         $('#shared_calendar_list').show();
       }
 
-      // Adjust text length
-      adjust_calendar_names_width();
-
       // Add event sources
       while (count--) {
         $('#calendar_view').fullCalendar('addEventSource',
@@ -1410,24 +1407,6 @@ var session_expired = function session_expired() {
   setTimeout(function() {
     window.location = base_url;
   }, 2000);
-};
-
-/**
- * Adjusts calendar text span width to parent container
- */
-var adjust_calendar_names_width = function adjust_calendar_names_width() {
-  $('.calendar_list li').each(function() {
-    var li = $(this);
-    var li_width = li.width();
-    var shared = li.find('span.shared');
-
-    var adjust = li_width - li.find('span.text').position().left + (li.outerWidth()-li_width);
-    if (shared.length == 1) {
-      adjust -= shared.outerWidth();
-    }
-
-    li.find('span.text').width(adjust);
-  });
 };
 
 /**
