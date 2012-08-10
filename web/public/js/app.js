@@ -1488,7 +1488,7 @@ var share_manager = function share_manager() {
     .data('autocomplete')._renderItem = function(ul, item) {
       return $('<li></li>')
         .data('item.autocomplete', item)
-        .append('<a>' + item.displayname 
+        .append('<a><i class="icon-user"></i> ' + item.displayname
         + '<span style="font-style: italic">'
         + ' &lt;' + item.email + '&gt;</span></a>')
         .appendTo(ul);
