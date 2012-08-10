@@ -80,7 +80,7 @@ $(document).ready(function() {
       default_calendar_color: default_calendar_color,
       base_url: base_url,
       base_app_url: base_app_url,
-      csrf_token_name: prefs_csrf_token_name,
+      csrf_token_name: AgenDAVConf.prefs_csrf_token_name,
       enable_calendar_sharing: enable_calendar_sharing
     });
 
@@ -92,22 +92,23 @@ $(document).ready(function() {
     $('#calendar_view').fullCalendar({
       selectable: true,
       editable: true,
-      firstDay: prefs_firstday,
+      firstDay: AgenDAVConf.prefs_firstday,
       timeFormat: {
-        agenda: prefs_timeformat + '{ - ' + prefs_timeformat + '}',
-        '': prefs_timeformat
+        agenda: AgenDAVConf.prefs_timeformat + '{ - ' 
+          + AgenDAVConf.prefs_timeformat + '}',
+        '': AgenDAVConf.prefs_timeformat
       },
       columnFormat: {
-        month: prefs_format_column_month,
-        week: prefs_format_column_week,
-        day: prefs_format_column_day,
-        table: prefs_format_column_table
+        month: AgenDAVConf.prefs_format_column_month,
+        week: AgenDAVConf.prefs_format_column_week,
+        day: AgenDAVConf.prefs_format_column_day,
+        table: AgenDAVConf.prefs_format_column_table
       },
       titleFormat: {
-        month: prefs_format_title_month,
-        week: prefs_format_title_week,
-        day: prefs_format_title_day,
-        table: prefs_format_title_table
+        month: AgenDAVConf.prefs_format_title_month,
+        week: AgenDAVConf.prefs_format_title_week,
+        day: AgenDAVConf.prefs_format_title_day,
+        table: AgenDAVConf.prefs_format_title_table
       },
       currentTimeIndicator: true,
       weekMode: 'liquid',
@@ -151,7 +152,7 @@ $(document).ready(function() {
       },
       theme: true, // use jQuery UI themeing
       allDayText: t('labels', 'allday'),
-      axisFormat: prefs_timeformat,
+      axisFormat: AgenDAVConf.prefs_timeformat,
       slotMinutes: 30,
       firstHour: 8,
 
@@ -625,14 +626,14 @@ $.datepicker.regional['custom'] = {
   dayNamesShort: day_names_short(),
   dayNamesMin: day_names_short(),
   weekHeader: 'Sm',
-  firstDay: prefs_firstday,
+  firstDay: AgenDAVConf.prefs_firstday,
   isRTL: false,
   showMonthAfterYear: false,
   yearSuffix: ''};  
 
 $.datepicker.setDefaults($.datepicker.regional['custom']);
 $.datepicker.setDefaults({constrainInput: true});
-$.datepicker.setDefaults({dateFormat: prefs_dateformat});
+$.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
 };
 
 /**
@@ -699,12 +700,6 @@ var event_field_form = function event_field_form(type, data) {
   load_generated_dialog(url_dialog,
     data,
     function() {
-      var common_timepicker_opts = {
-        show24Hours: (prefs_timeformat_option == '24' ? true : false),
-        separator: ':',
-        step: 30
-      };
-
       var start_datepicker_opts = {
         onSelect: function(dateText, inst) {
           // End date can't be previous to start date
@@ -716,8 +711,8 @@ var event_field_form = function event_field_form(type, data) {
       $(ced + '_tabs').tabs();
 
 
-      $(ced + ' input.start_time').timePicker(common_timepicker_opts);
-      $(ced + ' input.end_time').timePicker(common_timepicker_opts);
+      $(ced + ' input.start_time').timePicker(AgenDAVConf.timepicker_base);
+      $(ced + ' input.end_time').timePicker(AgenDAVConf.timepicker_base);
       $(ced + ' input.start_date').datepicker(start_datepicker_opts);
       $(ced + ' input.end_date').datepicker();
       $(ced + ' input.recurrence_until').datepicker();
@@ -807,7 +802,7 @@ var event_field_form = function event_field_form(type, data) {
             /*
              * TODO: initialize datepickers and timepickers
             .find('input.needs-datepicker').datepicker().end()
-            .find('input.needs-timepicker').timePicker(common_timepicker_opts);
+            .find('input.needs-timepicker').timePicker(AgenDAVConf.timepicker_base);
             */
           reminders_manager();
         }
@@ -1773,7 +1768,7 @@ var select_helper = function select_helper(start,end) {
   return $('<div style="border: 1px solid black; background-color: #f0f0f0;" class="selecthelper"/>')
     .text(
         $.fullCalendar.formatDates(start, end,
-          prefs_timeformat + '{ - ' + prefs_timeformat + '}'));
+          AgenDAVConf.prefs_timeformat + '{ - ' + AgenDAVConf.prefs_timeformat + '}'));
 };
 
 /**
@@ -1991,7 +1986,7 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
 
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
-  return $.cookie(prefs_csrf_cookie_name);
+  return $.cookie(AgenDAVConf.prefs_csrf_cookie_name);
 }
 
 // vim: sw=2 tabstop=2
