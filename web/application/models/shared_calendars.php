@@ -142,11 +142,11 @@ class Shared_calendars extends CI_Model {
      * @param $to   User id who's getting calendar rights
      * @param $options  Associative array with options for this calendar
      *   (color, displayname, ...)
-     * @param $write_access Use read+write profile on TRUE, read otherwise
+     * @param $write_access (Optional) Use read+write profile on '1', read on '0'
      * @return boolean  FALSE on error, TRUE otherwise
      */
     function store($sid = null, $from = '', $calendar = '', $to = '',
-            $options = array(), $write_access = FALSE) {
+            $options = array(), $write_access = null) {
         if ($sid === null && (empty($from) || empty($calendar) ||
                     empty($to))) {
             log_message('ERROR', 
@@ -163,17 +163,17 @@ class Shared_calendars extends CI_Model {
                 'calendar' => $calendar,
                 'user_which' => $to,
                 'options' => serialize($options),
-                'write_access' => $write_access ? '1' : '0',
                 );
-
+        if ($write_access !== null) {
+            $data['write_access'] = $write_access;
+        }
 
         $res = false;
         if (!is_null($sid)) {
             $conditions = array('sid' => $sid);
-            $data = array(
-                    'write_access' => $data['write_access'],
-                    'options' => $data['options'],
-                    );
+            unset($data['user_from']);
+            unset($data['user_which']);
+            unset($data['calendar']);
 
             // Preserve options
             if (is_null($options)) {

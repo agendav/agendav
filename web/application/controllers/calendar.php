@@ -380,7 +380,7 @@ class Calendar extends CI_Controller {
                             $internal_calendar,
                             $share['username'],
                             null,                   // Preserve options
-                            ($share['write_access'] == '1'));
+                            $share['write_access']);
 
                     if (!is_null($this_sid)) {
                         $updated_sids[$this_sid] = true;
