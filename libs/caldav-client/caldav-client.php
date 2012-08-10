@@ -145,8 +145,6 @@ class CalDAVClient {
       // Clean headers
       $this->headers = array();
       $dav_options = $this->DoOptionsRequestAndGetDAVHeader();
-      $ppal = $this->FindPrincipal();
-      log_message('INTERNALS', 'ppal_url=' . var_export($ppal, TRUE));
       $valid_caldav_server = isset($dav_options['calendar-access']);
 
       return $valid_caldav_server;
