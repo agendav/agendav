@@ -25,15 +25,9 @@ class Reminder {
     public $before;
     public $qty, $interval;
     public $absdatetime, $tdate, $ttime;
+    private $CI;
 
     public static $intervals = array(
-            'weeks' => 10080,
-            'days' => 1440,
-            'hours' => 60,
-            'minutes' => 1,
-            );
-
-    public static $icalendar_indexes = array(
             'week' => 10080,
             'day' => 1440,
             'hour' => 60,
@@ -43,6 +37,7 @@ class Reminder {
     public function __construct() {
         // TODO add more types
         $this->type = 'DISPLAY';
+        $this->CI =& get_instance();
     }
 
     public static function createFrom($when) {
@@ -67,16 +62,45 @@ class Reminder {
     }
 
 
+    /**
+     * Assigns the trigger, action and description for the given VALARM
+     component
+     */
+    public function assign_properties(&$valarm) {
+        if ($this->is_absolute) {
+            $valarm->setProperty('trigger',
+                    $this->CI->dates->datetime2idt($this->absdatetime),
+                    array('VALUE' => 'DATE-TIME'));
+        } else {
+            $valarm->setProperty('trigger',
+                    array(
+                        $this->interval => $this->qty,
+                        'relatedStart' => TRUE,
+                        'before' => $this->before,
+                        ));
+        }
+
+        $valarm->setProperty('action', $this->type);
+        // TODO store description
+        $valarm->setProperty('description', 'AgenDAV');
+
+        log_message('INTERNALS', 'Returning VALARM ' .
+                $valarm->createComponent($x));
+
+        return $valarm;
+    }
+
+
     private function approx_trigger($trigger) {
         $minutes = 0;
-        foreach (self::$icalendar_indexes as $u => $m) {
+        foreach (self::$intervals as $u => $m) {
             if (isset($trigger[$u])) {
                 $minutes += $trigger[$u]*$m;
             }
         }
 
         if ($minutes == 0) {
-            $use_unit = 'minutes';
+            $use_unit = 'min';
             // Fix 'before'
             $this->before = TRUE;
         } else {
@@ -92,5 +116,15 @@ class Reminder {
 
         $this->qty = $minutes/self::$intervals[$use_unit];
         $this->interval = $use_unit;
+    }
+
+
+    public function __toString() {
+        if ($this->is_absolute) {
+            return 'R[' . $this->absdatetime->format('c') . ']';
+        } else {
+            return 'R[' . $this->qty . ' ' . $this->interval .
+                ' ' . ($this->before ? 'before' : 'after') . ']';
+        }
     }
 }

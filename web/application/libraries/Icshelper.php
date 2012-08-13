@@ -984,6 +984,25 @@ class Icshelper {
         return $tzid;
     }
 
+    /**
+     * Adds or replaces VALARM components (reminders) for a given VEVENT
+     * resource
+     */
+    function set_valarms(&$resource, $reminders) {
+        foreach ($reminders as $r) {
+            $valarm = new valarm();
+            $valarm = $r->assign_properties($valarm);
+            if ($r->order !== FALSE) {
+                $resource = $this->replace_component($resource,
+                        'valarm', $r->order, $valarm);
+            } else {
+                $resource->setComponent($valarm);
+            }
+        }
+
+        return $resource;
+    }
+
 
 }
 

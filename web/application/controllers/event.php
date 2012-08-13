@@ -305,6 +305,45 @@ class Event extends CI_Controller {
         }
 
 
+        // Reminders
+        $reminders = array();
+        if (isset($p['reminders']) && is_array($p['reminders'])) {
+            $data_reminders = $p['reminders'];
+            $num_reminders = count($data_reminders['is_absolute']);
+
+            for($i=0;$i<$num_reminders;$i++) {
+                $this_reminder = null;
+                $data_reminders['is_absolute'][$i] =
+                    ($data_reminders['is_absolute'][$i] == 'true' ? TRUE :
+                     FALSE);
+
+                if ($data_reminders['is_absolute'][$i]) {
+                    $when =
+                        $this->dates->frontend2datetime($data_reminders['tdate'][$i]
+                                . ' ' . $data_reminders['ttime'][$i],
+                                $this->tz);
+                    $when->setTimezone($this->tz_utc);
+                    $this_reminder = Reminder::createFrom($when);
+                } else {
+                    $when = array(
+                            'before' => ($data_reminders['before'][$i] ==
+                                'true'));
+                    $interval = $data_reminders['interval'][$i];
+                    $when[$interval] = $data_reminders['qty'][$i];
+
+                    $this_reminder = Reminder::createFrom($when);
+                }
+
+                if (!empty($data_reminders['order'][$i])) {
+                    $this_reminder->order = $data_reminders['order'][$i];
+                }
+
+                log_message('INTERNALS', 'Adding reminder ' .
+                        $this_reminder);
+                $reminders[] = $this_reminder;
+            }
+        }
+
             
         // Is this a new event or a modification?
 
@@ -415,6 +454,10 @@ class Event extends CI_Controller {
 
             $vevent = $this->icshelper->change_properties($vevent,
                     $properties);
+
+            // Add/change reminders
+            $vevent = $this->icshelper->set_valarms($vevent,
+                    $reminders);
 
             $vevent = $this->icshelper->set_last_modified($vevent);
             $resource = $this->icshelper->replace_component($resource,
