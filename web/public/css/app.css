@@ -77,9 +77,9 @@ div.block .buttons {
   display: block;
   text-overflow: ellipsis;
 }
-.calendar_list li img.cfg {
+.calendar_list li i.cfg {
   display: none;
-  background-color: #fff;
+  color: #808080;
   position: absolute;
   right: 5px;
 }
@@ -91,8 +91,11 @@ div.block .buttons {
   background-color: #f0f0f0;
   padding-right: 20px;
 }
-.calendar_list li:hover > img.cfg {
+.calendar_list li:hover > i.cfg {
   display: inline;
+}
+.calendar_list li:hover > i.cfg:hover {
+  color: #000;
 }
 .calendar_list li.default_calendar {
   font-weight: bold;

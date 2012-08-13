@@ -238,7 +238,7 @@ $(document).ready(function() {
      *************************************************************/
 
     // Editing a calendar
-    $('div.calendar_list').on('click', 'img.cfg', function(e) {
+    $('div.calendar_list').on('click', 'i.cfg', function(e) {
       e.stopPropagation();
       var calentry = $(this).parent();
       calendar_modify_dialog($(calentry[0]).data());
@@ -1282,7 +1282,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   // Disable text selection on this (useful for dblclick)
   li.disableSelection();
 
-  li.append('<img class="cfg pseudobutton" src="'+base_url+'img/gear_in.png" />');
+  li.append('<i class="icon-cogs cfg pseudobutton"></i>');
 
   return li;
 };

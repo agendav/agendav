@@ -99,9 +99,9 @@ div.block {
     display: block;
     text-overflow: ellipsis;
 
-    img.cfg {
+    i.cfg {
       display: none;
-      background-color: #fff;
+      color: #808080;
       position: absolute;
       right: 5px;
     }
@@ -115,8 +115,12 @@ div.block {
       background-color: #f0f0f0;
       padding-right: 20px;
 
-      > img.cfg {
+      > i.cfg {
         display: inline;
+
+        &:hover {
+          color: #000;
+        }
       }
     }
 
