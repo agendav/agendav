@@ -28,7 +28,9 @@ foreach($prefs as $pref) {
 }
 ?>
     timepicker_base: {
-        show24Hours: (AgenDAVConf.prefs_timeformat_option == '24' ? true : false),
+        show24Hours: <?php echo ($this->config->item('default_time_format') == '24'
+                     ? 'true' : 'false')?>,
+
         separator: ':',
         step: 30
     },
