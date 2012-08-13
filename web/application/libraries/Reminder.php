@@ -20,7 +20,7 @@
  */
 
 class Reminder {
-    public $type, $order;
+    public $type, $order = FALSE;
     public $is_absolute;
     public $before;
     public $qty, $interval;
