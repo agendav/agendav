@@ -1,3 +1,7 @@
+{@contextDump /}
+{#visible_reminders}
+<input type="hidden" name="visible_reminders[{.}]" value="1" />
+{/visible_reminders}
 <table id="reminders_table" class="table table-striped">
  <thead>
   <th></th>

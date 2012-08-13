@@ -307,6 +307,12 @@ class Event extends CI_Controller {
 
         // Reminders
         $reminders = array();
+
+        // Contains a list of old parseable (visible on UI) reminders.
+        // Used to remove reminders that were deleted by user
+        $visible_reminders = isset($p['visible_reminders']) ?
+            $p['visible_reminders'] : array();
+
         if (isset($p['reminders']) && is_array($p['reminders'])) {
             $data_reminders = $p['reminders'];
             $num_reminders = count($data_reminders['is_absolute']);
@@ -455,9 +461,9 @@ class Event extends CI_Controller {
             $vevent = $this->icshelper->change_properties($vevent,
                     $properties);
 
-            // Add/change reminders
+            // Add/change/remove reminders
             $vevent = $this->icshelper->set_valarms($vevent,
-                    $reminders);
+                    $reminders, $visible_reminders);
 
             $vevent = $this->icshelper->set_last_modified($vevent);
             $resource = $this->icshelper->replace_component($resource,

@@ -504,6 +504,7 @@ class Icshelper {
         $this_event['end'] = $end->format(DateTime::ISO8601);
 
         // Reminders for this event
+        $this_event['visible_reminders'] = array();
         $this_event['reminders'] = array();
 
         $order = 0;
@@ -535,6 +536,7 @@ class Icshelper {
 
                 if ($reminder !== null) {
                     $reminder->order = $order;
+                    $this_event['visible_reminders'][] = $order;
                     $this_event['reminders'][] = $reminder;
                 }
             }
@@ -986,18 +988,25 @@ class Icshelper {
 
     /**
      * Adds or replaces VALARM components (reminders) for a given VEVENT
-     * resource
+     * resource. Removes VALARMs that were deleted by user
      */
-    function set_valarms(&$resource, $reminders) {
+    function set_valarms(&$resource, $reminders, $old_visible_reminders) {
         foreach ($reminders as $r) {
             $valarm = new valarm();
             $valarm = $r->assign_properties($valarm);
             if ($r->order !== FALSE) {
                 $resource = $this->replace_component($resource,
                         'valarm', $r->order, $valarm);
+                unset($old_visible_reminders[$r->order]);
             } else {
                 $resource->setComponent($valarm);
             }
+        }
+
+        // Any VALARMs left that was not present?
+        $remove_valarms = array_keys($old_visible_reminders);
+        foreach ($remove_valarms as $n) {
+            $resource->deleteComponent('valarm', $n);
         }
 
         return $resource;

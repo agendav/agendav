@@ -1925,6 +1925,7 @@ var modify_event_handler = function modify_event_handler() {
     transp: event_data.transp,
     recurrence_id: event_data.recurrence_id,
     reminders: event_data.reminders,
+    visible_reminders: event_data.visible_reminders,
     orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
     orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
   };
