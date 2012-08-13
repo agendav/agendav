@@ -23,12 +23,14 @@ class="rrule_raw_value">{rrule}</span></dd>
  {/rrule_explained}
 {/rrule}
 
+{^disable_actions}
 <div class="actions">
 <button type="button" href="#"
 class="addicon btn-icon-calendar-edit link_modify_event">{@i18n type="labels" name="modify"}{/i18n}</button>
 <button type="button" href="#"
 class="addicon btn-icon-calendar-delete link_delete_event">{@i18n type="labels" name="delete"}{/i18n}</button>
 </div>
+{/disable_actions}
 
 </dl>
 
