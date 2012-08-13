@@ -797,12 +797,7 @@ var event_field_form = function event_field_form(type, data) {
           show_error(t('messages', 'error_interfacefailure'),
             err.message);
         } else {
-          $('#tabs-reminders').html(out)
-            /*
-             * TODO: initialize datepickers and timepickers
-            .find('input.needs-datepicker').datepicker().end()
-            .find('input.needs-timepicker').timePicker(AgenDAVConf.timepicker_base);
-            */
+          $('#tabs-reminders').html(out);
           reminders_manager();
         }
       });
@@ -1529,7 +1524,10 @@ var share_manager_no_entries_placeholder = function share_manager_no_entries_pla
 
 var reminders_manager = function reminders_manager() {
 
+  var tab_reminders = $('#tabs-reminders');
   var manager = $('#reminders_table');
+
+  initialize_date_and_time_pickers(tab_reminders);
 
   reminders_manager_no_entries_placeholder();
 
@@ -1569,15 +1567,10 @@ var reminders_manager = function reminders_manager() {
             err.message);
         } else {
           manager.find('tbody').append(out);
-          var $new_row = manager.find('tr:last');
-          $new_row.find('.needs-datepicker').datepicker();
-          $new_row.find('.needs-timepicker').timepicker();
-
 
           // TODO
           // Reset form
-          // Initialize datepickers and timepickers
-
+          initialize_date_and_time_pickers(tab_reminders);
           reminders_manager_no_entries_placeholder();
         }
       });
@@ -1961,6 +1954,13 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
     hide_calendar(calendar_obj);
   }
 };
+
+// Initializes datepickers and timepickers
+var initialize_date_and_time_pickers = function initialize_date_and_time_pickers(obj) {
+  obj.find('.needs-datepicker').datepicker();
+  obj.find('.needs-timepicker').timePicker(AgenDAVConf.timepicker_base);
+};
+
 
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
