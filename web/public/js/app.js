@@ -1559,6 +1559,7 @@ var reminders_manager = function reminders_manager() {
     }
 
     if (proceed === true) {
+      var $new_reminder_row = $(this).closest('tr');
 
       dust.render('reminder_row',
         dustbase.push(formdata), function(err, out) {
@@ -1568,8 +1569,9 @@ var reminders_manager = function reminders_manager() {
         } else {
           manager.find('tbody').append(out);
 
-          // TODO
-          // Reset form
+          $new_reminder_row.find('input').val('');
+          $new_reminder_row.find('select').val('');
+
           initialize_date_and_time_pickers(tab_reminders);
           reminders_manager_no_entries_placeholder();
         }
