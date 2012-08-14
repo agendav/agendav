@@ -18,7 +18,7 @@
 
 {?user_from}
 <div class="share_info ui-corner-all">
-{@i18n type="messages" name="info_sharedby" user="{user_from}"/}
+{@i18n type="messages" name="info_sharedby" user="{user_from}"/} 
 {@eq key="{write_access}" value="0"}
 ({@i18n type="labels" name="readonly" /})
 {/eq}

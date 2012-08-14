@@ -1259,6 +1259,11 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
     }
   }
 
+  // Currently being shared by user?
+  if (data.shared === false && data.share_with.length > 0) {
+      li.find('span.text').prepend('<i class="icon-share"></i>');
+  }
+
   // Default calendar
   if (data.default_calendar === true) {
     li.addClass('default_calendar');
@@ -1595,11 +1600,11 @@ var reminders_manager_no_entries_placeholder = function reminders_manager_no_ent
  * Event render
  */
 var event_render_callback = function event_render_callback(event, element) {
+  var caldata = get_calendar_data(event.calendar);
   var data = $.extend({},
     event,
-    { formatted_calendar: get_calendar_displayname(event.calendar) });
+    { caldata: caldata });
 
-  var caldata = get_calendar_data(event.calendar);
   if (caldata !== undefined && caldata.shared === true &&
     caldata.write_access == '0') {
     $.extend(data, { disable_actions: true });
