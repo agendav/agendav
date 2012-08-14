@@ -158,13 +158,7 @@ $(document).ready(function() {
       allDayDefault: false,
 
       loading: function(bool) {
-        if (bool) {
-          // Now loading
-          $('#calendar_view').mask(t('messages', 'overlay_synchronizing'), 500);
-        } else {
-          // Finished loading
-          $('#calendar_view').unmask();
-        }
+        loading(bool);
       },
 
       eventRender: event_render_callback,
@@ -337,6 +331,9 @@ var calendar_height = function calendar_height() {
  */
 
 var show_error = function show_error(title, message) {
+  // Hide loading indicator
+  loading(false);
+
   $('#popup').freeow(title, message,
     {
       classes: ['popup_error'],
@@ -418,8 +415,6 @@ var load_generated_dialog = function load_generated_dialog(url, data, preDialogF
     var action = $(thisform).attr('action');
     var formdata = $(thisform).serialize();
 
-    $('body').mask(t('messages', 'overlay_loading_dialog'), 500);
-
     var dialog_ajax_req = $.ajax({
       url: base_app_url + url,
       cache: false,
@@ -429,7 +424,7 @@ var load_generated_dialog = function load_generated_dialog(url, data, preDialogF
     });
 
     dialog_ajax_req.then(function() {
-        $('body').unmask();
+        loading(false);
     });
 
     dialog_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
@@ -475,7 +470,7 @@ var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFun
   var data = $(formObj).serialize();
 
   // Mask body
-  $('body').mask(t('messages', 'overlay_sending_form'), 1000);
+  loading(true);
 
   var sendform_ajax_req = $.ajax({
     url: url,
@@ -486,7 +481,7 @@ var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFun
   });
 
   sendform_ajax_req.then(function() {
-    $('body').unmask();
+    loading(false);
   });
 
   sendform_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
@@ -1043,7 +1038,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
 
 var update_calendar_list = function update_calendar_list(maskbody) {
   if (maskbody) {
-    $('body').mask(t('messages', 'overlay_loading_calendar_list'), 500);
+    loading(true);
   }
 
   var updcalendar_ajax_req = $.ajax({
@@ -1055,7 +1050,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
   updcalendar_ajax_req.then(function() {
     if (maskbody) {
-      $('body').unmask();
+      loading(false);
     }
   });
 
@@ -1988,5 +1983,15 @@ var initialize_date_and_time_pickers = function initialize_date_and_time_pickers
 var get_csrf_token = function get_csrf_token() {
   return $.cookie(AgenDAVConf.prefs_csrf_cookie_name);
 }
+
+// Loading indicator
+var loading = function loading(status) {
+  if (status === false) {
+    $('#loading').hide();
+  } else {
+    $('#loading').show();
+  }
+}
+
 
 // vim: sw=2 tabstop=2
