@@ -240,6 +240,13 @@ div.selecthelper {
 .fc-event-hori .fc-event-inner {
   padding: 0.1em 0 0.2em 0;
 }
+.fc-event-icons {
+  float: right;
+  margin-right: 5px;
+}
+.fc-event-icons i {
+  margin-right: 2px;
+}
 div.calendar_color {
   display: inline-block;
   width: 12px;

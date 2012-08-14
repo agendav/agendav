@@ -1610,6 +1610,25 @@ var event_render_callback = function event_render_callback(event, element) {
     $.extend(data, { disable_actions: true });
   }
 
+  // Icons
+  var icons = [];
+
+  if (event.rrule != undefined) {
+    icons.push('icon-repeat');
+  }
+  if (event.reminders.length > 0) {
+    icons.push('icon-bell');
+  }
+
+  // Prepend icons
+  if (icons.length != 0) {
+    var icon_html = $('<span class="fc-event-icons"></span>');
+    $.each(icons, function(n, i) {
+      icon_html.append('<i class="' + i + '"></i>');
+    });
+    element.find('.fc-event-title').after(icon_html);
+  }
+
   dust.render('event_details_popup', dustbase.push(data), function(err, out) {
     if (err != null) {
       show_error(t('messages', 'error_interfacefailure'),
