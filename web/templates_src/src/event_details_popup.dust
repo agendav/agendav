@@ -23,6 +23,11 @@ class="rrule_raw_value">{rrule}</span></dd>
  {/rrule_explained}
 {/rrule}
 
+{#reminders}
+<dt>{@i18n type="labels" name="reminder"/}</dt>
+<dd>{>reminder_description /}</dd>
+{/reminders}
+
 {^disable_actions}
 <div class="actions">
 <button type="button" href="#"

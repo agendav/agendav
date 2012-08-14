@@ -176,7 +176,7 @@ $labels['days'] = 'days';
 $labels['weeks'] = 'weeks';
 
 $labels['remindersoptions'] = 'Reminders';
-$labels[''] = 'Reminders';
+$labels['reminder'] = 'Reminder';
 
 $labels['sharewith'] = 'Share with:';
 $labels['newreminder'] = 'New reminder:';
