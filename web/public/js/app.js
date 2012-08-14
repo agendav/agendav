@@ -1691,21 +1691,7 @@ var event_render_callback = function event_render_callback(event, element) {
           },
 
           hide: function (event, api) {
-            // Clicked on event?
-            var has_clicked_event;
-
-            if (event.originalEvent != undefined) {
-              var click_target = $(event.originalEvent.target).parents();
-              has_clicked_event = (click_target.length > 1 && click_target.andSelf().filter('.fc-event').length == 1);
-            } else {
-              has_clicked_event = false;
-            }
-
-            set_data('tooltip_hide_clicked_event', has_clicked_event);
-
-            var current = get_data('current_event');
-            set_data('recently_hidden_event', current);
-
+            remove_data('current_event');
             $(window).off('keydown.tooltipevents');
           }
         }
@@ -1719,20 +1705,16 @@ var event_render_callback = function event_render_callback(event, element) {
  */
 var event_click_callback = function event_click_callback(event, 
     jsEvent, view) {
-  var recently_hidden_event = get_data('recently_hidden_event');
-  var hide_clicked_event = get_data('tooltip_hide_clicked_event');
+  var current_event = get_data('current_event');
 
-  remove_data('current_event');
-
-  if (recently_hidden_event != event ||
-      (hide_clicked_event === false && 
-       recently_hidden_event == event)) {
+  if (current_event == event) {
+    $(ved).qtip('hide');
+    remove_data('current_event');
+  } else {
     set_data('current_event', event);
     $(this).qtip('show', jsEvent);
   }
 
-  remove_data('recently_hidden_event');
-  remove_data('tooltip_hide_clicked_event');
 };
 
 /**
