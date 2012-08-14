@@ -368,7 +368,7 @@ class Event extends CI_Controller {
         if (!isset($p['modification'])) {
             // New event (resource)
             $new_uid = $this->icshelper->new_resource($p,
-                    $resource, $this->tz);
+                    $resource, $this->tz, $reminders);
             $href = $new_uid . '.ics';
             $etag = '*';
         } else {

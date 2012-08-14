@@ -57,7 +57,8 @@ class Icshelper {
      * Returns generated guid, FALSE on error. $generated will be filled with
      * new generated resource (iCalComponent object)
      */
-    function new_resource($properties, &$generated, $tz) {
+    function new_resource($properties, &$generated, $tz, $reminders =
+            array()) {
         $properties = array_change_key_case($properties, CASE_UPPER);
 
         $contents = '';
@@ -111,6 +112,10 @@ class Icshelper {
                 $vevent->setProperty($p, $properties[$p], $params);
             }
         }
+
+        // VALARM components (reminders)
+        $vevent = $this->set_valarms($vevent, $reminders);
+
 
         $generated = $ical;
         return $uid;
@@ -990,7 +995,8 @@ class Icshelper {
      * Adds or replaces VALARM components (reminders) for a given VEVENT
      * resource. Removes VALARMs that were deleted by user
      */
-    function set_valarms(&$resource, $reminders, $old_visible_reminders) {
+    function set_valarms(&$resource, $reminders, $old_visible_reminders =
+            array()) {
         foreach ($reminders as $r) {
             $valarm = new valarm();
             $valarm = $r->assign_properties($valarm);
