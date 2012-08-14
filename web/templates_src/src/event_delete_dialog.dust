@@ -1,0 +1,20 @@
+<div id="event_delete_dialog">
+{>form_open/}
+
+<input type="hidden" name="calendar" value="{calendar}" />
+<input type="hidden" name="uid" value="{uid}" />
+<input type="hidden" name="href" value="{href}" />
+<input type="hidden" name="etag" value="{etag}" />
+
+<p>{@i18n type="messages" name="info_confirmeventdelete"/}</p>
+
+<p class="title">
+{title}
+</p>
+
+{?rrule}
+{@i18n type="messages" name="info_repetitivedeleteall"/}
+{/rrule}
+
+{>form_close/}
+</div>

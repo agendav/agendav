@@ -1030,7 +1030,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
   'calendar_delete_dialog',
   500,
   function() { });
-}
+};
 
 /*
  * Updates the calendar list and generates eventSources for fullcalendar
@@ -1670,7 +1670,7 @@ var event_render_callback = function event_render_callback(event, element) {
             .find('button.link_delete_event')
             .off('click')
             .on('click', function() {
-              delete_event_handler();
+              event_delete_dialog();
             })
             .end()
             .find('button.link_modify_event')
@@ -1835,9 +1835,11 @@ var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDe
 
 // Delete link
 // TODO: check for rrule/recurrence-id (EXDATE, etc)
-var delete_event_handler = function delete_event_handler() {
-  var data = get_data('current_event'),
-      ded = '#delete_event_dialog';
+var event_delete_dialog = function event_delete_dialog() {
+  var form_url = base_app_url + 'event/delete';
+  var title = t('labels', 'deleteevent');
+
+  var data = get_data('current_event');
 
   if (data === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
@@ -1845,56 +1847,50 @@ var delete_event_handler = function delete_event_handler() {
     return;
   }
 
-  load_generated_dialog('dialog_generator/delete_event',
-    {},
-    function() {
-      // Show event fields
-      $(ded + ' span.calendar').html(get_calendar_displayname(data.calendar));
-      $(ded + ' p.title').html(data.title);
+  $.extend(data, {
+    applyid: 'event_delete_form',
+    frm: {
+      action: form_url,
+      method: 'post',
+      csrf: get_csrf_token()
+    }
+  });
 
-      var rrule = data.rrule;
-      if (rrule === undefined) {
-        $(ded + ' div.rrule').hide();
-      }
-
-      var thisform = $('#delete_form');
-      thisform.find('input.uid').val(data.uid);
-      thisform.find('input.calendar').val(data.calendar);
-      thisform.find('input.href').val(data.href);
-      thisform.find('input.etag').val(data.etag);
-    },
-    t('labels', 'deleteevent'),
-    [
+  show_dialog('event_delete_dialog',
+    data,
+    title,
+    [ 
       {
         'text': t('labels', 'yes'),
         'class': 'addicon btn-icon-event-delete',
         'click': function() {
-          var thisform = $('#delete_form');
+          var thisform = $('#event_delete_form');
           proceed_send_ajax_form(thisform,
-            function(data) {
-              $('#calendar_view').fullCalendar('removeEvents', get_data('current_event').id);
+            function(rdata) {
+              $('#calendar_view').fullCalendar('removeEvents', data.id);
             },
-            function(data) {
+            function(rdata) {
               show_error(t('messages', 'error_event_not_deleted'), data);
             },
             function() {});
 
           // Destroy dialog
-          destroy_dialog('#delete_event_dialog');
-
+          destroy_dialog('#event_delete_dialog');
         }
       },
       {
         'text': t('labels', 'cancel'),
         'class': 'addicon btn-icon-cancel',
-        'click': function() { destroy_dialog('#delete_event_dialog'); }
+        'click': function() { destroy_dialog('#event_delete_dialog'); }
       }
     ],
-    'delete_event_dialog', 400);
+    'event_delete_dialog',
+    400,
+    function() {});
 
     // Close tooltip
     $(ved).qtip('hide');
-  return false;
+    return false;
 };
 
 // Edit/Modify link
