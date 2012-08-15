@@ -13,7 +13,7 @@
 </p>
 
 {?rrule}
-{@i18n type="messages" name="info_repetitivedeleteall"/}
+<p>{@i18n type="messages" name="info_repetitivedeleteall"/}</p>
 {/rrule}
 
 {>form_close/}

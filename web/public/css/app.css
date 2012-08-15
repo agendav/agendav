@@ -130,6 +130,7 @@ div.block .buttons {
   font-family: monospace;
 }
 .view_event_details .actions {
+  margin-top: 5px;
   text-align: right;
 }
 .view_event_details .ui-tooltip-content {
@@ -139,11 +140,11 @@ div.block .buttons {
   font-size: 120%;
 }
 /* overlay ends */
-#delete_event_dialog .title {
+#event_delete_dialog .title {
   font-size: 120%;
   font-style: italic;
 }
-#delete_event_dialog .calendar {
+#event_delete_dialog .calendar {
   font-style: italic;
 }
 /* delete event dialog ends */
