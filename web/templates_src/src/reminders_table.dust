@@ -13,7 +13,7 @@
  {/reminders}
  <tr id="reminders_no_rows">
  <td colspan="3">
-  {@i18n type="messages" name="info_noreminders"}{/i18n}
+  {@i18n type="messages" name="info_noreminders"/}
  </td>
  </tr>
  </tbody>
