@@ -61,14 +61,6 @@ class Dialog_generator extends CI_Controller {
     }
 
     /**
-     * Generates a view to remove an event
-     */
-    function delete_event() {
-        $this->load->view('dialogs/delete_event');
-    }
-
-
-    /**
      * Generates a view to add an event
      */
     function create_event() {
@@ -332,18 +324,6 @@ class Dialog_generator extends CI_Controller {
 
             $this->load->view('dialogs/create_or_modify_event', $data);
         }
-    }
-
-    /**
-     * Calendar creation dialog
-     */
-    function create_calendar() {
-        $calendar_colors = $this->config->item('calendar_colors');
-
-        $this->load->view('dialogs/create_calendar',
-                array(
-                    'default_calendar_color' => '#' . $calendar_colors[0]
-                    ));
     }
 
     /**
