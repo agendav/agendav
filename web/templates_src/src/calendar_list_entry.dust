@@ -1,0 +1,21 @@
+<li class="available_calendar{?default_calendar} 
+default_calendar{/default_calendar}">
+ <div class="calendar_color" 
+ style="background-color:
+ {?color}{color}{:else}{default_calendar_color}{/color}; border-color: {bordercolor}"></div>
+
+ <span class="icons">
+ {?shared}
+  {@eq key="{write_access}" value="0"}
+  <i class="icon-lock"></i>
+  {/eq}
+ {:else}
+  {?share_with}
+  <i class="icon-share"></i>
+  {/share_with}
+ {/shared}
+
+ </span>
+ <span class="text">{displayname}</span>
+ <i class="cfg pseudobutton icon-cogs"></i>
+</li>

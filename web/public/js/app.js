@@ -1078,12 +1078,22 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       shared_calendars = document.createDocumentFragment(),
       collected_event_sources = [];
 
-    $.each(data, function(key, value) {
+    $.each(data, function(key, calendar) {
       count++;
 
-      var li = generate_calendar_entry(value);
+      // Some values need to be generated
+      if (calendar.color === undefined || calendar.color === false || calendar.color == null) {
+        calendar.color = '#' + default_calendar_color;
+      } else {
+        calendar.color = calendar.color.substr(0,7);
+      }
+      calendar.fg = fg_for_bg(calendar.color);
+      calendar.bordercolor = $.color.parse(calendar.color).scale('rgb',
+        (calendar.fg == '#000000' ? 0.8 : 1.8)).toString();
 
-      if (value.shared == true) {
+      var li = generate_calendar_entry(calendar);
+
+      if (calendar.shared == true) {
         count_shared++;
         shared_calendars.appendChild(li[0]);
       } else {
@@ -1220,80 +1230,37 @@ var add_button_icons = function add_button_icons(buttons) {
  * Generates a new calendar entry
  */
 var generate_calendar_entry = function generate_calendar_entry(data) {
-  // Default color
-  if (data.color === undefined || data.color === false || data.color == null) {
-    data.color = '#' + default_calendar_color;
-  } else {
-    // Remove alpha channel from color
-    data.color = data.color.substring(0, 7);
-  }
-
-  // Foreground color
-  var fg = fg_for_bg(data.color);
-  // Border color
-  //var border = $.color.parse(data.color).scale('rgb', 0.8).toString();
-  var border = $.color.parse(data.color);
-  border = border.scale('rgb', (fg == '#000000' ? 0.8 : 1.8)).toString();
-
-  var color_square = $('<div></div>')
-    .addClass('calendar_color')
-    .css('background-color', data.color)
-    .css('border-color', border);
-
-  var li = $('<li></li>')
-    .addClass('available_calendar')
-    .attr('title', data.displayname)
-    .html('<span class="text">' + data.displayname + '</span>')
-    .prepend(color_square);
-
   var eventsource = generate_event_source(data.calendar);
   eventsource.ignoreTimezone = true; // Ignore UTC offsets
   eventsource.color = data.color;
-  eventsource.textColor = fg;
-  eventsource.borderColor = border;
-
-  var icons = [];
-
+  eventsource.textColor = data.fg;
+  eventsource.borderColor = data.bordercolor;
 
   // Shared calendars
-  if (data.shared !== undefined && data.shared == true) {
-    li.attr("title", li.attr("title") + " (@" + data.user_from + ")");
-
-    if (data.write_access == '0') {
-      eventsource.editable = false;
-      icons.push('icon-lock');
-    }
-  }
-
-  // Currently being shared by user?
-  if (data.shared === false && data.share_with.length > 0) {
-    icons.push('icon-share');
-  }
-
-  // Default calendar
-  if (data.default_calendar === true) {
-    li.addClass('default_calendar');
+  if (data.shared !== undefined && data.shared == true && data.write_access == '0') {
+    eventsource.editable = false;
   }
 
   data.eventsource = eventsource;
 
-  // Associate data + eventsource to new list item
-  li.data(data);
+  var $out;
 
-  // Disable text selection on this (useful for dblclick)
-  li.disableSelection();
+  dust.render('calendar_list_entry', dustbase.push(data), function(err, out) {
+    if (err != null) {
+      show_error(t('messages', 'error_interfacefailure'),
+        err.message);
+    } else {
+      $out = $(out);
 
-  if (icons.length > 0) {
-    var icon_html = $('<span class="icons"></span>');
-    $.each(icons, function(n, i) {
-      icon_html.append('<i class="' + i + '"></i>');
-    });
-    li.find('span.text').prepend(icon_html);
-  }
+      // Associate data + eventsource to new list item
+      $out.data(data);
 
-  li.append('<i class="icon-cogs cfg pseudobutton"></i>');
+      // Disable text selection on this (useful for dblclick)
+      $out.disableSelection();
+    }
+  });
 
-  return li;
+  return $out;
 };
 
 /**
