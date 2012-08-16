@@ -85,7 +85,7 @@ $(document).ready(function() {
 
     // Default colorpicker options
     set_default_colorpicker_options();
-  
+
     // Enable full calendar
     // TODO: configurable!
     $('#calendar_view').fullCalendar({
@@ -1257,6 +1257,20 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
       // Disable text selection on this (useful for dblclick)
       $out.disableSelection();
+
+      $out.find('span[title],i[title]').qtip({
+        position: {
+          my: 'top left',
+          at: 'bottom left'
+        },
+        show: {
+          delay: 600
+        },
+        style: {
+          classes: 'ui-tooltip-bootstrap',
+          tip: true
+        }
+      });
     }
   });
 
@@ -1956,6 +1970,7 @@ var loading = function loading(status) {
     $('#loading').show();
   }
 }
+
 
 
 // vim: sw=2 tabstop=2

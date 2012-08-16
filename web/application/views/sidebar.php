@@ -36,7 +36,9 @@ if (isset($logo)) {
    <ul>
    </ul>
    <div class="buttons">
-    <span id="toggle_all_shared_calendars" class="pseudobutton hide_all"><i class="icon-eye-close
+    <span id="toggle_all_shared_calendars" class="pseudobutton hide_all"
+    title="<?php echo $this->i18n->_('labels', 'toggleallcalendars')?>"
+    ><i class="icon-eye-close
     icon-large"></i></span>
    </div>
   </div>

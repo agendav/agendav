@@ -151,6 +151,7 @@ $labels['yes'] = 'Yes';
 $labels['untitled'] = 'Untitled';
 
 $labels['sharewith'] = 'Share with';
+$labels['currentlysharing'] = 'Currently sharing this calendar';
 $labels['publicurl'] = 'URL for calendaring desktop applications';
 
 $labels['access'] = 'Access';
@@ -178,7 +179,6 @@ $labels['weeks'] = 'weeks';
 $labels['remindersoptions'] = 'Reminders';
 $labels['reminder'] = 'Reminder';
 
-$labels['sharewith'] = 'Share with:';
 $labels['newreminder'] = 'New reminder:';
 
 $labels['before'] = 'before';

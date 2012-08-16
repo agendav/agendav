@@ -7,15 +7,18 @@ default_calendar{/default_calendar}">
  <span class="icons">
  {?shared}
   {@eq key="{write_access}" value="0"}
-  <i class="icon-lock"></i>
+  <i title="{@i18n type="labels" name="readonly"/}" class="icon-lock"></i>
   {/eq}
  {:else}
   {?share_with}
-  <i class="icon-share"></i>
+  <i title="{@i18n type="labels" name="currentlysharing"/}" class="icon-share"></i>
   {/share_with}
  {/shared}
 
  </span>
- <span class="text">{displayname}</span>
- <i class="cfg pseudobutton icon-cogs"></i>
+ <span class="text"
+ {?user_from}
+ title="{@i18n type="messages" name="info_sharedby" user="{user_from}"/}"
+ {/user_from}>{displayname}</span>
+ <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton icon-cogs"></i>
 </li>
