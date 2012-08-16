@@ -79,7 +79,6 @@ div.block .buttons {
 }
 .calendar_list li i.cfg {
   display: none;
-  color: #808080;
   position: absolute;
   right: 5px;
 }
@@ -94,19 +93,12 @@ div.block .buttons {
 .calendar_list li:hover > i.cfg {
   display: inline;
 }
-.calendar_list li:hover > i.cfg:hover {
-  color: #000;
-}
 .calendar_list li.default_calendar {
   font-weight: bold;
 }
 .calendar_list li.transparent div.calendar_color {
   background-color: #ffffff !important;
   border: 1px solid #e0e0e0 !important;
-}
-#toggle_all_shared_calendars {
-  position: absolute;
-  right: 5px;
 }
 /* overlay starts */
 .view_event_details {
@@ -262,10 +254,12 @@ div.calendar_color {
   border-style: solid;
 }
 .pseudobutton {
+  color: #8C8C8C;
   display: inline-block;
   padding: 2px;
 }
 .pseudobutton:hover {
+  color: #000;
   cursor: pointer;
   background-color: #a9d6ff !important;
 }

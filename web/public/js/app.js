@@ -254,7 +254,9 @@ $(document).ready(function() {
         $(this)
           .removeClass('hide_all')
           .addClass('show_all')
-          .attr('src', base_url + 'img/color_swatch.png');
+          .find('i')
+            .removeClass('icon-eye-close')
+            .addClass('icon-eye-open');
       } else {
         $.map(shared_cals, function(e, i) {
           show_calendar($(e));
@@ -262,7 +264,9 @@ $(document).ready(function() {
         $(this)
           .removeClass('show_all')
           .addClass('hide_all')
-          .attr('src', base_url + 'img/color_swatch_empty.png');
+          .find('i')
+            .removeClass('icon-eye-open')
+            .addClass('icon-eye-close');
       }
     });
 

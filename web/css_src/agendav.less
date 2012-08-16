@@ -101,7 +101,6 @@ div.block {
 
     i.cfg {
       display: none;
-      color: #808080;
       position: absolute;
       right: 5px;
     }
@@ -117,10 +116,6 @@ div.block {
 
       > i.cfg {
         display: inline;
-
-        &:hover {
-          color: #000;
-        }
       }
     }
 
@@ -133,11 +128,6 @@ div.block {
       border: 1px solid #e0e0e0 !important;
     }
   }
-}
-
-#toggle_all_shared_calendars {
-  position: absolute;
-  right: 5px;
 }
 
 /* overlay starts */
@@ -329,9 +319,11 @@ div.calendar_color {
 }
 
 .pseudobutton {
+  color: #8C8C8C;
   display: inline-block;
   padding: 2px;
   &:hover {
+    color: #000;
     cursor: pointer;
     background-color: @agendavbgHoverPseudobutton !important;
   }
