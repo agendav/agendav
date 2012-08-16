@@ -279,10 +279,12 @@ class Caldav {
             $info = $this->client->GetCalendarDetailsByURL($url);
 
             if (!is_array($info) || count($info) == 0) {
-                // Something went really wrong
+                // Something went really wrong in this calendar
                 $this->CI->extended_logs->message('ERROR', 
-                        'PROPFIND on ' . $url . ' failed');
-                return FALSE;
+                        'Ignoring shared calendar '
+                        . $url . '. PROPFIND yielded '
+                        . $this->client->GetHttpResultCode());
+                continue;
             }
 
             $properties = $info[$calid];
