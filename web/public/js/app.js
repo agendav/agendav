@@ -1252,6 +1252,8 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   eventsource.textColor = fg;
   eventsource.borderColor = border;
 
+  var icons = [];
+
 
   // Shared calendars
   if (data.shared !== undefined && data.shared == true) {
@@ -1259,13 +1261,13 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
     if (data.write_access == '0') {
       eventsource.editable = false;
-      li.find('span.text').prepend('<i class="icon-lock"></i>');
+      icons.push('icon-lock');
     }
   }
 
   // Currently being shared by user?
   if (data.shared === false && data.share_with.length > 0) {
-      li.find('span.text').prepend('<i class="icon-share"></i>');
+    icons.push('icon-share');
   }
 
   // Default calendar
@@ -1280,6 +1282,14 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
   // Disable text selection on this (useful for dblclick)
   li.disableSelection();
+
+  if (icons.length > 0) {
+    var icon_html = $('<span class="icons"></span>');
+    $.each(icons, function(n, i) {
+      icon_html.append('<i class="' + i + '"></i>');
+    });
+    li.find('span.text').prepend(icon_html);
+  }
 
   li.append('<i class="icon-cogs cfg pseudobutton"></i>');
 

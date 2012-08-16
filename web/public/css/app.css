@@ -86,6 +86,10 @@ div.block .buttons {
   font-size: 0.9em;
   letter-spacing: -0.1em;
 }
+.calendar_list li span.icons {
+  margin-right: 1px;
+  color: #a0a0a0;
+}
 .calendar_list li:hover {
   background-color: #f0f0f0;
   padding-right: 20px;
