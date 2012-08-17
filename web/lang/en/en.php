@@ -152,7 +152,7 @@ $labels['untitled'] = 'Untitled';
 
 $labels['sharewith'] = 'Share with';
 $labels['currentlysharing'] = 'Currently sharing this calendar';
-$labels['publicurl'] = 'URL for calendaring desktop applications';
+$labels['publicurl'] = 'Calendar URL for CalDAV clients';
 
 $labels['access'] = 'Access';
 $labels['readonly'] = 'Read only';

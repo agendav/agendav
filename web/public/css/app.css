@@ -151,6 +151,7 @@ div.block .buttons {
   z-index: 9999 !important;
 }
 div.public_url_container {
+  text-align: right;
   width: 90%;
   font-size: 70%;
   margin-top: 1em;
