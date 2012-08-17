@@ -270,6 +270,21 @@ $(document).ready(function() {
       }
     });
 
+    // Help tooltips
+    $('#sidebar div.buttons').find('img[title],span[title],a[title]').qtip({
+      position: {
+        my: 'top left',
+        at: 'bottom left'
+      },
+      show: {
+        delay: 600
+      },
+      style: {
+        classes: 'ui-tooltip-bootstrap',
+        tip: true
+      }
+    });
+
 
     // Create calendar
     $('#calendar_add')
