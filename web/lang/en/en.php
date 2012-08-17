@@ -184,6 +184,9 @@ $labels['newreminder'] = 'New reminder:';
 $labels['before'] = 'before';
 $labels['after'] = 'after';
 
+$labels['start'] = 'start';
+$labels['end'] = 'end';
+
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';

@@ -24,6 +24,7 @@ class Reminder {
     public $is_absolute;
     public $before;
     public $qty, $interval;
+    public $relatedStart;
     public $absdatetime, $tdate, $ttime;
     private $CI;
 
@@ -58,38 +59,9 @@ class Reminder {
 
     public function parse_trigger($trigger) {
         $this->before = $trigger['before'];
+        $this->relatedStart = $trigger['relatedStart'];
         $this->approx_trigger($trigger);
     }
-
-
-    /**
-     * Assigns the trigger, action and description for the given VALARM
-     component
-     */
-    public function assign_properties(&$valarm) {
-        if ($this->is_absolute) {
-            $valarm->setProperty('trigger',
-                    $this->CI->dates->datetime2idt($this->absdatetime),
-                    array('VALUE' => 'DATE-TIME'));
-        } else {
-            $valarm->setProperty('trigger',
-                    array(
-                        $this->interval => $this->qty,
-                        'relatedStart' => TRUE,
-                        'before' => $this->before,
-                        ));
-        }
-
-        $valarm->setProperty('action', $this->type);
-        // TODO store description
-        $valarm->setProperty('description', 'AgenDAV');
-
-        log_message('INTERNALS', 'Returning VALARM ' .
-                $valarm->createComponent($x));
-
-        return $valarm;
-    }
-
 
     private function approx_trigger($trigger) {
         $minutes = 0;
@@ -118,13 +90,42 @@ class Reminder {
         $this->interval = $use_unit;
     }
 
+    /**
+     * Assigns the trigger, action and description for the given VALARM
+     component
+     */
+    public function assign_properties(&$valarm) {
+        if ($this->is_absolute) {
+            $valarm->setProperty('trigger',
+                    $this->CI->dates->datetime2idt($this->absdatetime),
+                    array('VALUE' => 'DATE-TIME'));
+        } else {
+            $valarm->setProperty('trigger',
+                    array(
+                        $this->interval => $this->qty,
+                        'relatedStart' => $this->relatedStart,
+                        'before' => $this->before,
+                        ));
+        }
+
+        $valarm->setProperty('action', $this->type);
+        // TODO store description
+        $valarm->setProperty('description', 'AgenDAV');
+
+        log_message('INTERNALS', 'Returning VALARM ' .
+                $valarm->createComponent($x));
+
+        return $valarm;
+    }
+
 
     public function __toString() {
         if ($this->is_absolute) {
             return 'R[' . $this->absdatetime->format('c') . ']';
         } else {
             return 'R[' . $this->qty . ' ' . $this->interval .
-                ' ' . ($this->before ? 'before' : 'after') . ']';
+                ' ' . ($this->before ? 'before' : 'after') . 
+                ' ' . ($this->relatedStart ? 'start' : 'end') . ']';
         }
     }
 }

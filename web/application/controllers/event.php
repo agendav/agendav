@@ -333,7 +333,10 @@ class Event extends CI_Controller {
                 } else {
                     $when = array(
                             'before' => ($data_reminders['before'][$i] ==
-                                'true'));
+                                'true'),
+                            'relatedStart' =>
+                            ($data_reminders['relatedStart'][$i] == 'true'),
+                            );
                     $interval = $data_reminders['interval'][$i];
                     $when[$interval] = $data_reminders['qty'][$i];
 

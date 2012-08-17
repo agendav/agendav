@@ -981,8 +981,7 @@ class Icshelper {
                 $trigger = $valarm->getProperty('trigger');
                 $reminder = null;
 
-                if (isset($trigger['before']) 
-                        && $trigger['relatedStart'] === TRUE) {
+                if (isset($trigger['before'])) {
                     // Related to event start/end
                     $reminder = Reminder::createFrom($trigger);
                 } else {

@@ -39,6 +39,11 @@ name="{^add}reminders[tdate][]{:else}tdate{/add}" class="input-small needs-datep
  <option value="false"{^before}{^add} selected="true"{/add}{/before}>{@i18n type="labels" name="after"/}</option>
 </select>
 
+<select class="input-small" name="{^add}reminders[relatedStart][]{:else}relatedStart{/add}">
+ <option value="true"{?relatedStart} selected="true"{/relatedStart}>{@i18n type="labels" name="start"/}</option>
+ <option value="false"{^relatedStart}{^add} selected="true"{/add}{/relatedStart}>{@i18n type="labels" name="end"/}</option>
+</select>
+
 {^add}
 <input type="hidden" name="reminders[tdate][]" value="" />
 <input type="hidden" name="reminders[ttime][]" value="" />
