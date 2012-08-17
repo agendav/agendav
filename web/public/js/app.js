@@ -1079,11 +1079,18 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   });
 
   updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
+    var was_transparent = {};
+
     // Remove old eventSources and remove every list item
     $('.calendar_list li.available_calendar').each(function(index) {
       var data = $(this).data();
       $('#calendar_view').fullCalendar('removeEventSource',
         data.eventsource);
+
+      if ($(this).hasClass('transparent')) {
+        was_transparent[data.calendar] = true;
+      }
+
       $(this).remove();
     });
 
@@ -1108,6 +1115,12 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
       var li = generate_calendar_entry(calendar);
 
+      if (was_transparent[calendar.calendar]) {
+        li.addClass('transparent');
+      } else {
+        collected_event_sources.push($(li).data().eventsource);
+      }
+
       if (calendar.shared == true) {
         count_shared++;
         shared_calendars.appendChild(li[0]);
@@ -1115,7 +1128,6 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         own_calendars.appendChild(li[0]);
       }
 
-      collected_event_sources.push($(li).data().eventsource);
     });
 
     // No calendars?
