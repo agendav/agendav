@@ -512,39 +512,11 @@ class Icshelper {
         $this_event['visible_reminders'] = array();
         $this_event['reminders'] = array();
 
-        $order = 0;
-        while ($valarm = $vevent->getComponent('valarm')) {
-            $order++;
-            // TODO parse more actions
-            $action = $valarm->getProperty('action');
-            if ($action == 'DISPLAY') {
-                $trigger = $valarm->getProperty('trigger');
-                $reminder = null;
+        $valarms = $this->parse_valarms($vevent, $timezones);
 
-                if (isset($trigger['before']) 
-                        && $trigger['relatedStart'] === TRUE) {
-                    // Related to event start/end
-                    $reminder = Reminder::createFrom($trigger);
-                } else {
-                    // Absolute date-time trigger
-                    $tz = $this->detect_tz($valarm, $timezones, 'trigger');
-                    $datetime = $this->CI->dates->idt2datetime($trigger, $tz);
-                    // Use default timezone
-                    $datetime->setTimezone($this->tz);
-
-                    $reminder = Reminder::createFrom($datetime);
-                    $reminder->tdate =
-                        $datetime->format($this->date_frontend_format);
-                    $reminder->ttime =
-                        $datetime->format($this->time_frontend_format);
-                }
-
-                if ($reminder !== null) {
-                    $reminder->order = $order;
-                    $this_event['visible_reminders'][] = $order;
-                    $this_event['reminders'][] = $reminder;
-                }
-            }
+        foreach ($valarms as $order => $reminder) {
+            $this_event['visible_reminders'][] = $order;
+            $this_event['reminders'][] = $reminder;
         }
 
         return $this_event;
@@ -989,6 +961,52 @@ class Icshelper {
         }
 
         return $tzid;
+    }
+
+    /**
+     * Parses a VEVENT resource VALARM definitions
+     * 
+     * Returns an associative array ('n1#' => new Reminder, 'n2#' => new
+     * Reminder...), where 'n#' is the order where this VALARM was found
+     */
+    function parse_valarms($vevent, $timezones = array()) {
+        $parsed_reminders = array();
+
+        $order = 0;
+        while ($valarm = $vevent->getComponent('valarm')) {
+            $order++;
+            // TODO parse more actions
+            $action = $valarm->getProperty('action');
+            if ($action == 'DISPLAY') {
+                $trigger = $valarm->getProperty('trigger');
+                $reminder = null;
+
+                if (isset($trigger['before']) 
+                        && $trigger['relatedStart'] === TRUE) {
+                    // Related to event start/end
+                    $reminder = Reminder::createFrom($trigger);
+                } else {
+                    // Absolute date-time trigger
+                    $tz = $this->detect_tz($valarm, $timezones, 'trigger');
+                    $datetime = $this->CI->dates->idt2datetime($trigger, $tz);
+                    // Use default timezone
+                    $datetime->setTimezone($this->tz);
+
+                    $reminder = Reminder::createFrom($datetime);
+                    $reminder->tdate =
+                        $datetime->format($this->date_frontend_format);
+                    $reminder->ttime =
+                        $datetime->format($this->time_frontend_format);
+                }
+
+                if ($reminder !== null) {
+                    $reminder->order = $order;
+                    $parsed_reminders[$order] = $reminder;
+                }
+            }
+        }
+
+        return $parsed_reminders;
     }
 
     /**
