@@ -7,6 +7,7 @@ Release 1.2.6 (2012-X-Y)
     * Upgraded:
       - CodeIgniter (to 2.1.2)
       - jQuery UI (to 1.8.23)
+      - iCalcreator (to 2.14)
     * Added support for IPv6 clients
     * Added new option to customize login page image
     * Added pt-BR translation (thanks to Fernando Mercês)
