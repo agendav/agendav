@@ -130,7 +130,9 @@ class Dialog_generator extends CI_Controller {
                     'Call to create_or_modify_event() with no calendars stored in session');
         } else {
             foreach ($tmp_cals as $id => $data) {
-                $calendars[$id] = $data->displayname;
+                if (!$data->shared || $data->write_access == '1') {
+                    $calendars[$id] = $data->displayname;
+                }
             }
         }
 
@@ -205,7 +207,9 @@ class Dialog_generator extends CI_Controller {
                         'Call to create_or_modify_event() with no calendars stored in session');
             } else {
                 foreach ($tmp_cals as $id => $data) {
-                    $calendars[$id] = $data->displayname;
+                    if (!$data->shared || $data->write_access == '1') {
+                        $calendars[$id] = $data->displayname;
+                    }
                 }
             }
 

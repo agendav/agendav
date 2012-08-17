@@ -69,10 +69,6 @@ class Calendar extends CI_Controller {
             }
         }
 
-        // Save calendars into session (avoid multiple CalDAV queries when
-        // editing/adding events)
-        $this->session->set_userdata('available_calendars', $arr_calendars);
-
         // Default calendar
         $default_calendar = $this->prefs->default_calendar;
         if ($default_calendar !== null &&
@@ -83,7 +79,6 @@ class Calendar extends CI_Controller {
             $arr_calendars[$first]->default_calendar = TRUE;
         }
 
-
         // Add public URL
         if ($this->config->item('show_public_caldav_url')) {
             foreach ($arr_calendars as $calendar) {
@@ -93,6 +88,11 @@ class Calendar extends CI_Controller {
                                 $calendar->calendar);
             }
         }
+
+        // Save calendars into session (avoid multiple CalDAV queries when
+        // editing/adding events)
+        $this->session->set_userdata('available_calendars', $arr_calendars);
+
         $this->output->set_output(json_encode($arr_calendars));
     }
 
