@@ -1,3 +1,18 @@
+Release 1.2.6 (2012-X-Y)
+    * Added Reminders support
+    * Changed dialog rendering method to use client templates via
+      JavaScript. Much faster!
+    * Removed load indicator that blocked the whole page. Now it's just an
+      spinning wheel on the top right of the application
+    * Upgraded:
+      - CodeIgniter (to 2.1.2)
+      - jQuery UI (to 1.8.23)
+    * Added support for IPv6 clients
+    * Added new option to customize login page image
+    * Added pt-BR translation (thanks to Fernando Mercês)
+    * Lots of UI improvements (icons, tooltips)
+    * Lots of internal fixes and improvements
+
 Release 1.2.5.1 (2012-06-11)
     * Removed bogus DB update scripts that made the dbupdate process
       fail
