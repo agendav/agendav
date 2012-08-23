@@ -48,7 +48,6 @@ class Defs {
             'app.css',
             );
     static $printcssfiles = array(
-            'fullcalendar.print.css',
             'app.print.css',
             );
 

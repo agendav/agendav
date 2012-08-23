@@ -316,3 +316,6 @@ i.tab-icon {
 span.table_title {
   font-weight: bold;
 }
+#calendar_view.printing {
+  width: 8.3in !important;
+}

@@ -318,6 +318,13 @@ $(document).ready(function() {
       });
     }
 
+    // Printing
+    
+    setup_print_tweaks();
+    
+
+
+
     // User menu
     $('#usermenu').qtip({
       content: $('#usermenu_content'),
@@ -2001,6 +2008,36 @@ var loading = function loading(status) {
   }
 }
 
+// Printing helpers
+
+var beforePrint = function beforePrint() {
+  // Prepare calendar for printing
+  $('#calendar_view').addClass('printing');
+  $('#calendar_view').fullCalendar('render');
+};
+
+var afterPrint = function afterPrint() {
+  $('#calendar_view').removeClass('printing');
+  $('#calendar_view').fullCalendar('render');
+};
+
+
+// Apply printing helpers to document
+var setup_print_tweaks = function setup_print_tweaks() {
+  if (window.matchMedia) {
+    var mediaQueryList = window.matchMedia('print');
+    mediaQueryList.addListener(function(mql) {
+        if (mql.matches) {
+          beforePrint();
+        } else {
+          afterPrint();
+        }
+    });
+  }
+
+  window.onbeforeprint = beforePrint;
+  window.onafterprint = afterPrint;
+};
 
 
 // vim: sw=2 tabstop=2
