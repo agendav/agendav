@@ -13,6 +13,7 @@ Release 1.2.6 (2012-X-Y)
     * Added pt-BR translation (thanks to Fernando Mercês)
     * Lots of UI improvements (icons, tooltips)
     * Lots of internal fixes and improvements
+    * Improved print stylesheets
 
 Release 1.2.5.1 (2012-06-11)
     * Removed bogus DB update scripts that made the dbupdate process
