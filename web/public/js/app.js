@@ -1105,7 +1105,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
       // Some values need to be generated
       if (calendar.color === undefined || calendar.color === false || calendar.color == null) {
-        calendar.color = '#' + default_calendar_color;
+        calendar.color = default_calendar_color;
       } else {
         calendar.color = calendar.color.substr(0,7);
       }
