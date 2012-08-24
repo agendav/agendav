@@ -6,14 +6,14 @@
 @import url("basic.css");
  
 /* -- fontfaces ----------------------------------------------------------- */
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold);
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(http://fonts.googleapis.com/css?family=PT+Mono);
 
-@import url(http://fonts.googleapis.com/css?family=Amaranth);
+@import url(http://fonts.googleapis.com/css?family=Actor);
 /* -- page layout ----------------------------------------------------------- */
  
 body {
-    font-family: 'Droid Sans', helvetica, arial, serif;
+    font-family: 'Open Sans', helvetica, arial, serif;
     font-size: 100%;
     background-color: #111111;
     color: #555555;
@@ -97,7 +97,7 @@ div.sphinxsidebarwrapper{
  
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: Amaranth, arial, serif;
+    font-family: Actor, arial, serif;
     color: #222;
     font-size: 1.6em;
     font-weight: normal;
@@ -156,7 +156,7 @@ div.sphinxsidebar a:hover {
 div.sphinxsidebar input {
     border: 1px solid #ddd;
     border-bottom: 1px solid #bbb;
-    font-family: 'Droid Sans', helvetica, arial, serif;
+    font-family: 'Open Sans', helvetica, arial, serif;
     font-size: 1.3em;
     padding: 0.2em 0.4em;
     -moz-box-shadow: 0px 0px 3px rgba(0,0,0,0.1);
@@ -216,7 +216,7 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: Amaranth, arial, serif;
+    font-family: Actor, arial, serif;
     font-weight: normal;
     color: #000;
     margin: 36px 0px 9px 0px;
@@ -287,7 +287,7 @@ p.admonition-title:after {
 }
  
 pre {
-    font: 12px/18px 'Droid Sans Mono', arial, serif;
+    font: 12px/18px 'PT Mono', arial, serif;
     padding: 10px;
     background-color: #fcfadd;
     border:1px solid #ddd;
@@ -300,7 +300,7 @@ pre {
     box-shadow: 0px 0px 4px #d8d8d8;
 }
 .pre{
-    font-family: 'Droid Sans Mono', arial, serif;
+    font-family: 'PT Mono', arial, serif;
 
 }
  
