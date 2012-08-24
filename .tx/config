@@ -7,3 +7,9 @@ source_file = web/lang/en/en.php
 source_lang = en
 type = PHP_ALT_ARRAY
 
+[agendav.migrations]
+file_filter = web/lang/<lang>/migration_lang.php
+source_file = web/lang/en/migration_lang.php
+source_lang = en
+type = PHP_ALT_ARRAY
+
