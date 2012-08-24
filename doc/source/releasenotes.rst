@@ -3,6 +3,15 @@
 Release notes
 =============
 
+.. _v1.2.6:
+
+
+1.2.6 (2012-08-XX)
+------------------
+
+* This release requires neither configuration changes nor DB schema updates.
+* Reminders feature has been added. Reminders will be attached to events, but this version of AgenDAV is not capable of showing popups for them yet. Other CalDAV clients, such as smartphones and desktop applications, will understand them.
+
 .. _v1.2.5.1:
 
 1.2.5.1 (2012-06-11)
