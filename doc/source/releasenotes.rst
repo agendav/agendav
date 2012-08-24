@@ -11,6 +11,7 @@ Release notes
 
 * This release requires neither configuration changes nor DB schema updates.
 * Reminders feature has been added. Reminders will be attached to events, but this version of AgenDAV is not capable of showing popups for them yet. Other CalDAV clients, such as smartphones and desktop applications, will understand them.
+* A new ``log_create_permissions`` option has been added to ``advanced.php`` configuration file. Default is ``0640``
 
 .. _v1.2.5.1:
 
