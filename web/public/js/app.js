@@ -857,7 +857,7 @@ var event_field_form = function event_field_form(type, data) {
         'click': function() { destroy_dialog(ced); }
       }
     ],
-    'com_event_dialog', 500);
+    'com_event_dialog', 550);
 };
 
 /*
