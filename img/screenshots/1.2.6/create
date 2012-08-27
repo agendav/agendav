@@ -1,0 +1,1 @@
+for i in *.png; do convert $i -thumbnail 110x100^ -gravity center -extent 110x100 -bordercolor white -border 2 \( +clone -background black -shadow 40x3+2+2 \) +swap -background white -layers merge +repage `echo "$i"|sed s/.png$/_thumb.png/g`; done
