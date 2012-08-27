@@ -131,6 +131,10 @@ h2 {
   text-align: center;
 }
 
+#screenshots img {
+  margin-right: 4px;
+}
+
 /**
  * jQuery lightBox plugin
  * This jQuery plugin was inspired and based on Lightbox 2 by Lokesh Dhakar (http://www.huddletogether.com/projects/lightbox2/)
