@@ -126,6 +126,7 @@ class Caldav {
                 $usermsg = 'error_eventchanged';
                 break;
             case '204':
+            case '200':
                 // Success
                 $success = TRUE;
                 break;
