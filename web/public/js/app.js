@@ -335,6 +335,7 @@ $(document).ready(function() {
       },
       show: {
         event: 'click',
+        effect: false,
         delay: 0
       },
       hide: {
