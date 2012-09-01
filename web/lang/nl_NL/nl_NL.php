@@ -151,6 +151,7 @@ $labels['yes'] = 'Ja';
 $labels['untitled'] = 'Naamloos';
 
 $labels['sharewith'] = 'Delen met';
+$labels['currentlysharing'] = 'De agenda wordt opgeslagen';
 $labels['publicurl'] = 'URL voor agenda applicaties';
 
 $labels['access'] = 'Toegang';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Verberg in de lijst';
 $labels['defaultcalendar'] = 'Standaard agenda';
 
 $labels['toggleallcalendars'] = 'Toon/verberg alles';
+
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'E-mail';
+
+$labels['minutes'] = 'minuten';
+$labels['hours'] = 'uren';
+$labels['days'] = 'dagen';
+$labels['weeks'] = 'weken';
+
+$labels['remindersoptions'] = 'Herinneringen';
+$labels['reminder'] = 'Herinnering';
+
+$labels['newreminder'] = 'Nieuwe herinnering:';
+
+$labels['before'] = 'voor';
+$labels['after'] = 'na';
+
+$labels['start'] = 'start';
+$labels['end'] = 'einde';
+
 
 // Messages
 $messages['error_auth'] = 'Ongeldige gebruikersnaam of wachtwoord';
@@ -186,6 +207,7 @@ $messages['info_sharedby'] = 'U heeft toegang tot deze agenda omdat gebruiker %u
 $messages['info_shareexplanation'] = 'U kunt deze agenda met andere gebruikers delen en laten aanpassen.
 Geef de gebruikersnamen in, gescheiden door komma\'s of spaties';
 $messages['info_notshared'] = 'Deze agenda wordt niet gedeeld';
+$messages['info_noreminders'] = 'Deze gebeurtenis heeft geen herinneringen ingesteld';
 $messages['error_sessexpired'] = 'Uw sessie is verlopen';
 $messages['error_loginagain'] = 'Log a.u.b. opnieuw in';
 

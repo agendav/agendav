@@ -151,6 +151,7 @@ $labels['yes'] = 'Oui';
 $labels['untitled'] = 'Sans titre';
 
 $labels['sharewith'] = 'Partager avec';
+$labels['currentlysharing'] = 'Ce calendrier est actuellement partagé';
 $labels['publicurl'] = 'URL de ce calendrier';
 
 $labels['access'] = 'Accès';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Masquer';
 $labels['defaultcalendar'] = 'Calendrier par défaut';
 
 $labels['toggleallcalendars'] = 'Tout afficher/masquer';
+
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'minutes';
+$labels['hours'] = 'heures';
+$labels['days'] = 'jours';
+$labels['weeks'] = 'semaines';
+
+$labels['remindersoptions'] = 'Rappels';
+$labels['reminder'] = 'Rappel';
+
+$labels['newreminder'] = 'Nouveau rappel:';
+
+$labels['before'] = 'avant';
+$labels['after'] = 'après';
+
+$labels['start'] = 'début';
+$labels['end'] = 'fin';
+
 
 // Messages
 $messages['error_auth'] = 'Nom d\'utilisateur ou mot de passe invalide';
@@ -187,6 +208,7 @@ $messages['info_shareexplanation'] = 'Vous pouvez partager ce calendrier avec
 d\'autres utilisateurs et les laisser le modifier. Mettez leurs noms d\'utilisateur ci-dessous, séparés
 par des virgules ou des espaces';
 $messages['info_notshared'] = 'Ce calendrier n\'est pas encore partagé';
+$messages['info_noreminders'] = 'Cet évènement n\'a pas de rappels configuré';
 $messages['error_sessexpired'] = 'Votre session a expiré';
 $messages['error_loginagain'] = 'Veuillez vous reconnecter';
 

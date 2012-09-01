@@ -151,6 +151,7 @@ $labels['yes'] = 'Sì';
 $labels['untitled'] = 'Senza titolo';
 
 $labels['sharewith'] = 'Condividi con';
+$labels['currentlysharing'] = 'Calendario attualmente condiviso';
 $labels['publicurl'] = 'URL per applicazioni compatibili';
 
 $labels['access'] = 'Accesso';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Nascondi dalla lista';
 $labels['defaultcalendar'] = 'Calendario predefinito';
 
 $labels['toggleallcalendars'] = 'Nascondi/Mostra tutti';
+
+$labels['popup'] = 'Popup';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'minuti';
+$labels['hours'] = 'ore';
+$labels['days'] = 'giorni';
+$labels['weeks'] = 'settimane';
+
+$labels['remindersoptions'] = 'Promemoria';
+$labels['reminder'] = 'Promemoria';
+
+$labels['newreminder'] = 'Nuovo promemoria:';
+
+$labels['before'] = 'prima';
+$labels['after'] = 'dopo';
+
+$labels['start'] = 'inizio';
+$labels['end'] = 'fine';
+
 
 // Messages
 $messages['error_auth'] = 'Nome utente o password non validi';
@@ -185,6 +206,7 @@ $messages['info_repetitivedeleteall'] = 'Tutte le ripetizioni di questo evento v
 $messages['info_sharedby'] = 'Puoi accedere a questo calendario perché %user lo ha condiviso con te';
 $messages['info_shareexplanation'] = 'Puoi condividere questo calendario con altri utenti e permettere loro di modificarlo. Indicane i nomi qui sotto separati da virgole o spazi';
 $messages['info_notshared'] = 'Il calendario non è condiviso';
+$messages['info_noreminders'] = 'Non sono stati configurati promemoria per questo evento';
 $messages['error_sessexpired'] = 'La sessione è scaduta';
 $messages['error_loginagain'] = 'Esegui nuovamente la login';
 

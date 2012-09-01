@@ -29,5 +29,8 @@ $config['lang_rels'] = array(
 		'pt_BR' => array(
 			'codeigniter' => 'pt_BR',
 			),
+        'fi' => array(
+            'codeigniter' => 'english',
+            ),
 		);
 

@@ -151,6 +151,7 @@ $labels['yes'] = 'Jah';
 $labels['untitled'] = 'Pealkirjata';
 
 $labels['sharewith'] = 'Jaga';
+$labels['currentlysharing'] = 'Praegu selle kalendri jagamine';
 $labels['publicurl'] = 'URL kalendri töölaua rakendustele';
 
 $labels['access'] = 'Ligipääs';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Peida nimekirjast';
 $labels['defaultcalendar'] = 'Vaikimisi kalender';
 
 $labels['toggleallcalendars'] = 'Näita/Peida kõiki';
+
+$labels['popup'] = 'Hüpik';
+$labels['email'] = 'E-post';
+
+$labels['minutes'] = 'minutit';
+$labels['hours'] = 'tundi';
+$labels['days'] = 'päeva';
+$labels['weeks'] = 'nädalat';
+
+$labels['remindersoptions'] = 'Meelespead';
+$labels['reminder'] = 'Meelespea';
+
+$labels['newreminder'] = 'Uus meelespea:';
+
+$labels['before'] = 'enne';
+$labels['after'] = 'pärast';
+
+$labels['start'] = 'algus';
+$labels['end'] = 'lõpp';
+
 
 // Messages
 $messages['error_auth'] = 'Vigane kasutajanimi või parool';
@@ -186,6 +207,7 @@ $messages['info_sharedby'] = 'Sul on ligipääs sellele kalendrile, kuna %user j
 $messages['info_shareexplanation'] = 'Sa saad seda kalendrit teiste
 kasutajatega jagada ja lasta neil seda. Sisesta nende kasutajanimed alla ja eralda need omavahel komade või tühikutega';
 $messages['info_notshared'] = 'Seda kalendrit ei jagata kellegagi';
+$messages['info_noreminders'] = 'Sellel üritusel pole meelespäid salvestatud';
 $messages['error_sessexpired'] = 'Sinu sessioon on aegunud';
 $messages['error_loginagain'] = 'Palun logi uuesti sisse';
 

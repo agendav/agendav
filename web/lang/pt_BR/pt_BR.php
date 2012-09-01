@@ -151,6 +151,7 @@ $labels['yes'] = 'Sim';
 $labels['untitled'] = 'Sem título';
 
 $labels['sharewith'] = 'Compartilhado com';
+$labels['currentlysharing'] = 'Atualmente compartilhando este calendário';
 $labels['publicurl'] = 'URL para aplicativos de calenrário';
 
 $labels['access'] = 'Acesso';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Ocultar da lista';
 $labels['defaultcalendar'] = 'Calendário padrão';
 
 $labels['toggleallcalendars'] = 'Exibir/Ocultar todos';
+
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'minutos';
+$labels['hours'] = 'horas';
+$labels['days'] = 'dias';
+$labels['weeks'] = 'semanas';
+
+$labels['remindersoptions'] = 'Lembretes';
+$labels['reminder'] = 'Lembrete';
+
+$labels['newreminder'] = 'Novo lembrete:';
+
+$labels['before'] = 'antes';
+$labels['after'] = 'depois';
+
+$labels['start'] = 'início';
+$labels['end'] = 'fim';
+
 
 // Messages
 $messages['error_auth'] = 'Usuário ou senha inválidos';
@@ -187,6 +208,7 @@ $messages['info_shareexplanation'] = 'Você pode compartilhar este calendário c
 outros usuários e permitir que eles o modifiquem. Insira os nomes de usuário abaixo, separados por
 vírgula ou espaço';
 $messages['info_notshared'] = 'Este calendário não está compartilhado';
+$messages['info_noreminders'] = 'Este evento não possui lembretes configurados';
 $messages['error_sessexpired'] = 'Sua sessão expirou';
 $messages['error_loginagain'] = 'Por favor, efetue o login novamente';
 

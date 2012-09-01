@@ -70,7 +70,7 @@ $labels['tomorrow'] = 'Mañana';
 $labels['month'] = 'mes';
 $labels['week'] = 'semana';
 $labels['day'] = 'día';
-$labels['tableview'] = 'Agenda';
+$labels['tableview'] = 'agenda';
 $labels['allday'] = 'día completo';
 $labels['choose_date'] = 'Elegir una fecha';
 
@@ -151,6 +151,7 @@ $labels['yes'] = 'Sí';
 $labels['untitled'] = 'Sin título';
 
 $labels['sharewith'] = 'Compartir con';
+$labels['currentlysharing'] = 'Compartiendo este calendario';
 $labels['publicurl'] = 'URL para clientes de escritorio';
 
 $labels['access'] = 'Acceso';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Ocultar de la lista';
 $labels['defaultcalendar'] = 'Calendario por defecto';
 
 $labels['toggleallcalendars'] = 'Ver/ocultar todos';
+
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'minutos';
+$labels['hours'] = 'horas';
+$labels['days'] = 'días';
+$labels['weeks'] = 'semanas';
+
+$labels['remindersoptions'] = 'Recordatorios';
+$labels['reminder'] = 'Recordatorio';
+
+$labels['newreminder'] = 'Nuevo recordatorio';
+
+$labels['before'] = 'antes de';
+$labels['after'] = 'después de';
+
+$labels['start'] = 'empezar';
+$labels['end'] = 'acabar';
+
 
 // Messages
 $messages['error_auth'] = 'Nombre de usuario o contraseña inválidos';
@@ -188,6 +209,7 @@ $messages['info_shareexplanation'] = 'Puede compartir este calendario con
 otros usuarios para que ellos también puedan modificarlo. Separe con
 espacios o comas los nombres de los usuarios. ';
 $messages['info_notshared'] = 'Este calendario no se está compartiendo con nadie';
+$messages['info_noreminders'] = 'Este evento no tiene recordatorios asociados';
 $messages['error_sessexpired'] = 'Su sesión ha caducado';
 $messages['error_loginagain'] = 'Por favor, autentíquese de nuevo';
 
