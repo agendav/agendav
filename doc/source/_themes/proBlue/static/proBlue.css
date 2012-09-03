@@ -9,7 +9,7 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
 @import url(http://fonts.googleapis.com/css?family=PT+Mono);
 
-@import url(http://fonts.googleapis.com/css?family=Actor);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 /* -- page layout ----------------------------------------------------------- */
  
 body {
@@ -97,7 +97,7 @@ div.sphinxsidebarwrapper{
  
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: Actor, arial, serif;
+    font-family: 'Source Sans Pro', arial, serif;
     color: #222;
     font-size: 1.6em;
     font-weight: normal;
@@ -216,7 +216,7 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: Actor, arial, serif;
+    font-family: 'Source Sans Pro', arial, serif;
     font-weight: normal;
     color: #000;
     margin: 36px 0px 9px 0px;
