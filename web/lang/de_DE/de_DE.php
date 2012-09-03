@@ -151,6 +151,7 @@ $labels['yes'] = 'Ja';
 $labels['untitled'] = 'Unbenannt';
 
 $labels['sharewith'] = 'Teilen mit';
+$labels['currentlysharing'] = 'Dieser Kalender wird gerade geteilt';
 $labels['publicurl'] = 'URL für Terminprogramme';
 
 $labels['access'] = 'Zugriff';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Verstecken';
 $labels['defaultcalendar'] = 'Standardkalender';
 
 $labels['toggleallcalendars'] = 'Alle anzeigen/verstecken';
+
+$labels['popup'] = 'Dialogfenster';
+$labels['email'] = 'E-Mail';
+
+$labels['minutes'] = 'Minuten';
+$labels['hours'] = 'Stunden';
+$labels['days'] = 'Tage';
+$labels['weeks'] = 'Wochen';
+
+$labels['remindersoptions'] = 'Erinnerungen';
+$labels['reminder'] = 'Erinnerung';
+
+$labels['newreminder'] = 'Neue Erinnerung';
+
+$labels['before'] = 'vor';
+$labels['after'] = 'nach';
+
+$labels['start'] = 'Beginn';
+$labels['end'] = 'Ende';
+
 
 // Messages
 $messages['error_auth'] = 'Ungültiger Benutzername oder Passwort';
@@ -187,6 +208,7 @@ $messages['info_shareexplanation'] = 'Sie können diesen Kalender mit anderen
 Nutzern teilen und bearbeiten lassen. Geben Sie unten die Benutzernamen ein, abgetrennt
 durch Kommas oder Leerzeichen';
 $messages['info_notshared'] = 'Dieser Kalender wird nicht gemeinsam mit Anderen benutzt';
+$messages['info_noreminders'] = 'Für dieses Ereignis sind keine Erinnerungen konfiguriert';
 $messages['error_sessexpired'] = 'Ihre Sitzung ist abgelaufen';
 $messages['error_loginagain'] = 'Bitte melden Sie sich erneut an';
 

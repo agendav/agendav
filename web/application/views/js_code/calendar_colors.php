@@ -12,6 +12,6 @@ echo implode(', ', $final_colors);
 ?>
 		];
 }
-var default_calendar_color = <?php echo $final_colors[0]?>;
+var default_calendar_color = '#<?php echo $colors[0]?>';
 //]]>
 </script>

@@ -1,0 +1,42 @@
+<table id="calendar_share_table" class="table table-striped">
+ <thead>
+  <th>{@i18n type="labels" name="username"/}</th>
+  <th>{@i18n type="labels" name="access"/}</th>
+  <th></th>
+ </thead>
+ <tbody>
+ {#share_with}
+  {>calendar_share_row/}
+ {/share_with}
+  <tr id="calendar_share_no_rows">
+   <td colspan="3">{@i18n type="messages" name="info_notshared"/}</td>
+  </tr>
+ </tbody>
+</table>
+
+<span class="table_title">{@i18n type="labels" name="sharewith"/}</span>
+
+<table id="calendar_share_add" class="table-condensed">
+<tbody>
+<tr>
+ <td><div class="username">
+ <input name="autocomplete_username"
+ class="input-medium" id="calendar_share_add_username"
+ value="" maxlength="255" size="10" />
+ </div></td>
+ <td>
+ <select name="write-access" id="calendar_share_add_write_access"
+ class="input-medium">
+  {>calendar_share_access_options/}
+ </select>
+ </td>
+ <td>
+  <img src="{base_url}img/add.png" 
+  id="calendar_share_add_button"
+  class="pseudobutton"
+  alt="{@i18n type="labels" name="add"/}
+  title="{@i18n type="labels" name="add"/} />
+ </td>
+ </tr>
+ </tbody>
+</table>

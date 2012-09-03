@@ -1,13 +1,13 @@
 <?php
 /*********************************************************************************/
 /**
- * iCalcreator v2.12
- * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
+ * iCalcreator v2.14
+ * copyright (c) 2007-2012 Kjell-Inge Gustafsson kigkonsult
  * kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se
  *
  * Description:
- * This file is a PHP implementation of RFC 2445.
+ * This file is a PHP implementation of RFC 2445/5545.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,15 +44,8 @@ if ($pos   !== false) {
 }
 */
 /*********************************************************************************/
-/*         only for phpversion 5.1 and later,                                    */
-/*         date management, default timezone setting                             */
-/*         since 2.6.36 - 2010-12-31 */
-if( substr( phpversion(), 0, 3 ) >= '5.1' )
-  // && ( 'UTC' == date_default_timezone_get()))
-  date_default_timezone_set( 'Europe/Stockholm' );
-/*********************************************************************************/
 /*         version, do NOT remove!!                                              */
-define( 'ICALCREATOR_VERSION', 'iCalcreator 2.12' );
+define( 'ICALCREATOR_VERSION', 'iCalcreator 2.14' );
 /*********************************************************************************/
 /*********************************************************************************/
 /**
@@ -201,7 +194,7 @@ class vcalendar {
  * creates formatted output for calendar property prodid
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.10.16 - 2011-10-28
+ * @since 2.12.11 - 2012-05-13
  * @return string
  */
   function createProdid() {
@@ -212,7 +205,9 @@ class vcalendar {
         return $this->nl.' prodid="'.$this->prodid.'"';
         break;
       default:
-        return 'PRODID:'.$this->prodid.$this->nl;
+        $toolbox = new calendarComponent();
+        $toolbox->setConfig( $this->getConfig());
+        return $toolbox->_createElement( 'PRODID', '', $this->prodid );
         break;
     }
   }
@@ -410,7 +405,7 @@ class vcalendar {
  * get calendar property value/params
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.8.8 - 2011-04-16
+ * @since 2.13.4 - 2012-08-08
  * @param string $propName, optional
  * @param int $propix, optional, if specific property is wanted in case of multiply occurences
  * @param bool $inclParam=FALSE
@@ -420,13 +415,17 @@ class vcalendar {
     $propName = ( $propName ) ? strtoupper( $propName ) : 'X-PROP';
     if( 'X-PROP' == $propName ) {
       if( !$propix )
-        $propix = ( isset( $this->propix[$propName] )) ? $this->propix[$propName] + 2 : 1;
+        $propix  = ( isset( $this->propix[$propName] )) ? $this->propix[$propName] + 2 : 1;
       $this->propix[$propName] = --$propix;
     }
+    else
+      $mProps    = array( 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'RELATED-TO', 'RESOURCES' );
     switch( $propName ) {
       case 'ATTENDEE':
       case 'CATEGORIES':
+      case 'CONTACT':
       case 'DTSTART':
+      case 'GEOLOCATION':
       case 'LOCATION':
       case 'ORGANIZER':
       case 'PRIORITY':
@@ -434,13 +433,15 @@ class vcalendar {
       case 'STATUS':
       case 'SUMMARY':
       case 'RECURRENCE-ID-UID':
+      case 'RELATED-TO':
       case 'R-UID':
       case 'UID':
-        $output = array();
+      case 'URL':
+        $output  = array();
         foreach ( $this->components as $cix => $component) {
           if( !in_array( $component->objName, array('vevent', 'vtodo', 'vjournal', 'vfreebusy' )))
             continue;
-          if(( 'ATTENDEE' == $propName ) || ( 'CATEGORIES' == $propName ) || ( 'RESOURCES' == $propName )) {
+          if( in_array( strtoupper( $propName ), $mProps )) {
             $component->_getProperties( $propName, $output );
             continue;
           }
@@ -448,9 +449,26 @@ class vcalendar {
             if( FALSE !== ( $content = $component->getProperty( 'RECURRENCE-ID' )))
               $content = $component->getProperty( 'UID' );
           }
+          elseif( 'GEOLOCATION' == $propName ) {
+            $content = $component->getProperty( 'LOCATION' );
+            $content = ( !empty( $content )) ? $content.' ' : '';
+            if(( FALSE === ( $geo     = $component->getProperty( 'GEO' ))) || empty( $geo ))
+              continue;
+            if( 0.0 < $geo['latitude'] )
+              $sign   = '+';
+            else
+              $sign   = ( 0.0 > $geo['latitude'] ) ? '-' : '';
+            $content .= ' '.$sign.sprintf( "%09.6f", abs( $geo['latitude'] ));
+            $content  = rtrim( rtrim( $content, '0' ), '.' );
+            if( 0.0 < $geo['longitude'] )
+              $sign   = '+';
+            else
+              $sign   = ( 0.0 > $geo['longitude'] ) ? '-' : '';
+            $content .= $sign.sprintf( '%8.6f', abs( $geo['longitude'] )).'/';
+          }
           elseif( FALSE === ( $content = $component->getProperty( $propName )))
             continue;
-          if( FALSE === $content )
+          if(( FALSE === $content ) || empty( $content ))
             continue;
           elseif( is_array( $content )) {
             if( isset( $content['year'] )) {
@@ -478,7 +496,6 @@ class vcalendar {
           ksort( $output );
         return $output;
         break;
-
       case 'CALSCALE':
         return ( !empty( $this->calscale )) ? $this->calscale : FALSE;
         break;
@@ -654,7 +671,7 @@ class vcalendar {
  * general vcalendar config setting
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.11 - 2011-01-16
+ * @since 2.12.12 - 2012-05-13
  * @param mixed  $config
  * @param string $value
  * @return void
@@ -747,10 +764,10 @@ class vcalendar {
         $subcfg  = array( 'FORMAT' => $value );
         $res = TRUE;
         break;
-      case 'LANGUAGE':
-         // set language for calendar component as defined in [RFC 1766]
+      case 'LANGUAGE': // set language for calendar component as defined in [RFC 1766]
         $value   = trim( $value );
         $this->language = $value;
+        $this->_makeProdid();
         $subcfg  = array( 'LANGUAGE' => $value );
         $res = TRUE;
         break;
@@ -865,7 +882,7 @@ class vcalendar {
  * get calendar component from container
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.9.1 - 2011-04-16
+ * @since 2.13.5 - 2012-08-08
  * @param mixed $arg1 optional, ordno/component type/ component uid
  * @param mixed $arg2 optional, ordno if arg1 = component type
  * @return object
@@ -885,7 +902,8 @@ class vcalendar {
       $arg2  = implode( '-', array_keys( $arg1 ));
       $index = $this->compix[$arg2] = ( isset( $this->compix[$arg2] )) ? $this->compix[$arg2] + 1 : 1;
       $dateProps  = array( 'DTSTART', 'DTEND', 'DUE', 'CREATED', 'COMPLETED', 'DTSTAMP', 'LAST-MODIFIED', 'RECURRENCE-ID' );
-      $otherProps = array( 'ATTENDEE', 'CATEGORIES', 'LOCATION', 'ORGANIZER', 'PRIORITY', 'RESOURCES', 'STATUS', 'SUMMARY', 'UID' );
+      $otherProps = array( 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'LOCATION', 'ORGANIZER', 'PRIORITY', 'RELATED-TO', 'RESOURCES', 'STATUS', 'SUMMARY', 'UID', 'URL' );
+      $mProps     = array( 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'RELATED-TO', 'RESOURCES' );
     }
     elseif(( strlen( $arg1 ) <= strlen( 'vfreebusy' )) && ( FALSE === strpos( $arg1, '@' ))) { // object class name
       unset( $this->compix['INDEX'] );
@@ -917,24 +935,24 @@ class vcalendar {
         $cix1gC++;
       }
       elseif( is_array( $arg1 )) { // array( *[propertyName => propertyValue] )
-        $hit = FALSE;
+        $hit = array();
         foreach( $arg1 as $pName => $pValue ) {
           $pName = strtoupper( $pName );
           if( !in_array( $pName, $dateProps ) && !in_array( $pName, $otherProps ))
             continue;
-          if(( 'ATTENDEE' == $pName ) || ( 'CATEGORIES' == $pName ) || ( 'RESOURCES' == $pName )) { // multiple ocurrence may occur
+          if( in_array( $pName, $mProps )) { // multiple occurrence
             $propValues = array();
             $component->_getProperties( $pName, $propValues );
             $propValues = array_keys( $propValues );
-            $hit = ( in_array( $pValue, $propValues )) ? TRUE : FALSE;
+            $hit[] = ( in_array( $pValue, $propValues )) ? TRUE : FALSE;
             continue;
-          } // end   if(( 'CATEGORIES' == $propName ) || ( 'RESOURCES' == $propName )) { // multiple ocurrence may occur
-          if( FALSE === ( $value = $component->getProperty( $pName ))) { // single ocurrency
-            $hit = FALSE; // missing property
+          } // end   if(.. .// multiple occurrence
+          if( FALSE === ( $value = $component->getProperty( $pName ))) { // single occurrence
+            $hit[] = FALSE; // missing property
             continue;
           }
           if( 'SUMMARY' == $pName ) { // exists within (any case)
-            $hit = ( FALSE !== stripos( $d, $pValue )) ? TRUE : FALSE;
+            $hit[] = ( FALSE !== stripos( $value, $pValue )) ? TRUE : FALSE;
             continue;
           }
           if( in_array( strtoupper( $pName ), $dateProps )) {
@@ -948,7 +966,7 @@ class vcalendar {
               else
                 $pValue = substr( $pValue, 0, 8 );
             }
-            $hit = ( $pValue == $valuedate ) ? TRUE : FALSE;
+            $hit[] = ( $pValue == $valuedate ) ? TRUE : FALSE;
             continue;
           }
           elseif( !is_array( $value ))
@@ -957,14 +975,14 @@ class vcalendar {
             $part = ( FALSE !== strpos( $part, ',' )) ? explode( ',', $part ) : array( $part );
             foreach( $part as $subPart ) {
               if( $pValue == $subPart ) {
-                $hit = TRUE;
-                continue 2;
+                $hit[] = TRUE;
+                continue 3;
               }
             }
-          }
-          $hit = FALSE; // no hit in property
+          } // end foreach( $value as $part )
+          $hit[] = FALSE; // no hit in property
         } // end  foreach( $arg1 as $pName => $pValue )
-        if( $hit ) {
+        if( in_array( TRUE, $hit )) {
           if( $index == $cix1gC )
             return $component->copy();
           $cix1gC++;
@@ -1174,7 +1192,7 @@ class vcalendar {
           else
             break;
         } while( TRUE );
-      } // end recurrence-id test
+      } // end recurrence-id/sequence test
             /* select only components with.. . */
       if(( !$any && ( $startWdate >= $startDate ) && ( $startWdate <= $endDate )) || // (dt)start within the period
          (  $any && ( $startWdate < $endDate ) && ( $endWdate >= $startDate ))) {    // occurs within the period
@@ -1396,16 +1414,16 @@ class vcalendar {
     return $result;
   }
 /**
- * select components from calendar on based on Categories, Location, Resources and/or Summary
+ * select components from calendar on based on specific property value(-s)
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.8.8 - 2011-05-03
+ * @since 2.13.4 - 2012-08-07
  * @param array $selectOptions, (string) key => (mixed) value, (key=propertyName)
  * @return array
  */
   function selectComponents2( $selectOptions ) {
     $output = array();
-    $allowedProperties = array( 'ATTENDEE', 'CATEGORIES', 'LOCATION', 'ORGANIZER', 'RESOURCES', 'PRIORITY', 'STATUS', 'SUMMARY', 'UID' );
+    $allowedProperties = array( 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'LOCATION', 'ORGANIZER', 'PRIORITY', 'RELATED-TO', 'RESOURCES', 'STATUS', 'SUMMARY', 'UID', 'URL' );
     foreach( $this->components as $cix => $component3 ) {
       if( !in_array( $component3->objName, array('vevent', 'vtodo', 'vjournal', 'vfreebusy' )))
         continue;
@@ -1420,7 +1438,7 @@ class vcalendar {
           $output[] = $component3->copy();
           continue;
         }
-        elseif(( 'ATTENDEE' == $propName ) || ( 'CATEGORIES' == $propName ) || ( 'RESOURCES' == $propName )) {
+        elseif(( 'ATTENDEE' == $propName ) || ( 'CATEGORIES' == $propName ) || ( 'CONTACT' == $propName ) || ( 'RELATED-TO' == $propName ) || ( 'RESOURCES' == $propName )) { // multiple occurrence?
           $propValues = array();
           $component3->_getProperties( $propName, $propValues );
           $propValues = array_keys( $propValues );
@@ -1431,8 +1449,8 @@ class vcalendar {
             }
           }
           continue;
-        } // end   elseif(( 'ATTENDEE' == $propName ) || ( 'CATEGORIES' == $propName ) || ( 'RESOURCES' == $propName ))
-        elseif( FALSE === ( $d = $component3->getProperty( $propName ))) // single ocurrence
+        } // end   elseif( // multiple occurrence?
+        elseif( FALSE === ( $d = $component3->getProperty( $propName ))) // single occurrence
           continue;
         if( is_array( $d )) {
           foreach( $d as $part ) {
@@ -1521,11 +1539,11 @@ class vcalendar {
  * sort iCal compoments
  *
  * ascending sort on properties (if exist) x-current-dtstart, dtstart,
- * x-current-dtend, dtend, x-current-due, due, duration, created, dtstamp, uid
- * if no arguments, otherwise sorting on argument CATEGORIES, LOCATION, SUMMARY or RESOURCES
+ * x-current-dtend, dtend, x-current-due, due, duration, created, dtstamp, uid if called without arguments, 
+ * otherwise sorting on specific (argument) property values
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.8.4 - 2011-06-02
+ * @since 2.13.4 - 2012-08-07
  * @param string $sortArg, optional
  * @return void
  *
@@ -1534,7 +1552,7 @@ class vcalendar {
     if( is_array( $this->components )) {
       if( $sortArg ) {
         $sortArg = strtoupper( $sortArg );
-        if( !in_array( $sortArg, array( 'ATTENDEE', 'CATEGORIES', 'DTSTAMP', 'LOCATION', 'ORGANIZER', 'RESOURCES', 'PRIORITY', 'STATUS', 'SUMMARY' )))
+        if( !in_array( $sortArg, array( 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'DTSTAMP', 'LOCATION', 'ORGANIZER', 'PRIORITY', 'RELATED-TO', 'RESOURCES', 'STATUS', 'SUMMARY', 'URL' )))
           $sortArg = FALSE;
       }
             /* set sort parameters for each component */
@@ -1546,10 +1564,17 @@ class vcalendar {
           continue;
         }
         elseif( $sortArg ) {
-          if(( 'ATTENDEE' == $sortArg ) || ( 'CATEGORIES' == $sortArg ) || ( 'RESOURCES'  == $sortArg )) {
+          if(( 'ATTENDEE' == $sortArg ) || ( 'CATEGORIES' == $sortArg ) || ( 'CONTACT' == $sortArg ) || ( 'RELATED-TO' == $sortArg ) || ( 'RESOURCES' == $sortArg )) {
             $propValues = array();
             $c->_getProperties( $sortArg, $propValues );
-            $c->srtk[0] = reset( array_keys( $propValues ));
+            if( !empty( $propValues )) {
+              $sk         = array_keys( $propValues );
+              $c->srtk[0] = $sk[0];
+              if( 'RELATED-TO'  == $sortArg )
+                $c->srtk[0] .= $c->getProperty( 'uid' );
+            }
+            elseif( 'RELATED-TO'  == $sortArg )
+              $c->srtk[0] = $c->getProperty( 'uid' );
           }
           elseif( FALSE !== ( $d = $c->getProperty( $sortArg )))
             $c->srtk[0] = $d;
@@ -1600,6 +1625,8 @@ class vcalendar {
       if( is_array( $a->srtk[$k] )) {
         if( is_array( $b->srtk[$k] )) {
           foreach( $sortkeys as $key ) {
+            if    ( !isset( $a->srtk[$k][$key] )) return -1;
+            elseif( !isset( $b->srtk[$k][$key] )) return  1;
             if    (  empty( $a->srtk[$k][$key] )) return -1;
             elseif(  empty( $b->srtk[$k][$key] )) return  1;
             if    (         $a->srtk[$k][$key] == $b->srtk[$k][$key])
@@ -1622,7 +1649,7 @@ class vcalendar {
  * parse iCal text/file into vcalendar, components, properties and parameters
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.10 - 2012-01-31
+ * @since 2.12.17 - 2012-07-12
  * @param mixed $unparsedtext, optional, strict rfc2445 formatted, single property string or array of property strings
  * @return bool FALSE if error occurs during parsing
  *
@@ -1641,65 +1668,80 @@ class vcalendar {
       $rows =  implode( '\n'.$nl, $unparsedtext );
     else
       $rows = & $unparsedtext;
-            /* identify BEGIN:VCALENDAR, MUST be first row */
-    if( 'BEGIN:VCALENDAR' != strtoupper( substr( $rows, 0, 15 )))
-      return FALSE;                   /* err 8 */
             /* fix line folding */
-    $eolchars = array( "\r\n", "\n\r", "\n", "\r" ); // check all line endings
-    $EOLmark = FALSE;
-    foreach( $eolchars as $eolchar ) {
-      if( !$EOLmark  && ( FALSE !== strpos( $rows, $eolchar ))) {
-        $rows = str_replace( $eolchar." ",  '',  $rows );
-        $rows = str_replace( $eolchar."\t", '',  $rows );
-        if( $eolchar != $nl )
-          $rows = str_replace( $eolchar,    $nl, $rows );
-        $EOLmark = TRUE;
-      }
+    $rows = explode( $nl, iCalUtilityFunctions::convEolChar( $rows, $nl ));
+            /* skip leading (empty/invalid) lines */
+    foreach( $rows as $lix => $line ) {
+      if( FALSE !== stripos( $line, 'BEGIN:VCALENDAR' ))
+        break;
+      unset( $rows[$lix] );
     }
-    $rows = explode( $nl, $rows );
-            /* skip trailing empty lines */
-    $lix = count( $rows ) - 1;
-    while( empty( $rows[$lix] ) && ( 0 < $lix ))
-      $lix -= 1;
-            /* identify ending END:VCALENDAR row, MUST be last row */
-    if( 'END:VCALENDAR'   != strtoupper( substr( $rows[$lix], 0, 13 )))
-      return FALSE;                   /* err 9 */
-    if( 3 > count( $rows ))
-      return FALSE;                   /* err 10 */
+    $rcnt = count( $rows );
+    if( 3 > $rcnt )                  /* err 10 */
+      return FALSE;
+            /* skip trailing empty lines and ensure an end row */
+    $lix  = array_keys( $rows );
+    $lix  = end( $lix );
+    while( 3 < $lix ) {
+      $tst = trim( $rows[$lix] );
+      if(( '\n' == $tst ) || empty( $tst )) {
+        unset( $rows[$lix] );
+        $lix--;
+        continue;
+      }
+      if( FALSE === stripos( $rows[$lix], 'END:VCALENDAR' ))
+        $rows[] = 'END:VCALENDAR';
+      break;
+    }
     $comp    = & $this;
-    $calsync = 0;
+    $calsync = $compsync = 0;
             /* identify components and update unparsed data within component */
     $config = $this->getConfig();
-    foreach( $rows as $line ) {
+    $endtxt = array( 'END:VE', 'END:VF', 'END:VJ', 'END:VT' );
+    foreach( $rows as $lix => $line ) {
       if(     'BEGIN:VCALENDAR' == strtoupper( substr( $line, 0, 15 ))) {
         $calsync++;
         continue;
       }
       elseif( 'END:VCALENDAR'   == strtoupper( substr( $line, 0, 13 ))) {
+        if( 0 < $compsync )
+          $this->components[] = $comp->copy();
+        $compsync--;
         $calsync--;
         break;
       }
       elseif( 1 != $calsync )
         return FALSE;                 /* err 20 */
-      elseif( in_array( strtoupper( substr( $line, 0, 6 )), array( 'END:VE', 'END:VF', 'END:VJ', 'END:VT' ))) {
+      elseif( in_array( strtoupper( substr( $line, 0, 6 )), $endtxt )) {
         $this->components[] = $comp->copy();
+        $compsync--;
         continue;
       }
-      if(     'BEGIN:VEVENT'    == strtoupper( substr( $line, 0, 12 )))
+      if(     'BEGIN:VEVENT'    == strtoupper( substr( $line, 0, 12 ))) {
         $comp = new vevent( $config );
-      elseif( 'BEGIN:VFREEBUSY' == strtoupper( substr( $line, 0, 15 )))
+        $compsync++;
+      }
+      elseif( 'BEGIN:VFREEBUSY' == strtoupper( substr( $line, 0, 15 ))) {
         $comp = new vfreebusy( $config );
-      elseif( 'BEGIN:VJOURNAL'  == strtoupper( substr( $line, 0, 14 )))
+        $compsync++;
+      }
+      elseif( 'BEGIN:VJOURNAL'  == strtoupper( substr( $line, 0, 14 ))) {
         $comp = new vjournal( $config );
-      elseif( 'BEGIN:VTODO'     == strtoupper( substr( $line, 0, 11 )))
+        $compsync++;
+      }
+      elseif( 'BEGIN:VTODO'     == strtoupper( substr( $line, 0, 11 ))) {
         $comp = new vtodo( $config );
-      elseif( 'BEGIN:VTIMEZONE' == strtoupper( substr( $line, 0, 15 )))
+        $compsync++;
+      }
+      elseif( 'BEGIN:VTIMEZONE' == strtoupper( substr( $line, 0, 15 ))) {
         $comp = new vtimezone( $config );
+        $compsync++;
+      }
       else { /* update component with unparsed data */
         $comp->unparsed[] = $line;
       }
     } // end foreach( $rows as $line )
-    unset( $config );
+    unset( $config, $endtxt );
             /* parse data for calendar (this) object */
     if( isset( $this->unparsed ) && is_array( $this->unparsed ) && ( 0 < count( $this->unparsed ))) {
             /* concatenate property values spread over several lines */
@@ -1729,14 +1771,16 @@ class vcalendar {
         $line = str_replace( '!"#¤%&/()=? ', '', $line );
         $line = str_replace( '!"#¤%&/()=?', '', $line );
         if( '\n' == substr( $line, -2 ))
-          $line = substr( $line, 0, strlen( $line ) - 2 );
+          $line = substr( $line, 0, -2 );
             /* get property name */
-        $cix = $propname = null;
-        for( $cix=0, $clen = strlen( $line ); $cix < $clen; $cix++ ) {
-          if( in_array( $line[$cix], array( ':', ';' )))
+        $propname  = null;
+        $cix       = 0;
+        while( FALSE !== ( $char = substr( $line, $cix, 1 ))) {
+          if( in_array( $char, array( ':', ';' )))
             break;
           else
-            $propname .= $line[$cix];
+            $propname .= $char;
+          $cix++;
         }
             /* ignore version/prodid properties */
         if( in_array( strtoupper( $propname ), array( 'VERSION', 'PRODID' )))
@@ -1747,7 +1791,8 @@ class vcalendar {
         $attrix       = -1;
         $strlen       = strlen( $line );
         $WithinQuotes = FALSE;
-        for( $cix=0; $cix < $strlen; $cix++ ) {
+        $cix          = 0;
+        while( FALSE !== substr( $line, $cix, 1 )) {
           if(                       ( ':'  == $line[$cix] )                         &&
                                     ( substr( $line,$cix,     3 )  != '://' )       &&
              ( !in_array( strtolower( substr( $line,$cix - 6, 4 )), $paramMStz ))   &&
@@ -1776,6 +1821,7 @@ class vcalendar {
             $attr[++$attrix] = null;
           else
             $attr[$attrix] .= $line[$cix];
+          $cix++;
         }
             /* make attributes in array format */
         $propattr = array();
@@ -1788,16 +1834,16 @@ class vcalendar {
         }
             /* update Property */
         if( FALSE !== strpos( $line, ',' )) {
-          $llen     = strlen( $line );
           $content  = array( 0 => '' );
-          $cix      = 0;
-          for( $lix = 0; $lix < $llen; $lix++ ) {
-            if(( ',' == $line[$lix] ) && ( "\\" != $line[( $lix - 1 )])) {
+          $cix = $lix = 0;
+          while( FALSE !== substr( $line, $lix, 1 )) {
+            if(( 0 < $lix ) && ( ',' == $line[$lix] ) && ( "\\" != $line[( $lix - 1 )])) {
               $cix++;
               $content[$cix] = '';
             }
             else
               $content[$cix] .= $line[$lix];
+            $lix++;
           }
           if( 1 < count( $content )) {
             foreach( $content as $cix => $contentPart )
@@ -2257,7 +2303,7 @@ class calendarComponent {
  * set calendar component property attach
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.17 - 2012-02-03
+ * @since 2.12.18 - 2012-07-13
  * @param string $value
  * @param array $params, optional
  * @param integer $index, optional
@@ -2266,10 +2312,13 @@ class calendarComponent {
   function setAttendee( $value, $params=FALSE, $index=FALSE ) {
     if( empty( $value )) if( $this->getConfig( 'allowEmpty' )) $value = null; else return FALSE;
           // ftp://, http://, mailto:, file://, gopher://, news:, nntp://, telnet://, wais://, prospero://  may exist.. . also in params
-    if( FALSE !== ( $pos = strpos( substr( $value, 0, 9 ), ':' )))
-      $value = strtoupper( substr( $value, 0, $pos )).substr( $value, $pos );
-    elseif( !empty( $value ))
-      $value = 'MAILTO:'.$value;
+    if( !empty( $value )) {
+      if( FALSE === ( $pos = strpos( substr( $value, 0, 9 ), ':' )))
+        $value = 'MAILTO:'.$value;
+      elseif( !empty( $value ))
+        $value = strtolower( substr( $value, 0, $pos )).substr( $value, $pos );
+      $value = str_replace( 'mailto:', 'MAILTO:', $value );
+    }
     $params2 = array();
     if( is_array($params )) {
       $optarrays = array();
@@ -3161,7 +3210,7 @@ class calendarComponent {
  * creates formatted output for calendar component property geo
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.4.8 - 2008-10-21
+ * @since 2.12.6 - 2012-04-21
  * @return string
  */
   function createGeo() {
@@ -3169,27 +3218,36 @@ class calendarComponent {
     if( empty( $this->geo['value'] ))
       return ( $this->getConfig( 'allowEmpty' )) ? $this->_createElement( 'GEO' ) : FALSE;
     $attributes = $this->_createParams( $this->geo['params'] );
-    $content    = null;
-    $content   .= number_format( (float) $this->geo['value']['latitude'], 6, '.', '');
-    $content   .= ';';
-    $content   .= number_format( (float) $this->geo['value']['longitude'], 6, '.', '');
+    if( 0.0 < $this->geo['value']['latitude'] )
+      $sign   = '+';
+    else
+      $sign   = ( 0.0 > $this->geo['value']['latitude'] ) ? '-' : '';
+    $content  = $sign.sprintf( "%09.6f", abs( $this->geo['value']['latitude'] ));       // sprintf && lpad && float && sign !"#¤%&/(
+    $content  = rtrim( rtrim( $content, '0' ), '.' );
+    if( 0.0 < $this->geo['value']['longitude'] )
+      $sign   = '+';
+    else
+      $sign   = ( 0.0 > $this->geo['value']['longitude'] ) ? '-' : '';
+    $content .= ';'.$sign.sprintf( '%8.6f', abs( $this->geo['value']['longitude'] ));   // sprintf && lpad && float && sign !"#¤%&/(
+    $content  = rtrim( rtrim( $content, '0' ), '.' );
     return $this->_createElement( 'GEO', $attributes, $content );
   }
 /**
  * set calendar component property geo
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.4.8 - 2008-11-04
+ * @since 2.12.5 - 2012-04-21
  * @param float $latitude
  * @param float $longitude
  * @param array $params optional
  * @return bool
  */
   function setGeo( $latitude, $longitude, $params=FALSE ) {
-    if( !empty( $latitude ) && !empty( $longitude )) {
+    if(( !empty( $latitude )  || ( 0 == $latitude )) &&
+       ( !empty( $longitude ) || ( 0 == $longitude ))) {
       if( !is_array( $this->geo )) $this->geo = array();
-      $this->geo['value']['latitude']  = $latitude;
-      $this->geo['value']['longitude'] = $longitude;
+      $this->geo['value']['latitude']  = (float) $latitude;
+      $this->geo['value']['longitude'] = (float) $longitude;
       $this->geo['params'] = iCalUtilityFunctions::_setParams( $params );
     }
     elseif( $this->getConfig( 'allowEmpty' ))
@@ -3291,18 +3349,20 @@ class calendarComponent {
  * set calendar component property organizer
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.6.27 - 2010-11-29
+ * @since 2.12.18 - 2012-07-13
  * @param string $value
  * @param array params optional
  * @return bool
  */
   function setOrganizer( $value, $params=FALSE ) {
     if( empty( $value )) if( $this->getConfig( 'allowEmpty' )) $value = null; else return FALSE;
-    if( FALSE === ( $pos = strpos( substr( $value, 0, 9 ), ':' )))
-      $value = 'MAILTO:'.$value;
-    else
-      $value = strtolower( substr( $value, 0, $pos )).substr( $value, $pos );
-    $value = str_replace( 'mailto:', 'MAILTO:', $value );
+    if( !empty( $value )) {
+      if( FALSE === ( $pos = strpos( substr( $value, 0, 9 ), ':' )))
+        $value = 'MAILTO:'.$value;
+      elseif( !empty( $value ))
+        $value = strtolower( substr( $value, 0, $pos )).substr( $value, $pos );
+      $value = str_replace( 'mailto:', 'MAILTO:', $value );
+    }
     $this->organizer = array( 'value' => $value, 'params' => iCalUtilityFunctions::_setParams( $params ));
     if( isset( $this->organizer['params']['SENT-BY'] )){
       if( 'mailto:' !== strtolower( substr( $this->organizer['params']['SENT-BY'], 0, 7 )))
@@ -5260,7 +5320,7 @@ class calendarComponent {
  * if property has multiply values, consequtive function calls are needed
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.3 - 2012-01-10
+ * @since 2.12.4 - 2012-04-22
  * @param string $propName, optional
  * @param int @propix, optional, if specific property is wanted in case of multiply occurences
  * @param bool $inclParam=FALSE
@@ -5268,6 +5328,23 @@ class calendarComponent {
  * @return mixed
  */
   function getProperty( $propName=FALSE, $propix=FALSE, $inclParam=FALSE, $specform=FALSE ) {
+    if( 'GEOLOCATION' == strtoupper( $propName )) {
+      $content = $this->getProperty( 'LOCATION' );
+      $content = ( !empty( $content )) ? $content.' ' : '';
+      if(( FALSE === ( $geo     = $this->getProperty( 'GEO' ))) || empty( $geo ))
+        return FALSE;
+      if( 0.0 < $geo['latitude'] )
+        $sign   = '+';
+      else
+        $sign   = ( 0.0 > $geo['latitude'] ) ? '-' : '';
+      $content .= $sign.sprintf( "%09.6f", abs( $geo['latitude'] ));   // sprintf && lpad && float && sign !"#¤%&/(
+      $content  = rtrim( rtrim( $content, '0' ), '.' );
+      if( 0.0 < $geo['longitude'] )
+        $sign   = '+';
+      else
+       $sign   = ( 0.0 > $geo['longitude'] ) ? '-' : '';
+      return $content.$sign.sprintf( '%8.6f', abs( $geo['longitude'] )).'/';   // sprintf && lpad && float && sign !"#¤%&/(
+    }
     if( $this->_notExistProp( $propName )) return FALSE;
     $propName = ( $propName ) ? strtoupper( $propName ) : 'X-PROP';
     if( in_array( $propName, array( 'ATTACH',   'ATTENDEE', 'CATEGORIES', 'COMMENT',   'CONTACT', 'DESCRIPTION',    'EXDATE', 'EXRULE',
@@ -5513,17 +5590,21 @@ class calendarComponent {
     return FALSE;
   }
 /**
- * returns calendar property unique values for 'CATEGORIES', 'RESOURCES' or 'ATTENDEE' and each number of ocurrence
+ * returns calendar property unique values for 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'RELATED-TO' or 'RESOURCES' and for each, number of occurrence
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.8.8 - 2011-04-13
+ * @since 2.13.4 - 2012-08-07
  * @param string $propName
  * @param array  $output, incremented result array
  */
   function _getProperties( $propName, & $output ) {
-    if( !in_array( strtoupper( $propName ), array( 'ATTENDEE', 'CATEGORIES', 'RESOURCES' )))
-      return output;
+    if( empty( $output ))
+      $output = array();
+    if( !in_array( strtoupper( $propName ), array( 'ATTENDEE', 'CATEGORIES', 'CONTACT', 'RELATED-TO', 'RESOURCES' )))
+      return $output;
     while( FALSE !== ( $content = $this->getProperty( $propName ))) {
+      if( empty( $content ))
+        continue;
       if( is_array( $content )) {
         foreach( $content as $part ) {
           if( FALSE !== strpos( $part, ',' )) {
@@ -5546,7 +5627,7 @@ class calendarComponent {
               $output[$part] += 1;
           }
         }
-      }
+      } // end if( is_array( $content ))
       elseif( FALSE !== strpos( $content, ',' )) {
         $content = explode( ',', $content );
         foreach( $content as $thePart ) {
@@ -5558,7 +5639,7 @@ class calendarComponent {
               $output[$thePart] += 1;
           }
         }
-      }
+      } // end elseif( FALSE !== strpos( $content, ',' ))
       else {
         $content = trim( $content );
         if( !empty( $content )) {
@@ -5570,7 +5651,6 @@ class calendarComponent {
       }
     }
     ksort( $output );
-    return $output;
   }
 /**
  * general component property setting
@@ -5691,7 +5771,7 @@ class calendarComponent {
  * parse component unparsed data into properties
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.17 - 2012-02-03
+ * @since 2.12.17 - 2012-07-15
  * @param mixed $unparsedtext, optional, strict rfc2445 formatted, single property string or array of strings
  * @return bool FALSE if error occurs during parsing
  *
@@ -5701,49 +5781,66 @@ class calendarComponent {
       $nl = $this->getConfig( 'nl' );
       if( is_array( $unparsedtext ))
         $unparsedtext = implode( '\n'.$nl, $unparsedtext );
-            /* fix line folding */
-      $eolchars = array( "\r\n", "\n\r", "\n", "\r" ); // check all line endings
-      $EOLmark = FALSE;
-      foreach( $eolchars as $eolchar ) {
-        if( !$EOLmark  && ( FALSE !== strpos( $unparsedtext, $eolchar ))) {
-          $unparsedtext = str_replace( $eolchar." ",  '',  $unparsedtext );
-          $unparsedtext = str_replace( $eolchar."\t", '',  $unparsedtext );
-          if( $eolchar != $nl )
-            $unparsedtext = str_replace( $eolchar,    $nl, $unparsedtext );
-          $EOLmark = TRUE;
-        }
-      }
-      $tmp = explode( $nl, $unparsedtext );
-      $unparsedtext = array();
-      foreach( $tmp as $tmpr )
-        if( !empty( $tmpr ))
-          $unparsedtext[] = $tmpr;
+      $unparsedtext = explode( $nl, iCalUtilityFunctions::convEolChar( $unparsedtext, $nl ));
     }
     elseif( !isset( $this->unparsed ))
       $unparsedtext = array();
     else
       $unparsedtext = $this->unparsed;
-    $this->unparsed = array();
-    $comp = & $this;
-    $config = $this->getConfig();
-    foreach ( $unparsedtext as $line ) {
-      if( in_array( strtoupper( substr( $line, 0, 6 )), array( 'END:VA', 'END:DA' )))
-        $this->components[] = $comp->copy();
-      elseif( 'END:ST' == strtoupper( substr( $line, 0, 6 )))
-        array_unshift( $this->components, $comp->copy());
-      elseif( 'END:' == strtoupper( substr( $line, 0, 4 )))
-        break;
-      elseif( 'BEGIN:VALARM'   == strtoupper( substr( $line, 0, 12 )))
-        $comp = new valarm( $config);
-      elseif( 'BEGIN:STANDARD' == strtoupper( substr( $line, 0, 14 )))
-        $comp = new vtimezone( 'standard', $config );
-      elseif( 'BEGIN:DAYLIGHT' == strtoupper( substr( $line, 0, 14 )))
-        $comp = new vtimezone( 'daylight', $config );
-      elseif( 'BEGIN:'         == strtoupper( substr( $line, 0, 6 )))
-        continue;
+            /* skip leading (empty/invalid) lines */
+    foreach( $unparsedtext as $lix => $line ) {
+      $tst = trim( $line );
+      if(( '\n' == $tst ) || empty( $tst ))
+        unset( $unparsedtext[$lix] );
       else
-        $comp->unparsed[] = $line;
+        break;
     }
+    $this->unparsed = array();
+    $comp           = & $this;
+    $config         = $this->getConfig();
+    $compsync = $subsync = 0;
+    foreach ( $unparsedtext as $lix => $line ) {
+      if( 'END:VALARM'         == strtoupper( substr( $line, 0, 10 ))) {
+        if( 1 != $subsync ) return FALSE;
+        $this->components[]     = $comp->copy();
+        $subsync--;
+      }
+      elseif( 'END:DAYLIGHT'   == strtoupper( substr( $line, 0, 12 ))) {
+        if( 1 != $subsync ) return FALSE;
+        $this->components[]     = $comp->copy();
+        $subsync--;
+      }
+      elseif( 'END:STANDARD'   == strtoupper( substr( $line, 0, 12 ))) {
+        if( 1 != $subsync ) return FALSE;
+        array_unshift( $this->components, $comp->copy());
+        $subsync--;
+      }
+      elseif( 'END:'           == strtoupper( substr( $line, 0, 4 ))) { // end:<component>
+        if( 1 != $compsync ) return FALSE;
+        if( 0 < $subsync )
+          $this->components[]   = $comp->copy();
+        $compsync--;
+        break;                       /* skip trailing empty lines */
+      }
+      elseif( 'BEGIN:VALARM'   == strtoupper( substr( $line, 0, 12 ))) {
+        $comp = new valarm( $config);
+        $subsync++;
+      }
+      elseif( 'BEGIN:STANDARD' == strtoupper( substr( $line, 0, 14 ))) {
+        $comp = new vtimezone( 'standard', $config );
+        $subsync++;
+      }
+      elseif( 'BEGIN:DAYLIGHT' == strtoupper( substr( $line, 0, 14 ))) {
+        $comp = new vtimezone( 'daylight', $config );
+        $subsync++;
+      }
+      elseif( 'BEGIN:'         == strtoupper( substr( $line, 0, 6 )))  // begin:<component>
+        $compsync++;
+      else
+        $comp->unparsed[]       = $line;
+    }
+    if( 0 < $subsync )
+      $this->components[]   = $comp->copy();
     unset( $config );
             /* concatenate property values spread over several lines */
     $lastix    = -1;
@@ -5780,14 +5877,16 @@ class calendarComponent {
       $line = str_replace( '!"#¤%&/()=? ', '', $line );
       $line = str_replace( '!"#¤%&/()=?', '', $line );
       if( '\n' == substr( $line, -2 ))
-        $line = substr( $line, 0, strlen( $line ) - 2 );
+        $line = substr( $line, 0, -2 );
             /* get propname, (problem with x-properties, otherwise in previous loop) */
-      $cix = $propname = null;
-      for( $cix=0, $clen = strlen( $line ); $cix < $clen; $cix++ ) {
+      $propname = null;
+      $cix = 0;
+      while( isset( $line[$cix] )) {
         if( in_array( $line[$cix], array( ':', ';' )))
           break;
         else
           $propname .= $line[$cix];
+        $cix++;
       }
       if(( 'x-' == substr( $propname, 0, 2 )) || ( 'X-' == substr( $propname, 0, 2 ))) {
         $propname2 = $propname;
@@ -5800,7 +5899,8 @@ class calendarComponent {
       $attrix       = -1;
       $clen         = strlen( $line );
       $WithinQuotes = FALSE;
-      for( $cix=0; $cix < $clen; $cix++ ) {
+      $cix          = 0;
+      while( FALSE !== substr( $line, $cix, 1 )) {
         if(                       (  ':' == $line[$cix] )                         &&
                                   ( substr( $line,$cix,     3 )  != '://' )       &&
            ( !in_array( strtolower( substr( $line,$cix - 6, 4 )), $paramMStz ))   &&
@@ -5822,6 +5922,7 @@ class calendarComponent {
             $line = substr( $line, ( $cix + 1 ));
             break;
           }
+          $cix++;
         }
         if( '"' == $line[$cix] )
           $WithinQuotes = ( FALSE === $WithinQuotes ) ? TRUE : FALSE;
@@ -5829,6 +5930,7 @@ class calendarComponent {
           $attr[++$attrix] = null;
         else
           $attr[$attrix] .= $line[$cix];
+        $cix++;
       }
             /* make attributes in array format */
       $propattr = array();
@@ -5857,16 +5959,16 @@ class calendarComponent {
         case 'CATEGORIES':
         case 'RESOURCES':
           if( FALSE !== strpos( $line, ',' )) {
-            $llen     = strlen( $line );
             $content  = array( 0 => '' );
-            $cix      = 0;
-            for( $lix = 0; $lix < $llen; $lix++ ) {
+            $cix = $lix = 0;
+            while( FALSE !== substr( $line, $lix, 1 )) {
               if(( ',' == $line[$lix] ) && ( "\\" != $line[( $lix - 1 )])) {
                 $cix++;
                 $content[$cix] = '';
               }
               else
                 $content[$cix] .= $line[$lix];
+              $lix++;
             }
             if( 1 < count( $content )) {
               $content = array_values( $content );
@@ -6283,88 +6385,86 @@ class calendarComponent {
  * Edited 2007-08-26 by Anders Litzell, anders@litzell.se to fix bug where
  * the reserved expression "\n" in the arg $string could be broken up by the
  * folding of lines, causing ambiguity in the return string.
- * Fix uses var $breakAtChar=75 and breaks the line at $breakAtChar-1 if need be.
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.13 - 2012-02-14
+ * @since 2.12.17 - 2012-07-15
  * @param string $value
  * @return string
  */
   function _size75( $string ) {
-    $tmp        = $string;
-    $string     = '';
-    $eolcharlen = strlen( '\n' );
-            /* if PHP is config with  mb_string and conf overload.. . */
-    if( defined( 'MB_OVERLOAD_STRING' ) && ( 1 < ini_get( 'mbstring.func_overload' ))) {
-      $strlen  = mb_strlen( $tmp );
-      while( $strlen > 75 ) {
-        if( '\n' == mb_substr( $tmp, 75, $eolcharlen ))
-          $breakAtChar = 74;
-        else
-          $breakAtChar = 75;
-        $string .= mb_substr( $tmp, 0, $breakAtChar );
-        if( $this->nl != mb_substr( $string, ( 0 - mb_strlen( $this->nl ))))
-          $string .= $this->nl;
-        $tmp     = mb_substr( $tmp, $breakAtChar );
-        if( !empty( $tmp ))
-          $tmp   = ' '.$tmp;
-        $strlen  = mb_strlen( $tmp );
-      } // end while
-      if( 0 < $strlen ) {
-        $string .= $tmp; // the rest
-        if( $this->nl != mb_substr( $string, ( 0 - mb_strlen( $this->nl ))))
-          $string .= $this->nl;
-      }
-      return $string;
-    }
-            /* if PHP is not config with  mb_string.. . */
+    $tmp             = $string;
+    $string          = '';
+    $cCnt = $x       = 0;
     while( TRUE ) {
-      $bytecnt = strlen( $tmp );
-      $charCnt = $ix = 0;
-      for( $ix = 0; $ix < $bytecnt; $ix++ ) {
-        if(( 73 < $charCnt ) && ( '\n' == substr( $tmp, $ix, $eolcharlen )))
-          break;                                    // break before '\n'
-        elseif( 74 < $charCnt ) {
-          if( '\n' == substr( $tmp, $ix, $eolcharlen ))
-            $ix -= 1;                               // don't break inside '\n'
-          break;                                    // always break while-loop here
+      if( !isset( $tmp[$x] )) {
+        $string     .= $this->nl;                     // loop breakes here
+        break;
+      }
+      elseif(( 74   <= $cCnt ) && ( '\\'  == $tmp[$x] ) && ( 'n' == $tmp[$x+1] )) {
+        $string     .= $this->nl.' \n';               // don't break lines inside '\n'
+        $x          += 2;
+        if( !isset( $tmp[$x] )) {
+          $string   .= $this->nl;
+          break;
         }
-        else {
-          $byte = ord( $tmp[$ix] );
-          if ($byte <= 127) {                       // add a one byte character
-            $string .= substr( $tmp, $ix, 1 );
-            $charCnt += 1;
+        $cCnt        = 3;
+      }
+      elseif( 75    <= $cCnt ) {
+        $string     .= $this->nl.' ';
+        $cCnt        = 1;
+      }
+      $byte          = ord( $tmp[$x] );
+      $string       .= $tmp[$x];
+      switch( TRUE ) { // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
+        case(( $byte >= 0x20 ) && ( $byte <= 0x7F )): // characters U-00000000 - U-0000007F (same as ASCII)
+          $cCnt     += 1;
+          break;                                      // add a one byte character
+        case(( $byte & 0xE0) == 0xC0 ):               // characters U-00000080 - U-000007FF, mask 110XXXXX
+          if( isset( $tmp[$x+1] )) {
+            $cCnt   += 1;
+            $string  .= $tmp[$x+1];
+            $x       += 1;                            // add a two bytes character
           }
-          else if ($byte >= 194 && $byte <= 223) {  // start byte in two byte character
-            $string .= substr( $tmp, $ix, 2 );      // add a two bytes character
-            $charCnt += 1;
+          break;
+        case(( $byte & 0xF0 ) == 0xE0 ):              // characters U-00000800 - U-0000FFFF, mask 1110XXXX
+          if( isset( $tmp[$x+2] )) {
+            $cCnt   += 1;
+            $string .= $tmp[$x+1].$tmp[$x+2];
+            $x      += 2;                             // add a three bytes character
           }
-          else if ($byte >= 224 && $byte <= 239) {  // start byte in three bytes character
-            $string .= substr( $tmp, $ix, 3 );      // add a three bytes character
-            $charCnt += 1;
+          break;
+        case(( $byte & 0xF8 ) == 0xF0 ):              // characters U-00010000 - U-001FFFFF, mask 11110XXX
+          if( isset( $tmp[$x+3] )) {
+            $cCnt   += 1;
+            $string .= $tmp[$x+1].$tmp[$x+2].$tmp[$x+3];
+            $x      += 3;                             // add a four bytes character
           }
-          else if ($byte >= 240 && $byte <= 244) {  // start byte in four bytes character
-            $string .= substr( $tmp, $ix, 4 );      // add a four bytes character
-            $charCnt += 1;
+          break;
+        case(( $byte & 0xFC ) == 0xF8 ):              // characters U-00200000 - U-03FFFFFF, mask 111110XX
+          if( isset( $tmp[$x+4] )) {
+            $cCnt   += 1;
+            $string .= $tmp[$x+1].$tmp[$x+2].$tmp[$x+3].$tmp[$x+4];
+            $x      += 4;                             // add a five bytes character
           }
-        }
-      } // end for
-      if( $this->nl != substr( $string, ( 0 - strlen( $this->nl ))))
-        $string .= $this->nl;
-      if( FALSE === ( $tmp = substr( $tmp, $ix )))
-        break; // while-loop breakes here
-      else
-        $tmp  = ' '.$tmp;
-    } // end while
-    if( '\n'.$this->nl == substr( $string, ( 0 - strlen( '\n'.$this->nl ))))
-      $string = substr( $string, 0, ( strlen( $string ) - strlen( '\n'.$this->nl ))).$this->nl;
+          break;
+        case(( $byte & 0xFE ) == 0xFC ):              // characters U-04000000 - U-7FFFFFFF, mask 1111110X
+          if( isset( $tmp[$x+5] )) {
+            $cCnt   += 1;
+            $string .= $tmp[$x+1].$tmp[$x+2].$tmp[$x+3].$tmp[$x+4].$tmp[$x+5];
+            $x      += 5;                             // add a six bytes character
+          }
+        default:                                      // add any other byte without counting up $cCnt
+          break;
+      } // end switch( TRUE )
+      $x         += 1;                                // next 'byte' to test
+    } // end while( TRUE ) {
     return $string;
   }
 /**
  * special characters management output
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.6.15 - 2010-09-24
+ * @since 2.12.16 - 2012-07-16
  * @param string $string
  * @return string
  */
@@ -6377,9 +6477,8 @@ class calendarComponent {
       default:
         $pos = 0;
         $specChars = array( 'n', 'N', 'r', ',', ';' );
-        while( $pos <= strlen( $string )) {
-          $pos = strpos( $string, "\\", $pos );
-          if( FALSE === $pos )
+        while( isset( $string[$pos] )) {
+          if( FALSE === ( $pos = strpos( $string, "\\", $pos )))
             break;
           if( !in_array( substr( $string, $pos, 1 ), $specChars )) {
             $string = substr( $string, 0, $pos )."\\".substr( $string, ( $pos + 1 ));
@@ -6393,15 +6492,12 @@ class calendarComponent {
           $string = str_replace(',',   '\,',      $string);
         if( FALSE !== strpos( $string, ';' ))
           $string = str_replace(';',   '\;',      $string);
-
         if( FALSE !== strpos( $string, "\r\n" ))
           $string = str_replace( "\r\n", '\n',    $string);
         elseif( FALSE !== strpos( $string, "\r" ))
           $string = str_replace( "\r", '\n',      $string);
-
         elseif( FALSE !== strpos( $string, "\n" ))
           $string = str_replace( "\n", '\n',      $string);
-
         if( FALSE !== strpos( $string, '\N' ))
           $string = str_replace( '\N', '\n',      $string);
 //        if( FALSE !== strpos( $string, $this->nl ))
@@ -7182,6 +7278,41 @@ class iCalUtilityFunctions {
     }
   }
 /**
+ * byte oriented line folding fix
+ *
+ * remove any line-endings that include spaces or tabs
+ * and convert all line endings to $nl value (that defaults to \r\n)
+ * takes care of '\r\n', '\r' and '\n' and mixed '\r\n'+'\r', '\r\n'+'\n'
+ *
+ * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @since 2.12.17 - 2012-07-12
+ * @param string $text
+ * @param string $nl
+ * @return string
+ */
+  public static function convEolChar( & $text, $nl ) {
+    $outp = '';
+    $cix  = 0;
+    while(    isset(   $text[$cix] )) {
+      if(     isset(   $text[$cix + 2] ) &&  ( "\r" == $text[$cix] ) && ( "\n" == $text[$cix + 1] ) &&
+        ((    " " ==   $text[$cix + 2] ) ||  ( "\t" == $text[$cix + 2] )))                    // 2 pos eolchar + ' ' or '\t'
+        $cix  += 2;                                                                           // skip 3
+      elseif( isset(   $text[$cix + 1] ) &&  ( "\r" == $text[$cix] ) && ( "\n" == $text[$cix + 1] )) {
+        $outp .= $nl;                                                                         // 2 pos eolchar
+        $cix  += 1;                                                                           // replace with $nl
+      }
+      elseif( isset(   $text[$cix + 1] ) && (( "\r" == $text[$cix] ) || ( "\n" == $text[$cix] )) &&
+           (( " " ==   $text[$cix + 1] ) ||  ( "\t" == $text[$cix + 1] )))                     // 1 pos eolchar + ' ' or '\t'
+        $cix  += 1;                                                                            // skip 2
+      elseif(( "\r" == $text[$cix] )     ||  ( "\n" == $text[$cix] ))                          // 1 pos eolchar
+        $outp .= $nl;                                                                          // replace with $nl
+      else
+        $outp .= $text[$cix];                                                                  // add any other byte
+      $cix    += 1;
+    }
+    return $outp;
+  }
+/**
  * create timezone and standard/daylight components
  *
  * Result when 'Europe/Stockholm' and no from/to arguments is used as timezone:
@@ -7203,8 +7334,9 @@ class iCalUtilityFunctions {
  * END:VTIMEZONE
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.8 - 2012-02-06
+ * @since 2.13.2 - 2012-07-28
  * Generates components for all transitions in a date range, based on contribution by Yitzchok Lavi <icalcreator@onebigsystem.com>
+ * Additional changes jpirkey
  * @param object $calendar, reference to an iCalcreator calendar instance
  * @param string $timezone, a PHP5 (DateTimeZone) valid timezone
  * @param array  $xProp,    *[x-propName => x-propValue], optional
@@ -7213,7 +7345,7 @@ class iCalUtilityFunctions {
  * @return bool
  */
   public static function createTimezone( & $calendar, $timezone, $xProp=array(), $from=null, $to=null ) {
-    if( !class_exists( 'DateTimeZone' ))
+    if( substr( phpversion(), 0, 3 ) < '5.2' )
       return FALSE;
     if( empty( $timezone ))
       return FALSE;
@@ -7252,11 +7384,14 @@ class iCalUtilityFunctions {
     $transTemp           = array();
     $prevOffsetfrom      = $stdCnt = $dlghtCnt = 0;
     $stdIx  = $dlghtIx   = null;
-    $date = new DateTime( 'now', $utcTz );
+    $date                = new DateTime( 'now', $utcTz );
+    $prevTrans           = FALSE;
     foreach( $transitions as $tix => $trans ) {                  // all transitions in date-time order!!
       $date->setTimestamp( $trans['ts'] );                       // set transition date (UTC)
       if ( $date < $dateFrom ) {
         $prevOffsetfrom  = $trans['offset'];                     // previous trans offset will be 'next' trans offsetFrom
+        $prevTrans       = $trans;                               // save it in case we don't find any that match
+        $prevTrans['offsetfrom'] = ( 0 < $tix ) ? $transitions[$tix-1]['offset'] : 0;
         continue;
       }
       if( $date > $dateTo )
@@ -7269,7 +7404,7 @@ class iCalUtilityFunctions {
                               , 'day'   => $date->format( 'j' )
                               , 'hour'  => $date->format( 'G' )
                               , 'min'   => $date->format( 'i' )
-                              , 'sec'   => $date->format( 's' )); 
+                              , 'sec'   => $date->format( 's' ));
       }
       $prevOffsetfrom    = $trans['offset'];
       $trans['prevYear'] = $trans['time']['year'];
@@ -7308,9 +7443,6 @@ class iCalUtilityFunctions {
       } // end if( empty( $to ) && ( $transCnt == count( $transTemp )))
       $transTemp[$tix]   = $trans;
     } // end foreach( $transitions as $tix => $trans )
-    unset( $transitions );
-    if( empty( $transTemp ))
-      return FALSE;
     $tz  = & $calendar->newComponent( 'vtimezone' );
     $tz->setproperty( 'tzid', $timezone );
     if( !empty( $xProp )) {
@@ -7318,6 +7450,27 @@ class iCalUtilityFunctions {
         if( 'x-' == strtolower( substr( $xPropName, 0, 2 )))
           $tz->setproperty( $xPropName, $xPropValue );
     }
+    if( empty( $transTemp )) {      // if no match found
+      if( $prevTrans ) {            // then we use the last transition (before startdate) for the tz info
+        $date->setTimestamp( $prevTrans['ts'] );                 // set transition date (UTC)
+        $date->modify( $prevTrans['offsetfrom'].'seconds' );     // convert utc date to local date
+        $prevTrans['time'] = array( 'year'  => $date->format( 'Y' ) // set dtstart to array to ease up dtstart setting
+                                  , 'month' => $date->format( 'n' )
+                                  , 'day'   => $date->format( 'j' )
+                                  , 'hour'  => $date->format( 'G' )
+                                  , 'min'   => $date->format( 'i' )
+                                  , 'sec'   => $date->format( 's' ));
+        $transTemp[0] = $prevTrans;
+      }
+      else {                        // or we use the timezone identifier to BUILD the standard tz info (?)
+        $date         = new DateTime( $timezone );
+        $transTemp[0] = array( 'time'       => $date->format( 'Y-m-d\TH:i:sO' )
+                             , 'offset'     => $date->format( 'Z' )
+                             , 'offsetfrom' => $date->format( 'Z' )
+                             , 'isdst'      => false );
+      }
+    }
+    unset( $transitions, $date, $prevTrans );
     foreach( $transTemp as $trans ) {
       $type  = ( TRUE !== $trans['isdst'] ) ? 'standard' : 'daylight';
       $scomp = & $tz->newComponent( $type );
@@ -7325,7 +7478,8 @@ class iCalUtilityFunctions {
 //      $scomp->setProperty( 'x-utc-timestamp', $trans['ts'] );   // test ###
       if( !empty( $trans['abbr'] ))
         $scomp->setProperty( 'tzname',        $trans['abbr'] );
-      $scomp->setProperty( 'tzoffsetfrom',    iCalUtilityFunctions::offsetSec2His( $trans['offsetfrom'] ));
+      if( isset( $trans['offsetfrom'] ))
+        $scomp->setProperty( 'tzoffsetfrom',  iCalUtilityFunctions::offsetSec2His( $trans['offsetfrom'] ));
       $scomp->setProperty( 'tzoffsetto',      iCalUtilityFunctions::offsetSec2His( $trans['offset'] ));
       if( isset( $trans['rdate'] ))
         $scomp->setProperty( 'RDATE',         $trans['rdate'] );
@@ -7843,12 +7997,12 @@ class iCalUtilityFunctions {
  * matching (MS) UCT offset and time zone descriptors
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.10.29 - 2012-01-11
+ * @since 2.12.1 - 2012-04-06
  * @param string $timezone, input/output variable reference
  * @return bool
  */
   public static function ms2phpTZ( & $timezone ) {
-    if( !class_exists( 'DateTimeZone' ))
+    if( substr( phpversion(), 0, 3 ) < '5.2' )
       return FALSE;
     if( empty( $timezone ))
       return FALSE;
@@ -8813,7 +8967,7 @@ class iCalUtilityFunctions {
  * transforms a dateTime from a timezone to another using PHP DateTime and DateTimeZone class (PHP >= PHP 5.2.0)
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.14 - 2012-01-24
+ * @since 2.12.1 - 2012-04-1
  * @param mixed  $date,   date to alter
  * @param string $tzFrom, PHP valid old timezone
  * @param string $tzTo,   PHP valid new timezone, default 'UTC'
@@ -8821,7 +8975,7 @@ class iCalUtilityFunctions {
  * @return bool
  */
   public static function transformDateTime( & $date, $tzFrom, $tzTo='UTC', $format = 'Ymd\THis' ) {
-    if( !class_exists( 'DateTime' ) || !class_exists( 'DateTimeZone' ))
+    if( substr( phpversion(), 0, 3 ) < '5.2' )
       return FALSE;
     if( is_array( $date ) && isset( $date['timestamp'] ))
        $timestamp = $date['timestamp'];
@@ -8871,13 +9025,150 @@ class iCalUtilityFunctions {
   }
 }
 /*********************************************************************************/
+/*          iCalcreator vCard helper functions                                   */
+/*********************************************************************************/
+/**
+ * convert single ATTENDEE, CONTACT or ORGANIZER (in email format) to vCard
+ * returns vCard/TRUE or if directory (if set) or file write is unvalid, FALSE
+ *
+ * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @since 2.12.2 - 2012-07-11
+ * @param object $email
+ * $param string $version, vCard version (default 2.1)
+ * $param string $directory, where to save vCards (default FALSE)
+ * $param string $ext, vCard file extension (default 'vcf')
+ * @return mixed
+ */
+function iCal2vCard( $email, $version='2.1', $directory=FALSE, $ext='vcf' ) {
+  if( FALSE === ( $pos = strpos( $email, '@' )))
+    return FALSE;
+  if( $directory ) {
+    if( DIRECTORY_SEPARATOR != substr( $directory, ( 0 - strlen( DIRECTORY_SEPARATOR ))))
+      $directory .= DIRECTORY_SEPARATOR;
+    if( !is_dir( $directory ) || !is_writable( $directory ))
+      return FALSE;
+  }
+            /* prepare vCard */
+  $email  = str_replace( 'MAILTO:', '', $email );
+  $name   = $person = substr( $email, 0, $pos );
+  if( ctype_upper( $name ) || ctype_lower( $name ))
+    $name = array( $name );
+  else {
+    if( FALSE !== ( $pos = strpos( $name, '.' ))) {
+      $name = explode( '.', $name );
+      foreach( $name as $k => $part )
+        $name[$k] = ucfirst( $part );
+    }
+    else { // split camelCase
+      $chars = $name;
+      $name  = array( $chars[0] );
+      $k     = 0;
+      $x     = 1;
+      while( FALSE !== ( $char = substr( $chars, $x, 1 ))) {
+        if( ctype_upper( $char )) {
+          $k += 1;
+          $name[$k] = '';
+        }
+        $name[$k]  .= $char;
+        $x++;
+      }
+    }
+  }
+  $nl     = "\r\n";
+  $FN     = 'FN:'.implode( ' ', $name ).$nl;
+  $name   = array_reverse( $name );
+  $N      = 'N:'.array_shift( $name );
+  $scCnt  = 0;
+  while( NULL != ( $part = array_shift( $name ))) {
+    if(( '4.0' != $version ) || ( 4 > $scCnt ))
+      $scCnt += 1;
+    $N   .= ';'.$part;
+  }
+  while(( '4.0' == $version ) && ( 4 > $scCnt )) {
+    $N   .= ';';
+    $scCnt += 1;
+  }
+  $N     .= $nl;
+  $EMAIL  = 'EMAIL:'.$email.$nl;
+           /* create vCard */
+  $vCard  = 'BEGIN:VCARD'.$nl;
+  $vCard .= "VERSION:$version$nl";
+  $vCard .= 'PRODID:-//kigkonsult.se '.ICALCREATOR_VERSION."//$nl";
+  $vCard .= $N;
+  $vCard .= $FN;
+  $vCard .= $EMAIL;
+  $vCard .= 'REV:'.gmdate( 'Ymd\THis\Z' ).$nl;
+  $vCard .= 'END:VCARD'.$nl;
+            /* save each vCard as (unique) single file */
+  if( $directory ) {
+    $fname = $directory.preg_replace( '/[^a-z0-9.]/i', '', $email );
+    $cnt   = 1;
+    $dbl   = '';
+    while( is_file ( $fname.$dbl.'.'.$ext )) {
+      $cnt += 1;
+      $dbl = "_$cnt";
+    }
+    if( FALSE === file_put_contents( $fname, $fname.$dbl.'.'.$ext ))
+      return FALSE;
+    return TRUE;
+  }
+            /* return vCard */
+  else
+    return $vCard;
+}
+/**
+ * convert ATTENDEEs, CONTACTs and ORGANIZERs (in email format) to vCards
+ *
+ * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @since 2.12.2 - 2012-05-07
+ * @param object $calendar, iCalcreator vcalendar instance reference
+ * $param string $version, vCard version (default 2.1)
+ * $param string $directory, where to save vCards (default FALSE)
+ * $param string $ext, vCard file extension (default 'vcf')
+ * @return mixed
+ */
+function iCal2vCards( & $calendar, $version='2.1', $directory=FALSE, $ext='vcf' ) {
+  $hits   = array();
+  $vCardP = array( 'ATTENDEE', 'CONTACT', 'ORGANIZER' );
+  foreach( $vCardP as $prop ) {
+    $hits2 = $calendar->getProperty( $prop );
+    foreach( $hits2 as $propValue => $occCnt ) {
+      if( FALSE === ( $pos = strpos( $propValue, '@' )))
+        continue;
+      $propValue = str_replace( 'MAILTO:', '', $propValue );
+      if( isset( $hits[$propValue] ))
+        $hits[$propValue] += $occCnt;
+      else
+        $hits[$propValue]  = $occCnt;
+    }
+  }
+  if( empty( $hits ))
+    return FALSE;
+  ksort( $hits );
+  $output   = '';
+  foreach( $hits as $email => $skip ) {
+    $res = iCal2vCard( $email, $version, $directory, $ext );
+    if( $directory && !$res )
+      return FALSE;
+    elseif( !$res )
+      return $res;
+    else
+      $output .= $res;
+  }
+  if( $directory )
+    return TRUE;
+  if( !empty( $output ))
+    return $output;
+  return FALSE;
+}
+/*********************************************************************************/
 /*          iCalcreator XML (rfc6321) helper functions                           */
 /*********************************************************************************/
 /**
  * format iCal XML output, rfc6321, using PHP SimpleXMLElement
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.11.1 - 2012-02-22
+ * @since 2.12.3 - 2012-04-19
  * @param object $calendar, iCalcreator vcalendar instance reference
  * @return string
  */
@@ -9004,7 +9295,7 @@ function iCal2XML( & $calendar ) {
                                   (int)  $exDate['day'],
                                   (int)  $exDate['year'] );
                   unset( $exDate['tz'] );
-                  $exDate = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                  $exDate = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                   unset( $exDate['unparsedtext'] );
                 }
               }
@@ -9051,7 +9342,7 @@ function iCal2XML( & $calendar ) {
                                     (int)  $rDates[0]['day'],
                                     (int)  $rDates[0]['year'] );
                     unset( $rDates[0]['tz'] );
-                    $rDates[0] = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                    $rDates[0] = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                     unset( $rDates[0]['unparsedtext'] );
                   }
                   if( isset( $rDates[1]['year'] )) {
@@ -9069,7 +9360,7 @@ function iCal2XML( & $calendar ) {
                                       (int)  $rDates[1]['day'],
                                       (int)  $rDates[1]['year'] );
                       unset( $rDates[1]['tz'] );
-                      $rDates[1] = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                      $rDates[1] = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                       unset( $rDates[1]['unparsedtext'] );
                     }
                   }
@@ -9091,7 +9382,7 @@ function iCal2XML( & $calendar ) {
                                     (int)  $rDate['day'],
                                     (int)  $rDate['year'] );
                     unset( $rDate['tz'] );
-                    $rDate = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                    $rDate = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                     unset( $rDate['unparsedtext'] );
                   }
                 }
@@ -9152,7 +9443,7 @@ function iCal2XML( & $calendar ) {
                                   (int)  $content['value']['day'],
                                   (int)  $content['value']['year'] );
                   unset( $content['value']['tz'], $content['params']['TZID'] );
-                  $content['value'] = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                  $content['value'] = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                   unset( $content['value']['unparsedtext'] );
                 }
                 elseif( isset( $content['value']['tz'] ) && !empty( $content['value']['tz'] ) &&
@@ -9284,7 +9575,7 @@ function iCal2XML( & $calendar ) {
                                         (int)  $rDates[0]['day'],
                                         (int)  $rDates[0]['year'] );
                         unset( $rDates[0]['tz'] );
-                        $rDates[0] = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                        $rDates[0] = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                         unset( $rDates[0]['unparsedtext'] );
                       }
                       if( isset( $rDates[1]['year'] )) {
@@ -9302,7 +9593,7 @@ function iCal2XML( & $calendar ) {
                                           (int)  $rDates[1]['day'],
                                           (int)  $rDates[1]['year'] );
                           unset( $rDates[1]['tz'] );
-                          $rDates[1] = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                          $rDates[1] = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                           unset( $rDates[1]['unparsedtext'] );
                         }
                       }
@@ -9324,7 +9615,7 @@ function iCal2XML( & $calendar ) {
                                         (int)  $rDate['day'],
                                         (int)  $rDate['year'] );
                         unset( $rDate['tz'] );
-                        $rDate = iCalUtilityFunctions::_date_time_string( date( 'YmdTHis\Z', $date ), 6 );
+                        $rDate = iCalUtilityFunctions::_date_time_string( date( 'Ymd\THis\Z', $date ), 6 );
                         unset( $rDate['unparsedtext'] );
                       }
                     }
@@ -9671,7 +9962,7 @@ function & XMLfile2iCal( $xmlfile, $iCalcfg=array()) {
   return xml2iCal( $xml, $iCalcfg );
 }
 /**
- * parse SimpleXMLElement xCal into iCalcreator instance
+ * parse SimpleXMLElement instance into iCalcreator instance
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @since  2.11.2 - 2012-01-27
@@ -9708,7 +9999,7 @@ function & XML2iCal( $xmlobj, $iCalcfg=array()) {
   return $iCal;
 }
 /**
- * parse SimpleXMLElement xCal property parameters and return iCalcreator property parameter array
+ * parse SimpleXMLElement instance property parameters and return iCalcreator property parameter array
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @since  2.11.2 - 2012-01-15
@@ -9732,7 +10023,7 @@ function _getXMLParams( & $parameters ) {
   return $params;
 }
 /**
- * parse SimpleXMLElement xCal components, create iCalcreator component and update
+ * parse SimpleXMLElement instance components, create iCalcreator component and update
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @since  2.11.2 - 2012-01-15
@@ -9756,7 +10047,7 @@ function _getXMLComponents( & $iCal, & $component ) {
   } // end foreach( $component->children() as $compPart )
 }
 /**
- * parse SimpleXMLElement xCal property, create iCalcreator component property
+ * parse SimpleXMLElement instance property, create iCalcreator component property
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @since  2.11.2 - 2012-01-27
@@ -9932,7 +10223,7 @@ function _getXMLProperties( & $iCal, & $property ) {
  */
 function getTzOffsetForDate($timezonesarray, $tzid, $timestamp) {
     if( is_array( $timestamp )) {
-//$disp = sprintf( '%04d%02d%02d %02d%02d%02d', $timestamp['year'], $timestamp['month'], $timestamp['day'], $timestamp['hour'], $timestamp['min'], $timestamp['sec'] );
+//$disp = sprintf( '%04d%02d%02d %02d%02d%02d', $timestamp['year'], $timestamp['month'], $timestamp['day'], $timestamp['hour'], $timestamp['min'], $timestamp['sec'] ); // test ###
       $timestamp = gmmktime(
             $timestamp['hour'],
             $timestamp['min'],

@@ -151,7 +151,8 @@ $labels['yes'] = 'Yes';
 $labels['untitled'] = 'Untitled';
 
 $labels['sharewith'] = 'Share with';
-$labels['publicurl'] = 'URL for calendaring desktop applications';
+$labels['currentlysharing'] = 'Currently sharing this calendar';
+$labels['publicurl'] = 'Calendar URL for CalDAV clients';
 
 $labels['access'] = 'Access';
 $labels['readonly'] = 'Read only';
@@ -166,6 +167,26 @@ $labels['hidelist'] = 'Hide from list';
 $labels['defaultcalendar'] = 'Default calendar';
 
 $labels['toggleallcalendars'] = 'Show/hide all';
+
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'minutes';
+$labels['hours'] = 'hours';
+$labels['days'] = 'days';
+$labels['weeks'] = 'weeks';
+
+$labels['remindersoptions'] = 'Reminders';
+$labels['reminder'] = 'Reminder';
+
+$labels['newreminder'] = 'New reminder:';
+
+$labels['before'] = 'before';
+$labels['after'] = 'after';
+
+$labels['start'] = 'start';
+$labels['end'] = 'end';
+
 
 // Messages
 $messages['error_auth'] = 'Invalid username or password';
@@ -187,6 +208,7 @@ $messages['info_shareexplanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
 by commas or spaces';
 $messages['info_notshared'] = 'This calendar is not being shared with anyone';
+$messages['info_noreminders'] = 'This event has no configured reminders';
 $messages['error_sessexpired'] = 'Your session has expired';
 $messages['error_loginagain'] = 'Please, log in again';
 

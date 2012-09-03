@@ -52,7 +52,7 @@ Create an user in MySQL like this::
  mysql> FLUSH PRIVILEGES;
  mysql> ^D
 
-And then run the schema creation file::
+And then run the initial schema creation file::
 
  $ mysql --default-character-set=utf8 -uagendav \
    -p agendav < sql/mysql.schema.sql
@@ -61,8 +61,6 @@ And then run the schema creation file::
 
 Note the UTF8 parts on the previous commands. If you don't specify them you
 will have some issues with special characters.
-
-Now your database is ready.
 
 Steps 1&2: PostgreSQL
 *********************
@@ -84,7 +82,7 @@ Then you have to edit the file ``pg_hba.conf``, which is usually located at
  # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
  local   agendav     agendav     trust
 
-After that just restart PostgreSQL and load the schema::
+After that just restart PostgreSQL and load the initial schema::
 
  $ psql -U agendav agendav < sql/pgsql.schema.sql
 

@@ -1,0 +1,406 @@
+@agendavbgImage: "../img/bg_11.png";
+@agendavbgColor: #c6c8cd;
+@agendavbgHoverPseudobutton: #A9D6FF;
+
+.fontoverride(@size: 1.1em) {
+  font-family: 'Trebuchet MS',Arial,sans-serif !important;
+  font-size: @size;
+}
+
+// ---8<-----
+
+body {
+  background: url(@agendavbgImage) @agendavbgColor top left repeat-x;
+}
+
+/* jQuery UI font override */
+.ui-widget { 
+  .fontoverride;
+  
+  input, select, textarea, button { 
+    .fontoverride(1em);
+  } 
+}
+
+.ui-button, .ui-dialog .ui-dialog-buttonpane button,
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor: default !important;
+}
+
+.loginform {
+  background-color: #fff;
+  padding: 20px;
+  margin: 5% auto;
+  text-align: center;
+  width: 430px;
+}
+
+.loginerrors {
+  width: 400px;
+  margin: 5% auto 0 auto;
+}
+
+span.username {
+  padding-left: 20px;
+  background: url(../img/user.png) transparent left center no-repeat;
+}
+
+#sidebar {
+  max-width: 200px;
+}
+
+#footer {
+  text-align: center;
+}
+
+#footer p {
+  color: #777777;
+}
+
+label.suboption {
+  padding-left: 0.8em;
+}
+
+div#logo {
+  text-align: center;
+}
+
+
+div.block {
+  position: relative;
+  margin: 0 auto 5% auto;
+
+  .ui-widget-header {
+    padding: 0.4em 1em 0.3em 1em;
+  }
+
+  .buttons {
+    text-align: right;
+  }
+}
+
+#calendar_add {
+  margin: 5px;
+}
+
+.calendar_list {
+  ul, li {
+    list-style: none;
+    cursor: default;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    width: inherit;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 4px;
+    display: block;
+    text-overflow: ellipsis;
+
+    i.cfg {
+      display: none;
+      position: absolute;
+      right: 5px;
+    }
+
+    span.text {
+      font-size: 0.9em;
+      letter-spacing: -0.1em;
+    }
+
+    span.icons {
+      margin-right: 1px;
+      color: #a0a0a0;
+    }
+
+    &:hover {
+      background-color: #f0f0f0;
+      padding-right: 20px;
+
+      > i.cfg {
+        display: inline;
+      }
+    }
+
+    &.default_calendar {
+      font-weight: bold;
+    }
+
+    &.transparent div.calendar_color {
+      background-color: #ffffff !important;
+      border: 1px solid #e0e0e0 !important;
+    }
+  }
+}
+
+/* overlay starts */
+
+.view_event_details {
+  width: 400px !important;
+  max-width: 400px !important;
+
+  p.start_and_finish {
+    font-style: italic;
+  }
+
+  .ui-tooltip-content div {
+    line-height: 1.5em;
+  }
+
+  .description_value {
+    margin-left: 2em;
+    font-family: monospace;
+    max-height: 150px;
+    width: 90%;
+    overflow: auto;
+  }
+
+  span.rrule_raw_value {
+    font-family: monospace;
+  }
+
+  .actions {
+    margin-top: 5px;
+    text-align: right;
+  }
+
+  .ui-tooltip-content {
+    line-height: 150%;
+  }
+
+  .ui-tooltip-title {
+    font-size: 120%;
+  }
+}
+
+/* overlay ends */
+
+#event_delete_dialog {
+  .title {
+    font-size: 120%;
+    font-style: italic;
+  }
+
+  .calendar {
+    font-style: italic;
+  }
+}
+
+/* delete event dialog ends */
+
+.time-picker {
+  z-index: 9999 !important;
+}
+
+#ui-datepicker-div {
+  z-index: 9999 !important;
+}
+
+div.public_url_container {
+  text-align: right;
+  width: 90%;
+  font-size: 70%;
+  margin-top: 1em;
+}
+
+span.shared {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  padding-left: 5px;
+  background-image: url(../img/share.png);
+  background-position: 95% 50%;
+  background-repeat: no-repeat;
+}
+
+div.share_info {
+  background: url(../img/share_big.png) #fafafa center left no-repeat;
+  padding: 10px 10px 10px 40px;
+  border: 1px solid #e0e0e0;
+  width: 350px;
+  margin: 0.5em auto 0.5em auto;
+}
+
+/* 
+ * Dialog buttons
+ * --------------
+ */
+.btn-icon-cancel {
+  background-image: url(../img/button-icons/cancel.png) !important;
+}
+
+.btn-icon-ok {
+  background-image: url(../img/button-icons/ok.png) !important;
+}
+
+.btn-icon-event-delete, .btn-icon-calendar-delete {
+  background-image: url(../img/button-icons/calendar_delete.png) !important;
+}
+
+.btn-icon-calendar-add {
+  background-image: url(../img/button-icons/calendar_add.png) !important;
+}
+
+.btn-icon-event-edit, .btn-icon-calendar-edit {
+  background-image: url(../img/button-icons/calendar_edit.png) !important;
+}
+
+.fc-border-separate td {
+  border-color: #cbcbcb !important;
+}
+
+.fc-border-separate th.fc-first,
+.fc-border-separate td.fc-first {
+  border-left: 1px solid #b6b6b6 !important;
+}
+
+.fc-border-separate th.fc-last,
+.fc-border-separate td.fc-last {
+  border-right: 1px solid #b6b6b6 !important;
+}
+
+td.fc-other-month {
+  background-color: #f9f9f9;
+  border-style: dotted;
+  border-color: #bfbfbf;
+}
+
+td.fc-sat, td.fc-sun {
+  background-color: #eaeaea;
+}
+
+td.fc-today {
+  background-color: #FFFFCC !important;
+  font-weight: bold;
+  border: 2px solid #D2D267;
+}
+
+div.selecthelper {
+  filter: ~"alpha(opacity=50)";
+  opacity: 0.5;
+  zoom: 1;
+}
+
+.fc-button {
+  cursor: default !important;
+}
+
+.fc-event .fc-event-inner {
+  font-size: 1.1em !important;
+}
+
+.fc-event-hori .fc-event-inner {
+  padding: 0.1em 0 0.2em 0;
+}
+
+span.fc-event-icons {
+  float: right;
+  margin-right: 5px;
+
+  i {
+    margin-right: 2px;
+  }
+}
+
+#loading {
+  width: 20px;
+  height: 20px;
+  display: none;
+}
+
+div.calendar_color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.pseudobutton {
+  color: #8C8C8C;
+  display: inline-block;
+  padding: 2px;
+  &:hover {
+    color: #000;
+    cursor: pointer;
+    background-color: @agendavbgHoverPseudobutton !important;
+  }
+}
+
+#calendar_share_no_rows td,
+#reminders_no_rows td {
+  text-align: center !important;
+}
+
+
+#reminders_table,
+#calendar_share_table {
+  margin-bottom: 30px;
+}
+
+#prefs_buttons {
+  margin-bottom: 10px;
+}
+
+
+.agendav-menu .ui-tooltip-content {
+  padding: 0 3px;
+}
+
+#usermenu_content {
+  display: none;
+  ul {
+    list-style: none;
+    background: #fff;
+    margin: 0;
+    padding: 5px 0;
+
+    &:hover {
+      cursor: default !important;
+    }
+
+    li {
+      font-size: 14px;
+      list-style: none;
+      & > a {
+        display: block;
+        line-height: 28px;
+        padding: 0 5px 5px 30px;
+        background-position: 8px center;
+        background-repeat: no-repeat;
+        &.prefs {
+          background-image: url(../img/setting_tools.png);
+        }
+
+        &.logout {
+          background-image: url(../img/exit.png);
+        }
+
+        &:hover {
+          background-color: #08c;
+          color: #fff !important;
+          text-decoration: none;
+        }
+      }
+
+    }
+  }
+}
+
+i.tab-icon {
+  margin-right: 4px;
+}
+
+span.table_title {
+  font-weight: bold;
+}
+
+#calendar_view.printing {
+    width: 8.3in !important;
+}
+
+
+// vim: ft=css sw=2 tabstop=2 expandtab

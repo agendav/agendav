@@ -74,10 +74,11 @@ div.block .buttons {
   overflow: hidden;
   white-space: nowrap;
   padding: 4px;
+  display: block;
+  text-overflow: ellipsis;
 }
-.calendar_list li img.cfg {
+.calendar_list li i.cfg {
   display: none;
-  background-color: #fff;
   position: absolute;
   right: 5px;
 }
@@ -85,10 +86,15 @@ div.block .buttons {
   font-size: 0.9em;
   letter-spacing: -0.1em;
 }
+.calendar_list li span.icons {
+  margin-right: 1px;
+  color: #a0a0a0;
+}
 .calendar_list li:hover {
   background-color: #f0f0f0;
+  padding-right: 20px;
 }
-.calendar_list li:hover > img.cfg {
+.calendar_list li:hover > i.cfg {
   display: inline;
 }
 .calendar_list li.default_calendar {
@@ -98,21 +104,10 @@ div.block .buttons {
   background-color: #ffffff !important;
   border: 1px solid #e0e0e0 !important;
 }
-#toggle_all_shared_calendars {
-  position: absolute;
-  right: 5px;
-}
 /* overlay starts */
-#view_event_details_template,
-#share_calendar_manager_row_template {
-  display: none;
-}
 .view_event_details {
   width: 400px !important;
   max-width: 400px !important;
-}
-.view_event_details .label {
-  font-weight: bold;
 }
 .view_event_details p.start_and_finish {
   font-style: italic;
@@ -131,6 +126,7 @@ div.block .buttons {
   font-family: monospace;
 }
 .view_event_details .actions {
+  margin-top: 5px;
   text-align: right;
 }
 .view_event_details .ui-tooltip-content {
@@ -140,11 +136,11 @@ div.block .buttons {
   font-size: 120%;
 }
 /* overlay ends */
-#delete_event_dialog .title {
+#event_delete_dialog .title {
   font-size: 120%;
   font-style: italic;
 }
-#delete_event_dialog .calendar {
+#event_delete_dialog .calendar {
   font-style: italic;
 }
 /* delete event dialog ends */
@@ -154,10 +150,10 @@ div.block .buttons {
 #ui-datepicker-div {
   z-index: 9999 !important;
 }
-div.public_url {
-  width: 90%;
+div.public_url_container {
   text-align: right;
-  font-size: 80%;
+  width: 90%;
+  font-size: 70%;
   margin-top: 1em;
 }
 span.shared {
@@ -236,6 +232,18 @@ div.selecthelper {
 .fc-event-hori .fc-event-inner {
   padding: 0.1em 0 0.2em 0;
 }
+span.fc-event-icons {
+  float: right;
+  margin-right: 5px;
+}
+span.fc-event-icons i {
+  margin-right: 2px;
+}
+#loading {
+  width: 20px;
+  height: 20px;
+  display: none;
+}
 div.calendar_color {
   display: inline-block;
   width: 12px;
@@ -245,21 +253,22 @@ div.calendar_color {
   border-style: solid;
 }
 .pseudobutton {
+  color: #8C8C8C;
   display: inline-block;
   padding: 2px;
 }
 .pseudobutton:hover {
+  color: #000;
   cursor: pointer;
   background-color: #a9d6ff !important;
 }
-tr.share_calendar_manager_empty td {
+#calendar_share_no_rows td,
+#reminders_no_rows td {
   text-align: center !important;
-  display: none;
 }
-table.share_calendar_manager_new {
-  margin-top: 10px;
-  border: 1px solid #e0e0e0;
-  background-color: #f6f6f6;
+#reminders_table,
+#calendar_share_table {
+  margin-bottom: 30px;
 }
 #prefs_buttons {
   margin-bottom: 10px;
@@ -300,4 +309,13 @@ table.share_calendar_manager_new {
   background-color: #08c;
   color: #fff !important;
   text-decoration: none;
+}
+i.tab-icon {
+  margin-right: 4px;
+}
+span.table_title {
+  font-weight: bold;
+}
+#calendar_view.printing {
+  width: 8.3in !important;
 }

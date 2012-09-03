@@ -21,21 +21,21 @@
 
 class Strings extends CI_Controller {
 
-	function __construct() {
-		parent::__construct();
+    function __construct() {
+        parent::__construct();
 
-		$this->output->set_content_type('application/json');
-	}
+        $this->output->set_content_type('application/json');
+    }
 
-	function index() {
-	}
+    function index() {
+    }
 
-	/*
-	 * Localized language strings
-	 */
-	function load() {
-		// TODO get language from parameters
-		$i18n = $this->i18n->dump();
-		$this->output->set_output(json_encode($i18n));
-	}
+    /*
+     * Localized language strings
+     */
+    function load() {
+        // TODO get language from parameters
+        $i18n = $this->i18n->dump();
+        $this->output->set_output(json_encode($i18n));
+    }
 }

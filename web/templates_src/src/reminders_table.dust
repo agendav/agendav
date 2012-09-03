@@ -1,0 +1,35 @@
+{#visible_reminders}
+<input type="hidden" name="visible_reminders[{.}]" value="1" />
+{/visible_reminders}
+<table id="reminders_table" class="table table-striped">
+ <thead>
+  <th></th>
+  <th></th>
+  <th></th>
+ </thead>
+ <tbody>
+ {#reminders}
+ {>reminder_row/}
+ {/reminders}
+ <tr id="reminders_no_rows">
+ <td colspan="3">
+  {@i18n type="messages" name="info_noreminders"/}
+ </td>
+ </tr>
+ </tbody>
+</table>
+
+<span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
+<table class="table">
+<tbody>
+{>reminder_row add="true" /}
+</tbody>
+</table>
+
+<span class="table_title">{@i18n type="labels" name="newreminder"/}</span>
+<table class="table">
+<tbody>
+{>reminder_row add="true" is_absolute="true"/}
+</tbody>
+</table>
+

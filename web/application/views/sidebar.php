@@ -10,7 +10,8 @@ if (isset($logo)) {
  </div>
 
  <div class="calendar_list ui-widget block" id="own_calendar_list">
-  <div class="ui-widget-header ui-corner-all"><?php echo
+  <div class="ui-widget-header ui-corner-all">
+  <?php echo
   $this->i18n->_('labels', 'calendars')?></div>
   <div class="ui-widget-content">
    <ul>
@@ -30,17 +31,16 @@ if (isset($logo)) {
  <div class="calendar_list ui-widget block" id="shared_calendar_list">
   <div class="ui-widget-header ui-corner-all">
   <?php echo $this->i18n->_('labels', 'shared_calendars')?>
-    <?php echo img(array(
-				'id' => 'toggle_all_shared_calendars',
-				'class' => 'hide_all pseudobutton',
-				'src' => 'img/color_swatch_empty.png',
-				'alt' => $this->i18n->_('labels', 'toggleallcalendars'),
-				'title' => $this->i18n->_('labels', 'toggleallcalendars'),
-				)); ?>
   </div>
   <div class="ui-widget-content">
    <ul>
    </ul>
+   <div class="buttons">
+    <span id="toggle_all_shared_calendars" class="pseudobutton hide_all"
+    title="<?php echo $this->i18n->_('labels', 'toggleallcalendars')?>"
+    ><i class="icon-eye-close
+    icon-large"></i></span>
+   </div>
   </div>
  </div><!-- block -->
 

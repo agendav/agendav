@@ -7,17 +7,17 @@
 <tbody>
 <?php
 $i=1;
-foreach ($calendar_list as $c => $data):
+foreach ($calendar_list as $cal):
 ?>
  <tr>
   <td>
-  <?php echo $data['displayname'] ?>
+  <?php echo $cal->displayname ?>
   </td>
   <td style="text-align: center">
     <input type="hidden" name="calendar[<?php echo $i ?>][name]" value="<?php echo
-	$c?>" />
+	$cal->calendar?>" />
     <input type="checkbox" name="calendar[<?php echo $i ?>][hide]"
-	value="1"<?php echo (isset($hidden_calendars[$c])) ? ' checked="checked"' : ''?>>
+	value="1"<?php echo (isset($hidden_calendars[$cal->calendar])) ? ' checked="checked"' : ''?>>
   </td>
  </tr>
 <?php

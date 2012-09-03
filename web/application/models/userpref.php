@@ -20,51 +20,51 @@
  */
 
 class Userpref extends CI_Model {
-	function __construct() {
-		parent::__construct();
+    function __construct() {
+        parent::__construct();
 
-	}
+    }
 
-	/**
-	 * Gets all user preferences for a given user into a Preferences object
-	 */
-	function load_prefs($username) {
-		$options = array();
+    /**
+     * Gets all user preferences for a given user into a Preferences object
+     */
+    function load_prefs($username) {
+        $options = array();
 
-		$query = $this->db->get_where('prefs',
-				array('username' => $username));
+        $query = $this->db->get_where('prefs',
+                array('username' => $username));
 
-		if ($query->num_rows() == 1) {
-			$result = $query->result();
-			$options = json_decode($result[0]->options, TRUE);
-		}
+        if ($query->num_rows() == 1) {
+            $result = $query->result();
+            $options = json_decode($result[0]->options, TRUE);
+        }
 
-		$prefs = new Preferences($options);
+        $prefs = new Preferences($options);
 
-		return $prefs;
-	}
+        return $prefs;
+    }
 
-	/**
-	 * Saves user preferences
-	 */
-	function save_prefs($username, Preferences $prefs) {
-		$data = array(
-				'options' => $prefs->to_json(),
-				);
+    /**
+     * Saves user preferences
+     */
+    function save_prefs($username, Preferences $prefs) {
+        $data = array(
+                'options' => $prefs->to_json(),
+                );
 
-		log_message('DEBUG', 'Storing user prefs ['.
-				$prefs->to_json() .']'
-				.' for user ' . $username);
+        log_message('DEBUG', 'Storing user prefs ['.
+                $prefs->to_json() .']'
+                .' for user ' . $username);
 
-		$query = $this->db->get_where('prefs',
-				array('username' => $username));
-		if ($query->num_rows() == 1) {
-			$this->db->update('prefs',
-					$data, array('username' => $username));
-		} else {
-			$data['username'] = $username;
-			$this->db->insert('prefs', $data);
-		}
-	}
+        $query = $this->db->get_where('prefs',
+                array('username' => $username));
+        if ($query->num_rows() == 1) {
+            $this->db->update('prefs',
+                    $data, array('username' => $username));
+        } else {
+            $data['username'] = $username;
+            $this->db->insert('prefs', $data);
+        }
+    }
 }
 

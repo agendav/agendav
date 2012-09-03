@@ -2,6 +2,8 @@
  * Loads localized strings
  */
 function load_i18n_strings() {
+  AgenDAVConf.i18n = {};
+
 	var i18n_ajax_req = $.ajax({
 		async: false,
 		url: base_app_url + 'strings/load/' + agendav_version,
@@ -11,7 +13,7 @@ function load_i18n_strings() {
 	});
 
 	i18n_ajax_req.done(function(data, textStatus, jqXHR) {
-		i18n = data;
+		AgenDAVConf.i18n = data;
 
 		// Localized names
 		set_default_datepicker_options();
@@ -26,15 +28,15 @@ function load_i18n_strings() {
 /**
  * Function that translates a given label/message
  */
-function _(mtype, s, params) {
+function t(mtype, s, params) {
 	var ret = '[' + mtype + ':' + s + ']';
 
-	if (typeof(i18n)!= 'undefined' && (mtype == 'messages' 
+	if (typeof(AgenDAVConf.i18n)!= 'undefined' && (mtype == 'messages' 
 			|| mtype == 'labels')) {
-		if (mtype == 'labels' && i18n.labels[s]) {
-			ret = i18n.labels[s];
-		} else if (mtype == 'messages' && i18n.messages[s]) {
-			ret = i18n.messages[s];
+		if (mtype == 'labels' && AgenDAVConf.i18n.labels[s]) {
+			ret = AgenDAVConf.i18n.labels[s];
+		} else if (mtype == 'messages' && AgenDAVConf.i18n.messages[s]) {
+			ret = AgenDAVConf.i18n.messages[s];
 		}
 	}
 
@@ -58,7 +60,7 @@ function labels_as_array(arr) {
 	var total_arr = arr.length
 	
 	for (var i=0; i<total_arr; i++) {
-		result.push(i18n.labels[arr[i]]);
+		result.push(AgenDAVConf.i18n.labels[arr[i]]);
 	}
 
 	return result;

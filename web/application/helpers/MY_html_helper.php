@@ -77,19 +77,19 @@ if ( ! function_exists('script_tag'))
 if ( ! function_exists('formelement'))
 {
     function formelement($label, $input, $help = '') {
-		?>
-			<div class="control-group">
-			<?php 
-			echo form_label($label, '', array('class' => 'control-label'));
-			echo '<div class="controls">' . $input;
-			if (!empty($help)) {
-				echo '<p class="help-block">'.$help.'</p>';
-			}
-			echo '</div>';
-			?>
-			</div>
-		<?php
-	}
+        ?>
+            <div class="control-group">
+            <?php 
+            echo form_label($label, '', array('class' => 'control-label'));
+            echo '<div class="controls">' . $input;
+            if (!empty($help)) {
+                echo '<p class="help-block">'.$help.'</p>';
+            }
+            echo '</div>';
+            ?>
+            </div>
+        <?php
+    }
 }
 
 
@@ -98,12 +98,12 @@ if ( ! function_exists('formelement'))
  */
 
 function agendav_small_logo() {
-	return '<div id="logo" class="block">'
-		. img(array(
-				'src' => 'img/agendav_small.png',
-				'alt' => 'AgenDAV',
-				))
-		. '</div>';
+    return '<div id="logo" class="block">'
+        . img(array(
+                'src' => 'img/agendav_small.png',
+                'alt' => 'AgenDAV',
+                ))
+        . '</div>';
 }
 
 /*
@@ -111,11 +111,11 @@ function agendav_small_logo() {
  */
 
 function custom_logo($filename, $title = '') {
-	return '<div id="logo" class="block">'
-		. img(array(
-				'src' => 'img/' . $filename,
-				'alt' => $title,
-				'title' => $title,
-				))
-		. '</div>';
+    return '<div id="logo" class="block">'
+        . img(array(
+                'src' => 'img/' . $filename,
+                'alt' => $title,
+                'title' => $title,
+                ))
+        . '</div>';
 }

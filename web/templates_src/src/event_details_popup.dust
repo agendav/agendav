@@ -1,0 +1,42 @@
+<p class="start_and_finish">{formatted_start} {formatted_end}</p>
+<dl class="dl-horizontal">
+<dt>{@i18n type="labels" name="calendar"/}</dt>
+<dd><div class="calendar_color" style="background-color: {caldata.color};"></div>
+{caldata.displayname}</dd>
+
+{?location}
+<dt>{@i18n type="labels" name="location"/}</dt>
+<dd>{location}</dd>
+{/location}
+
+{?description}
+<dt>{@i18n type="labels" name="description"/}</dt>
+<dd>{formatted_description}</dd>
+{/description}
+
+{?rrule}
+<dt>{@i18n type="labels" name="repeat"/}</dt>
+{?rrule_explained}
+<dd>{@i18n type="messages" name="info_repetition_human" explanation="{rrule_explained}"/}</dd>
+ {:else}
+<dd>{@i18n type="messages" name="info_repetition_unparseable"/} <span
+class="rrule_raw_value">{rrule}</span></dd>
+ {/rrule_explained}
+{/rrule}
+
+{#reminders}
+<dt>{@i18n type="labels" name="reminder"/}</dt>
+<dd>{>reminder_description /}</dd>
+{/reminders}
+
+{^disable_actions}
+<div class="actions">
+<button type="button" href="#"
+class="addicon btn-icon-calendar-edit link_modify_event">{@i18n type="labels" name="modify"/}</button>
+<button type="button" href="#"
+class="addicon btn-icon-calendar-delete link_delete_event">{@i18n type="labels" name="delete"/}</button>
+</div>
+{/disable_actions}
+
+</dl>
+

@@ -19,56 +19,57 @@
  */
 
 class Defs {
-	// Leave jQuery and jQuery UI the two first scripts
-	static $jsfiles= array(
-			'libs/jquery-1.7.2.min.js',
-			'libs/jquery-ui-1.8.20.min.js',
-			'libs/jquery.freeow.min.js',
-			'libs/fullcalendar.min.js',
-			'libs/jquery.loadmask.min.js',
-			'libs/jquery.colorPicker.20091014.js',
-			'libs/jquery.qtip.min.js',
-			'libs/jquery.colorhelpers.js',
-			'libs/jquery.timePicker.20110318.js',
-			'translation.js',
-			'app.js',
-			);
+    // Leave jQuery and jQuery UI the two first scripts
+    static $jsfiles= array(
+            'libs/jquery-1.7.2.min.js',
+            'libs/jquery-ui-1.8.23.custom.min.js',
+            'libs/jquery.freeow.min.js',
+            'libs/fullcalendar.min.js',
+            'libs/jquery.colorPicker.js',
+            'libs/jquery.qtip.min.js',
+            'libs/jquery.colorhelpers.js',
+            'libs/jquery.timePicker.20110318.js',
+            'libs/jquery.cookie.js',
+            'libs/jquery.serializeobject.js',
+            'translation.js',
+            'libs/dust-core-1.0.0.js',
+            'templates/templates.js',
+            'app.js',
+            );
 
-	static $cssfiles = array(
-			'bootstrap.agendav.css',
-			'Aristo_20111229.css',
-			'fullcalendar.css',
-			'jquery.qtip.min.css',
-			'timePicker.css',
-			'loadmask.css',
-			'freeow.css',
-			'colorpicker.css',
-			'app.css',
-			);
-	static $printcssfiles = array(
-			'fullcalendar.print.css',
-			'app.print.css',
-			);
+    static $cssfiles = array(
+            'bootstrap.agendav.css',
+            'Aristo_20111229.css',
+            'fullcalendar.css',
+            'jquery.qtip.min.css',
+            'timePicker.css',
+            'freeow.css',
+            'colorpicker.css',
+            'app.css',
+            );
+    static $printcssfiles = array(
+            'app.print.css',
+            );
 
-	function definitions() {
-		define('AGENDAV_VERSION', '1.2.5.1');
-		set_include_path(implode(PATH_SEPARATOR, array(
-						BASEPATH . '../../libs/icalcreator',
-						BASEPATH . '../../libs/own_extensions',
-						BASEPATH . '../../libs/caldav-client/awl',
-						BASEPATH . '../../libs/caldav-client',
-						get_include_path()
-						)));
+    function definitions() {
+        define('AGENDAV_VERSION', '1.2.6');
+        set_include_path(implode(PATH_SEPARATOR, array(
+                        BASEPATH . '../../libs/icalcreator',
+                        BASEPATH . '../../libs/own_extensions',
+                        BASEPATH . '../../libs/awl',
+                        BASEPATH . '../../libs/caldav-client',
+                        get_include_path()
+                        )));
 
-	}
+    }
 
-	/**
-	 * Set PHP default timezone. date.timezone has to be set on php.ini, PHP
-	 * throws some warnings when it is not. Use configuration parameter
-	 * default_timezone
-	 */
-	function default_tz() {
-		$CI_config =& load_class('Config');
-		date_default_timezone_set($CI_config->item('default_timezone'));
-	}
+    /**
+     * Set PHP default timezone. date.timezone has to be set on php.ini, PHP
+     * throws some warnings when it is not. Use configuration parameter
+     * default_timezone
+     */
+    function default_tz() {
+        $CI_config =& load_class('Config');
+        date_default_timezone_set($CI_config->item('default_timezone'));
+    }
 }

@@ -1,0 +1,24 @@
+<li class="available_calendar{?default_calendar} 
+default_calendar{/default_calendar}">
+ <div class="calendar_color" 
+ style="background-color:
+ {?color}{color}{:else}{default_calendar_color}{/color}; border-color: {bordercolor}"></div>
+
+ <span class="icons">
+ {?shared}
+  {@eq key="{write_access}" value="0"}
+  <i title="{@i18n type="labels" name="readonly"/}" class="icon-lock"></i>
+  {/eq}
+ {:else}
+  {?share_with}
+  <i title="{@i18n type="labels" name="currentlysharing"/}" class="icon-share"></i>
+  {/share_with}
+ {/shared}
+
+ </span>
+ <span class="text"
+ {?user_from}
+ title="{@i18n type="messages" name="info_sharedby" user="{user_from}"/}"
+ {/user_from}>{displayname}</span>
+ <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton icon-cogs"></i>
+</li>

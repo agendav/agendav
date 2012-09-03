@@ -54,6 +54,13 @@ checking out AgenDAV 1.2.5 can be achieved with::
 Database upgrade
 ----------------
 
+.. note::
+
+   AgenDAV <= 1.2.5.1 have a bug that makes database upgrades to fail,
+   complaining about a missing ``migration_lang.php`` file. If you have
+   AgenDAV configured to use a language other than English, set
+   :confval:`default_language` to ``en`` before running ``agendav dbupdate``
+
 The database upgrade process included in AgenDAV since 1.2.5 lets you
 apply the latest schema changes without having to deal with ``.sql`` files
 and with no need to check which files you should apply to your current

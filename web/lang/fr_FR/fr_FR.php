@@ -151,6 +151,7 @@ $labels['yes'] = 'Oui';
 $labels['untitled'] = 'Sans titre';
 
 $labels['sharewith'] = 'Partager avec';
+$labels['currentlysharing'] = 'Ce calendrier est actuellement partagé';
 $labels['publicurl'] = 'URL de ce calendrier';
 
 $labels['access'] = 'Accès';
@@ -167,6 +168,26 @@ $labels['defaultcalendar'] = 'Calendrier par défaut';
 
 $labels['toggleallcalendars'] = 'Tout afficher/masquer';
 
+$labels['popup'] = 'Pop-up';
+$labels['email'] = 'Email';
+
+$labels['minutes'] = 'minutes';
+$labels['hours'] = 'heures';
+$labels['days'] = 'jours';
+$labels['weeks'] = 'semaines';
+
+$labels['remindersoptions'] = 'Rappels';
+$labels['reminder'] = 'Rappel';
+
+$labels['newreminder'] = 'Nouveau rappel:';
+
+$labels['before'] = 'avant';
+$labels['after'] = 'après';
+
+$labels['start'] = 'début';
+$labels['end'] = 'fin';
+
+
 // Messages
 $messages['error_auth'] = 'Nom d\'utilisateur ou mot de passe invalide';
 $messages['error_invaliddate'] = 'Date invalide pour le champ %s';
@@ -180,13 +201,14 @@ $messages['error_internalcalnameinuse'] = 'Ce nom de calendrier est déjà utili
 
 $messages['info_confirmcaldelete'] = 'Êtes-vous sûr(e) de vouloir suppimer le calendrier suivant?';
 $messages['info_confirmeventdelete'] = 'Êtes-vous sûr(e) de vouloir supprimer l\'événement suivant?';
-$messages['info_permanentremoval'] = 'Votre information sera définitivement perdue';
+$messages['info_permanentremoval'] = 'Vos données seront définitivement perdues';
 $messages['info_repetitivedeleteall'] = 'Toutes les instances de cet événement récurrent vont être supprimées';
 $messages['info_sharedby'] = 'Vous avez accès à ce calendrier car %user vous l\'a partagé';
 $messages['info_shareexplanation'] = 'Vous pouvez partager ce calendrier avec
 d\'autres utilisateurs et les laisser le modifier. Mettez leurs noms d\'utilisateur ci-dessous, séparés
 par des virgules ou des espaces';
 $messages['info_notshared'] = 'Ce calendrier n\'est pas encore partagé';
+$messages['info_noreminders'] = 'Cet évènement n\'a pas de rappels configuré';
 $messages['error_sessexpired'] = 'Votre session a expiré';
 $messages['error_loginagain'] = 'Veuillez vous reconnecter';
 

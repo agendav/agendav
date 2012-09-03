@@ -21,54 +21,54 @@
 
 class Cli extends CI_Controller {
 
-	// Special CLI controller
+    // Special CLI controller
 
-	private static $usage = <<<EOU
+    private static $usage = <<<EOU
 Available commands:
 
-	dbupdate		Updates database schema
+    dbupdate        Updates database schema
 
 EOU;
 
-	function __construct() {
-		parent::__construct();
-		if (!$this->input->is_cli_request()) {
-			echo "This controller can only be run from CLI";
-			die();
-		}
-	}
+    function __construct() {
+        parent::__construct();
+        if (!$this->input->is_cli_request()) {
+            echo "This controller can only be run from CLI";
+            die();
+        }
+    }
 
-	function index() {
-		$this->_print(self::$usage);
-	}
+    function index() {
+        $this->_print(self::$usage);
+    }
 
-	function help() {
-		$this->_print(self::$usage);
-	}
+    function help() {
+        $this->_print(self::$usage);
+    }
 
-	function dbupdate() {
-		$this->_print('Updating database schema...');
-		$this->load->library('migration');
-		if (!$this->migration->current()) {
-			$this->_print('Error while updating schema!');
-			$this->_print($this->migration->error_string());
-		} else {
-			$this->_print('Succeed! Your database is updated');
-		}
-	}
+    function dbupdate() {
+        $this->_print('Updating database schema...');
+        $this->load->library('migration');
+        if (!$this->migration->current()) {
+            $this->_print('Error while updating schema!');
+            $this->_print($this->migration->error_string());
+        } else {
+            $this->_print('Succeed! Your database is updated');
+        }
+    }
 
 
-	/**
-	 * Print function
-	 */
-	function _print($text) {
-		echo preg_replace(array(
-					'/\n/',
-					'/([^\n])$/'),
-				array(
-					PHP_EOL,
-					'\1' . PHP_EOL),
-				$text);
-	}
+    /**
+     * Print function
+     */
+    function _print($text) {
+        echo preg_replace(array(
+                    '/\n/',
+                    '/([^\n])$/'),
+                array(
+                    PHP_EOL,
+                    '\1' . PHP_EOL),
+                $text);
+    }
 
 }

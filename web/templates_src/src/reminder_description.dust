@@ -1,0 +1,14 @@
+{?is_absolute}
+{tdate} {ttime}
+{:else}
+{qty} 
+{@select key="{interval}"}
+ {@eq value="min"}{@i18n type="labels" name="minutes"/}{/eq}
+ {@eq value="hour"}{@i18n type="labels" name="hours"/}{/eq}
+ {@eq value="day"}{@i18n type="labels" name="days"/}{/eq}
+ {@eq value="week"}{@i18n type="labels" name="weeks"/}{/eq}
+{/select} 
+
+{?before}{@i18n type="labels" name="before"/}{:else}{@i18n type="labels" name="after"/}{/before} 
+{?relatedStart}{@i18n type="labels" name="start"/}{:else}{@i18n type="labels" name="end"/}{/relatedStart}
+{/is_absolute}
