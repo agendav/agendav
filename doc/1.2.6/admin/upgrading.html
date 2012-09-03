@@ -1,0 +1,180 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Upgrading &mdash; AgenDAV 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/proBlue.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="AgenDAV 1.2.6 documentation" href="../index.html" />
+    <link rel="up" title="Installation and configuration" href="index.html" />
+    <link rel="next" title="3. Configuration" href="configuration.html" />
+    <link rel="prev" title="1. Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="configuration.html" title="3. Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">AgenDAV 1.2.6 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Installation and configuration</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="upgrading">
+<span id="id1"></span><h1>2. Upgrading<a class="headerlink" href="#upgrading" title="Permalink to this headline">¶</a></h1>
+<p>AgenDAV upgrades can be split into two simple steps.</p>
+<p>Before starting this process, make sure you have a backup of your current
+AgenDAV directory, specially the <tt class="docutils literal"><span class="pre">web/config/</span></tt> directory, and dump your
+database schema and contents.</p>
+<p>Please, do not continue unless you have both backups.</p>
+<p>Read all the <a class="reference internal" href="../releasenotes.html#releasenotes"><em>Release notes</em></a> from the version you were using
+to current release, because some configuration files may have changed. Apply
+those changes after updating the files from AgenDAV.</p>
+<div class="section" id="files-upgrade">
+<span id="filesupgrade"></span><h2>2.1. Files upgrade<a class="headerlink" href="#files-upgrade" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="a-updating-from-tar-gz-file">
+<h3>2.1.1. a) Updating from tar.gz file<a class="headerlink" href="#a-updating-from-tar-gz-file" title="Permalink to this headline">¶</a></h3>
+<p>You can replace the whole AgenDAV directory with the new files, but it&#8217;s
+recommended to keep your old folder with a different name (e.g.
+<tt class="docutils literal"><span class="pre">agendav_old/</span></tt>). You&#8217;ll need it to copy back your configuration files.</p>
+<p>After downloading the new tar.gz file and uncompressing it, copy your
+configuration files from the old directory:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$ cd agendav_old/web/config/</span>
+<span class="x">$ cp -a advanced.php caldav.php config.php database.php \</span>
+<span class="x">  /path/to/new/agendav/web/config/</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="b-updating-from-git">
+<h3>2.1.2. b) Updating from git<a class="headerlink" href="#b-updating-from-git" title="Permalink to this headline">¶</a></h3>
+<p>If you downloaded AgenDAV from the git repository at GitHub then you can
+checkout latest stable release from the <tt class="docutils literal"><span class="pre">master</span></tt> branch, or an specific
+version using its tag.</p>
+<p>Just pull latest changes and checkout the release you want. For example,
+checking out AgenDAV 1.2.5 can be achieved with:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$ git pull</span>
+<span class="x">[...]</span>
+<span class="x">$ git checkout 1.2.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="database-upgrade">
+<span id="dbupgrade"></span><h2>2.2. Database upgrade<a class="headerlink" href="#database-upgrade" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">AgenDAV &lt;= 1.2.5.1 have a bug that makes database upgrades to fail,
+complaining about a missing <tt class="docutils literal"><span class="pre">migration_lang.php</span></tt> file. If you have
+AgenDAV configured to use a language other than English, set
+<a class="reference internal" href="configuration.html#confval-default_language"><tt class="xref std std-confval docutils literal"><span class="pre">default_language</span></tt></a> to <tt class="docutils literal"><span class="pre">en</span></tt> before running <tt class="docutils literal"><span class="pre">agendav</span> <span class="pre">dbupdate</span></tt></p>
+</div>
+<p>The database upgrade process included in AgenDAV since 1.2.5 lets you
+apply the latest schema changes without having to deal with <tt class="docutils literal"><span class="pre">.sql</span></tt> files
+and with no need to check which files you should apply to your current
+version.</p>
+<p>Just use the provided <tt class="docutils literal"><span class="pre">bin/agendavcli</span></tt> script this way:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$ ./bin/agendavcli dbupdate</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/agendav_160px.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Upgrading</a><ul>
+<li><a class="reference internal" href="#files-upgrade">2.1. Files upgrade</a><ul>
+<li><a class="reference internal" href="#a-updating-from-tar-gz-file">2.1.1. a) Updating from tar.gz file</a></li>
+<li><a class="reference internal" href="#b-updating-from-git">2.1.2. b) Updating from git</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-upgrade">2.2. Database upgrade</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">1. Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="next chapter">3. Configuration</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="configuration.html" title="3. Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             >previous</a> |</li>
+        <li><a href="../index.html">AgenDAV 1.2.6 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Installation and configuration</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2012, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

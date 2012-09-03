@@ -1,0 +1,156 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation and configuration &mdash; AgenDAV 1.2.6 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/proBlue.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="AgenDAV 1.2.6 documentation" href="../index.html" />
+    <link rel="next" title="1. Installation" href="installation.html" />
+    <link rel="prev" title="AgenDAV 1.2.6 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="AgenDAV 1.2.6 documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">AgenDAV 1.2.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-and-configuration">
+<h1>Installation and configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequisites">1.1. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#downloading-agendav-and-uncompressing">1.2. Downloading AgenDAV and uncompressing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#database-and-tables">1.3. Database and tables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#steps-1-2-mysql">1.3.1. Steps 1&amp;2: MySQL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#steps-1-2-postgresql">1.3.2. Steps 1&amp;2: PostgreSQL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#step-3-apply-latest-database-schema">1.3.3. Step 3: Apply latest database schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configuring-apache-web-server">1.4. Configuring Apache web server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#other-web-servers">1.4.1. Other web servers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configure-agendav">1.5. Configure AgenDAV</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">2. Upgrading</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#files-upgrade">2.1. Files upgrade</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#a-updating-from-tar-gz-file">2.1.1. a) Updating from tar.gz file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#b-updating-from-git">2.1.2. b) Updating from git</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#database-upgrade">2.2. Database upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">3. Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#general-configuration-config-php">3.1. General configuration (config.php)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#database-configuration-database-php">3.2. Database configuration (database.php)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#caldav-specific-options-caldav-php">3.3. CalDAV specific options (caldav.php)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#other-configuration-files">3.4. Other configuration files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#advanced-options-advanced-php">3.4.1. Advanced options (advanced.php)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">4. Troubleshooting AgenDAV</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#check-configuration-and-installation-environment">4.1. Check configuration and installation environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#more-verbose-logs">4.2. More verbose logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#show-errors">4.3. Show errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#capture-traffic">4.4. Capture traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#debug-your-browser-status">4.5. Debug your browser status</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/agendav_160px.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">AgenDAV 1.2.6 documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">1. Installation</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="1. Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="AgenDAV 1.2.6 documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">AgenDAV 1.2.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011-2012, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
