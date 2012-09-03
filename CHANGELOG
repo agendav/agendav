@@ -1,4 +1,4 @@
-Release 1.2.6 (2012-X-Y)
+Release 1.2.6 (2012-09-03)
     * Added Reminders support
     * Changed dialog rendering method to use client templates via
       JavaScript. Much faster!
