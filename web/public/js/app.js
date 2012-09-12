@@ -384,7 +384,7 @@ var cell_max_height = function cell_max_height(h) {
     current_month_weeks = 6;
   }
 
-  return Math.floor(h/current_month_weeks) - 30;
+  return Math.floor(h/current_month_weeks) - 40;
 };
 
 /**
