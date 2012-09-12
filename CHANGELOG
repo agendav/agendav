@@ -1,3 +1,8 @@
+Release 1.2.7 (2012-?-?)
+    * Calendar height in month view is now under control. Cells that have
+      lots of events have now a '+N events' link to day view for that
+      date
+
 Release 1.2.6 (2012-09-03)
     * Added Reminders support
     * Changed dialog rendering method to use client templates via
