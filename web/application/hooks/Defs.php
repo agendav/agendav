@@ -24,7 +24,7 @@ class Defs {
             'libs/jquery-1.7.2.min.js',
             'libs/jquery-ui-1.8.23.custom.min.js',
             'libs/jquery.freeow.min.js',
-            'libs/fullcalendar.min.js',
+            'libs/fullcalendar.js',
             'libs/jquery.colorPicker.js',
             'libs/jquery.qtip.min.js',
             'libs/jquery.colorhelpers.js',
