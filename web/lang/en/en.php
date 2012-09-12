@@ -248,3 +248,5 @@ $messages['error_shareunknownusers'] = 'Some of the users you specified do not e
 $messages['help_defaultcalendar'] = 'New events will be placed in this calendar by default. Set here your most used calendar';
 
 $messages['info_prefssaved'] = 'Preferences saved';
+
+$messages['more_events'] = '+ %count events';
