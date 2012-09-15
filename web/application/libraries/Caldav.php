@@ -22,7 +22,7 @@
 class Caldav {
     private $final_url;
     private $CI;
-    private $client = null;
+    private static $client = null;
 
     private $http_auth_method;
 
@@ -203,9 +203,13 @@ class Caldav {
      */
     function prepare_client($user, $passwd, $calendar = 'home') {
         $this->final_url = $this->build_calendar_url($user, $calendar);
-        $this->client = new CalDAVClient($this->final_url, $user, $passwd,
-                array('auth' => $this->http_auth_method));
-        $this->client->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
+        if (self::$client === null) {
+            $this->client = new CalDAVClient($this->final_url, $user, $passwd,
+                    array('auth' => $this->http_auth_method));
+            $this->client->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
+        } else {
+            $this->client->setCredentials($user, $passwd);
+        }
         $this->client->SetCalendar($this->final_url);
         $this->client->PrincipalURL($this->final_url);
         $this->client->CalendarHomeSet($this->final_url);
