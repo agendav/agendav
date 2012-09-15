@@ -73,9 +73,6 @@ class CalDAVClient {
   // cURL handle
   private $ch;
 
-  // Full URL
-  private $full_url;
-
   /**
    * Constructor
    *
@@ -91,8 +88,7 @@ class CalDAVClient {
 
   // TODO: proxy options, interface used,
   function __construct( $base_url, $user, $pass, $options = array()) {
-      $this->user = $user;
-      $this->pass = $pass;
+      $this->setCredentials($user, $pass);
       $this->headers = array();
 
       $this->timeout = isset($options['timeout']) ? 
@@ -114,7 +110,16 @@ class CalDAVClient {
                   CURLOPT_SSL_VERIFYPEER => FALSE,
                   ));
 
-      $this->full_url = $base_url;
+      $this->base_url = $base_url;
+  }
+
+
+  /**
+   * Sets current user and password
+   */
+  function setCredentials($user, $pass) {
+      $this->user = $user;
+      $this->pass = $pass;
   }
 
   /**
@@ -316,7 +321,7 @@ class CalDAVClient {
    */
   function DoRequest( $url = null ) {
       if (is_null($url)) {
-          $url = $this->full_url;
+          $url = $this->base_url;
       }
 
       $this->request_url = $url;
