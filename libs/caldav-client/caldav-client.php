@@ -95,24 +95,6 @@ class CalDAVClient {
       $this->pass = $pass;
       $this->headers = array();
 
-      if ( preg_match( '#^(https?)://([a-z0-9.-]+)(:([0-9]+))?(/.*)$#', $base_url, $matches ) ) {
-          $this->server = $matches[2];
-          $this->base_url = $matches[5];
-          if ( $matches[1] == 'https' ) {
-              $this->protocol = 'ssl';
-              $this->port = 443;
-          }
-          else {
-              $this->protocol = 'tcp';
-              $this->port = 80;
-          }
-          if ( $matches[4] != '' ) {
-              $this->port = intval($matches[4]);
-          }
-      } else {
-          trigger_error("Invalid URL: '".$base_url."'", E_USER_ERROR);
-      }
-
       $this->timeout = isset($options['timeout']) ? 
           $options['timeout'] : 10;
       $this->ch = curl_init();
