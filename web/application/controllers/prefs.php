@@ -58,7 +58,6 @@ class Prefs extends CI_Controller {
 
 
         // Calendar list
-        $this->load->library('caldav');
         $calendar_list = $this->caldav->all_user_calendars(
                 $this->auth->get_user(),
                 $this->auth->get_passwd());

@@ -41,8 +41,6 @@ class Calendar extends CI_Controller {
         $this->prefs =
             Preferences::singleton($this->session->userdata('prefs'));
 
-        $this->load->library('caldav');
-
         $this->output->set_content_type('application/json');
     }
 

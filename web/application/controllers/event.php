@@ -51,8 +51,6 @@ class Event extends CI_Controller {
         $this->prefs =
             Preferences::singleton($this->session->userdata('prefs'));
 
-        $this->load->library('caldav');
-
         $this->output->set_content_type('application/json');
     }
 
@@ -164,7 +162,6 @@ class Event extends CI_Controller {
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         } else {
-            $this->load->library('caldav');
             $res = $this->caldav->delete_resource(
                     $this->auth->get_user(),
                     $this->auth->get_passwd(),
@@ -219,8 +216,6 @@ class Event extends CI_Controller {
         if ($this->form_validation->run() === FALSE) {
             $this->_throw_exception(validation_errors());
         }
-
-        $this->load->library('caldav');
 
         // DateTime objects
         $start = null;

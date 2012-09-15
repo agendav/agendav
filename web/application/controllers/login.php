@@ -51,8 +51,6 @@ class Login extends CI_Controller {
 
         if ($validation !== FALSE) {
             // Check authentication against server
-            $this->load->library('caldav');
-            
             $user = $this->input->post('user');
             $passwd = $this->input->post('passwd');
 
