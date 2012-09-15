@@ -31,7 +31,7 @@ class Prefs extends CI_Controller {
 
         // Preferences
         $this->prefs =
-            Preferences::singleton($this->session->userdata('prefs'));
+            $this->userpref->load_prefs($this->auth->get_user());
     }
 
     function index() {

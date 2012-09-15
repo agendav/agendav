@@ -20,21 +20,12 @@
  */
 
 class Preferences {
-    private static $instance;
     private $options = array();
 
     function __construct($arr_values = array()) {
         foreach($arr_values as $name => $value) {
             $this->options[$name] = $value;
         }
-    }
-
-    public static function singleton($options = array()) {
-        if (!isset(self::$instance)) {
-            self::$instance = new Preferences($options);
-        }
-
-        return self::$instance;
     }
 
     function __set($name, $value) {

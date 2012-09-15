@@ -39,7 +39,7 @@ class Calendar extends CI_Controller {
         $this->calendar_colors = $this->config->item('calendar_colors');
 
         $this->prefs =
-            Preferences::singleton($this->session->userdata('prefs'));
+            $this->userpref->get_prefs($this->auth->get_user());
 
         $this->output->set_content_type('application/json');
     }

@@ -20,6 +20,8 @@
  */
 
 class Userpref extends CI_Model {
+
+    private static $current = null;
     function __construct() {
         parent::__construct();
 
@@ -65,6 +67,18 @@ class Userpref extends CI_Model {
             $data['username'] = $username;
             $this->db->insert('prefs', $data);
         }
+    }
+
+    /**
+     * Gets current user prefs
+     */
+
+    function get_prefs($user) {
+        if (self::$current === null) {
+            self::$current = $this->load_prefs($user);
+        }
+
+        return self::$current;
     }
 }
 

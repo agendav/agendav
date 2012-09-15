@@ -26,8 +26,7 @@ class Caldav2json extends CI_Controller {
     function __construct() {
         parent::__construct();
 
-        $this->prefs =
-            Preferences::singleton($this->session->userdata('prefs'));
+        $this->prefs = $this->userpref->get_prefs($this->auth->get_user());
 
         $this->output->set_content_type('application/json');
     }

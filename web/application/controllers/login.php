@@ -56,12 +56,11 @@ class Login extends CI_Controller {
 
             $valid_auth = $this->caldav->check_server_authentication($user, $passwd);
             if ($valid_auth !== FALSE) {
-                // TODO load user prefs
                 $data = array(
                         'user' => mb_strtolower($user),
                         'passwd' => $passwd,
                         'prefs' =>
-                            $this->userpref->load_prefs($user)->getAll(),
+                            $this->userpref->get_prefs($user)->getAll(),
                         );
                 $this->auth->new_session($data);
                 redirect("/main");

@@ -49,7 +49,7 @@ class Event extends CI_Controller {
         $this->tz_utc = $this->timezonemanager->getTz('UTC');
 
         $this->prefs =
-            Preferences::singleton($this->session->userdata('prefs'));
+            $this->userpref->get_prefs($this->auth->get_user());
 
         $this->output->set_content_type('application/json');
     }
