@@ -39,14 +39,10 @@ class Caldav {
             $this->http_auth_method = CURLAUTH_BASIC | CURLAUTH_DIGEST;
         }
 
-        // Light loading, for using some functions without loading the full
-        // stack
-        if (!isset($params['light']) || $params['light'] !== TRUE) {
-            // Load ICS helper library
-            $this->CI->load->library('icshelper');
+        // Load ICS helper library
+        $this->CI->load->library('icshelper');
 
-            require_once('caldav-client.php');
-        }
+        require_once('caldav-client.php');
 
     }
 
