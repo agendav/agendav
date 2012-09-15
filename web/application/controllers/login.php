@@ -59,8 +59,6 @@ class Login extends CI_Controller {
                 $data = array(
                         'user' => mb_strtolower($user),
                         'passwd' => $passwd,
-                        'prefs' =>
-                            $this->userpref->get_prefs($user)->getAll(),
                         );
                 $this->auth->new_session($data);
                 redirect("/main");
