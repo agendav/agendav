@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php 
+
+namespace Data;
+
+if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
@@ -18,6 +22,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 class Preferences {
     private $options = array();

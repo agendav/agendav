@@ -53,8 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
-		'timezonemanager', 'dates', 'preferences', 'recurrence',
-        'caldav');
+		'timezonemanager', 'dates', 'recurrence', 'caldav');
 
 
 /*
@@ -112,7 +111,7 @@ $autoload['language'] = array();
 */
 
 $autoload['model'] = array('auth', 'shared_calendars', 'i18n',
-		'userpref');
+		'preferences');
 
 
 /**
@@ -120,6 +119,7 @@ $autoload['model'] = array('auth', 'shared_calendars', 'i18n',
  */
 
 require_once('../application/libraries/CalendarInfo.php');
+require_once('../application/libraries/Preferences.php');
 require_once('../application/libraries/Reminder.php');
 
 

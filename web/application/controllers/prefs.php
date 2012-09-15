@@ -31,7 +31,7 @@ class Prefs extends CI_Controller {
 
         // Preferences
         $this->prefs =
-            $this->userpref->load_prefs($this->auth->get_user());
+            $this->preferences->get($this->auth->get_user());
     }
 
     function index() {
@@ -117,7 +117,7 @@ class Prefs extends CI_Controller {
         }
 
         $current_user = $this->auth->get_user();
-        $current_prefs = $this->userpref->load_prefs($current_user);
+        $current_prefs = $this->preferences->get($current_user);
 
         // Default calendar
         $current_prefs->default_calendar = $default_calendar;
@@ -140,7 +140,7 @@ class Prefs extends CI_Controller {
         $current_prefs->hidden_calendars = $hidden_calendars;
 
         // Save preferences
-        $this->userpref->save_prefs($current_user,
+        $this->preferences->save($current_user,
                 $current_prefs);
 
         $this->session->set_userdata('prefs', $current_prefs->getAll());

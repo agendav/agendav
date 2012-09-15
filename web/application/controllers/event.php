@@ -27,8 +27,6 @@ class Event extends CI_Controller {
     private $tz;
     private $tz_utc;
 
-    private $prefs;
-
     function __construct() {
         parent::__construct();
 
@@ -47,9 +45,6 @@ class Event extends CI_Controller {
         $this->tz = $this->timezonemanager->getTz(
                 $this->config->item('default_timezone'));
         $this->tz_utc = $this->timezonemanager->getTz('UTC');
-
-        $this->prefs =
-            $this->userpref->get_prefs($this->auth->get_user());
 
         $this->output->set_content_type('application/json');
     }

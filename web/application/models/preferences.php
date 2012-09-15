@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Userpref extends CI_Model {
+class Preferences extends CI_Model {
 
     private static $current = null;
     function __construct() {
@@ -30,7 +30,7 @@ class Userpref extends CI_Model {
     /**
      * Gets all user preferences for a given user into a Preferences object
      */
-    function load_prefs($username) {
+    private function load($username) {
         $options = array();
 
         $query = $this->db->get_where('prefs',
@@ -41,7 +41,7 @@ class Userpref extends CI_Model {
             $options = json_decode($result[0]->options, TRUE);
         }
 
-        $prefs = new Preferences($options);
+        $prefs = new Data\Preferences($options);
 
         return $prefs;
     }
@@ -49,7 +49,7 @@ class Userpref extends CI_Model {
     /**
      * Saves user preferences
      */
-    function save_prefs($username, Preferences $prefs) {
+    public function save($username, Data\Preferences $prefs) {
         $data = array(
                 'options' => $prefs->to_json(),
                 );
@@ -73,9 +73,9 @@ class Userpref extends CI_Model {
      * Gets current user prefs
      */
 
-    function get_prefs($user) {
+    public function get($user) {
         if (self::$current === null) {
-            self::$current = $this->load_prefs($user);
+            self::$current = $this->load($user);
         }
 
         return self::$current;
