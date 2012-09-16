@@ -632,11 +632,6 @@ class CI_Session {
      */
     function _sess_gc()
     {
-        if ($this->sess_use_database != TRUE)
-        {
-            return;
-        }
-
         srand(time());
         if ((rand() % 100) < $this->gc_probability)
         {
