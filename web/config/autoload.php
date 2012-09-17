@@ -4,9 +4,9 @@
  * AgenDAV additional classes
  */
 
-require_once('../application/libraries/CalendarInfo.php');
-require_once('../application/libraries/Preferences.php');
-require_once('../application/libraries/Reminder.php');
+require_once('../application/data/CalendarInfo.php');
+require_once('../application/data/Preferences.php');
+require_once('../application/data/Reminder.php');
 
 require_once('../application/libraries/User.php');
 

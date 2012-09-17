@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php 
+
+namespace AgenDAV\Data;
+
+if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>

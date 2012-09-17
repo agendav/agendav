@@ -81,7 +81,7 @@ class User {
      * Gets current user preferences
      *
      * @param boolean $force Force reloading preferences
-     * @return \AgenDAV\Preferences Current user preferences
+     * @return AgenDAV\Data\Preferences Current user preferences
      */
     public function getPreferences($force = false) {
         if ($force === true || $this->preferences === null) {
@@ -196,8 +196,6 @@ class User {
      */
     public function removeHiddenCalendars(&$calendars) {
         $hidden_calendars = $this->getPreferences()->hidden_calendars;
-        log_message('INTERNALS', 'Oculto: ' . var_export($hidden_calendars,
-                    true));
         return array_diff_key($calendars, $hidden_calendars);
     }
 

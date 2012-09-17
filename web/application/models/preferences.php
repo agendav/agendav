@@ -41,7 +41,7 @@ class Preferences extends CI_Model {
             $options = json_decode($result[0]->options, TRUE);
         }
 
-        $prefs = new Data\Preferences($options);
+        $prefs = new AgenDAV\Data\Preferences($options);
 
         return $prefs;
     }

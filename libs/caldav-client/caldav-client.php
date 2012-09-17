@@ -21,6 +21,8 @@
 
 require_once('XMLDocument.php');
 
+use AgenDAV\Data\CalendarInfo;
+
 class CalDAVClient {
   /**
   * Server, username, password, calendar

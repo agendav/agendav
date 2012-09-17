@@ -19,6 +19,8 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Data\Reminder;
+
 class Icshelper {
     private $config; // for iCalCreator
 

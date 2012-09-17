@@ -20,6 +20,7 @@
  */
 
 use AgenDAV\User;
+use AgenDAV\Data\Reminder;
 
 class Event extends CI_Controller {
 
