@@ -19,13 +19,19 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Main extends CI_Controller {
+
+    private $user;
 
     function __construct() {
         parent::__construct();
 
+        $this->user = User::getInstance();
+
         // Force authentication
-        $this->auth->force_auth();
+        $this->user->forceAuthentication();
     }
 
     function index() {
@@ -36,6 +42,7 @@ class Main extends CI_Controller {
         $data_header = array(
                 'title' => $title,
                 'logged_in' => TRUE,
+                'username' => $this->user->getUsername(),
                 'body_class' => array('calendarpage'),
                 );
 
@@ -67,7 +74,7 @@ class Main extends CI_Controller {
      * Closes user session
      */
     function logout() {
-        $this->auth->delete_session();
+        $this->user->removeSession();
 
         // Configured redirection
         $logout_url = $this->config->item('logout_redirect_to');

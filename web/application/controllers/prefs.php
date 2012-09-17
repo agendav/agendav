@@ -19,19 +19,23 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Prefs extends CI_Controller {
 
     private $prefs;
+    private $user;
 
     function __construct() {
         parent::__construct();
 
+        $this->user = User::getInstance();
+
         // Force authentication
-        $this->auth->force_auth();
+        $this->user->forceAuthentication();
 
         // Preferences
-        $this->prefs =
-            $this->preferences->get($this->auth->get_user());
+        $this->prefs = $this->user->getPreferences();
     }
 
     function index() {
@@ -42,6 +46,7 @@ class Prefs extends CI_Controller {
         $data_header = array(
                 'title' => $title,
                 'logged_in' => TRUE,
+                'username' => $this->user->getUsername(),
                 'body_class' => array('prefspage'),
                 );
 
@@ -59,8 +64,8 @@ class Prefs extends CI_Controller {
 
         // Calendar list
         $calendar_list = $this->caldav->all_user_calendars(
-                $this->auth->get_user(),
-                $this->auth->get_passwd());
+                $this->user->getUsername(),
+                $this->user->getPasswd());
 
         // TODO refactor this part
         $hidden_calendars = $this->prefs->hidden_calendars;
@@ -116,8 +121,8 @@ class Prefs extends CI_Controller {
                         'error_interfacefailure'));
         }
 
-        $current_user = $this->auth->get_user();
-        $current_prefs = $this->preferences->get($current_user);
+        $current_user = $this->user->getUsername();
+        $current_prefs = $this->user->getPreferences(true);
 
         // Default calendar
         $current_prefs->default_calendar = $default_calendar;

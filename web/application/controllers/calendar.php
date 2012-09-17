@@ -19,15 +19,18 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Calendar extends CI_Controller {
 
     private $calendar_colors;
-    private $prefs;
+    private $user, $prefs;
 
     function __construct() {
         parent::__construct();
+        $this->user = User::getInstance();
 
-        if (!$this->auth->is_authenticated()) {
+        if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INFO', 
                     'Anonymous access attempt to '
                     . uri_string());
@@ -39,7 +42,7 @@ class Calendar extends CI_Controller {
         $this->calendar_colors = $this->config->item('calendar_colors');
 
         $this->prefs =
-            $this->preferences->get($this->auth->get_user());
+            $this->preferences->get($this->user->getUsername());
 
         $this->output->set_content_type('application/json');
     }
@@ -54,8 +57,8 @@ class Calendar extends CI_Controller {
      */
     function all() {
         $arr_calendars = $this->caldav->all_user_calendars(
-                $this->auth->get_user(),
-                $this->auth->get_passwd());
+                $this->user->getUsername(),
+                $this->user->getPasswd());
 
         // Hide calendars user doesn't want to be shown
         $hidden_calendars = $this->prefs->hidden_calendars;
@@ -113,8 +116,8 @@ class Calendar extends CI_Controller {
 
         // Get current own calendars
         $current_calendars = $this->caldav->get_own_calendars(
-                $this->auth->get_user(),
-                $this->auth->get_passwd()
+                $this->user->getUsername(),
+                $this->user->getPasswd()
                 );
 
         // Generate internal calendar name
@@ -133,8 +136,8 @@ class Calendar extends CI_Controller {
 
 
         $res = $this->caldav->mkcalendar(
-                $this->auth->get_user(),
-                $this->auth->get_passwd(),
+                $this->user->getUsername(),
+                $this->user->getPasswd(),
                 $calendar,
                 $props);
 
@@ -160,8 +163,8 @@ class Calendar extends CI_Controller {
 
         // Get current own calendars and check if this one exists
         $current_calendars = $this->caldav->get_own_calendars(
-                $this->auth->get_user(),
-                $this->auth->get_passwd()
+                $this->user->getUsername(),
+                $this->user->getPasswd()
                 );
 
         if (!isset($current_calendars[$calendar])) {
@@ -176,7 +179,7 @@ class Calendar extends CI_Controller {
         // Delete calendar shares (if any), even if calendar sharing is not
         // enabled
         $shares =
-            $this->shared_calendars->get_shared_from($this->auth->get_user());
+            $this->shared_calendars->get_shared_from($this->user->getUsername());
 
         if (isset($shares[$calendar])) {
             $this_calendar_shares = array_values($shares[$calendar]);
@@ -185,14 +188,14 @@ class Calendar extends CI_Controller {
             }
         }
 
-        $replace_pattern = '/^' . $this->auth->get_user() . ':/';
+        $replace_pattern = '/^' . $this->user->getUsername() . ':/';
         $internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
 
         // Proceed to remove calendar from CalDAV server
         $res = $this->caldav->delete_resource(
-            $this->auth->get_user(),
-            $this->auth->get_passwd(),
+            $this->user->getUsername(),
+            $this->user->getPasswd(),
             '',
             $internal_calendar,
             null);
@@ -240,8 +243,8 @@ class Calendar extends CI_Controller {
 
         // Check if calendar is valid
         if (!$this->caldav->is_valid_calendar(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $calendar)) {
             $this->extended_logs->message('INTERNALS', 
                     'Call to modify_calendar() with non-existent calendar '
@@ -257,7 +260,7 @@ class Calendar extends CI_Controller {
         if ($is_sharing_enabled && $is_shared_calendar) {
             $current_calendar_shares =
                 $this->shared_calendars->users_with_access_to($calendar);
-            $current_user = $this->auth->get_user();
+            $current_user = $this->user->getUsername();
             foreach ($current_calendar_shares as $sh) {
                 if ($sh['username'] == $current_user) {
                     $sid = $sh['sid'];
@@ -288,12 +291,12 @@ class Calendar extends CI_Controller {
 
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
-            $replace_pattern = '/^' . $this->auth->get_user() . ':/';
+            $replace_pattern = '/^' . $this->user->getUsername() . ':/';
             $internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
             $res = $this->caldav->proppatch(
-                $this->auth->get_user(),
-                $this->auth->get_passwd(),
+                $this->user->getUsername(),
+                $this->user->getPasswd(),
                 $internal_calendar,
                 $props);
         } else if ($is_sharing_enabled) {
@@ -301,7 +304,7 @@ class Calendar extends CI_Controller {
             $success = $this->shared_calendars->store($sid,
                     null,
                     $calendar,
-                    $this->auth->get_user(),
+                    $this->user->getUsername(),
                     $props);
             if ($success === FALSE) {
                 $this->_throw_exception($this->i18n->_('messages',
@@ -352,8 +355,8 @@ class Calendar extends CI_Controller {
             }
 
             $res = $this->caldav->setacl(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $internal_calendar,
                     $set_shares);
 
@@ -373,7 +376,7 @@ class Calendar extends CI_Controller {
 
                     $this->shared_calendars->store(
                             $this_sid,
-                            $this->auth->get_user(),
+                            $this->user->getUsername(),
                             $internal_calendar,
                             $share['username'],
                             null,                   // Preserve options

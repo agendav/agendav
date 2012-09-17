@@ -71,10 +71,13 @@ class Preferences extends CI_Model {
 
     /**
      * Gets current user prefs
+     *
+     * @param string $user User name
+     * @param boolean $force Force load from DB
      */
 
-    public function get($user) {
-        if (self::$current === null) {
+    public function get($user, $force = false) {
+        if ($force === true || self::$current === null) {
             self::$current = $this->load($user);
         }
 

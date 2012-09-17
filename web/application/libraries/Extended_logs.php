@@ -19,12 +19,16 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Extended_logs {
 
     private $CI;
+    private $user;
 
     function __construct() {
         $this->CI = get_instance();
+        $this->user = User::getInstance();
     }
 
     /**
@@ -32,7 +36,7 @@ class Extended_logs {
     function message($level, $message) {
         $ip = $this->CI->input->ip_address();
         // TODO X-Forwarded-for?
-        $username = $this->CI->auth->get_user();
+        $username = $this->user->getUsername();
 
         // Include URL on errors
         if ($level == 'ERROR') {

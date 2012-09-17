@@ -19,14 +19,17 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Caldav2json extends CI_Controller {
 
-    private $prefs;
+    private $user, $prefs;
 
     function __construct() {
         parent::__construct();
 
-        $this->prefs = $this->preferences->get($this->auth->get_user());
+        $this->user = User::getInstance();
+        $this->prefs = $this->user->getPreferences();
 
         $this->output->set_content_type('application/json');
     }
@@ -43,8 +46,8 @@ class Caldav2json extends CI_Controller {
 
         if (!empty($term)) {
             $caldav_res = $this->caldav->principal_property_search(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $term, $term);
 
             if ($caldav_res[0] != '207') {

@@ -1,4 +1,15 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * AgenDAV additional classes
+ */
+
+require_once('../application/libraries/CalendarInfo.php');
+require_once('../application/libraries/Preferences.php');
+require_once('../application/libraries/Reminder.php');
+
+require_once('../application/libraries/User.php');
+
 /*
 | -------------------------------------------------------------------
 | AUTO-LOADER
@@ -110,17 +121,9 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('auth', 'shared_calendars', 'i18n',
-		'preferences');
+$autoload['model'] = array('shared_calendars', 'i18n', 'preferences');
 
 
-/**
- * AgenDAV additional classes
- */
-
-require_once('../application/libraries/CalendarInfo.php');
-require_once('../application/libraries/Preferences.php');
-require_once('../application/libraries/Reminder.php');
 
 
 /* End of file autoload.php */

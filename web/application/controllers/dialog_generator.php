@@ -19,6 +19,8 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Dialog_generator extends CI_Controller {
 
     // Formats
@@ -31,12 +33,16 @@ class Dialog_generator extends CI_Controller {
     // UTC timezone (used several times)
     private $tz_utc;
 
+    private $user;
+
     function __construct() {
         parent::__construct();
 
         $this->output->set_content_type('text/html');
 
-        if (!$this->auth->is_authenticated()) {
+        $this->user = User::getInstance();
+
+        if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INTERNALS', 
                     'Anonymous access attempt to '
                     . uri_string());
@@ -141,7 +147,7 @@ class Dialog_generator extends CI_Controller {
         $calendar = $this->input->post('current_calendar');
         if ($calendar === FALSE) {
             // Use the calendar specified in preferences
-            $prefs = $this->preferences->get($this->auth->get_user());
+            $prefs = $this->user->getPreferences();
             $calendar = $prefs->default_calendar;
             if ($calendar === FALSE) {
                 $calendar = array_shift(array_keys($calendars));

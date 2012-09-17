@@ -19,6 +19,8 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Event extends CI_Controller {
 
     private $time_format;
@@ -27,10 +29,14 @@ class Event extends CI_Controller {
     private $tz;
     private $tz_utc;
 
+    private $user;
+
     function __construct() {
         parent::__construct();
 
-        if (!$this->auth->is_authenticated()) {
+        $this->user = User::getInstance();
+
+        if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INFO', 
                     'Anonymous access attempt to '
                     . uri_string());
@@ -97,8 +103,8 @@ class Event extends CI_Controller {
                                 $this->tz_utc));
 
                 $returned_events = $this->caldav->fetch_events(
-                        $this->auth->get_user(),
-                        $this->auth->get_passwd(),
+                        $this->user->getUsername(),
+                        $this->user->getPasswd(),
                         $start, $end,
                         $calendar);
 
@@ -158,8 +164,8 @@ class Event extends CI_Controller {
                         'error_interfacefailure'));
         } else {
             $res = $this->caldav->delete_resource(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $href,
                     $calendar,
                     $etag);
@@ -348,8 +354,8 @@ class Event extends CI_Controller {
 
         // Valid destination calendar? 
         if (!$this->caldav->is_valid_calendar(
-                $this->auth->get_user(),
-                $this->auth->get_passwd(),
+                $this->user->getUsername(),
+                $this->user->getPasswd(),
                 $p['calendar'])) {
             $this->_throw_exception(
                     $this->i18n->_('messages', 'error_calendarnotfound', 
@@ -376,8 +382,8 @@ class Event extends CI_Controller {
             }
 
             if (!$this->caldav->is_valid_calendar(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $original_calendar)) {
                 $this->_throw_exception(
                     $this->i18n->_('messages', 'error_calendarnotfound', 
@@ -389,8 +395,8 @@ class Event extends CI_Controller {
             $etag = $p['etag'];
 
             $res = $this->caldav->fetch_resource_by_uid(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $uid,
                     $original_calendar);
 
@@ -476,8 +482,8 @@ class Event extends CI_Controller {
 
         // PUT on server
         $new_etag = $this->caldav->put_resource(
-                $this->auth->get_user(),
-                $this->auth->get_passwd(),
+                $this->user->getUsername(),
+                $this->user->getPasswd(),
                 $href,
                 $calendar,
                 $resource,
@@ -512,8 +518,8 @@ class Event extends CI_Controller {
             // Remove original event
             if (isset($p['modification']) && $original_calendar != $calendar) {
                 $res = $this->caldav->delete_resource(
-                        $this->auth->get_user(),
-                        $this->auth->get_passwd(),
+                        $this->user->getUsername(),
+                        $this->user->getPasswd(),
                         $href,
                         $original_calendar,
                         $original_etag);
@@ -581,8 +587,8 @@ class Event extends CI_Controller {
 
         // Load resource
         $resource = $this->caldav->fetch_resource_by_uid(
-                $this->auth->get_user(),
-                $this->auth->get_passwd(),
+                $this->user->getUsername(),
+                $this->user->getPasswd(),
                 $uid,
                 $calendar);
 
@@ -702,8 +708,8 @@ class Event extends CI_Controller {
 
         // PUT on server
         $new_etag = $this->caldav->put_resource(
-                $this->auth->get_user(),
-                $this->auth->get_passwd(),
+                $this->user->getUsername(),
+                $this->user->getPasswd(),
                 $href,
                 $calendar,
                 $ical,
@@ -743,8 +749,8 @@ class Event extends CI_Controller {
 
         if (!empty($term)) {
             $caldav_res = $this->caldav->principal_property_search(
-                    $this->auth->get_user(),
-                    $this->auth->get_passwd(),
+                    $this->user->getUsername(),
+                    $this->user->getPasswd(),
                     $term, $term);
 
             if ($caldav_res[0] != '207') {

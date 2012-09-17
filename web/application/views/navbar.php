@@ -10,7 +10,7 @@ if (isset($logged_in)):
 ?>
    <ul class="nav pull-right">
     <li class="dropdown" id="usermenu"><a href="#"><span class="username"><?php echo
-	$this->auth->get_user() ?></span><b class="caret"></b></a></li>
+	$username ?></span><b class="caret"></b></a></li>
    </ul>
 <?php
 endif;

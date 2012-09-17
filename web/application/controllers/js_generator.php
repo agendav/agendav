@@ -19,18 +19,22 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\User;
+
 class Js_generator extends CI_Controller {
 
     // Special methods that do should not enforce authentication
     private $not_enforced = array(
             'prefs',
             );
+    private $user;
 
     function __construct() {
         parent::__construct();
+        $this->user = User::getInstance();
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
-                !$this->auth->is_authenticated()) {
+                !$this->user->isAuthenticated()) {
             $this->extended_logs->message('INTERNALS', 
                     'Anonymous access attempt to '
                     . uri_string());
