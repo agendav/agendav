@@ -27,7 +27,7 @@ class User {
     private $username, $passwd, $displayname, $mail;
     private $is_authenticated = null;
     private $preferences;
-    private $calendars;
+    private $calendars = null;
     private $CI;
     private static $instance = null;
 
@@ -165,6 +165,59 @@ class User {
         if (!$this->isAuthenticated()) {
             redirect('/login');
         }
+    }
+
+    /**
+     * Retrieves all user calendars
+     *
+     * @param boolean $force Force calendar reloading
+     */
+    public function allCalendars($force = false) {
+        if ($force === true || $this->calendars === null) {
+            $calendars = $this->CI->caldav->all_user_calendars(
+                    $this->username, $this->passwd);
+
+            // Hide calendars user doesn't want to be shown
+            $calendars = $this->removeHiddenCalendars($calendars);
+
+            // Default calendar
+            $calendars = $this->setDefaultCalendar($calendars);
+        }
+
+        return $calendars;
+    }
+
+
+    /**
+     * Remove calendars which are marked to be hidden from calendar list
+     *
+     * @param Array $calendars Calendars fetched from server
+     * @return Array Resulting calendar list
+     */
+    public function removeHiddenCalendars(&$calendars) {
+        $hidden_calendars = $this->getPreferences()->hidden_calendars;
+        log_message('INTERNALS', 'Oculto: ' . var_export($hidden_calendars,
+                    true));
+        return array_diff_key($calendars, $hidden_calendars);
+    }
+
+    /**
+     * Sets default calendar
+     *
+     * @param Array $calendars Available calendars
+     * @return Array Modified calendars with default calendar present
+     */
+    public function setDefaultCalendar(&$calendars) {
+        $default_calendar = $this->getPreferences()->default_calendar;
+        if ($default_calendar !== null &&
+                isset($calendars[$default_calendar])) {
+            $calendars[$default_calendar]->default_calendar = true;
+        } elseif (count($calendars) > 0) {
+            $first = array_shift(array_keys($calendars));
+            $calendars[$first]->default_calendar = true;
+        }
+
+        return $calendars;
     }
 
 }
