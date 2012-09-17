@@ -56,44 +56,13 @@ class Calendar extends CI_Controller {
      * other users with the current one)
      */
     function all() {
-        $arr_calendars = $this->caldav->all_user_calendars(
-                $this->user->getUsername(),
-                $this->user->getPasswd());
-
-        // Hide calendars user doesn't want to be shown
-        $hidden_calendars = $this->prefs->hidden_calendars;
-        if ($hidden_calendars !== null) {
-            foreach ($arr_calendars as $c => $data) {
-                if (isset($hidden_calendars[$c])) {
-                    unset($arr_calendars[$c]);
-                }
-            }
-        }
-
-        // Default calendar
-        $default_calendar = $this->prefs->default_calendar;
-        if ($default_calendar !== null &&
-                isset($arr_calendars[$default_calendar])) {
-            $arr_calendars[$default_calendar]->default_calendar = TRUE;
-        } elseif (count($arr_calendars) > 0) {
-            $first = array_shift(array_keys($arr_calendars));
-            $arr_calendars[$first]->default_calendar = TRUE;
-        }
-
-        // Add public URL
-        if ($this->config->item('show_public_caldav_url')) {
-            foreach ($arr_calendars as $calendar) {
-                    $calendar->public_url =
-                        $this->caldav->construct_public_url(
-                                $calendar->calendar);
-            }
-        }
+        $calendars = $this->user->allCalendars(true);
 
         // Save calendars into session (avoid multiple CalDAV queries when
         // editing/adding events)
-        $this->session->set_userdata('available_calendars', $arr_calendars);
+        $this->session->set_userdata('available_calendars', $calendars);
 
-        $this->output->set_output(json_encode($arr_calendars));
+        $this->output->set_output(json_encode($calendars));
     }
 
     /**

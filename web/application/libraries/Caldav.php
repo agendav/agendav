@@ -825,6 +825,12 @@ class Caldav {
             }
         }
 
+        // Set public URLs
+        foreach ($ret as $calendar) {
+            $calendar->public_url =
+                $this->construct_public_url($calendar->calendar);
+        }
+
         return $ret;
     }
 
