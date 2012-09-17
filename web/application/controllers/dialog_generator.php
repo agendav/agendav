@@ -129,16 +129,10 @@ class Dialog_generator extends CI_Controller {
         }
 
         // Calendars
-        $tmp_cals= $this->session->userdata('available_calendars');
         $calendars = array();
-        if ($tmp_cals === FALSE) {
-            $this->extended_logs->message('ERROR',
-                    'Call to create_or_modify_event() with no calendars stored in session');
-        } else {
-            foreach ($tmp_cals as $id => $data) {
-                if (!$data->shared || $data->write_access == '1') {
-                    $calendars[$id] = $data->displayname;
-                }
+        foreach ($this->user->allCalendars() as $id => $data) {
+            if (!$data->shared || $data->write_access == '1') {
+                $calendars[$id] = $data->displayname;
             }
         }
 
@@ -206,16 +200,10 @@ class Dialog_generator extends CI_Controller {
                                 'repetitionexceptions'))));
         } else {
             // Calendars
-            $tmp_cals= $this->session->userdata('available_calendars');
             $calendars = array();
-            if ($tmp_cals === FALSE) {
-                $this->extended_logs->message('ERROR',
-                        'Call to create_or_modify_event() with no calendars stored in session');
-            } else {
-                foreach ($tmp_cals as $id => $data) {
-                    if (!$data->shared || $data->write_access == '1') {
-                        $calendars[$id] = $data->displayname;
-                    }
+            foreach ($this->user->allCalendars() as $id => $data) {
+                if (!$data->shared || $data->write_access == '1') {
+                    $calendars[$id] = $data->displayname;
                 }
             }
 

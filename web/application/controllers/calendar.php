@@ -57,11 +57,6 @@ class Calendar extends CI_Controller {
      */
     function all() {
         $calendars = $this->user->allCalendars(true);
-
-        // Save calendars into session (avoid multiple CalDAV queries when
-        // editing/adding events)
-        $this->session->set_userdata('available_calendars', $calendars);
-
         $this->output->set_output(json_encode($calendars));
     }
 
