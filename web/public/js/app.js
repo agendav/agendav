@@ -527,8 +527,15 @@ var load_generated_dialog = function load_generated_dialog(url, data, preDialogF
  */
 var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
     errorFunc) {
-  var url = $(formObj).attr('action');
-  var data = $(formObj).serialize();
+  var url, data;
+
+  if (formObj instanceof jQuery) {
+    url = $(formObj).attr('action');
+    data = $(formObj).serialize();
+  } else {
+    url = formObj.url;
+    data = formObj.data;
+  }
 
   // Mask body
   loading(true);
@@ -1819,41 +1826,7 @@ var select_helper = function select_helper(start,end) {
 var event_resize_callback = function event_resize_callback(event, dayDelta, minuteDelta, revertFunc,
   jsEvent, ui, view ) {
 
-  // Generate on-the-fly form
-  var formid = generate_on_the_fly_form(
-    base_app_url + 'event/alter',
-    {
-      uid: event.uid,
-      calendar: event.calendar,
-      etag: event.etag,
-      view: view.name,
-      dayDelta: dayDelta,
-      minuteDelta: minuteDelta,
-      allday: event.allDay,
-      was_allday: event.was_allday,
-      timezone: event.timezone,
-      type: 'resize'
-    });
-
-  if (get_data('formcreation') == 'ok') {
-    var thisform = $('#' + formid);
-
-    proceed_send_ajax_form(thisform,
-      function(data) {
-        // Users just want to know if something fails
-        update_single_event(event, data);
-      },
-      function(data) {
-        show_error(t('messages', 'error_modfailed'), data);
-        revertFunc();
-      },
-      function() {
-        revertFunc();
-      });
-    }
-
-  // Remove generated form
-  $(thisform).remove();
+      event_alter('resize', event, dayDelta, minuteDelta, event.allDay, revertFunc, jsEvent, ui, view);
 };
 
 /**
@@ -1863,28 +1836,34 @@ var event_resize_callback = function event_resize_callback(event, dayDelta, minu
 var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDelta, allDay,
       revertFunc, jsEvent, ui, view) {
 
-  // Generate on-the-fly form
-  var formid = generate_on_the_fly_form(
-    base_app_url + 'event/alter',
-    {
+      event_alter('drag', event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
+};
+
+
+/**
+ * Event alter via drag&drop or resizing it
+ */
+var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+  var params = {
+    url: base_app_url + 'event/alter',
+    data: {
       uid: event.uid,
       calendar: event.calendar,
       etag: event.etag,
       view: view.name,
       dayDelta: dayDelta,
       minuteDelta: minuteDelta,
-      allday: event.allDay,
-      was_allday: event.orig_allday,
+      allday: allDay,
+      was_allday: event.allDay,
       timezone: event.timezone,
-      type: 'drag'
-    });
+      type: alterType
+    }
+  };
 
-  if (get_data('formcreation') == 'ok') {
-    var thisform = $('#' + formid);
+  params.data[AgenDAVConf.prefs_csrf_token_name] = get_csrf_token();
 
-    proceed_send_ajax_form(thisform,
+  proceed_send_ajax_form(params,
       function(data) {
-        // Users just want to know if something fails
         update_single_event(event, data);
       },
       function(data) {
@@ -1894,10 +1873,6 @@ var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDe
       function() {
         revertFunc();
       });
-    }
-
-  // Remove generated form
-  $(thisform).remove();
 };
 
 // Delete link
