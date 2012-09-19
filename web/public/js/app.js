@@ -115,13 +115,6 @@ $(document).ready(function() {
       windowResize: function(view) {
         var new_height = calendar_height();
         $(this).fullCalendar('option', 'height', new_height);
-        $(this).fullCalendar('option', 'maxHeight', cell_max_height(new_height));
-      },
-      viewRender: function(view) {
-        if (view.name == 'month') {
-          $('#calendar_view').fullCalendar('option', 'maxHeight',
-            cell_max_height(calendar_height()));
-        }
       },
       overflowRender: function(data, element) {
         element.html(
@@ -368,23 +361,6 @@ $(document).ready(function() {
 var calendar_height = function calendar_height() {
   var offset = $('#calendar_view').offset();
   return $(window).height() - Math.ceil(offset.top) - 30;
-};
-
-/**
- * Used to calculate calendar max month cell height
- */
-var cell_max_height = function cell_max_height(h) {
-  var rows = $('#calendar_view .fc-content').find('tbody').first().find('tr.fc-last').length;
-  var current_month_weeks = 0;
-  if (rows == 3) {
-    current_month_weeks = 4;
-  } else if (rows == 2) {
-    current_month_weeks = 5;
-  } else {
-    current_month_weeks = 6;
-  }
-
-  return Math.floor(h/current_month_weeks) - 40;
 };
 
 /**
