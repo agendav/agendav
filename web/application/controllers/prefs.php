@@ -63,7 +63,7 @@ class Prefs extends CI_Controller {
 
 
         // Calendar list
-        $calendar_list = $this->user->allCalendars(true);
+        $calendar_list = $this->user->allCalendars(true, false);
 
         // TODO refactor this part
         $hidden_calendars = $this->prefs->hidden_calendars;

@@ -172,13 +172,15 @@ class User {
      *
      * @param boolean $force Force calendar reloading
      */
-    public function allCalendars($force = false) {
+    public function allCalendars($force = false, $hide_calendars = true) {
         if ($force === true || $this->calendars === null) {
             $calendars = $this->CI->caldav->all_user_calendars(
                     $this->username, $this->passwd);
 
             // Hide calendars user doesn't want to be shown
-            $calendars = $this->removeHiddenCalendars($calendars);
+            if ($hide_calendars === true) {
+                $calendars = $this->removeHiddenCalendars($calendars);
+            }
 
             // Default calendar
             $calendars = $this->setDefaultCalendar($calendars);
