@@ -1046,8 +1046,14 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
       'text': t('labels', 'yes'),
       'class': 'addicon btn-icon-calendar-delete',
       'click': function() {
-        var thisform = $('#calendar_delete_form');
-        proceed_send_ajax_form(thisform,
+        var params = {
+          url: base_app_url + 'calendar/delete',
+          data: $('#calendar_delete_form').serializeObject()
+        };
+
+        destroy_dialog('#calendar_delete_dialog');
+
+        proceed_send_ajax_form(params,
             function(removed_calendar) {
               // Just remove deleted calendar
               $('.calendar_list li.available_calendar').each(function(index) {
@@ -1064,8 +1070,6 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
             },
             function() {}); 
 
-        // Destroy dialog
-        destroy_dialog('#calendar_delete_dialog');
       }
     },
     {
