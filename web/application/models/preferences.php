@@ -49,7 +49,7 @@ class Preferences extends CI_Model {
     /**
      * Saves user preferences
      */
-    public function save($username, Data\Preferences $prefs) {
+    public function save($username, AgenDAV\Data\Preferences $prefs) {
         $data = array(
                 'options' => $prefs->to_json(),
                 );
