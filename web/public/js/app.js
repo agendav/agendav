@@ -188,7 +188,7 @@ $(document).ready(function() {
 
 
     // Refresh link
-    $('<span class="fc-button-refresh">' 
+    $('<span id="button-refresh" class="fc-button-refresh">'
       +'<i class="icon-refresh"></i> '
       +t('labels', 'refresh') + '</span>')
       .appendTo('#calendar_view td.fc-header-right')
@@ -1987,10 +1987,14 @@ var get_csrf_token = function get_csrf_token() {
 
 // Loading indicator
 var loading = function loading(status) {
+  var $loading = $('#loading');
+  var $refresh = $('#button-refresh');
   if (status === false) {
-    $('#loading').hide();
+    $refresh.button('option', 'disabled', false);
+    $loading.hide();
   } else {
-    $('#loading').show();
+    $refresh.button('option', 'disabled', true);
+    $loading.show();
   }
 }
 
