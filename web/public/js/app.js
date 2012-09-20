@@ -912,10 +912,13 @@ var calendar_create_dialog = function calendar_create_dialog() {
         'text': t('labels', 'create'),
         'class': 'addicon btn-icon-calendar-add',
         'click': function() {
-          var thisform = $('#calendar_create_form');
-          proceed_send_ajax_form(thisform,
+          var params = {
+            url: base_app_url + 'calendar/create',
+            data: $('#calendar_create_form').serializeObject()
+          };
+          destroy_dialog('#calendar_create_dialog');
+          proceed_send_ajax_form(params,
             function(data) {
-              destroy_dialog('#calendar_create_dialog');
               update_calendar_list(false);
             },
             function(data) {
