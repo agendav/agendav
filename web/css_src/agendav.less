@@ -1,3 +1,4 @@
+@import "variables_agendav.less";
 @agendavbgImage: "../img/bg_11.png";
 @agendavbgColor: #c6c8cd;
 @agendavbgHoverPseudobutton: #A9D6FF;
@@ -292,10 +293,16 @@ div.selecthelper {
 }
 
 .fc-event-hori .fc-event-inner {
-  padding: 0.1em 0 0.2em 0;
+  padding: 2px 0;
+  height: @baseLineHeight;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
 }
 
 span.fc-event-icons {
+  font-size: 90%;
   float: right;
   margin-right: 5px;
 
