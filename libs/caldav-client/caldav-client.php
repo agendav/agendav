@@ -679,13 +679,9 @@ class CalDAVClient {
       $xml = $this->DoPROPFINDRequest( $url, array('resourcetype', 'current-user-principal', 'owner', 'principal-URL',
                   'urn:ietf:params:xml:ns:caldav:calendar-home-set'), 1);
 
-      $principal_url = $this->HrefForProp('DAV::principal');
-
-      if ( !isset($principal_url) ) {
-          foreach( array('DAV::current-user-principal', 'DAV::principal-URL', 'DAV::owner') AS $href ) {
-              if ( !isset($principal_url) ) {
-                  $principal_url = $this->HrefValueInside($href);
-              }
+      foreach( array('DAV::current-user-principal', 'DAV::principal-URL', 'DAV::owner') AS $href ) {
+          if ( !isset($principal_url) ) {
+              $principal_url = $this->HrefValueInside($href);
           }
       }
 
