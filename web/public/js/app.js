@@ -1095,8 +1095,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   var updcalendar_ajax_req = $.ajax({
     url: base_app_url + 'calendar/all',
     cache: false,
-    dataType: 'json',
-    async: false // Let's wait
+    dataType: 'json'
   });
 
   updcalendar_ajax_req.then(function() {
