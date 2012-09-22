@@ -69,6 +69,10 @@ class CalDAVClient {
 
   protected $parser; // our XML parser object
 
+  protected $xmlnodes;
+
+  protected $xmltags;
+
   // Requests timeout
   private $timeout;
 
@@ -322,13 +326,9 @@ class CalDAVClient {
    * @return string The content of the response from the server
    */
   function DoRequest( $url = null ) {
-      if (is_null($url)) {
-          $url = $this->base_url;
-      }
+      $this->request_url = $this->base_url . ($url === null ? '' : $url);
 
-      $this->request_url = $url;
-
-      curl_setopt($this->ch, CURLOPT_URL, $url);
+      curl_setopt($this->ch, CURLOPT_URL, $this->request_url);
 
       // Request method
       curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, $this->requestMethod);
@@ -879,25 +879,27 @@ EOXML;
       $this->DoRequest( $this->calendar_url );
 
       $report = array();
-      foreach( $this->xmlnodes as $k => $v ) {
-          switch( $v['tag'] ) {
-              case 'DAV::response':
-                  if ( $v['type'] == 'open' ) {
-                      $response = array();
-                  }
-                  elseif ( $v['type'] == 'close' ) {
-                      $report[] = $response;
-                  }
-                  break;
-              case 'DAV::href':
-                  $response['href'] = basename( rawurldecode($v['value']) );
-                  break;
-              case 'DAV::getetag':
-                  $response['etag'] = preg_replace('/^"?([^"]+)"?/', '$1', $v['value']);
-                  break;
-              case 'urn:ietf:params:xml:ns:caldav:calendar-data':
-                        $response['data'] = $v['value'];
-                        break;
+      if (is_array($this->xmlnodes)) {
+          foreach( $this->xmlnodes as $k => $v ) {
+              switch( $v['tag'] ) {
+                  case 'DAV::response':
+                      if ( $v['type'] == 'open' ) {
+                          $response = array();
+                      }
+                      elseif ( $v['type'] == 'close' ) {
+                          $report[] = $response;
+                      }
+                      break;
+                  case 'DAV::href':
+                      $response['href'] = basename( rawurldecode($v['value']) );
+                      break;
+                  case 'DAV::getetag':
+                      $response['etag'] = preg_replace('/^"?([^"]+)"?/', '$1', $v['value']);
+                      break;
+                  case 'urn:ietf:params:xml:ns:caldav:calendar-data':
+                            $response['data'] = $v['value'];
+                            break;
+              }
           }
       }
       return $report;
@@ -1117,13 +1119,13 @@ EOFILTER;
                       if ($this->xmlnodes[$node]['tag'] == 'DAV::status'
                               && $this->xmlnodes[$node]['value'] !=
                               'HTTP/1.1 200 OK') {
-                          return $this->xmlnodes[$node]['value'];
+                          return FALSE;
                       }
                   }
               }
           }
       } else if ($this->httpResultCode != 200) {
-          return 'Unknown HTTP code';
+          return FALSE;
       }
 
       return TRUE;
@@ -1133,12 +1135,11 @@ EOFILTER;
    * Queries server using a principal-property search
    *
    * @param string    XML request
-   * @param string    URL
    * @return          FALSE on error, array with results otherwise
    */
-  function principal_property_search($xml_text, $url) {
+  function principal_property_search($xml_text) {
       $result = array();
-      $this->DoXMLRequest('REPORT', $xml_text, $url);
+      $this->DoXMLRequest('REPORT', $xml_text);
 
       if ($this->httpResultCode == '207') {
           $errmsg = $this->httpResultCode;
@@ -1173,7 +1174,7 @@ EOFILTER;
               }
           }
       } else if ($this->httpResultCode != 200) {
-          return 'Unknown HTTP code';
+          return false;
       }
 
       return $result;
