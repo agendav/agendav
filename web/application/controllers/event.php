@@ -553,7 +553,7 @@ class Event extends CI_Controller {
         }
 
         // We're prepared to modify the event
-        $href = $calendar . $resource['href'];
+        $href = $resource['href'];
         $ical = $this->icshelper->parse_icalendar($resource['data']);
         $timezones = $this->icshelper->get_timezones($ical);
         $vevent = null;
@@ -656,7 +656,7 @@ class Event extends CI_Controller {
 
         // PUT on server
         $new_etag = $this->caldavoperations->putResource(
-                $href,
+                $calendar . $href,
                 $ical->createCalendar(),
                 $etag
         );
