@@ -31,6 +31,8 @@ class Caldav2json extends CI_Controller {
         $this->user = User::getInstance();
         $this->prefs = $this->user->getPreferences();
 
+        $this->caldavoperations->setClient($this->user->createCalDAVClient());
+
         $this->output->set_content_type('application/json');
     }
 
@@ -45,19 +47,7 @@ class Caldav2json extends CI_Controller {
         $term = $this->input->get('term');
 
         if (!empty($term)) {
-            $caldav_res = $this->caldav->principal_property_search(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
-                    $term, $term);
-
-            if ($caldav_res[0] != '207') {
-                $this->extended_logs->message('ERROR',
-                        'principal-property-search for '
-                        . $term . ' answer was HTTP code '
-                        . $caldav_res[0]);
-            } else {
-                $result = array_values($caldav_res[1]);
-            }
+            $result = $this->caldavoperations->principalSearch($term, $term);
         }
 
         $this->output->set_output(json_encode($result));
