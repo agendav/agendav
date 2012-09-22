@@ -2,6 +2,8 @@
 
 namespace AgenDAV;
 
+use \CalDAVClient;
+
 if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
@@ -74,6 +76,18 @@ class User {
     public function setCredentials($username, $passwd) {
         $this->username = mb_strtolower($username);
         $this->passwd = $passwd;
+    }
+
+    /**
+     * Creates a CalDAV client
+     *
+     * @return CalDAVClient CalDAV client object for current user
+     */
+    public function createCalDAVClient() {
+        return new CalDAVClient(
+                $this->CI->config->item('caldav_server'),
+                $this->username,
+                $this->passwd);
     }
 
 
@@ -149,7 +163,7 @@ class User {
             return false;
         } elseif ($this->is_authenticated !== true) {
             $this->is_authenticated =
-                $this->CI->caldav->check_server_authentication(
+                $this->CI->caldavoperations->checkAuthentication(
                         $this->username,
                         $this->passwd);
         }
@@ -218,6 +232,15 @@ class User {
         }
 
         return $calendars;
+    }
+
+    /**
+     * Gets current user principal URL
+     *
+     * @return string Current user principal URL
+     */
+    public function getPrincipal() {
+        return $this->caldav->findOwnPrincipal($this->username, $this->passwd);
     }
 
 }
