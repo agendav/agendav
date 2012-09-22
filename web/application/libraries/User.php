@@ -84,10 +84,14 @@ class User {
      * @return CalDAVClient CalDAV client object for current user
      */
     public function createCalDAVClient() {
-        return new CalDAVClient(
+        $c = new CalDAVClient(
                 $this->CI->config->item('caldav_server'),
                 $this->username,
                 $this->passwd);
+
+        $c->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
+
+        return $c;
     }
 
 
