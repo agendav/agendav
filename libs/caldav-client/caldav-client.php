@@ -1044,20 +1044,9 @@ EOFILTER;
 
               if ( !isset($calendar_urls[$href]) ) continue;
 
-              //        printf("Seems '%s' is a calendar.\n", $href );
-
-
               $calendar = new CalendarInfo($href);
 
-              /*
-               *  Transform href into calendar
-               * /xxxxx/yyyyy/caldav.php/principal/resource/
-               *                          t-3       t-2
-               */
-              $pieces = preg_split('/\//', $href);
-              $total = count($pieces);
-              $calendar_id = $pieces[$total-3] . ':' . $pieces[$total-2];
-              $calendar->calendar = $calendar_id;
+              $calendar->calendar = $href;
 
               $ok_props = $this->GetOKProps($hnode);
               foreach( $ok_props AS $v ) {
@@ -1083,7 +1072,7 @@ EOFILTER;
                           break;
                   }
               }
-              $calendars[$calendar_id] = $calendar;
+              $calendars[$href] = $calendar;
           }
       }
 

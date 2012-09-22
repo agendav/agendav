@@ -31,9 +31,7 @@ class Calendar extends CI_Controller {
         $this->user = User::getInstance();
 
         if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INFO', 
-                    'Anonymous access attempt to '
-                    . uri_string());
+            $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
@@ -41,8 +39,9 @@ class Calendar extends CI_Controller {
 
         $this->calendar_colors = $this->config->item('calendar_colors');
 
-        $this->prefs =
-            $this->preferences->get($this->user->getUsername());
+        $this->prefs = $this->preferences->get($this->user->getUsername());
+
+        $this->caldavoperations->setClient($this->user->createCalDAVClient());
 
         $this->output->set_content_type('application/json');
     }
@@ -64,8 +63,8 @@ class Calendar extends CI_Controller {
      * Creates a calendar
      */
     function create() {
-        $displayname = $this->input->post('displayname', TRUE);
-        $calendar_color = $this->input->post('calendar_color', TRUE);
+        $displayname = $this->input->post('displayname', true);
+        $calendar_color = $this->input->post('calendar_color', true);
 
         // Display name
         if (empty($displayname)) {
@@ -78,19 +77,11 @@ class Calendar extends CI_Controller {
             $calendar_color = '#' . $this->calendar_color[0];
         }
 
-        // Get current own calendars
-        $current_calendars = $this->caldav->get_own_calendars(
-                $this->user->getUsername(),
-                $this->user->getPasswd()
-                );
-
         // Generate internal calendar name
-        do {
-            $calendar = $this->icshelper->generate_guid();
-        } while (isset($current_calendars[$calendar]));
+        $calendar = $this->caldavoperations->findCalendarHomeSet() . $this->icshelper->generate_guid();
 
         // Add transparency to color
-        $calendar_color = $this->caldav->_rgb2rgba($calendar_color);
+        $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
 
         // Calendar properties
         $props = array(
@@ -99,14 +90,16 @@ class Calendar extends CI_Controller {
                 );
 
 
-        $res = $this->caldav->mkcalendar(
-                $this->user->getUsername(),
-                $this->user->getPasswd(),
-                $calendar,
-                $props);
+        $res = $this->caldavoperations->createCalendar($calendar, $props);
 
-        if ($res !== TRUE) {
-            $this->_throw_error($this->i18n->_('messages', $res[0], $res[1]));
+        if ($res !== true) {
+            switch ($res) {
+                case '403':
+                    $this->_throw_error($this->i18n->_('messages', 'error_denied'));
+                    break;
+                default:
+                    $this->_throw_error($this->i18n->_('messages', 'error_unknownhttpcode'));
+            }
         } else {
             $this->_throw_success();
         }
@@ -118,32 +111,10 @@ class Calendar extends CI_Controller {
      */
     function delete() {
         $calendar = $this->input->post('calendar');
-        if ($calendar === FALSE) {
-            $this->extended_logs->message('ERROR', 
-                    'Call to delete_calendar() without calendar');
-            $this->_throw_error($this->i18n->_('messages',
-                        'error_interfacefailure'));
+        if ($calendar === false) {
+            $this->extended_logs->message('ERROR', 'Call to delete_calendar() without calendar');
+            $this->_throw_error($this->i18n->_('messages', 'error_interfacefailure'));
         }
-
-        // Get current own calendars and check if this one exists
-        $current_calendars = $this->caldav->get_own_calendars(
-                $this->user->getUsername(),
-                $this->user->getPasswd()
-                );
-
-        if (!isset($current_calendars[$calendar])) {
-            $this->extended_logs->message('INTERNALS', 
-                    'Call to delete_calendar() with non-existent calendar ('
-                        .$calendar.')');
-            $this->_throw_exception(
-                $this->i18n->_('messages', 'error_calendarnotfound', 
-                    array('%calendar' => $p['calendar'])));
-        }
-
-        // Delete calendar shares (if any), even if calendar sharing is not
-        // enabled
-        $shares =
-            $this->shared_calendars->get_shared_from($this->user->getUsername());
 
         if (isset($shares[$calendar])) {
             $this_calendar_shares = array_values($shares[$calendar]);
@@ -152,24 +123,27 @@ class Calendar extends CI_Controller {
             }
         }
 
-        $replace_pattern = '/^' . $this->user->getUsername() . ':/';
-        $internal_calendar = preg_replace($replace_pattern, '', $calendar);
-
-
         // Proceed to remove calendar from CalDAV server
-        $res = $this->caldav->delete_resource(
-            $this->user->getUsername(),
-            $this->user->getPasswd(),
-            '',
-            $internal_calendar,
-            null);
+        $res = $this->caldavoperations->deleteResource($calendar, null);
 
-        if ($res === TRUE) {
+        if ($res === true) {
             $this->_throw_success($calendar);
         } else {
             // There was an error
-            $this->_throw_exception($this->i18n->_('messages', $res[0],
-                        $res[1]));
+            $params = array();
+            switch ($res) {
+                case '404':
+                    $usermsg = 'error_eventnotfound';
+                    break;
+                case '412':
+                    $usermsg = 'error_eventchanged';
+                    break;
+                default:
+                    $usermsg = 'error_unknownhttpcode'; 
+                    $params = array('%res' => $res);
+                    break;
+            }
+            $this->_throw_exception($this->i18n->_('messages', $usermsg, $params));
         }
     }
 
@@ -192,8 +166,8 @@ class Calendar extends CI_Controller {
         // a list of users he/she wants to share the calendar with
         $share_with = $this->input->post('share_with');
 
-        if ($calendar === FALSE || $displayname === FALSE || $calendar_color ===
-                FALSE || ($is_sharing_enabled && $is_shared_calendar === FALSE)) {
+        if ($calendar === false || $displayname === false || $calendar_color ===
+                false || ($is_sharing_enabled && $is_shared_calendar === false)) {
             $this->extended_logs->message('ERROR', 
                     'Call to modify_calendar() with incomplete parameters');
             $this->_throw_error($this->i18n->_('messages',
@@ -201,24 +175,10 @@ class Calendar extends CI_Controller {
         }
 
         // Calculate boolean value for is_shared_calendar
-        $is_shared_calendar = ($is_shared_calendar === FALSE ?
-                FALSE :
+        $is_shared_calendar = ($is_shared_calendar === false ?
+                false :
                 ($is_shared_calendar == 'true'));
 
-        // Check if calendar is valid
-        if (!$this->caldav->is_valid_calendar(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
-                    $calendar)) {
-            $this->extended_logs->message('INTERNALS', 
-                    'Call to modify_calendar() with non-existent calendar '
-                    .' or with access forbidden ('
-                        .$calendar.')');
-
-            $this->_throw_exception(
-                $this->i18n->_('messages', 'error_calendarnotfound', 
-                    array('%calendar' => $calendar)));
-        }
 
         // Retrieve ID on shared calendars table
         if ($is_sharing_enabled && $is_shared_calendar) {
@@ -244,7 +204,7 @@ class Calendar extends CI_Controller {
 
 
         // Add transparency to color
-        $calendar_color = $this->caldav->_rgb2rgba($calendar_color);
+        $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
 
         // Calendar properties
         $props = array(
@@ -255,14 +215,8 @@ class Calendar extends CI_Controller {
 
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
-            $replace_pattern = '/^' . $this->user->getUsername() . ':/';
-            $internal_calendar = preg_replace($replace_pattern, '', $calendar);
 
-            $res = $this->caldav->proppatch(
-                $this->user->getUsername(),
-                $this->user->getPasswd(),
-                $internal_calendar,
-                $props);
+            $res = $this->caldavoperations->changeProperties($calendar, $props);
         } else if ($is_sharing_enabled) {
             // If this a shared calendar, store settings locally
             $success = $this->shared_calendars->store($sid,
@@ -270,23 +224,27 @@ class Calendar extends CI_Controller {
                     $calendar,
                     $this->user->getUsername(),
                     $props);
-            if ($success === FALSE) {
-                $this->_throw_exception($this->i18n->_('messages',
-                            'error_internal'));
+            if ($success !== true) {
+                if ($success == '404') {
+                    $this->_throw_exception($this->i18n->_('messages',
+                                'error_calendarnotfound'));
+                } else {
+                    $this->_throw_exception(
+                            $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $success))
+                    );
+                }
             } else {
-                $res = TRUE;
+                $res = true;
             }
         } else {
             // Tried to modify a shared calendar when sharing is disabled
             $this->extended_logs->message('ERROR',
-                    'Tried to modify the shared calendar ' . $calendar
-                    .' when calendar sharing is disabled');
-            $this->_throw_exception($this->i18n->_('messages',
-                        'error_interfacefailure'));
+                    'Tried to modify the shared calendar ' . $calendar .' when calendar sharing is disabled');
+            $this->_throw_exception($this->i18n->_('messages', 'error_interfacefailure'));
         }
 
         // Set ACLs
-        if ($is_sharing_enabled && $res === TRUE && !$is_shared_calendar) {
+        if ($is_sharing_enabled && $res === true && !$is_shared_calendar) {
             $set_shares = array();
 
             if (is_array($share_with) && isset($share_with['sid']) 
@@ -318,19 +276,19 @@ class Calendar extends CI_Controller {
                 }
             }
 
-            $res = $this->caldav->setacl(
+            $res = $this->caldavoperations->setacl(
                     $this->user->getUsername(),
                     $this->user->getPasswd(),
                     $internal_calendar,
                     $set_shares);
 
             // Update shares on database
-            if ($res === TRUE) {
+            if ($res === true) {
                 $current_shares =
                     $this->shared_calendars->users_with_access_to($calendar);
                 $orig_sids = array();
                 foreach ($current_shares as $db_share_row) {
-                    $orig_sids[$db_share_row['sid']] = TRUE;
+                    $orig_sids[$db_share_row['sid']] = true;
                 }
 
                 $updated_sids = array();
@@ -360,12 +318,11 @@ class Calendar extends CI_Controller {
             }
         }
 
-        if ($res === TRUE) {
+        if ($res === true) {
             $this->_throw_success();
         } else {
             // There was an error
-            $this->_throw_exception($this->i18n->_('messages', $res[0],
-                        $res[1]));
+            $this->_throw_exception($this->i18n->_('messages', $res[0], $res[1]));
         }
     }
 

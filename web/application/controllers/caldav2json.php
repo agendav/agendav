@@ -29,6 +29,14 @@ class Caldav2json extends CI_Controller {
         parent::__construct();
 
         $this->user = User::getInstance();
+
+        if (!$this->user->isAuthenticated()) {
+            $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
+            $this->output->set_status_header('401');
+            $this->output->_display();
+            die();
+        }
+
         $this->prefs = $this->user->getPreferences();
 
         $this->caldavoperations->setClient($this->user->createCalDAVClient());

@@ -192,8 +192,7 @@ class User {
      */
     public function allCalendars($force = false, $hide_calendars = true) {
         if ($force === true || $this->calendars === null) {
-            $calendars = $this->CI->caldav->all_user_calendars(
-                    $this->username, $this->passwd);
+            $calendars = $this->CI->caldavoperations->getCalendars();
 
             // Hide calendars user doesn't want to be shown
             if ($hide_calendars === true) {
@@ -244,7 +243,7 @@ class User {
      * @return string Current user principal URL
      */
     public function getPrincipal() {
-        return $this->caldav->findOwnPrincipal($this->username, $this->passwd);
+        return $this->caldavoperations->findOwnPrincipal($this->username, $this->passwd);
     }
 
 }

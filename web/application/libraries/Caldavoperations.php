@@ -93,6 +93,17 @@ class Caldavoperations {
         return ($absolute ? $this->base_url : ''). $principal;
     }
 
+    /**
+     * Finds current user calendar-home-set
+     *
+     * TODO allow multiple calendar-home-set
+     * @return string Calendar home set
+     */
+    public function findCalendarHomeSet() {
+        $res = $this->client->FindCalendarHome();
+        return $res[0];
+    }
+
 
     /**
      * Fetches events for a given resource
