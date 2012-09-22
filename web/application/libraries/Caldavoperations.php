@@ -22,7 +22,7 @@
 class Caldavoperations {
     private $base_url;
     private $CI;
-    private static $client = null;
+    private $client = null;
 
     private $http_auth_method;
 
