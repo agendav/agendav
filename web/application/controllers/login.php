@@ -59,6 +59,9 @@ class Login extends CI_Controller {
             $passwd = $this->input->post('passwd');
 
             $this->user->setCredentials($user, $passwd);
+            $caldav_client = $this->user->createCalDAVClient();
+            $this->caldavoperations->setClient($caldav_client);
+
             if ($this->user->isAuthenticated()) {
                 $this->user->newSession();
                 redirect("/main");
