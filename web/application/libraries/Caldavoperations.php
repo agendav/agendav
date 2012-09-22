@@ -180,16 +180,16 @@ class Caldavoperations {
      * @param string $href Relative URL for the resource
      * @param string $icalendar iCalendar text resource
      * @param string $etag ETag for operation
-     * @return mixed New ETag on success, or HTTP result code otherwise
+     * @return mixed New ETag on success, or array(HTTP result code) otherwise
      */
 
     public function putResource($href, $icalendar, $etag = null)
     {
 
-        $new_etag = $this->client->DoPUTRequest($url, $icalendar, $etag);
+        $new_etag = $this->client->DoPUTRequest($href, $icalendar, $etag);
         $result_code = $this->client->GetHTTPResultCode();
 
-        return ($result_code[0] == '2') ? $new_etag : $result_code;
+        return ($result_code[0] == '2') ? $new_etag : array($result_code);
     }
 
 

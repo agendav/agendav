@@ -51,6 +51,8 @@ class Dialog_generator extends CI_Controller {
             exit;
         } else {
             $this->load->helper('form');
+
+            $this->caldavoperations->setClient($this->user->createCalDAVClient());
             
             // Load formats
             $this->date_format = $this->dates->date_format_string('date');

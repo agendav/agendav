@@ -46,6 +46,8 @@ class Event extends CI_Controller {
             die();
         }
 
+        $this->caldavoperations->setClient($this->user->createCalDAVClient());
+
         $this->date_format = $this->dates->date_format_string('date');
         $this->time_format = $this->dates->time_format_string('date');
 
@@ -64,75 +66,58 @@ class Event extends CI_Controller {
         $err = 0;
 
         // For benchmarking
-        $time_start = microtime(TRUE);
+        $time_start = microtime(true);
         $time_end = $time_fetch = -1;
         $total_fetch = $total_parse = -1;
 
         $calendar = $this->input->get('calendar');
-        if ($calendar === FALSE) {
-            $this->extended_logs->message('ERROR',
-                    'Calendar events request with no calendar name');
+        if ($calendar === false) {
+            $this->extended_logs->message('ERROR', 'Calendar events request with no calendar name');
             $err = 400;
         }
 
         $start = $this->input->get('start');
         $end = $this->input->get('end');
 
-        if ($err == 0 && $start === FALSE) {
+        if ($err == 0 && $start === false) {
             // Something is wrong here
-            $this->extended_logs->message('ERROR',
-                    'Calendar events request for ' . $calendar 
-                    .' with no start timestamp');
+            $this->extended_logs->message(
+                    'ERROR',
+                    'Calendar events request for ' . $calendar .' with no start timestamp');
             $err = 400;
         } else if ($err == 0) {
             $start =
-                $this->dates->datetime2idt(
-                        $this->dates->ts2datetime(
-                            $start,
-                            $this->tz_utc));
+                $this->dates->datetime2idt($this->dates->ts2datetime($start, $this->tz_utc));
 
-            if ($end === FALSE) {
-                $this->extended_logs->message('ERROR',
-                    'Calendar events request for ' . $calendar 
-                    .' with no end timestamp');
+            if ($end === false) {
+                $this->extended_logs->message(
+                        'ERROR',
+                        'Calendar events request for ' . $calendar .' with no end timestamp');
                 $err = 400;
             } else {
-                $end =
-                    $this->dates->datetime2idt(
-                            $this->dates->ts2datetime(
-                                $end,
-                                $this->tz_utc));
+                $end = $this->dates->datetime2idt($this->dates->ts2datetime($end, $this->tz_utc));
 
-                $returned_events = $this->caldav->fetch_events(
-                        $this->user->getUsername(),
-                        $this->user->getPasswd(),
-                        $start, $end,
-                        $calendar);
+                $returned_events = $this->caldavoperations->fetchEvents($calendar, $start, $end);
 
-                $time_fetch = microtime(TRUE);
-
-                if ($returned_events === FALSE) {
-                    // Something went wrong
-                    $err = 500;
-                }
+                $time_fetch = microtime(true);
             }
         }
 
         if ($err == 0) {
             $parsed =
-                $this->icshelper->expand_and_parse_events($returned_events, 
-                        $start, $end, $calendar);
+                $this->icshelper->expand_and_parse_events($returned_events, $start, $end, $calendar);
 
-            $time_end = microtime(TRUE);
+            $time_end = microtime(true);
 
             $total_fetch = sprintf('%.4F', $time_fetch - $time_start);
             $total_parse = sprintf('%.4F', $time_end - $time_fetch);
             $total_time = sprintf('%.4F', $time_end - $time_start);
 
 
-            $this->extended_logs->message('INTERNALS', 'Sending to client ' .
-                    count($parsed) . ' event(s) on calendar ' . $calendar 
-                    .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
+            $this->extended_logs->message(
+                    'INTERNALS',
+                    'Sending to client ' .  count($parsed) . ' event(s) on calendar ' . $calendar 
+                        .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
 
             $this->output->set_header("X-Fetch-Time: " . $total_fetch);
             $this->output->set_header("X-Parse-Time: " . $total_parse);
@@ -156,26 +141,36 @@ class Event extends CI_Controller {
 
         $response = array();
 
-        if ($calendar === FALSE || $uid === FALSE || $href === FALSE ||
-                $etag === FALSE || empty($calendar) || empty($uid) ||
+        if ($calendar === false || $uid === false || $href === false ||
+                $etag === false || empty($calendar) || empty($uid) ||
                 empty($href) || empty($calendar) || empty($etag)) {
             $this->extended_logs->message('ERROR', 
                     'Call to delete_event() with no calendar, uid, href or etag');
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         } else {
-            $res = $this->caldav->delete_resource(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
+            $res = $this->caldavoperations->deleteResource(
                     $href,
-                    $calendar,
                     $etag);
-            if ($res === TRUE) {
+            if ($res === true) {
                 $this->_throw_success();
             } else {
                 // There was an error
-                $msg = $this->i18n->_('messages', $res[0],
-                        $res[1]);
+                $params = array();
+                switch ($res) {
+                    case '404':
+                        $usermsg = 'error_eventnotfound';
+                        break;
+                    case '412':
+                        $usermsg = 'error_eventchanged';
+                        break;
+                    default:
+                        $usermsg = 'error_unknownhttpcode';
+                        $params['%res'] = $res;
+                        break;
+                }
+
+                $msg = $this->i18n->_('messages', $usermsg, $params);
                 $this->_throw_exception($msg);
             }
         }
@@ -193,7 +188,7 @@ class Event extends CI_Controller {
         $resource = null;
         // Default new properties. To be cleaned
         // on Icshelper library
-        $p = $this->input->post(null, TRUE); // XSS
+        $p = $this->input->post(null, true); // XSS
 
         $this->load->library('form_validation');
         $this->form_validation
@@ -215,7 +210,7 @@ class Event extends CI_Controller {
                         'repeatuntil'),
                     'callback__empty_or_valid_date');
 
-        if ($this->form_validation->run() === FALSE) {
+        if ($this->form_validation->run() === false) {
             $this->_throw_exception(validation_errors());
         }
 
@@ -254,7 +249,7 @@ class Event extends CI_Controller {
                             'endtime'),
                         'required|callback__valid_time');
 
-            if ($this->form_validation->run() === FALSE) {
+            if ($this->form_validation->run() === false) {
                 $this->_throw_exception(validation_errors());
             }
 
@@ -284,7 +279,7 @@ class Event extends CI_Controller {
                 }
 
                 $rrule = $this->recurrence->build($p, $rrule_err);
-                if (FALSE === $rrule) {
+                if (false === $rrule) {
                     // Couldn't build rrule
                     $this->extended_logs->message('ERROR', 
                             'Error building RRULE ('
@@ -317,8 +312,8 @@ class Event extends CI_Controller {
             for($i=0;$i<$num_reminders;$i++) {
                 $this_reminder = null;
                 $data_reminders['is_absolute'][$i] =
-                    ($data_reminders['is_absolute'][$i] == 'true' ? TRUE :
-                     FALSE);
+                    ($data_reminders['is_absolute'][$i] == 'true' ? true :
+                     false);
 
                 if ($data_reminders['is_absolute'][$i]) {
                     $when =
@@ -344,8 +339,7 @@ class Event extends CI_Controller {
                     $this_reminder->order = $data_reminders['order'][$i];
                 }
 
-                log_message('INTERNALS', 'Adding reminder ' .
-                        $this_reminder);
+                log_message('INTERNALS', 'Adding reminder ' .  $this_reminder);
                 $reminders[] = $this_reminder;
             }
         }
@@ -354,13 +348,10 @@ class Event extends CI_Controller {
         // Is this a new event or a modification?
 
         // Valid destination calendar? 
-        if (!$this->caldav->is_valid_calendar(
-                $this->user->getUsername(),
-                $this->user->getPasswd(),
-                $p['calendar'])) {
+        if (!$this->caldavoperations->isAccessible($p['calendar'])) {
             $this->_throw_exception(
-                    $this->i18n->_('messages', 'error_calendarnotfound', 
-                        array('%calendar' => $p['calendar'])));
+                    $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $p['calendar']))
+            );
         } else {
             $calendar = $p['calendar'];
         }
@@ -376,39 +367,29 @@ class Event extends CI_Controller {
 
             // Valid original calendar?
             if (!isset($p['original_calendar'])) {
-                $this->_throw_exception($this->i18n->_('messages',
-                            'error_interfacefailure'));
+                $this->_throw_exception($this->i18n->_('messages', 'error_interfacefailure'));
             } else {
                 $original_calendar = $p['original_calendar'];
             }
 
-            if (!$this->caldav->is_valid_calendar(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
-                    $original_calendar)) {
+            if (!$this->caldavoperations->isAccessible($original_calendar)) {
                 $this->_throw_exception(
-                    $this->i18n->_('messages', 'error_calendarnotfound', 
-                        array('%calendar' => $original_calendar)));
+                    $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $original_calendar))
+                );
             }
 
             $uid = $p['uid'];
             $href = $p['href'];
             $etag = $p['etag'];
 
-            $res = $this->caldav->fetch_resource_by_uid(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
-                    $uid,
-                    $original_calendar);
+            $res = $this->caldavoperations->fetchEntryByUid($original_calendar, $uid);
 
-            if (is_null($res)) {
-                $this->_throw_error(
-                        $this->i18n->_('messages', 'error_eventnotfound'));
+            if (count($res) == 0) {
+                $this->_throw_error($this->i18n->_('messages', 'error_eventnotfound'));
             }
 
             if ($etag != $res['etag']) {
-                $this->_throw_error(
-                        $this->i18n->_('messages', 'error_eventchanged'));
+                $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
             }
 
 
@@ -416,12 +397,9 @@ class Event extends CI_Controller {
             $timezones = $this->icshelper->get_timezones($resource);
             $vevent = null;
             // TODO: recurrence-id?
-            $modify_pos =
-                $this->icshelper->find_component_position($resource,
-                    'VEVENT', array(), $vevent);
+            $modify_pos = $this->icshelper->find_component_position($resource, 'VEVENT', array(), $vevent);
             if (is_null($vevent)) {
-                $this->_throw_error(
-                        $this->i18n->_('messages', 'error_eventnofound'));
+                $this->_throw_error( $this->i18n->_('messages', 'error_eventnofound'));
             }
 
             $tz = $this->icshelper->detect_tz($vevent, $timezones);
@@ -458,19 +436,15 @@ class Event extends CI_Controller {
                 $properties['transp'] = strtoupper($p['transp']);
             }
 
-            $vevent = $this->icshelper->change_properties($vevent,
-                    $properties);
+            $vevent = $this->icshelper->change_properties($vevent, $properties);
 
             // Add/change/remove reminders
-            $vevent = $this->icshelper->set_valarms($vevent,
-                    $reminders, $visible_reminders);
+            $vevent = $this->icshelper->set_valarms($vevent, $reminders, $visible_reminders);
 
             $vevent = $this->icshelper->set_last_modified($vevent);
-            $resource = $this->icshelper->replace_component($resource,
-                    'vevent', $modify_pos, $vevent);
-            if ($resource === FALSE) {
-                $this->_throw_error(
-                        $this->i18n->_('messages', 'error_internalgen'));
+            $resource = $this->icshelper->replace_component($resource, 'vevent', $modify_pos, $vevent);
+            if ($resource === false) {
+                $this->_throw_error($this->i18n->_('messages', 'error_internalgen'));
             }
 
             // Moving event between calendars
@@ -482,78 +456,59 @@ class Event extends CI_Controller {
         }
 
         // PUT on server
-        $new_etag = $this->caldav->put_resource(
-                $this->user->getUsername(),
-                $this->user->getPasswd(),
-                $href,
-                $calendar,
-                $resource,
+        $new_etag = $this->caldavoperations->putResource(
+                $calendar . $href,
+                $resource->createCalendar(),
                 $etag);
 
-        if (FALSE === $new_etag) {
-            $code = $this->caldav->get_last_response();
-            switch ($code[0]) {
+        // Error
+        if (is_array($new_etag)) {
+            $code = current($new_etag);
+            switch ($code) {
                 case '412':
                     // TODO new events + already used UIDs!
                     if (isset($p['modification'])) {
-                        $this->_throw_exception(
-                            $this->i18n->_('messages', 'error_eventchanged'));
+                        $this->_throw_exception( $this->i18n->_('messages', 'error_eventchanged'));
                     } else {
                         // Already used UID on new event. What a bad luck!
                         // TODO propose a solution
-                        $this->_throw_error('Bad luck'
-                                .' Repeated UID');
+                        $this->_throw_error('Bad luck' .' Repeated UID');
                     }
                     break;
                 case '403':
-                    $this->_throw_error($this->i18n->_('messages',
-                                'error_denied'));
+                    $this->_throw_error($this->i18n->_('messages', 'error_denied'));
                     break;
                 default:
-                    $this->_throw_error( $this->i18n->_('messages',
-                                'error_unknownhttpcode',
-                                array('%res' =>  $code[0])));
+                    $this->_throw_error($this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $code[0])));
                     break;
             }
         } else {
             // Remove original event
             if (isset($p['modification']) && $original_calendar != $calendar) {
-                $res = $this->caldav->delete_resource(
-                        $this->user->getUsername(),
-                        $this->user->getPasswd(),
-                        $href,
-                        $original_calendar,
-                        $original_etag);
-                if ($res === TRUE) {
-                    $this->extended_logs->message('INTERNALS', 
-                            'Deleted event (moved) with uid=' . $uid 
-                            .' from calendar ' .  $original_calendar);
-                } else {
+                $res = $this->caldavoperations->deleteResource(
+                        $original_calendar . $href,
+                        $original_etag
+                );
+                if ($res !== true) {
                     // There was an error
-                    $this->extended_logs->message('INTERNALS',
-                            'Error deleting event (moved) with uid=' . $uid
-                            .' from calendar ' . $original_calendar . ': '
-                            . $res);
-                    $this->_throw_exception($res);
+                    $this->_throw_exception('');
                 }
             }
 
             // Return a list of affected calendars (original_calendar, new
             // calendar)
             $affected_calendars = array($calendar);
-            if (isset($original_calendar) && $original_calendar !=
-                    $calendar) {
+            if (isset($original_calendar) && $original_calendar != $calendar) {
                 $affected_calendars[] = $original_calendar;
             }
 
             $this->_throw_success($affected_calendars);
         }
-        
     }
 
 
     /**
-     * Resizing of an event
+     * Resizing an event
      */
     function alter() {
         $uid = $this->input->post('uid');
@@ -566,11 +521,11 @@ class Event extends CI_Controller {
         $view = $this->input->post('view');
         $type = $this->input->post('type');
 
-        if ($uid === FALSE || $calendar === FALSE ||
-                $etag === FALSE || $dayDelta === FALSE || 
-                $minuteDelta === FALSE || 
-                $view === FALSE || $allday === FALSE ||
-                $type === FALSE || $was_allday === FALSE) {
+        if ($uid === false || $calendar === false ||
+                $etag === false || $dayDelta === false || 
+                $minuteDelta === false || 
+                $view === false || $allday === false ||
+                $type === false || $was_allday === false) {
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         }
@@ -587,35 +542,26 @@ class Event extends CI_Controller {
         }
 
         // Load resource
-        $resource = $this->caldav->fetch_resource_by_uid(
-                $this->user->getUsername(),
-                $this->user->getPasswd(),
-                $uid,
-                $calendar);
+        $resource = $this->caldavoperations->fetchEntryByUid($calendar, $uid);
 
-
-        if (is_null($resource)) {
-            $this->_throw_error(
-                        $this->i18n->_('messages', 'error_eventnotfound'));
+        if (count($resource) == 0) {
+            $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
         }
 
         if ($etag != $resource['etag']) {
-            $this->_throw_error(
-                        $this->i18n->_('messages', 'error_eventchanged'));
+            $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
         }
 
         // We're prepared to modify the event
-        $href = $resource['href'];
+        $href = $calendar . $resource['href'];
         $ical = $this->icshelper->parse_icalendar($resource['data']);
         $timezones = $this->icshelper->get_timezones($ical);
         $vevent = null;
         // TODO: recurrence-id?
-        $modify_pos = $this->icshelper->find_component_position($ical,
-                'VEVENT', array(), $vevent);
+        $modify_pos = $this->icshelper->find_component_position($ical, 'VEVENT', array(), $vevent);
 
-        if (is_null($vevent)) {
-            $this->_throw_error(
-                        $this->i18n->_('messages', 'error_eventnotfound'));
+        if ($vevent === null) {
+            $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
         }
 
         $tz = $this->icshelper->detect_tz($vevent, $timezones);
@@ -632,60 +578,63 @@ class Event extends CI_Controller {
                 if ($allday == 'true') {
                     // From all day to all day
                     $tz = $this->tz_utc;
-                    $new_vevent = $this->icshelper->make_start($vevent,
-                            $tz, null, $dur_string, 'DATE');
-                    $new_vevent = $this->icshelper->make_end($new_vevent,
-                            $tz, null, $dur_string, 'DATE');
+                    $new_vevent = $this->icshelper->make_start($vevent, $tz, null, $dur_string, 'DATE');
+                    $new_vevent = $this->icshelper->make_end($new_vevent, $tz, null, $dur_string, 'DATE');
                 } else {
                     // From all day to normal event
                     // Use default timezone
                     $tz = $this->tz;
 
                     // Add VTIMEZONE
-                    $this->icshelper->add_vtimezone($ical, $tz->getName(), 
-                            $timezones);
+                    $this->icshelper->add_vtimezone($ical, $tz->getName(), $timezones);
 
                     // Set start date using default timezone instead of UTC
                     $start = $this->icshelper->extract_date($vevent,
                             'DTSTART', $tz);
                     $start_obj = $start['result'];
                     $start_obj->add($this->dates->duration2di($dur_string));
-                    $new_vevent = $this->icshelper->make_start($vevent,
-                            $tz, $start_obj, null, 'DATE-TIME',
-                            $tz->getName());
-                    $new_vevent = $this->icshelper->make_end($new_vevent,
-                            $tz, $start_obj, 'PT1H', 'DATE-TIME', 
-                            $tz->getName());
+                    $new_vevent = $this->icshelper->make_start(
+                            $vevent,
+                            $tz,
+                            $start_obj,
+                            null,
+                            'DATE-TIME',
+                            $tz->getName()
+                    );
+                    $new_vevent = $this->icshelper->make_end(
+                            $new_vevent,
+                            $tz,
+                            $start_obj,
+                            'PT1H',
+                            'DATE-TIME',
+                            $tz->getName()
+                    );
                 }
             } else {
                 // was_allday = false
                 $force = ($allday == 'true' ? 'DATE' : null);
-                $new_vevent = $this->icshelper->make_start($vevent, $tz,
-                        null, $dur_string, $force);
+                $new_vevent = $this->icshelper->make_start($vevent, $tz, null, $dur_string, $force);
                 if ($allday == 'true') {
-                    $new_start = $this->icshelper->extract_date($new_vevent,
-                            'DTSTART', $tz);
-                    $new_vevent = $this->icshelper->make_end($new_vevent,
-                            $tz, $new_start['result'], 'P1D', $force);
+                    $new_start = $this->icshelper->extract_date($new_vevent, 'DTSTART', $tz);
+                    $new_vevent = $this->icshelper->make_end($new_vevent, $tz, $new_start['result'], 'P1D', $force);
                 } else {
-                    $new_vevent = $this->icshelper->make_end($new_vevent,
-                            $tz, null, $dur_string, $force);
+                    $new_vevent = $this->icshelper->make_end($new_vevent, $tz, null, $dur_string, $force);
                 }
             }
         } else {
-            $new_vevent = $this->icshelper->make_end($vevent,
-                    $tz, null, $dur_string);
+            $new_vevent = $this->icshelper->make_end($vevent, $tz, null, $dur_string);
 
             // Check if DTSTART == DTEND
-            $new_dtstart = $this->icshelper->extract_date($new_vevent,
-                    'DTSTART', $tz);
-            $new_dtend = $this->icshelper->extract_date($new_vevent,
-                    'DTEND', $tz);
+            $new_dtstart = $this->icshelper->extract_date($new_vevent, 'DTSTART', $tz);
+            $new_dtend = $this->icshelper->extract_date($new_vevent, 'DTEND', $tz);
             if ($new_dtstart['result'] == $new_dtend['result']) {
                 // Avoid this
-                $new_vevent = $this->icshelper->make_end($vevent,
-                        $tz, null, ($new_dtend['value'] == 'DATE' ? 'P1D' :
-                            'PT60M'));
+                $new_vevent = $this->icshelper->make_end(
+                        $vevent,
+                        $tz,
+                        null,
+                        ($new_dtend['value'] == 'DATE' ? 'P1D' : 'PT60M')
+                );
             }
 
 
@@ -700,74 +649,43 @@ class Event extends CI_Controller {
                 */
 
 
-        $ical = $this->icshelper->replace_component($ical, 'vevent',
-                $modify_pos, $new_vevent);
-        if ($ical === FALSE) {
-            $this->_throw_error($this->i18n->_('messages',
-                        'error_internalgen'));
+        $ical = $this->icshelper->replace_component($ical, 'vevent', $modify_pos, $new_vevent);
+        if ($ical === false) {
+            $this->_throw_error($this->i18n->_('messages', 'error_internalgen'));
         }
 
         // PUT on server
-        $new_etag = $this->caldav->put_resource(
-                $this->user->getUsername(),
-                $this->user->getPasswd(),
+        $new_etag = $this->caldavoperations->putResource(
                 $href,
-                $calendar,
-                $ical,
-                $etag);
+                $ical->createCalendar(),
+                $etag
+        );
 
 
-        if (FALSE === $new_etag) {
-            $code = $this->caldav->get_last_response();
-            switch ($code[0]) {
+        // Error
+        if (is_array($new_etag)) {
+            $new_etag = current($new_etag);
+            switch ($new_etag) {
                 case '412':
-                    $this->_throw_exception(
-                            $this->i18n->_('messages', 'error_eventchanged'));
+                    $this->_throw_exception( $this->i18n->_('messages', 'error_eventchanged'));
                     break;
                 default:
-                    $this->_throw_error( $this->i18n->_('messages',
-                                'error_unknownhttpcode',
-                                array('%res' =>  $code[0])));
+                    $this->_throw_error( $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $new_etag)));
                     break;
             }
         } else {
             // Send new information about this event
-
             $info = $this->icshelper->parse_vevent_fullcalendar(
-                    $new_vevent, $href, $new_etag, $calendar, $tz,
-                    $timezones);
+                    $new_vevent,
+                    $href,
+                    $new_etag,
+                    $calendar,
+                    $tz,
+                    $timezones
+            );
             $this->_throw_success($info);
         }
     }
-
-
-    /**
-     * Searchs a principal using provided data
-     */
-    function principal_search() {
-        $result = array();
-        $term = $this->input->get('term');
-
-        if (!empty($term)) {
-            $caldav_res = $this->caldav->principal_property_search(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
-                    $term, $term);
-
-            if ($caldav_res[0] != '207') {
-                $this->extended_logs->message('ERROR',
-                        'principal-property-search for '
-                        . $term . ' answer was HTTP code '
-                        . $caldav_res[0]);
-            } else {
-                $result = array_values($caldav_res[1]);
-            }
-        }
-
-        $this->output->set_output(json_encode($result));
-    }
-
-
 
     /**
      * Input validators
@@ -777,12 +695,12 @@ class Event extends CI_Controller {
     function _valid_date($d) {
         $obj = $this->dates->frontend2datetime($d .' ' .
                 date($this->time_format));
-        if (FALSE === $obj) {
+        if (false === $obj) {
             $this->form_validation->set_message('_valid_date',
                     $this->i18n->_('messages', 'error_invaliddate'));
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -799,12 +717,12 @@ class Event extends CI_Controller {
     // Validate time format
     function _valid_time($t) {
         $obj = $this->dates->frontend2datetime(date($this->date_format) .' '. $t);
-        if (FALSE === $obj) {
+        if (false === $obj) {
             $this->form_validation->set_message('_valid_time',
                     $this->i18n->_('messages', 'error_invalidtime'));
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
