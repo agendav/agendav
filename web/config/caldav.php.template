@@ -34,11 +34,24 @@ $config['caldav_http_auth_method'] = null;
  *******************/
 
 /*
+ * CalDAV server base URL
+ * ======================
+ *
+ * This URL will be used to build the rest of URLs (principals and
+ * calendars)
+ *
+ * Please, do NOT add trailing slash
+ */
+
+$config['caldav_server'] = 'http://caldav.server';
+
+/*
  * CalDAV principal URL template
  * =============================
  *
  * %u will be replaced by an username. Please, add trailing slash
- * Some samples:
+ *
+ * Some examples:
  * - DAViCal: https://host/caldav.php/%u/
  * - SabreDAV: https://host/calendarserver.php/principals/%u/
  * - Apple Calendar Server: https://host/calendars/users/%u/
@@ -50,26 +63,25 @@ $config['caldav_principal_url'] = 'https://caldav.server/caldav.php/%u/';
  * CalDAV calendars URL template
  * =============================
  *
- * %s will be replaced by the required string depending on the context (user
- * name, username followed by a calendar or resource inside a calendar)
- * Please, add trailing slash
+ * %u will be replaced by an username. Please, add trailing slash
+ *
  * Some samples:
- * - DAViCal: https://host/caldav.php/%s/
- * - SabreDAV: https://host/calendarserver.php/calendars/%s/
- * - Apple Calendar Server: https://host/calendars/users/%s/
+ *
+ * - DAViCal: https://host/caldav.php/%u/
+ * - SabreDAV: https://host/calendarserver.php/calendars/%u/
+ * - Apple Calendar Server: https://host/calendars/users/%u/
  */
 
-$config['caldav_calendar_url'] = 'https://caldav.server/caldav.php/%s/';
+$config['caldav_calendar_root'] = 'https://caldav.server/caldav.php/%u/';
 
 /*
  * Public CalDAV URL for calendars
  * ===============================
  *
- * %s is a placeholder for the rest of the URL (user + calendar).
- * Please, add trailing slash.
+ * Please, do NOT add trailing slash.
  * Will be shown to users only when 'show_public_caldav_url' is enabled
  */
-$config['public_caldav_url'] = 'https://public.server/caldav.php/%s/';
+$config['public_caldav_url'] = 'https://public.server';
 
 /*******************
  * Share options   *
