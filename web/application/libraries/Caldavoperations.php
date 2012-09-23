@@ -60,12 +60,13 @@ class Caldavoperations {
     /**
      * Checks for correct authentication
      *
+     * @param string $url URL to use
      * @return bool Current user is authenticated or not
      */
 
-    public function checkAuthentication()
+    public function checkAuthentication($url = null)
     {
-        return $this->client->CheckValidCalDAV();
+        return $this->client->CheckValidCalDAV($url);
     }
 
     /**
@@ -89,8 +90,11 @@ class Caldavoperations {
      */
     public function findOwnPrincipal($absolute = true)
     {
-        $principal = $this->client->FindPrincipal();
-        return ($absolute ? $this->base_url : ''). $principal;
+        /*
+         * TODO use principal-URI PROPFIND
+         * $principal = $this->client->FindPrincipal();
+         */
+        return ($absolute ? $this->base_url : ''). 'dumb';
     }
 
     /**
@@ -315,9 +319,11 @@ class Caldavoperations {
         $return_results = array();
 
         // Build XML
-        $xml = '<?xml version="1.0" encoding="utf-8" ?>';
-        $xml .= '<principal-property-search xmlns="DAV:"' .
-            ($use_or ? ' test="anyof"' : '') . '>';
+        $xml = <<<EOXML
+<?xml version="1.0" encoding="utf-8" ?>
+<principal-property-search xmlns="DAV:"
+EOXML;
+        $xml .= ($use_or ? ' test="anyof"' : '') . '>';
         if ($dn !== null) {
             $xml .= '<property-search>';
             $xml .= '<prop><displayname/></prop>';

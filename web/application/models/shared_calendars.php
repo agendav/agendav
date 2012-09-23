@@ -237,10 +237,12 @@ class Shared_calendars extends CI_Model
     {
         foreach ($calendars as $c) {
             $c->shared = true;
-            $current = $properties[$c->calendar];
-            foreach (array('sid', 'write_access', 'user_from', 'color', 'displayname') as $p) {
-                if (isset($current[$p])) {
-                    $c->$p = $current[$p];
+            if (isset($properties[$c->calendar])) {
+                $current = $properties[$c->calendar];
+                foreach (array('sid', 'write_access', 'user_from', 'color', 'displayname') as $p) {
+                    if (isset($current[$p])) {
+                        $c->$p = $current[$p];
+                    }
                 }
             }
         }

@@ -31,6 +31,8 @@ class User {
     private $preferences;
     private $calendars = null;
     private $CI;
+    private $principal;
+    private $calendar_home_set;
     private static $instance = null;
 
     /**
@@ -84,19 +86,88 @@ class User {
      * @return CalDAVClient CalDAV client object for current user
      */
     public function createCalDAVClient() {
+        $base_caldav_url = $this->CI->config->item('caldav_server');
         $auth = $this->CI->config->item('caldav_http_auth_method');
 
         $c = new CalDAVClient(
-                $this->CI->config->item('caldav_server'),
+                $base_caldav_url,
                 $this->username,
                 $this->passwd,
                 array('auth' => $auth)
              );
 
         $c->SetUserAgent('AgenDAV v' . AGENDAV_VERSION);
+        
+        // TODO ask server about my principal URL and calendar-home-set
+        $this->generatePrincipalURL();
+        $this->generateCalendarHomeSet();
+        $c->PrincipalURL($this->getPrincipalURL(false));
+        $c->CalendarHomeSet($this->getCalendarHomeSet(false));
 
         return $c;
     }
+
+    /**
+     * Generates current user principal URL
+     * @return void
+     */
+    private function generatePrincipalURL() {
+        $url = preg_replace(
+                '/%u/',
+                urlencode($this->username),
+                $this->CI->config->item('caldav_principal_url')
+               );
+        $this->principal = $url;
+    }
+
+    /**
+     * Gets current user principal URL
+     *
+     * @param bool $absolute Return absolute URL
+     * @return string Principal URL
+     */
+    public function getPrincipalURL($absolute = false)
+    {
+        if ($absolute === false) {
+            $tmp = parse_url($this->principal);
+            return $tmp['path'];
+        } else {
+            return $this->principal;
+        }
+    }
+
+
+    /**
+     * Sets current user calendar-home-set
+     *
+     * @return void
+     */
+    public function generateCalendarHomeSet()
+    {
+        $url = preg_replace(
+                '/%u/',
+                urlencode($this->username),
+                $this->CI->config->item('caldav_calendar_root')
+               );
+        $this->calendar_home_set = $url;
+    }
+
+    /**
+     * Gets current user calendar-home-set
+     *
+     * @param bool $absolute Return absolute URL
+     * @return string Calendar home URL
+     */
+    public function getCalendarHomeSet($absolute = false)
+    {
+        if ($absolute === false) {
+            $tmp = parse_url($this->calendar_home_set);
+            return $tmp['path'];
+        } else {
+            return $this->calendar_home_set;
+        }
+    }
+
 
 
     /**
@@ -171,9 +242,7 @@ class User {
             return false;
         } elseif ($this->is_authenticated !== true) {
             $this->is_authenticated =
-                $this->CI->caldavoperations->checkAuthentication(
-                        $this->username,
-                        $this->passwd);
+                $this->CI->caldavoperations->checkAuthentication($this->getPrincipalURL());
         }
 
         return $this->is_authenticated;
@@ -258,14 +327,4 @@ class User {
 
         return $calendars;
     }
-
-    /**
-     * Gets current user principal URL
-     *
-     * @return string Current user principal URL
-     */
-    public function getPrincipal() {
-        return $this->caldavoperations->findOwnPrincipal($this->username, $this->passwd);
-    }
-
 }

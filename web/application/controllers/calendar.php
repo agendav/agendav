@@ -78,7 +78,7 @@ class Calendar extends CI_Controller {
         }
 
         // Generate internal calendar name
-        $calendar = $this->caldavoperations->findCalendarHomeSet() . $this->icshelper->generate_guid();
+        $calendar = $this->user->getCalendarHomeSet() . $this->icshelper->generate_guid();
 
         // Add transparency to color
         $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
