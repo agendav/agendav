@@ -183,7 +183,7 @@ class Calendar extends CI_Controller {
         // Retrieve ID on shared calendars table
         if ($is_sharing_enabled && $is_shared_calendar) {
             $current_calendar_shares =
-                $this->shared_calendars->users_with_access_to($calendar);
+                $this->shared_calendars->usersWithAccessTo($calendar);
             $current_user = $this->user->getUsername();
             foreach ($current_calendar_shares as $sh) {
                 if ($sh['username'] == $current_user) {
@@ -285,7 +285,7 @@ class Calendar extends CI_Controller {
             // Update shares on database
             if ($res === true) {
                 $current_shares =
-                    $this->shared_calendars->users_with_access_to($calendar);
+                    $this->shared_calendars->usersWithAccessTo($calendar);
                 $orig_sids = array();
                 foreach ($current_shares as $db_share_row) {
                     $orig_sids[$db_share_row['sid']] = true;
