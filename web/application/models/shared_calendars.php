@@ -19,31 +19,32 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Shared_calendars extends CI_Model {
-    function __construct() {
+class Shared_calendars extends CI_Model
+{
+    public function __construct()
+    {
         parent::__construct();
-
     }
 
     /**
      * Get calendars which other users are sharing with a given user.
      *
-     * @return array        Array of calendars (sid, user_from, calendar)
+     * @param string $username Username
+     * @return Array        Array of calendars (sid, user_from, calendar)
      */
-    function get_shared_with($username) {
-        $res = $this->db->get_where('shared', array(
-                    'user_which' => $username));
+    public function givenAccesses($username)
+    {
+        $res = $this->db->get_where('shared', array( 'user_which' => $username));
 
         $tmp = $res->result_array();
         $result = array();
 
         foreach ($tmp as $c) {
-            $index = $c['user_from'] .':'. $c['calendar'];
+            $index = $c['calendar'];
             $result[$index] = array(
                     'sid' => $c['sid'],
                     'user_from' => $c['user_from'],
-                    'write_access' =>
-                        $this->_bool_to_int($c['write_access']),
+                    'write_access' => $this->boolToInt($c['write_access']),
                     );
             $options = unserialize($c['options']);
             if (is_array($options)) {
@@ -62,7 +63,8 @@ class Shared_calendars extends CI_Model {
      *                      Associative array
      * @return array        Array of calendars (sid, user_from, calendar)
      */
-    function get_shared_from($username, $cond = null) {
+    function get_shared_from($username, $cond = null)
+    {
         $conditions = array('user_from' => $username);
         if (!is_null($cond) && is_array($cond)) {
             $conditions = array_merge($conditions, $cond);
@@ -73,13 +75,13 @@ class Shared_calendars extends CI_Model {
         $result = array();
 
         foreach ($tmp as $c) {
-            $index = $c['user_from'] .':'. $c['calendar'];
+            $index = $c['calendar'];
             if (!isset($result[$index])) {
                 $result[$index] = array();
             }
             $sid = $c['sid'];
 
-            $c['write_access'] = $this->_bool_to_int($c['write_access']);
+            $c['write_access'] = $this->boolToInt($c['write_access']);
 
             $options = unserialize($c['options']);
             if (is_array($options)) {
@@ -95,38 +97,23 @@ class Shared_calendars extends CI_Model {
     /**
      * Get a list of users who can access a calendar
      *
-     * @param $calendar     Complete calendar name (user:calendar)
-     * @return              Array of the form:
-     *                       [ [ 'username' => username, 'sid' => sid, 'write_access' => write_access], 
-     *                       ['username' => username2, 'sid' => sid2, 'write_access'
-     *                       => write_access2], ...], 
-     *
+     * @param string $calendar Calendar
+     * @return Array Calendar associative array in the form: [calendar => properties]
      */
 
-    function users_with_access_to($calendar) {
-        $pieces = preg_split('/:/', $calendar);
-        if (count($pieces) != 2) {
-            log_message('ERROR', 'Call to users_with_access_to() '
-                    .'without full calendar specified (' . $calendar .')');
-            return array();
-        }
-
-        $user_from = $pieces[0];
-        $calendar = $pieces[1];
-
-        $tmp = $this->get_shared_from($user_from, array(
-                    'calendar' => $calendar));
+    public function usersWithAccessTo($calendar)
+    {
+        $qry = $this->db->get_where('shared', array('calendar' => $calendar));
+        $res = $qry->result_array();
         $users = array();
 
-        if (count($tmp) > 0) {
-            $tmp = array_values($tmp);
-            foreach ($tmp[0] as $sid => $share) {
-                $users[] = array(
-                    'username' => mb_strtolower($share['user_which']),
-                    'sid' => $share['sid'],
-                    'write_access' => $share['write_access'],
-                    );
-            }
+        foreach ($res as $c) {
+            $index = $c['calendar'];
+            $users[] = array(
+                    'username' => mb_strtolower($c['user_which']),
+                    'sid' => $c['sid'],
+                    'write_access' => $c['write_access'],
+            );
         }
 
         return $users;
@@ -143,15 +130,21 @@ class Shared_calendars extends CI_Model {
      * @param $options  Associative array with options for this calendar
      *   (color, displayname, ...)
      * @param $write_access (Optional) Use read+write profile on '1', read on '0'
-     * @return boolean  FALSE on error, TRUE otherwise
+     * @return boolean  false on error, true otherwise
      */
-    function store($sid = null, $from = '', $calendar = '', $to = '',
-            $options = array(), $write_access = null) {
+    public function store(
+            $sid = null,
+            $from = '',
+            $calendar = '',
+            $to = '',
+            $options = array(),
+            $write_access = null)
+    {
         if ($sid === null && (empty($from) || empty($calendar) ||
                     empty($to))) {
             log_message('ERROR', 
                     'Call to shared_calendars->store() with no enough parameters');
-            return FALSE;
+            return false;
         }
 
         $calendar = preg_replace('/^[^:]+:/', '', $calendar);
@@ -185,7 +178,7 @@ class Shared_calendars extends CI_Model {
         } else {
             $res = $this->db->insert('shared', $data);
 
-            if ($res === TRUE) {
+            if ($res === true) {
                 log_message('INTERNALS', 'Granted access on '
                         . $data['user_from'] . ':' . $data['calendar'] . ' to '
                         . $data['user_which']);
@@ -204,13 +197,13 @@ class Shared_calendars extends CI_Model {
      * Removes a sharing from database
      *
      * @param $sid  Sharing id
-     * @return boolean  FALSE on error, TRUE otherwise
+     * @return boolean  false on error, true otherwise
      */
     function remove($sid = null) {
         if (is_null($sid)) {
             log_message('ERROR',
                     'Call to shared_calendars->remove() without sid');
-            return FALSE;
+            return false;
         }
 
         $this->db->where('sid', $sid);
@@ -220,7 +213,7 @@ class Shared_calendars extends CI_Model {
         if (count($row) == 0) {
             log_message('ERROR', 
                     'Tried to remove nonexistant share id [' . $sid .']');
-            return FALSE;
+            return false;
         } else {
             $row = $row[0];
             $this->db->where('sid', $sid);
@@ -229,7 +222,7 @@ class Shared_calendars extends CI_Model {
             log_message('INTERNALS', 'Revoked access on '
                     . $row['user_from'] . ':' . $row['calendar'] . ' to '
                     . $row['user_which']);
-            return TRUE;
+            return true;
         }
                 
     }
@@ -237,7 +230,8 @@ class Shared_calendars extends CI_Model {
     /**
      * Translates a boolean from PostgreSQL to 1/0
      */
-    function _bool_to_int($value) {
+    private function boolToInt($value)
+    {
         $ret = 0;
 
         switch ($value) {
@@ -255,5 +249,39 @@ class Shared_calendars extends CI_Model {
         return $ret;
     }
 
+    /**
+     * Adds 'share_with' attribute to each calendar
+     *
+     * @param Array $calendars Calendar array of CalendarInfo class each one
+     * @return Array List of calendars with share_with added
+     */
+    public function addShareWith(&$calendars)
+    {
+        foreach ($calendars as $c) {
+            $c->share_with = $access = $this->usersWithAccessTo($c->calendar);
+        }
+
+        return $calendars;
+    }
+
+    /**
+     * Sets user defined properties (from shared db) for each calendar. Sets
+     * some special properties too
+     *
+     * @param Array $calendars Calendar array of CalendarInfo class each one
+     * @param Array $properties Result of get_shared_with($username)
+     * @return Array Modified calendar list
+     */
+    function setProperties(&$calendars, $properties)
+    {
+        foreach ($calendars as $c) {
+            $c->shared = true;
+            foreach (array('sid', 'user_from', 'color', 'displayname') as $p) {
+                $c->$p = $properties[$c->calendar][$p];
+            }
+        }
+
+        return $calendars;
+    }
 }
 

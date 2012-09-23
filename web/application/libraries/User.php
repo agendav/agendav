@@ -194,6 +194,20 @@ class User {
         if ($force === true || $this->calendars === null) {
             $calendars = $this->CI->caldavoperations->getCalendars();
 
+            if ($this->CI->config->item('enable_calendar_sharing') === true) {
+                // 1. Add share information to own calendars
+                $calendars = $this->CI->shared_calendars->addShareWith($calendars);
+
+                // 2. Fetch calendars shared with current user
+                $shared_db = $this->CI->shared_calendars->givenAccesses($this->username);
+                if (count($shared_db) > 0) {
+                    $shared_calendars = $this->CI->caldavoperations->getCalendars(array_keys($shared_db));
+                    $shared_calendars = $this->CI->shared_calendars->setProperties($shared_calendars, $shared_db);
+
+                    $calendars = array_merge($calendars, $shared_calendars);
+                }
+            }
+
             // Hide calendars user doesn't want to be shown
             if ($hide_calendars === true) {
                 $calendars = $this->removeHiddenCalendars($calendars);

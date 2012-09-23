@@ -167,7 +167,7 @@ class Caldavoperations {
 
         $this->CI->extended_logs->message(
                 'INTERNALS',
-                'Delete for resource ' . $href . ' returned HTTP code ' . $result);
+                'DELETE on resource ' . $href . ' returned HTTP code ' . $result);
 
         return ($result[0] == '2') ? true : $result;
     }
@@ -188,6 +188,10 @@ class Caldavoperations {
 
         $new_etag = $this->client->DoPUTRequest($href, $icalendar, $etag);
         $result_code = $this->client->GetHTTPResultCode();
+
+        $this->CI->extended_logs->message(
+                'INTERNALS',
+                'PUT on resource ' . $href . ' returned HTTP code ' .  $result_code);
 
         return ($result_code[0] == '2') ? $new_etag : array($result_code);
     }
@@ -344,11 +348,29 @@ class Caldavoperations {
 
     /**
      * Get a list of calendars owned by current user
+     *
+     * @param Array List of calendar paths to retrieve. If not present or empty array, only own calendars will be retrieved
      * @return Array Calendar list
      */
-    public function getCalendars()
+    public function getCalendars($list = array())
     {
-        $cals = $this->client->FindCalendars();
+        $cals = array();
+
+        if (count($list) == 0) {
+            $cals = $this->client->FindCalendars();
+        } else {
+            foreach ($list as $wanted) {
+                $info = $this->client->GetCalendarDetailsByURL($wanted);
+                if (!is_array($info) || count($info) == 0) {
+                    // Something went really wrong in this calendar
+                    $this->CI->extended_logs->message(
+                            'ERROR',
+                            'Ignoring calendar ' . $wanted . '. PROPFIND: ' . $this->client->GetHTTPResultCode());
+                } else {
+                    $cals = array_merge($cals, $info);
+                }
+            }
+        }
         if ($this->CI->config->item('show_public_caldav_url')) {
             foreach ($cals as $c) {
                 $c->public_url = $this->publicUrl($c->calendar);
@@ -500,49 +522,5 @@ class Caldavoperations {
 
         return $ace;
     }
-
-
-    /**
-     * Loads full list of calendars for current user
-     */
-    public function all_user_calendars($user, $passwd) {
-        $ret = array();
-
-        // TODO order
-        $own_calendars = $this->get_own_calendars($user, $passwd);
-        $ret = $own_calendars;
-
-        if ($this->CI->config->item('enable_calendar_sharing')) {
-            // Add sharing information for this calendar
-            foreach ($ret as $calendar) {
-                $calendar->share_with =
-                    $this->CI->shared_calendars->users_with_access_to($calendar->calendar);
-            }
-
-            // Look for shared calendars
-            $tmp_shared_calendars =
-                $this->CI->shared_calendars->get_shared_with($user);
-
-            if (is_array($tmp_shared_calendars) && count($tmp_shared_calendars) > 0) {
-                $shared_calendars = $this->get_shared_calendars_info($user,
-                        $passwd, $tmp_shared_calendars);
-                if ($shared_calendars === FALSE) {
-                    $this->CI->extended_logs->message('ERROR', 
-                            'Error reading shared calendars');
-                } else {
-                    $ret = array_merge($ret, $shared_calendars);
-                }
-            }
-        }
-
-        // Set public URLs
-        foreach ($ret as $calendar) {
-            $calendar->public_url =
-                $this->construct_public_url($calendar->calendar);
-        }
-
-        return $ret;
-    }
-
 
 }
