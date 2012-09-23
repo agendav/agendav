@@ -348,7 +348,14 @@ class Caldavoperations {
      */
     public function getCalendars()
     {
-        return $this->client->FindCalendars();
+        $cals = $this->client->FindCalendars();
+        if ($this->CI->config->item('show_public_caldav_url')) {
+            foreach ($cals as $c) {
+                $c->public_url = $this->publicUrl($c->calendar);
+            }
+        }
+
+        return $cals;
     }
 
     /**
