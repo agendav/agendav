@@ -23,7 +23,7 @@
  * Set this to TRUE to enable config test (disabled by default)
  * Remember to disable it again when finished
  */
-define('ENABLE_SETUP_TESTS', FALSE);
+define('ENABLE_SETUP_TESTS', false);
 
 /*
  * Checks:
@@ -31,6 +31,7 @@ define('ENABLE_SETUP_TESTS', FALSE);
  * - PHP >= 5.3.0
  * - magic_quotes_gpc and magic_quotes_runtime disabled
  * - php-mbstring available
+ * - php-ctype available
  * - php-curl available
  * - Correctly configured config.php, database.php and caldav.php 
  * - PHP database module (mysql, mysqli or postgresql) 
@@ -83,6 +84,14 @@ if (extension_loaded('mbstring')) {
 } else {
 	$tests[] = array('mbstring extension', 'Not installed', 
 			'mbstring extension is needed by AgenDAV');
+}
+
+// PHP ctype
+if (extension_loaded('ctype')) {
+	$tests[] = array('ctype extension', 'Available', 'OK');
+} else {
+	$tests[] = array('ctype extension', 'Not installed',
+			'ctype extension is needed by AgenDAV');
 }
 
 
