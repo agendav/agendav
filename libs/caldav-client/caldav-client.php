@@ -133,11 +133,14 @@ class CalDAVClient {
    * 
    * Can be used to check authentication against server
    *
+   * @param string $url URL to check
+   * @return bool Valid CalDAV (or authentication)
+   *
    */
-  function CheckValidCalDAV() {
+  function CheckValidCalDAV($url = null) {
       // Clean headers
       $this->headers = array();
-      $dav_options = $this->DoOptionsRequestAndGetDAVHeader();
+      $dav_options = $this->DoOptionsRequestAndGetDAVHeader($url);
       $valid_caldav_server = isset($dav_options['calendar-access']);
 
       return $valid_caldav_server;
@@ -326,6 +329,10 @@ class CalDAVClient {
    * @return string The content of the response from the server
    */
   function DoRequest( $url = null ) {
+      $this->xmlResponse = '';
+      $this->xmltags = array();
+      $this->xmlnodes = array();
+
       $this->request_url = $this->base_url . ($url === null ? '' : $url);
 
       curl_setopt($this->ch, CURLOPT_URL, $this->request_url);
