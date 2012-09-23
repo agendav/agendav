@@ -315,7 +315,8 @@ class Caldavoperations {
         $return_results = array();
 
         // Build XML
-        $xml = '<principal-property-search xmlns="DAV:"' .
+        $xml = '<?xml version="1.0" encoding="utf-8" ?>';
+        $xml .= '<principal-property-search xmlns="DAV:"' .
             ($use_or ? ' test="anyof"' : '') . '>';
         if ($dn !== null) {
             $xml .= '<property-search>';
