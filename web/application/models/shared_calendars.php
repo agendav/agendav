@@ -56,45 +56,6 @@ class Shared_calendars extends CI_Model
     }
 
     /**
-     * Get calendars which current user is sharing with other users
-     *
-     * @param $username     User which is sharing calendars
-     * @param $cond         Additional conditions for this query (optional).
-     *                      Associative array
-     * @return array        Array of calendars (sid, user_from, calendar)
-     */
-    function get_shared_from($username, $cond = null)
-    {
-        $conditions = array('user_from' => $username);
-        if (!is_null($cond) && is_array($cond)) {
-            $conditions = array_merge($conditions, $cond);
-        }
-        $res = $this->db->get_where('shared', $conditions);
-
-        $tmp = $res->result_array();
-        $result = array();
-
-        foreach ($tmp as $c) {
-            $index = $c['calendar'];
-            if (!isset($result[$index])) {
-                $result[$index] = array();
-            }
-            $sid = $c['sid'];
-
-            $c['write_access'] = $this->boolToInt($c['write_access']);
-
-            $options = unserialize($c['options']);
-            if (is_array($options)) {
-                $c = array_merge($c, $options);
-            }
-
-            $result[$index][$sid] = $c;
-        }
-
-        return $result;
-    }
-
-    /**
      * Get a list of users who can access a calendar
      *
      * @param string $calendar Calendar
@@ -276,8 +237,11 @@ class Shared_calendars extends CI_Model
     {
         foreach ($calendars as $c) {
             $c->shared = true;
-            foreach (array('sid', 'user_from', 'color', 'displayname') as $p) {
-                $c->$p = $properties[$c->calendar][$p];
+            $current = $properties[$c->calendar];
+            foreach (array('sid', 'write_access', 'user_from', 'color', 'displayname') as $p) {
+                if (isset($current[$p])) {
+                    $c->$p = $current[$p];
+                }
             }
         }
 

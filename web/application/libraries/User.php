@@ -229,6 +229,10 @@ class User {
      */
     public function removeHiddenCalendars(&$calendars) {
         $hidden_calendars = $this->getPreferences()->hidden_calendars;
+        if ($hidden_calendars === null) {
+            $hidden_calendars = array();
+        }
+
         return array_diff_key($calendars, $hidden_calendars);
     }
 
