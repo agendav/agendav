@@ -101,8 +101,8 @@ class User {
         // TODO ask server about my principal URL and calendar-home-set
         $this->generatePrincipalURL();
         $this->generateCalendarHomeSet();
-        $c->PrincipalURL($this->getPrincipalURL(false));
-        $c->CalendarHomeSet($this->getCalendarHomeSet(false));
+        $c->PrincipalURL($this->getPrincipalURL());
+        $c->CalendarHomeSet($this->getCalendarHomeSet());
 
         return $c;
     }
@@ -112,12 +112,7 @@ class User {
      * @return void
      */
     private function generatePrincipalURL() {
-        $url = preg_replace(
-                '/%u/',
-                urlencode($this->username),
-                $this->CI->config->item('caldav_principal_url')
-               );
-        $this->principal = $url;
+        $this->principal = $this->CI->urlgenerator->generatePrincipal($this->username, true);
     }
 
     /**
@@ -144,12 +139,7 @@ class User {
      */
     public function generateCalendarHomeSet()
     {
-        $url = preg_replace(
-                '/%u/',
-                urlencode($this->username),
-                $this->CI->config->item('caldav_calendar_root')
-               );
-        $this->calendar_home_set = $url;
+        $this->calendar_home_set = $this->CI->urlgenerator->generateCalendarHomeSet($this->username, true);
     }
 
     /**
