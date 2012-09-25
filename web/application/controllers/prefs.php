@@ -34,6 +34,7 @@ class Prefs extends CI_Controller {
         // Force authentication
         $this->user->forceAuthentication();
 
+        $this->caldavoperations->setClient($this->user->createCalDAVClient());
         // Preferences
         $this->prefs = $this->user->getPreferences();
     }
