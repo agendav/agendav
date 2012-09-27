@@ -19,8 +19,6 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('XMLDocument.php');
-
 use AgenDAV\Data\CalendarInfo;
 
 class CalDAVClient {
