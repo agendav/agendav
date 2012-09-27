@@ -24,27 +24,14 @@ class Caldavoperations {
     private $CI;
     private $client = null;
 
-    private $http_auth_method;
-
     public function __construct()
     {
         $this->CI =& get_instance();
 
         $this->base_url = $this->CI->config->item('caldav_server');
 
-        $this->http_auth_method =
-            $this->CI->config->item('caldav_http_auth_method');
-
-        // Empty string or FALSE
-        if ($this->http_auth_method != CURLAUTH_BASIC &&
-                 $this->http_auth_method != CURLAUTH_DIGEST) {
-            $this->http_auth_method = CURLAUTH_BASIC | CURLAUTH_DIGEST;
-        }
-
         // Load ICS helper library
         $this->CI->load->library('icshelper');
-
-        require_once('caldav-client.php');
     }
 
     /**
