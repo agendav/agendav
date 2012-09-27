@@ -3,3 +3,5 @@ doc/build
 *.swp
 web/application/controllers/x.php
 web/vendor
+web/composer.phar
+web/composer.lock
