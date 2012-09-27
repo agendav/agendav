@@ -24,7 +24,6 @@ class Preferences extends CI_Model {
     private static $current = null;
     function __construct() {
         parent::__construct();
-
     }
 
     /**

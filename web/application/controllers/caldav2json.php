@@ -23,12 +23,16 @@ use AgenDAV\User;
 
 class Caldav2json extends CI_Controller {
 
-    private $user, $prefs;
+    private $user;
 
     function __construct() {
         parent::__construct();
 
-        $this->user = User::getInstance();
+        $this->user = new User(
+            $this->session,
+            $this->preferences,
+            $this->encrypt
+        );
 
         if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
@@ -36,8 +40,6 @@ class Caldav2json extends CI_Controller {
             $this->output->_display();
             die();
         }
-
-        $this->prefs = $this->user->getPreferences();
 
         $this->caldavoperations->setClient($this->user->createCalDAVClient());
 

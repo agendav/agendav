@@ -34,6 +34,16 @@ class URLGenerator
     }
 
     /**
+     * Returns base URL
+     *
+     * @return string Base URL
+     */
+    function getBaseURL()
+    {
+        return $this->base;
+    }
+
+    /**
      * Builds a principal URL
      *
      * @param string $username User name

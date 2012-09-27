@@ -1,11 +1,4 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-/**
- * AgenDAV additional classes
- */
-
-require_once('../application/libraries/User.php');
-
 /*
 | -------------------------------------------------------------------
 | AUTO-LOADER

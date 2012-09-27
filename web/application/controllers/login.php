@@ -20,12 +20,24 @@
  */
 
 use AgenDAV\User;
+use AgenDAV\CalDAV\URLGenerator;
+use AgenDAV\CalDAV\Client;
 
 class Login extends CI_Controller {
     private $user;
+    private $urlgenerator;
 
     public function index() {
-        $this->user = User::getInstance();
+        $this->user = new User(
+            $this->session,
+            $this->preferences,
+            $this->encrypt
+        );
+        $this->urlgenerator = new URLGenerator(
+            $this->config->item('caldav_server'),
+            $this->config->item('caldav_principal_url'),
+            $this->config->item('caldav_calendar_homeset_template')
+        );
         // Already authenticated?
         if ($this->user->isAuthenticated()) {
             redirect('/main');
@@ -59,7 +71,11 @@ class Login extends CI_Controller {
             $passwd = $this->input->post('passwd');
 
             $this->user->setCredentials($user, $passwd);
-            $caldav_client = $this->user->createCalDAVClient();
+            $caldav_client = new Client(
+                $this->user,
+                $this->urlgenerator,
+                $this->extended_logs
+            );
             $this->caldavoperations->setClient($caldav_client);
 
             if ($this->user->isAuthenticated()) {

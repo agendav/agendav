@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
+
+namespace AgenDAV\CalDAV;
 
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
@@ -21,32 +23,28 @@
 
 use AgenDAV\User;
 
-class Extended_logs {
-
-    private $CI;
+class Client extends \CalDAVClient
+{
     private $user;
 
-    function __construct() {
-        $this->CI = get_instance();
-        $this->user = new User(
-            $this->CI->session,
-            $this->CI->preferences,
-            $this->CI->encrypt
+    private $urlgenerator;
+
+    private $logger;
+
+    function __construct($user, $urlgenerator, $logger)
+    {
+        $this->user = $user;
+        $this->urlgenerator = $urlgenerator;
+        $this->logger = $logger;
+
+        // TODO auth options
+        parent::__construct(
+            $this->urlgenerator->getBaseURL(),
+            $this->user->getUserName(),
+            $this->user->getPasswd()
         );
-    }
 
-    /**
-      */
-    function message($level, $message) {
-        $ip = $this->CI->input->ip_address();
-        // TODO X-Forwarded-for?
-        $username = $this->user->getUsername();
-
-        // Include URL on errors
-        if ($level == 'ERROR') {
-            $message .= ' ['.$this->CI->uri->uri_string().']';
-        }
-
-        log_message($level, $username . '@' . $ip . ' ' . $message);
+        $this->PrincipalURL($this->urlgenerator->generatePrincipal($this->user->getUserName));
+        $this->CalendarHomeSet($this->urlgenerator->generateCalendarHomeSet($this->user->getUserName));
     }
 }

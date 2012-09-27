@@ -31,7 +31,12 @@ class Js_generator extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->user = User::getInstance();
+        // TODO fails
+        $this->user = new User(
+            $this->session,
+            $this->preferences,
+            $this->encrypt
+        );
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
                 !$this->user->isAuthenticated()) {
