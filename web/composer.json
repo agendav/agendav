@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-0": {
+            "AgenDAV": "lib/AgenDAV/",
+            "": "lib/"
+        }
+    }
+}
