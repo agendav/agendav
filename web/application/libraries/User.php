@@ -3,6 +3,7 @@
 namespace AgenDAV;
 
 use \CalDAVClient;
+use AgenDAV\CalDAV\URLGenerator;
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
@@ -34,12 +35,18 @@ class User {
     private $principal;
     private $calendar_home_set;
     private static $instance = null;
+    private $urlgenerator;
 
     /**
      * Creates a user instance. Loads data from session, if available
      */
     public function __construct() {
         $this->CI =& get_instance();
+        $this->urlgenerator = new URLGenerator(
+            $this->CI->config->item('caldav_server'),
+            $this->CI->config->item('caldav_principal_url'),
+            $this->CI->config->item('caldav_calendar_homeset_template')
+        );
         
         foreach (array('username', 'passwd', 'is_authenticated') as $n) {
             if (false !== $current = $this->CI->session->userdata($n)) {
@@ -112,7 +119,7 @@ class User {
      * @return void
      */
     private function generatePrincipalURL() {
-        $this->principal = $this->CI->urlgenerator->generatePrincipal($this->username, true);
+        $this->principal = $this->urlgenerator->generatePrincipal($this->username, true);
     }
 
     /**
@@ -139,7 +146,7 @@ class User {
      */
     public function generateCalendarHomeSet()
     {
-        $this->calendar_home_set = $this->CI->urlgenerator->generateCalendarHomeSet($this->username, true);
+        $this->calendar_home_set = $this->urlgenerator->generateCalendarHomeSet($this->username, true);
     }
 
     /**

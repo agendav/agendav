@@ -72,7 +72,7 @@ $config['caldav_principal_url'] = 'https://caldav.server/caldav.php/%u/';
  * - Apple Calendar Server: https://host/calendars/users/%u/
  */
 
-$config['caldav_calendar_root'] = 'https://caldav.server/caldav.php/%u/';
+$config['caldav_calendar_homeset_template'] = 'https://caldav.server/caldav.php/%u/';
 
 /*
  * Public CalDAV URL for calendars

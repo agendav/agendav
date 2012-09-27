@@ -60,8 +60,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
-    'timezonemanager', 'dates', 'recurrence', 'urlgenerator',
-    'caldavoperations');
+    'timezonemanager', 'dates', 'recurrence', 'caldavoperations');
 
 
 /*

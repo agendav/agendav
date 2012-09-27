@@ -1,4 +1,5 @@
 <?php
+namespace AgenDAV\CalDAV;
 
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
@@ -19,18 +20,17 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Urlgenerator
+class URLGenerator
 {
     private $principal_template;
     private $base;
-    private $calendar_root;
+    private $calendar_homeset_template;
     private $CI;
 
-    public function __construct() {
-        $this->CI =& get_instance();
-        $this->principal_template = $this->CI->config->item('caldav_principal_url');
-        $this->base = $this->CI->config->item('caldav_server');
-        $this->calendar_root = $this->CI->config->item('caldav_calendar_root');
+    public function __construct($base, $principal_template, $calendar_homeset_template) {
+        $this->base = $base;
+        $this->principal_template = $principal_template;
+        $this->calendar_homeset_template = $calendar_homeset_template;
     }
 
     /**
@@ -66,7 +66,7 @@ class Urlgenerator
         $url = preg_replace(
             '/%u/',
             $username,
-            $this->calendar_root
+            $this->calendar_homeset_template
         );
 
         return $absolute ? $url : $this->getPath($url);
