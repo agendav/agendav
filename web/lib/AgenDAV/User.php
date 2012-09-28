@@ -36,6 +36,8 @@ class User
 
     private $preferences = null;
 
+    private $current_preferences = null;
+
     private $encrypt;
 
     /**
@@ -79,12 +81,12 @@ class User
      * @return AgenDAV\Data\Preferences Current user preferences
      */
     public function getPreferences($force = false) {
-        if ($force === true || $this->preferences === null) {
-            $this->preferences =
+        if ($force === true || $this->current_preferences === null) {
+            $this->current_preferences =
                 $this->preferences->get($this->username, $force);
         }
 
-        return $this->preferences;
+        return $this->current_preferences;
     }
 
     /**
