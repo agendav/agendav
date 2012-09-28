@@ -2,8 +2,6 @@
 
 namespace AgenDAV\Data;
 
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
-
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -24,20 +22,30 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  */
 
 
-class Preferences {
+/**
+ * Holds user preferences 
+ *
+ * @package 
+ * @version $id$
+ * @copyright 1997-2005 The PHP Group
+ * @author Tobias Schlitt <toby@php.net> 
+ * @license PHP Version 3.0 {@link http://www.php.net/license/3_0.txt}
+ */
+class Preferences
+{
     private $options = array();
 
-    function __construct($arr_values = array()) {
+    public function __construct($arr_values = array()) {
         foreach($arr_values as $name => $value) {
             $this->options[$name] = $value;
         }
     }
 
-    function __set($name, $value) {
+    public function __set($name, $value) {
         $this->options[$name] = $value;
     }
 
-    function __get($name) {
+    public function __get($name) {
         if (array_key_exists($name, $this->options)) {
             return $this->options[$name];
         } else {
@@ -45,15 +53,15 @@ class Preferences {
         }
     }
 
-    function getAll() {
+    public function getAll() {
         return $this->options;
     }
 
-    function setAll($options) {
+    public function setAll($options) {
         $this->options = $options;
     }
 
-    function to_json() {
+    public function to_json() {
         return json_encode($this->options);
     }
 }

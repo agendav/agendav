@@ -2,8 +2,6 @@
 
 namespace AgenDAV\Data;
 
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
-
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -23,10 +21,33 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CalendarInfo {
-    public $url, $displayname, $getctag;
-    public $calendar, $order, $color, $shared, $rgba_color, $is_default;
-    public $share_with = array(), $write_access;
+/**
+ * Stores information about a calendar collection 
+ */
+class CalendarInfo
+{
+    public $calendar;
+
+    public $url;
+
+    public $displayname;
+
+    public $getctag;
+
+    public $order;
+
+    public $color;
+
+    public $shared;
+
+    public $rgba_color;
+
+    public $is_default;
+
+    public $share_with;
+
+    public $write_access;
+
 
     public function __construct($url, $displayname = null, $getctag = null ) {
         $this->url = $url;
@@ -37,9 +58,4 @@ class CalendarInfo {
         $this->rgba_color = FALSE;
         $this->shared = FALSE;
     }
-
-    public function __toString() {
-        return( '(URL: '.$this->url.'   Ctag: '.$this->getctag.'   Displayname: '.$this->displayname .')'. "\n" );
-    }
 }
-

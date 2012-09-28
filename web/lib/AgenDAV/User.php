@@ -20,28 +20,90 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Represents the current AgenDAV user 
+ */
 class User
 {
+    /**
+     * User name 
+     *
+     * @var string
+     */
     private $username;
 
+    /**
+     * Password provided by the user 
+     *
+     * @var string
+     * @access private
+     */
     private $passwd;
 
+    /**
+     * Additional user properties 
+     *
+     * @var mixed
+     * @access private
+     */
     private $properties;
 
+    /**
+     * Whether current user is authenticated or not 
+     *
+     * @var boolean
+     * @access private
+     */
     private $is_authenticated = false;
 
+    /**
+     * Current user principal on CalDAV server 
+     *
+     * @var string
+     * @access private
+     */
     private $principal;
 
-    private $session = null;
-
-    private $preferences = null;
-
+    /**
+     * Current user preferences
+     *
+     * @var AgenDAV\Preferences
+     * @access private
+     */
     private $current_preferences = null;
 
+    /**
+     * Session manager 
+     *
+     * @var Object
+     * @access private
+     */
+    private $session = null;
+
+    /**
+     * Preferences manager 
+     *
+     * @var Object
+     * @access private
+     */
+    private $preferences = null;
+
+    /**
+     * Encryption manager 
+     *
+     * @var Object
+     * @access private
+     */
     private $encrypt;
 
     /**
      * Creates a user instance. Loads data from session, if available
+     *
+     * @param Object $session Session manager
+     * @param Object $preferences Preferences manager
+     * @param Object $encrypt Encryption manager
+     * @access public
+     * @return void
      */
     public function __construct($session, $preferences, $encrypt) {
         $this->session = $session;
@@ -153,7 +215,7 @@ class User
 
     /**
      * Sets current user authentication status
-     * 
+     *
      * @param bool $is_authenticated 
      * @return void
      */

@@ -23,15 +23,46 @@ namespace AgenDAV\CalDAV;
 
 use AgenDAV\Version;
 
+/**
+ * AgenDAV CalDAV client 
+ */
 class Client extends \CalDAVClient
 {
+    /**
+     * Current user
+     *
+     * @var Object
+     * @access private
+     */
     private $app_user;
 
+    /**
+     * URL generator manager 
+     *
+     * @var Object
+     * @access private
+     */
     private $urlgenerator;
 
+    /**
+     * Log manager 
+     *
+     * @var Object
+     * @access private
+     */
     private $logger;
 
-    function __construct($app_user, $urlgenerator, $logger, $version)
+    /**
+     * Creates a new CalDAV client
+     *
+     * @param Object $app_user Current user
+     * @param Object $urlgenerator URL generator
+     * @param Object $logger Log manager
+     * @param string $version AgenDAV version
+     * @access public
+     * @return void
+     */
+    public function __construct($app_user, $urlgenerator, $logger, $version)
     {
         $this->app_user = $app_user;
         $this->urlgenerator = $urlgenerator;

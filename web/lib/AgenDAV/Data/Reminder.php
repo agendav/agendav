@@ -2,8 +2,6 @@
 
 namespace AgenDAV\Data;
 
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
-
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -23,7 +21,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Reminder {
+class Reminder
+{
     public $type, $order = FALSE;
     public $is_absolute;
     public $before;

@@ -22,11 +22,40 @@ namespace AgenDAV\CalDAV;
 
 class URLGenerator
 {
-    private $principal_template;
-    private $base;
-    private $calendar_homeset_template;
-    private $CI;
 
+    /**
+     * CalDAV base URL 
+     *
+     * @var mixed
+     * @access private
+     */
+    private $base;
+
+    /**
+     * Principal URL template
+     *
+     * @var string
+     * @access private
+     */
+    private $principal_template;
+
+    /**
+     * calendar-home-set URL template
+     *
+     * @var string
+     * @access private
+     */
+    private $calendar_homeset_template;
+
+    /**
+     * Creates a new URL generator
+     *
+     * @param string $base Base CalDAV URL
+     * @param string $principal_template Principal URL template
+     * @param string $calendar_homeset_template Calendar home set template
+     * @access public
+     * @return void
+     */
     public function __construct($base, $principal_template, $calendar_homeset_template) {
         $this->base = $base;
         $this->principal_template = $principal_template;
@@ -84,7 +113,7 @@ class URLGenerator
 
     /**
      * Extracts path from a provided URL 
-     * 
+     *
      * @param string $url URL
      * @return string Path from the URL
      */

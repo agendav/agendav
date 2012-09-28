@@ -70,7 +70,7 @@ class Action {
 
     /**
      * Fetches events for a given resource
-     * 
+     *
      * @param string $href Relative URL to collection
      * @param int $start Start timestamp
      * @param int $end End timestamp
