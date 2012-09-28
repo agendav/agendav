@@ -1171,7 +1171,7 @@ EOFILTER;
           return false;
       }
 
-      return $result;
+      return array_values($result);
   }
 
   /**
