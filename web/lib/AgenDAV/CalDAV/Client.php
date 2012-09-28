@@ -21,30 +21,28 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
-
 class Client extends \CalDAVClient
 {
-    private $user;
+    private $app_user;
 
     private $urlgenerator;
 
     private $logger;
 
-    function __construct($user, $urlgenerator, $logger)
+    function __construct($app_user, $urlgenerator, $logger)
     {
-        $this->user = $user;
+        $this->app_user = $app_user;
         $this->urlgenerator = $urlgenerator;
         $this->logger = $logger;
 
         // TODO auth options
         parent::__construct(
             $this->urlgenerator->getBaseURL(),
-            $this->user->getUserName(),
-            $this->user->getPasswd()
+            $this->app_user->getUserName(),
+            $this->app_user->getPasswd()
         );
 
-        $this->PrincipalURL($this->urlgenerator->generatePrincipal($this->user->getUserName));
-        $this->CalendarHomeSet($this->urlgenerator->generateCalendarHomeSet($this->user->getUserName));
+        $this->PrincipalURL($this->urlgenerator->generatePrincipal($this->app_user->getUserName()));
+        $this->CalendarHomeSet($this->urlgenerator->generateCalendarHomeSet($this->app_user->getUserName()));
     }
 }
