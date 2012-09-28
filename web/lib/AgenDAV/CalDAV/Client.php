@@ -56,13 +56,13 @@ class Client extends \CalDAVClient
      * Creates a new CalDAV client
      *
      * @param Object $app_user Current user
-     * @param Object $urlgenerator URL generator
+     * @param \AgenDAV\CalDAV\IURLGenerator $urlgenerator URL generator
      * @param Object $logger Log manager
      * @param string $version AgenDAV version
      * @access public
      * @return void
      */
-    public function __construct($app_user, $urlgenerator, $logger, $version)
+    public function __construct($app_user, \AgenDAV\CalDAV\IURLGenerator $urlgenerator, $logger, $version)
     {
         $this->app_user = $app_user;
         $this->urlgenerator = $urlgenerator;

@@ -20,13 +20,13 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class URLGenerator
+class URLGenerator implements IURLGenerator
 {
 
     /**
      * CalDAV base URL 
      *
-     * @var mixed
+     * @var string
      * @access private
      */
     private $base;
@@ -67,7 +67,7 @@ class URLGenerator
      *
      * @return string Base URL
      */
-    function getBaseURL()
+    public function getBaseURL()
     {
         return $this->base;
     }
