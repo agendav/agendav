@@ -56,7 +56,8 @@ class MY_Controller extends CI_Controller
             return new $c(
                 $container['user'],
                 $container['urlgenerator'],
-                $this->extended_logs
+                $this->extended_logs,
+                AgenDAV\Version::V
             );
         });
     }

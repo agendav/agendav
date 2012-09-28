@@ -15,10 +15,10 @@ if (ENVIRONMENT == 'development') {
 	$printcss = Defs::$printcssfiles;
 } else {
 	$css = array(
-			'agendav-' . AGENDAV_VERSION . '.css',
+			'agendav-' . \AgenDAV\Version::V . '.css',
 			);
 	$printcss = array(
-			'agendav-' . AGENDAV_VERSION . '.print.css',
+			'agendav-' . \AgenDAV\Version::V . '.print.css',
 			);
 }
 
