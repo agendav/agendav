@@ -198,7 +198,7 @@ class Dialog_generator extends MY_Controller
         } else {
             // Calendars
             $calendars = array();
-            foreach ($this->user->allCalendars() as $id => $data) {
+            foreach ($this->caldavoperations->getCalendars() as $id => $data) {
                 if (!$data->shared || $data->write_access == '1') {
                     $calendars[$id] = $data->displayname;
                 }
