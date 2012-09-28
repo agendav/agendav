@@ -52,7 +52,7 @@ class User
 
                 // Decrypt password
                 if ($n == 'passwd') {
-                    $current = $this->encrypt->decrypt($current);
+                    $current = $this->encrypt->decode($current);
                 }
 
                 $this->$n = $current;
@@ -115,7 +115,7 @@ class User
     public function newSession() {
         $data = array(
                 'username' => $this->username,
-                'passwd' => $this->encrypt->encrypt($this->passwd),
+                'passwd' => $this->encrypt->encode($this->passwd),
                 'is_authenticated' => $this->is_authenticated,
                 );
         $this->session->set_userdata($data);
