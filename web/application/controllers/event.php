@@ -19,10 +19,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
 use AgenDAV\Data\Reminder;
 
-class Event extends CI_Controller {
+class Event extends MY_Controller
+{
 
     private $time_format;
     private $date_format;
@@ -35,7 +35,7 @@ class Event extends CI_Controller {
     function __construct() {
         parent::__construct();
 
-        $this->user = User::getInstance();
+        $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INFO', 
@@ -46,7 +46,7 @@ class Event extends CI_Controller {
             die();
         }
 
-        $this->caldavoperations->setClient($this->user->createCalDAVClient());
+        $this->caldavoperations->setClient($this->container['client']);
 
         $this->date_format = $this->dates->date_format_string('date');
         $this->time_format = $this->dates->time_format_string('date');

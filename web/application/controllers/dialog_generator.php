@@ -19,10 +19,8 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
-
-class Dialog_generator extends CI_Controller {
-
+class Dialog_generator extends MY_Controller
+{
     // Formats
     private $time_format;
     private $date_format;
@@ -40,27 +38,24 @@ class Dialog_generator extends CI_Controller {
 
         $this->output->set_content_type('text/html');
 
-        $this->user = User::getInstance();
+        $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INTERNALS', 
-                    'Anonymous access attempt to '
-                    . uri_string());
+            $this->extended_logs->message('INTERNALS', 'Anonymous access attempt to ' . uri_string());
             $expire = $this->load->view('js_code/session_expired', '', true);
             echo $expire;
             exit;
         } else {
             $this->load->helper('form');
 
-            $this->caldavoperations->setClient($this->user->createCalDAVClient());
+            $this->caldavoperations->setClient($this->container['client']);
             
             // Load formats
             $this->date_format = $this->dates->date_format_string('date');
             $this->time_format = $this->dates->time_format_string('date');
 
             // Timezone
-            $this->tz = $this->timezonemanager->getTz(
-                    $this->config->item('default_timezone'));
+            $this->tz = $this->timezonemanager->getTz( $this->config->item('default_timezone'));
             $this->tz_utc = $this->timezonemanager->getTz('UTC');
         }
     }
@@ -132,7 +127,7 @@ class Dialog_generator extends CI_Controller {
 
         // Calendars
         $calendars = array();
-        foreach ($this->user->allCalendars() as $id => $data) {
+        foreach ($this->caldavoperations->getCalendars() as $id => $data) {
             if (!$data->shared || $data->write_access == '1') {
                 $calendars[$id] = $data->displayname;
             }

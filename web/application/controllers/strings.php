@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Strings extends CI_Controller {
+class Strings extends MY_Controller {
 
     function __construct() {
         parent::__construct();

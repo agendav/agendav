@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Cli extends CI_Controller {
+class Cli extends MY_Controller {
 
     // Special CLI controller
 

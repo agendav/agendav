@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
 
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
@@ -19,19 +19,20 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
-
-class Main extends CI_Controller {
+class Main extends MY_Controller
+{
 
     private $user;
 
     function __construct() {
         parent::__construct();
 
-        $this->user = User::getInstance();
+        $this->user = $this->container['user'];
 
         // Force authentication
-        $this->user->forceAuthentication();
+        if (!$this->user->isAuthenticated()) {
+            redirect('/login');
+        }
     }
 
     function index() {
@@ -41,7 +42,7 @@ class Main extends CI_Controller {
 
         $data_header = array(
                 'title' => $title,
-                'logged_in' => TRUE,
+                'logged_in' => true,
                 'username' => $this->user->getUsername(),
                 'body_class' => array('calendarpage'),
                 );
@@ -52,20 +53,20 @@ class Main extends CI_Controller {
         $data_calendar['title'] = $title;
 
         $components['header'] = 
-            $this->load->view('common_header', $data_header, TRUE);
+            $this->load->view('common_header', $data_header, true);
 
         $components['navbar'] = 
-            $this->load->view('navbar', $data_header, TRUE);
+            $this->load->view('navbar', $data_header, true);
 
         $components['sidebar'] = 
-            $this->load->view('sidebar', $data_calendar, TRUE);
+            $this->load->view('sidebar', $data_calendar, true);
         $components['content'] = 
-            $this->load->view('center', array(), TRUE); 
+            $this->load->view('center', array(), true); 
         $components['footer'] = $this->load->view('footer',
                 array(
-                    'load_session_refresh' => TRUE,
-                    'load_calendar_colors' => TRUE,
-                    ), TRUE);
+                    'load_session_refresh' => true,
+                    'load_calendar_colors' => true,
+                    ), true);
 
         $this->load->view('layouts/app.php', $components);
     }
@@ -78,7 +79,7 @@ class Main extends CI_Controller {
 
         // Configured redirection
         $logout_url = $this->config->item('logout_redirect_to');
-        if ($logout_url === FALSE || empty($logout_url)) {
+        if ($logout_url === false || empty($logout_url)) {
             $logout_url = 'login';
         }
 

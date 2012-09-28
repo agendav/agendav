@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
 
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
@@ -19,9 +19,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
+use AgenDAV\Data\Preferences;
 
-class Prefs extends CI_Controller {
+class Prefs extends MY_Controller
+{
 
     private $prefs;
     private $user;
@@ -29,12 +30,14 @@ class Prefs extends CI_Controller {
     function __construct() {
         parent::__construct();
 
-        $this->user = User::getInstance();
+        $this->user = $this->container['user'];
 
         // Force authentication
-        $this->user->forceAuthentication();
+        if (!$this->user->isAuthenticated()) {
+            redirect('/login');
+        }
 
-        $this->caldavoperations->setClient($this->user->createCalDAVClient());
+        $this->caldavoperations->setClient($this->container['client']);
         // Preferences
         $this->prefs = $this->user->getPreferences();
     }
@@ -46,7 +49,7 @@ class Prefs extends CI_Controller {
 
         $data_header = array(
                 'title' => $title,
-                'logged_in' => TRUE,
+                'logged_in' => true,
                 'username' => $this->user->getUsername(),
                 'body_class' => array('prefspage'),
                 );
@@ -57,14 +60,14 @@ class Prefs extends CI_Controller {
         $data_calendar['title'] = $title;
 
         $components['header'] = 
-            $this->load->view('common_header', $data_header, TRUE);
+            $this->load->view('common_header', $data_header, true);
 
         $components['navbar'] = 
-            $this->load->view('navbar', $data_header, TRUE);
+            $this->load->view('navbar', $data_header, true);
 
 
         // Calendar list
-        $calendar_list = $this->user->allCalendars(true, false);
+        $calendar_list = $this->caldavoperations->getCalendars();
 
         // TODO refactor this part
         $hidden_calendars = $this->prefs->hidden_calendars;
@@ -87,12 +90,12 @@ class Prefs extends CI_Controller {
                 );
 
         $components['content'] = $this->load->view('preferences_page',
-                $data_prefs, TRUE);
+                $data_prefs, true);
         $components['footer'] = $this->load->view('footer',
                 array(
-                    'load_session_refresh' => TRUE,
-                    'load_calendar_colors' => TRUE,
-                    ), TRUE);
+                    'load_session_refresh' => true,
+                    'load_calendar_colors' => true,
+                    ), true);
 
         $this->load->view('layouts/plain.php', $components);
     }
@@ -136,7 +139,7 @@ class Prefs extends CI_Controller {
                         .'name not found');
             } else {
                 if (isset($c['hide']) && $c['hide'] == '1') {
-                    $hidden_calendars[$c['name']] = TRUE;
+                    $hidden_calendars[$c['name']] = true;
                 }
             }
         }
@@ -144,8 +147,7 @@ class Prefs extends CI_Controller {
         $current_prefs->hidden_calendars = $hidden_calendars;
 
         // Save preferences
-        $this->preferences->save($current_user,
-                $current_prefs);
+        $this->preferences->save($current_user, $current_prefs);
 
         $this->session->set_userdata('prefs', $current_prefs->getAll());
         $this->_throw_success();

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
 
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
@@ -19,9 +19,8 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
-
-class Js_generator extends CI_Controller {
+class Js_generator extends MY_Controller
+{
 
     // Special methods that do should not enforce authentication
     private $not_enforced = array(
@@ -31,12 +30,7 @@ class Js_generator extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        // TODO fails
-        $this->user = new User(
-            $this->session,
-            $this->preferences,
-            $this->encrypt
-        );
+        $this->user = $this->container['user'];
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
                 !$this->user->isAuthenticated()) {
