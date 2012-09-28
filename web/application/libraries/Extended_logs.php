@@ -24,29 +24,20 @@ use AgenDAV\User;
 class Extended_logs {
 
     private $CI;
-    private $user;
 
     function __construct() {
         $this->CI = get_instance();
-        $this->user = new User(
-            $this->CI->session,
-            $this->CI->preferences,
-            $this->CI->encrypt
-        );
     }
 
     /**
       */
     function message($level, $message) {
         $ip = $this->CI->input->ip_address();
-        // TODO X-Forwarded-for?
-        $username = $this->user->getUsername();
-
         // Include URL on errors
         if ($level == 'ERROR') {
             $message .= ' ['.$this->CI->uri->uri_string().']';
         }
 
-        log_message($level, $username . '@' . $ip . ' ' . $message);
+        log_message($level, $ip . ' ' . $message);
     }
 }
