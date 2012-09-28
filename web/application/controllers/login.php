@@ -19,27 +19,14 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
-use AgenDAV\CalDAV\URLGenerator;
-use AgenDAV\CalDAV\Client;
-
-class Login extends CI_Controller {
-    private $user;
-    private $urlgenerator;
+class Login extends MY_Controller {
 
     public function index() {
-        $this->user = new User(
-            $this->session,
-            $this->preferences,
-            $this->encrypt
-        );
-        $this->urlgenerator = new URLGenerator(
-            $this->config->item('caldav_server'),
-            $this->config->item('caldav_principal_url'),
-            $this->config->item('caldav_calendar_homeset_template')
-        );
+        $app_user = $this->container['user'];
+        $urlgenerator = $this->container['urlgenerator'];
+
         // Already authenticated?
-        if ($this->user->isAuthenticated()) {
+        if ($app_user->isAuthenticated()) {
             redirect('/main');
         }
 
@@ -69,17 +56,14 @@ class Login extends CI_Controller {
             // Check authentication against server
             $user = $this->input->post('user');
             $passwd = $this->input->post('passwd');
+            $app_user->setCredentials($user, $passwd);
 
-            $this->user->setCredentials($user, $passwd);
-            $caldav_client = new Client(
-                $this->user,
-                $this->urlgenerator,
-                $this->extended_logs
-            );
-            $this->caldavoperations->setClient($caldav_client);
+            $caldav_client = $this->container['client'];
 
-            if ($this->user->isAuthenticated()) {
-                $this->user->newSession();
+
+            if ($caldav_client->CheckValidCalDAV()) {
+                $app_user->setAuthenticated(true);
+                $app_user->newSession();
                 redirect("/main");
                 $this->output->_display();
                 die();

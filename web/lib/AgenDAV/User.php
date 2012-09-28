@@ -149,4 +149,15 @@ class User
         }
     }
 
+    /**
+     * Sets current user authentication status
+     * 
+     * @param bool $is_authenticated 
+     * @return void
+     */
+    public function setAuthenticated($is_authenticated)
+    {
+        $this->is_authenticated = $is_authenticated;
+    }
+
 }
