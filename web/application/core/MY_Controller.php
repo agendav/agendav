@@ -28,7 +28,7 @@ class MY_Controller extends CI_Controller
         // Classes
         $this->container['user_class'] = '\AgenDAV\User';
         $this->container['urlgenerator_class'] = '\AgenDAV\CalDAV\URLGenerator';
-        $this->container['client_class'] = '\AgenDAV\CalDAV\Client';
+        $this->container['client_class'] = '\AgenDAV\CalDAV\CURLClient';
         $this->container['session_class'] = '\AgenDAV\CodeIgniterSessionManager';
 
         // URLGenerator

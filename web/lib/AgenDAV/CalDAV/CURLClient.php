@@ -26,7 +26,7 @@ use AgenDAV\Version;
 /**
  * AgenDAV CalDAV client 
  */
-class Client extends \CalDAVClient
+class CURLClient extends \CalDAVClient
 {
     /**
      * Current user
