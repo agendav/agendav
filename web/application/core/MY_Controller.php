@@ -29,6 +29,7 @@ class MY_Controller extends CI_Controller
         $this->container['user_class'] = '\AgenDAV\User';
         $this->container['urlgenerator_class'] = '\AgenDAV\CalDAV\URLGenerator';
         $this->container['client_class'] = '\AgenDAV\CalDAV\Client';
+        $this->container['session_class'] = '\AgenDAV\CodeIgniterSessionManager';
 
         // URLGenerator
         $this->container['urlgenerator'] = $this->container->share(function($container) {
@@ -40,11 +41,16 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // Session
+        $this->container['session'] = $this->container->share(function($container) {
+            return new $container['session_class'];
+        });
+
         // User
         $this->container['user'] = $this->container->share(function($container) {
             $c = $container['user_class'];
             return new $c(
-                $this->session,
+                $container['session'],
                 $this->preferences,
                 $this->encrypt
             );

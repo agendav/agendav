@@ -75,7 +75,7 @@ class User
     /**
      * Session manager 
      *
-     * @var Object
+     * @var ISessionManager
      * @access private
      */
     private $session = null;
@@ -99,20 +99,23 @@ class User
     /**
      * Creates a user instance. Loads data from session, if available
      *
-     * @param Object $session Session manager
+     * @param ISessionManager $session Session manager
      * @param Object $preferences Preferences manager
      * @param Object $encrypt Encryption manager
      * @access public
      * @return void
      */
-    public function __construct($session, $preferences, $encrypt) {
+    public function __construct(ISessionManager $session, $preferences, $encrypt) {
         $this->session = $session;
         $this->preferences = $preferences;
         $this->encrypt = $encrypt;
+
+        // Initialize session
+        $this->session->initialize();
         
         // TODO other properties!
         foreach (array('username', 'passwd', 'is_authenticated') as $n) {
-            if (false !== $current = $this->session->userdata($n)) {
+            if (null !== $current = $this->session->get($n)) {
 
                 // Decrypt password
                 if ($n == 'passwd') {
@@ -182,7 +185,7 @@ class User
                 'passwd' => $this->encrypt->encode($this->passwd),
                 'is_authenticated' => $this->is_authenticated,
                 );
-        $this->session->set_userdata($data);
+        $this->session->setAll($data);
     }
 
     /**
@@ -191,13 +194,7 @@ class User
      * @return void
      */
     public function removeSession() {
-        $data = array(
-                'username' => '',
-                'passwd' => '',
-                'is_authenticated' => '',
-                );
-        $this->session->unset_userdata($data);
-        $this->session->sess_destroy();
+        $this->session->clear();
     }
 
     /**
