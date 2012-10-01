@@ -57,14 +57,6 @@ class User
     private $is_authenticated = false;
 
     /**
-     * Current user principal on CalDAV server 
-     *
-     * @var string
-     * @access private
-     */
-    private $principal;
-
-    /**
      * Current user preferences
      *
      * @var AgenDAV\Preferences
