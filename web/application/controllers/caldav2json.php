@@ -36,8 +36,6 @@ class Caldav2json extends MY_Controller
             die();
         }
 
-        $this->caldavoperations->setClient($this->container['client']);
-
         $this->output->set_content_type('application/json');
     }
 
@@ -50,9 +48,10 @@ class Caldav2json extends MY_Controller
     function principal_search() {
         $result = array();
         $term = $this->input->get('term');
+        $client = $this->container['client'];
 
         if (!empty($term)) {
-            $result = $this->caldavoperations->principalSearch($term, $term);
+            $result = $client->principalSearch($term, $term);
         }
 
         $this->output->set_output(json_encode($result));
