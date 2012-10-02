@@ -72,12 +72,24 @@ class MY_Controller extends CI_Controller
         $this->container['channels/calendarhomeset'] = $this->container->share(function($container) {
             return new \AgenDAV\CalendarChannels\CalendarHomeSet($container['client']);
         });
+        $this->container['channels/sharedcalendars'] = $this->container->share(function($container) {
+            $shared = new \AgenDAV\CalendarChannels\SharedCalendars($container['client'], $this->shared_calendars);
+            $user = $container['user'];
+            $shared->configure(array('username' => $user->getUsername()));
+
+            return $shared;
+        });
 
         // Calendar finder
         $this->container['calendarfinder'] = $this->container->share(function($container) {
             $calendar_finder = new \AgenDAV\CalendarFinder();
 
             $calendar_finder->registerChannel($container['channels/calendarhomeset']);
+
+            // Sharing enabled?
+            if ($this->config->item('enable_calendar_sharing') === true) {
+                $calendar_finder->registerChannel($container['channels/sharedcalendars']);
+            }
 
             return $calendar_finder;
         });
