@@ -37,7 +37,8 @@ class MY_Controller extends CI_Controller
             return new $c(
                 $this->config->item('caldav_server'),
                 $this->config->item('caldav_principal_url'),
-                $this->config->item('caldav_calendar_homeset_template')
+                $this->config->item('caldav_calendar_homeset_template'),
+                $this->config->item('public_caldav_url')
             );
         });
 

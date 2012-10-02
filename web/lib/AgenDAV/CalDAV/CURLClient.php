@@ -136,7 +136,7 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
 
         // Add public URLs
         foreach ($cals as $c) {
-            $c->public_url = 'TODO';
+            $c->public_url = $this->urlgenerator->generatePublicURL($c->url);
         }
 
         return $cals;

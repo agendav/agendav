@@ -48,4 +48,13 @@ interface IURLGenerator
      * @return string Calendar home set URL
      */
     public function generateCalendarHomeSet($username, $absolute);
+
+    /**
+     * Builds a public URL for a given resource
+     *
+     * @param string $path Path to the resource
+     *
+     * @return string Public URL
+     */
+    public function generatePublicURL($path);
 }

@@ -48,18 +48,28 @@ class URLGenerator implements IURLGenerator
     private $calendar_homeset_template;
 
     /**
+     * CalDAV public URL
+     *
+     * @var string
+     * @access private
+     */
+    private $public_caldav_url;
+
+    /**
      * Creates a new URL generator
      *
      * @param string $base Base CalDAV URL
      * @param string $principal_template Principal URL template
      * @param string $calendar_homeset_template Calendar home set template
+     * @param string $public_caldav_url Base CalDAV public URL
      * @access public
      * @return void
      */
-    public function __construct($base, $principal_template, $calendar_homeset_template) {
+    public function __construct($base, $principal_template, $calendar_homeset_template, $public_caldav_url) {
         $this->base = $base;
         $this->principal_template = $principal_template;
         $this->calendar_homeset_template = $calendar_homeset_template;
+        $this->public_caldav_url = $calendar_homeset_template;
     }
 
     /**
@@ -122,6 +132,18 @@ class URLGenerator implements IURLGenerator
         $parsed = parse_url($url);
 
         return $parsed['path'];
+    }
+
+    /**
+     * Builds a public URL for a given resource
+     *
+     * @param string $path Path to the resource
+     *
+     * @return string Public URL
+     */
+    public function generatePublicURL($path)
+    {
+        return $this->public_caldav_url . $path;
     }
 
 }
