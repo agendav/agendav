@@ -37,12 +37,12 @@ class Prefs extends MY_Controller
             redirect('/login');
         }
 
-        $this->caldavoperations->setClient($this->container['client']);
         // Preferences
         $this->prefs = $this->user->getPreferences();
     }
 
     function index() {
+        $client = $this->container['client'];
         // Layout components
         $components = array();
         $title = $this->config->item('site_title');
@@ -67,7 +67,7 @@ class Prefs extends MY_Controller
 
 
         // Calendar list
-        $calendar_list = $this->caldavoperations->getCalendars();
+        $calendar_list = $client->getCalendars();
 
         // TODO refactor this part
         $hidden_calendars = $this->prefs->hidden_calendars;
