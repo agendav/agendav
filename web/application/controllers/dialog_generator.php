@@ -33,7 +33,7 @@ class Dialog_generator extends MY_Controller
 
     private $user;
 
-    private $client;
+    private $calendarfinder;
 
     function __construct() {
         parent::__construct();
@@ -58,7 +58,7 @@ class Dialog_generator extends MY_Controller
             $this->tz = $this->timezonemanager->getTz( $this->config->item('default_timezone'));
             $this->tz_utc = $this->timezonemanager->getTz('UTC');
 
-            $this->client = $this->container['client'];
+            $this->calendarfinder = $this->container['calendarfinder'];
         }
     }
 
@@ -129,7 +129,7 @@ class Dialog_generator extends MY_Controller
 
         // Calendars
         $calendars = array();
-        foreach ($this->client->getCalendars() as $id => $data) {
+        foreach ($this->calendarfinder->getAll() as $id => $data) {
             if (!$data->shared || $data->write_access == '1') {
                 $calendars[$id] = $data->displayname;
             }
@@ -200,7 +200,7 @@ class Dialog_generator extends MY_Controller
         } else {
             // Calendars
             $calendars = array();
-            foreach ($this->client->getCalendars() as $id => $data) {
+            foreach ($this->calendarfinder->getAll() as $id => $data) {
                 if (!$data->shared || $data->write_access == '1') {
                     $calendars[$id] = $data->displayname;
                 }

@@ -61,8 +61,8 @@ class Calendar extends MY_Controller
      * other users with the current one)
      */
     function all() {
-        $calendar_finder = $this->container['calendarfinder'];
-        $calendars = $calendar_finder->getAll();
+        $calendarfinder = $this->container['calendarfinder'];
+        $calendars = $calendarfinder->getAll();
         $this->output->set_output(json_encode($calendars));
     }
 

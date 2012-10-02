@@ -42,7 +42,8 @@ class Prefs extends MY_Controller
     }
 
     function index() {
-        $client = $this->container['client'];
+        $calendarfinder = $this->container['calendarfinder'];
+
         // Layout components
         $components = array();
         $title = $this->config->item('site_title');
@@ -67,7 +68,7 @@ class Prefs extends MY_Controller
 
 
         // Calendar list
-        $calendar_list = $client->getCalendars();
+        $calendar_list = $calendarfinder->getAll();
 
         // TODO refactor this part
         $hidden_calendars = $this->prefs->hidden_calendars;
