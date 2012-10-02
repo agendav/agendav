@@ -205,7 +205,7 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
      */
     public function putResource($href, $data, $etag = null)
     {
-        $new_etag = $this->DoPUTRequest($href, $icalendar, $etag);
+        $new_etag = $this->DoPUTRequest($href, $data, $etag);
         $result_code = $this->GetHTTPResultCode();
 
         $this->logger->message(

@@ -31,6 +31,7 @@ class Event extends MY_Controller
     private $tz_utc;
 
     private $user;
+    private $client;
 
     function __construct() {
         parent::__construct();
@@ -45,8 +46,7 @@ class Event extends MY_Controller
             $this->output->_display();
             die();
         }
-
-        $this->caldavoperations->setClient($this->container['client']);
+        $this->client = $this->container['client'];
 
         $this->date_format = $this->dates->date_format_string('date');
         $this->time_format = $this->dates->time_format_string('date');
@@ -97,7 +97,7 @@ class Event extends MY_Controller
             } else {
                 $end = $this->dates->datetime2idt($this->dates->ts2datetime($end, $this->tz_utc));
 
-                $returned_events = $this->caldavoperations->fetchEvents($calendar, $start, $end);
+                $returned_events = $this->client->fetchEvents($calendar, $start, $end);
 
                 $time_fetch = microtime(true);
             }
@@ -149,8 +149,8 @@ class Event extends MY_Controller
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         } else {
-            $res = $this->caldavoperations->deleteResource(
-                    $href,
+            $res = $this->client->deleteResource(
+                    $calendar . $href,
                     $etag);
             if ($res === true) {
                 $this->_throw_success();
@@ -348,7 +348,7 @@ class Event extends MY_Controller
         // Is this a new event or a modification?
 
         // Valid destination calendar? 
-        if (!$this->caldavoperations->isAccessible($p['calendar'])) {
+        if (!$this->client->isAccessible($p['calendar'])) {
             $this->_throw_exception(
                     $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $p['calendar']))
             );
@@ -372,7 +372,7 @@ class Event extends MY_Controller
                 $original_calendar = $p['original_calendar'];
             }
 
-            if (!$this->caldavoperations->isAccessible($original_calendar)) {
+            if (!$this->client->isAccessible($original_calendar)) {
                 $this->_throw_exception(
                     $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $original_calendar))
                 );
@@ -382,7 +382,7 @@ class Event extends MY_Controller
             $href = $p['href'];
             $etag = $p['etag'];
 
-            $res = $this->caldavoperations->fetchEntryByUid($original_calendar, $uid);
+            $res = $this->client->fetchEntryByUid($original_calendar, $uid);
 
             if (count($res) == 0) {
                 $this->_throw_error($this->i18n->_('messages', 'error_eventnotfound'));
@@ -456,7 +456,7 @@ class Event extends MY_Controller
         }
 
         // PUT on server
-        $new_etag = $this->caldavoperations->putResource(
+        $new_etag = $this->client->putResource(
                 $calendar . $href,
                 $resource->createCalendar(),
                 $etag);
@@ -485,7 +485,7 @@ class Event extends MY_Controller
         } else {
             // Remove original event
             if (isset($p['modification']) && $original_calendar != $calendar) {
-                $res = $this->caldavoperations->deleteResource(
+                $res = $this->client->deleteResource(
                         $original_calendar . $href,
                         $original_etag
                 );
@@ -542,7 +542,7 @@ class Event extends MY_Controller
         }
 
         // Load resource
-        $resource = $this->caldavoperations->fetchEntryByUid($calendar, $uid);
+        $resource = $this->client->fetchEntryByUid($calendar, $uid);
 
         if (count($resource) == 0) {
             $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
@@ -655,7 +655,7 @@ class Event extends MY_Controller
         }
 
         // PUT on server
-        $new_etag = $this->caldavoperations->putResource(
+        $new_etag = $this->client->putResource(
                 $calendar . $href,
                 $ical->createCalendar(),
                 $etag
