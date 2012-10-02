@@ -1067,9 +1067,7 @@ EOFILTER;
                       case 'http://apple.com/ns/ical/:calendar-color':
                           $rgba_color = isset($v['value']) ?
                               $v['value'] : '#ffffffff';
-                          $calendar->rgba_color = $rgba_color;
-                          $calendar->color =
-                              $this->_rgba2rgb($rgba_color);
+                          $calendar->color = $rgba_color;
                           break;
                       case 'http://apple.com/ns/ical/:calendar-order':
                           $calendar->order = isset($v['value']) ?
@@ -1172,18 +1170,6 @@ EOFILTER;
       }
 
       return array_values($result);
-  }
-
-  /**
-   * Converts a RGBA hexadecimal string (#rrggbbXX) to RGB
-   */
-  private function _rgba2rgb($s) {
-      if (strlen($s) == '9') {
-          return substr($s, 0, 7);
-      } else {
-          // Unknown string
-          return $s;
-      }
   }
 
 }

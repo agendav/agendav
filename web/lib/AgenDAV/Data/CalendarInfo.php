@@ -40,8 +40,6 @@ class CalendarInfo
 
     public $shared;
 
-    public $rgba_color;
-
     public $is_default;
 
     public $share_with;
@@ -53,9 +51,8 @@ class CalendarInfo
         $this->url = $url;
         $this->displayname = $displayname;
         $this->getctag = $getctag;
-        $this->is_default = FALSE;
-        $this->order = FALSE;
-        $this->rgba_color = FALSE;
-        $this->shared = FALSE;
+        $this->is_default = false;
+        $this->order = false;
+        $this->shared = false;
     }
 }

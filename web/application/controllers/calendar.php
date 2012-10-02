@@ -63,7 +63,7 @@ class Calendar extends MY_Controller
      * other users with the current one)
      */
     function all() {
-        $calendars = $this->caldavoperations->getCalendars();
+        $calendars = $this->client->getCalendars();
         $this->output->set_output(json_encode($calendars));
     }
 
@@ -130,7 +130,7 @@ class Calendar extends MY_Controller
         }
 
         // Proceed to remove calendar from CalDAV server
-        $res = $this->caldavoperations->deleteResource($calendar, null);
+        $res = $this->client->deleteResource($calendar, null);
 
         if ($res === true) {
             $this->_throw_success($calendar);
