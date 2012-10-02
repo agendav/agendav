@@ -49,8 +49,6 @@ class Calendar extends MY_Controller
 
         $this->client = $this->container['client'];
 
-        $this->caldavoperations->setClient($this->client);
-
         $this->output->set_content_type('application/json');
     }
 
@@ -88,7 +86,7 @@ class Calendar extends MY_Controller
         $url = $this->urlgenerator->generateCalendarHomeSet($this->user->getUsername()) . $this->icshelper->generate_guid();
 
         // Add transparency to color
-        $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
+        $calendar_color = $this->toRGBA($calendar_color);
 
         $new_calendar = new CalendarInfo(
             $url,
@@ -210,7 +208,7 @@ class Calendar extends MY_Controller
 
 
         // Add transparency to color
-        $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
+        $calendar_color = $this->toRGBA($calendar_color);
 
         // Calendar properties
         $changed_calendar = new CalendarInfo(
@@ -282,7 +280,7 @@ class Calendar extends MY_Controller
                 }
             }
 
-            $res = $this->caldavoperations->setacl(
+            $res = $this->client->setacl(
                     $this->user->getUsername(),
                     $this->user->getPasswd(),
                     $internal_calendar,
@@ -365,6 +363,24 @@ class Calendar extends MY_Controller
         die();
     }
 
-
-
+    /**
+     * Converts a RGB hexadecimal string (#rrggbb or short #rgb) to full
+     * RGBA
+     *
+     * @param string $s RGB color (#rrggbb) to be converted
+     * @return string RGBA representation of $s with full opacity
+     */
+    private function toRGBA($s)
+    {
+        if (strlen($s) == '7') {
+            return $s . 'ff';
+        } elseif (strlen($s) == '4') {
+            $res = preg_match('/#(.)(.)(.)/', $s, $matches);
+            return '#' . $matches[1] . $matches[1] . $matches[2] .
+                $matches[2] . $matches[3] . $matches[3] . 'ff';
+        } else {
+            // Unknown string
+            return $s;
+        }
+    }
 }
