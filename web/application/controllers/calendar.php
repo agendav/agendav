@@ -19,11 +19,16 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \AgenDAV\Data\CalendarInfo;
+
 class Calendar extends MY_Controller
 {
 
     private $calendar_colors;
-    private $user, $prefs;
+    private $user;
+    private $client;
+    private $prefs;
+    private $urlgenerator;
 
     function __construct() {
         parent::__construct();
@@ -40,7 +45,11 @@ class Calendar extends MY_Controller
 
         $this->prefs = $this->preferences->get($this->user->getUsername());
 
-        $this->caldavoperations->setClient($this->container['client']);
+        $this->urlgenerator = $this->container['urlgenerator'];
+
+        $this->client = $this->container['client'];
+
+        $this->caldavoperations->setClient($this->client);
 
         $this->output->set_content_type('application/json');
     }
@@ -67,8 +76,7 @@ class Calendar extends MY_Controller
 
         // Display name
         if (empty($displayname)) {
-            $this->_throw_exception($this->i18n->_('messages',
-                        'error_calname_missing'));
+            $this->_throw_exception($this->i18n->_('messages', 'error_calname_missing'));
         }
 
         // Default color
@@ -76,20 +84,19 @@ class Calendar extends MY_Controller
             $calendar_color = '#' . $this->calendar_color[0];
         }
 
-        // Generate internal calendar name
-        $calendar = $this->user->getCalendarHomeSet() . $this->icshelper->generate_guid();
+        // Generate URL
+        $url = $this->urlgenerator->generateCalendarHomeSet($this->user->getUsername()) . $this->icshelper->generate_guid();
 
         // Add transparency to color
         $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
 
-        // Calendar properties
-        $props = array(
-                'displayname' => $displayname,
-                'color' => $calendar_color,
-                );
+        $new_calendar = new CalendarInfo(
+            $url,
+            $displayname
+        );
+        $new_calendar->color = $calendar_color;
 
-
-        $res = $this->caldavoperations->createCalendar($calendar, $props);
+        $res = $this->client->createCalendar($new_calendar);
 
         if ($res !== true) {
             switch ($res) {
@@ -206,16 +213,16 @@ class Calendar extends MY_Controller
         $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
 
         // Calendar properties
-        $props = array(
-                'displayname' => $displayname,
-                'color' => $calendar_color,
-                );
-
+        $changed_calendar = new CalendarInfo(
+            $calendar,
+            $displayname
+        );
+        $changed_calendar->color = $calendar_color;
 
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
 
-            $res = $this->caldavoperations->changeProperties($calendar, $props);
+            $res = $this->client->changeResource($changed_calendar);
         } else if ($is_sharing_enabled) {
             // If this a shared calendar, store settings locally
             $success = $this->shared_calendars->store($sid,
