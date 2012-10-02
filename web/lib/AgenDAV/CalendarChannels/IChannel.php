@@ -47,7 +47,7 @@ interface IChannel
      * Gets current user calendars 
      * 
      * @access public
-     * @return void
+     * @return Array [path => \AgenDAV\Data\CalendarInfo]
      */
     public function getCalendars();
 }
