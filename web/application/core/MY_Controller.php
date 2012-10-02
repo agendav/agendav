@@ -25,6 +25,15 @@ class MY_Controller extends CI_Controller
         parent::__construct();
         $this->container = new Pimple();
 
+        /*
+         * Make some CI models/libraries available to Pimple.
+         * PHP 5.3 doesn't support the use of $this inside closures
+         */
+        $ci_preferences = $this->preferences;
+        $ci_encrypt = $this->encrypt;
+        $ci_logger = $this->extended_logs;
+        $ci_shared_calendars = $this->shared_calendars;
+
         // Classes
         $this->container['user_class'] = '\AgenDAV\User';
         $this->container['urlgenerator_class'] = '\AgenDAV\CalDAV\URLGenerator';
@@ -32,13 +41,20 @@ class MY_Controller extends CI_Controller
         $this->container['session_class'] = '\AgenDAV\CodeIgniterSessionManager';
 
         // URLGenerator
-        $this->container['urlgenerator'] = $this->container->share(function($container) {
+        $cfg = array(
+            'caldav_server' => $this->config->item('caldav_server'),
+            'caldav_principal_url' => $this->config->item('caldav_principal_url'),
+            'caldav_calendar_homeset_template' => $this->config->item('caldav_calendar_homeset_template'),
+            'public_caldav_url' => $this->config->item('public_caldav_url')
+        );
+
+        $this->container['urlgenerator'] = $this->container->share(function($container) use ($cfg){
             $c = $container['urlgenerator_class'];
             return new $c(
-                $this->config->item('caldav_server'),
-                $this->config->item('caldav_principal_url'),
-                $this->config->item('caldav_calendar_homeset_template'),
-                $this->config->item('public_caldav_url')
+                $cfg['caldav_server'],
+                $cfg['caldav_principal_url'],
+                $cfg['caldav_calendar_homeset_template'],
+                $cfg['public_caldav_url']
             );
         });
 
@@ -48,22 +64,22 @@ class MY_Controller extends CI_Controller
         });
 
         // User
-        $this->container['user'] = $this->container->share(function($container) {
+        $this->container['user'] = $this->container->share(function($container) use ($ci_preferences, $ci_encrypt) {
             $c = $container['user_class'];
             return new $c(
                 $container['session'],
-                $this->preferences,
-                $this->encrypt
+                $ci_preferences,
+                $ci_encrypt
             );
         });
 
         // CalDAV client
-        $this->container['client'] = $this->container->share(function($container) {
+        $this->container['client'] = $this->container->share(function($container) use ($ci_logger) {
             $c = $container['client_class'];
             return new $c(
                 $container['user'],
                 $container['urlgenerator'],
-                $this->extended_logs,
+                $ci_logger,
                 AgenDAV\Version::V
             );
         });
@@ -72,8 +88,8 @@ class MY_Controller extends CI_Controller
         $this->container['channels/calendarhomeset'] = $this->container->share(function($container) {
             return new \AgenDAV\CalendarChannels\CalendarHomeSet($container['client']);
         });
-        $this->container['channels/sharedcalendars'] = $this->container->share(function($container) {
-            $shared = new \AgenDAV\CalendarChannels\SharedCalendars($container['client'], $this->shared_calendars);
+        $this->container['channels/sharedcalendars'] = $this->container->share(function($container) use ($ci_shared_calendars) {
+            $shared = new \AgenDAV\CalendarChannels\SharedCalendars($container['client'], $ci_shared_calendars);
             $user = $container['user'];
             $shared->configure(array('username' => $user->getUsername()));
 
@@ -81,13 +97,14 @@ class MY_Controller extends CI_Controller
         });
 
         // Calendar finder
-        $this->container['calendarfinder'] = $this->container->share(function($container) {
+        $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
+        $this->container['calendarfinder'] = $this->container->share(function($container) use ($enable_calendar_sharing) {
             $calendar_finder = new \AgenDAV\CalendarFinder();
 
             $calendar_finder->registerChannel($container['channels/calendarhomeset']);
 
             // Sharing enabled?
-            if ($this->config->item('enable_calendar_sharing') === true) {
+            if ($enable_calendar_sharing === true) {
                 $calendar_finder->registerChannel($container['channels/sharedcalendars']);
             }
 
