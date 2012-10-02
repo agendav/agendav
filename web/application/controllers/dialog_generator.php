@@ -33,6 +33,8 @@ class Dialog_generator extends MY_Controller
 
     private $user;
 
+    private $client;
+
     function __construct() {
         parent::__construct();
 
@@ -48,8 +50,6 @@ class Dialog_generator extends MY_Controller
         } else {
             $this->load->helper('form');
 
-            $this->caldavoperations->setClient($this->container['client']);
-            
             // Load formats
             $this->date_format = $this->dates->date_format_string('date');
             $this->time_format = $this->dates->time_format_string('date');
@@ -57,6 +57,8 @@ class Dialog_generator extends MY_Controller
             // Timezone
             $this->tz = $this->timezonemanager->getTz( $this->config->item('default_timezone'));
             $this->tz_utc = $this->timezonemanager->getTz('UTC');
+
+            $this->client = $this->container['client'];
         }
     }
 
@@ -127,7 +129,7 @@ class Dialog_generator extends MY_Controller
 
         // Calendars
         $calendars = array();
-        foreach ($this->caldavoperations->getCalendars() as $id => $data) {
+        foreach ($this->client->getCalendars() as $id => $data) {
             if (!$data->shared || $data->write_access == '1') {
                 $calendars[$id] = $data->displayname;
             }
@@ -198,7 +200,7 @@ class Dialog_generator extends MY_Controller
         } else {
             // Calendars
             $calendars = array();
-            foreach ($this->caldavoperations->getCalendars() as $id => $data) {
+            foreach ($this->client->getCalendars() as $id => $data) {
                 if (!$data->shared || $data->write_access == '1') {
                     $calendars[$id] = $data->displayname;
                 }
