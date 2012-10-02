@@ -67,6 +67,20 @@ class MY_Controller extends CI_Controller
                 AgenDAV\Version::V
             );
         });
+        
+        // Calendar sources
+        $this->container['channels/calendarhomeset'] = $this->container->share(function($container) {
+            return new \AgenDAV\CalendarChannels\CalendarHomeSet($container['client']);
+        });
+
+        // Calendar finder
+        $this->container['calendarfinder'] = $this->container->share(function($container) {
+            $calendar_finder = new \AgenDAV\CalendarFinder();
+
+            $calendar_finder->registerChannel($container['channels/calendarhomeset']);
+
+            return $calendar_finder;
+        });
     }
 }
 
