@@ -69,7 +69,7 @@ class URLGenerator implements IURLGenerator
         $this->base = $base;
         $this->principal_template = $principal_template;
         $this->calendar_homeset_template = $calendar_homeset_template;
-        $this->caldav_public_base_url = $calendar_homeset_template;
+        $this->caldav_public_base_url = $caldav_public_base_url;
     }
 
     /**
