@@ -74,13 +74,17 @@ class MY_Controller extends CI_Controller
         });
 
         // CalDAV client
-        $this->container['client'] = $this->container->share(function($container) use ($ci_logger) {
+        $cfg_client = array(
+            'auth' => $this->config->item('caldav_http_auth_method'),
+            'useragent' => 'AgenDAV v' . \AgenDAV\Version::V,
+        );
+        $this->container['client'] = $this->container->share(function($container) use ($ci_logger, $cfg_client) {
             $c = $container['client_class'];
             return new $c(
                 $container['user'],
                 $container['urlgenerator'],
                 $ci_logger,
-                AgenDAV\Version::V
+                $cfg_client
             );
         });
         

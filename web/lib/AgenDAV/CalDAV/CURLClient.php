@@ -58,26 +58,26 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
      * @param Object $app_user Current user
      * @param IURLGenerator $urlgenerator URL generator
      * @param Object $logger Log manager
-     * @param string $version AgenDAV version
+     * @param Array $options Options array. Valid options are: timeout, auth
      * @access public
      * @return void
      */
-    public function __construct($app_user, IURLGenerator $urlgenerator, $logger, $version)
+    public function __construct($app_user, IURLGenerator $urlgenerator, $logger)
     {
         $this->app_user = $app_user;
         $this->urlgenerator = $urlgenerator;
         $this->logger = $logger;
 
-        // TODO auth options
         parent::__construct(
             $this->urlgenerator->getBaseURL(),
             $this->app_user->getUserName(),
-            $this->app_user->getPasswd()
+            $this->app_user->getPasswd(),
+            $options
         );
 
         $this->PrincipalURL($this->urlgenerator->generatePrincipal($this->app_user->getUserName()));
         $this->CalendarHomeSet($this->urlgenerator->generateCalendarHomeSet($this->app_user->getUserName()));
-        $this->SetUserAgent('AgenDAV v' . $version);
+        $this->SetUserAgent($options['useragent']);
     }
 
     /**
