@@ -208,22 +208,25 @@ class Calendar extends MY_Controller
         }
 
 
-        // Add transparency to color
+        // Add alpha channel to color
         $calendar_color = $this->toRGBA($calendar_color);
-
-        // Calendar properties
-        $changed_calendar = new CalendarInfo(
-            $calendar,
-            $displayname
-        );
-        $changed_calendar->color = $calendar_color;
 
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
+            // Calendar properties
+            $changed_calendar = new CalendarInfo(
+                $calendar,
+                $displayname
+            );
+            $changed_calendar->color = $calendar_color;
 
             $res = $this->client->changeResource($changed_calendar);
         } else if ($is_sharing_enabled) {
             // If this a shared calendar, store settings locally
+            $props = array(
+                'displayname' => $displayname,
+                'color' => $calendar_color,
+            );
             $success = $this->shared_calendars->store($sid,
                     null,
                     $calendar,
