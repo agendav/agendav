@@ -53,7 +53,7 @@ class URLGenerator implements IURLGenerator
      * @var string
      * @access private
      */
-    private $public_caldav_url;
+    private $caldav_public_base_url;
 
     /**
      * Creates a new URL generator
@@ -61,15 +61,15 @@ class URLGenerator implements IURLGenerator
      * @param string $base Base CalDAV URL
      * @param string $principal_template Principal URL template
      * @param string $calendar_homeset_template Calendar home set template
-     * @param string $public_caldav_url Base CalDAV public URL
+     * @param string $caldav_public_base_url Base CalDAV public URL
      * @access public
      * @return void
      */
-    public function __construct($base, $principal_template, $calendar_homeset_template, $public_caldav_url) {
+    public function __construct($base, $principal_template, $calendar_homeset_template, $caldav_public_base_url) {
         $this->base = $base;
         $this->principal_template = $principal_template;
         $this->calendar_homeset_template = $calendar_homeset_template;
-        $this->public_caldav_url = $calendar_homeset_template;
+        $this->caldav_public_base_url = $calendar_homeset_template;
     }
 
     /**
@@ -92,13 +92,13 @@ class URLGenerator implements IURLGenerator
      */
     public function generatePrincipal($username, $absolute = false)
     {
-        $url = preg_replace(
+        $path = preg_replace(
             '/%u/',
             $username,
             $this->principal_template
         );
 
-        return $absolute ? $url : $this->getPath($url);
+        return $absolute ? $this->getBaseURL() . $path : $path;
     }
 
 
@@ -112,26 +112,13 @@ class URLGenerator implements IURLGenerator
      */
     public function generateCalendarHomeSet($username, $absolute = false)
     {
-        $url = preg_replace(
+        $path = preg_replace(
             '/%u/',
             $username,
             $this->calendar_homeset_template
         );
 
-        return $absolute ? $url : $this->getPath($url);
-    }
-
-    /**
-     * Extracts path from a provided URL 
-     *
-     * @param string $url URL
-     * @return string Path from the URL
-     */
-    private function getPath($url)
-    {
-        $parsed = parse_url($url);
-
-        return $parsed['path'];
+        return $absolute ? $this->getBaseURL() . $path : $path;
     }
 
     /**
@@ -143,7 +130,7 @@ class URLGenerator implements IURLGenerator
      */
     public function generatePublicURL($path)
     {
-        return $this->public_caldav_url . $path;
+        return $this->caldav_public_base_url . $path;
     }
 
 }

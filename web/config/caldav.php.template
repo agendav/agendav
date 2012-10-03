@@ -43,45 +43,51 @@ $config['caldav_http_auth_method'] = null;
  * Please, do NOT add trailing slash
  */
 
-$config['caldav_server'] = 'http://caldav.server';
+$config['caldav_base_url'] = 'http://caldav.server';
 
 /*
- * CalDAV principal URL template
- * =============================
+ * CalDAV principal PATH template
+ * ==============================
+ *
+ * Do not use a full URL, use a relative path to be appended to your caldav_base_url
  *
  * %u will be replaced by an username. Please, add trailing slash
  *
  * Some examples:
- * - DAViCal: https://host/caldav.php/%u/
- * - SabreDAV: https://host/calendarserver.php/principals/%u/
- * - Apple Calendar Server: https://host/calendars/users/%u/
+ * - DAViCal: /caldav.php/%u/
+ * - SabreDAV: /calendarserver.php/principals/%u/
+ * - Apple Calendar Server: /users/%u/
  */
 
-$config['caldav_principal_url'] = 'https://caldav.server/caldav.php/%u/';
+$config['caldav_principal_template'] = '/caldav.php/%u/';
 
 /*
- * CalDAV calendars URL template
- * =============================
+ * CalDAV calendar home set PATH template
+ * ======================================
+ *
+ * Do not use a full URL, use a relative path to be appended to your caldav_base_url
  *
  * %u will be replaced by an username. Please, add trailing slash
  *
  * Some samples:
  *
- * - DAViCal: https://host/caldav.php/%u/
- * - SabreDAV: https://host/calendarserver.php/calendars/%u/
- * - Apple Calendar Server: https://host/calendars/users/%u/
+ * - DAViCal: /caldav.php/%u/
+ * - SabreDAV: /calendarserver.php/calendars/%u/
+ * - Apple Calendar Server: /calendars/users/%u/
  */
 
-$config['caldav_calendar_homeset_template'] = 'https://caldav.server/caldav.php/%u/';
+$config['caldav_calendar_homeset_template'] = '/caldav.php/%u/';
 
 /*
- * Public CalDAV URL for calendars
- * ===============================
+ * Public CalDAV base URL for calendars
+ * ====================================
  *
  * Please, do NOT add trailing slash.
  * Will be shown to users only when 'show_public_caldav_url' is enabled
  */
-$config['public_caldav_url'] = 'https://public.server';
+
+$config['caldav_public_base_url'] = 'https://public.server';
+
 
 /*******************
  * Share options   *

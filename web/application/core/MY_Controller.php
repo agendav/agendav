@@ -42,19 +42,19 @@ class MY_Controller extends CI_Controller
 
         // URLGenerator
         $cfg = array(
-            'caldav_server' => $this->config->item('caldav_server'),
-            'caldav_principal_url' => $this->config->item('caldav_principal_url'),
+            'caldav_base_url' => $this->config->item('caldav_base_url'),
+            'caldav_principal_template' => $this->config->item('caldav_principal_template'),
             'caldav_calendar_homeset_template' => $this->config->item('caldav_calendar_homeset_template'),
-            'public_caldav_url' => $this->config->item('public_caldav_url')
+            'caldav_public_base_url' => $this->config->item('caldav_public_base_url')
         );
 
         $this->container['urlgenerator'] = $this->container->share(function($container) use ($cfg){
             $c = $container['urlgenerator_class'];
             return new $c(
-                $cfg['caldav_server'],
-                $cfg['caldav_principal_url'],
+                $cfg['caldav_base_url'],
+                $cfg['caldav_principal_template'],
                 $cfg['caldav_calendar_homeset_template'],
-                $cfg['public_caldav_url']
+                $cfg['caldav_public_base_url']
             );
         });
 

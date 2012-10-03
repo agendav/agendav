@@ -3,6 +3,17 @@
 Release notes
 =============
 
+.. _v1.2.7:
+
+
+1.2.7 (2012-XX-YY)
+------------------
+
+* ``caldav.php`` configuration file has been mostly rewritten, so you're advised to make a copy of ``caldav.php.template`` and configure AgenDAV again. See :ref:`caldavphpconf`
+
+* Database changes are required: TODO
+
+
 .. _v1.2.6:
 
 
