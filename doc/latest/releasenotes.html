@@ -2,17 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release notes &mdash; AgenDAV v1.2.5 documentation</title>
+    <title>Release notes &mdash; AgenDAV 1.2.7 documentation</title>
+    
     <link rel="stylesheet" href="_static/proBlue.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.2.5',
+        VERSION:     '1.2.7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -21,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="AgenDAV v1.2.5 documentation" href="index.html" />
+    <link rel="top" title="AgenDAV 1.2.7 documentation" href="index.html" />
     <link rel="prev" title="Translating AgenDAV" href="translations.html" /> 
   </head>
   <body>
@@ -34,7 +37,7 @@
         <li class="right" >
           <a href="translations.html" title="Translating AgenDAV"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">AgenDAV 1.2.7 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -45,8 +48,36 @@
             
   <div class="section" id="release-notes">
 <span id="releasenotes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="mm-dd">
-<span id="v1-2-5"></span><h2>1.2.5 (2012-MM-DD)<a class="headerlink" href="#mm-dd" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="xx-yy">
+<span id="v1-2-7"></span><h2>1.2.7 (2012-XX-YY)<a class="headerlink" href="#xx-yy" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">caldav.php</span></tt> configuration file has been mostly rewritten, so you&#8217;re advised to make a copy of <tt class="docutils literal"><span class="pre">caldav.php.template</span></tt> and configure AgenDAV again. See <a class="reference internal" href="admin/configuration.html#caldavphpconf"><em>CalDAV specific options (caldav.php)</em></a></li>
+<li>Database changes are required: TODO</li>
+</ul>
+</div>
+<div class="section" id="v1-2-6">
+<span id="id1"></span><h2>1.2.6 (2012-09-03)<a class="headerlink" href="#v1-2-6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>This release requires neither configuration changes nor DB schema updates.</li>
+<li>Reminders feature has been added. Reminders will be attached to events, but this version of AgenDAV is not capable of showing popups for them yet. Other CalDAV clients, such as smartphones and desktop applications, will understand them.</li>
+<li>A new <tt class="docutils literal"><span class="pre">log_create_permissions</span></tt> option has been added to <tt class="docutils literal"><span class="pre">advanced.php</span></tt> configuration file. Default is <tt class="docutils literal"><span class="pre">0640</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-2-5-1">
+<span id="id2"></span><h2>1.2.5.1 (2012-06-11)<a class="headerlink" href="#v1-2-5-1" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This version has a bug that will make <a class="reference internal" href="admin/upgrading.html#dbupgrade"><em>Database upgrade</em></a> to fail if you
+have AgenDAV configured to use a language other than English. Please, set
+<a class="reference internal" href="admin/configuration.html#confval-default_language"><tt class="xref std std-confval docutils literal"><span class="pre">default_language</span></tt></a> to <tt class="docutils literal"><span class="pre">en</span></tt> before running <tt class="docutils literal"><span class="pre">agendav</span>
+<span class="pre">dbupdate</span></tt></p>
+</div>
+<ul class="simple">
+<li>This release fixes some invalid SQL queries included in the database update process</li>
+</ul>
+</div>
+<div class="section" id="v1-2-5">
+<span id="id3"></span><h2>1.2.5 (2012-06-07)<a class="headerlink" href="#v1-2-5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>DB schema needs to be updated, but a new database upgrade process is now available. No more <tt class="docutils literal"><span class="pre">*.sql</span></tt> files, just read <a class="reference internal" href="admin/upgrading.html#dbupgrade"><em>Database upgrade</em></a> section.</li>
 <li>This release requires PHP cURL support. Make sure your PHP installation
@@ -64,7 +95,7 @@ sense. Have a look at new options <a class="reference internal" href="admin/conf
 </ul>
 </div>
 <div class="section" id="v1-2-4">
-<span id="id1"></span><h2>1.2.4 (2012-01-16)<a class="headerlink" href="#v1-2-4" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>1.2.4 (2012-01-16)<a class="headerlink" href="#v1-2-4" title="Permalink to this headline">¶</a></h2>
 <p>This release requires no database changes. Contains a fix for localization
 support for IE7, and lots of aesthetical changes, besides upgraded libraries
 (jQuery 1.7.1, qTip2 and iCalcreator). Session cookies are now smaller and
@@ -86,7 +117,7 @@ contain only session identifiers.</p>
 </ul>
 </div>
 <div class="section" id="v1-2-3">
-<span id="id2"></span><h2>1.2.3 (2011-11-08)<a class="headerlink" href="#v1-2-3" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>1.2.3 (2011-11-08)<a class="headerlink" href="#v1-2-3" title="Permalink to this headline">¶</a></h2>
 <p>This release fixes some bugs with am/pm indicators under some circumstances,
 editing recurring events, include_path problems and other bugs.</p>
 <p>It also introduces dynamic text color calculation and new default calendar
@@ -100,20 +131,20 @@ colors, so it&#8217;s recommended to remove the following settings from
 <p>This release requires no database upgrades.</p>
 </div>
 <div class="section" id="v1-2-2">
-<span id="id3"></span><h2>1.2.2 (2011-10-25)<a class="headerlink" href="#v1-2-2" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>1.2.2 (2011-10-25)<a class="headerlink" href="#v1-2-2" title="Permalink to this headline">¶</a></h2>
 <p>This release fixes important issues with recurrent events. It also fixes
 the am/pm indicator on times.</p>
 <p>It requires no database upgrades.</p>
 </div>
 <div class="section" id="v1-2-1">
-<span id="id4"></span><h2>1.2.1 (2011-10-24)<a class="headerlink" href="#v1-2-1" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>1.2.1 (2011-10-24)<a class="headerlink" href="#v1-2-1" title="Permalink to this headline">¶</a></h2>
 <p>This release mainly fixes issues with timezone differences and Daylight Save
 Time problems.</p>
 <p>Also updates iCalcreator library to latest version (2.10.15) and qTip2.</p>
 <p>It requires no database upgrades.</p>
 </div>
 <div class="section" id="v1-2">
-<span id="id5"></span><h2>1.2 (2011-10-17)<a class="headerlink" href="#v1-2" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>1.2 (2011-10-17)<a class="headerlink" href="#v1-2" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">DB schema needs to be altered. UTF8 wasn&#8217;t being used by default, and
 sessions table wasn&#8217;t using InnoDB. Apply the changes on
@@ -137,7 +168,7 @@ AgenDAV. Please, make sure you set correct values on <tt class="docutils literal
 </ul>
 </div>
 <div class="section" id="v1-1-1">
-<span id="id6"></span><h2>1.1.1 (2011-09-24)<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>1.1.1 (2011-09-24)<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">Fix DB schema. Wasn&#8217;t properlty updated on sql/schema.sql, which
 caused a problem with sessions</p>
@@ -170,7 +201,10 @@ AgenDAV completely relies on your CalDAV server.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Release notes</a><ul>
-<li><a class="reference internal" href="#mm-dd">1.2.5 (2012-MM-DD)</a></li>
+<li><a class="reference internal" href="#xx-yy">1.2.7 (2012-XX-YY)</a></li>
+<li><a class="reference internal" href="#v1-2-6">1.2.6 (2012-09-03)</a></li>
+<li><a class="reference internal" href="#v1-2-5-1">1.2.5.1 (2012-06-11)</a></li>
+<li><a class="reference internal" href="#v1-2-5">1.2.5 (2012-06-07)</a></li>
 <li><a class="reference internal" href="#v1-2-4">1.2.4 (2012-01-16)</a></li>
 <li><a class="reference internal" href="#v1-2-3">1.2.3 (2011-11-08)</a></li>
 <li><a class="reference internal" href="#v1-2-2">1.2.2 (2011-10-25)</a></li>
@@ -210,12 +244,12 @@ AgenDAV completely relies on your CalDAV server.</p>
         <li class="right" >
           <a href="translations.html" title="Translating AgenDAV"
              >previous</a> |</li>
-        <li><a href="index.html">AgenDAV v1.2.5 documentation</a> &raquo;</li> 
+        <li><a href="index.html">AgenDAV 1.2.7 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2011, Jorge López Pérez.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+        &copy; Copyright 2011-2012, Jorge López Pérez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

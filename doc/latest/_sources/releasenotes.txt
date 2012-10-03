@@ -3,9 +3,45 @@
 Release notes
 =============
 
+.. _v1.2.7:
+
+
+1.2.7 (2012-XX-YY)
+------------------
+
+* ``caldav.php`` configuration file has been mostly rewritten, so you're advised to make a copy of ``caldav.php.template`` and configure AgenDAV again. See :ref:`caldavphpconf`
+
+* Database changes are required: TODO
+
+
+.. _v1.2.6:
+
+
+1.2.6 (2012-09-03)
+------------------
+
+* This release requires neither configuration changes nor DB schema updates.
+* Reminders feature has been added. Reminders will be attached to events, but this version of AgenDAV is not capable of showing popups for them yet. Other CalDAV clients, such as smartphones and desktop applications, will understand them.
+* A new ``log_create_permissions`` option has been added to ``advanced.php`` configuration file. Default is ``0640``
+
+.. _v1.2.5.1:
+
+1.2.5.1 (2012-06-11)
+--------------------
+
+.. note::
+
+   This version has a bug that will make :ref:`dbupgrade` to fail if you
+   have AgenDAV configured to use a language other than English. Please, set
+   :confval:`default_language` to ``en`` before running ``agendav
+   dbupdate``
+
+* This release fixes some invalid SQL queries included in the database update process
+
+
 .. _v1.2.5:
 
-1.2.5 (2012-MM-DD)
+1.2.5 (2012-06-07)
 ------------------
 
 * DB schema needs to be updated, but a new database upgrade process is now available. No more ``*.sql`` files, just read :ref:`dbupgrade` section.

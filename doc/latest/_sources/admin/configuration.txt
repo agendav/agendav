@@ -95,6 +95,14 @@ setting.
    Image filename which will be used as a logo. Has to be a valid filename
    placed inside ``web/public/img/`` directory.
 
+.. confval:: login_page_logo
+
+   Image filename which will be used as a logo only for login page. It's
+   usually bigger than the normal logo. Has to be a valid filename placed
+   inside ``web/public/img/`` directory.
+
+   .. versionadded:: 1.2.6
+
 .. confval:: footer
 
    Text to be placed in the footer.
@@ -288,16 +296,19 @@ Database configuration (database.php)
 ``database.php`` contains how to connect to your MySQL database. Just follow
 inline comments, it's pretty straight forward.
 
+.. _caldavphpconf:
+
 CalDAV specific options (caldav.php)
 ------------------------------------
 
 Here you will configure every single aspect of your CalDAV server.
 
-.. confval:: caldav_url
 
-   .. deprecated:: 1.2.4
+.. confval:: caldav_base_url
 
-   .. seealso:: :confval:`caldav_principal_url` :confval:`caldav_calendar_url`
+   .. versionadded:: 1.2.7
+
+   Base CalDAV URL used to build all CalDAV URLs
 
 .. confval:: caldav_http_auth_method
 
@@ -324,62 +335,54 @@ Here you will configure every single aspect of your CalDAV server.
    .. versionadded:: 1.2.5
 
 
-.. confval:: caldav_principal_url
+.. confval:: caldav_principal_template
 
    Used by AgenDAV to generate a principal URL for your CalDAV server. The
-   placeholder ``%u`` will be replaced by an username.
+   placeholder ``%u`` will be replaced with a username.
+
+   This is just a path, not a full URL. Your :confval:`caldav_base_url` will be prepended to this value.
 
    Needs a trailing slash.
 
    Example::
 
     // Example 1: DAViCal
-    $config['caldav_principal_url'] = 'http://10.0.0.12/caldav.php/%u/';
+    $config['caldav_principal_template'] = '/caldav.php/%u/';
 
     // Example 2: SabreDAV
-    $config['caldav_principal_url'] = 'http://10.0.0.12/calendarserver.php/principals/%u/';
+    $config['caldav_principal_template'] = '/calendarserver.php/principals/%u/';
 
     // Example 3: Calendar server
-    $config['caldav_principal_url'] = 'http://10.0.0.12/calendars/users/%u/';
+    $config['caldav_principal_template'] = '/calendars/users/%u/';
 
-   Principal URL for user ``my_user`` for example 2 will be:
+   .. seealso:: :confval:`caldav_calendar_homeset_template`
 
-    http://10.0.12/calendarserver.php/principals/my_user/
+.. confval:: caldav_calendar_homeset_template
 
-   .. seealso:: :confval:`caldav_calendar_url`
+   Used by AgenDAV to search for calendars for current user. ``%u`` will be replaced with a username.
 
-.. confval:: caldav_calendar_url
-
-   Used by AgenDAV to generate a calendar collection URL or resource URL for
-   your CalDAV server. The placeholder ``%s`` will be replaced by AgenDAV
-   with required values.
+   This is just a path, not a full URL. Your :confval:`caldav_base_url` will be prepended to this value.
 
    Example::
 
     // DAViCal
-    $config['caldav_calendar_url'] = 'http://10.0.0.12/caldav.php/%s/';
+    $config['caldav_calendar_homeset_template'] = '/caldav.php/%u/';
    
-   Resource with UID=aaa0001 on calendar 'work' for user3 will become:
+   .. seealso:: :confval:`caldav_base_url`
 
-    http://10.0.12/caldav.php/user3/work/aaa0001/
+   .. versionadded:: 1.2.7
 
-   Calendar 'test' for user1 will become:
 
-    http://10.0.12/caldav.php/user3/test/
+.. confval:: caldav_public_base_url
 
-   .. seealso:: :confval:`caldav_principal_url`
+   The base URL that will be shown to users if :confval:`show_public_caldav_url` is
+   enabled. It's not used for internal connections.
 
-.. confval:: public_caldav_url
-
-   The URL that will be shown to users if :confval:`show_public_caldav_url` is
-   enabled. It's not used for internal connections. Placeholder ``%s`` will
-   be replaced by current username and calendar.
-   
-   Needs a trailing slash.
+   Do not add a trailing slash.
 
    Example::
 
-    $config['public_caldav_url'] = 'https://public.caldav.tld/caldav.php/%s/';
+    $config['public_caldav_url'] = 'https://public.caldav.tld';
 
    Will become for user ``user2`` and calendar ``myhomecalendar``:
 
@@ -412,13 +415,6 @@ Here you will configure every single aspect of your CalDAV server.
    <http://wiki.davical.org/w/Permissions>`_. Default values of this option
    will work all right for DAViCal.
 
-.. confval:: share_permissions
-
-   .. deprecated:: 1.2.5
-
-   .. seealso:: See :confval:`read_profile_permissions` and
-      :confval:`read_write_profile_permissions`
-
 .. confval:: read_profile_permissions
 
    List of DAV permissions used for users given read-only permission on a
@@ -442,6 +438,39 @@ Here you will configure every single aspect of your CalDAV server.
    permissions does it support.
 
    Default value lets users just to make free/busy queries in DAViCal.
+
+.. confval:: caldav_url
+
+   .. deprecated:: 1.2.4
+
+   .. seealso:: :confval:`caldav_principal_template` and :confval:`caldav_calendar_homeset_template`
+
+.. confval:: caldav_principal_url
+
+   .. deprecated:: 1.2.7
+   .. seealso:: :confval:`caldav_principal_template`
+
+
+.. confval:: public_caldav_url
+
+   .. deprecated:: 1.2.7
+
+   .. seealso:: :confval:`caldav_public_base_url`
+
+.. confval:: share_permissions
+
+   .. deprecated:: 1.2.5
+
+   .. seealso:: See :confval:`read_profile_permissions` and
+      :confval:`read_write_profile_permissions`
+
+.. confval:: caldav_calendar_url
+
+   .. deprecated:: 1.2.7
+
+   .. seealso:: :confval:`caldav_calendar_homeset_template`
+
+
 
 Other configuration files
 -------------------------
