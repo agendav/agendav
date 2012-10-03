@@ -62,7 +62,7 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
      * @access public
      * @return void
      */
-    public function __construct($app_user, IURLGenerator $urlgenerator, $logger)
+    public function __construct($app_user, IURLGenerator $urlgenerator, $logger, $options)
     {
         $this->app_user = $app_user;
         $this->urlgenerator = $urlgenerator;
