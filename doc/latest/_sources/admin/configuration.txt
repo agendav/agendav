@@ -306,9 +306,9 @@ Here you will configure every single aspect of your CalDAV server.
 
 .. confval:: caldav_base_url
 
-   .. versionadded:: 1.2.7
-
    Base CalDAV URL used to build all CalDAV URLs
+
+   .. versionadded:: 1.2.7
 
 .. confval:: caldav_http_auth_method
 
@@ -355,6 +355,8 @@ Here you will configure every single aspect of your CalDAV server.
     // Example 3: Calendar server
     $config['caldav_principal_template'] = '/calendars/users/%u/';
 
+   .. versionadded:: 1.2.7
+
    .. seealso:: :confval:`caldav_calendar_homeset_template`
 
 .. confval:: caldav_calendar_homeset_template
@@ -368,10 +370,9 @@ Here you will configure every single aspect of your CalDAV server.
     // DAViCal
     $config['caldav_calendar_homeset_template'] = '/caldav.php/%u/';
    
-   .. seealso:: :confval:`caldav_base_url`
-
    .. versionadded:: 1.2.7
 
+   .. seealso:: :confval:`caldav_base_url`
 
 .. confval:: caldav_public_base_url
 
