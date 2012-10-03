@@ -42,14 +42,15 @@ foreach ($compilers as $path => $url) {
 // Load file list
 define('BASEPATH', $app_dir);
 require_once($app_dir . 'hooks/Defs.php');
+require_once($app_dir . '../libs/AgenDAV/Version.php');
 
 $defs = new Defs();
 $defs->definitions();
 
 
 // JS
-$jsmin = $js_dir . 'jquery-base-' . AGENDAV_VERSION . '.js';
-$jsfull = $js_dir . 'agendav-' . AGENDAV_VERSION . '.js';
+$jsmin = $js_dir . 'jquery-base-' . \AgenDAV\Version::V . '.js';
+$jsfull = $js_dir . 'agendav-' . \AgenDAV\Version::V . '.js';
 
 $jsfullhandle = fopen($jsfull, 'w');
 $jsminhandle = fopen($jsmin, 'w');
@@ -83,8 +84,8 @@ fclose($jsminhandle);
 
 
 // CSS
-$cssmin = $css_dir . 'agendav-' . AGENDAV_VERSION . '.css';
-$cssprint = $css_dir . 'agendav-' . AGENDAV_VERSION . '.print.css';
+$cssmin = $css_dir . 'agendav-' . \AgenDAV\Version::V . '.css';
+$cssprint = $css_dir . 'agendav-' . \AgenDAV\Version::V . '.print.css';
 $tmp = array_keys($compilers);
 $yuicompressor = basename($tmp[1]);
 

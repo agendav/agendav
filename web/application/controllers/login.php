@@ -19,15 +19,14 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
-
-class Login extends CI_Controller {
-    private $user;
+class Login extends MY_Controller {
 
     public function index() {
-        $this->user = User::getInstance();
+        $app_user = $this->container['user'];
+        $urlgenerator = $this->container['urlgenerator'];
+
         // Already authenticated?
-        if ($this->user->isAuthenticated()) {
+        if ($app_user->isAuthenticated()) {
             redirect('/main');
         }
 
@@ -57,13 +56,14 @@ class Login extends CI_Controller {
             // Check authentication against server
             $user = $this->input->post('user');
             $passwd = $this->input->post('passwd');
+            $app_user->setCredentials($user, $passwd);
 
-            $this->user->setCredentials($user, $passwd);
-            $caldav_client = $this->user->createCalDAVClient();
-            $this->caldavoperations->setClient($caldav_client);
+            $caldav_client = $this->container['client'];
 
-            if ($this->user->isAuthenticated()) {
-                $this->user->newSession();
+
+            if ($caldav_client->CheckValidCalDAV()) {
+                $app_user->setAuthenticated(true);
+                $app_user->newSession();
                 redirect("/main");
                 $this->output->_display();
                 die();

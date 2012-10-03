@@ -10,7 +10,7 @@ $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
 var base_url = '<?php echo $base; ?>';
 var base_app_url = '<?php echo site_url(); ?>/';
 var relative_url = '<?php echo $relative; ?>';
-var agendav_version = '<?php echo AGENDAV_VERSION; ?>';
+var agendav_version = '<?php echo \AgenDAV\Version::V ?>';
 var enable_calendar_sharing = <?php echo ($enable_calendar_sharing ? 'true' :
 'false') ?>;
 //]]>
@@ -21,8 +21,8 @@ site_url('js_generator/prefs')?>"></script>
 <?php
 $js = (ENVIRONMENT == 'development' ? 
 		Defs::$jsfiles : 
-		array('jquery-base-' . AGENDAV_VERSION . '.js', 
-			'agendav-' .  AGENDAV_VERSION . '.js'));
+		array('jquery-base-' . AgenDAV\Version::V . '.js', 
+			'agendav-' .  AgenDAV\Version::V . '.js'));
 
 // Additional JS files
 $additional_js = $this->config->item('additional_js');

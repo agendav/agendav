@@ -1,7 +1,9 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
+
+namespace AgenDAV;
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -19,23 +21,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Strings extends MY_Controller {
-
-    function __construct() {
-        parent::__construct();
-
-        $this->output->set_content_type('application/json');
-    }
-
-    function index() {
-    }
-
-    /*
-     * Localized language strings
-     */
-    function load() {
-        // TODO get language from parameters
-        $i18n = $this->i18n->dump();
-        $this->output->set_output(json_encode($i18n));
-    }
+/**
+ * Keeps the AgenDAV version 
+ */
+class Version
+{
+    const V = '1.2.7-dev';
 }

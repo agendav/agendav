@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
 
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
@@ -19,16 +19,15 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
+class Caldav2json extends MY_Controller
+{
 
-class Caldav2json extends CI_Controller {
-
-    private $user, $prefs;
+    private $user;
 
     function __construct() {
         parent::__construct();
 
-        $this->user = User::getInstance();
+        $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
@@ -36,10 +35,6 @@ class Caldav2json extends CI_Controller {
             $this->output->_display();
             die();
         }
-
-        $this->prefs = $this->user->getPreferences();
-
-        $this->caldavoperations->setClient($this->user->createCalDAVClient());
 
         $this->output->set_content_type('application/json');
     }
@@ -53,9 +48,10 @@ class Caldav2json extends CI_Controller {
     function principal_search() {
         $result = array();
         $term = $this->input->get('term');
+        $client = $this->container['client'];
 
         if (!empty($term)) {
-            $result = $this->caldavoperations->principalSearch($term, $term);
+            $result = $client->principalSearch($term, $term);
         }
 
         $this->output->set_output(json_encode($result));

@@ -20,17 +20,66 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class URLGenerator
+class URLGenerator implements IURLGenerator
 {
-    private $principal_template;
-    private $base;
-    private $calendar_homeset_template;
-    private $CI;
 
-    public function __construct($base, $principal_template, $calendar_homeset_template) {
+    /**
+     * CalDAV base URL 
+     *
+     * @var string
+     * @access private
+     */
+    private $base;
+
+    /**
+     * Principal URL template
+     *
+     * @var string
+     * @access private
+     */
+    private $principal_template;
+
+    /**
+     * calendar-home-set URL template
+     *
+     * @var string
+     * @access private
+     */
+    private $calendar_homeset_template;
+
+    /**
+     * CalDAV public URL
+     *
+     * @var string
+     * @access private
+     */
+    private $public_caldav_url;
+
+    /**
+     * Creates a new URL generator
+     *
+     * @param string $base Base CalDAV URL
+     * @param string $principal_template Principal URL template
+     * @param string $calendar_homeset_template Calendar home set template
+     * @param string $public_caldav_url Base CalDAV public URL
+     * @access public
+     * @return void
+     */
+    public function __construct($base, $principal_template, $calendar_homeset_template, $public_caldav_url) {
         $this->base = $base;
         $this->principal_template = $principal_template;
         $this->calendar_homeset_template = $calendar_homeset_template;
+        $this->public_caldav_url = $calendar_homeset_template;
+    }
+
+    /**
+     * Returns base URL
+     *
+     * @return string Base URL
+     */
+    public function getBaseURL()
+    {
+        return $this->base;
     }
 
     /**
@@ -74,7 +123,7 @@ class URLGenerator
 
     /**
      * Extracts path from a provided URL 
-     * 
+     *
      * @param string $url URL
      * @return string Path from the URL
      */
@@ -83,6 +132,18 @@ class URLGenerator
         $parsed = parse_url($url);
 
         return $parsed['path'];
+    }
+
+    /**
+     * Builds a public URL for a given resource
+     *
+     * @param string $path Path to the resource
+     *
+     * @return string Public URL
+     */
+    public function generatePublicURL($path)
+    {
+        return $this->public_caldav_url . $path;
     }
 
 }

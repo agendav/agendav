@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
 
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
@@ -19,16 +19,20 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\User;
+use \AgenDAV\Data\CalendarInfo;
 
-class Calendar extends CI_Controller {
+class Calendar extends MY_Controller
+{
 
     private $calendar_colors;
-    private $user, $prefs;
+    private $user;
+    private $client;
+    private $prefs;
+    private $urlgenerator;
 
     function __construct() {
         parent::__construct();
-        $this->user = User::getInstance();
+        $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
             $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
@@ -41,7 +45,9 @@ class Calendar extends CI_Controller {
 
         $this->prefs = $this->preferences->get($this->user->getUsername());
 
-        $this->caldavoperations->setClient($this->user->createCalDAVClient());
+        $this->urlgenerator = $this->container['urlgenerator'];
+
+        $this->client = $this->container['client'];
 
         $this->output->set_content_type('application/json');
     }
@@ -55,7 +61,8 @@ class Calendar extends CI_Controller {
      * other users with the current one)
      */
     function all() {
-        $calendars = $this->user->allCalendars(true);
+        $calendarfinder = $this->container['calendarfinder'];
+        $calendars = $calendarfinder->getAll();
         $this->output->set_output(json_encode($calendars));
     }
 
@@ -68,8 +75,7 @@ class Calendar extends CI_Controller {
 
         // Display name
         if (empty($displayname)) {
-            $this->_throw_exception($this->i18n->_('messages',
-                        'error_calname_missing'));
+            $this->_throw_exception($this->i18n->_('messages', 'error_calname_missing'));
         }
 
         // Default color
@@ -77,20 +83,19 @@ class Calendar extends CI_Controller {
             $calendar_color = '#' . $this->calendar_color[0];
         }
 
-        // Generate internal calendar name
-        $calendar = $this->user->getCalendarHomeSet() . $this->icshelper->generate_guid();
+        // Generate URL
+        $url = $this->urlgenerator->generateCalendarHomeSet($this->user->getUsername()) . $this->icshelper->generate_guid();
 
         // Add transparency to color
-        $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
+        $calendar_color = $this->toRGBA($calendar_color);
 
-        // Calendar properties
-        $props = array(
-                'displayname' => $displayname,
-                'color' => $calendar_color,
-                );
+        $new_calendar = new CalendarInfo(
+            $url,
+            $displayname
+        );
+        $new_calendar->color = $calendar_color;
 
-
-        $res = $this->caldavoperations->createCalendar($calendar, $props);
+        $res = $this->client->createCalendar($new_calendar);
 
         if ($res !== true) {
             switch ($res) {
@@ -124,7 +129,7 @@ class Calendar extends CI_Controller {
         }
 
         // Proceed to remove calendar from CalDAV server
-        $res = $this->caldavoperations->deleteResource($calendar, null);
+        $res = $this->client->deleteResource($calendar, null);
 
         if ($res === true) {
             $this->_throw_success($calendar);
@@ -203,22 +208,25 @@ class Calendar extends CI_Controller {
         }
 
 
-        // Add transparency to color
-        $calendar_color = $this->caldavoperations->rgb2rgba($calendar_color);
-
-        // Calendar properties
-        $props = array(
-                'displayname' => $displayname,
-                'color' => $calendar_color,
-                );
-
+        // Add alpha channel to color
+        $calendar_color = $this->toRGBA($calendar_color);
 
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
+            // Calendar properties
+            $changed_calendar = new CalendarInfo(
+                $calendar,
+                $displayname
+            );
+            $changed_calendar->color = $calendar_color;
 
-            $res = $this->caldavoperations->changeProperties($calendar, $props);
+            $res = $this->client->changeResource($changed_calendar);
         } else if ($is_sharing_enabled) {
             // If this a shared calendar, store settings locally
+            $props = array(
+                'displayname' => $displayname,
+                'color' => $calendar_color,
+            );
             $success = $this->shared_calendars->store($sid,
                     null,
                     $calendar,
@@ -276,7 +284,7 @@ class Calendar extends CI_Controller {
                 }
             }
 
-            $res = $this->caldavoperations->setacl(
+            $res = $this->client->setacl(
                     $this->user->getUsername(),
                     $this->user->getPasswd(),
                     $internal_calendar,
@@ -359,6 +367,24 @@ class Calendar extends CI_Controller {
         die();
     }
 
-
-
+    /**
+     * Converts a RGB hexadecimal string (#rrggbb or short #rgb) to full
+     * RGBA
+     *
+     * @param string $s RGB color (#rrggbb) to be converted
+     * @return string RGBA representation of $s with full opacity
+     */
+    private function toRGBA($s)
+    {
+        if (strlen($s) == '7') {
+            return $s . 'ff';
+        } elseif (strlen($s) == '4') {
+            $res = preg_match('/#(.)(.)(.)/', $s, $matches);
+            return '#' . $matches[1] . $matches[1] . $matches[2] .
+                $matches[2] . $matches[3] . $matches[3] . 'ff';
+        } else {
+            // Unknown string
+            return $s;
+        }
+    }
 }

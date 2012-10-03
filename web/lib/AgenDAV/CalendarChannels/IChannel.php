@@ -1,6 +1,5 @@
 <?php 
-
-namespace AgenDAV\Data;
+namespace AgenDAV\CalendarChannels;
 
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
@@ -22,37 +21,33 @@ namespace AgenDAV\Data;
  */
 
 /**
- * Stores information about a calendar collection 
+ * This interface provides a calendar location where calendars can be found for current user
  */
-class CalendarInfo
+
+interface IChannel
 {
-    public $calendar;
+    /**
+     * Configure this channel 
+     * 
+     * @param Array $options Options for this channel
+     * @access public
+     * @return void
+     */
+    public function configure($options);
 
-    public $url;
+    /**
+     * Get name for current channel 
+     * 
+     * @access public
+     * @return string
+     */
+    public function getName();
 
-    public $displayname;
-
-    public $getctag;
-
-    public $order;
-
-    public $color;
-
-    public $shared;
-
-    public $is_default;
-
-    public $share_with;
-
-    public $write_access;
-
-
-    public function __construct($url, $displayname = null, $getctag = null ) {
-        $this->url = $url;
-        $this->displayname = $displayname;
-        $this->getctag = $getctag;
-        $this->is_default = false;
-        $this->order = false;
-        $this->shared = false;
-    }
+    /**
+     * Gets current user calendars 
+     * 
+     * @access public
+     * @return Array [path => \AgenDAV\Data\CalendarInfo]
+     */
+    public function getCalendars();
 }

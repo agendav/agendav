@@ -1,11 +1,4 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-/**
- * AgenDAV additional classes
- */
-
-require_once('../application/libraries/User.php');
-
 /*
 | -------------------------------------------------------------------
 | AUTO-LOADER
@@ -60,7 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('session', 'encrypt', 'extended_logs',
-    'timezonemanager', 'dates', 'recurrence', 'caldavoperations');
+    'timezonemanager', 'dates', 'recurrence', 'icshelper');
 
 
 /*
