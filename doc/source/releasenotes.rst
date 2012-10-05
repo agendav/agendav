@@ -3,11 +3,16 @@
 Release notes
 =============
 
-.. _v1.2.7:
+.. _v1.3.0:
 
 
-1.2.7 (2012-XX-YY)
+1.3.0 (2012-XX-YY)
 ------------------
+
+* AgenDAV uses now `Composer <http://getcomposer.org>`_. If you are using the
+  tarball from the website you don't have to worry at all. Otherwise, you'll
+  have to install it and fetch AgenDAV dependencies. You'll find instructions on
+  Installation section.
 
 * ``caldav.php`` configuration file has been mostly rewritten, so you're advised to make a copy of ``caldav.php.template`` and configure AgenDAV again. See :ref:`caldavphpconf`
 

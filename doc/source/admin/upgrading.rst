@@ -49,6 +49,15 @@ checking out AgenDAV 1.2.5 can be achieved with::
   [...]
   $ git checkout 1.2.5
 
+Next step is downloading latest AgenDAV dependencies using Composer. If you
+already have Composer installed, just run::
+
+ $ cd web/
+ $ php composer.phar update
+
+If you're upgrading from AgenDAV 1.2.x, you will need to install Composer.
+Follow the instructions you'll find in the installation section.
+
 .. _dbupgrade:
 
 Database upgrade

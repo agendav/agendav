@@ -27,6 +27,21 @@ Uncompress it using ``tar``::
  $ tar xzf adobo-agendav-...tar.gz
  $ cd adobo-agendav-.../
 
+Download dependencies (only for Git)
+------------------------------------
+
+If you downloaded AgenDAV from GitHub using ``git``, you will need to download
+`Composer <http://getcomposer.org>`_ and use it to fetch AgenDAV dependencies.
+
+Composer is a PHP package manager, and some libraries used by AgenDAV are
+downloaded using it.
+
+Composer installation is really simple::
+
+ $ cd web/
+ $ curl -s https://getcomposer.org/installer | php
+ $ php composer.phar install
+
 Database and tables
 -------------------
 
