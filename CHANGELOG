@@ -1,4 +1,4 @@
-Release 1.2.7 (2012-?-?)
+Release 1.3.0 (2012-?-?)
     * Calendar height in month view is now under control. Cells that have
       lots of events have now a '+N events' link to day view for that
       date
