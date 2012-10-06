@@ -61,7 +61,7 @@ class Login extends MY_Controller {
             $caldav_client = $this->container['client'];
 
 
-            if ($caldav_client->CheckValidCalDAV()) {
+            if ($caldav_client->checkAuthentication()) {
                 $app_user->setAuthenticated(true);
                 $app_user->newSession();
                 redirect("/main");

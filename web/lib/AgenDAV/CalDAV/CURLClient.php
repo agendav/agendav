@@ -87,7 +87,7 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
      * @access public
      * @return boolean
      */
-    public function checkAuthentication($url = '')
+    public function checkAuthentication($url = '/')
     {
         return $this->CheckValidCalDAV($url);
     }

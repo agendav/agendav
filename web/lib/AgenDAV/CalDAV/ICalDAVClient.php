@@ -34,7 +34,7 @@ interface ICalDAVClient
      * @access public
      * @return boolean
      */
-    public function checkAuthentication($url = '');
+    public function checkAuthentication($url = '/');
 
     /**
      * Checks if provided resource is accesible for current user 
