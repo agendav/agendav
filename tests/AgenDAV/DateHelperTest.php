@@ -1,0 +1,181 @@
+<?php
+namespace AgenDAV;
+
+class DateHelperTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * UTC timezone 
+     * 
+     * @var mixed
+     * @access private
+     */
+    private $utc;
+
+    public function __construct()
+    {
+        $this->utc = new \DateTimeZone('UTC');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testCreateDateTimeFail()
+    {
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '99/99/99 99:99', $this->utc);
+    }
+
+    public function testCreateDateTimeSampleZero()
+    {
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '10/7/2012 10:00', $this->utc);
+        $dt2 = DateHelper::createDateTime('m/d/Y H:i', '10/07/2012 10:00', $this->utc);
+
+        $this->assertEquals($dt, $dt2);
+    }
+
+    public function testCreateDateTimeTZ()
+    {
+        $different_tz = new \DateTimeZone('Europe/Madrid');
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '10/07/2012 10:00', $different_tz);
+
+        $this->assertEquals($dt->getTimeZone(), $different_tz);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testApproximateBadDt()
+    {
+        $tmp = DateHelper::approximate('notadatetime');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testApproximateBadFactor()
+    {
+        $tmp = DateHelper::approximate(new \DateTime(), 'xxx');
+    }
+
+    public function testApproximateExample1()
+    {
+        $dt = new \DateTime();
+        $tmp = DateHelper::approximate($dt, 1);
+
+        $this->assertEquals($dt, $tmp);
+    }
+
+    public function testApproximateExample2()
+    {
+        $dt = new \DateTime('now', $this->utc);
+        $dt->setTimestamp(1);
+
+        // First example
+        $tmp = DateHelper::approximate($dt, 60);
+        $this->assertTrue($tmp->getTimestamp() == 0);
+
+        // Second one
+        $dt->setTimestamp(2);
+        $tmp2 = DateHelper::approximate($dt, 3);
+        $this->assertTrue($tmp2->getTimestamp() == 3);
+    }
+
+    public function testFrontendToDatetimeExample()
+    {
+        $str = '07/10/2012 13:05';
+        $dt = DateHelper::frontendToDateTime($str, 'dmy', '24', $this->utc);
+
+        $this->assertEquals($dt->format('YmdHi'), '201210071305');
+    }
+
+    public function testFrontendToDatetime12()
+    {
+        $str = '07/10/2012 1:12PM';
+        $dt = DateHelper::frontendToDateTime($str, 'dmy', '12', $this->utc);
+
+        $this->assertEquals($dt->format('YmdHi'), '201210071312');
+    }
+
+    public function testFullcalendarToDateTime()
+    {
+        $str = '20121007100000';
+        $dt = DateHelper::fullcalendarToDateTime($str, $this->utc);
+
+        $this->assertEquals($dt->format('YmdHis'), '20121007100000');
+    }
+
+    public function testDateTimeToiCalendar1()
+    {
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '10/07/2012 10:00', $this->utc);
+
+        $this->assertEquals(
+            DateHelper::dateTimeToiCalendar($dt, 'DATE-TIME'),
+            '20121007T100000Z'
+        );
+    }
+
+    public function testDateTimeToiCalendar2()
+    {
+        // TZ != UTC
+        $tz = new \DateTimeZone('Europe/Madrid');
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '10/07/2012 10:00', $tz);
+
+        $this->assertEquals(
+            DateHelper::dateTimeToiCalendar($dt, 'DATE-TIME'),
+            '20121007T100000'
+        );
+    }
+
+    public function testDateTimeToiCalendar3()
+    {
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '10/07/2012 10:00', $this->utc);
+
+        $this->assertEquals(
+            DateHelper::dateTimeToiCalendar($dt, 'DATE'),
+            '20121007'
+        );
+    }
+
+    public function testDateTimeToiCalendar4()
+    {
+        // TZ != UTC
+        $tz = new \DateTimeZone('Europe/Madrid');
+        $dt = DateHelper::createDateTime('m/d/Y H:i', '10/07/2012 10:00', $tz);
+
+        $this->assertEquals(
+            DateHelper::dateTimeToiCalendar($dt, 'DATE'),
+            '20121007'
+        );
+    }
+
+    public function testiCalCreatorToDateTime1()
+    {
+        $sample = array(
+            'year' => '2012',
+            'month' => '10',
+            'day' => '07',
+            'hour' => '23',
+            'min' => '00',
+            'sec' => '00',
+            'tz' => 'Europe/Madrid',
+        );
+
+        $dt = DateHelper::iCalcreatorToDateTime($sample, new \DateTimeZone('Europe/Madrid'));
+
+        $this->assertEquals($dt->format('YmdHis'), '20121007230000');
+    }
+
+    public function testiCalCreatorToDateTime2()
+    {
+        $sample = array(
+            'year' => '2012',
+            'month' => '10',
+            'day' => '07',
+            'tz' => 'Europe/Madrid',
+        );
+
+        $dt = DateHelper::iCalcreatorToDateTime($sample, new \DateTimeZone('Europe/Madrid'));
+
+        $this->assertEquals($dt->format('YmdHis'), '20121007000000');
+    }
+
+}
