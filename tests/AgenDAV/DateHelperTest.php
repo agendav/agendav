@@ -178,4 +178,29 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dt->format('YmdHis'), '20121007000000');
     }
 
+    public function testDurationToDateInterval()
+    {
+        $d1 = DateHelper::durationToDateInterval('P1D');
+        $this->assertEquals($d1->invert, 0);
+        $d2 = DateHelper::durationToDateInterval('-P1D');
+        $this->assertEquals($d2->invert, 1);
+    }
+
+    public function testiCalcreatorXCurrentToDateTime()
+    {
+        $example1 = '2012-10-08';
+        $res1 = DateHelper::iCalcreatorXCurrentToDateTime($example1, $this->utc);
+        $this->assertEquals($res1, DateHelper::createDateTime('YmdHis', '20121008000000', $this->utc));
+
+        $example2 = '2012-10-08 10:11:12 CEST';
+        $res2 = DateHelper::iCalcreatorXCurrentToDateTime($example2, $this->utc);
+        $this->assertEquals($res2, DateHelper::createDateTime('YmdHis', '20121008101112', $this->utc));
+    }
+
+    public function testformatTime()
+    {
+        $dt = DateHelper::createDateTime('YmdHis', '20121008200000', $this->utc);
+        $this->assertEquals(DateHelper::formatTime($dt, '24'), '20:00');
+        $this->assertEquals(DateHelper::formatTime($dt, '12'), '08:00 pm');
+    }
 }

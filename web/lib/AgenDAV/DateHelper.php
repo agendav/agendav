@@ -36,7 +36,7 @@ class DateHelper
             '12' => array(
                 'strftime' => '%l:%M',  // %P will be simulated, not working
                                         // in all systems
-                'date' => 'h:i A', // Match timepicker format
+                'date' => 'h:i a', // Match timepicker format
                 'fullcalendar' => 'h(:mm)tt',
                 ));
 
@@ -262,61 +262,24 @@ class DateHelper
     }
 
     /**
-     * Converts a DateInterval to a DURATION string
-     *
-     * Parameter has to be the result of add() or diff() to an existing
-     * DateTime object
-     */
-    function di2duration($di) {
-        if ($obj->days === FALSE) {
-            // We have a problem
-            return FALSE;
-        }
-
-        $days = $obj->days;
-        $seconds = $obj->s + $obj->i*60 + $obj->h*3600;
-        $str = '';
-
-        // Simplest case
-        if ($days%7 == 0 && $seconds == 0) {
-            $str = ($days/7) . 'W';
-        } else {
-            $time_units = array(
-                    '3600' => 'H',
-                    '60' => 'M',
-                    '1' => 'S',
-                    );
-            $str_time = '';
-            foreach ($time_units as $k => $v) {
-                if ($seconds >= $k) {
-                    $str_time .= floor($seconds/$k) . $v;
-                    $seconds %= $k;
-                }
-            }
-
-            // No days
-            if ($days == 0) {
-                $str = 'T' . $str_time;
-            } else {
-                $str = $days . 'D' . (empty($str_time) ? '' : 'T' . $str_time);
-            }
-        }
-
-        return ($obj->invert == '1' ? '-' : '') . 'P' . $str;
-    }
-
-    /**
      * Convertes a DURATION string to a DateInterval
      * Allows the use of '-' in front of the string
+     * 
+     * @param string $str DURATION value
+     * @access public
+     * @return \DateInterval
      */
-    function duration2di($str) {
-        $minus;
-        $new_str = preg_replace('/^(-)/', '', $str, -1, $minus);
+    public static function durationToDateInterval($str)
+    {
+        $invert = 0;
 
-        $interval = new DateInterval($new_str);
-        if ($minus == 1) {
-            $interval->invert = 1;
+        if ($str[0] == '-') {
+            $invert = 1;
+            $str = substr($str, 1);
         }
+
+        $interval = new \DateInterval($str);
+        $interval->invert = $invert;
 
         return $interval;
     }
@@ -324,16 +287,20 @@ class DateHelper
     /**
      * Converts a X-CURRENT-DTSTART/X-CURRENT-DTEND string to a DateTime
      * object
+     *
+     * @param string $str 
+     * @param \DateTimeZone $tz 
+     * @access public
+     * @return \DateTime
+     * @throws \InvalidArgumentException
      */
-    function x_current2datetime($str, $tz) {
+    public static function iCalcreatorXCurrentToDateTime($str, \DateTimeZone $tz)
+    {
         $matches = array();
         $res = preg_match('/^(\d+)-(\d+)-(\d+)( (\d+):(\d+):(\d+)( (\S+))?)?$/', $str, $matches);
 
-        if ($res === FALSE || $res != 1) {
-            log_message('ERROR',
-                    'Error processing [' . $str . '] as X-CURRENT-*'
-                    .' string');
-            return new DateTime();
+        if ($res === false || $res != 1) {
+            throw new \InvalidArgumentException($str . ' is not an X-CURRENT-DTSTART/DTEND');
         }
 
         $y = $matches[1];
@@ -348,35 +315,26 @@ class DateHelper
         $format = 'dmY His';
         $new_str = $d.$m.$y.' '.$h.$i.$s;
 
-        $dt = $this->create_datetime($format, $new_str, $tz);
-
-        if ($dt === FALSE) {
-            $this->CI->extended_logs->message('ERROR',
-                    'Error processing ' . $new_str . ' (post) as a string'
-                    .' for X-CURRENT-*');
-            return new DateTime();
-        }
+        $dt = self::createDateTime($format, $new_str, $tz);
 
         return $dt;
     }
 
 
     /**
-     * Formats a timestamp time using strftime
+     * Returns formatted time for a given \DateTime
      *
-     * @param   int Timestamp
-     * @param   DateTime    DateTime object (used to calculate am/pm)
-     * @return  string  Formatted time string with strftime
+     * @param \DateTime $dt 
+     * @param string $time_format 12 or 24
+     * @static
+     * @access public
+     * @return string
      */
-    function strftime_time($timestamp, $dt) {
-        $format = Dates::$time_formats[$this->cfg_time]['strftime'];
-        $result = strftime($format, $timestamp);
-        if ($this->cfg_time == '12') {
-            $result .= $dt->format('a');
-        }
+    public static function formatTime(\DateTime $dt, $time_format)
+    {
+        $format = self::getTimeFormatFor('date', $time_format);
+        $result = $dt->format($format);
         
         return $result;
     }
-
-
 }
