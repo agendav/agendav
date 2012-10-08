@@ -28,13 +28,12 @@ namespace AgenDAV\CalDAV;
 interface ICalDAVClient
 {
     /**
-     * Checks current user authentication against provided 
+     * Checks current user authentication against current user principal URL
      * 
-     * @param string $url 
      * @access public
      * @return boolean
      */
-    public function checkAuthentication($url = '/');
+    public function checkAuthentication();
 
     /**
      * Checks if provided resource is accesible for current user 

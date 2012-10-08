@@ -306,7 +306,13 @@ Here you will configure every single aspect of your CalDAV server.
 
 .. confval:: caldav_base_url
 
-   Base CalDAV URL used to build all CalDAV URLs
+   Base CalDAV URL used to build all CalDAV URLs. If your CalDAV server is located under a relative path don't specify
+   it here. Do not add trailing slash.
+
+   Examples::
+
+    // This will work for CalDAV servers placed on root URL or under any relative path
+    $config['caldav_base_url'] = 'http://my.caldav.server';
 
    .. versionadded:: 1.3.0
 
@@ -342,6 +348,8 @@ Here you will configure every single aspect of your CalDAV server.
 
    This is just a path, not a full URL. Your :confval:`caldav_base_url` will be prepended to this value.
 
+   Remember to add the relative path to your CalDAV server if it's not located under your root URL.
+
    Needs a trailing slash.
 
    Example::
@@ -349,15 +357,18 @@ Here you will configure every single aspect of your CalDAV server.
     // Example 1: DAViCal
     $config['caldav_principal_template'] = '/caldav.php/%u/';
 
-    // Example 2: SabreDAV
+    // Example 2: DAViCal on http://my.caldav.server/davical/...
+    $config['caldav_principal_template'] = '/davical/caldav.php/%u/';
+
+    // Example 3: SabreDAV
     $config['caldav_principal_template'] = '/calendarserver.php/principals/%u/';
 
-    // Example 3: Calendar server
+    // Example 4: Calendar server
     $config['caldav_principal_template'] = '/calendars/users/%u/';
 
    .. versionadded:: 1.3.0
 
-   .. seealso:: :confval:`caldav_calendar_homeset_template`
+   .. seealso:: :confval:`caldav_base_url` and :confval:`caldav_calendar_homeset_template`
 
 .. confval:: caldav_calendar_homeset_template
 
@@ -365,19 +376,26 @@ Here you will configure every single aspect of your CalDAV server.
 
    This is just a path, not a full URL. Your :confval:`caldav_base_url` will be prepended to this value.
 
+   Remember to add the relative path to your CalDAV server if it's not located under your root URL.
+
    Example::
 
     // DAViCal
     $config['caldav_calendar_homeset_template'] = '/caldav.php/%u/';
+
+    // DAViCal under /davical
+    $config['caldav_calendar_homeset_template'] = '/davical/caldav.php/%u/';
    
    .. versionadded:: 1.3.0
 
-   .. seealso:: :confval:`caldav_base_url`
+   .. seealso:: :confval:`caldav_base_url` and :confval:`caldav_principal_template`
 
 .. confval:: caldav_public_base_url
 
    The base URL that will be shown to users if :confval:`show_public_caldav_url` is
    enabled. It's not used for internal connections.
+
+   If your CalDAV server is located under a relative path don't specify it here. Do not add trailing slash.
 
    Do not add a trailing slash.
 
@@ -385,9 +403,9 @@ Here you will configure every single aspect of your CalDAV server.
 
     $config['public_caldav_url'] = 'https://public.caldav.tld';
 
-   Will become for user ``user2`` and calendar ``myhomecalendar``:
+   For a DAViCal server placed on /davical will become for user ``user2`` and calendar ``myhomecalendar``:
 
-    https://public.caldav.tld/caldav.php/user2/myhomecalendar/
+    https://public.caldav.tld/davical/caldav.php/user2/myhomecalendar/
 
 .. confval:: enable_calendar_sharing
 

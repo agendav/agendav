@@ -40,6 +40,8 @@ $config['caldav_http_auth_method'] = null;
  * This URL will be used to build the rest of URLs (principals and
  * calendars)
  *
+ * If your CalDAV server is placed under a relative path, don't specify it here
+ *
  * Please, do NOT add trailing slash
  */
 
@@ -51,10 +53,13 @@ $config['caldav_base_url'] = 'http://caldav.server';
  *
  * Do not use a full URL, use a relative path to be appended to your caldav_base_url
  *
+ * Remember to add your CalDAV server relative path if needed
+ *
  * %u will be replaced by an username. Please, add trailing slash
  *
  * Some examples:
  * - DAViCal: /caldav.php/%u/
+ * - DAViCal under non-root path: /davical/caldav.php/%u/
  * - SabreDAV: /calendarserver.php/principals/%u/
  * - Apple Calendar Server: /users/%u/
  */
@@ -67,11 +72,14 @@ $config['caldav_principal_template'] = '/caldav.php/%u/';
  *
  * Do not use a full URL, use a relative path to be appended to your caldav_base_url
  *
+ * Remember to add your CalDAV server relative path if needed
+ *
  * %u will be replaced by an username. Please, add trailing slash
  *
  * Some samples:
  *
  * - DAViCal: /caldav.php/%u/
+ * - DAViCal under non-root path: /davical/caldav.php/%u/
  * - SabreDAV: /calendarserver.php/calendars/%u/
  * - Apple Calendar Server: /calendars/users/%u/
  */
@@ -83,6 +91,7 @@ $config['caldav_calendar_homeset_template'] = '/caldav.php/%u/';
  * ====================================
  *
  * Please, do NOT add trailing slash.
+ * If your CalDAV server is placed under a relative path, don't specify it here
  * Will be shown to users only when 'show_public_caldav_url' is enabled
  */
 
