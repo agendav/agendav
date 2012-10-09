@@ -65,11 +65,11 @@ class DateHelper
      * @param string $type One of: fullcalendar, date or strftime
      * @param string $which_one One of the predefined sets: 12 or 24
      * @static
-     * @access private
+     * @access public
      * @return string Format string
      * @throws \InvalidArgumentException
      */
-    private static function getTimeFormatFor($type, $which_one)
+    public static function getTimeFormatFor($type, $which_one)
     {
         if ($which_one != '12' && $which_one != '24') {
             throw new \InvalidArgumentException('Invalid type ' . $type);
@@ -93,11 +93,11 @@ class DateHelper
      * @param string $type One of: fullcalendar, date or strftime
      * @param string $which_one One of the predefined sets: ymd, dmy, mdy
      * @static
-     * @access private
+     * @access public
      * @return string Format string
      * @throws \InvalidArgumentException
      */
-    private static function getDateFormatFor($type, $which_one)
+    public static function getDateFormatFor($type, $which_one)
     {
         if ($which_one != 'ymd' && $which_one != 'dmy' && $which_one != 'mdy') {
             throw new \InvalidArgumentException('Invalid type ' . $type);
