@@ -1913,6 +1913,11 @@ var calendar_list = function calendar_list() {
   }
 
   return result;
+}
+
+// Load options from server
+var load_config = function load_config() {
+  return $.get(base_app_url + 'conf');
 };
 
 
