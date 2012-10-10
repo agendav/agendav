@@ -4,6 +4,7 @@ Release 1.3.0 (2012-?-?)
       date
     * Upgraded:
       - CodeIgniter (to 2.1.3)
+    * Added ru_RU translation (thanks to ?vexoid?)
 
 Release 1.2.6 (2012-09-03)
     * Added Reminders support
