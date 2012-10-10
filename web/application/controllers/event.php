@@ -79,28 +79,15 @@ class Event extends MY_Controller
         $start = $this->input->get('start');
         $end = $this->input->get('end');
 
-        if ($err == 0 && $start === false) {
+        if ($err == 0 && ($start === false || $end === false)) {
             // Something is wrong here
             $this->extended_logs->message(
                     'ERROR',
-                    'Calendar events request for ' . $calendar .' with no start timestamp');
+                    'Calendar events request for ' . $calendar .' with no start/end');
             $err = 400;
         } else if ($err == 0) {
-            $start =
-                $this->dates->datetime2idt($this->dates->ts2datetime($start, $this->tz_utc));
-
-            if ($end === false) {
-                $this->extended_logs->message(
-                        'ERROR',
-                        'Calendar events request for ' . $calendar .' with no end timestamp');
-                $err = 400;
-            } else {
-                $end = $this->dates->datetime2idt($this->dates->ts2datetime($end, $this->tz_utc));
-
-                $returned_events = $this->client->fetchEvents($calendar, $start, $end);
-
-                $time_fetch = microtime(true);
-            }
+            $returned_events = $this->client->fetchEvents($calendar, $start, $end);
+            $time_fetch = microtime(true);
         }
 
         if ($err == 0) {

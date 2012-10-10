@@ -12,7 +12,7 @@
  * Dual licensed under the MIT and GPL licenses, located in
  * MIT-LICENSE.txt and GPL-LICENSE.txt respectively.
  *
- * Date: Wed Sep 12 11:41:07 2012 +0200
+ * Date: Wed Oct 10 13:38:37 2012 +0200
  *
  */
  
@@ -909,7 +909,6 @@ function EventManager(options, _sources) {
 	var stickySource = { events: [] };
 	var sources = [ stickySource ];
 	var rangeStart, rangeEnd;
-	var offsetStart, offsetEnd;
 	var currentFetchID = 0;
 	var pendingSourceCnt = 0;
 	var loadingLevel = 0;
@@ -934,8 +933,6 @@ function EventManager(options, _sources) {
 	function fetchEvents(start, end, src) {
 		rangeStart = start;
 		rangeEnd = end;
-		offsetStart = start.getTimezoneOffset()*60*1000;
-		offsetEnd = end.getTimezoneOffset()*60*1000;
 		// partially clear cache if refreshing one source only (issue #1061)
 		cache = typeof src != 'undefined' ? $.grep(cache, function(e) { return !isSourcesEqual(e.source, src); }) : [];
 		var fetchID = ++currentFetchID;
@@ -1009,18 +1006,10 @@ function EventManager(options, _sources) {
 				var startParam = firstDefined(source.startParam, options.startParam);
 				var endParam = firstDefined(source.endParam, options.endParam);
 				if (startParam) {
-					var tmpstart = rangeStart;
-					if (source.startParamUTC) {
-						tmpstart -= offsetStart;
-					}
-					data[startParam] = Math.round(+tmpstart / 1000);
+					data[startParam] = _UTC8601(rangeStart);
 				}
 				if (endParam) {
-					var tmpend = rangeEnd;
-					if (source.endParamUTC) {
-						tmpend -= offsetEnd;
-					}
-					data[endParam] = Math.round(+tmpend / 1000);
+					data[endParam] = _UTC8601(rangeEnd);
 				}
 				pushLoading();
 				$.ajax($.extend({}, ajaxDefaults, source, {
@@ -1047,6 +1036,25 @@ function EventManager(options, _sources) {
 			}
 		}
 	}
+
+    /*
+     * Returns a Date object formatted using ISO 8601 format. Uses UTC
+     */
+    function _UTC8601(dt) {
+        var result = '';
+
+        result = dt.getUTCFullYear()
+            + (dt .getUTCMonth() < 9 ? '0' : '') + (dt .getUTCMonth() + 1)
+            + (dt .getUTCDate() < 10 ? '0' : '') + dt .getUTCDate();
+
+        result += 'T'
+            + (dt.getUTCHours() < 10 ? '0' : '') + dt.getUTCHours()
+            + (dt.getUTCMinutes() < 10 ? '0' : '') + dt.getUTCMinutes()
+            + (dt.getUTCSeconds() < 10 ? '0' : '') + dt.getUTCSeconds()
+            + 'Z';
+
+        return result;
+    }
 	
 	
 	

@@ -1229,10 +1229,7 @@ var generate_event_source = function generate_event_source(calendar) {
           t('messages', 
             'error_loadevents', { '%cal' : calendar }));
         }
-      },
-
-      startParamUTC: true,
-      endParamUTC: true
+      }
   };
 
   return ajax_options;
