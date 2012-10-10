@@ -58,10 +58,20 @@ class Event extends MY_Controller
         $this->output->set_content_type('application/json');
     }
 
-    function index() {
+    public function index()
+    {
     }
 
-    function all() {
+    /**
+     * Returns all events from a given calendar
+     *
+     * Reads calendar, start and end date from GET parameters
+     *
+     * @access public
+     * @return void
+     */
+    public function all()
+    {
         $returned_events = array();
         $err = 0;
 
@@ -83,14 +93,12 @@ class Event extends MY_Controller
             // Something is wrong here
             $this->extended_logs->message(
                     'ERROR',
-                    'Calendar events request for ' . $calendar .' with no start/end');
+                    'Requested events from ' . $calendar .' with no start/end'
+            );
             $err = 400;
         } else if ($err == 0) {
             $returned_events = $this->client->fetchEvents($calendar, $start, $end);
             $time_fetch = microtime(true);
-        }
-
-        if ($err == 0) {
             $parsed =
                 $this->icshelper->expand_and_parse_events($returned_events, $start, $end, $calendar);
 
@@ -103,7 +111,7 @@ class Event extends MY_Controller
 
             $this->extended_logs->message(
                     'INTERNALS',
-                    'Sending to client ' .  count($parsed) . ' event(s) on calendar ' . $calendar 
+                    'Sent ' .  count($parsed) . ' event(s) from ' . $calendar
                         .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
 
             $this->output->set_header("X-Fetch-Time: " . $total_fetch);
@@ -120,7 +128,8 @@ class Event extends MY_Controller
      * TODO: control whether we want to remove a single recurrence-id
      * instead of the whole event
      */
-    function delete() {
+    public function delete()
+    {
         $calendar = $this->input->post('calendar');
         $uid = $this->input->post('uid');
         $href = $this->input->post('href');
@@ -167,7 +176,8 @@ class Event extends MY_Controller
      * Creates or modifies an existing event
      * TODO: detect if we are defining a new recurrence-id
      */
-    function modify() {
+    public function modify()
+    {
         // Important data to be filled later
         $etag = '';
         $href = '';
@@ -497,7 +507,8 @@ class Event extends MY_Controller
     /**
      * Resizing an event
      */
-    function alter() {
+    public function alter()
+    {
         $uid = $this->input->post('uid');
         $calendar = $this->input->post('calendar');
         $etag = $this->input->post('etag');
@@ -679,7 +690,8 @@ class Event extends MY_Controller
      */
 
     // Validate date format
-    function _valid_date($d) {
+    public function _valid_date($d)
+    {
         $obj = $this->dates->frontend2datetime($d .' ' .
                 date($this->time_format));
         if (false === $obj) {
@@ -692,17 +704,20 @@ class Event extends MY_Controller
     }
 
     // Validate date format (or empty string)
-    function _empty_or_valid_date($d) {
+    public function _empty_or_valid_date($d)
+    {
         return empty($d) || $this->_valid_date($d);
     }
 
     // Validate empty or > 0
-    function _empty_or_natural_no_zero($n) {
+    public function _empty_or_natural_no_zero($n)
+    {
         return empty($n) || intval($n) > 0;
     }
 
     // Validate time format
-    function _valid_time($t) {
+    public function _valid_time($t)
+    {
         $obj = $this->dates->frontend2datetime(date($this->date_format) .' '. $t);
         if (false === $obj) {
             $this->form_validation->set_message('_valid_time',
@@ -717,7 +732,8 @@ class Event extends MY_Controller
     /**
      * Throws an exception message
      */
-    function _throw_exception($message) {
+    private function _throw_exception($message)
+    {
         $this->output->set_output(json_encode(array(
                         'result' => 'EXCEPTION',
                         'message' => $message)));
@@ -728,7 +744,8 @@ class Event extends MY_Controller
     /**
      * Throws an error message
      */
-    function _throw_error($message) {
+    private function _throw_error($message)
+    {
         $this->output->set_output(json_encode(array(
                         'result' => 'ERROR',
                         'message' => $message)));
@@ -739,7 +756,8 @@ class Event extends MY_Controller
     /**
      * Throws a success message
      */
-    function _throw_success($message = '') {
+    private function _throw_success($message = '')
+    {
         $this->output->set_output(json_encode(array(
                         'result' => 'SUCCESS',
                         'message' => $message)));
