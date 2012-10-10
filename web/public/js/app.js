@@ -605,18 +605,22 @@ var generate_on_the_fly_form = function generate_on_the_fly_form(action, data) {
   // Now we have our random id
   var form_gen = base_app_url + 'dialog_generator/on_the_fly_form/' +
     random_id;
+  var params = {
+    emptydata: 'empty' // CodeIgniter 2.1.3 now looks for POST data
+  };
+  params[AgenDAVConf.prefs_csrf_token_name] = get_csrf_token();
+
   var csrf_ajax_gen = $.ajax({
+    type: 'POST',
     url: form_gen,
     cache: false,
-    type: 'POST',
-    contentType: 'text',
+    data: params,
     dataType: 'text',
     async: false // Let's wait
   });
 
   csrf_ajax_gen.fail(function(jqXHR, textStatus, errorThrown) {
     // This is generally caused by expired session
-    session_expired();
     set_data('formcreation', 'failed');
   });
 
