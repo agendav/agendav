@@ -247,3 +247,5 @@ $messages['error_shareunknownusers'] = 'Sommige door u opgegeven gebruikers kome
 $messages['help_defaultcalendar'] = 'Nieuwe gebeurtenissen worden standaard in deze agenda geplaatst. Geef hier je meest gebruikte agenda aan.';
 
 $messages['info_prefssaved'] = 'Voorkeuren opgeslagen';
+
+$messages['more_events'] = '+ %count events';

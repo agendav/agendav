@@ -247,3 +247,5 @@ $messages['error_shareunknownusers'] = 'Mõningaid sinu poolt määratud kasutaj
 $messages['help_defaultcalendar'] = 'Uued sündmused pannakse vaikimisi sellesse kalendrisse. Määra siin oma kõige rohkemkasutatav kalender';
 
 $messages['info_prefssaved'] = 'Eelistused on salvestatud';
+
+$messages['more_events'] = '+ %count events';

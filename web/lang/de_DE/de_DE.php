@@ -248,3 +248,5 @@ $messages['error_shareunknownusers'] = 'Einige der Benutzer, die Sie angegeben h
 $messages['help_defaultcalendar'] = 'Neue Einträge werden standardmässig in diesem Kalender angelegt. Geben Sie hier den Kalender an, den Sie am Meisten verwenden.';
 
 $messages['info_prefssaved'] = 'Einstellungen gespeichert';
+
+$messages['more_events'] = '+ %count events';

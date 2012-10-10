@@ -253,3 +253,5 @@ existen';
 $messages['help_defaultcalendar'] = 'Los eventos nuevos serán colocados en este calendario por defecto. Elija el calendario que más use';
 
 $messages['info_prefssaved'] = 'Preferencias guardadas';
+
+$messages['more_events'] = '+%count eventos';

@@ -246,3 +246,5 @@ $messages['error_shareunknownusers'] = 'Alcuni degli utenti specificati non esis
 $messages['help_defaultcalendar'] = 'I nuovi eventi verranno automaticamente memorizzati in questo calendario. Inserire qui il calendario più utilizzato.';
 
 $messages['info_prefssaved'] = 'Preferenze salvate';
+
+$messages['more_events'] = '+ %count events';

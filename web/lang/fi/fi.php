@@ -248,3 +248,5 @@ $messages['error_shareunknownusers'] = 'Jotkin määrittelemäsi käyttäjät ei
 $messages['help_defaultcalendar'] = 'Uudet tapahtumat asetetaan oletuksena tähän kalenteriin. Aseta tässä useimmin käyttämäsi kalenteri';
 
 $messages['info_prefssaved'] = 'Asetukset tallennettu';
+
+$messages['more_events'] = '+ %count tapahtumaa';
