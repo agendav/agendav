@@ -157,67 +157,39 @@ setting.
 
 .. confval:: format_full_date
 
-   Human readable format for dates, using ``strftime`` syntax
-   (http://php.net/strftime). Some examples:
-
-   * ``%a %e %B %Y``: Mon 5 March 2012
-   * ``%a %e de %B de %Y``: Lun 5 de marzo de 2012 (localized using ``es_ES`` as :confval:`default_language`)
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_column_month
 
-   Sets how the UI calendar should format the column header in month view. 
-   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_column_week
 
-   Sets how the UI calendar should format the column header in week view. 
-   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_column_day
 
-   Sets how the UI calendar should format the column header in day view. 
-   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_column_table
 
-   Sets how the UI calendar should format the column header in table (called *agenda*) view.  Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_title_month
 
-   Sets how the UI calendar should format the title in month view. 
-   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_title_week
 
-   Sets how the UI calendar should format the title in week view. 
-   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_title_day
 
-   Sets how the UI calendar should format the title in day view. 
-   Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: format_title_table
 
-   Sets how the UI calendar should format the title header in table (called *agenda*) view.  Uses `FullCalendar own syntax <http://arshaw.com/fullcalendar/docs/utilities/formatDate/>`_
-
-   .. versionadded:: 1.2.5
+   .. deprecated:: 1.3.0
 
 .. confval:: default_first_day
    
