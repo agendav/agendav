@@ -39,7 +39,6 @@ class Icshelper {
         $this->tz = $this->CI->timezonemanager->getTz(
                 $this->CI->config->item('default_timezone'));
 
-        $this->date_format = $this->CI->config->item('format_full_date');
         $this->date_frontend_format = $this->CI->dates->date_format_string('date');
         $this->time_frontend_format = $this->CI->dates->time_format_string('date');
 
@@ -475,7 +474,10 @@ class Icshelper {
             date_default_timezone_set($this->tz->getName());
         }
 
-        $this_event['formatted_start'] = strftime($this->date_format, $ts_start); 
+        // Load date format
+        $date_format = $this->CI->i18n->_('formats', 'full_date_strftime');
+
+        $this_event['formatted_start'] = strftime($date_format, $ts_start); 
 
         if (isset($this_event['allDay']) && $this_event['allDay'] == TRUE) {
             // Next day?
@@ -483,7 +485,7 @@ class Icshelper {
                 $this_event['formatted_end'] =
                     '('.$this->CI->i18n->_('labels', 'allday').')';
             } else {
-                $this_event['formatted_end'] = strftime($this->date_format, $ts_end); 
+                $this_event['formatted_end'] = strftime($date_format, $ts_end); 
             }
         } else {
             // Are they in the same day?
@@ -494,7 +496,7 @@ class Icshelper {
                     $this->CI->dates->strftime_time($ts_end, $end);
             } else {
                 $this_event['formatted_end'] =
-                    strftime($this->date_format, $ts_end) . ' ' .
+                    strftime($date_format, $ts_end) . ' ' .
                     $this->CI->dates->strftime_time($ts_end, $end);
             }
         }
