@@ -75,21 +75,23 @@ class I18n extends CI_Model {
      */
     private function parse_language($lang) {
         $file = $this->lang_path . '/' . $lang . '/' . $lang . '.php';
+        $file_formats = $this->lang_path . '/' . $lang . '/formats.php';
 
-        if (!is_file($file)) {
+        if (!is_file($file) || !is_file($file_formats)) {
             return FALSE;
         } else {
             $messages = array();
             $labels = array();
-            $js_messages = array();
+            $formats = array();
 
             @include($file);
+            @include($file_formats);
 
             return array(
                 'messages' => $messages,
                 'labels' => $labels,
-                'js_messages' => $js_messages,
-                );
+                'formats' => $formats,
+            );
         }
     }
 

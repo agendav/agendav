@@ -98,16 +98,16 @@ $(document).ready(function() {
         '': AgenDAVConf.prefs_timeformat
       },
       columnFormat: {
-        month: AgenDAVConf.prefs_format_column_month,
-        week: AgenDAVConf.prefs_format_column_week,
-        day: AgenDAVConf.prefs_format_column_day,
-        table: AgenDAVConf.prefs_format_column_table
+        month: t('formats', 'column_week_fullcalendar'),
+        week: t('formats', 'column_week_fullcalendar'),
+        day: t('formats', 'column_day_fullcalendar'),
+        table: t('formats', 'column_table_fullcalendar'),
       },
       titleFormat: {
-        month: AgenDAVConf.prefs_format_title_month,
-        week: AgenDAVConf.prefs_format_title_week,
-        day: AgenDAVConf.prefs_format_title_day,
-        table: AgenDAVConf.prefs_format_title_table
+        month: t('formats', 'title_month_fullcalendar'),
+        week: t('formats', 'title_week_fullcalendar'),
+        day: t('formats', 'title_day_fullcalendar'),
+        table: t('formats', 'title_table_fullcalendar')
       },
       currentTimeIndicator: true,
       weekMode: 'liquid',

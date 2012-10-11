@@ -32,12 +32,14 @@ function t(mtype, s, params) {
 	var ret = '[' + mtype + ':' + s + ']';
 
 	if (typeof(AgenDAVConf.i18n)!= 'undefined' && (mtype == 'messages' 
-			|| mtype == 'labels')) {
+			|| mtype == 'labels' || mtype == 'formats')) {
 		if (mtype == 'labels' && AgenDAVConf.i18n.labels[s]) {
 			ret = AgenDAVConf.i18n.labels[s];
 		} else if (mtype == 'messages' && AgenDAVConf.i18n.messages[s]) {
 			ret = AgenDAVConf.i18n.messages[s];
-		}
+		} else if (mtype == 'formats') {
+      ret = AgenDAVConf.i18n.formats[s];
+    }
 	}
 
 	for (var i in params) {
