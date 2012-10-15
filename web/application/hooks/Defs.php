@@ -52,7 +52,7 @@ class Defs {
             );
 
     function definitions() {
-        define('AGENDAV_VERSION', '1.2.6.1');
+        define('AGENDAV_VERSION', '1.2.6.2');
         set_include_path(implode(PATH_SEPARATOR, array(
                         BASEPATH . '../../libs/icalcreator',
                         BASEPATH . '../../libs/own_extensions',
