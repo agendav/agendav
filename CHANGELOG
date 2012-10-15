@@ -6,6 +6,9 @@ Release 1.3.0 (2012-?-?)
       - CodeIgniter (to 2.1.3)
     * Added ru_RU translation (thanks to Anton Dolgov)
 
+Release 1.2.6.2 (2012-10-15)
+    * Add missing files
+
 Release 1.2.6.1 (2012-10-15)
     * Handle timezones with three components (X/Y/Z)
 
