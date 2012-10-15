@@ -1,3 +1,6 @@
+Release 1.2.6.2 (2012-10-15)
+    * Add missing files
+
 Release 1.2.6.1 (2012-10-15)
     * Handle timezones with three components (X/Y/Z)
 
