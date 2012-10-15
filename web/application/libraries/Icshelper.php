@@ -548,9 +548,7 @@ class Icshelper {
             
             if ($tzval === FALSE || empty($tzval)) {
                 // Try to extract it from TZID name
-                if (preg_match('#([^/]+/[^/]+)$#', $tzid, $matches)) {
-                    $tzval = $matches[1];
-                }
+                $tzval = $tzid;
             } else {
                 $tzval = $tzval[1];
             }

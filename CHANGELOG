@@ -1,3 +1,6 @@
+Release 1.2.6.1 (2012-10-15)
+    * Handle timezones with three components (X/Y/Z)
+
 Release 1.2.6 (2012-09-03)
     * Added Reminders support
     * Changed dialog rendering method to use client templates via
