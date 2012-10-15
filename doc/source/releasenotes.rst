@@ -18,6 +18,15 @@ Release notes
 
 * Database changes are required: TODO
 
+.. _v1.2.6.1:
+
+
+1.2.6.1 (2012-10-15)
+------------------
+
+This release just fixes a problem with some timezones which have three
+components, such as America/Argentina/Cordoba. AgenDAV 1.2.6 refused to parse calendars
+that contained events with those kind of timezones.
 
 .. _v1.2.6:
 
