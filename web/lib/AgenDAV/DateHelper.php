@@ -238,10 +238,11 @@ class DateHelper
      *
      * @param Array $id_arr Array from iCalcreator (year, month, day, etc)
      * @param \DateTimeZone $tz Timezone for given input
+     * @static
      * @access public
      * @return \DateTime
      */
-    public function iCalcreatorToDateTime($icalcreator_data, \DateTimeZone $tz)
+    public static function iCalcreatorToDateTime($icalcreator_data, \DateTimeZone $tz)
     {
         $format = 'YmdHis';
 
