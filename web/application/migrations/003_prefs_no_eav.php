@@ -6,9 +6,10 @@ class Migration_Prefs_no_eav extends CI_Migration {
         echo "Creating table prefs...\n";
 
         // DBForge doesn't support foreign keys
+        $prefs_table = $this->db->protect_identifiers('prefs', true);
         if (preg_match('/^mysql/', $this->db->dbdriver)) {
             $sql = <<< 'MYSQL'
-                CREATE TABLE prefs (
+                CREATE TABLE $prefs_table (
                         username VARCHAR(255) NOT NULL,
                         options TEXT NOT NULL,
                         PRIMARY KEY(username)
@@ -16,7 +17,7 @@ class Migration_Prefs_no_eav extends CI_Migration {
 MYSQL;
         } elseif ($this->db->dbdriver == 'postgre') {
             $sql = <<< 'PGSQL'
-                CREATE TABLE prefs (
+                CREATE TABLE $prefs_table (
                         username varchar(255) not null,
                         options text not null,
                         primary key (username));
