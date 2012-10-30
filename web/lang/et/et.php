@@ -232,7 +232,7 @@ $messages['error_current_event_not_loaded'] = 'Praegune sündmus pole saadaval';
 $messages['error_event_not_deleted'] = 'Viga sündmuse kustutamisel';
 $messages['error_loading_calendar_list'] = 'Viga kalendrite nimekirja lugemisel';
 $messages['notice_no_calendars'] = 'Ühtegikalendrit pole saadaval';
-$messages['info_repetition_human'] = 'See sündmus korrdub %explanation';
+$messages['info_repetition_human'] = 'See sündmus kordub %explanation';
 $messages['info_repetition_unparseable'] = 'See programm ei saa aru käesoleva sündmuse kordamise reeglitest. Toortõlge:';
 $messages['error_calendarnotfound'] = 'Vigane kalender %calendar';
 $messages['error_eventnotfound'] = 'Elementi ei leitud';
@@ -248,4 +248,4 @@ $messages['help_defaultcalendar'] = 'Uued sündmused pannakse vaikimisi sellesse
 
 $messages['info_prefssaved'] = 'Eelistused on salvestatud';
 
-$messages['more_events'] = '+ %count events';
+$messages['more_events'] = '+ %count sündmust';
