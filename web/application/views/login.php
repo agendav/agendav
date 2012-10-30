@@ -48,7 +48,7 @@ if (isset($logo)) {
 		  'name' => 'passwd',
 		  'id' => 'login_passwd',
 		  'value' => '',
-		  'maxlength' => '40',
+		  'maxlength' => '100',
 		  'class' => 'input-medium',
 		  'size' => '15',
 		  );
