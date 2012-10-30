@@ -248,4 +248,4 @@ $messages['help_defaultcalendar'] = 'Uued sündmused pannakse vaikimisi sellesse
 
 $messages['info_prefssaved'] = 'Eelistused on salvestatud';
 
-$messages['more_events'] = '+ %count events';
+$messages['more_events'] = '+ %count sündmust';
