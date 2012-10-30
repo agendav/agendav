@@ -27,8 +27,8 @@ $js = (ENVIRONMENT == 'development' ?
 // Additional JS files
 $additional_js = $this->config->item('additional_js');
 if ($additional_js !== FALSE && is_array($additional_js)) {
-	foreach ($additional_js as $js) {
-		$js[] = $js;
+	foreach ($additional_js as $j) {
+		$js[] = $j;
 	}
 }
 
