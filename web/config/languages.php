@@ -35,5 +35,8 @@ $config['lang_rels'] = array(
         'ru_RU' => array(
             'codeigniter' => 'ru',
             ),
+        'pl' => array(
+            'codeigniter' => 'pl',
+            ),
 		);
 
