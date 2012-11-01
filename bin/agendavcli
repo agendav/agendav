@@ -12,4 +12,4 @@ realpath() {
 
 PUBLIC_DIR=`realpath "$0"|sed 's_agendavcli\$__g'`../web/public
 
-$PHPCLI "${PUBLIC_DIR}"/index.php cli ${1-}
+(cd $PUBLIC_DIR && $PHPCLI "${PUBLIC_DIR}"/index.php cli ${1-})
