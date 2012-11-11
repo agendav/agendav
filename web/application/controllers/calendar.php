@@ -63,7 +63,11 @@ class Calendar extends MY_Controller
     function all() {
         $calendarfinder = $this->container['calendarfinder'];
         $calendars = $calendarfinder->getAll();
-        $this->output->set_output(json_encode($calendars));
+        $calendar_attrs = array();
+        foreach ($calendars as $calendar => $calobj) {
+            $calendar_attrs[$calendar] = $calobj->getAll();
+        }
+        $this->output->set_output(json_encode($calendar_attrs));
     }
 
     /**
@@ -330,8 +334,11 @@ class Calendar extends MY_Controller
             $this->_throw_success();
         } else {
             // There was an error
-            $this->_throw_exception($this->i18n->_('messages', $res[0], $res[1]));
+            $this->_throw_exception(
+                $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $res))
+            );
         }
+
     }
 
     /**
