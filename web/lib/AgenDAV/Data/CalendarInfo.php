@@ -26,33 +26,72 @@ namespace AgenDAV\Data;
  */
 class CalendarInfo
 {
-    public $calendar;
+    /**
+     * Calendar attributes
+     *
+     * @var array
+     * @access private
+     */
+    private $data;
 
-    public $url;
-
-    public $displayname;
-
-    public $getctag;
-
-    public $order;
-
-    public $color;
-
-    public $shared;
-
-    public $is_default;
-
-    public $share_with;
-
-    public $write_access;
+    /**
+     * Default attributes 
+     */
+    public static $defaults = array(
+        'displayname' => '',
+        'getctag' => null,
+        'order' => null,
+        'color' => null,
+        'shared' => false,
+        'is_default' => false,
+        'share_with' => array(),
+        'write_access' => true,
+    );
 
 
-    public function __construct($url, $displayname = null, $getctag = null ) {
-        $this->url = $url;
-        $this->displayname = $displayname;
-        $this->getctag = $getctag;
-        $this->is_default = false;
-        $this->order = false;
-        $this->shared = false;
+    public function __construct($url, $displayname = '', $getctag = null )
+    {
+        $this->data = self::$defaults;
+        $this->data['url'] = $url;
+        $this->data['displayname'] = $displayname;
+        $this->data['getctag'] = $getctag;
+    }
+
+    public function __get($attr)
+    {
+        // Backwards compatibility
+        if ($attr == 'calendar') {
+            $attr = 'url';
+        }
+
+        return array_key_exists($attr, $this->data) ?
+            $this->data[$attr] :
+            null;
+    }
+
+    public function __set($attr, $value)
+    {
+        // Backwards compatibility
+        if ($attr == 'calendar') {
+            $attr = 'url';
+        }
+
+        $this->data[$attr] = $value;
+    }
+
+    /**
+     * Returns all calendar attributes. Useful for JSON encoding until PHP 5.4 JsonSerializable
+     * is widely available
+     * 
+     * @access public
+     * @return array
+     */
+    public function getAll()
+    {
+        $tmp = $this->data;
+        // Backwards compatibility
+        $tmp['calendar'] = $tmp['url'];
+
+        return $tmp;
     }
 }
