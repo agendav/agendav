@@ -31,7 +31,7 @@ class MY_Controller extends CI_Controller
          */
         $ci_preferences = $this->preferences;
         $ci_encrypt = $this->encrypt;
-        $ci_logger = $this->extended_logs;
+        $ci_logger = $this->log;
         $ci_shared_calendars = $this->shared_calendars;
 
         // Classes

@@ -1,135 +1,82 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/**
-* CodeIgniter
-*
-* An open source application development framework for PHP 4.3.2 or newer
-*
-* @package        CodeIgniter
-* @author        ExpressionEngine Dev Team
-* @copyright    Copyright (c) 2006, EllisLab, Inc.
-* @license        http://codeigniter.com/user_guide/license.html
-* @link        http://codeigniter.com
-* @since        Version 1.0
-* @filesource
-*/
-// ------------------------------------------------------------------------
-/**
-* MY_Logging Class
-*
-* This library assumes that you have a config item called
-* $config['show_in_log'] = array();
-* you can then create any error level you would like, using the following format
-* $config['show_in_log']= array('DEBUG','ERROR','INFO','SPECIAL','MY_ERROR_GROUP','ETC_GROUP');
-* Setting the array to empty will log all error messages.
-* Deleting this config item entirely will default to the standard
-* error loggin threshold config item.
-*
-* @package        CodeIgniter
-* @subpackage    Libraries
-* @category    Logging
-* @author        ExpressionEngine Dev Team. Mod by Chris Newton
-*/
-class MY_Log extends CI_Log {
+<?php
 
-    private $config;
+/*
+ * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
+ *
+ *  This file is part of AgenDAV.
+ *
+ *  AgenDAV is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  any later version.
+ *
+ *  AgenDAV is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+class MY_Log extends CI_Log
+{
 
     /**
-     * Constructor
+     * Logger
      *
-     * @access    public
-     * @param    array the array of loggable items
-     * @param    string    the log file path
-     * @param     string     the error threshold
-     * @param    string    the date formatting codes
+     * @var mixed
+     * @access private
      */
+    private $logger;
+
+    /**
+     * CodeIgniter configuration
+     *
+     * @var mixed
+     * @access private
+     */
+    private $config;
+
     function __construct()
     {
         parent::__construct();
         $this->config =& get_config();
-        if (isset ($this->config['show_in_log']))
-        {
-            $show_in_log=$this->config['show_in_log'];
-        }
-        else
-        {
-            $show_in_log="";
-        }
-        $this->log_path = ($this->config['log_path'] != '') ? $this->config['log_path'] : BASEPATH.'logs/';
-        
-        if ( ! is_dir($this->log_path) OR ! is_really_writable($this->log_path))
-        {
-            $this->_enabled = FALSE;
-        }
-        if (is_array($show_in_log))
-        {
-            $this->_logging_array = $show_in_log;
-        }
-        if (is_numeric($this->config['log_threshold']))
-        {
-            $this->_threshold = $this->config['log_threshold'];
-        }    
-        if ($this->config['log_date_format'] != '')
-        {
-            $this->_date_fmt = $this->config['log_date_format'];
+
+        $this->logger = new \AgenDAV\Log();
+
+        $logfile = $this->config['log_path'] . date('Y-m-d') . '.log';
+        $this->logger->addLogFile($logfile);
+
+        // Debug
+        if ($this->config['enable_debug'] == true) {
+            $debugfile = $this->config['log_path'] . 'debug.log';
+            $processors = array(
+                new \Monolog\Processor\WebProcessor(),
+                new \Monolog\Processor\IntrospectionProcessor(),
+            );
+            $this->logger->addLogFile($debugfile, \Monolog\Logger::DEBUG, $processors);
         }
     }
-    // --------------------------------------------------------------------
-    /**
-     * Write Log File
-     *
-     * Generally this function will be called using the global log_message() function
-     *
-     * @access    public
-     * @param    string    the error level
-     * @param    string    the error message
-     * @param    bool    whether the error is a native PHP error
-     * @return    bool
-     */        
+
     function write_log($level = 'error', $msg, $php_error = FALSE)
     {        
-        if ($this->_enabled === FALSE)
-        {
-            return FALSE;
-        }
         $level = strtoupper($level);
         
-        if (isset($this->_logging_array))
-        {
-            if ((! in_array($level, $this->_logging_array)) && (! empty($this->_logging_array)))
-            {
-                return FALSE;
-            }
-        }
-        else
-        {
-            if ( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))
-            {
-                return FALSE;
-            }
-        }
+        return $this->logger->message($level, $msg);
+    }
 
-        $filepath = $this->log_path.'log-'.date('Y-m-d').EXT;
-        $message  = '';
-        
-        if ( ! file_exists($filepath))
-        {
-            $message .= "<"."?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?".">\n\n";
-        }
-            
-        if ( ! $fp = @fopen($filepath, FOPEN_WRITE_CREATE))
-        {
-            return FALSE;
-        }
-
-        $message .= $level.' '.(($level == 'INFO') ? ' -' : '-').' '.date($this->_date_fmt). ' --> '.$msg."\n";
-        
-        flock($fp, LOCK_EX);    
-        fwrite($fp, $message);
-        flock($fp, LOCK_UN);
-        fclose($fp);
-    
-        @chmod($filepath, $this->config['log_create_permissions']);
-        return TRUE;
+    /**
+     * Log a message. This method just maintains backwards compatibility
+     *
+     * @param mixed $level
+     * @param mixed $message
+     * @access public
+     * @return void
+     */
+    public function message($level, $message)
+    {
+        return $this->write_log($level, $message);
     }
 
 } 

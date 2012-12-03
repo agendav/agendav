@@ -337,7 +337,7 @@ class Dates {
         $dt = $this->create_datetime($format, $new_str, $tz);
 
         if ($dt === FALSE) {
-            $this->CI->extended_logs->message('ERROR',
+            log_message('ERROR',
                     'Error processing ' . $new_str . ' (post) as a string'
                     .' for X-CURRENT-*');
             return new DateTime();
@@ -360,7 +360,7 @@ class Dates {
                 return Dates::$timeformats[$this->cfg_time][$type];
                 break;
             default:
-                $this->CI->extended_logs->message('ERROR', 
+                log_message('ERROR', 
                         'Invalid type for time_format_string() passed'
                         .' ('.$type.')');
                 break;
@@ -381,7 +381,7 @@ class Dates {
                 return Dates::$dateformats[$this->cfg_date][$type];
                 break;
             default:
-                $this->CI->extended_logs->message('ERROR', 
+                log_message('ERROR', 
                         'Invalid type for date_format_string() passed'
                         .' ('.$type.')');
                 break;

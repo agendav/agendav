@@ -54,7 +54,7 @@ class I18n extends CI_Model {
 
         if (FALSE === ($this->lang_contents =
                     $this->parse_language($this->langname))) {
-            $this->extended_logs->message('ERROR', 'Language '
+            log_message('ERROR', 'Language '
                     . $this->langname . ' not found');
             $this->langname = 'en';
             $this->lang_contents = $this->parse_language($this->langname);

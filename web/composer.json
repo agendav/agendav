@@ -1,6 +1,7 @@
 {
     "require": {
-        "pimple/pimple": "1.0.0"
+        "pimple/pimple": "1.0.0",
+        "monolog/monolog": "1.*"
     },
     "autoload": {
         "psr-0": {

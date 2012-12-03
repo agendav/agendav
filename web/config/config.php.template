@@ -22,26 +22,6 @@ require_once('defaults.php');
 */
 $config['base_url']	= '';
 
-
-/*
-|--------------------------------------------------------------------------
-| Categories of log messages which will get logged
-|--------------------------------------------------------------------------
-|
-| Specify which types of log lines should be written to disk. Possible
-| values are:
-|
-|  * ERROR: error messages, recommended
-|  * INFO: informational messages, recommended
-|  * AUTHERR: authentication errors
-|  * AUTHOK: successful authentications
-|  * INTERNALS: AgenDAV internal processing actions, do not use unless you
-|               are having problems or you want to debug AgenDAV
-|  * DEBUG: CodeIgniter internal debug. Do not enable unless you know what
-|           you're doing
-*/
-$config['show_in_log']= array('ERROR','INFO','AUTHERR', 'AUTHOK'); 
-
 /*
 |--------------------------------------------------------------------------
 | Error Logging Directory Path
@@ -51,6 +31,17 @@ $config['show_in_log']= array('ERROR','INFO','AUTHERR', 'AUTHOK');
 |
 */
 $config['log_path'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Enable debug
+|--------------------------------------------------------------------------
+|
+| Set this to TRUE to enable debugging. Debug information will be written on
+| $log_path/debug
+|
+*/
+$config['enable_debug']= FALSE;
 
 /*
 |--------------------------------------------------------------------------

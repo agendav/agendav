@@ -43,7 +43,7 @@ class Dialog_generator extends MY_Controller
         $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INTERNALS', 'Anonymous access attempt to ' . uri_string());
+            log_message('INTERNALS', 'Anonymous access attempt to ' . uri_string());
             $expire = $this->load->view('js_code/session_expired', '', true);
             echo $expire;
             exit;
@@ -250,7 +250,7 @@ class Dialog_generator extends MY_Controller
                 } else {
                     if ($rrule_serialized == 'undefined') {
                         // No serialized value?
-                        $this->extended_logs->message('ERROR',
+                        log_message('ERROR',
                                 'rrule_serialized undefined while editing'
                                 . $uid . ' at calendar ' . $calendar);
                         $this->_throw_error('com_event',
@@ -262,7 +262,7 @@ class Dialog_generator extends MY_Controller
 
                     $rrule_serialized = @base64_decode($rrule_serialized);
                     if ($rrule_serialized == FALSE) {
-                        $this->extended_logs->message('ERROR',
+                        log_message('ERROR',
                                 'rrule_serialized b64 failed while editing'
                                 . $uid . ' at calendar ' . $calendar);
                         $this->_throw_error('com_event',
@@ -274,7 +274,7 @@ class Dialog_generator extends MY_Controller
 
                     $rrule_arr = @unserialize($rrule_serialized);
                     if ($rrule_arr === FALSE) {
-                        $this->extended_logs->message('ERROR',
+                        log_message('ERROR',
                                 'rrule unserialize failed while editing'
                                 . $uid . ' at calendar ' . $calendar);
                         $this->_throw_error('com_event',

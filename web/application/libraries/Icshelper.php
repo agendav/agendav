@@ -167,7 +167,7 @@ class Icshelper {
             $ical = new vcalendar($this->config);
             $res = $ical->parse($r['data']);
             if ($res === FALSE) {
-                $this->CI->extended_logs->message('ERROR', 
+                log_message('ERROR', 
                         "Couldn't parse event with href=" . $calendar . '/'
                         .$event_href);
             }
@@ -211,7 +211,7 @@ class Icshelper {
                 $expand = $ical->selectComponents($sy, $sm, $sd, $ey, $em, $ed,
                         'vevent', true, true, false);
                 if ($expand === FALSE) {
-                    $this->CI->extended_logs->message('ERROR', 
+                    log_message('ERROR', 
                             "Server sent an event which doesn't fit in our dates interval");
                 } else {
                     foreach($expand as $event) {
@@ -381,7 +381,7 @@ class Icshelper {
                     $this_event['recurrence_id'] = $val;
                     break;
                 default:
-                    $this->CI->extended_logs->message('ERROR', 
+                    log_message('ERROR', 
                             'Attempt to parse iCalendar property ' . $p 
                             . ' on VEVENT which is not developed '
                             .'yet');
@@ -760,7 +760,7 @@ class Icshelper {
                 if ($dtend_info === FALSE) {
                     // Something is wrong . No DTEND nor DURATION
                     // Return the component as is
-                    $this->CI->extended_logs->message('ERROR',
+                    log_message('ERROR',
                             'Event with uid=' . $component->getProperty('uid')
                             .' has neither DTEND nor DURATION properties');
                     return $component;
@@ -955,7 +955,7 @@ class Icshelper {
             $res = iCalUtilityFunctions::createTimezone($resource,
                     $tzid, array( 'X-LIC-LOCATION' => $tzid));
             if ($res === FALSE) {
-                $this->CI->extended_logs->message('ERROR', 
+                log_message('ERROR', 
                         "Couldn't create vtimezone with tzid=" . $tzid
                         .' Defaulting to UTC');
                 $tzid = 'UTC';
