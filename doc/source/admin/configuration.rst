@@ -29,23 +29,21 @@ setting.
 
     $config['base_url'] = 'https://agendav.host/';
 
+.. confval:: enable_debug
+
+   Enables debug logs for AgenDAV.
+
+   Debug log will be written at :confval:`log_path` on a single file called ``debug.log``. Example::
+
+     $config['enable_debug'] = FALSE;
+
+   .. versionadded:: 1.3.0
+
 .. confval:: show_in_log
 
-   Array of logging levels which will appear in logs. Possible logging
-   levels are:
+   .. deprecated:: 1.3.0
 
-   * ``ERROR``: error messages, recommended
-   * ``INFO``: informational messages, recommended
-   * ``AUTHERR``: authentication errors
-   * ``AUTHOK``: successful authentications
-   * ``INTERNALS``:  AgenDAV internal processing actions, not recommended unless
-     you are having problems or you want to debug AgenDAV
-   * ``DEBUG``: CodeIgniter internal debug. Do not enable unless you know
-     what you are doing
-
-   Example::
-
-    $config['show_in_log']= array('ERROR','INFO','AUTHERR', 'AUTHOK');
+   .. seealso:: :confval:`enable_debug`
 
 .. confval:: log_path
 

@@ -132,39 +132,6 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 
 /*
 |--------------------------------------------------------------------------
-| Error Logging Threshold
-|--------------------------------------------------------------------------
-|
-| If you have enabled error logging, you can set an error threshold to
-| determine what gets logged. Threshold options are:
-| You can enable error logging by setting a threshold over zero. The
-| threshold determines what gets logged. Threshold options are:
-|
-|	0 = Disables logging, Error logging TURNED OFF
-|	1 = Error Messages (including PHP errors)
-|	2 = Debug Messages
-|	3 = Informational Messages
-|	4 = All Messages
-|
-| For a live site you'll usually only enable Errors (1) to be logged otherwise
-| your log files will fill up very fast.
-|
-*/
-$config['log_threshold'] = 3;
-
-/*
-|--------------------------------------------------------------------------
-| Date Format for Logs
-|--------------------------------------------------------------------------
-|
-| Each item that is logged has an associated date. You can use PHP date
-| codes to set your own date formatting
-|
-*/
-$config['log_date_format'] = 'Y-m-d H:i:s';
-
-/*
-|--------------------------------------------------------------------------
 | Cache Directory Path
 |--------------------------------------------------------------------------
 |
@@ -273,12 +240,8 @@ $config['sess_match_ip']		= TRUE;
 $config['sess_match_useragent']	= TRUE;
 $config['sess_time_to_update']	= 300;
 
-/*
-|--------------------------------------------------------------------------
-| Log permissions
-|--------------------------------------------------------------------------
-|
-| Use a full octal permission.
-| Example: 0644, 0666
-*/
-$config['log_create_permissions'] = 0640;
+// These settings have no effect, but CodeIgniter needs them
+$config['log_threshold'] = 3;
+$config['log_date_format'] = 'Y-m-d H:i:s';
+
+

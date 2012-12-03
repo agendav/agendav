@@ -111,14 +111,14 @@ class Prefs extends MY_Controller
         $default_calendar = $this->input->post('default_calendar');
 
         if (!is_array($calendar)) {
-            $this->extended_logs->message('ERROR',
+            log_message('ERROR',
                 'Preferences save attempt with invalid calendars array');
             $this->_throw_error($this->i18n->_('messages', 
                         'error_interfacefailure'));
         }
 
         if ($default_calendar === FALSE) {
-            $this->extended_logs->message('ERROR',
+            log_message('ERROR',
                 'Preferences save attempt with default_calendar not set');
             $this->_throw_error($this->i18n->_('messages', 
                         'error_interfacefailure'));
@@ -135,7 +135,7 @@ class Prefs extends MY_Controller
 
         foreach ($calendar as $c) {
             if (!isset($c['name'])) {
-                $this->extended_logs->message('ERROR',
+                log_message('ERROR',
                         'Skipping invalid calendar when saving preferences, '
                         .'name not found');
             } else {

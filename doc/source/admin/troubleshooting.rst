@@ -34,17 +34,13 @@ Remember to set ``ENABLE_SETUP_TESTS`` back to ``FALSE`` inside
 More verbose logs
 -----------------
 
-Edit ``web/config/config.php`` and add the value ``INTERNALS`` inside
-``show_in_log`` variable. For example::
+Edit ``web/config/config.php`` and set :confval:`enable_debug` to ``TRUE``.
 
-  $config['show_in_log']= array('ERROR','INFO','AUTHERR', 'AUTHOK','INTERNALS');
-
-Check AgenDAV logs (make sure you have Check AgenDAV logs (make sure you
+Make sure you
 have a valid path configured in :confval:`log_path` and the user which runs
-the webserver has writing access to it) and your webserver logs.
+the webserver has write access to it.
 
-You can add the value ``DEBUG`` to make CodeIgniter (the PHP framework) log
-some more lines.
+Check then the ``debug.log`` file inside your log directory, and check also your webserver logs.
 
 Show errors
 -----------

@@ -30,7 +30,7 @@ class Caldav2json extends MY_Controller
         $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
+            log_message('INFO', 'Anonymous access attempt to ' . uri_string());
             $this->output->set_status_header('401');
             $this->output->_display();
             die();

@@ -39,9 +39,7 @@ class Event extends MY_Controller
         $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INFO', 
-                    'Anonymous access attempt to '
-                    . uri_string());
+            log_message('INFO', 'Anonymous access attempt to ' . uri_string());
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
@@ -82,7 +80,7 @@ class Event extends MY_Controller
 
         $calendar = $this->input->get('calendar');
         if ($calendar === false) {
-            $this->extended_logs->message('ERROR', 'Calendar events request with no calendar name');
+            log_message('ERROR', 'Calendar events request with no calendar name');
             $err = 400;
         }
 
@@ -91,9 +89,7 @@ class Event extends MY_Controller
 
         if ($err == 0 && ($start === false || $end === false)) {
             // Something is wrong here
-            $this->extended_logs->message(
-                    'ERROR',
-                    'Requested events from ' . $calendar .' with no start/end'
+            log_message('ERROR', 'Requested events from ' . $calendar .' with no start/end'
             );
             $err = 400;
         } else if ($err == 0) {
@@ -109,9 +105,7 @@ class Event extends MY_Controller
             $total_time = sprintf('%.4F', $time_end - $time_start);
 
 
-            $this->extended_logs->message(
-                    'INTERNALS',
-                    'Sent ' .  count($parsed) . ' event(s) from ' . $calendar
+            log_message('INTERNALS', 'Sent ' .  count($parsed) . ' event(s) from ' . $calendar
                         .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
 
             $this->output->set_header("X-Fetch-Time: " . $total_fetch);
@@ -140,8 +134,7 @@ class Event extends MY_Controller
         if ($calendar === false || $uid === false || $href === false ||
                 $etag === false || empty($calendar) || empty($uid) ||
                 empty($href) || empty($calendar) || empty($etag)) {
-            $this->extended_logs->message('ERROR', 
-                    'Call to delete_event() with no calendar, uid, href or etag');
+            log_message('ERROR', 'Call to delete_event() with no calendar, uid, href or etag');
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         } else {
@@ -278,9 +271,7 @@ class Event extends MY_Controller
                 $rrule = $this->recurrence->build($p, $rrule_err);
                 if (false === $rrule) {
                     // Couldn't build rrule
-                    $this->extended_logs->message('ERROR', 
-                            'Error building RRULE ('
-                                . $rrule_err .')');
+                    log_message('ERROR', 'Error building RRULE (' . $rrule_err .')');
                     $this->_throw_exception($this->i18n->_('messages',
                             'error_bogusrepeatrule') . ': ' . $rrule_err);
                 }

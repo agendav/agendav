@@ -35,7 +35,7 @@ class Calendar extends MY_Controller
         $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
+            log_message('INFO', 'Anonymous access attempt to ' . uri_string());
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
@@ -121,7 +121,7 @@ class Calendar extends MY_Controller
     function delete() {
         $calendar = $this->input->post('calendar');
         if ($calendar === false) {
-            $this->extended_logs->message('ERROR', 'Call to delete_calendar() without calendar');
+            log_message('ERROR', 'Call to delete_calendar() without calendar');
             $this->_throw_error($this->i18n->_('messages', 'error_interfacefailure'));
         }
 
@@ -177,7 +177,7 @@ class Calendar extends MY_Controller
 
         if ($calendar === false || $displayname === false || $calendar_color ===
                 false || ($is_sharing_enabled && $is_shared_calendar === false)) {
-            $this->extended_logs->message('ERROR', 
+            log_message('ERROR', 
                     'Call to modify_calendar() with incomplete parameters');
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
@@ -202,7 +202,7 @@ class Calendar extends MY_Controller
             }
 
             if ($sid === null) {
-                $this->extended_logs->message('ERROR', 
+                log_message('ERROR', 
                         'Call to modify_calendar() with shared calendar, '
                         .'but no sid was found');
                 $this->_throw_error($this->i18n->_('messages',
@@ -250,7 +250,7 @@ class Calendar extends MY_Controller
             }
         } else {
             // Tried to modify a shared calendar when sharing is disabled
-            $this->extended_logs->message('ERROR',
+            log_message('ERROR',
                     'Tried to modify the shared calendar ' . $calendar .' when calendar sharing is disabled');
             $this->_throw_exception($this->i18n->_('messages', 'error_interfacefailure'));
         }
@@ -269,7 +269,7 @@ class Calendar extends MY_Controller
                     $exists_write_access =
                         isset($share_with['write_access'][$i]);
                     if (!$exists_username || !$exists_write_access) {
-                        $this->extended_logs->message('ERROR', 
+                        log_message('ERROR', 
                                 'Ignoring incomplete share row ('.$i.') attributes'
                                 .' on calendar modification: '
                                 . serialize($share_with));

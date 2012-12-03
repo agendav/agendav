@@ -16,6 +16,9 @@ Release notes
 
 * ``caldav.php`` configuration file has been mostly rewritten, so you're advised to make a copy of ``caldav.php.template`` and configure AgenDAV again. See :ref:`caldavphpconf`
 
+* AgenDAV now uses a new logging system based on Monolog. :confval:`show_in_log` has been replaced by a
+  new :confval:`enable_debug` option.
+
 * Database changes are required: TODO
 
 .. _v1.2.6.2:
