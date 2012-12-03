@@ -60,9 +60,10 @@ class Log extends \Monolog\Logger
     {
         $file_stream = new StreamHandler($path, $level);
         
+        $log_format = "[%datetime%] %level_name%: %message% %context% %extra%\n";
         // TODO make timestamp format configurable
         $ts_format = 'Y-m-d H:i:s.u';
-        $file_stream->setFormatter(new LineFormatter(null, $ts_format));
+        $file_stream->setFormatter(new LineFormatter($log_format, $ts_format));
 
         foreach ($processors as $p) {
             $file_stream->pushProcessor($p);
