@@ -212,7 +212,7 @@ class Icshelper {
                         'vevent', true, true, false);
                 if ($expand === FALSE) {
                     log_message('ERROR', 
-                            "Server sent an event which doesn't fit in our dates interval");
+                            'Event ' . $calendar . $event_href . ' cannot be expanded.');
                 } else {
                     foreach($expand as $event) {
                         $tz = $this->detect_tz($event, $timezones);

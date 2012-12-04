@@ -43,7 +43,6 @@ class Dialog_generator extends MY_Controller
         $this->user = $this->container['user'];
 
         if (!$this->user->isAuthenticated()) {
-            log_message('INTERNALS', 'Anonymous access attempt to ' . uri_string());
             $expire = $this->load->view('js_code/session_expired', '', true);
             echo $expire;
             exit;

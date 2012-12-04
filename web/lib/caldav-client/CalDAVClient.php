@@ -252,7 +252,7 @@ class CalDAVClient {
               //        echo "\nNodes array............................................................\n"; print_r( $this->xmlnodes );
               //        echo "\nTags array............................................................\n";  print_r( $this->xmltags );
               //printf( "\nXML Reponse:\n%s\n", $this->xmlResponse );
-              log_message('ERROR', 'XML parsing error: ' 
+              log_message('CRITICAL', 'XML parsing error: ' 
                       . xml_get_error_code($parser) . ', ' 
                       . xml_error_string(xml_get_error_code($parser)));
           }
@@ -363,7 +363,7 @@ class CalDAVClient {
 
       if (FALSE === $response) {
           // TODO better error handling
-          log_message('ERROR', 'Error requesting ' . $url . ': ' 
+          log_message('CRITICAL', 'Error requesting ' . $url . ': ' 
                   . curl_error($this->ch));
           return false;
       }

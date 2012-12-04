@@ -34,8 +34,6 @@ class Js_generator extends MY_Controller
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
                 !$this->user->isAuthenticated()) {
-            log_message('INTERNALS', 'Anonymous access attempt to ' . uri_string());
-
             $expire = $this->load->view('js_code/session_expired', '', true);
             echo $expire;
             die();

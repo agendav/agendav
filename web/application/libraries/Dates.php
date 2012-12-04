@@ -65,7 +65,7 @@ class Dates {
         $cfg_time = $this->CI->config->item('default_time_format');
         if ($cfg_time === FALSE 
                 || ($cfg_time != '12' && $cfg_time != '24')) {
-            log_message('ERROR', 
+            log_message('CRITICAL', 
                     'Invalid default_time_format configuration value');
             $this->cfg_time = '24';
         } else {
@@ -76,7 +76,7 @@ class Dates {
         if ($cfg_date === FALSE 
                 || ($cfg_date != 'ymd' && $cfg_date != 'dmy'
                     && $cfg_date != 'mdy')) {
-            log_message('ERROR', 
+            log_message('CRITICAL', 
                     'Invalid default_date_format configuration value');
             $this->cfg_date = 'ymd';
         }  else {
@@ -316,7 +316,7 @@ class Dates {
         $res = preg_match('/^(\d+)-(\d+)-(\d+)( (\d+):(\d+):(\d+)( (\S+))?)?$/', $str, $matches);
 
         if ($res === FALSE || $res != 1) {
-            log_message('ERROR',
+            log_message('CRITICAL',
                     'Error processing [' . $str . '] as X-CURRENT-*'
                     .' string');
             return new DateTime();
@@ -337,7 +337,7 @@ class Dates {
         $dt = $this->create_datetime($format, $new_str, $tz);
 
         if ($dt === FALSE) {
-            log_message('ERROR',
+            log_message('CRITICAL',
                     'Error processing ' . $new_str . ' (post) as a string'
                     .' for X-CURRENT-*');
             return new DateTime();
@@ -360,7 +360,7 @@ class Dates {
                 return Dates::$timeformats[$this->cfg_time][$type];
                 break;
             default:
-                log_message('ERROR', 
+                log_message('CRITICAL', 
                         'Invalid type for time_format_string() passed'
                         .' ('.$type.')');
                 break;
@@ -381,7 +381,7 @@ class Dates {
                 return Dates::$dateformats[$this->cfg_date][$type];
                 break;
             default:
-                log_message('ERROR', 
+                log_message('CRITICAL', 
                         'Invalid type for date_format_string() passed'
                         .' ('.$type.')');
                 break;

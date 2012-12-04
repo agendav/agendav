@@ -157,7 +157,7 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
 
         // Bogus CalDAV server
         if (false === $entries) {
-            $this->logger->message('ERROR', 'Possible invalid CalDAV server');
+            $this->logger->message('CRITICAL', 'Possible invalid CalDAV server');
         } else {
             $this->logger->message('INTERNALS', 'Received ' . count($entries) . ' entries');
         }
