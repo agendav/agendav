@@ -1,0 +1,5 @@
+<div id="event_edit_dialog">
+{>form_open applyclass="form-horizontal" applyid="event_edit_form" /}
+{>event_basic_form_part/}
+{>form_close/}
+</div>

@@ -1,0 +1,88 @@
+<ul>
+<li><a href="#tabs-general">
+ <i class="tab-icon icon-tag"></i>
+ {@i18n type="labels" name="generaloptions" /}</a>
+</li>
+<li><a href="#tabs-recurrence">
+<i class="tab-icon icon-repeat"></i>
+ {@i18n type="labels" name="repeatoptions" /}</a>
+</li>
+<li><a href="#tabs-reminders">
+<i class="tab-icon icon-bell"></i>
+ {@i18n type="labels" name="remindersoptions" /}</a>
+</li>
+<li><a href="#tabs-workgroup">
+<i class="tab-icon icon-group"></i>
+ {@i18n type="labels" name="workgroupoptions" /}</a>
+</li>
+</ul>
+
+<div id="tabs-general">
+
+{?uid}
+<input type="hidden" name="uid" value="{uid}" />
+<input type="hidden" name="href" value="{href}" />
+<input type="hidden" name="etag" value="{etag}" />
+<input type="hidden" name="original_calendar" value="{calendar}" />
+{/uid}
+
+{>form_element_start for="summary" label="summary" /}
+<input name="summary" type="text" size="25" maxlength="255" value="{summary}" class="summary input-large" />
+{>form_element_end/}
+
+{>form_element_start for="location" label="location" /}
+<input name="location" type="text" size="25" maxlength="255" value="{location}" class="location input-large" />
+{>form_element_end/}
+
+{>form_element_start for="calendar" label="calendar" /}
+<select name="calendar" class="input-medium">
+{#calendars}
+ <option value="{url}"{@eq key="{url}" value="{calendar}"} selected="selected"{/eq}>{displayname}</option>
+{/calendars}
+</select>
+{>form_element_end/}
+
+{>form_element_start for="start_date" label="startdate" /}
+<input name="start_date" type="text" size="15" maxlength="10" value="{start_date}" class="start_date input-small" />
+<input name="start_time" type="text" size="15" maxlength="10" value="{start_time}" class="time start_time input-mini" />
+{>form_element_end/}
+
+{>form_element_start for="end_date" label="enddate" /}
+<input name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date input-small" />
+<input name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time input-mini" />
+{>form_element_end/}
+
+</div>
+
+<div id="tabs-recurrence">
+{^unparseable_rrule}
+{>repeat_rule_form/}
+{:else}
+<input type="hidden" name="unparseable_rrule" value="true" />
+{@i18n type="messages" name="info_repetition_unparseable" /}
+<pre>
+{rrule}
+</pre>
+{/unparseable_rrule}
+</div>
+
+<div id="tabs-reminders">
+{>reminders_table /}
+</div>
+
+<div id="tabs-workgroup">
+{>form_element_start for="class" label="privacy" /}
+<select name="class" type="text" class="input-medium">
+ <option name="PUBLIC"{@eq key="{class}" value="PUBLIC"} selected="selected"{/eq}>{@i18n type="labels" name="public"/}</option>
+ <option name="PRIVATE"{@eq key="{class}" value="PRIVATE"} selected="selected"{/eq}>{@i18n type="labels" name="private"/}</option>
+ <option name="CONFIDENTIAL"{@eq key="{class}" value="CONFIDENTIAL"} selected="selected"{/eq}>{@i18n type="labels" name="confidential"/}</option>
+</select>
+{>form_element_end/}
+
+{>form_element_start for="transp" label="transp" /}
+<select name="transp" type="text" class="input-medium">
+ <option name="OPAQUE"{@eq key="{class}" value="OPAQUE"} selected="selected"{/eq}>{@i18n type="labels" name="opaque"/}</option>
+ <option name="TRANSPARENT"{@eq key="{class}" value="TRANSPARENT"} selected="selected"{/eq}>{@i18n type="labels" name="transparent"/}</option>
+</select>
+{>form_element_end/}
+</div>
