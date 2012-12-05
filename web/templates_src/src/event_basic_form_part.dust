@@ -52,6 +52,15 @@
 <input name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time input-mini" />
 {>form_element_end/}
 
+{>form_element_start for="allday" label="alldayform" /}
+<input type="checkbox" name="allday" class="allday" value="true" />
+{>form_element_end/}
+
+{>form_element_start for="description" label="description" /}
+<textarea name="description" class="input-large" rows="4">{description}</textarea>
+{>form_element_end/}
+
+
 </div>
 
 <div id="tabs-recurrence">
