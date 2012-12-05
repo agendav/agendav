@@ -729,27 +729,62 @@ var event_field_form = function event_field_form(type, data) {
   }
 
   $.extend(
-      data,
-      {
-        applyid: 'event_edit_form',
-        frm: {
-          action: form_url,
-          method: 'post',
-          csrf: get_csrf_token()
-        }
-      });
+    data,
+    {
+      applyid: 'event_edit_form',
+      frm: {
+        action: form_url,
+        method: 'post',
+        csrf: get_csrf_token()
+      }
+    }
+  );
 
-  var action_verb;
+  var buttons = [
+    {
+      'text': t('labels', 'save'),
+      'class': 'addicon btn-icon-event-edit',
+      'click': function() {
+        var thisform = $('#event_edit_form');
+        proceed_send_ajax_form(thisform,
+            function(data) {
+              // Reload only affected calendars
+              $.each(data, function(k, cal) {
+                reload_event_source(cal);
+              });
+
+              destroy_dialog('#event_edit_dialog');
+            },
+            function(data) {
+              // Problem with form data
+              show_error(t('messages', 'error_invalidinput'), data);
+            },   
+            function(data) {
+              // Do nothing
+            });
+      }
+    },
+    {
+      'text': t('labels', 'cancel'),
+      'class': 'addicon btn-icon-cancel',
+      'click': function() { destroy_dialog('#event_edit_dialog'); }
+    }
+  ];
 
   show_dialog('event_edit_dialog',
       data,
       title,
-      [],
+      buttons,
       'event_edit_dialog',
       550,
       function() {
         $('#event_edit_dialog').tabs();
         handle_date_and_time('#event_edit_dialog', data);
+
+        // TODO recurrence rules
+        
+        // Reminders
+        reminders_manager();
       }
   );
   return;
@@ -935,7 +970,6 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
     }
   });
 
-  // TODO recurrence rules
 
   // Preserve start->end duration
   $(where)
@@ -949,9 +983,6 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
     .on('change', 'input.end_time', function() {
       $(this).data('untouched', false);
     });
-
-  // Reminders
-  reminders_manager();
 
 };
 
