@@ -315,7 +315,7 @@ $(document).ready(function() {
         }
       })
       .on('click', function() {
-        var start = fulldatetimestring($('#calendar_view').fullCalendar('getDate'));
+        var start = $('#calendar_view').fullCalendar('getDate');
         var data = {
             start: start,
             allday: false,
@@ -728,6 +728,11 @@ var event_field_form = function event_field_form(type, data) {
     title = t('labels', 'editevent');
   }
 
+  // Missing end
+  if (data.end === undefined) {
+    data.end = moment(end).add('hours', 1);
+  }
+
   $.extend(
     data,
     {
@@ -736,7 +741,12 @@ var event_field_form = function event_field_form(type, data) {
         action: form_url,
         method: 'post',
         csrf: get_csrf_token()
-      }
+      },
+      // Dates and times
+      start_date: AgenDAVDateAndTime.extractDate(data.start),
+      start_time: AgenDAVDateAndTime.extractTime(data.start),
+      end_date: AgenDAVDateAndTime.extractDate(data.end),
+      end_time: AgenDAVDateAndTime.extractTime(data.end)
     }
   );
 
@@ -1884,8 +1894,8 @@ var event_click_callback = function event_click_callback(event,
 var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDay, jsEvent, view) {
   var pass_allday = (view.name == 'month') ? false : allDay;
   var data = {
-      start: fulldatetimestring(startDate),
-      end: fulldatetimestring(endDate),
+      start: startDate,
+      end: endDate,
       allday: pass_allday,
       view: view.name
   };
@@ -2033,32 +2043,10 @@ var modify_event_handler = function modify_event_handler() {
     return;
   }
 
-  var data = {
-    uid: event_data.uid,
-    calendar: event_data.calendar,
-    href: event_data.href,
-    etag: event_data.etag,
-    start: fulldatetimestring(event_data.start),
-    end: fulldatetimestring(event_data.end),
-    summary: event_data.title,
-    location: event_data.location,
-    allday: event_data.allDay,
-    description: event_data.description,
-    rrule: event_data.rrule,
-    rrule_serialized: event_data.rrule_serialized,
-    rrule_explained: event_data.rrule_explained,
-    icalendar_class: event_data.icalendar_class,
-    transp: event_data.transp,
-    recurrence_id: event_data.recurrence_id,
-    reminders: event_data.reminders,
-    visible_reminders: event_data.visible_reminders,
-    orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
-    orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
-  };
   // Close tooltip
   $(ved).qtip('hide');
 
-  event_field_form('modify', data);
+  event_field_form('modify', event_data);
 
   return false;
 };

@@ -7,6 +7,8 @@ echo addslashes($this->config->item('default_time_format'))?>',
 echo addslashes($this->dates->time_format_string('fullcalendar'))?>',
     prefs_dateformat:  '<?php 
 echo addslashes($this->dates->date_format_string('datepicker'))?>',
+    prefs_dateformat_option:  '<?php 
+echo $this->config->item('default_date_format')?>',
     prefs_firstday:  <?php 
 echo $this->config->item('default_first_day')?>,
     timepicker_base: {
