@@ -681,18 +681,10 @@ $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
 /**
  * Sets a minDate on end_date
  */
-var set_end_minDate = function set_end_minDate() {
-  var elems = ced + ' input.start_date';
-  var eleme = ced + ' input.end_date';
-  var elemru = ced + ' input.recurrence_until';
-
-  var selected = $(elems).datepicker('getDate');
-
-  selected.setTime(selected.getTime());
-
-  $(eleme).datepicker('option', 'minDate', selected);
-  $(elemru).datepicker('option', 'minDate', selected);
-
+var set_mindate = function set_mindate(mindate, datepickers) {
+  $.each(datepickers, function (i, datepicker) {
+    datepicker.datepicker('option', 'minDate', mindate);
+  });
 };
 
 /**
@@ -727,43 +719,50 @@ var update_recurrence_options = function update_recurrence_options(newval) {
 // Triggers a dialog for editing/creating events
 var event_field_form = function event_field_form(type, data) {
 
-  var url_dialog = 'dialog_generator/';
+  var form_url = base_app_url + 'event/modify';
   var title;
-  var action_verb;
 
   if (type == 'new') {
-    url_dialog += 'create_event';
     title = t('labels', 'createevent');
   } else {
-    url_dialog += 'edit_event';
     title = t('labels', 'editevent');
   }
+
+  $.extend(
+      data,
+      {
+        applyid: 'event_edit_form',
+        frm: {
+          action: form_url,
+          method: 'post',
+          csrf: get_csrf_token()
+        }
+      });
+
+  var action_verb;
+
+  show_dialog('event_edit_dialog',
+      data,
+      title,
+      [],
+      'event_edit_dialog',
+      550,
+      function() {
+        $('#event_edit_dialog').tabs();
+        handle_date_and_time('#event_edit_dialog', data);
+      }
+  );
+  return;
+
 
   load_generated_dialog(url_dialog,
     data,
     function() {
-      var start_datepicker_opts = {
-        onSelect: function(dateText, inst) {
-          // End date can't be previous to start date
-          set_end_minDate();
-        }
-      };
 
       // Tabs
       $(ced + '_tabs').tabs();
 
 
-      $(ced + ' input.start_time').timePicker(AgenDAVConf.timepicker_base);
-      $(ced + ' input.end_time').timePicker(AgenDAVConf.timepicker_base);
-      $(ced + ' input.start_date').datepicker(start_datepicker_opts);
-      $(ced + ' input.end_date').datepicker();
-      $(ced + ' input.recurrence_until').datepicker();
-
-      // Untouched value
-      $(ced + ' input.end_time').data('untouched', true);
-
-      // First time datepicker is run we need to set minDate on end date
-      set_end_minDate();
 
       // And recurrence options have to be enabled/disabled
       update_recurrence_options($(ced + ' select.recurrence_type').val());
@@ -880,6 +879,80 @@ var event_field_form = function event_field_form(type, data) {
       }
     ],
     'com_event_dialog', 550);
+};
+
+
+/*
+ * Sets up date and time fields
+ */
+
+var handle_date_and_time = function handle_date_and_time(where, data) {
+
+  var $start_time = $(where + ' input.start_time');
+  var $end_time = $(where + ' input.end_time');
+  var $start_date = $(where + ' input.start_date');
+  var $end_date = $(where + ' input.end_date');
+  var $recurrence_until = $(where + ' input.recurrence_until');
+
+  $start_time.timePicker(AgenDAVConf.timepicker_base);
+  $end_time.timePicker(AgenDAVConf.timepicker_base);
+  $start_date.datepicker(
+      {
+        onSelect: function(dateText, inst) {
+          // End date can't be previous to start date
+          set_mindate($(this).datepicker('getDate'),
+            [ $end_date, $recurrence_until ]
+            );
+
+        }
+      });
+  $end_date.datepicker();
+  $recurrence_until.datepicker();
+
+  // Untouched value
+  $end_time.data('untouched', true);
+  $end_time.data(
+      'original_duration', 
+      $.timePicker($end_time).getTime() - $.timePicker($start_time).getTime()
+  );
+
+  // First time datepicker is run we need to set minDate on end date
+  set_mindate(data.start,
+      [ $end_date, $recurrence_until ]
+      );
+
+  // All day checkbox
+  $(where).on('change', 'input.allday', function() {
+    if ($(this).is(':checked')) {
+      $start_time.hide();
+      $end_time.hide();
+    } else {
+      $end_date.removeAttr('disabled');
+      $end_date.removeClass('ui-state-disabled');
+
+      $start_time.show();
+      $end_time.show();
+    }
+  });
+
+  // TODO recurrence rules
+
+  // Preserve start->end duration
+  $(where)
+    .on('change', 'input.start_time', function() {
+      if ($end_time.data('untouched') === true) {
+        $.timePicker($end_time).setTime(
+          $.timePicker($start_time).getTime() + $end_time.data('original_duration')
+        );
+      }
+    })
+    .on('change', 'input.end_time', function() {
+      $(this).data('untouched', false);
+    });
+
+  // Reminders
+  reminders_manager();
+
 };
 
 /*
