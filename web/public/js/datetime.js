@@ -23,3 +23,15 @@ AgenDAVDateAndTime.extractDate = function extractDate(dateobj) {
         return moment(dateobj).format('MM-DD-YYYY');
     }
 };
+
+/*
+ * Approximates a date to the nearest quarter
+ */
+AgenDAVDateAndTime.approxNearest = function approxNearest(dt) {
+    var minutes = dt.minutes();
+    var minutes_to_add = Math.round(minutes/15)*15;
+    // Clone original moment object, and set new minutes
+    var result = moment(dt).seconds(0).minutes(0).add('minutes', minutes_to_add);
+
+    return result;
+};
