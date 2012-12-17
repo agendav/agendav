@@ -683,7 +683,7 @@ $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
  */
 var set_mindate = function set_mindate(mindate, datepickers) {
   $.each(datepickers, function (i, datepicker) {
-    datepicker.datepicker('option', 'minDate', mindate);
+    datepicker.datepicker('option', 'minDate', mindate.toDate());
   });
 };
 
@@ -722,15 +722,31 @@ var event_field_form = function event_field_form(type, data) {
   var form_url = base_app_url + 'event/modify';
   var title;
 
+  // Transform Date to Moment objects
+  if (data.start === undefined) {
+    data.start = moment();
+  } else {
+    data.start = moment(data.start);
+  }
+
+  if (data.view == 'month') {
+    data.start = AgenDAVDateAndTime.approxNearest(data.start);
+    data.end = moment(data.start).add('hours', 1);
+  } else {
+    // Any other view
+    if (data.allday === false || data.allday === undefined) {
+      data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+    } else {
+      data.start.minutes(0).seconds(0);
+      data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+    }
+  }
+
+
   if (type == 'new') {
     title = t('labels', 'createevent');
   } else {
     title = t('labels', 'editevent');
-  }
-
-  // Missing end
-  if (data.end === undefined) {
-    data.end = moment(end).add('hours', 1);
   }
 
   $.extend(
@@ -2035,8 +2051,9 @@ var event_delete_dialog = function event_delete_dialog() {
 // Edit/Modify link
 var modify_event_handler = function modify_event_handler() {
   // TODO: check for rrule/recurrence-id
-  // Data about this event
-  var event_data = get_data('current_event');
+  // Clone data about this event
+  var current_event = get_data('current_event');
+  var event_data = $.extend(true, {}, current_event);
   if (event_data === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
       t('messages', 'error_current_event_not_loaded'));

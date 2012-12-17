@@ -27,7 +27,7 @@
 {/uid}
 
 {>form_element_start for="summary" label="summary" /}
-<input name="summary" type="text" size="25" maxlength="255" value="{summary}" class="summary input-large" />
+<input name="summary" type="text" size="25" maxlength="255" value="{title}" class="summary input-large" />
 {>form_element_end/}
 
 {>form_element_start for="location" label="location" /}
