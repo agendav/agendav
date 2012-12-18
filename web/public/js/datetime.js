@@ -28,10 +28,14 @@ AgenDAVDateAndTime.extractDate = function extractDate(dateobj) {
  * Approximates a date to the nearest quarter
  */
 AgenDAVDateAndTime.approxNearest = function approxNearest(dt) {
-    var minutes = dt.minutes();
-    var minutes_to_add = Math.round(minutes/15)*15;
+    var now = moment();
+    var minutes = Math.ceil(now.minutes()/15)*15;
     // Clone original moment object, and set new minutes
-    var result = moment(dt).seconds(0).minutes(0).add('minutes', minutes_to_add);
+    var result = moment(dt)
+        .hours(now.hours())
+        .minutes(0)
+        .seconds(0)
+        .add('minutes', minutes);
 
     return result;
 };
