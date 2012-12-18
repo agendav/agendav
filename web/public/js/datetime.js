@@ -45,7 +45,7 @@ AgenDAVDateAndTime.approxNearest = function approxNearest(dt) {
 AgenDAVDateAndTime.endDate = function endDate(end, start) {
     var generated_end;
 
-    if (end === undefined) {
+    if (end === undefined || end === null) {
         generated_end = moment(start).add('hours', 1);
     } else {
         generated_end = moment(end);

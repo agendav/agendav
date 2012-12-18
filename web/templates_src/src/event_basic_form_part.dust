@@ -53,7 +53,7 @@
 {>form_element_end/}
 
 {>form_element_start for="allday" label="alldayform" /}
-<input type="checkbox" name="allday" class="allday" value="true" />
+<input type="checkbox" name="allday" class="allday" value="true" {?allDay}checked="checked"{/allDay} />
 {>form_element_end/}
 
 {>form_element_start for="description" label="description" /}

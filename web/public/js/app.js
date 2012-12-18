@@ -318,7 +318,7 @@ $(document).ready(function() {
         var start = $('#calendar_view').fullCalendar('getDate');
         var data = {
             start: start,
-            allday: false,
+            allDay: false,
             view: 'month'
         };
 
@@ -734,7 +734,7 @@ var event_field_form = function event_field_form(type, data) {
     data.end = moment(data.start).add('hours', 1);
   } else {
     // Any other view
-    if (data.allday === false || data.allday === undefined) {
+    if (data.allDay === false || data.allDay === undefined) {
       data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
     } else {
       data.start.minutes(0).seconds(0);
@@ -954,6 +954,7 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   var $start_date = $(where + ' input.start_date');
   var $end_date = $(where + ' input.end_date');
   var $recurrence_until = $(where + ' input.recurrence_until');
+  var $allday = $(where + ' input.allday');
 
   $start_time.timePicker(AgenDAVConf.timepicker_base);
   $end_time.timePicker(AgenDAVConf.timepicker_base);
@@ -995,6 +996,9 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       $end_time.show();
     }
   });
+
+  // Update status
+  $allday.trigger('change');
 
 
   // Preserve start->end duration
@@ -1912,7 +1916,7 @@ var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDa
   var data = {
       start: startDate,
       end: endDate,
-      allday: pass_allday,
+      allDay: pass_allday,
       view: view.name
   };
 
@@ -1967,7 +1971,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
       dayDelta: dayDelta,
       minuteDelta: minuteDelta,
       allday: allDay,
-      was_allday: event.allDay,
+      was_allday: event.orig_allday,
       timezone: event.timezone,
       type: alterType
     }
