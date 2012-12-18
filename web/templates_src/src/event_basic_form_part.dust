@@ -36,8 +36,8 @@
 
 {>form_element_start for="calendar" label="calendar" /}
 <select name="calendar" class="input-medium">
-{#calendars}
- <option value="{url}"{@eq key="{url}" value="{calendar}"} selected="selected"{/eq}>{displayname}</option>
+{#calendars current_calendar=calendar}
+ <option value="{url}"{@eq key="{calendar}" value="{current_calendar}"} selected="selected"{/eq}>{displayname}</option>
 {/calendars}
 </select>
 {>form_element_end/}
