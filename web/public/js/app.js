@@ -324,7 +324,7 @@ $(document).ready(function() {
 
         // Unselect every single day/slot
         $('#calendar_view').fullCalendar('unselect');
-        event_field_form('new', data);
+        event_edit_dialog('new', data);
       });
     }
 
@@ -717,7 +717,7 @@ var update_recurrence_options = function update_recurrence_options(newval) {
  */
 
 // Triggers a dialog for editing/creating events
-var event_field_form = function event_field_form(type, data) {
+var event_edit_dialog = function event_edit_dialog(type, data) {
 
   var form_url = base_app_url + 'event/modify';
   var title;
@@ -1922,7 +1922,7 @@ var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDa
 
   // Unselect every single day/slot
   $('#calendar_view').fullCalendar('unselect');
-  event_field_form('new', data);
+  event_edit_dialog('new', data);
 };
 
 /**
@@ -2067,7 +2067,7 @@ var modify_event_handler = function modify_event_handler() {
   // Close tooltip
   $(ved).qtip('hide');
 
-  event_field_form('modify', event_data);
+  event_edit_dialog('modify', event_data);
 
   return false;
 };
