@@ -580,7 +580,7 @@ var show_dialog = function show_dialog(template, data, title, buttons,
         modal: true,
         open: function(event, ui) {
           pre_func();
-          $(divname).dialog('option', 'position', 'center');
+          $('#' + divname).dialog('option', 'position', 'center');
           var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
           add_button_icons(buttons);
         },
