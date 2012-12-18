@@ -758,6 +758,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
         method: 'post',
         csrf: get_csrf_token()
       },
+      calendars: calendar_list(),
       // Dates and times
       start_date: AgenDAVDateAndTime.extractDate(data.start),
       start_time: AgenDAVDateAndTime.extractTime(data.start),
@@ -2147,6 +2148,19 @@ var setup_print_tweaks = function setup_print_tweaks() {
 
   window.onbeforeprint = beforePrint;
   window.onafterprint = afterPrint;
+};
+
+// Get calendar list
+var calendar_list = function calendar_list() {
+  var calendars = $('div.calendar_list li.available_calendar');
+  var total = calendars.length;
+  var result = [];
+
+  for (var i=0;i<total;i++) {
+    result.push($(calendars[i]).data());
+  }
+
+  return result;
 };
 
 
