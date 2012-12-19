@@ -823,12 +823,8 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   $end_date.datepicker();
   $recurrence_until.datepicker();
 
-  // Untouched value
-  $end_time.data('untouched', true);
-  $end_time.data(
-      'original_duration', 
-      $.timePicker($end_time).getTime() - $.timePicker($start_time).getTime()
-  );
+  // Calculate initial event duration
+  $end_time.data('duration', calculate_event_duration($start_time, $end_time));
 
   // First time datepicker is run we need to set minDate on end date
   set_mindate(data.start,
@@ -856,16 +852,24 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   // Preserve start->end duration
   $(where)
     .on('change', 'input.start_time', function() {
-      if ($end_time.data('untouched') === true) {
-        $.timePicker($end_time).setTime(
-          $.timePicker($start_time).getTime() + $end_time.data('original_duration')
-        );
-      }
+      var duration = $end_time.data('duration');
+      var new_end = moment($.timePicker($start_time).getTime()).add('minutes', duration);
+      $.timePicker($end_time).setTime(new_end.toDate());
     })
     .on('change', 'input.end_time', function() {
-      $(this).data('untouched', false);
+      $end_time.data('duration', calculate_event_duration($start_time, $end_time));
     });
 
+};
+
+/**
+ * Calculates the difference between two timepicker inputs
+ */
+var calculate_event_duration = function calculate_event_duration(start, end) {
+  var end_time_moment = moment($.timePicker(end).getTime());
+  var start_time_moment = moment($.timePicker(start).getTime());
+
+  return end_time_moment.diff(start_time_moment, 'minutes');
 };
 
 var handle_repetitions = function handle_repetitions(where, data) {
