@@ -792,133 +792,6 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
         reminders_manager();
       }
   );
-  return;
-
-
-  load_generated_dialog(url_dialog,
-    data,
-    function() {
-
-      // Tabs
-      $(ced + '_tabs').tabs();
-
-
-
-      // And recurrence options have to be enabled/disabled
-      update_recurrence_options($(ced + ' select.recurrence_type').val());
-
-      // All day checkbox
-      $(ced).on('change', 'input.allday', function() {
-        // TODO: timepickers should update their values
-        var current = $(ced + " input.start_date").datepicker('getDate');
-        set_end_minDate();
-
-        if ($(this).is(':checked')) {
-          $(ced + ' input.start_time').hide();
-          $(ced + ' input.end_time').hide();
-        } else {
-          $(ced + ' input.end_date').removeAttr('disabled');
-          $(ced + ' input.end_date').removeClass('ui-state-disabled');
-          $(ced + ' input.end_date').datepicker('setDate', current);
-
-          $(ced + ' input.start_time').show();
-          $(ced + ' input.end_time').show();
-        }
-      });
-
-      // Recurrence type
-      $(ced).on('change', 'select.recurrence_type', function() {
-        var newval = $(this).val();
-
-        //update_recurrence_options($(this).val());
-      });
-
-      // Avoid having a value in both recurrence options (count / until)
-      $(ced)
-      .on('keyup', 'input.recurrence_count', function() {
-        enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
-      })
-      .on('keyup change', 'input.recurrence_until', function() {
-        enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
-      });
-
-      // Timepicker: keep 1h between start-end if on the same day
-      // and end_time hasn't been changed by hand
-      var origStart = $.timePicker(ced + ' input.start_time').getTime();
-      var origDur = $.timePicker(ced + ' input.end_time').getTime() - origStart.getTime();
-
-
-      $(ced).on('change', 'input.start_time', function() {
-        if ($(ced + ' input.end_time').data('untouched')) { 
-
-          var start = $.timePicker(ced + ' input.start_time').getTime();
-
-          var dur = $.timePicker(ced + ' input.end_time').getTime() 
-            - origStart.getTime();
-          $.timePicker(ced + ' input.end_time').setTime(new Date(start.getTime() + dur));
-          origStart = start;
-        }
-      });
-
-      $(ced).on('change', 'input.end_time', function() {
-        var durn = $.timePicker(this).getTime() 
-          - $.timePicker(ced + ' input.start_time').getTime();
-        if (durn != origDur) {
-          $(this).data('untouched', false);
-        }
-      });
-
-      // Focus first field on creation
-      if (type == 'new') {
-        $('input[name="summary"]').focus();
-      }
-
-      // Show 'Reminders' tab contents
-      dust.render('reminders_table', dustbase.push(data), function(err, out) {
-        if (err != null) {
-          show_error(t('messages', 'error_interfacefailure'),
-            err.message);
-        } else {
-          $('#tabs-reminders').html(out);
-          reminders_manager();
-        }
-      });
-
-      
-    },
-    title,
-    [
-      {
-        'text': t('labels', 'save'),
-        'class': 'addicon btn-icon-event-edit',
-        'click': function() {
-          var thisform = $('#com_form');
-          proceed_send_ajax_form(thisform,
-            function(data) {
-              // Reload only affected calendars
-              $.each(data, function(k, cal) {
-                reload_event_source(cal);
-              });
-
-              destroy_dialog(ced);
-            },
-            function(data) {
-              // Problem with form data
-              show_error(t('messages', 'error_invalidinput'), data);
-            },
-            function(data) {
-              // Do nothing
-            });
-
-        }
-      },
-      {
-        'text': t('labels', 'cancel'),
-        'class': 'addicon btn-icon-cancel',
-        'click': function() { destroy_dialog(ced); }
-      }
-    ],
-    'com_event_dialog', 550);
 };
 
 
@@ -928,12 +801,12 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
 
 var handle_date_and_time = function handle_date_and_time(where, data) {
 
-  var $start_time = $(where + ' input.start_time');
-  var $end_time = $(where + ' input.end_time');
-  var $start_date = $(where + ' input.start_date');
-  var $end_date = $(where + ' input.end_date');
-  var $recurrence_until = $(where + ' input.recurrence_until');
-  var $allday = $(where + ' input.allday');
+  var $start_time = $(where).find('input.start_time');
+  var $end_time = $(where).find('input.end_time');
+  var $start_date = $(where).find('input.start_date');
+  var $end_date = $(where).find('input.end_date');
+  var $recurrence_until = $(where).find('input.recurrence_until');
+  var $allday = $(where).find('input.allday');
 
   $start_time.timePicker(AgenDAVConf.timepicker_base);
   $end_time.timePicker(AgenDAVConf.timepicker_base);
@@ -996,9 +869,9 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
 };
 
 var handle_repetitions = function handle_repetitions(where, data) {
-  var $recurrence_type = $(where + 'input.recurrence_type');
-  var $recurrence_count = $(where + 'input.recurrence_count');
-  var $recurrence_until = $(where + 'input.recurrence_until');
+  var $recurrence_type = $(where).find('input.recurrence_type');
+  var $recurrence_count = $(where).find('input.recurrence_count');
+  var $recurrence_until = $(where).find('input.recurrence_until');
 
   $recurrence_type.on('change', function() {
     var newval = $(this).val();
