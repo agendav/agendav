@@ -687,29 +687,6 @@ var set_mindate = function set_mindate(mindate, datepickers) {
   });
 };
 
-/**
- * Sets recurrence options to be enabled or disabled
- */
-var update_recurrence_options = function update_recurrence_options(newval) {
-  if (newval == 'none') {
-    $(ced + ' input.recurrence_count').val('');
-    $(ced + ' input.recurrence_until').val('');
-
-    $(ced + ' input.recurrence_count').attr('disabled', 'disabled');
-    $(ced + ' input.recurrence_count').addClass('ui-state-disabled');
-    $(ced + ' label[for="recurrence_count"]').addClass('ui-state-disabled');
-
-    $(ced + ' input.recurrence_until').attr('disabled', 'disabled');
-    $(ced + ' input.recurrence_until').datepicker('disable');
-    $(ced + ' input.recurrence_until').addClass('ui-state-disabled');
-    $(ced + ' label[for="recurrence_until"]').addClass('ui-state-disabled');
-  } else {
-    enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
-    enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
-
-  }
-};
-
 
 
 /***************************
@@ -807,6 +784,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       function() {
         $('#event_edit_dialog').tabs();
         handle_date_and_time('#event_edit_dialog', data);
+        handle_repetitions('#event_edit_dialog', data);
 
         // TODO recurrence rules
         
@@ -852,7 +830,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       $(ced).on('change', 'select.recurrence_type', function() {
         var newval = $(this).val();
 
-        update_recurrence_options($(this).val());
+        //update_recurrence_options($(this).val());
       });
 
       // Avoid having a value in both recurrence options (count / until)
@@ -1015,6 +993,25 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       $(this).data('untouched', false);
     });
 
+};
+
+var handle_repetitions = function handle_repetitions(where, data) {
+  var $recurrence_type = $(where + 'input.recurrence_type');
+  var $recurrence_count = $(where + 'input.recurrence_count');
+  var $recurrence_until = $(where + 'input.recurrence_until');
+
+  $recurrence_type.on('change', function() {
+    var newval = $(this).val();
+    update_recurrence_options(newval);
+  });
+
+  // Avoid having a value in both recurrence options (count / until)
+  $recurrence_count.on('keyup', function() {
+      //enforce_exclusive_recurrence_field(where, 'recurrence_count', 'recurrence_until');
+  });
+  $recurrence_until.on('keyup change', function() {
+    //enforce_exclusive_recurrence_field(where, 'recurrence_until', 'recurrence_count');
+  });
 };
 
 /*
@@ -1523,28 +1520,6 @@ var reload_event_source = function reload_event_source(cal) {
         t('messages', 'error_calendarnotfound', {'%calendar' : cal }));
   }
 
-};
-
-/*
- * Enforces the use of only one recurrence fields
- */
-var enforce_exclusive_recurrence_field = function enforce_exclusive_recurrence_field(current, other) {
-  if ($(ced + ' input.' + current).val() == '') {
-    $(ced + ' input.' + other).removeAttr('disabled');
-    $(ced + ' input.' + other).removeClass('ui-state-disabled');
-    $(ced + ' label[for="' + other + '"]').removeClass('ui-state-disabled');
-    if (other == 'recurrence_until') {
-      $(ced + ' input.' + other).datepicker('enable');
-    }
-  } else {
-    $(ced + ' input.' + other).attr('disabled', 'disabled');
-    $(ced + ' input.' + other).addClass('ui-state-disabled');
-    $(ced + ' input.' + other).val('');
-    $(ced + ' label[for="' + other + '"]').addClass('ui-state-disabled');
-    if (other == 'recurrence_until') {
-      $(ced + ' input.' + other).datepicker('disable');
-    }
-  }
 };
 
 /*
