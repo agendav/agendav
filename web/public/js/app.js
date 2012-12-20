@@ -873,22 +873,26 @@ var calculate_event_duration = function calculate_event_duration(start, end) {
 };
 
 var handle_repetitions = function handle_repetitions(where, data) {
-  var $recurrence_type = $(where).find('input.recurrence_type');
-  var $recurrence_count = $(where).find('input.recurrence_count');
-  var $recurrence_until = $(where).find('input.recurrence_until');
+  var $recurrence_type = $(where).find('select.recurrence_type');
+  var $recurrence_ends = $(where).find('div.recurrence_ends');
 
   $recurrence_type.on('change', function() {
     var newval = $(this).val();
-    update_recurrence_options(newval);
+    if (newval == 'none') {
+      $recurrence_ends.hide();
+    } else {
+      $recurrence_ends.show();
+    }
+  });
+  $recurrence_type.trigger('change');
+
+
+  $recurrence_ends.on('change', 'input:radio', function() {
+    $(this).siblings(':input:text').prop('disabled', false);
+    // Disable all other options
+    $(this).parent().siblings().find(':input:text').val('').prop('disabled', true);
   });
 
-  // Avoid having a value in both recurrence options (count / until)
-  $recurrence_count.on('keyup', function() {
-      //enforce_exclusive_recurrence_field(where, 'recurrence_count', 'recurrence_until');
-  });
-  $recurrence_until.on('keyup change', function() {
-    //enforce_exclusive_recurrence_field(where, 'recurrence_until', 'recurrence_count');
-  });
 };
 
 /*

@@ -8,14 +8,14 @@
  </select>
 {>form_element_end /}
 
-{>form_element_start for="" label="ends" /}
+{>form_element_start for="" label="ends" class="recurrence_ends" /}
 <label class="radio">
  <input type="radio" name="ends" value="never" /> {@i18n type="labels" name="never" /}
 </label>
 <label class="radio">
  <input type="radio" name="ends" value="count" />
   {@i18n type="labels" name="after" /} 
-  <input type="text" name="recurrence_count" class="recurrence_count input-mini" maxlength="2" size="2" value="{recurrence_count}" /> 
+  <input type="text" name="recurrence_count" class="recurrence_count input-mini" maxlength="3" value="{recurrence_count}" /> 
   {@i18n type="labels" name="occurrences" /}
 </label>
 <label class="radio">

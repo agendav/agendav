@@ -1,4 +1,4 @@
-<div class="control-group">
+<div class="control-group {class}">
 <label {?for}for="{for}"{/for}
 class="control-label">{@i18n type="labels" name=label/}</label>
 <div class="controls">
