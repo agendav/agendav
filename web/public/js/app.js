@@ -926,7 +926,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
       $('input.pick_color').colorPicker();
       $('#calendar_modify_dialog_tabs').tabs();
 
-      if (enable_calendar_sharing === true && data.shared !== true) {
+      if (AgenDAVConf.enable_calendar_sharing === true && data.shared !== true) {
         share_manager();
       }
     });
