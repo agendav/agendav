@@ -708,7 +708,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
 
   if (data.view == 'month') {
     data.start = AgenDAVDateAndTime.approxNearest(data.start);
-    data.end = moment(data.start).add('hours', 1);
+    data.end = AgenDAVDateAndTime.approxNearest(data.end).add('hours', 1);
   } else {
     // Any other view
     if (data.allDay === false || data.allDay === undefined) {
