@@ -1,0 +1,41 @@
+{?uid}
+<input type="hidden" name="modification" value="true" />
+<input type="hidden" name="uid" value="{uid}" />
+<input type="hidden" name="href" value="{href}" />
+<input type="hidden" name="etag" value="{etag}" />
+<input type="hidden" name="original_calendar" value="{calendar}" />
+{/uid}
+
+{>form_element_start for="summary" label="summary" /}
+<input name="summary" type="text" size="25" maxlength="255" value="{title}" class="summary input-large" />
+{>form_element_end/}
+
+{>form_element_start for="location" label="location" /}
+<input name="location" type="text" size="25" maxlength="255" value="{location}" class="location input-large" />
+{>form_element_end/}
+
+{>form_element_start for="calendar" label="calendar" /}
+<select name="calendar" class="input-medium">
+{#calendars current_calendar=calendar}
+ <option value="{url}"{@eq key="{calendar}" value="{current_calendar}"} selected="selected"{/eq}>{displayname}</option>
+{/calendars}
+</select>
+{>form_element_end/}
+
+{>form_element_start for="start_date" label="startdate" /}
+<input name="start_date" type="text" size="15" maxlength="10" value="{start_date}" class="start_date input-small" />
+<input name="start_time" type="text" size="15" maxlength="10" value="{start_time}" class="time start_time input-mini" />
+{>form_element_end/}
+
+{>form_element_start for="end_date" label="enddate" /}
+<input name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date input-small" />
+<input name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time input-mini" />
+{>form_element_end/}
+
+{>form_element_start for="allday" label="alldayform" /}
+<input type="checkbox" name="allday" class="allday" value="true" {?allDay}checked="checked"{/allDay} />
+{>form_element_end/}
+
+{>form_element_start for="description" label="description" /}
+<textarea name="description" class="input-large" rows="4">{description}</textarea>
+{>form_element_end/}

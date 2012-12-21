@@ -315,16 +315,16 @@ $(document).ready(function() {
         }
       })
       .on('click', function() {
-        var start = fulldatetimestring($('#calendar_view').fullCalendar('getDate'));
+        var start = $('#calendar_view').fullCalendar('getDate');
         var data = {
             start: start,
-            allday: false,
+            allDay: false,
             view: 'month'
         };
 
         // Unselect every single day/slot
         $('#calendar_view').fullCalendar('unselect');
-        event_field_form('new', data);
+        event_edit_dialog('new', data);
       });
     }
 
@@ -432,71 +432,6 @@ var remove_data = function remove_data(name) {
 
 
 /**
- * Loads a form (via AJAX) to a specified div
- */
-var load_generated_dialog = function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
-  
-  divname = '#' + divname;
-
-  // Avoid double dialog opening
-  if ($(divname).length != 0) {
-    return false;
-  }
-
-  // Do it via POST
-  var newid = generate_on_the_fly_form(
-    base_app_url + 'event/modify', data);
-
-  if (get_data('formcreation') == 'ok') {
-    var thisform = $('#' + newid);
-    var action = $(thisform).attr('action');
-    var formdata = $(thisform).serialize();
-
-    var dialog_ajax_req = $.ajax({
-      url: base_app_url + url,
-      cache: false,
-      type: 'POST',
-      data: formdata,
-      dataType: 'html'
-    });
-
-    dialog_ajax_req.then(function() {
-        loading(false);
-    });
-
-    dialog_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-      show_error(t('messages', 'error_loading_dialog'),
-        t('messages', 'error_oops') + ': ' + textStatus);
-    });
-      
-    dialog_ajax_req.done(function(data, textStatus, jqxHR) {
-      $('body').append(data);
-      $(divname).dialog({
-        autoOpen: true,
-        buttons: buttons,
-        title: title,
-        minWidth: width,
-        modal: true,
-        open: function(event, ui) {
-          preDialogFunc();
-          $(divname).dialog('option', 'position', 'center');
-          var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
-          add_button_icons(buttons);
-        },
-        close: function(ev, ui) { $(this).remove(); }
-      })
-    });
-
-    // Remove generated form
-    $(thisform).remove();
-  } else {
-    // Error generating dialog on the fly?
-    show_error(t('messages', 'error_interfacefailure'), 
-        t('messages', 'error_oops'));
-  }
-};
-
-/**
  * Sends a form via AJAX.
  * 
  * This way we respect CodeIgniter CSRF tokens
@@ -580,7 +515,7 @@ var show_dialog = function show_dialog(template, data, title, buttons,
         modal: true,
         open: function(event, ui) {
           pre_func();
-          $(divname).dialog('option', 'position', 'center');
+          $('#' + divname).dialog('option', 'position', 'center');
           var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
           add_button_icons(buttons);
         },
@@ -588,59 +523,6 @@ var show_dialog = function show_dialog(template, data, title, buttons,
       })
     }
   });
-};
-
-/**
- * Creates a form with a random id in the document, and returns it.
- * Defines each element in the second parameter as hidden fields
- */
-var generate_on_the_fly_form = function generate_on_the_fly_form(action, data) {
-  var random_id = '';
-  var possible = 
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for( var i=0; i < 10; i++ )
-    random_id += possible.charAt(Math.floor(Math.random() *
-          possible.length));
-  
-  // Now we have our random id
-  var form_gen = base_app_url + 'dialog_generator/on_the_fly_form/' +
-    random_id;
-  var params = {
-    emptydata: 'empty' // CodeIgniter 2.1.3 now looks for POST data
-  };
-  params[AgenDAVConf.prefs_csrf_token_name] = get_csrf_token();
-
-  var csrf_ajax_gen = $.ajax({
-    type: 'POST',
-    url: form_gen,
-    cache: false,
-    data: params,
-    dataType: 'text',
-    async: false // Let's wait
-  });
-
-  csrf_ajax_gen.fail(function(jqXHR, textStatus, errorThrown) {
-    // This is generally caused by expired session
-    set_data('formcreation', 'failed');
-  });
-
-  csrf_ajax_gen.done(function(formdata, textStatus, jqXHR) {
-    var hidden_fields = '';
-
-    $.each(data, function (i, v) {
-      hidden_fields += '<input type="hidden" name="'+i
-        +'" value="'+v+'" />';
-    });
-
-    $(formdata)
-      .append(hidden_fields)
-      .attr('action' , action)
-      .appendTo(document.body);
-
-    set_data('formcreation', 'ok');
-  });
-
-  return random_id;
 };
 
 /**
@@ -681,41 +563,10 @@ $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
 /**
  * Sets a minDate on end_date
  */
-var set_end_minDate = function set_end_minDate() {
-  var elems = ced + ' input.start_date';
-  var eleme = ced + ' input.end_date';
-  var elemru = ced + ' input.recurrence_until';
-
-  var selected = $(elems).datepicker('getDate');
-
-  selected.setTime(selected.getTime());
-
-  $(eleme).datepicker('option', 'minDate', selected);
-  $(elemru).datepicker('option', 'minDate', selected);
-
-};
-
-/**
- * Sets recurrence options to be enabled or disabled
- */
-var update_recurrence_options = function update_recurrence_options(newval) {
-  if (newval == 'none') {
-    $(ced + ' input.recurrence_count').val('');
-    $(ced + ' input.recurrence_until').val('');
-
-    $(ced + ' input.recurrence_count').attr('disabled', 'disabled');
-    $(ced + ' input.recurrence_count').addClass('ui-state-disabled');
-    $(ced + ' label[for="recurrence_count"]').addClass('ui-state-disabled');
-
-    $(ced + ' input.recurrence_until').attr('disabled', 'disabled');
-    $(ced + ' input.recurrence_until').datepicker('disable');
-    $(ced + ' input.recurrence_until').addClass('ui-state-disabled');
-    $(ced + ' label[for="recurrence_until"]').addClass('ui-state-disabled');
-  } else {
-    enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
-    enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
-
-  }
+var set_mindate = function set_mindate(mindate, datepickers) {
+  $.each(datepickers, function (i, datepicker) {
+    datepicker.datepicker('option', 'minDate', mindate.toDate());
+  });
 };
 
 
@@ -725,161 +576,219 @@ var update_recurrence_options = function update_recurrence_options(newval) {
  */
 
 // Triggers a dialog for editing/creating events
-var event_field_form = function event_field_form(type, data) {
+var event_edit_dialog = function event_edit_dialog(type, data) {
 
-  var url_dialog = 'dialog_generator/';
-  var title;
-  var action_verb;
-
-  if (type == 'new') {
-    url_dialog += 'create_event';
-    title = t('labels', 'createevent');
-  } else {
-    url_dialog += 'edit_event';
-    title = t('labels', 'editevent');
+  // Repetition exceptions not implemented yet
+  if (type == 'modify' && data.recurrence_id !== undefined) {
+    show_error(
+        t('messages', 'error_oops'),
+        t('messages', 'error_notimplemented',
+          { '%feature': t('labels', 'repetitionexceptions') })
+    );
+    return;
   }
 
-  load_generated_dialog(url_dialog,
-    data,
-    function() {
-      var start_datepicker_opts = {
-        onSelect: function(dateText, inst) {
-          // End date can't be previous to start date
-          set_end_minDate();
-        }
-      };
+  var form_url = base_app_url + 'event/modify';
+  var title;
 
-      // Tabs
-      $(ced + '_tabs').tabs();
+  // Transform Date to Moment objects
+  if (data.start === undefined) {
+    data.start = moment();
+  } else {
+    data.start = moment(data.start);
+  }
 
+  if (type == 'new') {
+    title = t('labels', 'createevent');
 
-      $(ced + ' input.start_time').timePicker(AgenDAVConf.timepicker_base);
-      $(ced + ' input.end_time').timePicker(AgenDAVConf.timepicker_base);
-      $(ced + ' input.start_date').datepicker(start_datepicker_opts);
-      $(ced + ' input.end_date').datepicker();
-      $(ced + ' input.recurrence_until').datepicker();
-
-      // Untouched value
-      $(ced + ' input.end_time').data('untouched', true);
-
-      // First time datepicker is run we need to set minDate on end date
-      set_end_minDate();
-
-      // And recurrence options have to be enabled/disabled
-      update_recurrence_options($(ced + ' select.recurrence_type').val());
-
-      // All day checkbox
-      $(ced).on('change', 'input.allday', function() {
-        // TODO: timepickers should update their values
-        var current = $(ced + " input.start_date").datepicker('getDate');
-        set_end_minDate();
-
-        if ($(this).is(':checked')) {
-          $(ced + ' input.start_time').hide();
-          $(ced + ' input.end_time').hide();
-        } else {
-          $(ced + ' input.end_date').removeAttr('disabled');
-          $(ced + ' input.end_date').removeClass('ui-state-disabled');
-          $(ced + ' input.end_date').datepicker('setDate', current);
-
-          $(ced + ' input.start_time').show();
-          $(ced + ' input.end_time').show();
-        }
-      });
-
-      // Recurrence type
-      $(ced).on('change', 'select.recurrence_type', function() {
-        var newval = $(this).val();
-
-        update_recurrence_options($(this).val());
-      });
-
-      // Avoid having a value in both recurrence options (count / until)
-      $(ced)
-      .on('keyup', 'input.recurrence_count', function() {
-        enforce_exclusive_recurrence_field('recurrence_count', 'recurrence_until');
-      })
-      .on('keyup change', 'input.recurrence_until', function() {
-        enforce_exclusive_recurrence_field('recurrence_until', 'recurrence_count');
-      });
-
-      // Timepicker: keep 1h between start-end if on the same day
-      // and end_time hasn't been changed by hand
-      var origStart = $.timePicker(ced + ' input.start_time').getTime();
-      var origDur = $.timePicker(ced + ' input.end_time').getTime() - origStart.getTime();
-
-
-      $(ced).on('change', 'input.start_time', function() {
-        if ($(ced + ' input.end_time').data('untouched')) { 
-
-          var start = $.timePicker(ced + ' input.start_time').getTime();
-
-          var dur = $.timePicker(ced + ' input.end_time').getTime() 
-            - origStart.getTime();
-          $.timePicker(ced + ' input.end_time').setTime(new Date(start.getTime() + dur));
-          origStart = start;
-        }
-      });
-
-      $(ced).on('change', 'input.end_time', function() {
-        var durn = $.timePicker(this).getTime() 
-          - $.timePicker(ced + ' input.start_time').getTime();
-        if (durn != origDur) {
-          $(this).data('untouched', false);
-        }
-      });
-
-      // Focus first field on creation
-      if (type == 'new') {
-        $('input[name="summary"]').focus();
+    if (data.view == 'month') {
+      data.start = AgenDAVDateAndTime.approxNearest(data.start);
+      data.end = AgenDAVDateAndTime.approxNearest(data.end).add('hours', 1);
+    } else {
+      // Any other view
+      if (data.allDay === false || data.allDay === undefined) {
+        data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+      } else {
+        data.start.minutes(0).seconds(0);
+        data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
       }
+    }
+  } else {
+    title = t('labels', 'editevent');
+    if (data.rrule !== undefined) {
+      data.start = moment(data.orig_start);
+      data.end = moment(data.orig_end);
+    }
+  }
 
-      // Show 'Reminders' tab contents
-      dust.render('reminders_table', dustbase.push(data), function(err, out) {
-        if (err != null) {
-          show_error(t('messages', 'error_interfacefailure'),
-            err.message);
-        } else {
-          $('#tabs-reminders').html(out);
-          reminders_manager();
-        }
-      });
+  $.extend(
+    data,
+    {
+      applyid: 'event_edit_form',
+      frm: {
+        action: form_url,
+        method: 'post',
+        csrf: get_csrf_token()
+      },
+      calendars: calendar_list(),
+      // Dates and times
+      start_date: AgenDAVDateAndTime.extractDate(data.start),
+      start_time: AgenDAVDateAndTime.extractTime(data.start),
+      end_date: AgenDAVDateAndTime.extractDate(data.end),
+      end_time: AgenDAVDateAndTime.extractTime(data.end)
+    }
+  );
 
-      
-    },
-    title,
-    [
-      {
-        'text': t('labels', 'save'),
-        'class': 'addicon btn-icon-event-edit',
-        'click': function() {
-          var thisform = $('#com_form');
-          proceed_send_ajax_form(thisform,
+  var buttons = [
+    {
+      'text': t('labels', 'save'),
+      'class': 'addicon btn-icon-event-edit',
+      'click': function() {
+        var thisform = $('#event_edit_form');
+        proceed_send_ajax_form(thisform,
             function(data) {
               // Reload only affected calendars
               $.each(data, function(k, cal) {
                 reload_event_source(cal);
               });
 
-              destroy_dialog(ced);
+              destroy_dialog('#event_edit_dialog');
             },
             function(data) {
               // Problem with form data
               show_error(t('messages', 'error_invalidinput'), data);
-            },
+            },   
             function(data) {
               // Do nothing
             });
+      }
+    },
+    {
+      'text': t('labels', 'cancel'),
+      'class': 'addicon btn-icon-cancel',
+      'click': function() { destroy_dialog('#event_edit_dialog'); }
+    }
+  ];
+
+  show_dialog('event_edit_dialog',
+      data,
+      title,
+      buttons,
+      'event_edit_dialog',
+      550,
+      function() {
+        $('#event_edit_dialog').tabs();
+        handle_date_and_time('#event_edit_dialog', data);
+        handle_repetitions('#event_edit_dialog', data);
+
+        // TODO recurrence rules
+        
+        // Reminders
+        reminders_manager();
+      }
+  );
+};
+
+
+/*
+ * Sets up date and time fields
+ */
+
+var handle_date_and_time = function handle_date_and_time(where, data) {
+
+  var $start_time = $(where).find('input.start_time');
+  var $end_time = $(where).find('input.end_time');
+  var $start_date = $(where).find('input.start_date');
+  var $end_date = $(where).find('input.end_date');
+  var $recurrence_until = $(where).find('input.recurrence_until');
+  var $allday = $(where).find('input.allday');
+
+  $start_time.timePicker(AgenDAVConf.timepicker_base);
+  $end_time.timePicker(AgenDAVConf.timepicker_base);
+  $start_date.datepicker(
+      {
+        onSelect: function(dateText, inst) {
+          // End date can't be previous to start date
+          set_mindate($(this).datepicker('getDate'),
+            [ $end_date, $recurrence_until ]
+            );
 
         }
-      },
-      {
-        'text': t('labels', 'cancel'),
-        'class': 'addicon btn-icon-cancel',
-        'click': function() { destroy_dialog(ced); }
-      }
-    ],
-    'com_event_dialog', 550);
+      });
+  $end_date.datepicker();
+  $recurrence_until.datepicker();
+
+  // Calculate initial event duration
+  $end_time.data('duration', calculate_event_duration($start_time, $end_time));
+
+  // First time datepicker is run we need to set minDate on end date
+  set_mindate(data.start,
+      [ $end_date, $recurrence_until ]
+      );
+
+  // All day checkbox
+  $(where).on('change', 'input.allday', function() {
+    if ($(this).is(':checked')) {
+      $start_time.hide();
+      $end_time.hide();
+    } else {
+      $end_date.removeAttr('disabled');
+      $end_date.removeClass('ui-state-disabled');
+
+      $start_time.show();
+      $end_time.show();
+    }
+  });
+
+  // Update status
+  $allday.trigger('change');
+
+
+  // Preserve start->end duration
+  $(where)
+    .on('change', 'input.start_time', function() {
+      var duration = $end_time.data('duration');
+      var new_end = moment($.timePicker($start_time).getTime()).add('minutes', duration);
+      $.timePicker($end_time).setTime(new_end.toDate());
+    })
+    .on('change', 'input.end_time', function() {
+      $end_time.data('duration', calculate_event_duration($start_time, $end_time));
+    });
+
+};
+
+/**
+ * Calculates the difference between two timepicker inputs
+ */
+var calculate_event_duration = function calculate_event_duration(start, end) {
+  var end_time_moment = moment($.timePicker(end).getTime());
+  var start_time_moment = moment($.timePicker(start).getTime());
+
+  return end_time_moment.diff(start_time_moment, 'minutes');
+};
+
+var handle_repetitions = function handle_repetitions(where, data) {
+  var $recurrence_type = $(where).find('select.recurrence_type');
+  var $recurrence_ends = $(where).find('div.recurrence_ends');
+
+  $recurrence_type.on('change', function() {
+    var newval = $(this).val();
+    if (newval == 'none') {
+      $recurrence_ends.hide();
+    } else {
+      $recurrence_ends.show();
+      $recurrence_ends.find(':input:radio:first').trigger('click');
+    }
+  });
+  $recurrence_type.trigger('change');
+
+
+  $recurrence_ends.on('change', 'input:radio', function() {
+    $(this).siblings(':input:text').prop('disabled', false);
+    // Disable all other options
+    $(this).parent().siblings().find(':input:text').val('').prop('disabled', true);
+  });
+
 };
 
 /*
@@ -1391,28 +1300,6 @@ var reload_event_source = function reload_event_source(cal) {
 };
 
 /*
- * Enforces the use of only one recurrence fields
- */
-var enforce_exclusive_recurrence_field = function enforce_exclusive_recurrence_field(current, other) {
-  if ($(ced + ' input.' + current).val() == '') {
-    $(ced + ' input.' + other).removeAttr('disabled');
-    $(ced + ' input.' + other).removeClass('ui-state-disabled');
-    $(ced + ' label[for="' + other + '"]').removeClass('ui-state-disabled');
-    if (other == 'recurrence_until') {
-      $(ced + ' input.' + other).datepicker('enable');
-    }
-  } else {
-    $(ced + ' input.' + other).attr('disabled', 'disabled');
-    $(ced + ' input.' + other).addClass('ui-state-disabled');
-    $(ced + ' input.' + other).val('');
-    $(ced + ' label[for="' + other + '"]').addClass('ui-state-disabled');
-    if (other == 'recurrence_until') {
-      $(ced + ' input.' + other).datepicker('disable');
-    }
-  }
-};
-
-/*
  * Round a Date timestamp
  */
 var timestamp = function timestamp(d) {
@@ -1780,15 +1667,15 @@ var event_click_callback = function event_click_callback(event,
 var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDay, jsEvent, view) {
   var pass_allday = (view.name == 'month') ? false : allDay;
   var data = {
-      start: fulldatetimestring(startDate),
-      end: fulldatetimestring(endDate),
-      allday: pass_allday,
+      start: startDate,
+      end: endDate,
+      allDay: pass_allday,
       view: view.name
   };
 
   // Unselect every single day/slot
   $('#calendar_view').fullCalendar('unselect');
-  event_field_form('new', data);
+  event_edit_dialog('new', data);
 };
 
 /**
@@ -1837,7 +1724,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
       dayDelta: dayDelta,
       minuteDelta: minuteDelta,
       allday: allDay,
-      was_allday: event.allDay,
+      was_allday: event.orig_allday,
       timezone: event.timezone,
       type: alterType
     }
@@ -1921,40 +1808,19 @@ var event_delete_dialog = function event_delete_dialog() {
 // Edit/Modify link
 var modify_event_handler = function modify_event_handler() {
   // TODO: check for rrule/recurrence-id
-  // Data about this event
-  var event_data = get_data('current_event');
+  // Clone data about this event
+  var current_event = get_data('current_event');
+  var event_data = $.extend(true, {}, current_event);
   if (event_data === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
       t('messages', 'error_current_event_not_loaded'));
     return;
   }
 
-  var data = {
-    uid: event_data.uid,
-    calendar: event_data.calendar,
-    href: event_data.href,
-    etag: event_data.etag,
-    start: fulldatetimestring(event_data.start),
-    end: fulldatetimestring(event_data.end),
-    summary: event_data.title,
-    location: event_data.location,
-    allday: event_data.allDay,
-    description: event_data.description,
-    rrule: event_data.rrule,
-    rrule_serialized: event_data.rrule_serialized,
-    rrule_explained: event_data.rrule_explained,
-    icalendar_class: event_data.icalendar_class,
-    transp: event_data.transp,
-    recurrence_id: event_data.recurrence_id,
-    reminders: event_data.reminders,
-    visible_reminders: event_data.visible_reminders,
-    orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),
-    orig_end: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_end))
-  };
   // Close tooltip
   $(ved).qtip('hide');
 
-  event_field_form('modify', data);
+  event_edit_dialog('modify', event_data);
 
   return false;
 };
@@ -2034,6 +1900,19 @@ var setup_print_tweaks = function setup_print_tweaks() {
 
   window.onbeforeprint = beforePrint;
   window.onafterprint = afterPrint;
+};
+
+// Get calendar list
+var calendar_list = function calendar_list() {
+  var calendars = $('div.calendar_list li.available_calendar');
+  var total = calendars.length;
+  var result = [];
+
+  for (var i=0;i<total;i++) {
+    result.push($(calendars[i]).data());
+  }
+
+  return result;
 };
 
 

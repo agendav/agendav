@@ -105,9 +105,6 @@ $labels['repeatweekly'] = 'Weekly';
 $labels['repeatmonthly'] = 'Monthly';
 $labels['repeatyearly'] = 'Yearly';
 
-$labels['repeatcount'] = 'Count';
-$labels['repeatuntil'] = 'Until';
-
 $labels['explntimes'] = '%n times';
 $labels['expluntil'] = 'until %d';
 
@@ -186,6 +183,10 @@ $labels['after'] = 'after';
 
 $labels['start'] = 'start';
 $labels['end'] = 'end';
+
+$labels['ends'] = 'Ends:';
+$labels['never'] = 'never';
+$labels['occurrences'] = 'occurrences';
 
 
 // Messages
