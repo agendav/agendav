@@ -882,6 +882,7 @@ var handle_repetitions = function handle_repetitions(where, data) {
       $recurrence_ends.hide();
     } else {
       $recurrence_ends.show();
+      $recurrence_ends.find(':input:radio:first').trigger('click');
     }
   });
   $recurrence_type.trigger('change');
