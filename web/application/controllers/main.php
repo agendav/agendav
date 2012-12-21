@@ -65,7 +65,6 @@ class Main extends MY_Controller
         $components['footer'] = $this->load->view('footer',
                 array(
                     'load_session_refresh' => true,
-                    'load_calendar_colors' => true,
                     ), true);
 
         $this->load->view('layouts/app.php', $components);

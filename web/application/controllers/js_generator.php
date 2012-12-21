@@ -63,9 +63,10 @@ class Js_generator extends MY_Controller
     }
 
     /**
-     * Loads app preferences
+     * Sets application options
      */
-    function prefs() {
+    function siteconf()
+    {
         $this->output->set_header(
                 'Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         $this->output->set_header(
@@ -73,7 +74,52 @@ class Js_generator extends MY_Controller
         $this->output->set_header(
                 'Cache-Control: post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache'); 
-        $this->load->view('js_code/preferences');
+
+        $options = array(
+            'base_url' => base_url(),
+            'base_app_url' => site_url() . '/',
+            'agendav_version' => \AgenDAV\Version::V,
+            'enable_calendar_sharing' => $this->config->item('enable_calendar_sharing'),
+            'prefs_timeformat_option' => $this->config->item('default_time_format'),
+            'prefs_timeformat' => $this->dates->time_format_string('fullcalendar'),
+            'prefs_dateformat_option' => $this->config->item('default_date_format'),
+            'prefs_dateformat' => $this->dates->date_format_string('datepicker'),
+            'prefs_firstday' => $this->config->item('default_first_day'),
+            'timepicker_base' => array(
+                'show24Hours' => $this->config->item('default_time_format') == '24',
+                'separator' => ':',
+                'step' => 30,
+            ),
+            'csrf_cookie_name' => $this->config->item('cookie_prefix') 
+                                . $this->config->item('csrf_cookie_name'),
+            'csrf_token_name' => $this->config->item('csrf_token_name'),
+            'calendar_colors' => $this->config->item('calendar_colors'),
+        );
+
+        $options['default_calendar_color'] = '#' . $options['calendar_colors'][0];
+
+        $this->load->view('js_code/siteconf', array(
+            'options' => $options,
+        ));
+
+    }
+
+
+    function userprefs()
+    {
+        $this->output->set_header(
+                'Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        $this->output->set_header(
+                'Cache-Control: no-store, no-cache, must-revalidate');
+        $this->output->set_header(
+                'Cache-Control: post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache'); 
+
+        $preferences = $this->user->getPreferences();
+
+        $this->load->view('js_code/userprefs', array(
+            'preferences' => $preferences,
+        ));
     }
 
 }

@@ -57,7 +57,7 @@ $(document).ready(function() {
     $('#prefs_tabs').tabs();
     $('#prefs_buttons button').button();
     $('#return_button').on('click', function() {
-      window.location = base_app_url;
+      window.location = AgenDAVConf.base_app_url;
       return false;
     });
     $('#save_button').on('click', function() {
@@ -76,11 +76,11 @@ $(document).ready(function() {
   } else if ($('body').hasClass('calendarpage')) {
     // Dust.js base context
     dustbase = dust.makeBase({
-      default_calendar_color: default_calendar_color,
-      base_url: base_url,
-      base_app_url: base_app_url,
-      csrf_token_name: AgenDAVConf.prefs_csrf_token_name,
-      enable_calendar_sharing: enable_calendar_sharing
+      default_calendar_color: AgenDAVConf.default_calendar_color,
+      base_url: AgenDAVConf.base_url,
+      base_app_url: AgenDAVConf.base_app_url,
+      csrf_token_name: AgenDAVConf.csrf_token_name,
+      enable_calendar_sharing: AgenDAVConf.enable_calendar_sharing
     });
 
     // Default colorpicker options
@@ -588,7 +588,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     return;
   }
 
-  var form_url = base_app_url + 'event/modify';
+  var form_url = AgenDAVConf.base_app_url + 'event/modify';
   var title;
 
   // Transform Date to Moment objects
@@ -805,7 +805,7 @@ var update_single_event = function update_single_event(event, new_data) {
 // Triggers a dialog for creating calendars
 var calendar_create_dialog = function calendar_create_dialog() {
 
-  var form_url = base_app_url + 'calendar/create';
+  var form_url = AgenDAVConf.base_app_url + 'calendar/create';
   var title = t('labels', 'newcalendar');
 
   var data = {
@@ -826,7 +826,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
         'class': 'addicon btn-icon-calendar-add',
         'click': function() {
           var params = {
-            url: base_app_url + 'calendar/create',
+            url: AgenDAVConf.base_app_url + 'calendar/create',
             data: $('#calendar_create_form').serializeObject()
           };
           destroy_dialog('#calendar_create_dialog');
@@ -859,7 +859,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
 // Triggers a dialog for editing calendars
 var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
 
-  var form_url = base_app_url + 'calendar/modify';
+  var form_url = AgenDAVConf.base_app_url + 'calendar/modify';
   var title = t('labels', 'modifycalendar');
 
   var data = calendar_obj;
@@ -938,7 +938,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
  */
 var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
   destroy_dialog('#calendar_modify_dialog');
-  var form_url = base_app_url + 'calendar/delete';
+  var form_url = AgenDAVConf.base_app_url + 'calendar/delete';
   var title = t('labels', 'deletecalendar');
 
   var data = calendar_obj;
@@ -960,7 +960,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
       'class': 'addicon btn-icon-calendar-delete',
       'click': function() {
         var params = {
-          url: base_app_url + 'calendar/delete',
+          url: AgenDAVConf.base_app_url + 'calendar/delete',
           data: $('#calendar_delete_form').serializeObject()
         };
 
@@ -1006,7 +1006,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   }
 
   var updcalendar_ajax_req = $.ajax({
-    url: base_app_url + 'calendar/all',
+    url: AgenDAVConf.base_app_url + 'calendar/all',
     cache: false,
     dataType: 'json'
   });
@@ -1049,7 +1049,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
       // Some values need to be generated
       if (calendar.color === undefined || calendar.color === false || calendar.color == null) {
-        calendar.color = default_calendar_color;
+        calendar.color = AgenDAVConf.default_calendar_color;
       } else {
         calendar.color = calendar.color.substr(0,7);
       }
@@ -1124,7 +1124,7 @@ var generate_event_source = function generate_event_source(calendar) {
   var ajax_options = {
       // If #calendar is not used, Fullcalendar will be confused when
       // calling removeEventSource, and will remove all calendars
-      url: base_app_url + 'event/all#' + calendar,
+      url: AgenDAVConf.base_app_url + 'event/all#' + calendar,
       cache: false,
       // TODO make timezone configurable
       data: {
@@ -1151,7 +1151,7 @@ var generate_event_source = function generate_event_source(calendar) {
  */
 var session_refresh = function session_refresh(n) {
   var sessrefresh_ajax_req = $.ajax({
-    url: base_app_url + 'js_generator/keepalive',
+    url: AgenDAVConf.base_app_url + 'js_generator/keepalive',
     cache: false,
     method: 'GET',
     dataType: 'html'
@@ -1341,7 +1341,7 @@ var session_expired = function session_expired() {
   show_error(t('messages', 'error_sessexpired'),
       t('messages', 'error_loginagain'));
   setTimeout(function() {
-    window.location = base_url;
+    window.location = AgenDAVConf.base_url;
   }, 2000);
 };
 
@@ -1377,7 +1377,7 @@ var share_manager = function share_manager() {
           return;
         }
 
-        lastXhr = $.getJSON(base_app_url + 'caldav2json/principal_search', 
+        lastXhr = $.getJSON(AgenDAVConf.base_app_url + 'caldav2json/principal_search', 
           request, function(data, status, xhr) {
           user_autocomplete_cache[term] = data;
           if (xhr === lastXhr) {
@@ -1715,7 +1715,7 @@ var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDe
  */
 var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
   var params = {
-    url: base_app_url + 'event/alter',
+    url: AgenDAVConf.base_app_url + 'event/alter',
     data: {
       uid: event.uid,
       calendar: event.calendar,
@@ -1730,7 +1730,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
     }
   };
 
-  params.data[AgenDAVConf.prefs_csrf_token_name] = get_csrf_token();
+  params.data[AgenDAVConf.csrf_token_name] = get_csrf_token();
 
   proceed_send_ajax_form(params,
       function(data) {
@@ -1748,7 +1748,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
 // Delete link
 // TODO: check for rrule/recurrence-id (EXDATE, etc)
 var event_delete_dialog = function event_delete_dialog() {
-  var form_url = base_app_url + 'event/delete';
+  var form_url = AgenDAVConf.base_app_url + 'event/delete';
   var title = t('labels', 'deleteevent');
 
   var data = get_data('current_event');
@@ -1855,7 +1855,7 @@ var initialize_date_and_time_pickers = function initialize_date_and_time_pickers
 
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
-  return $.cookie(AgenDAVConf.prefs_csrf_cookie_name);
+  return $.cookie(AgenDAVConf.csrf_cookie_name);
 }
 
 // Loading indicator
@@ -1914,11 +1914,5 @@ var calendar_list = function calendar_list() {
 
   return result;
 }
-
-// Load options from server
-var load_config = function load_config() {
-  return $.get(base_app_url + 'conf');
-};
-
 
 // vim: sw=2 tabstop=2
