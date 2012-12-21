@@ -5,18 +5,10 @@ $base = base_url();
 $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
 ?>
  
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-var base_url = '<?php echo $base; ?>';
-var base_app_url = '<?php echo site_url(); ?>/';
-var relative_url = '<?php echo $relative; ?>';
-var agendav_version = '<?php echo \AgenDAV\Version::V ?>';
-var enable_calendar_sharing = <?php echo ($enable_calendar_sharing ? 'true' :
-'false') ?>;
-//]]>
-</script>
 <script language="JavaScript" type="text/javascript" src="<?php echo
-site_url('js_generator/prefs')?>"></script>
+site_url('js_generator/siteconf')?>"></script>
+<script language="JavaScript" type="text/javascript" src="<?php echo
+site_url('js_generator/userprefs')?>"></script>
 
 <?php
 $js = (ENVIRONMENT == 'development' ? 
@@ -59,14 +51,6 @@ $(document).ready(function() {
 </script>
 	<?php
 endif;
-
-if (isset($load_calendar_colors) && $load_calendar_colors === TRUE) {
-	// Calendar colors
-	$calendar_colors = $this->config->item('calendar_colors');
-	$this->load->view('js_code/calendar_colors',
-			array('colors' => $calendar_colors));
-}
-
 
 $img = array(
 		'src' => 'img/agendav_small.png',

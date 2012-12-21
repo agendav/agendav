@@ -6,7 +6,7 @@ function load_i18n_strings() {
 
 	var i18n_ajax_req = $.ajax({
 		async: false,
-		url: base_app_url + 'strings/load/' + agendav_version,
+		url: AgenDAVConf.base_app_url + 'strings/load/' + AgenDAVConf.agendav_version,
 		dataType: 'json',
 		method: 'GET',
 		ifModified: false // TODO set to true + cache
