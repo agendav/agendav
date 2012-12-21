@@ -432,71 +432,6 @@ var remove_data = function remove_data(name) {
 
 
 /**
- * Loads a form (via AJAX) to a specified div
- */
-var load_generated_dialog = function load_generated_dialog(url, data, preDialogFunc, title, buttons, divname, width) {
-  
-  divname = '#' + divname;
-
-  // Avoid double dialog opening
-  if ($(divname).length != 0) {
-    return false;
-  }
-
-  // Do it via POST
-  var newid = generate_on_the_fly_form(
-    base_app_url + 'event/modify', data);
-
-  if (get_data('formcreation') == 'ok') {
-    var thisform = $('#' + newid);
-    var action = $(thisform).attr('action');
-    var formdata = $(thisform).serialize();
-
-    var dialog_ajax_req = $.ajax({
-      url: base_app_url + url,
-      cache: false,
-      type: 'POST',
-      data: formdata,
-      dataType: 'html'
-    });
-
-    dialog_ajax_req.then(function() {
-        loading(false);
-    });
-
-    dialog_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-      show_error(t('messages', 'error_loading_dialog'),
-        t('messages', 'error_oops') + ': ' + textStatus);
-    });
-      
-    dialog_ajax_req.done(function(data, textStatus, jqxHR) {
-      $('body').append(data);
-      $(divname).dialog({
-        autoOpen: true,
-        buttons: buttons,
-        title: title,
-        minWidth: width,
-        modal: true,
-        open: function(event, ui) {
-          preDialogFunc();
-          $(divname).dialog('option', 'position', 'center');
-          var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
-          add_button_icons(buttons);
-        },
-        close: function(ev, ui) { $(this).remove(); }
-      })
-    });
-
-    // Remove generated form
-    $(thisform).remove();
-  } else {
-    // Error generating dialog on the fly?
-    show_error(t('messages', 'error_interfacefailure'), 
-        t('messages', 'error_oops'));
-  }
-};
-
-/**
  * Sends a form via AJAX.
  * 
  * This way we respect CodeIgniter CSRF tokens
@@ -591,59 +526,6 @@ var show_dialog = function show_dialog(template, data, title, buttons,
 };
 
 /**
- * Creates a form with a random id in the document, and returns it.
- * Defines each element in the second parameter as hidden fields
- */
-var generate_on_the_fly_form = function generate_on_the_fly_form(action, data) {
-  var random_id = '';
-  var possible = 
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for( var i=0; i < 10; i++ )
-    random_id += possible.charAt(Math.floor(Math.random() *
-          possible.length));
-  
-  // Now we have our random id
-  var form_gen = base_app_url + 'dialog_generator/on_the_fly_form/' +
-    random_id;
-  var params = {
-    emptydata: 'empty' // CodeIgniter 2.1.3 now looks for POST data
-  };
-  params[AgenDAVConf.prefs_csrf_token_name] = get_csrf_token();
-
-  var csrf_ajax_gen = $.ajax({
-    type: 'POST',
-    url: form_gen,
-    cache: false,
-    data: params,
-    dataType: 'text',
-    async: false // Let's wait
-  });
-
-  csrf_ajax_gen.fail(function(jqXHR, textStatus, errorThrown) {
-    // This is generally caused by expired session
-    set_data('formcreation', 'failed');
-  });
-
-  csrf_ajax_gen.done(function(formdata, textStatus, jqXHR) {
-    var hidden_fields = '';
-
-    $.each(data, function (i, v) {
-      hidden_fields += '<input type="hidden" name="'+i
-        +'" value="'+v+'" />';
-    });
-
-    $(formdata)
-      .append(hidden_fields)
-      .attr('action' , action)
-      .appendTo(document.body);
-
-    set_data('formcreation', 'ok');
-  });
-
-  return random_id;
-};
-
-/**
  * Destroys a dialog
  */
 var destroy_dialog = function destroy_dialog(name) {
@@ -696,6 +578,16 @@ var set_mindate = function set_mindate(mindate, datepickers) {
 // Triggers a dialog for editing/creating events
 var event_edit_dialog = function event_edit_dialog(type, data) {
 
+  // Repetition exceptions not implemented yet
+  if (type == 'modify' && data.recurrence_id !== undefined) {
+    show_error(
+        t('messages', 'error_oops'),
+        t('messages', 'error_notimplemented',
+          { '%feature': t('labels', 'repetitionexceptions') })
+    );
+    return;
+  }
+
   var form_url = base_app_url + 'event/modify';
   var title;
 
@@ -706,24 +598,27 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     data.start = moment(data.start);
   }
 
-  if (data.view == 'month') {
-    data.start = AgenDAVDateAndTime.approxNearest(data.start);
-    data.end = AgenDAVDateAndTime.approxNearest(data.end).add('hours', 1);
-  } else {
-    // Any other view
-    if (data.allDay === false || data.allDay === undefined) {
-      data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
-    } else {
-      data.start.minutes(0).seconds(0);
-      data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
-    }
-  }
-
-
   if (type == 'new') {
     title = t('labels', 'createevent');
+
+    if (data.view == 'month') {
+      data.start = AgenDAVDateAndTime.approxNearest(data.start);
+      data.end = AgenDAVDateAndTime.approxNearest(data.end).add('hours', 1);
+    } else {
+      // Any other view
+      if (data.allDay === false || data.allDay === undefined) {
+        data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+      } else {
+        data.start.minutes(0).seconds(0);
+        data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+      }
+    }
   } else {
     title = t('labels', 'editevent');
+    if (data.rrule !== undefined) {
+      data.start = moment(data.orig_start);
+      data.end = moment(data.orig_end);
+    }
   }
 
   $.extend(
