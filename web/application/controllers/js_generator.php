@@ -24,7 +24,7 @@ class Js_generator extends MY_Controller
 
     // Special methods that do should not enforce authentication
     private $not_enforced = array(
-            'prefs',
+            'siteconf',
             );
     private $user;
 

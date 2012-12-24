@@ -96,8 +96,10 @@ class Login extends MY_Controller {
         $data['title'] = $title;
 
         $page_components['content'] = $this->load->view('login', $data, TRUE);
-        $page_components['footer'] = $this->load->view('footer', array(),
-                TRUE);
+        $page_components['footer'] = $this->load->view('footer',
+            array('login_page' => true),
+            TRUE
+        );
 
         $this->load->view('layouts/plain', $page_components);
 

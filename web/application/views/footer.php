@@ -7,10 +7,14 @@ $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
  
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/siteconf')?>"></script>
+<?php
+if (!isset($login_page) || $login_page === false):
+?>
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/userprefs')?>"></script>
-
 <?php
+endif;
+
 $js = (ENVIRONMENT == 'development' ? 
 		Defs::$jsfiles : 
 		array('jquery-base-' . AgenDAV\Version::V . '.js', 
@@ -36,20 +40,6 @@ if (isset($load_session_refresh) && $load_session_refresh === TRUE):
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/session_refresh')?>"></script>
 <?php
-endif;
-
-if (isset($login_page) && $login_page === TRUE):
-	?>
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-$(document).ready(function() {
-	$("input:submit").button();
-	$('input[name="user"]').focus();
-
-});
-//]]>
-</script>
-	<?php
 endif;
 
 $img = array(
