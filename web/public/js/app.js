@@ -621,6 +621,11 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     }
   }
 
+  // Set default calendar
+  if (data.calendar === undefined) {
+    data.calendar = AgenDAVUserPrefs.default_calendar;
+  }
+
   $.extend(
     data,
     {

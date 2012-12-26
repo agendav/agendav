@@ -118,7 +118,7 @@ class Js_generator extends MY_Controller
         $preferences = $this->user->getPreferences();
 
         $this->load->view('js_code/userprefs', array(
-            'preferences' => $preferences,
+            'preferences' => $preferences->getAll(),
         ));
     }
 
