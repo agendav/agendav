@@ -6,6 +6,8 @@
     -->
 
     <property name="agendav.docs.dir" value="doc" />
+    <property name="agendav.bin.dir" value="bin" />
+    <property name="agendav.public.dir" value="web/public" />
     <property name="sphinx.build" value="sphinx-build" />
 
     <!-- Cleans build/agendav-{current} directory -->
@@ -29,7 +31,9 @@
         <phingcall target="replace:version" />
         <phingcall target="docs" />
         <phingcall target="composer" />
-        <!-- TODO: build *.js, *.css -->
+        <phingcall target="environment" />
+        <!-- TODO: do this from Phing -->
+        <phingcall target="compress:static" />
     </target>
 
     <!-- Replaces @AGENDAV.VERSION@ with current version -->
@@ -55,6 +59,26 @@
     <!-- Downloads composer dependencies -->
     <target name="composer">
         <exec command="composer install" dir="web" checkreturn="1" />
+    </target>
+
+    <!-- Changes environment to production -->
+    <target name="environment">
+        <reflexive>
+            <fileset dir="${agendav.public.dir}">
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp 
+                        pattern="define\('ENVIRONMENT', 'development'\)" 
+                        replace="define('ENVIRONMENT', 'production')" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- Minifies js and css files -->
+    <target name="compress:static">
+        <exec command="./prepare-static.php" dir="${agendav.bin.dir}" logoutput="1" />
     </target>
 
     <!-- Sets AgenDAV version -->

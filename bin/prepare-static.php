@@ -42,7 +42,7 @@ foreach ($compilers as $path => $url) {
 // Load file list
 define('BASEPATH', $app_dir);
 require_once($app_dir . 'hooks/Defs.php');
-require_once($app_dir . '../libs/AgenDAV/Version.php');
+require_once($app_dir . '../lib/AgenDAV/Version.php');
 
 $defs = new Defs();
 $defs->definitions();
