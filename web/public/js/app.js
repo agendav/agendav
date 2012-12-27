@@ -101,7 +101,7 @@ $(document).ready(function() {
         month: t('formats', 'column_week_fullcalendar'),
         week: t('formats', 'column_week_fullcalendar'),
         day: t('formats', 'column_day_fullcalendar'),
-        table: t('formats', 'column_table_fullcalendar'),
+        table: t('formats', 'column_table_fullcalendar')
       },
       titleFormat: {
         month: t('formats', 'title_month_fullcalendar'),
