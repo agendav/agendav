@@ -19,6 +19,8 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \AgenDAV\DateHelper;
+
 class Js_generator extends MY_Controller
 {
 
@@ -81,9 +83,15 @@ class Js_generator extends MY_Controller
             'agendav_version' => \AgenDAV\Version::V,
             'enable_calendar_sharing' => $this->config->item('enable_calendar_sharing'),
             'prefs_timeformat_option' => $this->config->item('default_time_format'),
-            'prefs_timeformat' => $this->dates->time_format_string('fullcalendar'),
+            'prefs_timeformat' => DateHelper::getTimeFormatFor(
+                'fullcalendar',
+                $this->config->item('default_time_format')
+            ),
             'prefs_dateformat_option' => $this->config->item('default_date_format'),
-            'prefs_dateformat' => $this->dates->date_format_string('datepicker'),
+            'prefs_dateformat' => DateHelper::getDateFormatFor(
+                'datepicker',
+                $this->config->item('default_date_format')
+            ),
             'prefs_firstday' => $this->config->item('default_first_day'),
             'timepicker_base' => array(
                 'show24Hours' => $this->config->item('default_time_format') == '24',

@@ -21,6 +21,8 @@ namespace AgenDAV\Data;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \AgenDAV\DateHelper;
+
 class Reminder
 {
     public $type, $order = FALSE;
@@ -29,7 +31,6 @@ class Reminder
     public $qty, $interval;
     public $relatedStart;
     public $absdatetime, $tdate, $ttime;
-    private $CI;
 
     public static $intervals = array(
             'week' => 10080,
@@ -41,7 +42,6 @@ class Reminder
     public function __construct() {
         // TODO add more types
         $this->type = 'DISPLAY';
-        $this->CI =& get_instance();
     }
 
     public static function createFrom($when) {
@@ -100,7 +100,7 @@ class Reminder
     public function assign_properties(&$valarm) {
         if ($this->is_absolute) {
             $valarm->setProperty('trigger',
-                    $this->CI->dates->datetime2idt($this->absdatetime),
+                    DateHelper::DateTimeToiCalendar($this->absdatetime, 'DATE-TIME'),
                     array('VALUE' => 'DATE-TIME'));
         } else {
             $valarm->setProperty('trigger',

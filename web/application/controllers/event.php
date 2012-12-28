@@ -20,12 +20,15 @@
  */
 
 use AgenDAV\Data\Reminder;
+use AgenDAV\DateHelper;
 
 class Event extends MY_Controller
 {
 
     private $time_format;
+    private $time_format_pref;
     private $date_format;
+    private $date_format_pref;
 
     private $tz;
     private $tz_utc;
@@ -45,8 +48,10 @@ class Event extends MY_Controller
         }
         $this->client = $this->container['client'];
 
-        $this->date_format = $this->dates->date_format_string('date');
-        $this->time_format = $this->dates->time_format_string('date');
+        $this->date_format_pref = $this->config->item('default_date_format');
+        $this->time_format_pref = $this->config->item('default_time_format');
+        $this->date_format = DateHelper::getDateFormatFor('date', $this->date_format_pref);
+        $this->time_format = DateHelper::getTimeFormatFor('date', $this->time_format_pref);
 
         $this->tz = $this->timezonemanager->getTz(
                 $this->config->item('default_timezone'));
@@ -219,12 +224,20 @@ class Event extends MY_Controller
         // If not, generate our own values
         if (isset($p['allday']) && $p['allday'] == 'true') {
             // Start and end days, 00:00
-            $start = $this->dates->frontend2datetime($p['start_date'] 
-                    . ' ' . date($this->time_format, mktime(0,0)), 
-                    $this->tz_utc);
-            $end = $this->dates->frontend2datetime($p['end_date'] 
-                    . ' ' . date($this->time_format, mktime(0, 0)), 
-                    $this->tz_utc);
+            $str_start = $p['start_date'] . ' ' . date($this->time_format, mktime(0,0));
+            $str_end = $p['end_date'] . ' ' . date($this->time_format, mktime(0,0));
+            $start = DateHelper::frontEndToDateTime(
+                $str_start,
+                $this->date_format_pref,
+                $this->time_format_pref,
+                $this->tz_utc
+            );
+            $end = DateHelper::frontEndToDateTime(
+                $str_end,
+                $this->date_format_pref,
+                $this->time_format_pref,
+                $this->tz_utc
+            );
             // Add 1 day (iCalendar needs this)
             $end->add(new DateInterval('P1D'));
         } else {
@@ -243,10 +256,23 @@ class Event extends MY_Controller
             }
 
             // 2. Check if start date <= end date
-            $start = $this->dates->frontend2datetime($p['start_date'] 
-                    . ' ' .  $p['start_time'], $tz);
-            $end = $this->dates->frontend2datetime($p['end_date'] 
-                    . ' ' .  $p['end_time'], $tz);
+            $str_start = $p['start_date'] . ' ' . $p['start_time'];
+            $str_end = $p['end_date'] . ' ' . $p['end_time'];
+
+            $start = DateHelper::frontEndToDateTime(
+                $str_start,
+                $this->date_format_pref,
+                $this->time_format_pref,
+                $tz
+            );
+
+            $end = DateHelper::frontEndToDateTime(
+                $str_end,
+                $this->date_format_pref,
+                $this->time_format_pref,
+                $tz
+            );
+
             if ($end->getTimestamp() < $start->getTimestamp()) {
                 $this->_throw_exception($this->i18n->_('messages',
                             'error_startgreaterend'));
@@ -303,10 +329,13 @@ class Event extends MY_Controller
                      false);
 
                 if ($data_reminders['is_absolute'][$i]) {
-                    $when =
-                        $this->dates->frontend2datetime($data_reminders['tdate'][$i]
-                                . ' ' . $data_reminders['ttime'][$i],
-                                $this->tz);
+                    $str = $data_reminders['tdate'][$i] . ' ' . $data_reminders['ttime'][$i];
+                    $when = DateHelper::frontEndToDateTime(
+                        $str,
+                        $this->date_format_pref,
+                        $this->time_format_pref,
+                        $this->tz
+                    );
                     $when->setTimezone($this->tz_utc);
                     $this_reminder = Reminder::createFrom($when);
                 } else {
@@ -580,7 +609,7 @@ class Event extends MY_Controller
                     $start = $this->icshelper->extract_date($vevent,
                             'DTSTART', $tz);
                     $start_obj = $start['result'];
-                    $start_obj->add($this->dates->duration2di($dur_string));
+                    $start_obj->add(DateHelper::durationToDateInterval($dur_string));
                     $new_vevent = $this->icshelper->make_start(
                             $vevent,
                             $tz,
@@ -682,15 +711,21 @@ class Event extends MY_Controller
     // Validate date format
     public function _valid_date($d)
     {
-        $obj = $this->dates->frontend2datetime($d .' ' .
-                date($this->time_format));
-        if (false === $obj) {
+        $str = $d . ' ' . date($this->time_format);
+        try {
+            $obj = DateHelper::frontEndToDateTime(
+                $str,
+                $this->date_format_pref,
+                $this->time_format_pref,
+                $this->tz
+            );
+        } catch (\InvalidArgumentException $e) {
             $this->form_validation->set_message('_valid_date',
                     $this->i18n->_('messages', 'error_invaliddate'));
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     // Validate date format (or empty string)
@@ -708,14 +743,21 @@ class Event extends MY_Controller
     // Validate time format
     public function _valid_time($t)
     {
-        $obj = $this->dates->frontend2datetime(date($this->date_format) .' '. $t);
-        if (false === $obj) {
+        $str = date($this->date_format) .' '. $t;
+        try {
+            $obj = DateHelper::frontEndToDateTime(
+                $str,
+                $this->date_format_pref,
+                $this->time_format_pref,
+                $this->tz
+            );
+        } catch (\InvalidArgumentException $e) {
             $this->form_validation->set_message('_valid_time',
                     $this->i18n->_('messages', 'error_invalidtime'));
             return false;
-        } else {
-            return true;
-        }
+        } 
+
+        return true;
     }
 
 

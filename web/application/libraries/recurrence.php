@@ -19,15 +19,21 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \AgenDAV\DateHelper;
+
 class Recurrence {
 
+    private $date_format_pref;
+    private $time_format_pref;
     private $date_format;
     private $tz;
     private $CI;
 
     function __construct() {
         $this->CI =& get_instance();
-        $this->date_format = $this->CI->dates->date_format_string('date');
+        $this->date_format_pref = $this->CI->config->item('default_date_format');
+        $this->time_format_pref = $this->CI->config->item('default_time_format');
+        $this->date_format = DateHelper::getDateFormatFor('date', $this->date_format_pref);
         $this->tz = $this->CI->timezonemanager->getTz(
                 $this->CI->config->item('default_timezone'));
     }
@@ -78,8 +84,10 @@ class Recurrence {
                             array('%n' => $v));
                     break;
                 case 'UNTIL':
-                    $date = $this->CI->dates->idt2datetime($v,
-                                $this->CI->timezonemanager->getTz('UTC'));
+                    $date = DateHelper::iCalcreatorToDateTime(
+                        $v,
+                        $this->CI->timezonemanager->getTz('UTC')
+                    );
                     $date->setTimeZone($this->tz);
                     $explanation .= ', ' . $this->CI->i18n->_('labels',
                             'expluntil',
@@ -134,14 +142,19 @@ class Recurrence {
         } else if (isset($opts['recurrence_until']) &&
                 !empty($opts['recurrence_until'])) {
             $date =
-                $this->CI->dates->frontend2datetime($opts['recurrence_until'],
-                        $this->CI->timezonemanager->getTz('UTC'));
+                DateHelper::frontEndToDateTime(
+                    $opts['recurrence_until'],
+                    $this->date_format_pref,
+                    $this->time_format_pref,
+                    $this->CI->timezonemanager->getTz('UTC')
+                );
             if ($date === FALSE) {
                 $rrule_err = $this->CI->i18n->_('messages',
                         'error_bogusrepeatrule');
                 return FALSE;
             } else {
-                $res['UNTIL'] = $this->CI->dates->datetime2idt($date);
+                // TODO date-time?
+                $res['UNTIL'] = DateHelper::dateTimeToiCalendar($date, 'DATE-TIME');
             }
         }
 

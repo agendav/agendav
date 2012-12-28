@@ -20,6 +20,7 @@
  */
 
 use AgenDAV\Data\Reminder;
+use AgenDAV\DateHelper;
 
 class Icshelper {
     private $config; // for iCalCreator
@@ -28,7 +29,10 @@ class Icshelper {
 
     private $date_format; // Date format given by lang file
 
-    private $date_frontend_format, $time_frontend_format;
+    private $date_frontend_format_pref;
+    private $date_frontend_format;
+    private $time_frontend_format_pref;
+    private $time_frontend_format;
 
 
     function __construct() {
@@ -39,8 +43,10 @@ class Icshelper {
         $this->tz = $this->CI->timezonemanager->getTz(
                 $this->CI->config->item('default_timezone'));
 
-        $this->date_frontend_format = $this->CI->dates->date_format_string('date');
-        $this->time_frontend_format = $this->CI->dates->time_format_string('date');
+        $this->date_frontend_format_pref = $this->CI->config->item('default_date_format');
+        $this->time_frontend_format_pref = $this->CI->config->item('default_time_format');
+        $this->date_frontend_format = DateHelper::getDateFormatFor('date', $this->date_frontend_format_pref);
+        $this->time_frontend_format = DateHelper::gettimeFormatFor('date', $this->time_frontend_format_pref);
 
         $this->config = array(
                 'unique_id' =>
@@ -80,7 +86,10 @@ class Icshelper {
 
         $vevent =& $ical->newComponent('vevent');
 
-        $now = $this->CI->dates->datetime2idt();
+        $now = DateHelper::dateTimeToiCalendar(
+            new \DateTime('now', $this->CI->timezonemanager->getTz('UTC')),
+            'DATE-TIME'
+        );
         $uid = $this->generate_guid();
 
         $vevent->setProperty('CREATED', $now);
