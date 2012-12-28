@@ -43,16 +43,16 @@
 <div id="tabs-workgroup">
 {>form_element_start for="class" label="privacy" /}
 <select name="class" type="text" class="input-medium">
- <option name="PUBLIC"{@eq key="{class}" value="PUBLIC"} selected="selected"{/eq}>{@i18n type="labels" name="public"/}</option>
- <option name="PRIVATE"{@eq key="{class}" value="PRIVATE"} selected="selected"{/eq}>{@i18n type="labels" name="private"/}</option>
- <option name="CONFIDENTIAL"{@eq key="{class}" value="CONFIDENTIAL"} selected="selected"{/eq}>{@i18n type="labels" name="confidential"/}</option>
+ <option value="PUBLIC"{@eq key="{icalendar_class}" value="PUBLIC"} selected="selected"{/eq}>{@i18n type="labels" name="public"/}</option>
+ <option value="PRIVATE"{@eq key="{icalendar_class}" value="PRIVATE"} selected="selected"{/eq}>{@i18n type="labels" name="private"/}</option>
+ <option value="CONFIDENTIAL"{@eq key="{icalendar_class}" value="CONFIDENTIAL"} selected="selected"{/eq}>{@i18n type="labels" name="confidential"/}</option>
 </select>
 {>form_element_end/}
 
 {>form_element_start for="transp" label="transp" /}
 <select name="transp" type="text" class="input-medium">
- <option name="OPAQUE"{@eq key="{class}" value="OPAQUE"} selected="selected"{/eq}>{@i18n type="labels" name="opaque"/}</option>
- <option name="TRANSPARENT"{@eq key="{class}" value="TRANSPARENT"} selected="selected"{/eq}>{@i18n type="labels" name="transparent"/}</option>
+ <option value="OPAQUE"{@eq key="{transp}" value="OPAQUE"} selected="selected"{/eq}>{@i18n type="labels" name="opaque"/}</option>
+ <option value="TRANSPARENT"{@eq key="{transp}" value="TRANSPARENT"} selected="selected"{/eq}>{@i18n type="labels" name="transparent"/}</option>
 </select>
 {>form_element_end/}
 </div>
