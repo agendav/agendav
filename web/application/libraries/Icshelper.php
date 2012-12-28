@@ -359,6 +359,8 @@ class Icshelper {
                                 $unused);
                     if ($explanation !== FALSE) {
                         $this_event['rrule_explained'] = $explanation;
+                    } else {
+                        $this_event['unparseable_rrule'] = TRUE;
                     }
                     // TODO make it editable when able to parse it
                     $this_event['editable'] = FALSE;
