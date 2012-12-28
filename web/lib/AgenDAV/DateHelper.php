@@ -72,7 +72,7 @@ class DateHelper
     public static function getTimeFormatFor($type, $which_one)
     {
         if ($which_one != '12' && $which_one != '24') {
-            throw new \InvalidArgumentException('Invalid type ' . $type);
+            throw new \InvalidArgumentException('Invalid subtype ' . $which_one);
         }
 
         switch($type) {
@@ -100,12 +100,12 @@ class DateHelper
     public static function getDateFormatFor($type, $which_one)
     {
         if ($which_one != 'ymd' && $which_one != 'dmy' && $which_one != 'mdy') {
-            throw new \InvalidArgumentException('Invalid type ' . $type);
+            throw new \InvalidArgumentException('Invalid subtype ' . $which_one);
         }
 
         switch($type) {
-            case 'fullcalendar':
             case 'date':
+            case 'datepicker':
             case 'strftime':
                 return self::$date_formats[$which_one][$type];
                 break;
