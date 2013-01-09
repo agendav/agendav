@@ -55,10 +55,7 @@ class Defs {
 
     function definitions() {
         set_include_path(implode(PATH_SEPARATOR, array(
-                        BASEPATH . '../../libs/icalcreator',
-                        BASEPATH . '../../libs/own_extensions',
-                        BASEPATH . '../../libs/awl',
-                        BASEPATH . '../../libs/caldav-client',
+                        BASEPATH . '../lib/iCalcreator',
                         get_include_path()
                         )));
 
