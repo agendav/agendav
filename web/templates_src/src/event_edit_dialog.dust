@@ -26,7 +26,7 @@
 
 <div id="tabs-recurrence">
 {^unparseable_rrule}
-{>repeat_rule_form/}
+{>repeat_rule_form:recurrence_components/}
 {:else}
 <input type="hidden" name="unparseable_rrule" value="true" />
 {@i18n type="messages" name="info_repetition_unparseable" /}

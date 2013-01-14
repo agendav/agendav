@@ -782,8 +782,17 @@ var handle_repetitions = function handle_repetitions(where, data) {
     if (newval == 'none') {
       $recurrence_ends.hide();
     } else {
+      var notempty, $select_this;
       $recurrence_ends.show();
-      $recurrence_ends.find(':input:radio:first').trigger('click');
+      notempty = $recurrence_ends.find(':input:text[value!=""]');
+      if (notempty.length == 0) {
+        $select_this = $recurrence_ends.find(':input:radio:first');
+      } else {
+        $select_this = notempty.first().prev(':input:radio');
+      }
+
+      $select_this.trigger('click');
+
     }
   });
   $recurrence_type.trigger('change');
@@ -794,6 +803,9 @@ var handle_repetitions = function handle_repetitions(where, data) {
     // Disable all other options
     $(this).parent().siblings().find(':input:text').val('').prop('disabled', true);
   });
+  if ($recurrence_ends.is(':visible')) {
+    $recurrence_ends.find('input:radio:checked').trigger('change');
+  }
 
 };
 

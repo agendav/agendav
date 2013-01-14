@@ -1,10 +1,10 @@
 {>form_element_start for="recurrence_type" label="repeat" /}
  <select name="recurrence_type" class="recurrence_type input-medium">
-  <option value="none"{^recurrence_type} selected="selected"{/recurrence_type}>{@i18n type="labels" name="repeatno"/}</option>
-  <option value="DAILY"{@eq key="{recurrence_type}" value="DAILY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatdaily"/}</option>
-  <option value="WEEKLY"{@eq key="{recurrence_type}" value="WEEKLY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatweekly"/}</option>
-  <option value="MONTHLY"{@eq key="{recurrence_type}" value="MONTHLY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatmonthly"/}</option>
-  <option value="YEARLY"{@eq key="{recurrence_type}" value="YEARLY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatyearly"/}</option>
+  <option value="none">{@i18n type="labels" name="repeatno"/}</option>
+  <option value="DAILY"{@eq key="{FREQ}" value="DAILY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatdaily"/}</option>
+  <option value="WEEKLY"{@eq key="{FREQ}" value="WEEKLY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatweekly"/}</option>
+  <option value="MONTHLY"{@eq key="{FREQ}" value="MONTHLY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatmonthly"/}</option>
+  <option value="YEARLY"{@eq key="{FREQ}" value="YEARLY"} selected="selected"{/eq}>{@i18n type="labels" name="repeatyearly"/}</option>
  </select>
 {>form_element_end /}
 
@@ -15,11 +15,11 @@
 <label class="radio">
  <input type="radio" name="ends" value="count" />
   {@i18n type="labels" name="after" /} 
-  <input type="text" name="recurrence_count" class="recurrence_count input-mini" maxlength="3" value="{recurrence_count}" /> 
+  <input type="text" name="recurrence_count" class="recurrence_count input-mini" maxlength="3" value="{COUNT}" /> 
   {@i18n type="labels" name="occurrences" /}
 </label>
 <label class="radio">
  <input type="radio" name="ends" value="until" />
- <input type="text" name="recurrence_until" class="recurrence_until input-small" maxlength="10" size="15" value="{recurrence_until}" />
+ <input type="text" name="recurrence_until" class="recurrence_until input-small" maxlength="10" size="15" value="{UNTIL}" />
 </label>
 {>form_element_end /}

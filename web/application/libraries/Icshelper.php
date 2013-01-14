@@ -357,8 +357,7 @@ class Icshelper {
                         preg_replace('/\\\n|\\\r/', '<br />', $description);
                     break;
                 case 'rrule':
-                    $this_event['rrule_serialized'] =
-                        base64_encode(serialize($val));
+                    $this_event['recurrence_components'] = $val;
                     $new_val = trim($vevent->_format_recur('RRULE',
                                 array($prop)));
                     $this_event['rrule'] = $new_val;
