@@ -413,7 +413,7 @@ class Icshelper {
         if (isset($dtstart['value']) &&
                 $dtstart['value'] == 'DATE') {
             $this_event['allDay'] = TRUE;
-        } else if ($start->diff($end)->format('s') == '86400') {
+        } else if (($end->getTimestamp() - $start->getTimestamp())%86400 == 0) {
             if ($start->format('Hi') == '0000') {
                 $this_event['allDay'] = TRUE;
             }
