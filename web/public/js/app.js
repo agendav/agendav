@@ -683,6 +683,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       550,
       function() {
         $('#event_edit_dialog').tabs();
+        $('#event_edit_dialog').find('input.summary').focus();
         handle_date_and_time('#event_edit_dialog', data);
         handle_repetitions('#event_edit_dialog', data);
 
