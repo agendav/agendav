@@ -606,7 +606,7 @@ class CalDAVClient {
           $j = $this->xmltags[$tagname][$i];
           while( $j-- > 0 && $this->xmlnodes[$j]['tag'] != 'DAV::href' ) {
               //        printf( "Node[$j]: %s\n", $this->xmlnodes[$j]['tag']);
-              if ( $this->xmlnodes[$j]['tag'] == 'DAV::status' && $this->xmlnodes[$j]['value'] != 'HTTP/1.1 200 OK' ) return null;
+              if ( $this->xmlnodes[$j]['tag'] == 'DAV::status' && preg_match('/^HTTP\/1\.1 200/', $this->xmlnodes[$j]['value'])) return null;
           }
           //      printf( "Node[$j]: %s\n", $this->xmlnodes[$j]['tag']);
           if ( $j > 0 && isset($this->xmlnodes[$j]['value']) ) {
@@ -658,7 +658,7 @@ class CalDAVClient {
                   $status = '';
               }
               else {
-                  if ( $status == 'HTTP/1.1 200 OK' ) break;
+                  if (preg_match('/^HTTP\/1\.1 200/', $status)) break;
               }
           }
           elseif ( !isset($this->xmlnodes[$nodenum]) || !is_array($this->xmlnodes[$nodenum]) ) {
@@ -1109,8 +1109,7 @@ EOFILTER;
 
                   while ($this->xmlnodes[++$node]['level'] >= $level) {
                       if ($this->xmlnodes[$node]['tag'] == 'DAV::status'
-                              && $this->xmlnodes[$node]['value'] !=
-                              'HTTP/1.1 200 OK') {
+                              && preg_match('/^HTTP\/1\.1 200/', $this->xmlnodes[$node]['value'])) {
                           return FALSE;
                       }
                   }
