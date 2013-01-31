@@ -44,9 +44,8 @@ class Recurrence {
      * If no explanation is possible, FALSE is returned
      */
 
-    function rrule_explain($rrule = null, &$extract_params) {
+    function rrule_explain($rrule = null) {
         $explanation = '';
-        $extract_params = array();
 
         if (is_null($rrule)) {
             return FALSE;
