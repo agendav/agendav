@@ -471,7 +471,7 @@ class CalDAVClient {
       if ( $etag != null ) {
           $this->SetMatch( ($etag != '*'), $etag );
       }
-      $this->SetContentType('text/calendar; encoding="utf-8"');
+      $this->SetContentType('text/calendar; charset=utf-8');
       $this->DoRequest($url);
 
       $etag = null;
