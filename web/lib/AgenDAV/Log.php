@@ -82,6 +82,9 @@ class Log extends \Monolog\Logger
             case 'INFO':
                 $level = Logger::INFO;
                 break;
+            case 'WARNING':
+                $level = Logger::WARNING;
+                break;
             case 'ERROR':
                 $level = Logger::ERROR;
                 break;

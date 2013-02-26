@@ -220,7 +220,7 @@ class Icshelper {
                 $expand = $ical->selectComponents($sy, $sm, $sd, $ey, $em, $ed,
                         'vevent', true, true, false);
                 if ($expand === FALSE) {
-                    log_message('ERROR', 
+                    log_message('WARNING',
                             'Event ' . $calendar . $event_href . ' cannot be expanded.');
                 } else {
                     foreach($expand as $event) {
