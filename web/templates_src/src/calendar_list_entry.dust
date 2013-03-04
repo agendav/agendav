@@ -17,8 +17,8 @@ default_calendar{/default_calendar}">
 
  </span>
  <span class="text"
- {?user_from}
- title="{@i18n type="messages" name="info_sharedby" user="{user_from}"/}"
- {/user_from}>{displayname}</span>
+ {?grantor}
+ title="{@i18n type="messages" name="info_sharedby" user="{grantor}"/}"
+ {/grantor}>{displayname}</span>
  <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton icon-cogs"></i>
 </li>

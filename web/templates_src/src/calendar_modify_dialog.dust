@@ -16,14 +16,14 @@
 {>form_open applyclass="form-horizontal" applyid="calendar_modify_form" /}
 <div id="tabs-general">
 
-{?user_from}
+{?grantor}
 <div class="share_info ui-corner-all">
-{@i18n type="messages" name="info_sharedby" user="{user_from}"/} 
+{@i18n type="messages" name="info_sharedby" user="{grantor}"/} 
 {@eq key="{write_access}" value="0"}
 ({@i18n type="labels" name="readonly" /})
 {/eq}
 </div>
-{/user_from}
+{/grantor}
 
 {>calendar_basic_form_part/}
 </div>
