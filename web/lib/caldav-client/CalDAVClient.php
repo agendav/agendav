@@ -1109,7 +1109,7 @@ EOFILTER;
 
                   while ($this->xmlnodes[++$node]['level'] >= $level) {
                       if ($this->xmlnodes[$node]['tag'] == 'DAV::status'
-                              && preg_match('/^HTTP\/1\.1 200/', $this->xmlnodes[$node]['value'])) {
+                              && !preg_match('/^HTTP\/1\.1 200/', $this->xmlnodes[$node]['value'])) {
                           return FALSE;
                       }
                   }
