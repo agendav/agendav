@@ -1223,7 +1223,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   eventsource.borderColor = data.bordercolor;
 
   // Shared calendars
-  if (data.shared !== undefined && data.shared == true && data.write_access == '0') {
+  if (data.shared !== undefined && data.shared == true && data.rw == '0') {
     eventsource.editable = false;
   }
 
@@ -1439,7 +1439,7 @@ var share_manager = function share_manager() {
       if (!already_added) {
         var new_row_data = {
           username: new_user,
-          write_access: access
+          rw: access
         };
 
         dust.render('calendar_share_row',
@@ -1565,7 +1565,7 @@ var event_render_callback = function event_render_callback(event, element) {
     { caldata: caldata });
 
   if (caldata !== undefined && caldata.shared === true &&
-    caldata.write_access == '0') {
+    caldata.rw == '0') {
     $.extend(data, { disable_actions: true });
   }
 

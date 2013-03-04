@@ -6,7 +6,7 @@ default_calendar{/default_calendar}">
 
  <span class="icons">
  {?shared}
-  {@eq key="{write_access}" value="0"}
+  {@eq key="{rw}" value="0"}
   <i title="{@i18n type="labels" name="readonly"/}" class="icon-lock"></i>
   {/eq}
  {:else}

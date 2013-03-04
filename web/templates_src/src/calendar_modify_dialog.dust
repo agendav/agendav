@@ -19,7 +19,7 @@
 {?grantor}
 <div class="share_info ui-corner-all">
 {@i18n type="messages" name="info_sharedby" user="{grantor}"/} 
-{@eq key="{write_access}" value="0"}
+{@eq key="{rw}" value="0"}
 ({@i18n type="labels" name="readonly" /})
 {/eq}
 </div>

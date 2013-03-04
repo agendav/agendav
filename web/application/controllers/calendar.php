@@ -260,13 +260,13 @@ class Calendar extends MY_Controller
 
             if (is_array($share_with) && isset($share_with['sid']) 
                     && isset($share_with['username'])
-                    && isset($share_with['write_access'])) {
+                    && isset($share_with['rw'])) {
                 $num_shares = count($share_with['sid']);
                 for ($i=0;$i<$num_shares;$i++) {
                     $exists_username =
                         isset($share_with['username'][$i]);
                     $exists_write_access =
-                        isset($share_with['write_access'][$i]);
+                        isset($share_with['rw'][$i]);
                     if (!$exists_username || !$exists_write_access) {
                         log_message('ERROR', 
                                 'Ignoring incomplete share row ('.$i.') attributes'
@@ -275,7 +275,7 @@ class Calendar extends MY_Controller
                     } else {
                         $new_share = array(
                                 'username' => $share_with['username'][$i],
-                                'write_access' => $share_with['write_access'][$i],
+                                'rw' => $share_with['rw'][$i],
                                 );
 
                         if (!empty($share_with['sid'][$i])) {
@@ -313,7 +313,7 @@ class Calendar extends MY_Controller
                             $internal_calendar,
                             $share['username'],
                             null,                   // Preserve options
-                            $share['write_access']);
+                            $share['rw']);
 
                     if (!is_null($this_sid)) {
                         $updated_sids[$this_sid] = true;

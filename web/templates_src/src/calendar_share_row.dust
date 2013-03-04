@@ -3,7 +3,7 @@
 <td>
 <input type="hidden" name="share_with[sid][]" value="{sid}"/>
 <input type="hidden" name="share_with[username][]" value="{username}"/>
-<select name="share_with[write_access][]" class="input-medium">
+<select name="share_with[rw][]" class="input-medium">
  {>calendar_share_access_options/}
 </select>
 </td>
