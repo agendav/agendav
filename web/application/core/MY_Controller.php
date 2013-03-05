@@ -33,6 +33,7 @@ class MY_Controller extends CI_Controller
         $ci_encrypt = $this->encrypt;
         $ci_logger = $this->log;
         $ci_shared_calendars = $this->shared_calendars;
+        $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
 
         // Classes
         $this->container['user_class'] = '\AgenDAV\User';
@@ -87,10 +88,14 @@ class MY_Controller extends CI_Controller
                 $cfg_client
             );
         });
-        
+
         // Calendar sources
-        $this->container['channels/calendarhomeset'] = $this->container->share(function($container) {
-            return new \AgenDAV\CalendarChannels\CalendarHomeSet($container['client']);
+        $this->container['channels/calendarhomeset'] = $this->container->share(function($container) use ($enable_calendar_sharing, $ci_shared_calendars) {
+            $homeset = new \AgenDAV\CalendarChannels\CalendarHomeSet($container['client']);
+            if ($enable_calendar_sharing === true) {
+                $homeset->configure(array('shares' => $ci_shared_calendars));
+            }
+            return $homeset;
         });
         $this->container['channels/sharedcalendars'] = $this->container->share(function($container) use ($ci_shared_calendars) {
             $shared = new \AgenDAV\CalendarChannels\SharedCalendars($container['client'], $ci_shared_calendars);
@@ -101,7 +106,6 @@ class MY_Controller extends CI_Controller
         });
 
         // Calendar finder
-        $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
         $this->container['calendarfinder'] = $this->container->share(function($container) use ($enable_calendar_sharing) {
             $calendar_finder = new \AgenDAV\CalendarFinder();
 

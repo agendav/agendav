@@ -44,8 +44,8 @@ class CalendarInfo
         'color' => null,
         'shared' => false,
         'is_default' => false,
-        'share_with' => array(),
-        'write_access' => true,
+        'grantee' => array(),
+        'rw' => true,
     );
 
 

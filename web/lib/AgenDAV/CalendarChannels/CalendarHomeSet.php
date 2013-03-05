@@ -31,6 +31,14 @@ class CalendarHomeSet implements IChannel
     private $client;
 
     /**
+     * CodeIgniter shared_calendars model (if calendar sharing is enabled)
+     *
+     * @var StdClass
+     * @access private
+     */
+    private $shares;
+
+    /**
      * Instantiates a new CalendarHomeSet channel
      * 
      * @param \AgenDAV\CalDAV\ICalDAVClient $client 
@@ -40,6 +48,7 @@ class CalendarHomeSet implements IChannel
     public function __construct(\AgenDAV\CalDAV\ICalDAVClient $client)
     {
         $this->client = $client;
+        $this->shares = null;
     }
 
     /**
@@ -51,6 +60,7 @@ class CalendarHomeSet implements IChannel
      */
     public function configure($options)
     {
+        $this->shares = $options['shares'];
     }
 
     /**
@@ -72,6 +82,12 @@ class CalendarHomeSet implements IChannel
      */
     public function getCalendars()
     {
-        return $this->client->getCalendars();
+        $cals = $this->client->getCalendars();
+        if ($cals !== null) {
+            foreach ($cals as $c) {
+                $c->grantee = $this->shares->usersWithAccessTo($c->calendar);
+            }
+        }
+        return $cals;
     }
 }
