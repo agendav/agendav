@@ -110,20 +110,39 @@ $config['caldav_public_base_url'] = 'https://public.server';
  * support WebDAV ACLs disable sharing
  */
 
-$config['enable_calendar_sharing'] = TRUE;
+$config['enable_calendar_sharing'] = true;
 
 // Default permissions for calendar owner
-$config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
-		'read-current-user-privilege-set', 'write-acl', 'C:read-free-busy',
-		'write', 'write-properties', 'write-content', 'bind', 'unbind');
+$config['owner_permissions'] = array(
+    array('DAV:', 'all'),
+    array('DAV:', 'read'),
+    array('DAV:', 'unlock'),
+    array('DAV:', 'read-acl'),
+    array('DAV:', 'read-current-user-privilege-set'),
+    array('DAV:', 'write-acl'),
+    array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
+    array('DAV:', 'write'),
+    array('DAV:', 'write-properties'),
+    array('DAV:', 'write-content'),
+    array('DAV:', 'bind'),
+    array('DAV:', 'unbind'),
+);
 
 // Permissions for sharing calendars using the 'read' profile
-$config['read_profile_permissions'] = array('C:read-free-busy', 'read');
+$config['read_profile_permissions'] = array(
+    array('DAV:', 'read'),
+    array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
+);
 
 // Permissions for sharing calendars using the 'read+write' profile
-$config['read_write_profile_permissions'] = array('C:read-free-busy',
-		'read', 'write');
+$config['read_write_profile_permissions'] = array(
+    array('DAV:', 'read'),
+    array('DAV:', 'write'),
+    array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
+);
 
 // Authenticated users default permissions
-$config['default_permissions'] = array('C:read-free-busy');
+$config['default_permissions'] = array(
+    array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
+);
 
