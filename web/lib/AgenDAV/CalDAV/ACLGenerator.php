@@ -74,8 +74,13 @@ class ACLGenerator implements IACLGenerator
         );
         $xml->appendChild($acl);
 
-        $default = $this->permissions->getDefault();
-        $this->addACE($xml, 'other', null, $default);
+        // Default ACEs
+        $default_perms = $this->permissions->getDefault();
+        $this->addACE($xml, 'other', null, $default_perms);
+        $owner_perms = $this->permissions->getProfile('owner');
+        $this->addACE($xml, 'owner', null, $owner_perms);
+
+
         foreach ($this->grants as $username => $profile) {
             $perms = $this->permissions->getProfile($profile);
             $this->addACE($xml, $profile, $username, $perms);
