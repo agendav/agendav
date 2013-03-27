@@ -65,7 +65,7 @@ class ACLGenerator implements IACLGenerator
      */
     public function buildACL()
     {
-        $xml = new \DomDocument('1.0', 'utf-8');
+        $xml = new \DOMDocument('1.0', 'utf-8');
         $acl = $xml->createElementNS('DAV:', 'acl');
         $acl->setAttributeNS(
             'http://www.w3.org/2000/xmlns/',
@@ -74,17 +74,19 @@ class ACLGenerator implements IACLGenerator
         );
         $xml->appendChild($acl);
 
-        // Default ACEs
-        $default_perms = $this->permissions->getDefault();
-        $this->addACE($xml, 'other', null, $default_perms);
+        // Owner ACE
         $owner_perms = $this->permissions->getProfile('owner');
         $this->addACE($xml, 'owner', null, $owner_perms);
 
-
+        // Grants
         foreach ($this->grants as $username => $profile) {
             $perms = $this->permissions->getProfile($profile);
             $this->addACE($xml, $profile, $username, $perms);
         }
+
+        // Default ACE
+        $default_perms = $this->permissions->getDefault();
+        $this->addACE($xml, 'other', null, $default_perms);
 
         // Debug purposes only
         //$xml->formatOutput = true;
