@@ -82,14 +82,14 @@ class Event extends MY_Controller
         $time_end = $time_fetch = -1;
         $total_fetch = $total_parse = -1;
 
-        $calendar = $this->input->get('calendar');
+        $calendar = $this->input->get('calendar', true);
         if ($calendar === false) {
             log_message('ERROR', 'Calendar events request with no calendar name');
             $err = 400;
         }
 
-        $start = $this->input->get('start');
-        $end = $this->input->get('end');
+        $start = $this->input->get('start', true);
+        $end = $this->input->get('end', true);
 
         if ($err == 0 && ($start === false || $end === false)) {
             // Something is wrong here
@@ -128,10 +128,10 @@ class Event extends MY_Controller
      */
     public function delete()
     {
-        $calendar = $this->input->post('calendar');
-        $uid = $this->input->post('uid');
-        $href = $this->input->post('href');
-        $etag = $this->input->post('etag');
+        $calendar = $this->input->post('calendar', true);
+        $uid = $this->input->post('uid', true);
+        $href = $this->input->post('href', true);
+        $etag = $this->input->post('etag', true);
 
         $response = array();
 
@@ -528,15 +528,15 @@ class Event extends MY_Controller
      */
     public function alter()
     {
-        $uid = $this->input->post('uid');
-        $calendar = $this->input->post('calendar');
-        $etag = $this->input->post('etag');
-        $dayDelta = $this->input->post('dayDelta');
-        $minuteDelta = $this->input->post('minuteDelta');
-        $allday = $this->input->post('allday');
-        $was_allday = $this->input->post('was_allday');
-        $view = $this->input->post('view');
-        $type = $this->input->post('type');
+        $uid = $this->input->post('uid', true);
+        $calendar = $this->input->post('calendar', true);
+        $etag = $this->input->post('etag', true);
+        $dayDelta = $this->input->post('dayDelta', true);
+        $minuteDelta = $this->input->post('minuteDelta', true);
+        $allday = $this->input->post('allday', true);
+        $was_allday = $this->input->post('was_allday', true);
+        $view = $this->input->post('view', true);
+        $type = $this->input->post('type', true);
 
         if ($uid === false || $calendar === false ||
                 $etag === false || $dayDelta === false || 

@@ -46,7 +46,7 @@ class Caldav2json extends MY_Controller
      */
     function principal_search() {
         $result = array();
-        $term = $this->input->get('term');
+        $term = $this->input->get('term', true);
         $client = $this->container['client'];
 
         if (!empty($term)) {

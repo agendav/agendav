@@ -106,8 +106,8 @@ class Prefs extends MY_Controller
      *  - default_calendar@form: default_calendar
      */
     function save() {
-        $calendar = $this->input->post('calendar');
-        $default_calendar = $this->input->post('default_calendar');
+        $calendar = $this->input->post('calendar', true);
+        $default_calendar = $this->input->post('default_calendar, true');
 
         if (!is_array($calendar)) {
             log_message('ERROR',

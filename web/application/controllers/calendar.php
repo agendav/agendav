@@ -118,7 +118,7 @@ class Calendar extends MY_Controller
      * Deletes a calendar
      */
     function delete() {
-        $calendar = $this->input->post('calendar');
+        $calendar = $this->input->post('calendar', true);
         if ($calendar === false) {
             log_message('ERROR', 'Call to delete_calendar() without calendar');
             $this->_throw_error($this->i18n->_('messages', 'error_interfacefailure'));
@@ -161,18 +161,18 @@ class Calendar extends MY_Controller
     function modify() {
         $is_sharing_enabled =
             $this->config->item('enable_calendar_sharing');
-        $calendar = $this->input->post('calendar');
-        $displayname = $this->input->post('displayname');
-        $calendar_color = $this->input->post('calendar_color');
+        $calendar = $this->input->post('calendar', true);
+        $displayname = $this->input->post('displayname', true);
+        $calendar_color = $this->input->post('calendar_color', true);
 
-        $is_shared_calendar = $this->input->post('is_shared_calendar');
+        $is_shared_calendar = $this->input->post('is_shared_calendar', true);
 
         // Will be only used for shared calendars
         $sid = null;
 
         // In case this calendar is owned by current user, this will contain
         // a list of users he/she wants to share the calendar with
-        $share_with = $this->input->post('share_with');
+        $share_with = $this->input->post('share_with', true);
 
         if ($calendar === false || $displayname === false || $calendar_color ===
                 false || ($is_sharing_enabled && $is_shared_calendar === false)) {
