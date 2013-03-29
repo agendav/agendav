@@ -79,5 +79,15 @@ Just use the provided ``bin/agendavcli`` script this way::
 
   $ ./bin/agendavcli dbupdate
 
+Please, note that this requires you have created a ``database.php`` file with
+a valid configuration to connect your database.
 
+
+.. note::
+
+   On Windows systems you may have some issues running ``agendavcli``. You can
+   use the following command::
+
+     cd web/public
+     php-cli.exe index.php cli dbupdate
 
