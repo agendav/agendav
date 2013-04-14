@@ -287,11 +287,19 @@ class Calendar extends MY_Controller
                 }
             }
 
-            $res = $this->client->setacl(
-                    $this->user->getUsername(),
-                    $this->user->getPasswd(),
-                    $internal_calendar,
-                    $set_shares);
+            $aclgenerator = $this->container['aclgenerator'];
+            foreach ($set_shares as $share) {
+                $principal = $this->urlgenerator->generatePrincipal($share['username']);
+                if ($share['rw'] == '0') {
+                    $aclgenerator->addGrant($principal, 'read');
+                } else {
+                    $aclgenerator->addGrant($principal, 'read_write');
+                }
+            }
+            $res = $this->client->setACL(
+                $changed_calendar->url,
+                $aclgenerator->buildACL()
+            );
 
             // Update shares on database
             if ($res === true) {

@@ -19,6 +19,9 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \AgenDAV\Data\Permissions;
+use \AgenDAV\Data\SinglePermission;
+
 class MY_Controller extends CI_Controller
 {
     public function __construct() {
@@ -118,6 +121,18 @@ class MY_Controller extends CI_Controller
 
             return $calendar_finder;
         });
+
+        // ACL generator
+        if ($enable_calendar_sharing === true) {
+            $cfg_permissions = $this->config->item('permissions');
+            $permissions = new Permissions($cfg_permissions['default']);
+            foreach ($cfg_permissions as $profile => $perms) {
+                $permissions->addProfile($profile, $perms);
+            }
+            $this->container['aclgenerator'] = $this->container->share(function($container) use ($permissions) {
+                return new \AgenDAV\CalDAV\ACLGenerator($permissions);
+            });
+        }
     }
 }
 

@@ -115,10 +115,10 @@ interface ICalDAVClient
      * Sets an ACL on a resource
      *
      * @param string $href Relative URL to the resource
-     * @param Array $share_with List of principals+permissions we want to share this calendar with
+     * @param string $acl ACL XML body
      * @return mixed true on success, HTTP code otherwise
      */
-    public function setACL($href, $acls);
+    public function setACL($href, $acl);
 
     /**
      * Searchs a principal based on passed conditions.

@@ -304,12 +304,17 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
      * Sets an ACL on a resource
      *
      * @param string $href Relative URL to the resource
-     * @param Array $share_with List of principals+permissions we want to share this calendar with
+     * @param string $acl ACL XML body
      * @return mixed true on success, HTTP code otherwise
      */
-    public function setACL($href, $acls)
+    public function setACL($href, $acl)
     {
-        return '400';
+        $res = $this->DoXMLRequest('ACL', $acl, $href);
+
+        $code = $this->GetHTTPResultCode();
+        $this->logger->message('INTERNALS', 'ACL on '.$href.' returned HTTP ' . $code);
+
+        return ($code[0] == '2') ? true : $code;
     }
 
     /**

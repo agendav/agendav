@@ -42,8 +42,7 @@ class Permissions
 
     public function __construct(Array $default_perms)
     {
-        $this->checkValidPermissionsArray($default_perms);
-        $this->default_perms = $default_perms;
+        $this->default_perms = $this->checkValidPermissionsArray($default_perms);
         $this->perms = array();
     }
 
@@ -58,8 +57,7 @@ class Permissions
         if (isset($this->perms[$name])) {
             throw new \RuntimeException('Profile ' . $name . ' already defined');
         } else {
-            $this->checkValidPermissionsArray($perms);
-            $this->perms[$name] = $perms;
+            $this->perms[$name] = $this->checkValidPermissionsArray($perms);
         }
     }
 
@@ -79,14 +77,18 @@ class Permissions
 
     private function checkValidPermissionsArray($arr)
     {
-        foreach ($arr as $elem) {
+        foreach ($arr as $pos => $elem) {
             if (!($elem instanceof SinglePermission)) {
-                throw new \RuntimeException(
-                    'Invalid element ' . var_export($elem, true) . ' inside '
-                    .'permissions array'
-                );
+                if (is_array($elem)) {
+                    $arr[$pos] = new SinglePermission($elem);
+                } else {
+                    throw new \RuntimeException(
+                        'Invalid element ' . var_export($elem, true) . ' inside '
+                        .'permissions array'
+                    );
+                }
             }
         }
-        return true;
+        return $arr;
     }
 }
