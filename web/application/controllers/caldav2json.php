@@ -50,7 +50,7 @@ class Caldav2json extends MY_Controller
         $client = $this->container['client'];
 
         if (!empty($term)) {
-            $result = $client->principalSearch($term, $term);
+            $result = $client->principalSearch($term, $term, true);
         }
 
         $this->output->set_output(json_encode($result));
