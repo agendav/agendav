@@ -87,9 +87,17 @@ class Js_generator extends MY_Controller
                 'fullcalendar',
                 $this->config->item('default_time_format')
             ),
+            'prefs_timeformat_moment' => DateHelper::getTimeFormatFor(
+                'moment',
+                $this->config->item('default_time_format')
+            ),
             'prefs_dateformat_option' => $this->config->item('default_date_format'),
             'prefs_dateformat' => DateHelper::getDateFormatFor(
                 'datepicker',
+                $this->config->item('default_date_format')
+            ),
+            'prefs_dateformat_moment' => DateHelper::getDateFormatFor(
+                'moment',
                 $this->config->item('default_date_format')
             ),
             'prefs_firstday' => $this->config->item('default_first_day'),

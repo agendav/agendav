@@ -32,12 +32,14 @@ class DateHelper
                 'strftime' => '%H:%M',
                 'date' => 'H:i',
                 'fullcalendar' => 'HH:mm',
+                'moment' => 'HH:mm',
                 ),
             '12' => array(
                 'strftime' => '%l:%M',  // %P will be simulated, not working
                                         // in all systems
                 'date' => 'h:i a', // Match timepicker format
                 'fullcalendar' => 'h(:mm)tt',
+                'moment' => 'hh:mm A',
                 ));
 
     // Possible date formats (not needed for strftime)
@@ -46,16 +48,19 @@ class DateHelper
                 'date' => 'Y-m-d',
                 'datepicker' => 'yy-mm-dd',
                 'strftime' => '%Y-%m-%d',
+                'moment' => 'YYYY-MM-DD',
                 ),
             'dmy' => array(
                 'date' => 'd/m/Y',
                 'datepicker' => 'dd/mm/yy',
                 'strftime' => '%d/%m/%Y',
+                'moment' => 'DD/MM/YYYY',
                 ),
             'mdy' => array(
                 'date' => 'm/d/Y',
                 'datepicker' => 'mm/dd/yy',
                 'strftime' => '%m/%d/%Y',
+                'moment' => 'MM/DD/YYYY',
                 ),
             );
 
@@ -79,6 +84,7 @@ class DateHelper
             case 'fullcalendar':
             case 'date':
             case 'strftime':
+            case 'moment':
                 return self::$time_formats[$which_one][$type];
                 break;
             default:
@@ -107,6 +113,7 @@ class DateHelper
             case 'date':
             case 'datepicker':
             case 'strftime':
+            case 'moment':
                 return self::$date_formats[$which_one][$type];
                 break;
             default:

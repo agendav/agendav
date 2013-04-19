@@ -74,6 +74,8 @@ $(document).ready(function() {
         function(data) { });
     });
   } else if ($('body').hasClass('calendarpage')) {
+    set_default_datepicker_options();
+
     // Dust.js base context
     dustbase = dust.makeBase({
       default_calendar_color: AgenDAVConf.default_calendar_color,
@@ -561,11 +563,17 @@ $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
 };
 
 /**
- * Sets a minDate on end_date
+ * Sets a minDate on passed elements, which already are datepickers
  */
 var set_mindate = function set_mindate(mindate, datepickers) {
-  $.each(datepickers, function (i, datepicker) {
-    datepicker.datepicker('option', 'minDate', mindate.toDate());
+  var desired_date = mindate;
+
+  if (moment.isMoment(mindate)) {
+    desired_date = mindate.toDate();
+  }
+
+  $.each(datepickers, function (i, element) {
+    element.datepicker('option', 'minDate', desired_date);
   });
 };
 
