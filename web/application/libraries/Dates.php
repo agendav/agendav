@@ -207,6 +207,16 @@ class Dates {
 
         $str = '';
         foreach ($id_arr as $k => $v) {
+            // iCalcreator could return month and day on 1 digit only.
+            // It is ugly, but it is a bug into iCalcreator (class iCalUtilityFunctions), and this
+            // library is too hard to read and debug to fix it.
+            switch ($k)
+            {
+              case 'month':
+              case 'day':
+                $v = sprintf('%02d', $v);
+                break;
+            }
             $str .= $v;
         }
 
