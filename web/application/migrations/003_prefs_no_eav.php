@@ -8,7 +8,7 @@ class Migration_Prefs_no_eav extends CI_Migration {
         // DBForge doesn't support foreign keys
         $prefs_table = $this->db->protect_identifiers('prefs', true);
         if (preg_match('/^mysql/', $this->db->dbdriver)) {
-            $sql = <<< 'MYSQL'
+            $sql = <<< MYSQL
                 CREATE TABLE $prefs_table (
                         username VARCHAR(255) NOT NULL,
                         options TEXT NOT NULL,
@@ -16,7 +16,7 @@ class Migration_Prefs_no_eav extends CI_Migration {
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 MYSQL;
         } elseif ($this->db->dbdriver == 'postgre') {
-            $sql = <<< 'PGSQL'
+            $sql = <<< PGSQL
                 CREATE TABLE $prefs_table (
                         username varchar(255) not null,
                         options text not null,
