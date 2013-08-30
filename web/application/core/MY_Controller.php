@@ -77,6 +77,9 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // Load it here instead of autoloading it becuase we need the user in here.
+        $this->load->model('i18n');
+
         // CalDAV client
         $cfg_client = array(
             'auth' => $this->config->item('caldav_http_auth_method'),

@@ -34,8 +34,16 @@ class I18n extends CI_Model {
         // Load language relations file
         $this->config->load('languages');
 
+        /** @var \AgenDAV\User $user */
+        $user = $this->container['user'];
+        $prefs = $user->getPreferences()->getAll();
+
         $this->lang_path = APPPATH . '../lang';
         $this->langname = $this->config->item('default_language');
+
+        // Overwrite default setting by users preferences
+        if (isset($prefs['language']))
+            $this->langname = $prefs['language'];
 
         if (!is_dir($this->lang_path)) {
             log_message('ERROR', 'Language path is not a directory');

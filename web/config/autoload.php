@@ -110,7 +110,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('shared_calendars', 'i18n', 'preferences');
+$autoload['model'] = array('shared_calendars', 'preferences');
 
 
 
