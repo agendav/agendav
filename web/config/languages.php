@@ -6,37 +6,48 @@
 */
 $config['lang_rels'] = array(
 		'en' => array(
-			'codeigniter' => 'English',
+			'codeigniter' => 'english',
+            'name' => 'English',
 			),
 		'es_ES' => array(
-			'codeigniter' => 'Spanish (Spain)',
+			'codeigniter' => 'spanish',
+            'name' => 'Spanish (Spain)',
 			),
 		'de_DE' => array(
-			'codeigniter' => 'German (Germany)',
+			'codeigniter' => 'german',
+            'name' => 'German (Germany)',
 			),
 		'it_IT' => array(
-			'codeigniter' => 'Italian (Italy)',
+			'codeigniter' => 'italian',
+            'name' => 'Italian (Italy)',
 			),
 		'fr_FR' => array(
-			'codeigniter' => 'French (France)',
+			'codeigniter' => 'french',
+            'name' => 'French (France)',
 			),
 		'nl_NL' => array(
-			'codeigniter' => 'Dutch (Netherlands)',
+			'codeigniter' => 'nl',
+            'name' => 'Dutch (Netherlands)',
 			),
 		'et' => array(
-			'codeigniter' => 'Estonian',
+			'codeigniter' => 'et',
+            'name' => 'Estonian',
 			),
 		'pt_BR' => array(
-			'codeigniter' => 'Portuguese (Brazilian)',
+			'codeigniter' => 'pt_BR',
+            'name' => 'Portuguese (Brazilian)',
 			),
         'fi' => array(
-            'codeigniter' => 'Finnish',
+            'codeigniter' => 'english',
+            'name' => 'Finnish',
             ),
         'ru_RU' => array(
-            'codeigniter' => 'Russian (Russia)',
+            'codeigniter' => 'ru',
+            'name' => 'Russian (Russia)',
             ),
         'pl' => array(
-            'codeigniter' => 'Polish',
+            'codeigniter' => 'pl',
+            'name' => 'Polish',
             ),
 		);
 

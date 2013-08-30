@@ -3,7 +3,7 @@
 $languages = array();
 foreach ($this->config->item('lang_rels') as $langKey => $val)
 {
-    $languages[$langKey] = $val['codeigniter'];
+    $languages[$langKey] = $val['name'];
 }
 
 echo formelement(
