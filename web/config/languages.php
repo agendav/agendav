@@ -6,37 +6,37 @@
 */
 $config['lang_rels'] = array(
 		'en' => array(
-			'codeigniter' => 'english',
+			'codeigniter' => 'English',
 			),
 		'es_ES' => array(
-			'codeigniter' => 'spanish',
+			'codeigniter' => 'Spanish (Spain)',
 			),
 		'de_DE' => array(
-			'codeigniter' => 'german',
+			'codeigniter' => 'German (Germany)',
 			),
 		'it_IT' => array(
-			'codeigniter' => 'italian',
+			'codeigniter' => 'Italian (Italy)',
 			),
 		'fr_FR' => array(
-			'codeigniter' => 'french',
+			'codeigniter' => 'French (France)',
 			),
 		'nl_NL' => array(
-			'codeigniter' => 'nl',
+			'codeigniter' => 'Dutch (Netherlands)',
 			),
 		'et' => array(
-			'codeigniter' => 'et',
+			'codeigniter' => 'Estonian',
 			),
 		'pt_BR' => array(
-			'codeigniter' => 'pt_BR',
+			'codeigniter' => 'Portuguese (Brazilian)',
 			),
         'fi' => array(
-            'codeigniter' => 'english',
+            'codeigniter' => 'Finnish',
             ),
         'ru_RU' => array(
-            'codeigniter' => 'ru',
+            'codeigniter' => 'Russian (Russia)',
             ),
         'pl' => array(
-            'codeigniter' => 'pl',
+            'codeigniter' => 'Polish',
             ),
 		);
 
