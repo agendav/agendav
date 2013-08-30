@@ -112,6 +112,13 @@ class Js_generator extends MY_Controller
             'calendar_colors' => $this->config->item('calendar_colors'),
         );
 
+        $prefs = $this->user->getPreferences()->getAll();
+        foreach($options as $key => &$value) {
+            if (isset($prefs[$key]))
+                $value = $prefs[$key];
+        }
+        unset($value);
+
         $options['default_calendar_color'] = '#' . $options['calendar_colors'][0];
 
         $this->load->view('js_code/siteconf', array(
@@ -121,6 +128,10 @@ class Js_generator extends MY_Controller
     }
 
 
+    /**
+     * Please refactor all these settings to the general configuration.
+     * @deprecated
+     */
     function userprefs()
     {
         $this->output->set_header(
