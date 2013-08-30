@@ -139,10 +139,14 @@ class I18n extends CI_Model {
                 $this->lang_relations['codeigniter']);
     }
 
+    public function getCurrent()
+    {
+        return $this->langname;
+    }
+
     /**
      * Dumps language contents 
      */
-
     public function dump() {
         return $this->lang_contents;
     }
