@@ -17,16 +17,5 @@ $hook['pre_system'] = array(
 		'filepath' => 'hooks',
 		);
 
-// Avoid problems when date.timezone is not set on php.ini
-$hook['pre_controller'] = array(
-		'class' => 'Defs',
-		'function' => 'default_tz',
-		'filename' => 'Defs.php',
-		'filepath' => 'hooks',
-		);
-
-
-
-
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

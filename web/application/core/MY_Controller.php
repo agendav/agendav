@@ -77,6 +77,13 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        /** @var \AgenDAV\User $user */
+        $user = $this->container['user'];
+        $timezone = $user->getPreferences()->timezone !== null ? $user->getPreferences()->timezone : $this->config->item('default_timezone');
+        // Set default timezone used all over in this app.
+        $this->config->set_item('default_timezone', $timezone);
+        date_default_timezone_set($timezone);
+
         // Load it here instead of autoloading it becuase we need the user in here.
         $this->load->model('i18n');
 

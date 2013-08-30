@@ -26,4 +26,20 @@ echo formelement(
 			$prefs_firstday,
 			'class="medium"'));
 
+$zones = array();
+$allZones = timezone_abbreviations_list();
+foreach($allZones as $zoneLabel => $zoneData) {
+    foreach($zoneData as $zone) {
+        $zones[$zone['timezone_id']] = $zone['timezone_id'];
+    }
+}
+$zones = array_unique($zones);
+sort($zones);
+
+echo formelement(
+		$this->i18n->_('labels', 'timezone'),
+		form_dropdown('timezone', array_combine($zones, $zones),
+			$timezone,
+			'class="medium"'));
+
 ?>

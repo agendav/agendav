@@ -36,7 +36,8 @@ $img_save = array(
 <div id="tabs-general">
     <?php $this->load->view('preferences_general', array(
         'language' => $language,
-        'prefs_firstday' => $prefs_firstday)); ?>
+        'prefs_firstday' => $prefs_firstday,
+        'timezone' => $timezone)); ?>
 </div>
 
 <div id="tabs-calendars">
