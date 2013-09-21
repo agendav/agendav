@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Interner Kalendername wird bereits ge
 $messages['info_confirmcaldelete'] = 'Sind Sie sich sicher, dass Sie den folgenden Kalender löschen möchten?';
 $messages['info_confirmeventdelete'] = 'Sind Sie sich sicher, dass Sie den folgenden Termin löschen möchten?';
 $messages['info_permanentremoval'] = 'Ihre Informationen werden unwiederrufbar gelöscht';
-$messages['info_repetitivedeleteall'] = 'Alle Wiederholungsinstanzen des Termins werden gelöscht';
 $messages['info_sharedby'] = 'Sie haben Zugriff auf diesen Kalender, da %user ihn mit Ihnen teilt';
 $messages['info_shareexplanation'] = 'Sie können diesen Kalender mit anderen
 Nutzern teilen und bearbeiten lassen. Geben Sie unten die Benutzernamen ein, abgetrennt

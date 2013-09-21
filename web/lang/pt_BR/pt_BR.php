@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Nome do calendário interno já está
 $messages['info_confirmcaldelete'] = 'Tem certeza que deseja excluir o seguinte calendário?';
 $messages['info_confirmeventdelete'] = 'Tem certeza que deseja excluir o seguinte evento?';
 $messages['info_permanentremoval'] = 'Suas informações serão excluídas permanentemente';
-$messages['info_repetitivedeleteall'] = 'Todas as instâncias de repetições deste evento serão excluídas';
 $messages['info_sharedby'] = 'Você tem acesso a este calendário porque %user o compartilhou com você';
 $messages['info_shareexplanation'] = 'Você pode compartilhar este calendário com
 outros usuários e permitir que eles o modifiquem. Insira os nomes de usuário abaixo, separados por

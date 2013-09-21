@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Внутреннее имя уже и
 $messages['info_confirmcaldelete'] = 'Вы уверены, что хотите удалить календарь?';
 $messages['info_confirmeventdelete'] = 'Вы уверены что хотите удалить эти события?';
 $messages['info_permanentremoval'] = 'Информация будет безвозвратно удалена';
-$messages['info_repetitivedeleteall'] = 'Все повторы этого события будут удалены';
 $messages['info_sharedby'] = '%user предоставил Вам доступ к этому календарю';
 $messages['info_shareexplanation'] = 'Вы можете предоставить доступ
 к этому календарю другим пользователям.

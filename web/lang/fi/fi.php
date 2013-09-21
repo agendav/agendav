@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Sisäinen kalenterin nimi on jo käyt
 $messages['info_confirmcaldelete'] = 'Haluatko varmasti poistaa seuraavan kalenterin?';
 $messages['info_confirmeventdelete'] = 'Haluatko varmasti poistaa seuraavan tapahtuman?';
 $messages['info_permanentremoval'] = 'Tietosi hävitetään pysyvästi';
-$messages['info_repetitivedeleteall'] = 'Kaikki tämän tapahtuman toistuvat kohteet poistetaan';
 $messages['info_sharedby'] = 'Sinulla on pääsy tähän kalenteriin, koska %user jakoi sen kanssasi';
 $messages['info_shareexplanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated

@@ -203,7 +203,6 @@ $messages['info_confirmcaldelete'] = '¿Está seguro de querer borrar el siguien
 $messages['info_confirmeventdelete'] = '¿Está seguro de querer borrar el siguiente evento?';
 $messages['info_permanentremoval'] = 'La información se perderá con carácter
 permanente';
-$messages['info_repetitivedeleteall'] = 'Todas las repeticiones de este evento se borrarán';
 $messages['info_sharedby'] = 'Tiene acceso a este calendario porque %user lo comparte con usted';
 $messages['info_shareexplanation'] = 'Puede compartir este calendario con
 otros usuarios para que ellos también puedan modificarlo. Separe con

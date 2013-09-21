@@ -14,9 +14,5 @@
 {title}
 </p>
 
-{?rrule}
-<p>{@i18n type="messages" name="info_repetitivedeleteall"/}</p>
-{/rrule}
-
 {>form_close/}
 </div>

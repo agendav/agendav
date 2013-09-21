@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Nome del calendario già in uso';
 $messages['info_confirmcaldelete'] = 'Vuoi davvero cancellare questo calendario?';
 $messages['info_confirmeventdelete'] = 'Vuoi davvero cancellare questo evento?';
 $messages['info_permanentremoval'] = 'I dati verranno cancellati in modo definitivo';
-$messages['info_repetitivedeleteall'] = 'Tutte le ripetizioni di questo evento verranno cancellate';
 $messages['info_sharedby'] = 'Puoi accedere a questo calendario perché %user lo ha condiviso con te';
 $messages['info_shareexplanation'] = 'Puoi condividere questo calendario con altri utenti e permettere loro di modificarlo. Indicane i nomi qui sotto separati da virgole o spazi';
 $messages['info_notshared'] = 'Il calendario non è condiviso';

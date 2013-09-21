@@ -203,7 +203,6 @@ $messages['error_internalcalnameinuse'] = 'Internal calendar name already being 
 $messages['info_confirmcaldelete'] = 'Are you sure you want to delete the following calendar?';
 $messages['info_confirmeventdelete'] = 'Are you sure you want to delete the following event?';
 $messages['info_permanentremoval'] = 'Your information will be permanently lost';
-$messages['info_repetitivedeleteall'] = 'All repetitive instances of this event will be deleted';
 $messages['info_sharedby'] = 'You have access to this calendar because %user shared it with you';
 $messages['info_shareexplanation'] = 'You can share this calendar with
 other users and let them modify it. Place their usernames below, separated
