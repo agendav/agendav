@@ -110,7 +110,7 @@ class Prefs extends MY_Controller
      */
     function save() {
         $calendar = $this->input->post('calendar', true);
-        $default_calendar = $this->input->post('default_calendar, true');
+        $default_calendar = $this->input->post('default_calendar', true);
         $prefs_firstday = $this->input->post('prefs_firstday', true);
         $language = $this->input->post('language', true);
         $timezone = $this->input->post('timezone', true);
