@@ -5,6 +5,8 @@
 <input type="hidden" name="uid" value="{uid}" />
 <input type="hidden" name="href" value="{href}" />
 <input type="hidden" name="etag" value="{etag}" />
+<input type="hidden" name="delete_just_this_instance" value="{delete_just_this_instance}" />
+<input type="hidden" name="start_of_this_instance" value="{start_of_this_instance}" />
 
 <p>{@i18n type="messages" name="info_confirmeventdelete"/}</p>
 
