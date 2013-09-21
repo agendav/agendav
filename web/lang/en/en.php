@@ -144,6 +144,8 @@ $labels['cancel'] = 'Cancel';
 $labels['next'] = 'next';
 $labels['previous'] = 'previous';
 $labels['yes'] = 'Yes';
+$labels['yes, the whole event'] = 'Yes, the whole event';
+$labels['yes, but just this instance'] = 'Yes, but just this instance';
 
 $labels['untitled'] = 'Untitled';
 

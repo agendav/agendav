@@ -147,6 +147,8 @@ $labels['cancel'] = 'Abbrechen';
 $labels['next'] = 'Nächstes';
 $labels['previous'] = 'Vorheriges';
 $labels['yes'] = 'Ja';
+$labels['yes, the whole event'] = 'Ja, die gesamte Terminserie';
+$labels['yes, but just this instance'] = 'Ja, aber nur diesen Termin';
 
 $labels['untitled'] = 'Unbenannt';
 
