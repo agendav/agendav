@@ -48,6 +48,7 @@ class Defs {
             'freeow.css',
             'colorpicker.css',
             'app.css',
+            'custom.css',
             );
     static $printcssfiles = array(
             'app.print.css',
