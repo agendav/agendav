@@ -464,6 +464,11 @@ Here you will configure every single aspect of your CalDAV server.
 Other configuration files
 -------------------------
 
+Custom CSS
+^^^^^^^^^^
+
+You can place your custom css in web/public/css/custom.css.
+
 Advanced options (advanced.php)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
