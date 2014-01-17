@@ -1,0 +1,44 @@
+---
+- hosts: all
+  tasks:
+
+      - name: update apt cache
+        apt: update_cache=yes cache_valid_time=3600
+        sudo: yes
+
+      - name: upgrade the distro
+        apt: upgrade=yes
+        sudo: yes
+
+      - name: install packages
+        apt: pkg={{ item }} state=latest
+        sudo: yes
+        with_items:
+            - curl
+            - php5
+            - php5-cli
+            - php5-mysql
+            - php5-mcrypt
+            - php5-sqlite
+            - mysql-client
+            - mysql-server
+            - python-mysqldb
+            - sqlite
+        notify:
+            - restart mysql
+
+      - name: create database
+        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8
+
+      - name: check for baikal
+        stat: path=/var/www/baikal-regular
+        register: baikal
+
+      - name: install baikal
+        include: baikal.yml
+        when: baikal.stat.exists == false
+
+  handlers:
+      - name: restart mysql
+        sudo: yes
+        action: service name=mysql state=restarted enabled=yes
