@@ -1,0 +1,5 @@
+# Customize the following settings for your development VM
+---
+
+# System wide timezone, used in php.in too
+timezone: 'Europe/Madrid'

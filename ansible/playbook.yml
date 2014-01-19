@@ -1,5 +1,9 @@
 ---
 - hosts: all
+
+  vars_files:
+      - vars.yml
+
   tasks:
 
       - name: update apt cache
@@ -27,6 +31,11 @@
         notify:
             - restart mysql
 
+      - name: set system timezone
+        template: src=system/timezone.j2 dest=/etc/timezone
+        sudo: yes
+        notify: reload timezone
+
       - name: create database
         mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8
 
@@ -38,7 +47,20 @@
         include: baikal.yml
         when: baikal.stat.exists == false
 
+      - name: configure php
+        copy: src=php/php.ini.j2 dest=/etc/php5/apache2/php.ini owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
   handlers:
       - name: restart mysql
         sudo: yes
         action: service name=mysql state=restarted enabled=yes
+
+      - name: restart apache
+        sudo: yes
+        action: service name=apache2 state=restarted enabled=yes
+
+      - name: reload timezone
+        sudo: yes
+        action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
