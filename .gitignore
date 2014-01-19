@@ -6,3 +6,5 @@ doc/html
 web/application/controllers/x.php
 web/vendor
 web/composer.phar
+.vagrant
+vagrant_ansible_inventory_default
