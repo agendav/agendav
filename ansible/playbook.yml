@@ -57,6 +57,10 @@
         sudo: yes
         notify: restart apache
 
+      - name: create agendav log directory
+        file: path=/var/log/agendav state=directory owner=www-data group=www-data mode=0644
+        sudo: yes
+
   handlers:
       - name: restart mysql
         sudo: yes
