@@ -48,7 +48,12 @@
         when: baikal.stat.exists == false
 
       - name: configure php
-        copy: src=php/php.ini.j2 dest=/etc/php5/apache2/php.ini owner=root mode=644 backup=yes
+        template: src=php/php.ini.j2 dest=/etc/php5/apache2/php.ini owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: configure apache
+        copy: src=apache/virtualhost dest=/etc/apache2/sites-available/default owner=root mode=644 backup=yes
         sudo: yes
         notify: restart apache
 
