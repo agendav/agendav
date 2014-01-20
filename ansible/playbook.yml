@@ -85,6 +85,9 @@
       - name: configure agendav (3/3)
         copy: src=agendav/database.php dest=/vagrant/web/config/database.php backup=yes
 
+      - name: apply latest schema updates
+        command: /vagrant/bin/agendavcli dbupdate
+
   handlers:
       - name: restart mysql
         sudo: yes
