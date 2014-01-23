@@ -8,18 +8,21 @@
     command: /bin/tar xzf /tmp/baikal.tgz -C /var/www
     sudo: yes
 
+  - name: rename baikal
+    command: /bin/mv /var/www/baikal-regular /var/www/baikal
+
   - name: baikal permissions
-    file: path=/var/www/baikal-regular state=directory recurse=yes mode=0755 owner=www-data group=www-data
+    file: path=/var/www/baikal state=directory recurse=yes mode=0755 owner=www-data group=www-data
     sudo: yes
 
   - name: baikal configuration (1/2)
-    copy: src=baikal/config.php dest=/var/www/baikal-regular/Specific owner=www-data group=www-data mode=600 backup=yes
+    copy: src=baikal/config.php dest=/var/www/baikal/Specific owner=www-data group=www-data mode=600 backup=yes
     sudo: yes
 
   - name: baikal configuration (2/2)
-    copy: src=baikal/config.system.php dest=/var/www/baikal-regular/Specific owner=www-data group=www-data mode=600 backup=yes
+    copy: src=baikal/config.system.php dest=/var/www/baikal/Specific owner=www-data group=www-data mode=600 backup=yes
     sudo: yes
 
   - name: baikal database
-    copy: src=baikal/db.sqlite dest=/var/www/baikal-regular/Specific/db owner=www-data group=www-data mode=600 backup=yes
+    copy: src=baikal/db.sqlite dest=/var/www/baikal/Specific/db owner=www-data group=www-data mode=600 backup=yes
     sudo: yes

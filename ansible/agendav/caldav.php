@@ -26,7 +26,7 @@
  *  DAViCal: $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
  */
 
-$config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+$config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
 
 
 /*******************
@@ -43,7 +43,7 @@ $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
  * Please, do NOT add trailing slash
  */
 
-$config['caldav_base_url'] = 'http://localhost/baikal';
+$config['caldav_base_url'] = 'http://localhost/baikal/html';
 
 /*
  * CalDAV principal PATH template
@@ -59,7 +59,7 @@ $config['caldav_base_url'] = 'http://localhost/baikal';
  * - Apple Calendar Server: /users/%u/
  */
 
-$config['caldav_principal_template'] = '/index.php/%u/';
+$config['caldav_principal_template'] = '/cal.php/principals/%u/';
 
 /*
  * CalDAV calendar home set PATH template
@@ -76,7 +76,7 @@ $config['caldav_principal_template'] = '/index.php/%u/';
  * - Apple Calendar Server: /calendars/users/%u/
  */
 
-$config['caldav_calendar_homeset_template'] = '/index.php/%u/';
+$config['caldav_calendar_homeset_template'] = '/cal.php/calendars/%u/';
 
 /*
  * Public CalDAV base URL for calendars
@@ -86,7 +86,7 @@ $config['caldav_calendar_homeset_template'] = '/index.php/%u/';
  * Will be shown to users only when 'show_public_caldav_url' is enabled
  */
 
-$config['caldav_public_base_url'] = 'http://192.168.100.10/baikal';
+$config['caldav_public_base_url'] = 'http://192.168.100.10/baikal/html';
 
 
 /*******************

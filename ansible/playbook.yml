@@ -43,7 +43,7 @@
         mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8
 
       - name: check for baikal
-        stat: path=/var/www/baikal-regular
+        stat: path=/var/www/baikal
         register: baikal
 
       - name: install baikal
@@ -53,6 +53,10 @@
       - name: configure php
         template: src=php/php.ini.j2 dest=/etc/php5/apache2/php.ini owner=root mode=644 backup=yes
         sudo: yes
+        notify: restart apache
+
+      - name: enable mod_rewrite
+        shell: /usr/sbin/a2enmod rewrite
         notify: restart apache
 
       - name: configure apache

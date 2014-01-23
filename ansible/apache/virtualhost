@@ -1,7 +1,7 @@
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 
-	DocumentRoot /vagrant/web/public
+	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
@@ -15,5 +15,9 @@
 
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-	Alias /baikal /var/www/baikal-regular/html
+	Alias /agendav /vagrant/web/public
+
+    RewriteEngine On
+    RewriteRule ^/$ /agendav [L,R=301]
+
 </VirtualHost>
