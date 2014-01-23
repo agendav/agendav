@@ -5,6 +5,13 @@
       - vars.yml
 
   tasks:
+      - name: set system timezone
+        template: src=system/timezone.j2 dest=/etc/timezone
+        sudo: yes
+
+      - name: reload timezone
+        sudo: yes
+        action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
 
       - name: update apt cache
         apt: update_cache=yes cache_valid_time=3600
@@ -32,14 +39,8 @@
         notify:
             - restart mysql
 
-      - name: set system timezone
-        template: src=system/timezone.j2 dest=/etc/timezone
-        sudo: yes
-        notify: reload timezone
-
       - name: create database
         mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8
-        notify: import agendav schema
 
       - name: check for baikal
         stat: path=/var/www/baikal-regular
@@ -70,7 +71,11 @@
       - name: install composer
         shell: /usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php -- --install-dir=/usr/local/bin
         when: composer.stat.exists == false
-        notify: rename composer.phar
+        sudo: yes
+
+      - name: rename composer.phar
+        action: command /bin/mv /usr/local/bin/composer.phar /usr/local/bin/composer
+        when: composer.stat.exists == false
         sudo: yes
 
       - name: install composer dependencies
@@ -85,6 +90,9 @@
       - name: configure agendav (3/3)
         copy: src=agendav/database.php dest=/vagrant/web/config/database.php backup=yes
 
+      - name: import agendav schema
+        mysql_db: name=agendav state=import collation=utf8_general_ci encoding=utf8 target=/vagrant/sql/mysql.schema.sql
+
       - name: apply latest schema updates
         command: /vagrant/bin/agendavcli dbupdate
 
@@ -96,14 +104,3 @@
       - name: restart apache
         sudo: yes
         action: service name=apache2 state=restarted enabled=yes
-
-      - name: reload timezone
-        sudo: yes
-        action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
-
-      - name: rename composer.phar
-        sudo: yes
-        action: command /bin/mv /usr/local/bin/composer.phar /usr/local/bin/composer
-
-      - name: import agendav schema
-        mysql_db: name=agendav state=import collation=utf8_general_ci encoding=utf8 target=/vagrant/sql/mysql.schema.sql
