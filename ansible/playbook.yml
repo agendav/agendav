@@ -90,11 +90,20 @@
       - name: configure agendav (3/3)
         copy: src=agendav/database.php dest=/vagrant/web/config/database.php backup=yes
 
+      - name: check if database is empty
+        shell: /usr/bin/mysql -uroot -e 'show tables;' agendav | /bin/grep sessions
+        register: dbstatus
+
       - name: import agendav schema
+        when: dbstatus.rc == 1
         mysql_db: name=agendav state=import collation=utf8_general_ci encoding=utf8 target=/vagrant/sql/mysql.schema.sql
 
       - name: apply latest schema updates
         command: /vagrant/bin/agendavcli dbupdate
+
+      - name: change log permissions again
+        file: path=/var/log/agendav recurse=true state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
 
   handlers:
       - name: restart mysql
