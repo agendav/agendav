@@ -1,0 +1,119 @@
+---
+- hosts: all
+
+  vars_files:
+      - vars.yml
+
+  tasks:
+      - name: set system timezone
+        template: src=system/timezone.j2 dest=/etc/timezone
+        sudo: yes
+
+      - name: reload timezone
+        sudo: yes
+        action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
+
+      - name: update apt cache
+        apt: update_cache=yes cache_valid_time=3600
+        sudo: yes
+
+      - name: upgrade the distro
+        apt: upgrade=yes
+        sudo: yes
+
+      - name: install packages
+        apt: pkg={{ item }} state=latest
+        sudo: yes
+        with_items:
+            - curl
+            - php5
+            - php5-cli
+            - php5-curl
+            - php5-mysql
+            - php5-mcrypt
+            - php5-sqlite
+            - mysql-client
+            - mysql-server
+            - python-mysqldb
+            - sqlite
+        notify:
+            - restart mysql
+
+      - name: create database
+        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8
+
+      - name: check for baikal
+        stat: path=/var/www/baikal
+        register: baikal
+
+      - name: install baikal
+        include: baikal.yml
+        when: baikal.stat.exists == false
+
+      - name: configure php
+        template: src=php/php.ini.j2 dest=/etc/php5/apache2/php.ini owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: enable mod_rewrite
+        shell: /usr/sbin/a2enmod rewrite
+        notify: restart apache
+
+      - name: configure apache
+        copy: src=apache/virtualhost dest=/etc/apache2/sites-available/default owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: create agendav log directory
+        file: path=/var/log/agendav state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
+
+      - name: check if composer is installed
+        stat: path=/usr/local/bin/composer
+        register: composer
+
+      - name: install composer
+        shell: /usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php -- --install-dir=/usr/local/bin
+        when: composer.stat.exists == false
+        sudo: yes
+
+      - name: rename composer.phar
+        action: command /bin/mv /usr/local/bin/composer.phar /usr/local/bin/composer
+        when: composer.stat.exists == false
+        sudo: yes
+
+      - name: install composer dependencies
+        command: /usr/local/bin/composer install chdir=/vagrant/web
+
+      - name: configure agendav (1/3)
+        template: src=agendav/config.php.j2 dest=/vagrant/web/config/config.php backup=yes
+
+      - name: configure agendav (2/3)
+        copy: src=agendav/caldav.php dest=/vagrant/web/config/caldav.php backup=yes
+
+      - name: configure agendav (3/3)
+        copy: src=agendav/database.php dest=/vagrant/web/config/database.php backup=yes
+
+      - name: check if database is empty
+        shell: /usr/bin/mysql -uroot -e 'show tables;' agendav | /bin/grep sessions
+        register: dbstatus
+
+      - name: import agendav schema
+        when: dbstatus.rc == 1
+        mysql_db: name=agendav state=import collation=utf8_general_ci encoding=utf8 target=/vagrant/sql/mysql.schema.sql
+
+      - name: apply latest schema updates
+        command: /vagrant/bin/agendavcli dbupdate
+
+      - name: change log permissions again
+        file: path=/var/log/agendav recurse=true state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
+
+  handlers:
+      - name: restart mysql
+        sudo: yes
+        action: service name=mysql state=restarted enabled=yes
+
+      - name: restart apache
+        sudo: yes
+        action: service name=apache2 state=restarted enabled=yes
