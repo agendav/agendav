@@ -56,6 +56,7 @@
 
       - name: enable mod_rewrite
         shell: /usr/sbin/a2enmod rewrite
+        sudo: yes
         notify: restart apache
 
       - name: configure apache
@@ -95,6 +96,7 @@
 
       - name: check if database is empty
         shell: /usr/bin/mysql -uroot -e 'show tables;' agendav | /bin/grep sessions
+        ignore_errors: true
         register: dbstatus
 
       - name: import agendav schema
