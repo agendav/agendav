@@ -46,8 +46,7 @@
         stat: path=/var/www/baikal
         register: baikal
 
-      - name: install baikal
-        include: baikal.yml
+      - include: baikal.yml
         when: baikal.stat.exists == false
 
       - name: configure php
