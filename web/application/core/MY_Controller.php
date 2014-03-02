@@ -38,12 +38,6 @@ class MY_Controller extends CI_Controller
         $ci_shared_calendars = $this->shared_calendars;
         $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
 
-        // Classes
-        $this->container['user_class'] = '\AgenDAV\User';
-        $this->container['urlgenerator_class'] = '\AgenDAV\CalDAV\URLGenerator';
-        $this->container['client_class'] = '\AgenDAV\CalDAV\CURLClient';
-        $this->container['session_class'] = '\AgenDAV\CodeIgniterSessionManager';
-
         // URLGenerator
         $cfg = array(
             'caldav_base_url' => $this->config->item('caldav_base_url'),
@@ -53,8 +47,7 @@ class MY_Controller extends CI_Controller
         );
 
         $this->container['urlgenerator'] = $this->container->share(function($container) use ($cfg){
-            $c = $container['urlgenerator_class'];
-            return new $c(
+            return new \AgenDAV\CalDAV\URLGenerator(
                 $cfg['caldav_base_url'],
                 $cfg['caldav_principal_template'],
                 $cfg['caldav_calendar_homeset_template'],
@@ -64,13 +57,12 @@ class MY_Controller extends CI_Controller
 
         // Session
         $this->container['session'] = $this->container->share(function($container) {
-            return new $container['session_class'];
+            return new \AgenDAV\CodeIgniterSessionManager();
         });
 
         // User
         $this->container['user'] = $this->container->share(function($container) use ($ci_preferences, $ci_encrypt) {
-            $c = $container['user_class'];
-            return new $c(
+            return new \AgenDAV\User(
                 $container['session'],
                 $ci_preferences,
                 $ci_encrypt
@@ -83,8 +75,7 @@ class MY_Controller extends CI_Controller
             'useragent' => 'AgenDAV v' . \AgenDAV\Version::V,
         );
         $this->container['client'] = $this->container->share(function($container) use ($ci_logger, $cfg_client) {
-            $c = $container['client_class'];
-            return new $c(
+            return new \AgenDAV\CalDAV\CURLClient(
                 $container['user'],
                 $container['urlgenerator'],
                 $ci_logger,
