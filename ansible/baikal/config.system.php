@@ -39,7 +39,7 @@
 define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
 
 # If you change this value, you'll have to re-generate passwords for all your users
-define("BAIKAL_AUTH_REALM", "BaikalDAV");
+define("BAIKAL_AUTH_REALM", 'BaikalDAV');
 
 # Should begin and end with a "/"
 define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
@@ -54,19 +54,19 @@ define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
 define("PROJECT_DB_MYSQL", FALSE);
 
 # MySQL > Host, including ':portnumber' if port is not the default one (3306)
-define("PROJECT_DB_MYSQL_HOST", "");
+define("PROJECT_DB_MYSQL_HOST", '');
 
 # MySQL > Database name
-define("PROJECT_DB_MYSQL_DBNAME", "");
+define("PROJECT_DB_MYSQL_DBNAME", '');
 
 # MySQL > Username
-define("PROJECT_DB_MYSQL_USERNAME", "");
+define("PROJECT_DB_MYSQL_USERNAME", '');
 
 # MySQL > Password
-define("PROJECT_DB_MYSQL_PASSWORD", "");
+define("PROJECT_DB_MYSQL_PASSWORD", '');
 
 # A random 32 bytes key that will be used to encrypt data
-define("BAIKAL_ENCRYPTION_KEY", "5023c8ea66c380b1b66e44f24825b9ce");
+define("BAIKAL_ENCRYPTION_KEY", '5023c8ea66c380b1b66e44f24825b9ce');
 
 # The currently configured Baïkal version
-define("BAIKAL_CONFIGURED_VERSION", "0.2.6");
+define("BAIKAL_CONFIGURED_VERSION", '0.2.7');

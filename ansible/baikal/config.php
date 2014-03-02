@@ -32,7 +32,7 @@
 #
 
 # Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-define("PROJECT_TIMEZONE", "Europe/Paris");
+define("PROJECT_TIMEZONE", 'Europe/Paris');
 
 # CardDAV ON/OFF switch; default TRUE
 define("BAIKAL_CARD_ENABLED", TRUE);
@@ -41,7 +41,7 @@ define("BAIKAL_CARD_ENABLED", TRUE);
 define("BAIKAL_CAL_ENABLED", TRUE);
 
 # WebDAV authentication type; default Digest
-define("BAIKAL_DAV_AUTH_TYPE", "Digest");
+define("BAIKAL_DAV_AUTH_TYPE", 'Digest');
 
 # Baïkal Web Admin ON/OFF switch; default TRUE
 define("BAIKAL_ADMIN_ENABLED", TRUE);
@@ -50,4 +50,4 @@ define("BAIKAL_ADMIN_ENABLED", TRUE);
 define("BAIKAL_ADMIN_AUTOLOCKENABLED", FALSE);
 
 # Baïkal Web admin password hash; Set via Baïkal Web Admin
-define("BAIKAL_ADMIN_PASSWORDHASH", "142ff212f9ed2f8f8b5e7b96f6929f78");
+define("BAIKAL_ADMIN_PASSWORDHASH", '142ff212f9ed2f8f8b5e7b96f6929f78');
