@@ -1,14 +1,14 @@
 <?php
 namespace AgenDAV\Data;
 
-class CalendarInfoTest extends \PHPUnit_Framework_TestCase
+class CalendarTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
     {
-        $defaults = CalendarInfo::$defaults;
+        $defaults = Calendar::$defaults;
         $count = count($defaults) + 2; // url and calendar
 
-        $c = new CalendarInfo('/path');
+        $c = new Calendar('/path');
         $current = $c->getAll();
         $this->assertCount($count, $current);
         $this->assertArrayHasKey('calendar', $current);
@@ -21,7 +21,7 @@ class CalendarInfoTest extends \PHPUnit_Framework_TestCase
 
     public function testCalendarAttribute()
     {
-        $c = new CalendarInfo('TEST');
+        $c = new Calendar('TEST');
         $this->assertEquals($c->url, 'TEST');
         $this->assertEquals($c->calendar, 'TEST');
 
@@ -32,7 +32,7 @@ class CalendarInfoTest extends \PHPUnit_Framework_TestCase
 
     public function testSet()
     {
-        $c = new CalendarInfo('/path');
+        $c = new Calendar('/path');
         $c->displayname = 'Test';
 
         $this->assertEquals($c->displayname, 'Test');
