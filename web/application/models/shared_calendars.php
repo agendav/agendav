@@ -213,7 +213,7 @@ class Shared_calendars extends CI_Model
      * Sets user defined properties (from shared db) for each calendar. Sets
      * some special properties too
      *
-     * @param Array $calendars Calendar array of CalendarInfo class each one
+     * @param Array $calendars Array of Calendar each one
      * @param Array $properties Result of get_shared_with($username)
      * @return Array Modified calendar list
      */

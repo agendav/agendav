@@ -78,14 +78,14 @@ class CalendarHomeSet implements IChannel
      * Gets current user calendars 
      * 
      * @access public
-     * @return Array [path => \AgenDAV\Data\CalendarInfo]
+     * @return Array [path => \AgenDAV\Data\Calendar]
      */
     public function getCalendars()
     {
         $cals = $this->client->getCalendars();
         if ($cals !== null) {
             foreach ($cals as $c) {
-                $c->grantee = $this->shares->usersWithAccessTo($c->calendar);
+                //$c->grantee = $this->shares->usersWithAccessTo($c->calendar);
             }
         }
         return $cals;

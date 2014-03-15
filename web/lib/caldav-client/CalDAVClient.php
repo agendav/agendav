@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\Data\CalendarInfo;
+use AgenDAV\Data\Calendar;
 
 class CalDAVClient {
   /**
@@ -773,7 +773,7 @@ class CalDAVClient {
       $hnode = $this->xmltags['DAV::href'][0];
       $href = rawurldecode($this->xmlnodes[$hnode]['value']);
 
-      $calendar = new CalendarInfo($href);
+      $calendar = new Calendar($href);
       $ok_props = $this->GetOKProps($hnode);
       foreach( $ok_props AS $k => $v ) {
           $name = preg_replace( '{^.*:}', '', $v['tag'] );
@@ -1049,7 +1049,7 @@ EOFILTER;
 
               if ( !isset($calendar_urls[$href]) ) continue;
 
-              $calendar = new CalendarInfo($href);
+              $calendar = new Calendar($href);
 
               $calendar->calendar = $href;
 

@@ -239,10 +239,10 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
     /**
      * Changes properties for a given resource using PROPPATCH
      *
-     * @param \AgenDAV\Data\CalendarInfo $calendar Calendar resource to be modified
+     * @param \AgenDAV\Data\Calendar $calendar Calendar resource to be modified
      * @return mixed  true on successful creation, HTTP result code otherwise
      */
-    public function changeResource(\AgenDAV\Data\CalendarInfo $calendar)
+    public function changeResource(\AgenDAV\Data\Calendar $calendar)
     {
         // Create XML body
         $ns = array(
@@ -271,10 +271,10 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
     /**
      * Creates a new calendar inside a principal collection
      *
-     * @param \AgenDAV\Data\CalendarInfo $calendar New calendar to be added
+     * @param \AgenDAV\Data\Calendar $calendar New calendar to be added
      * @return mixed true on successful creation, HTTP result code otherwise
      */
-    public function createCalendar(\AgenDAV\Data\CalendarInfo $calendar)
+    public function createCalendar(\AgenDAV\Data\Calendar $calendar)
     {
         // Create XML body
         $ns = array(

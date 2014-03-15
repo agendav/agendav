@@ -24,7 +24,7 @@ namespace AgenDAV\Data;
 /**
  * Stores information about a calendar collection 
  */
-class CalendarInfo
+class Calendar
 {
     /**
      * Calendar attributes

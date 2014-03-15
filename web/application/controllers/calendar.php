@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use \AgenDAV\Data\CalendarInfo;
+use \AgenDAV\Data\Calenda;
 
 class Calendar extends MY_Controller
 {
@@ -92,7 +92,7 @@ class Calendar extends MY_Controller
         // Add transparency to color
         $calendar_color = $this->toRGBA($calendar_color);
 
-        $new_calendar = new CalendarInfo(
+        $new_calendar = new Calendar(
             $url,
             $displayname
         );
@@ -217,7 +217,7 @@ class Calendar extends MY_Controller
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
             // Calendar properties
-            $changed_calendar = new CalendarInfo(
+            $changed_calendar = new Calendar(
                 $calendar,
                 $displayname
             );
