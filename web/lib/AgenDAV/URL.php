@@ -1,5 +1,5 @@
 <?php
-namespace AgenDAV\CalDAV;
+namespace AgenDAV;
 
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
@@ -20,7 +20,7 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class URLGenerator implements IURLGenerator
+class URL
 {
 
     /**

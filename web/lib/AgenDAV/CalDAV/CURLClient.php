@@ -21,12 +21,13 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\URL;
 use AgenDAV\Version;
 
 /**
  * AgenDAV CalDAV client 
  */
-class CURLClient extends \CalDAVClient implements ICalDAVClient
+class CURLClient extends \CalDAVClient implements Client
 {
     /**
      * Current user
@@ -39,7 +40,7 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
     /**
      * URL generator manager 
      *
-     * @var IURLGenerator
+     * @var URL
      * @access private
      */
     private $urlgenerator;
@@ -56,13 +57,13 @@ class CURLClient extends \CalDAVClient implements ICalDAVClient
      * Creates a new CalDAV client
      *
      * @param Object $app_user Current user
-     * @param IURLGenerator $urlgenerator URL generator
+     * @param URL $urlgenerator URL generator
      * @param Object $logger Log manager
      * @param Array $options Options array. Valid options are: timeout, auth
      * @access public
      * @return void
      */
-    public function __construct($app_user, IURLGenerator $urlgenerator, $logger, $options)
+    public function __construct($app_user, URL $urlgenerator, $logger, $options)
     {
         $this->app_user = $app_user;
         $this->urlgenerator = $urlgenerator;

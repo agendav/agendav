@@ -38,7 +38,7 @@ class MY_Controller extends CI_Controller
         $ci_shared_calendars = $this->shared_calendars;
         $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
 
-        // URLGenerator
+        // URL generator
         $cfg = array(
             'caldav_base_url' => $this->config->item('caldav_base_url'),
             'caldav_principal_template' => $this->config->item('caldav_principal_template'),
@@ -47,7 +47,7 @@ class MY_Controller extends CI_Controller
         );
 
         $this->container['urlgenerator'] = $this->container->share(function($container) use ($cfg){
-            return new \AgenDAV\CalDAV\URLGenerator(
+            return new \AgenDAV\URL(
                 $cfg['caldav_base_url'],
                 $cfg['caldav_principal_template'],
                 $cfg['caldav_calendar_homeset_template'],

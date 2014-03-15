@@ -21,11 +21,11 @@ namespace AgenDAV\CalDAV;
  */
 
 /**
- * ICalDAVClient 
+ * Client 
  *
  * Interface for CalDAV clients
  */
-interface ICalDAVClient
+interface Client
 {
     /**
      * Checks current user authentication against current user principal URL

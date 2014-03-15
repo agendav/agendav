@@ -25,7 +25,7 @@ class CalendarHomeSet implements IChannel
     /**
      * CalDAV client 
      * 
-     * @var \AgenDAV\CalDAV\ICalDAVClient
+     * @var \AgenDAV\CalDAV\Client
      * @access private
      */
     private $client;
@@ -41,11 +41,11 @@ class CalendarHomeSet implements IChannel
     /**
      * Instantiates a new CalendarHomeSet channel
      * 
-     * @param \AgenDAV\CalDAV\ICalDAVClient $client 
+     * @param \AgenDAV\CalDAV\Client $client 
      * @access public
      * @return void
      */
-    public function __construct(\AgenDAV\CalDAV\ICalDAVClient $client)
+    public function __construct(\AgenDAV\CalDAV\Client $client)
     {
         $this->client = $client;
         $this->shares = null;

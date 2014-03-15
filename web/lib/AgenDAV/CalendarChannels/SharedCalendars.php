@@ -25,7 +25,7 @@ class SharedCalendars implements IChannel
     /**
      * CalDAV client 
      * 
-     * @var \AgenDAV\CalDAV\ICalDAVClient
+     * @var \AgenDAV\CalDAV\Client
      * @access private
      */
     private $client;
@@ -49,12 +49,12 @@ class SharedCalendars implements IChannel
     /**
      * Instantiates a new SharedCalendars channel
      * 
-     * @param \AgenDAV\CalDAV\ICalDAVClient $client 
+     * @param \AgenDAV\CalDAV\Client $client 
      * @param Object $model shared_calendars model instance from CodeIgniter
      * @access public
      * @return void
      */
-    public function __construct(\AgenDAV\CalDAV\ICalDAVClient $client, $model)
+    public function __construct(\AgenDAV\CalDAV\Client $client, $model)
     {
         $this->client = $client;
         $this->model = $model;
