@@ -43,7 +43,7 @@ $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
  * Please, do NOT add trailing slash
  */
 
-$config['caldav_base_url'] = 'http://localhost/baikal/html';
+$config['caldav_base_url'] = 'http://localhost:81';
 
 /*
  * CalDAV principal PATH template
@@ -86,7 +86,7 @@ $config['caldav_calendar_homeset_template'] = '/cal.php/calendars/%u/';
  * Will be shown to users only when 'show_public_caldav_url' is enabled
  */
 
-$config['caldav_public_base_url'] = 'http://192.168.100.10/baikal/html';
+$config['caldav_public_base_url'] = 'http://192.168.100.10:81';
 
 
 /*******************

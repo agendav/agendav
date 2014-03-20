@@ -59,8 +59,23 @@
         sudo: yes
         notify: restart apache
 
-      - name: configure apache
-        copy: src=apache/virtualhost dest=/etc/apache2/sites-available/default owner=root mode=644 backup=yes
+      - name: configure apache 1/3
+        copy: src=apache/ports.conf dest=/etc/apache2/ports.conf owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: configure apache 2/3
+        copy: src=apache/agendav dest=/etc/apache2/sites-available/default owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: configure apache 3/3
+        copy: src=apache/baikal dest=/etc/apache2/sites-available/baikal owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: enable baikal on apache
+        shell: /usr/sbin/a2ensite baikal
         sudo: yes
         notify: restart apache
 
