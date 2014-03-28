@@ -71,6 +71,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $guzzle->getEmitter()->attach($response_mock);
 
         $client = new Client($guzzle);
-        $client->setHeader('Test-Header', 'Test value');
+        $client->request('GET', '/');
     }
 }

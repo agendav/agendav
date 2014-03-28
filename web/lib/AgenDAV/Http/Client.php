@@ -64,6 +64,7 @@ class Client
         );
 
         $this->options = array_merge($this->options, $custom_options);
+        $this->request_headers = array();
     }
 
     /**
