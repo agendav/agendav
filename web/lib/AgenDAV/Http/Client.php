@@ -45,11 +45,6 @@ class Client
     private $request;
 
     /**
-     * Received response
-     */
-    private $response;
-
-    /**
      * Common request options
      */
     private $options;
@@ -57,12 +52,13 @@ class Client
     /**
      * Creates a new Client
      *
-     * TODO add comments to documentation about SSL verifying
+     * TODO add comments to documentation about SSL certificate validation
+     * @param GuzzleHttp\client $guzzle Actual Guzzle HTTP client
      * @param Array $custom_options     Options to be used on every request. Overrides default values
      */
-    public function __construct(array $custom_options = array())
+    public function __construct(GuzzleClient $guzzle, array $custom_options = array())
     {
-        $this->guzzle = new GuzzleClient();
+        $this->guzzle = $guzzle;
         $this->options = array(
             'exceptions' => false, // Do not throw an exception on 4xx/5xx
         );
@@ -131,23 +127,14 @@ class Client
     }
 
     /**
-     * Sets next request body
+     * Gets last request sent using this client
      *
-     * @param string $body  Request body
-     * @return void
+     * @return GuzzleHttp\Message\RequestInterface     Last request sent
+     * @author Jorge López Pérez <jorge@adobo.org>
      **/
-    public function setBody($body)
+    public function getLastRequest()
     {
-        $this->requestBody = $body;
-    }
-
-    /**
-     * Gets response headers
-     *
-     * @return Array Response headers in array format
-     **/
-    public function getResponseHeaders()
-    {
+        return $this->request;
     }
 
 
@@ -166,6 +153,7 @@ class Client
             $this->options
         );
 
+        $this->request->setHeaders($this->request_headers);
         $this->request->setHeader('User-Agent', 'AgenDAV/' . Version::V);
 
         if ($body !== '') {
