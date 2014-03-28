@@ -73,4 +73,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client($guzzle);
         $client->request('GET', '/');
     }
+
+    public function testCleanHeadersAfterARequest()
+    {
+        $guzzle = new GuzzleClient();
+        $response_mock = new Mock(array(
+            'HTTP/1.1 200 OK\nContent-Length: 0\r\n\r\n',
+            'HTTP/1.1 200 OK\nContent-Length: 0\r\n\r\n',
+        ));
+        $guzzle->getEmitter()->attach($response_mock);
+
+        $client = new Client($guzzle);
+        $client->setHeader('Test-Header', 'Value');
+        $client->request('GET', '/');
+
+        // Send a second request, does it contain the Test-Header header?
+        $client->request('GET', '/');
+
+        $headers = $client->getLastRequest()->getHeaders();
+        $this->assertFalse(
+            isset($headers['Test-Header']),
+            'Headers are not cleaned after a request'
+        );
+    }
 }

@@ -163,6 +163,9 @@ class Client
 
         $this->response = $this->guzzle->send($this->request);
 
+        // Clean current headers
+        $this->request_headers = array();
+
         return $this->response;
     }
 }
