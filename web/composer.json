@@ -11,7 +11,8 @@
         "keboola/php-encryption": "~0.2.1",
         "mockery/mockery": "~0.9.1",
         "doctrine/orm": "~2.4",
-        "guzzlehttp/guzzle": "~5.0"
+        "guzzlehttp/guzzle": "~5.0",
+        "sabre/xml": "0.0.5"
     },
     "autoload": {
         "psr-4": {
