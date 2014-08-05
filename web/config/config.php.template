@@ -209,6 +209,23 @@ $config['default_first_day'] = 0;
 
 $config['default_timezone'] = 'Europe/Madrid';
 
+
+/*
+|--------------------------------------------------------------------------
+| Database settings
+|--------------------------------------------------------------------------
+|
+| Set your database connection settings here
+*/
+$config['db'] = array(
+        'dbname' => 'agendav',
+        'user' => 'user',
+        'password' => 'password',
+        'host' => 'localhost',
+        'driver' => 'pdo_mysql',
+);
+
+
 /*
 |--------------------------------------------------------------------------
 | Color list

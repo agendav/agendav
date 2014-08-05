@@ -1,7 +1,8 @@
 {
     "require": {
         "pimple/pimple": "1.0.0",
-        "monolog/monolog": "1.*"
+        "monolog/monolog": "1.*",
+        "doctrine/dbal": "~2.4"
     },
     "autoload": {
         "psr-0": {

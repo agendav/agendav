@@ -38,6 +38,13 @@ class MY_Controller extends CI_Controller
         $ci_shared_calendars = $this->shared_calendars;
         $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
 
+
+        $db_options = $this->config->item('db');
+        $this->container['db'] = $this->container->share(function($container) use ($db_options) {
+            $dbal_config = new \Doctrine\DBAL\Configuration();
+            return \Doctrine\DBAL\DriverManager::getConnection($db_options, $dbal_config);
+        });
+
         // URL generator
         $cfg = array(
             'caldav_base_url' => $this->config->item('caldav_base_url'),
