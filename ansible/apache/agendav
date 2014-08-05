@@ -2,9 +2,10 @@
 	ServerAdmin webmaster@localhost
 
 	DocumentRoot /vagrant/web/public
-	<Directory />
+	<Directory /vagrant/web/public>
 		Options FollowSymLinks
 		AllowOverride None
+		Require all granted
 	</Directory>
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log

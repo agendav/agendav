@@ -13,8 +13,16 @@
         sudo: yes
         action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
 
+      - name: install python-pycurl
+        sudo: yes
+        apt: name='python-pycurl' update_cache=yes
+
+      - name: add ondrej/php5 repository
+        sudo: yes
+        apt_repository: repo='ppa:ondrej/php5'
+
       - name: update apt cache
-        apt: update_cache=yes cache_valid_time=3600
+        apt: update_cache=yes
         sudo: yes
 
       - name: install packages
@@ -61,12 +69,12 @@
         notify: restart apache
 
       - name: configure apache 2/3
-        copy: src=apache/agendav dest=/etc/apache2/sites-available/default owner=root mode=644 backup=yes
+        copy: src=apache/agendav dest=/etc/apache2/sites-available/000-default.conf owner=root mode=644 backup=yes
         sudo: yes
         notify: restart apache
 
       - name: configure apache 3/3
-        copy: src=apache/baikal dest=/etc/apache2/sites-available/baikal owner=root mode=644 backup=yes
+        copy: src=apache/baikal dest=/etc/apache2/sites-available/baikal.conf owner=root mode=644 backup=yes
         sudo: yes
         notify: restart apache
 

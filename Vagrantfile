@@ -7,6 +7,8 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: "192.168.100.10"
   config.vm.hostname = "agendav.dev"
 
+  config.vm.synced_folder '.', '/vagrant', nfs: true
+
   config.vm.provider "virtualbox" do |v|
       v.memory = 1024
   end
