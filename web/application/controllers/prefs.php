@@ -25,12 +25,14 @@ class Prefs extends MY_Controller
 {
 
     private $prefs;
+    private $preferences_repository;
     private $user;
 
     function __construct() {
         parent::__construct();
 
         $this->user = $this->container['user'];
+        $this->preferences_repository = $this->container['preferences_repository'];
 
         // Force authentication
         if (!$this->user->isAuthenticated()) {
@@ -38,7 +40,7 @@ class Prefs extends MY_Controller
         }
 
         // Preferences
-        $this->prefs = $this->user->getPreferences();
+        $this->prefs = $this->preferences_repository->userPreferences($this->user->getUsername());;
     }
 
     function index() {
@@ -124,7 +126,7 @@ class Prefs extends MY_Controller
         }
 
         $current_user = $this->user->getUsername();
-        $current_prefs = $this->user->getPreferences(true);
+        $current_prefs = $this->preferences_repository->userPreferences($current_user);
 
         // Default calendar
         $current_prefs->default_calendar = $default_calendar;
@@ -147,7 +149,7 @@ class Prefs extends MY_Controller
         $current_prefs->hidden_calendars = $hidden_calendars;
 
         // Save preferences
-        $this->preferences->save($current_user, $current_prefs);
+        $this->preferences_repository->save($current_user, $current_prefs);
 
         $this->session->set_userdata('prefs', $current_prefs->getAll());
         $this->_throw_success();
