@@ -93,7 +93,12 @@ class DoctrinePreferencesRepository implements PreferencesRepository
             $insert_stmt = $this->connection->prepare($sql_insert);
             $insert_stmt->bindParam(':username', $username, \PDO::PARAM_STR);
             $insert_stmt->bindParam(':options', $data, \PDO::PARAM_STR);
-            $insert_stmt->execute();
+            try {
+                $insert_stmt->execute();
+            } catch (\Exception $e) {
+                // The user already had his/her preferences stored,
+                // and saved them with no changes applied
+            }
         }
     }
 }
