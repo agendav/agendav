@@ -57,28 +57,12 @@ class User
     private $is_authenticated = false;
 
     /**
-     * Current user preferences
-     *
-     * @var AgenDAV\Preferences
-     * @access private
-     */
-    private $current_preferences = null;
-
-    /**
      * Session manager 
      *
      * @var ISessionManager
      * @access private
      */
     private $session = null;
-
-    /**
-     * Preferences manager 
-     *
-     * @var Object
-     * @access private
-     */
-    private $preferences = null;
 
     /**
      * Encryption manager 
@@ -92,14 +76,12 @@ class User
      * Creates a user instance. Loads data from session, if available
      *
      * @param ISessionManager $session Session manager
-     * @param Object $preferences Preferences manager
      * @param Object $encrypt Encryption manager
      * @access public
      * @return void
      */
-    public function __construct(ISessionManager $session, $preferences, $encrypt) {
+    public function __construct(ISessionManager $session, $encrypt) {
         $this->session = $session;
-        $this->preferences = $preferences;
         $this->encrypt = $encrypt;
 
         // Initialize session
@@ -129,21 +111,6 @@ class User
     public function setCredentials($username, $passwd) {
         $this->username = mb_strtolower($username);
         $this->passwd = $passwd;
-    }
-
-    /**
-     * Gets current user preferences
-     *
-     * @param boolean $force Force reloading preferences
-     * @return AgenDAV\Data\Preferences Current user preferences
-     */
-    public function getPreferences($force = false) {
-        if ($force === true || $this->current_preferences === null) {
-            $this->current_preferences =
-                $this->preferences->get($this->username, $force);
-        }
-
-        return $this->current_preferences;
     }
 
     /**

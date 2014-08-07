@@ -32,7 +32,6 @@ class MY_Controller extends CI_Controller
          * Make some CI models/libraries available to Pimple.
          * PHP 5.3 doesn't support the use of $this inside closures
          */
-        $ci_preferences = $this->preferences;
         $ci_encrypt = $this->encrypt;
         $ci_logger = $this->log;
         $ci_shared_calendars = $this->shared_calendars;
@@ -75,10 +74,9 @@ class MY_Controller extends CI_Controller
         });
 
         // User
-        $this->container['user'] = $this->container->share(function($container) use ($ci_preferences, $ci_encrypt) {
+        $this->container['user'] = $this->container->share(function($container) use ($ci_encrypt) {
             return new \AgenDAV\User(
                 $container['session'],
-                $ci_preferences,
                 $ci_encrypt
             );
         });
