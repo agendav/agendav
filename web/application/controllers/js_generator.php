@@ -54,7 +54,8 @@ class Js_generator extends MY_Controller
      * Session refresh code
      */
     function session_refresh() {
-        $seconds = $this->config->item('sess_time_to_update');
+        $session_options = $this->config->item('sessions');
+        $seconds = $session_options['refresh'];
         $seconds++; // Give a margin of 1s to update
         $this->load->view('js_code/session_refresh',
                 array('every' => $seconds));

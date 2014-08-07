@@ -232,13 +232,11 @@ $config['rewrite_short_tags'] = FALSE;
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'agendav_sessid';
-$config['sess_expiration']		= 7200;
-$config['sess_expire_on_close']	= TRUE;
-$config['sess_table_name']		= 'sessions';
-$config['sess_match_ip']		= TRUE;
-$config['sess_match_useragent']	= TRUE;
-$config['sess_time_to_update']	= 300;
+$config['sessions'] = array(
+    'name' => 'agendav_sessid',
+    'cookie_lifetime' => 0,
+    'refresh' => 300,
+);
 
 // These settings have no effect, but CodeIgniter needs them
 $config['log_threshold'] = 3;

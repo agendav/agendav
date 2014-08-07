@@ -68,9 +68,18 @@ class MY_Controller extends CI_Controller
             );
         });
 
-        // Session
+        // Session stuff
+        $session_options = $this->config->item('sessions');
+        $this->container['session_storage'] = $this->container->share(function($container) use ($session_options) {
+            $storage = new Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage(
+                $session_options
+            );
+
+            return $storage;
+        });
+
         $this->container['session'] = $this->container->share(function($container) {
-            return new \AgenDAV\CodeIgniterSessionManager();
+            return new \AgenDAV\Session\HttpFoundationSession($container['session_storage']);
         });
 
         // User

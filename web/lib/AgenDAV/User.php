@@ -1,6 +1,4 @@
 <?php 
-namespace AgenDAV;
-
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -19,6 +17,10 @@ namespace AgenDAV;
  *  You should have received a copy of the GNU General Public License
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+namespace AgenDAV;
+
+use AgenDAV\Session\Session;
 
 /**
  * Represents the current AgenDAV user 
@@ -59,7 +61,7 @@ class User
     /**
      * Session manager 
      *
-     * @var ISessionManager
+     * @var Session
      * @access private
      */
     private $session = null;
@@ -75,12 +77,12 @@ class User
     /**
      * Creates a user instance. Loads data from session, if available
      *
-     * @param ISessionManager $session Session manager
+     * @param Session $session Session manager
      * @param Object $encrypt Encryption manager
      * @access public
      * @return void
      */
-    public function __construct(ISessionManager $session, $encrypt) {
+    public function __construct(Session $session, $encrypt) {
         $this->session = $session;
         $this->encrypt = $encrypt;
 

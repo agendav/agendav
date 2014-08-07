@@ -1,6 +1,4 @@
-<?php 
-namespace AgenDAV;
-
+<?php
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -20,18 +18,20 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace AgenDAV\Session;
+
 /**
- * CodeIgniterSessionManager 
+ * CodeIgniterSession
  *
- * Implements CodeIgniter session manager using ISessionManager interface
- * 
- * @uses ISessionManager
+ * Implements CodeIgniter session manager using Session interface
+ *
+ * @uses Session
  */
-class CodeIgniterSessionManager implements ISessionManager
+class CodeIgniterSession implements Session
 {
     /**
-     * CodeIgniter singleton 
-     * 
+     * CodeIgniter singleton
+     *
      * @var Object
      * @access private
      */
@@ -43,8 +43,8 @@ class CodeIgniterSessionManager implements ISessionManager
     }
 
     /**
-     * Gets a session variable value 
-     * 
+     * Gets a session variable value
+     *
      * @param string $name Session variable
      * @access public
      * @return mixed If variable was not found, returns null
@@ -54,8 +54,8 @@ class CodeIgniterSessionManager implements ISessionManager
     }
 
     /**
-     * Gets a session variable value 
-     * 
+     * Gets a session variable value
+     *
      * @param string $name Session variable
      * @access public
      * @return mixed If variable was not found, returns null
@@ -66,8 +66,8 @@ class CodeIgniterSessionManager implements ISessionManager
     }
 
     /**
-     * Sets a session variable 
-     * 
+     * Sets a session variable
+     *
      * @param string $name Session variable
      * @param mixed $value Value
      * @access public
@@ -80,7 +80,7 @@ class CodeIgniterSessionManager implements ISessionManager
 
     /**
      * Sets multiple session variables
-     * 
+     *
      * @param Array $data Associative array: name => value
      * @access public
      * @return void
@@ -91,9 +91,9 @@ class CodeIgniterSessionManager implements ISessionManager
     }
 
     /**
-     * Checks if current session contains a variable 
-     * 
-     * @param string $name 
+     * Checks if current session contains a variable
+     *
+     * @param string $name
      * @access public
      * @return boolean
      */
@@ -105,9 +105,9 @@ class CodeIgniterSessionManager implements ISessionManager
     }
 
     /**
-     * Removes a session variable from current session 
-     * 
-     * @param string $name 
+     * Removes a session variable from current session
+     *
+     * @param string $name
      * @access public
      * @return void
      */
@@ -117,8 +117,8 @@ class CodeIgniterSessionManager implements ISessionManager
     }
 
     /**
-     * Clears current session 
-     * 
+     * Clears current session
+     *
      * @access public
      * @return void
      */

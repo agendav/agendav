@@ -1,6 +1,4 @@
-<?php 
-namespace AgenDAV;
-
+<?php
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -20,19 +18,21 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ISessionManager
+namespace AgenDAV\Session;
+
+interface Session
 {
     /**
-     * Initializes session manager 
-     * 
+     * Initializes session manager
+     *
      * @access public
      * @return void
      */
     public function initialize();
 
     /**
-     * Gets a session variable value 
-     * 
+     * Gets a session variable value
+     *
      * @param string $name Session variable
      * @access public
      * @return mixed If variable was not found, returns null
@@ -40,8 +40,8 @@ interface ISessionManager
     public function get($name);
 
     /**
-     * Sets a session variable 
-     * 
+     * Sets a session variable
+     *
      * @param string $name Session variable
      * @param mixed $value Value
      * @access public
@@ -51,7 +51,7 @@ interface ISessionManager
 
     /**
      * Sets multiple session variables
-     * 
+     *
      * @param Array $data Associative array: name => value
      * @access public
      * @return void
@@ -59,26 +59,26 @@ interface ISessionManager
     public function setAll($data);
 
     /**
-     * Checks if current session contains a variable 
-     * 
-     * @param string $name 
+     * Checks if current session contains a variable
+     *
+     * @param string $name
      * @access public
      * @return boolean
      */
     public function has($name);
 
     /**
-     * Removes a session variable from current session 
-     * 
-     * @param string $name 
+     * Removes a session variable from current session
+     *
+     * @param string $name
      * @access public
      * @return void
      */
     public function remove($name);
 
     /**
-     * Clears current session 
-     * 
+     * Clears current session
+     *
      * @access public
      * @return void
      */
