@@ -77,6 +77,14 @@ interface Session
     public function remove($name);
 
     /**
+     * Checks if current user is authenticated
+     *
+     * @access public
+     * @return boolean  true if user is authenticated, false if not
+     */
+    public function isAuthenticated();
+
+    /**
      * Clears current session
      *
      * @access public

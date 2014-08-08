@@ -31,13 +31,14 @@ class Prefs extends MY_Controller
     function __construct() {
         parent::__construct();
 
+        // Force authentication
+        if (!$this->container['session']->isAuthenticated()) {
+            redirect('/login');
+        }
+
         $this->user = $this->container['user'];
         $this->preferences_repository = $this->container['preferences_repository'];
 
-        // Force authentication
-        if (!$this->user->isAuthenticated()) {
-            redirect('/login');
-        }
 
         // Preferences
         $this->prefs = $this->preferences_repository->userPreferences($this->user->getUsername());;
@@ -151,7 +152,7 @@ class Prefs extends MY_Controller
         // Save preferences
         $this->preferences_repository->save($current_user, $current_prefs);
 
-        $this->session->set_userdata('prefs', $current_prefs->getAll());
+        $this->container['session']->set('prefs', $current_prefs->getAll());
         $this->_throw_success();
     }
 

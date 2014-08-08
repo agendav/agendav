@@ -33,14 +33,15 @@ class Calendar extends MY_Controller
 
     function __construct() {
         parent::__construct();
-        $this->user = $this->container['user'];
-        $this->preferences_repository = $this->container['preferences_repository'];
 
-        if (!$this->user->isAuthenticated()) {
+        if (!$this->container['session']->isAuthenticated()) {
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
         }
+
+        $this->user = $this->container['user'];
+        $this->preferences_repository = $this->container['preferences_repository'];
 
         $this->calendar_colors = $this->config->item('calendar_colors');
 

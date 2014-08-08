@@ -82,6 +82,8 @@ class MY_Controller extends CI_Controller
             return new \AgenDAV\Session\HttpFoundationSession($container['session_storage']);
         });
 
+        $this->container['session']->initialize();
+
         // User
         $this->container['user'] = $this->container->share(function($container) use ($ci_encrypt) {
             return new \AgenDAV\User(

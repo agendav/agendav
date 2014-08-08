@@ -38,7 +38,7 @@ class Js_generator extends MY_Controller
         $this->preferences_repository = $this->container['preferences_repository'];
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
-                !$this->user->isAuthenticated()) {
+                !$this->container['session']->isAuthenticated()) {
             $expire = $this->load->view('js_code/session_expired', '', true);
             echo $expire;
             die();

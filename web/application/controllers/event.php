@@ -39,13 +39,12 @@ class Event extends MY_Controller
     function __construct() {
         parent::__construct();
 
-        $this->user = $this->container['user'];
-
-        if (!$this->user->isAuthenticated()) {
+        if (!$this->container['session']->isAuthenticated()) {
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
         }
+        $this->user = $this->container['user'];
         $this->client = $this->container['client'];
 
         $this->date_format_pref = $this->config->item('default_date_format');

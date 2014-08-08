@@ -120,6 +120,18 @@ class HttpFoundationSession implements Session
     }
 
     /**
+     * Checks if current user is authenticated
+     *
+     * @access public
+     * @return boolean  true if user is authenticated, false if not
+     */
+    public function isAuthenticated()
+    {
+        return $this->session->has('username') &&
+            $this->session->has('password');
+    }
+
+    /**
      * Clears current session
      *
      * @access public
