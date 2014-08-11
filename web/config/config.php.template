@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 // Advanced options which you should not need to modify
 require_once('advanced.php');
