@@ -41,8 +41,9 @@ class MY_Controller extends CI_Controller
         // Database connection
         $db_options = $this->config->item('db');
         $this->container['db'] = $this->container->share(function($container) use ($db_options) {
-            $dbal_config = new \Doctrine\DBAL\Configuration();
-            return \Doctrine\DBAL\DriverManager::getConnection($db_options, $dbal_config);
+            $db = new \AgenDAV\DB($db_options);
+
+            return $db->getConnection();
         });
 
         // Preferences repository
