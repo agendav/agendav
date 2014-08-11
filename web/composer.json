@@ -2,7 +2,8 @@
     "require": {
         "pimple/pimple": "1.0.0",
         "monolog/monolog": "1.*",
-        "doctrine/dbal": "~2.4"
+        "doctrine/dbal": "~2.4",
+        "symfony/http-foundation": "~2.5.3"
     },
     "autoload": {
         "psr-0": {
