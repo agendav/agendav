@@ -4,7 +4,6 @@
 require_once __DIR__ . '/../web/vendor/autoload.php';
 $config_file = __DIR__ . '/../web/config/config.php';
 
-$helperSet = null;
 if (!file_exists($config_file) || !is_readable($config_file)) {
     echo $config_file . " cannot be read\n";
     exit(255);
@@ -18,6 +17,7 @@ $agendav_db = new \AgenDAV\DB($config['db']);
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(
     [
     'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($agendav_db->getConnection()),
+    'dialog' => new \Symfony\Component\Console\Helper\DialogHelper(),
     ]
 );
 
@@ -28,7 +28,6 @@ $cli->addCommands(array(
     // DBAL Commands
     new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(),
     new \Doctrine\DBAL\Tools\Console\Command\ImportCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
