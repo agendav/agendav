@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2cce07f488efe9872fd57c927668197a",
+    "hash": "d3d64e1a28cc1d2f04add369d31375e7",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -540,6 +540,53 @@
                 "migrations"
             ],
             "time": "2014-07-09 07:58:02"
+        },
+        {
+            "name": "keboola/php-encryption",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/keboola/php-encryption.git",
+                "reference": "b3608ad1572dde0a1d8af0c25289eba7407b60ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/keboola/php-encryption/zipball/b3608ad1572dde0a1d8af0c25289eba7407b60ad",
+                "reference": "b3608ad1572dde0a1d8af0c25289eba7407b60ad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mcrypt": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Keboola\\Encryption": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Halamicek",
+                    "email": "martin@halamicek.cz"
+                }
+            ],
+            "description": "Mcrypt wrapper - AES encryption support",
+            "keywords": [
+                "aes",
+                "cipher",
+                "encryption",
+                "mcrypt",
+                "security"
+            ],
+            "time": "2013-07-15 12:02:24"
         },
         {
             "name": "monolog/monolog",

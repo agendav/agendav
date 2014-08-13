@@ -69,11 +69,23 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // Encryption
+        $encryption_key = $this->config->item('encryption_key');
+        $this->container['encryptor'] = $this->container->share(function($container) use ($encryption_key) {
+            $encryption_key = substr(sha1($encryption_key), 0, 16); // Use AES128
+            $source_encryptor = new \Keboola\Encryption\AesEncryptor($encryption_key);
+
+            return new \AgenDAV\Encryption\KeboolaAesEncryptor($source_encryptor);
+        });
+
         // Session stuff
         $session_options = $this->config->item('sessions');
         $this->container['session_handler'] = $this->container->share(function($container) {
             $db = $container['db'];
-            return new \Symfony\Bridge\Doctrine\HttpFoundation\DbalSessionHandler($db);
+            $encryptor = $container['encryptor'];
+            $dbal_handler = new \Symfony\Bridge\Doctrine\HttpFoundation\DbalSessionHandler($db);
+
+            return new \AgenDAV\Session\SessionEncrypter($dbal_handler, $encryptor);
         });
 
         $this->container['session_storage'] = $this->container->share(function($container) use ($session_options) {

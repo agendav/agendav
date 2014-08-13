@@ -48,11 +48,10 @@ $config['enable_debug']= FALSE;
 | Encryption Key
 |--------------------------------------------------------------------------
 |
-| If you use the Encryption class or the Session class you
-| MUST set an encryption key.  See the user guide for info.
+| You MUST set an encryption key
 |
 */
-$config['encryption_key'] = 'ASasdkdkdk';
+$config['encryption_key'] = 'this is my key';
 
 
 /*

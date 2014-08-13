@@ -7,7 +7,8 @@
         "doctrine/migrations": "1.0.*@dev",
         "symfony/console": "~2.5.3",
         "symfony/yaml": "~2.5.3",
-        "symfony/doctrine-bridge": "~2.5.3"
+        "symfony/doctrine-bridge": "~2.5.3",
+        "keboola/php-encryption": "~0.2.1"
     },
     "autoload": {
         "psr-0": {
