@@ -6,7 +6,8 @@
         "symfony/http-foundation": "~2.5.3",
         "doctrine/migrations": "1.0.*@dev",
         "symfony/console": "~2.5.3",
-        "symfony/yaml": "~2.5.3"
+        "symfony/yaml": "~2.5.3",
+        "symfony/doctrine-bridge": "~2.5.3"
     },
     "autoload": {
         "psr-0": {

@@ -71,9 +71,15 @@ class MY_Controller extends CI_Controller
 
         // Session stuff
         $session_options = $this->config->item('sessions');
+        $this->container['session_handler'] = $this->container->share(function($container) {
+            $db = $container['db'];
+            return new \Symfony\Bridge\Doctrine\HttpFoundation\DbalSessionHandler($db);
+        });
+
         $this->container['session_storage'] = $this->container->share(function($container) use ($session_options) {
             $storage = new Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage(
-                $session_options
+                $session_options,
+                $container['session_handler']
             );
 
             return $storage;
