@@ -88,6 +88,9 @@ class Prefs extends MY_Controller
                 'calendar_ids_and_dn' => $calendar_ids_and_dn,
                 'default_calendar' => $default_calendar,
                 'hidden_calendars' => $hidden_calendars,
+                'language' => $this->config->item("language"),
+                'prefs_firstday' => $this->prefs->prefs_firstday,
+                'timezone' => $this->config->item("default_timezone"),
                 );
 
         $components['content'] = $this->load->view('preferences_page',
@@ -108,6 +111,9 @@ class Prefs extends MY_Controller
     function save() {
         $calendar = $this->input->post('calendar', true);
         $default_calendar = $this->input->post('default_calendar', true);
+        $prefs_firstday = $this->input->post('prefs_firstday', true);
+        $language = $this->input->post('language', true);
+        $timezone = $this->input->post('timezone', true);
 
         if (!is_array($calendar)) {
             log_message('ERROR',
@@ -145,6 +151,11 @@ class Prefs extends MY_Controller
         }
 
         $current_prefs->hidden_calendars = $hidden_calendars;
+        $current_prefs->language = $language;
+        $current_prefs->timezone = $timezone;
+
+        if (isset($prefs_firstday))
+            $current_prefs->prefs_firstday = $prefs_firstday;
 
         // Save preferences
         $this->preferences->save($current_user, $current_prefs);

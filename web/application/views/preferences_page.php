@@ -25,11 +25,20 @@ $img_save = array(
 
 <div id="prefs_tabs">
 <ul>
+ <li><a href="#tabs-general"><?php echo $this->i18n->_('labels',
+         'general')?></a></li>
  <li><a href="#tabs-calendars"><?php echo $this->i18n->_('labels',
 		 'calendars')?></a></li>
 </ul>
 
 <?php echo form_open('prefs/save', array('id' => 'prefs_form')); ?>
+
+<div id="tabs-general">
+    <?php $this->load->view('preferences_general', array(
+        'language' => $language,
+        'prefs_firstday' => $prefs_firstday,
+        'timezone' => $timezone)); ?>
+</div>
 
 <div id="tabs-calendars">
 <?php $this->load->view('preferences_calendars', array(
