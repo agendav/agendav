@@ -4,19 +4,11 @@ namespace AgenDAV\Encryption;
 
 use \Mockery as m;
 
-/*
- * All these tests will show a warning:
- * PHP Warning:  mcrypt_module_close() expects parameter 1 to be resource, null given
- *
- * Can't get it sorted out, seems that Mockery doesn't support overriding the
- * __destruct() method
- */
-
 class KeboolaAesEncryptorTest extends \PHPUnit_Framework_TestCase
 {
     public function testEncrypt()
     {
-        $internal_encrytor = m::mock('\Keboola\Encryption\AesEncryptor')
+        $internal_encrytor = m::mock('AgenDAV\Encryption\FakeAesEncryptor')
             ->shouldReceive('encrypt')
             ->with('TEST')->andReturn('ENCRYPTED_TEST')->once()
             ->getMock();
@@ -27,7 +19,7 @@ class KeboolaAesEncryptorTest extends \PHPUnit_Framework_TestCase
 
     public function testDecrypt()
     {
-        $internal_encrytor = m::mock('\Keboola\Encryption\AesEncryptor')
+        $internal_encrytor = m::mock('AgenDAV\Encryption\FakeAesEncryptor')
             ->shouldReceive('decrypt')->once()
             ->with('ENCRYPTED_TEST')->andReturn('TEST');
 
