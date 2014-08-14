@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Wewnętrzna nazwa kalendarza jest ju�
 $messages['info_confirmcaldelete'] = 'Czy na pewno chcesz usunąć następujący kalendarz?';
 $messages['info_confirmeventdelete'] = 'Czy na pewno chcesz usunąć następujące zdarzenie?';
 $messages['info_permanentremoval'] = 'Twoje dane zostaną usunięte';
-$messages['info_repetitivedeleteall'] = 'Wszystkie powtarzające się wystąpienia tego zdarzenia zostaną usunięte';
 $messages['info_sharedby'] = 'Masz dostęp do tego kalendarza, ponieważ użytkownik% udostępnia go Tobie';
 $messages['info_shareexplanation'] = 'Możesz udostępnić ten kalendarz
 inni użytkownicy będą mogli go modyfikować. Zamieść nazwy użytkowników poniżej, oddzielone

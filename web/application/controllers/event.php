@@ -123,7 +123,6 @@ class Event extends MY_Controller
 
     /**
      * Deletes an event
-     * TODO: control whether we want to remove a single recurrence-id
      * instead of the whole event
      */
     public function delete()
@@ -132,8 +131,8 @@ class Event extends MY_Controller
         $uid = $this->input->post('uid', true);
         $href = $this->input->post('href', true);
         $etag = $this->input->post('etag', true);
-
-        $response = array();
+        $deleteJustThisInstance = $this->input->post('delete_just_this_instance', true);
+        $startOfThisInstance = $this->input->post('start_of_this_instance', true);
 
         if ($calendar === false || $uid === false || $href === false ||
                 $etag === false || empty($calendar) || empty($uid) ||
@@ -141,6 +140,58 @@ class Event extends MY_Controller
             log_message('ERROR', 'Call to delete_event() with no calendar, uid, href or etag');
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
+        } else if ($deleteJustThisInstance == 1) {
+            $res = $this->client->fetchEntryByUid($calendar, $uid);
+
+            if (count($res) == 0) {
+                $this->_throw_error($this->i18n->_('messages', 'error_eventnotfound'));
+            }
+
+            if ($etag != $res['etag']) {
+                $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
+            }
+
+            $resource = $this->icshelper->parse_icalendar($res['data']);
+
+            /** @var vevent $vevent */
+            $vevent = null;
+            $modify_pos = $this->icshelper->find_component_position($resource, 'VEVENT', array(), $vevent);
+
+            // Add the exception as exception-date.
+            // TODO: Add support for exception-time (not only date) and exception-rules
+            $startDate = new DateTime($startOfThisInstance);
+            $vevent->setProperty( "exdate" , array(
+                array(
+                    "year" => $startDate->format("Y"),
+                    "month" => $startDate->format("m"),
+                    "day" => $startDate->format("d")
+                )
+            ), array( "VALUE" => "DATE" ));
+
+            $resource = $this->icshelper->replace_component($resource, 'vevent', $modify_pos, $vevent);
+            if ($resource === false) {
+                $this->_throw_error($this->i18n->_('messages', 'error_internalgen'));
+            }
+
+            // PUT on server
+            $new_etag = $this->client->putResource(
+                $calendar . $href,
+                $resource->createCalendar(),
+                $etag);
+
+            if (is_array($new_etag)) {
+                $code = current($new_etag);
+                switch ($code) {
+                    case '403':
+                        $this->_throw_error($this->i18n->_('messages', 'error_denied'));
+                        break;
+                    default:
+                        $this->_throw_error($this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $code[0])));
+                        break;
+                }
+            } else {
+                $this->_throw_success();
+            }
         } else {
             $res = $this->client->deleteResource(
                     $calendar . $href,

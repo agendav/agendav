@@ -1791,37 +1791,63 @@ var event_delete_dialog = function event_delete_dialog() {
       action: form_url,
       method: 'post',
       csrf: get_csrf_token()
-    }
+    },
+    start_of_this_instance: AgenDAVDateAndTime.extractDate(data._start),
+    delete_just_this_instance: "0"
+  });
+
+  var options = [];
+  options.push({
+      'text': t('labels', ('rrule' in data) ? 'yes, the whole event' : 'yes'),
+      'class': 'addicon btn-icon-event-delete',
+      'click': function() {
+          var thisform = $('#event_delete_form');
+          proceed_send_ajax_form(thisform,
+              function(rdata) {
+                  $('#calendar_view').fullCalendar('removeEvents', data.id);
+              },
+              function(rdata) {
+                  show_error(t('messages', 'error_event_not_deleted'), data);
+              },
+              function() {});
+
+          // Destroy dialog
+          destroy_dialog('#event_delete_dialog');
+      }
+  });
+
+  if ('rrule' in data)
+      options.push({
+          'text': t('labels', 'yes, but just this instance'),
+          'class': 'addicon btn-icon-event-delete',
+          'click': function() {
+              var thisform = $('#event_delete_form');
+              $("input[name=delete_just_this_instance]", thisform).attr("value", "1");
+              proceed_send_ajax_form(thisform,
+                  function(rdata) {
+                      // TODO: Check if there's an option to just reload this event or to add an exception-date or ~rule
+                      $('#calendar_view').fullCalendar('refetchEvents');
+                  },
+                  function(rdata) {
+                      show_error(t('messages', 'error_event_not_deleted'), data);
+                  },
+                  function() {});
+
+              // Destroy dialog
+              destroy_dialog('#event_delete_dialog');
+          }
+      });
+
+  options.push({
+      'text': t('labels', 'cancel'),
+      'class': 'addicon btn-icon-cancel',
+      'click': function() { destroy_dialog('#event_delete_dialog'); }
   });
 
   show_dialog('event_delete_dialog',
     data,
     title,
-    [ 
-      {
-        'text': t('labels', 'yes'),
-        'class': 'addicon btn-icon-event-delete',
-        'click': function() {
-          var thisform = $('#event_delete_form');
-          proceed_send_ajax_form(thisform,
-            function(rdata) {
-              $('#calendar_view').fullCalendar('removeEvents', data.id);
-            },
-            function(rdata) {
-              show_error(t('messages', 'error_event_not_deleted'), data);
-            },
-            function() {});
-
-          // Destroy dialog
-          destroy_dialog('#event_delete_dialog');
-        }
-      },
-      {
-        'text': t('labels', 'cancel'),
-        'class': 'addicon btn-icon-cancel',
-        'click': function() { destroy_dialog('#event_delete_dialog'); }
-      }
-    ],
+    options,
     'event_delete_dialog',
     400,
     function() {});

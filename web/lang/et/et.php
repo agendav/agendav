@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Kalendri sisemine nimi on juba kasutu
 $messages['info_confirmcaldelete'] = 'Oled sa kindel, et sa soovid seda kalendrit kustutada?';
 $messages['info_confirmeventdelete'] = 'Oled sa kindel, et sa soovid seda sündmust kustutada?';
 $messages['info_permanentremoval'] = 'Sinu info läheb jäädavalt kaduma';
-$messages['info_repetitivedeleteall'] = 'Kõik selle sündmuse kordused kustutatakse';
 $messages['info_sharedby'] = 'Sul on ligipääs sellele kalendrile, kuna %user jagas seda sinuga';
 $messages['info_shareexplanation'] = 'Sa saad seda kalendrit teiste
 kasutajatega jagada ja lasta neil seda. Sisesta nende kasutajanimed alla ja eralda need omavahel komade või tühikutega';

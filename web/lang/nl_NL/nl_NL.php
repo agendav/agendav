@@ -202,7 +202,6 @@ $messages['error_internalcalnameinuse'] = 'Interne agendanaam is al in gebruik';
 $messages['info_confirmcaldelete'] = 'Weet u zeker dat u de volgende agenda wilt verwijderen?';
 $messages['info_confirmeventdelete'] = 'Weet u zeker dat u de volgende gebeurtenis wilt verwijderen?';
 $messages['info_permanentremoval'] = 'Uw informatie wordt definitief verwijderd';
-$messages['info_repetitivedeleteall'] = 'Alle herhalingen van deze gebeurtenis worden verwijderd';
 $messages['info_sharedby'] = 'U heeft toegang tot deze agenda omdat gebruiker %user deze met u heeft gedeeld';
 $messages['info_shareexplanation'] = 'U kunt deze agenda met andere gebruikers delen en laten aanpassen.
 Geef de gebruikersnamen in, gescheiden door komma\'s of spaties';
