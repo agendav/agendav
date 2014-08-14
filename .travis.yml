@@ -8,4 +8,4 @@ php:
 script:
   - phpunit --configuration tests/phpunit.xml
 
-before_script: composer install
+before_script: composer install -d web/
