@@ -10,11 +10,11 @@ Requisites
 
 * A CalDAV server (developed mainly with [DAViCal](http://www.davical.org/))
 * A web server
-* PHP >= 5.3.0
+* PHP >= 5.4.0
 * PHP mbstring extension
 * PHP ctype extension
 * PHP cURL extension
-* MySQL > 5.1 or PostgreSQL >= 8.1
+* Most DB backends: MySQL, PostgreSQL, SQLite. Look for supported DB drivers at http://doctrine-dbal.readthedocs.org/en/latest/reference/configuration.html#driver
 
 Thanks
 ------
