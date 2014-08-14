@@ -104,26 +104,14 @@
       - name: install composer dependencies
         command: /usr/local/bin/composer install chdir=/vagrant/web
 
-      - name: configure agendav (1/3)
+      - name: configure agendav (1/2)
         template: src=agendav/config.php.j2 dest=/vagrant/web/config/config.php backup=yes
 
-      - name: configure agendav (2/3)
+      - name: configure agendav (2/2)
         copy: src=agendav/caldav.php dest=/vagrant/web/config/caldav.php backup=yes
 
-      - name: configure agendav (3/3)
-        copy: src=agendav/database.php dest=/vagrant/web/config/database.php backup=yes
-
-      - name: check if database is empty
-        shell: /usr/bin/mysql -uroot -e 'show tables;' agendav | /bin/grep sessions
-        ignore_errors: true
-        register: dbstatus
-
-      - name: import agendav schema
-        when: dbstatus.rc == 1
-        mysql_db: name=agendav state=import collation=utf8_general_ci encoding=utf8 target=/vagrant/sql/mysql.schema.sql
-
       - name: apply latest schema updates
-        command: /vagrant/bin/agendavcli dbupdate
+        command: /vagrant/bin/agendavcli migrations:migrate --configuration=/vagrant/bin/migrations.yml --no-interaction
 
       - name: change log permissions again
         file: path=/var/log/agendav recurse=true state=directory owner=www-data group=vagrant mode=0774
