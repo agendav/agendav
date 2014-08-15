@@ -260,8 +260,10 @@ setting.
         );
 
 
-Database configuration (database.php)
--------------------------------------
+.. _dbconfig:
+
+Database configuration WRONG
+----------------------------
 
 ``database.php`` contains how to connect to your MySQL database. Just follow
 inline comments, it's pretty straight forward.
