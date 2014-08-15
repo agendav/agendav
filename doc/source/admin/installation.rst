@@ -54,9 +54,9 @@ First of all you have to create a user and a database for that user.
 After preparing your DB, you will have to configure your database settings, and after that you will be able to create
 the database tables using a provided script.
 
-How to create an user on MySQL
-******************************
-Create an user in MySQL like this::
+How to create a user on MySQL
+*****************************
+Create a user in MySQL like this::
 
  $ mysql --default-character-set=utf8 -uroot -p
  Enter password: 
@@ -66,8 +66,8 @@ Create an user in MySQL like this::
  mysql> FLUSH PRIVILEGES;
  mysql> ^D
 
-How to create  an user on PostgreSQL
-************************************
+How to create a user on PostgreSQL
+**********************************
 
 Use the special ``postgres`` system user to manage your installation. You
 can add a new user and a new database the following way::

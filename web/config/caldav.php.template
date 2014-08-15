@@ -74,7 +74,7 @@ $config['caldav_principal_template'] = '/caldav.php/%u/';
  *
  * Remember to add your CalDAV server relative path if needed
  *
- * %u will be replaced by an username. Please, add trailing slash
+ * %u will be replaced by a username. Please, add trailing slash
  *
  * Some samples:
  *
