@@ -9,3 +9,4 @@ web/vendor
 web/composer.phar
 .vagrant
 vagrant_ansible_inventory_default
+phpunit.phar
