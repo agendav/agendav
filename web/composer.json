@@ -9,7 +9,8 @@
         "symfony/yaml": "~2.5.3",
         "symfony/doctrine-bridge": "~2.5.3",
         "keboola/php-encryption": "~0.2.1",
-        "mockery/mockery": "~0.9.1"
+        "mockery/mockery": "~0.9.1",
+        "doctrine/orm": "~2.4"
     },
     "autoload": {
         "psr-0": {

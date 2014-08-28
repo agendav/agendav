@@ -46,10 +46,19 @@ class MY_Controller extends CI_Controller
             return $db->getConnection();
         });
 
+        // ORM Entity manager
+        $this->container['entity_manager'] = $this->container->share(function($container) use ($db_options) {
+            $setup = Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
+                array(__DIR__ . '/../../lib/AgenDAV/Data')
+            );
+
+            return Doctrine\ORM\EntityManager::create($db_options, $setup);
+        });
+
         // Preferences repository
         $this->container['preferences_repository'] = $this->container->share(function($container) {
-            $db = $container['db'];
-            return new AgenDAV\Repositories\DoctrinePreferencesRepository($db);
+            $em = $container['entity_manager'];
+            return new AgenDAV\Repositories\DoctrineOrmPreferencesRepository($em);
         });
 
         // URL generator
