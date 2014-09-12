@@ -29,7 +29,8 @@ class Version20140812133707 extends AgenDAVMigration
     protected function createSharesTable(Schema $schema)
     {
         $shares_table = $schema->createTable('shares');
-        $shares_table->addColumn('sid', 'integer', ['unsigned' => true]);
+        $sid = $shares_table->addColumn('sid', 'integer', ['unsigned' => true]);
+        $sid->setAutoIncrement(true);
         $shares_table->addColumn('grantor', 'string', ['length' => 255]);
         $shares_table->addColumn('path', 'string', ['length' => 255]);
         $shares_table->addColumn('grantee', 'string', ['length' => 255]);
