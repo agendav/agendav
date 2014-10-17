@@ -244,4 +244,41 @@ $config['sess_time_to_update']	= 300;
 $config['log_threshold'] = 3;
 $config['log_date_format'] = 'Y-m-d H:i:s';
 
-
+ 
+/*
+|--------------------------------------------------------------------------
+| Password hook
+|--------------------------------------------------------------------------
+|
+| If defined, can modify the username/password that was passed in to the
+| login page
+|
+function hook_auth_password($user,$passwd) {
+  // do stuff here and modify $user or $passwd for return
+  return(array('user'=>$user,'passwd'=>$passwd));
+}
+*/
+ 
+/*
+|--------------------------------------------------------------------------
+| User settings hooks
+|--------------------------------------------------------------------------
+|
+| If defined, can read/write preferences from another source and optionally
+| skip reading or saving preferences to the db
+|
+function hook_load_prefs($user) {
+  // $options is an array of key=>val pairs
+  $options = array();
+  $use_db = true; // set to false to prevent settings from read from db and
+                  // merged with this set of options. option keys returned
+                  // from here take preference
+  return(array('use_db'=>$use_db,'options'=>$options));
+}
+function hook_save_prefs($user,$options) {
+  // $options is an array of key=>val pairs
+  $use_db = true; // set to false to prevent settings from being written
+                  // to db
+  return(array('use_db'=>$use_db));
+}
+*/
