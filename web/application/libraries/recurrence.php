@@ -34,8 +34,13 @@ class Recurrence {
         $this->date_format_pref = $this->CI->config->item('default_date_format');
         $this->time_format_pref = $this->CI->config->item('default_time_format');
         $this->date_format = DateHelper::getDateFormatFor('date', $this->date_format_pref);
-        $this->tz = $this->CI->timezonemanager->getTz(
-                $this->CI->config->item('default_timezone'));
+        $prefs = Preferences::singleton($this->CI->session->userdata('prefs'));
+        if ($prefs->__get('timezone')) {
+            $this->tz = $this->CI->timezonemanager->getTz($prefs->__get('timezone'));
+        } else {
+            $this->tz = $this->CI->timezonemanager->getTz(
+                    $this->CI->config->item('default_timezone'));
+        }
     }
 
     /**

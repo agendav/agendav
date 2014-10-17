@@ -56,6 +56,13 @@ class Login extends MY_Controller {
             // Check authentication against server
             $user = $this->input->post('user', true);
             $passwd = $this->input->post('passwd', false);
+
+            if (function_exists('hook_auth_password')) {
+                $res = hook_auth_password($user,$passwd);
+                $user = $res['user'];
+                $passwd = $res['passwd'];
+            }
+
             $app_user->setCredentials($user, $passwd);
 
             $caldav_client = $this->container['client'];

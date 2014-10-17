@@ -31,13 +31,27 @@ class Preferences extends CI_Model {
      */
     private function load($username) {
         $options = array();
+        $use_db = true;
 
-        $query = $this->db->get_where('prefs',
-                array('username' => $username));
+        if (function_exists('hook_load_prefs')) {
+            $res = hook_load_prefs($username);
+            $options = $res['options'];
+            if (array_key_exists('use_db',$res)) {
+                $use_db = $res['use_db'];
+            }
+        }
 
-        if ($query->num_rows() == 1) {
-            $result = $query->result();
-            $options = json_decode($result[0]->options, TRUE);
+        if ($use_db) {
+            $query = $this->db->get_where('prefs',
+                    array('username' => $username));
+
+            if ($query->num_rows() == 1) {
+                $result = $query->result();
+                $options = json_decode($result[0]->options, TRUE);
+                $options = array_merge($options,
+                    json_decode($result[0]->options, TRUE));
+                }
+            }
         }
 
         $prefs = new AgenDAV\Data\Preferences($options);
@@ -49,22 +63,33 @@ class Preferences extends CI_Model {
      * Saves user preferences
      */
     public function save($username, AgenDAV\Data\Preferences $prefs) {
-        $data = array(
-                'options' => $prefs->to_json(),
-                );
+        $use_db = true;
 
-        log_message('DEBUG', 'Storing user prefs ['.
-                $prefs->to_json() .']'
-                .' for user ' . $username);
+        if (function_exists('hook_save_prefs')) {
+            $res = hook_save_prefs($username,$prefs->getAll());
+            if (array_key_exists('use_db',$res)) {
+                $use_db = $res['use_db'];
+            }
+        }
 
-        $query = $this->db->get_where('prefs',
-                array('username' => $username));
-        if ($query->num_rows() == 1) {
-            $this->db->update('prefs',
-                    $data, array('username' => $username));
-        } else {
-            $data['username'] = $username;
-            $this->db->insert('prefs', $data);
+        if ($use_db) {
+            $data = array(
+                    'options' => $prefs->to_json(),
+                    );
+
+            log_message('DEBUG', 'Storing user prefs ['.
+                    $prefs->to_json() .']'
+                    .' for user ' . $username);
+
+            $query = $this->db->get_where('prefs',
+                    array('username' => $username));
+            if ($query->num_rows() == 1) {
+                $this->db->update('prefs',
+                        $data, array('username' => $username));
+            } else {
+                $data['username'] = $username;
+                $this->db->insert('prefs', $data);
+            }
         }
     }
 
