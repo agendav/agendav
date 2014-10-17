@@ -53,8 +53,12 @@ class Event extends MY_Controller
         $this->date_format = DateHelper::getDateFormatFor('date', $this->date_format_pref);
         $this->time_format = DateHelper::getTimeFormatFor('date', $this->time_format_pref);
 
-        $this->tz = $this->timezonemanager->getTz(
+        if ($this->prefs->__get('timezone')) {
+            $this->tz = $this->timezonemanager->getTz($this->prefs->__get('timezone'));
+        } else {
+            $this->tz = $this->timezonemanager->getTz(
                 $this->config->item('default_timezone'));
+        }
         $this->tz_utc = $this->timezonemanager->getTz('UTC');
 
         $this->output->set_content_type('application/json');

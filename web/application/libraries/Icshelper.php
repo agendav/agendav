@@ -40,8 +40,13 @@ class Icshelper {
         $this->CI =& get_instance();
 
         // Timezone
-        $this->tz = $this->CI->timezonemanager->getTz(
-                $this->CI->config->item('default_timezone'));
+        $prefs = Preferences::singleton($this->CI->session->userdata('prefs'));
+        if ($prefs->__get('timezone')) {
+            $this->tz = $this->CI->timezonemanager->getTz($prefs->__get('timezone'));
+        } else {
+            $this->tz = $this->CI->timezonemanager->getTz(
+                    $this->CI->config->item('default_timezone'));
+        }
 
         $this->date_frontend_format_pref = $this->CI->config->item('default_date_format');
         $this->time_frontend_format_pref = $this->CI->config->item('default_time_format');
