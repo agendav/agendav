@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -20,28 +19,28 @@
  */
 
 /**
- * This controller loads basic configuration from AgenDAV 
+ * This controller loads basic configuration from AgenDAV
  */
 class Conf extends MY_Controller
 {
 
     /**
-     * Current user 
-     * 
+     * Current user
+     *
      * @var \AgenDAV\User
      * @access private
      */
     private $user;
 
     private $options = array(
-		'format_column_month',
-		'format_column_week',
-		'format_column_day',
-		'format_column_table',
-		'format_title_month',
-		'format_title_week',
-		'format_title_day',
-		'format_title_table',
+        'format_column_month',
+        'format_column_week',
+        'format_column_day',
+        'format_column_table',
+        'format_title_month',
+        'format_title_week',
+        'format_title_day',
+        'format_title_table',
         'cookie_prefix',
         'csrf_cookie_name',
         'csrf_token_name',
@@ -50,10 +49,9 @@ class Conf extends MY_Controller
     public function __construct() {
         parent::__construct();
 
-        $this->user = $this->container['user'];
+        $session = $this->container['session'];
 
-        if (!$this->user->isAuthenticated()) {
-            $this->extended_logs->message('INFO', 'Anonymous access attempt to ' . uri_string());
+        if (!$session->isAuthenticated()) {
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
@@ -63,8 +61,8 @@ class Conf extends MY_Controller
     }
 
     /**
-     * Returns all options 
-     * 
+     * Returns all options
+     *
      * @access public
      * @return void
      */

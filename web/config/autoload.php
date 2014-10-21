@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /*
 | -------------------------------------------------------------------
 | AUTO-LOADER
@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('session', 'encrypt',
+$autoload['libraries'] = array('encrypt',
     'timezonemanager', 'dates', 'recurrence', 'icshelper');
 
 
@@ -110,7 +110,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('shared_calendars', 'i18n', 'preferences');
+$autoload['model'] = array('shared_calendars', 'i18n');
 
 
 

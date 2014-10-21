@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 // Advanced options which you should not need to modify
 require_once('advanced.php');
@@ -48,11 +48,10 @@ $config['enable_debug']= FALSE;
 | Encryption Key
 |--------------------------------------------------------------------------
 |
-| If you use the Encryption class or the Session class you
-| MUST set an encryption key.  See the user guide for info.
+| You MUST set an encryption key
 |
 */
-$config['encryption_key'] = 'ASasdkdkdk';
+$config['encryption_key'] = 'this is my key';
 
 
 /*
@@ -208,6 +207,23 @@ $config['default_first_day'] = 0;
 */
 
 $config['default_timezone'] = 'Europe/Madrid';
+
+
+/*
+|--------------------------------------------------------------------------
+| Database settings
+|--------------------------------------------------------------------------
+|
+| Set your database connection settings here
+*/
+$config['db'] = array(
+        'dbname' => 'agendav',
+        'user' => 'user',
+        'password' => 'password',
+        'host' => 'localhost',
+        'driver' => 'pdo_mysql',
+);
+
 
 /*
 |--------------------------------------------------------------------------

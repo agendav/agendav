@@ -30,12 +30,15 @@ class Js_generator extends MY_Controller
             );
     private $user;
 
+    private $preferences_repository;
+
     function __construct() {
         parent::__construct();
         $this->user = $this->container['user'];
+        $this->preferences_repository = $this->container['preferences_repository'];
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
-                !$this->user->isAuthenticated()) {
+                !$this->container['session']->isAuthenticated()) {
             $expire = $this->load->view('js_code/session_expired', '', true);
             echo $expire;
             die();
@@ -51,7 +54,8 @@ class Js_generator extends MY_Controller
      * Session refresh code
      */
     function session_refresh() {
-        $seconds = $this->config->item('sess_time_to_update');
+        $session_options = $this->config->item('sessions');
+        $seconds = $session_options['refresh'];
         $seconds++; // Give a margin of 1s to update
         $this->load->view('js_code/session_refresh',
                 array('every' => $seconds));
@@ -131,7 +135,9 @@ class Js_generator extends MY_Controller
                 'Cache-Control: post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache'); 
 
-        $preferences = $this->user->getPreferences();
+        $preferences = $this->preferences_repository->userPreferences(
+            $this->user->getUsername()
+        );
 
         $this->load->view('js_code/userprefs', array(
             'preferences' => $preferences->getAll(),

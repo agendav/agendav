@@ -22,11 +22,11 @@
 class Login extends MY_Controller {
 
     public function index() {
-        $app_user = $this->container['user'];
+        $session = $this->container['session'];
         $urlgenerator = $this->container['urlgenerator'];
 
         // Already authenticated?
-        if ($app_user->isAuthenticated()) {
+        if ($session->isAuthenticated()) {
             redirect('/main');
         }
 
@@ -56,14 +56,15 @@ class Login extends MY_Controller {
             // Check authentication against server
             $user = $this->input->post('user', true);
             $passwd = $this->input->post('passwd', false);
+            $app_user = $this->container['user'];
             $app_user->setCredentials($user, $passwd);
 
             $caldav_client = $this->container['client'];
 
 
             if ($caldav_client->checkAuthentication()) {
-                $app_user->setAuthenticated(true);
-                $app_user->newSession();
+                $session->set('username', $user);
+                $session->set('password', $passwd);
                 redirect("/main");
                 $this->output->_display();
                 die();

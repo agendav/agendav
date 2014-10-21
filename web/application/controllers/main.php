@@ -27,12 +27,12 @@ class Main extends MY_Controller
     function __construct() {
         parent::__construct();
 
-        $this->user = $this->container['user'];
-
         // Force authentication
-        if (!$this->user->isAuthenticated()) {
+        if (!$this->container['session']->isAuthenticated()) {
             redirect('/login');
         }
+
+        $this->user = $this->container['user'];
     }
 
     function index() {
@@ -74,7 +74,7 @@ class Main extends MY_Controller
      * Closes user session
      */
     function logout() {
-        $this->user->removeSession();
+        $this->container['session']->clear();
 
         // Configured redirection
         $logout_url = $this->config->item('logout_redirect_to');

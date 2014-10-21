@@ -32,11 +32,34 @@ class MY_Controller extends CI_Controller
          * Make some CI models/libraries available to Pimple.
          * PHP 5.3 doesn't support the use of $this inside closures
          */
-        $ci_preferences = $this->preferences;
         $ci_encrypt = $this->encrypt;
         $ci_logger = $this->log;
         $ci_shared_calendars = $this->shared_calendars;
         $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
+
+
+        // Database connection
+        $db_options = $this->config->item('db');
+        $this->container['db'] = $this->container->share(function($container) use ($db_options) {
+            $db = new \AgenDAV\DB($db_options);
+
+            return $db->getConnection();
+        });
+
+        // ORM Entity manager
+        $this->container['entity_manager'] = $this->container->share(function($container) use ($db_options) {
+            $setup = Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
+                array(__DIR__ . '/../../lib/AgenDAV/Data')
+            );
+
+            return Doctrine\ORM\EntityManager::create($db_options, $setup);
+        });
+
+        // Preferences repository
+        $this->container['preferences_repository'] = $this->container->share(function($container) {
+            $em = $container['entity_manager'];
+            return new AgenDAV\Repositories\DoctrineOrmPreferencesRepository($em);
+        });
 
         // URL generator
         $cfg = array(
@@ -55,16 +78,44 @@ class MY_Controller extends CI_Controller
             );
         });
 
-        // Session
-        $this->container['session'] = $this->container->share(function($container) {
-            return new \AgenDAV\CodeIgniterSessionManager();
+        // Encryption
+        $encryption_key = $this->config->item('encryption_key');
+        $this->container['encryptor'] = $this->container->share(function($container) use ($encryption_key) {
+            $encryption_key = substr(sha1($encryption_key), 0, 16); // Use AES128
+            $source_encryptor = new \Keboola\Encryption\AesEncryptor($encryption_key);
+
+            return new \AgenDAV\Encryption\KeboolaAesEncryptor($source_encryptor);
         });
 
+        // Session stuff
+        $session_options = $this->config->item('sessions');
+        $this->container['session_handler'] = $this->container->share(function($container) {
+            $db = $container['db'];
+            $encryptor = $container['encryptor'];
+            $dbal_handler = new \Symfony\Bridge\Doctrine\HttpFoundation\DbalSessionHandler($db);
+
+            return new \AgenDAV\Session\SessionEncrypter($dbal_handler, $encryptor);
+        });
+
+        $this->container['session_storage'] = $this->container->share(function($container) use ($session_options) {
+            $storage = new Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage(
+                $session_options,
+                $container['session_handler']
+            );
+
+            return $storage;
+        });
+
+        $this->container['session'] = $this->container->share(function($container) {
+            return new \AgenDAV\Session\HttpFoundationSession($container['session_storage']);
+        });
+
+        $this->container['session']->initialize();
+
         // User
-        $this->container['user'] = $this->container->share(function($container) use ($ci_preferences, $ci_encrypt) {
+        $this->container['user'] = $this->container->share(function($container) use ($ci_encrypt) {
             return new \AgenDAV\User(
                 $container['session'],
-                $ci_preferences,
                 $ci_encrypt
             );
         });

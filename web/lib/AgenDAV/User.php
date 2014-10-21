@@ -1,6 +1,4 @@
 <?php 
-namespace AgenDAV;
-
 /*
  * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
  *
@@ -20,6 +18,10 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace AgenDAV;
+
+use AgenDAV\Session\Session;
+
 /**
  * Represents the current AgenDAV user 
  */
@@ -38,7 +40,7 @@ class User
      * @var string
      * @access private
      */
-    private $passwd;
+    private $password;
 
     /**
      * Additional user properties 
@@ -57,28 +59,12 @@ class User
     private $is_authenticated = false;
 
     /**
-     * Current user preferences
-     *
-     * @var AgenDAV\Preferences
-     * @access private
-     */
-    private $current_preferences = null;
-
-    /**
      * Session manager 
      *
-     * @var ISessionManager
+     * @var Session
      * @access private
      */
     private $session = null;
-
-    /**
-     * Preferences manager 
-     *
-     * @var Object
-     * @access private
-     */
-    private $preferences = null;
 
     /**
      * Encryption manager 
@@ -91,27 +77,22 @@ class User
     /**
      * Creates a user instance. Loads data from session, if available
      *
-     * @param ISessionManager $session Session manager
-     * @param Object $preferences Preferences manager
+     * @param Session $session Session manager
      * @param Object $encrypt Encryption manager
      * @access public
      * @return void
      */
-    public function __construct(ISessionManager $session, $preferences, $encrypt) {
+    public function __construct(Session $session, $encrypt) {
         $this->session = $session;
-        $this->preferences = $preferences;
         $this->encrypt = $encrypt;
 
-        // Initialize session
-        $this->session->initialize();
-        
         // TODO other properties!
-        foreach (array('username', 'passwd', 'is_authenticated') as $n) {
+        foreach (array('username', 'password') as $n) {
             if (null !== $current = $this->session->get($n)) {
 
                 // Decrypt password
-                if ($n == 'passwd') {
-                    $current = $this->encrypt->decode($current);
+                if ($n == 'password') {
+                    //$current = $this->encrypt->decode($current);
                 }
 
                 $this->$n = $current;
@@ -123,27 +104,12 @@ class User
      * Set user credentials
      *
      * @param string $username User name
-     * @param string $passwd Clear text password
+     * @param string $password Clear text password
      * @return void
      */
-    public function setCredentials($username, $passwd) {
+    public function setCredentials($username, $password) {
         $this->username = mb_strtolower($username);
-        $this->passwd = $passwd;
-    }
-
-    /**
-     * Gets current user preferences
-     *
-     * @param boolean $force Force reloading preferences
-     * @return AgenDAV\Data\Preferences Current user preferences
-     */
-    public function getPreferences($force = false) {
-        if ($force === true || $this->current_preferences === null) {
-            $this->current_preferences =
-                $this->preferences->get($this->username, $force);
-        }
-
-        return $this->current_preferences;
+        $this->password = $password;
     }
 
     /**
@@ -161,56 +127,7 @@ class User
      * @return string Password
      */
     public function getPasswd() {
-        return $this->passwd;
-    }
-
-    // TODO other properties!
-
-    /**
-     * Creates new session
-     *
-     * @return void
-     */
-    public function newSession() {
-        $data = array(
-                'username' => $this->username,
-                'passwd' => $this->encrypt->encode($this->passwd),
-                'is_authenticated' => $this->is_authenticated,
-                );
-        $this->session->setAll($data);
-    }
-
-    /**
-     * Empty current session
-     *
-     * @return void
-     */
-    public function removeSession() {
-        $this->session->clear();
-    }
-
-    /**
-     * Checks valid authentication against CalDAV server
-     *
-     * @return boolean Current user is logged in
-     */
-    public function isAuthenticated() {
-        if (empty($this->username) || empty($this->passwd)) {
-            return false;
-        } else {
-            return $this->is_authenticated;
-        }
-    }
-
-    /**
-     * Sets current user authentication status
-     *
-     * @param bool $is_authenticated 
-     * @return void
-     */
-    public function setAuthenticated($is_authenticated)
-    {
-        $this->is_authenticated = $is_authenticated;
+        return $this->password;
     }
 
 }

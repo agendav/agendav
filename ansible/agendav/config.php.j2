@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 // Advanced options which you should not need to modify
 require_once('advanced.php');
@@ -208,6 +208,36 @@ $config['default_first_day'] = 1;
 */
 
 $config['default_timezone'] = '{{ timezone }}';
+
+/*
+|--------------------------------------------------------------------------
+| Database settings
+|--------------------------------------------------------------------------
+|
+| Set your database connection settings here
+*/
+$config['db'] = array(
+        'dbname' => 'agendav',
+        'user' => 'root',
+        'password' => '',
+        'host' => 'localhost',
+        'driver' => 'pdo_mysql',
+);
+
+/*
+|--------------------------------------------------------------------------
+| Database settings
+|--------------------------------------------------------------------------
+|
+| Set your database connection settings here
+*/
+$config['db'] = array(
+        'dbname' => 'agendav',
+        'user' => 'root',
+        'password' => '',
+        'host' => 'localhost',
+        'driver' => 'pdo_mysql',
+);
 
 /*
 |--------------------------------------------------------------------------

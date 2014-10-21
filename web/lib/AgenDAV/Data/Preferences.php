@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AgenDAV\Data;
 
@@ -23,16 +23,19 @@ namespace AgenDAV\Data;
 
 
 /**
- * Holds user preferences 
- *
- * @package 
- * @version $id$
- * @copyright 1997-2005 The PHP Group
- * @author Tobias Schlitt <toby@php.net> 
- * @license PHP Version 3.0 {@link http://www.php.net/license/3_0.txt}
+ * Holds user preferences
+ */
+
+/**
+ * @Entity
+ * @Table(name="prefs")
  */
 class Preferences
 {
+    /** @Id @Column(type="string") */
+    private $username;
+
+    /** @Column(type="json_array") */
     private $options = array();
 
     public function __construct($arr_values = array()) {
@@ -51,6 +54,16 @@ class Preferences
         } else {
             return null;
         }
+    }
+
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
     }
 
     public function getAll() {

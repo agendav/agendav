@@ -8,24 +8,26 @@ Prerequisites
 
 AgenDAV |release| requires the following software to be installed:
 
-* A CalDAV server (developed mainly with `DAViCal <http://www.davical.org/>`_
+* A CalDAV server
 * A web server
-* PHP >= 5.3.0
+* PHP >= 5.4.0
 * PHP mbstring extension
 * PHP cURL extension
-* MySQL > 5.1 or PostgreSQL >= 8.1
+* A database backend
+
+Most popular database backends are supported, such as MySQL, PostgreSQL or SQLite.
+
+Look for supported databases on this `Doctrine DBAL driver list <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#driver>`_.
 
 Downloading AgenDAV and uncompressing
 -------------------------------------
 
-AgenDAV |release| can be obtained at `AgenDAV official webpage
-<http://agendav.org>`_, but you can use GitHub to download latest version.
-Have a look at `<http://github.com/adobo/agendav>`_.
+AgenDAV |release| can be obtained at `AgenDAV webpage <http://agendav.org>`_.
 
 Uncompress it using ``tar``::
 
- $ tar xzf adobo-agendav-...tar.gz
- $ cd adobo-agendav-.../
+ $ tar agendav-...tar.gz
+ $ cd agendav-.../
 
 Download dependencies (only for Git)
 ------------------------------------
@@ -45,19 +47,16 @@ Composer installation is really simple::
 Database and tables
 -------------------
 
-AgenDAV requires a database to store some information. Supported RDBMs are
-MySQL and PostgreSQL.
+AgenDAV requires a database to store some extra information.
 
 First of all you have to create a user and a database for that user.
 
-Second, you'll have to create initial AgenDAV tables using provided SQL
-files inside ``sql/`` directory.
+After preparing your DB, you will have to configure your database settings, and after that you will be able to create
+the database tables using a provided script.
 
-Last step is applying database upgrades to initial database tables.
-
-Steps 1&2: MySQL
-****************
-Create an user in MySQL like this::
+How to create a user on MySQL
+*****************************
+Create a user in MySQL like this::
 
  $ mysql --default-character-set=utf8 -uroot -p
  Enter password: 
@@ -67,18 +66,8 @@ Create an user in MySQL like this::
  mysql> FLUSH PRIVILEGES;
  mysql> ^D
 
-And then run the initial schema creation file::
-
- $ mysql --default-character-set=utf8 -uagendav \
-   -p agendav < sql/mysql.schema.sql
- Enter password:
- $
-
-Note the UTF8 parts on the previous commands. If you don't specify them you
-will have some issues with special characters.
-
-Steps 1&2: PostgreSQL
-*********************
+How to create a user on PostgreSQL
+**********************************
 
 Use the special ``postgres`` system user to manage your installation. You
 can add a new user and a new database the following way::
@@ -95,23 +84,25 @@ Then you have to edit the file ``pg_hba.conf``, which is usually located at
 ``/var/lib/pgsql/``. Add the following line before other definitions::
 
  # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
- local   agendav     agendav     trust
+ local   agendav     agendav                           md5
 
-After that just restart PostgreSQL and load the initial schema::
+Create AgenDAV tables
+*********************
 
- $ psql -U agendav agendav < sql/pgsql.schema.sql
+AgenDAV tables are created by running the provided ``agendavcli`` script.
 
+Before being able to run it, you will have to configure at least your database
+connection details. Have a look at the :confval:`db` parameter.
 
-Step 3: Apply latest database schema
-************************************
+After configuring your database connection, just run the script like this::
 
-Initial database structure created with `*.sql` files provides only a base
-structure for AgenDAV. It has to be modified to apply latest release
-changes. To do this, follow instructions on :ref:`dbupgrade`.
+  $ cd bin/
+  $ ./agendavcli migrations:migrate
 
+Confirm the operation, and your database should be ready.
 
-Configuring Apache web server
------------------------------
+Configuring  Apache to serve AgenDAV
+------------------------------------
 
 Apache has to be configured to point to ``web/public`` directory, using its
 own VirtualHost or just an Alias.
@@ -139,11 +130,10 @@ Example using the Alias directive::
 Other web servers
 *****************
 
-AgenDAV should work on all other web server software if they support PHP
-scripts, but this is untested.
+AgenDAV should run on any other web server software as well.
 
 Configure AgenDAV
 -----------------
 
-Now you can proceed to configure AgenDAV following the :doc:`configuration`
+Now you can proceed to fully configure AgenDAV following the :doc:`configuration`
 section.

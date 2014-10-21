@@ -29,20 +29,23 @@ class Calendar extends MY_Controller
     private $client;
     private $prefs;
     private $urlgenerator;
+    private $preferences_repository;
 
     function __construct() {
         parent::__construct();
-        $this->user = $this->container['user'];
 
-        if (!$this->user->isAuthenticated()) {
+        if (!$this->container['session']->isAuthenticated()) {
             $this->output->set_status_header('401');
             $this->output->_display();
             die();
         }
 
+        $this->user = $this->container['user'];
+        $this->preferences_repository = $this->container['preferences_repository'];
+
         $this->calendar_colors = $this->config->item('calendar_colors');
 
-        $this->prefs = $this->preferences->get($this->user->getUsername());
+        $this->prefs = $this->preferences_repository->userPreferences($this->user->getUsername());
 
         $this->urlgenerator = $this->container['urlgenerator'];
 

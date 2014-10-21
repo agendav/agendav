@@ -1,15 +1,38 @@
-#!/bin/bash
+#!/usr/bin/php
+<?php
 
-PHPCLI=`which php-cli 2>/dev/null`
-if [ "x$PHPCLI" == "x" ]; then
-	PHPCLI=`which php 2>/dev/null`
-fi
+require_once __DIR__ . '/../web/vendor/autoload.php';
+$config_file = __DIR__ . '/../web/config/config.php';
 
-# Find path to web/public dir
-realpath() {
-	[[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+if (!file_exists($config_file) || !is_readable($config_file)) {
+    echo $config_file . " cannot be read\n";
+    exit(255);
 }
 
-PUBLIC_DIR=`realpath "$0"|sed 's_agendavcli\$__g'`../web/public
+// Load DB definition
+require $config_file;
 
-(cd $PUBLIC_DIR && $PHPCLI "${PUBLIC_DIR}"/index.php cli ${1-})
+$agendav_db = new \AgenDAV\DB($config['db']);
+
+$helperSet = new \Symfony\Component\Console\Helper\HelperSet(
+    [
+    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($agendav_db->getConnection()),
+    'dialog' => new \Symfony\Component\Console\Helper\DialogHelper(),
+    ]
+);
+
+$cli = new \Symfony\Component\Console\Application('AgenDAV CLI', \AgenDAV\Version::V);
+$cli->setCatchExceptions(true);
+$cli->setHelperSet($helperSet);
+$cli->addCommands(array(
+    // DBAL Commands
+    new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(),
+    new \Doctrine\DBAL\Tools\Console\Command\ImportCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
+
+));
+$cli->run();
