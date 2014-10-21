@@ -259,14 +259,22 @@ setting.
 		'3E4147',
         );
 
+.. confval:: db
 
-.. _dbconfig:
+   Database connection parameters. Uses Doctrine DBAL syntax, so follow the guide at
+   http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
+   for a better reference. Example::
 
-Database configuration WRONG
-----------------------------
+        $config['db'] = $config['db'] = array(
+            'dbname' => 'agendav',
+            'user' => 'user',
+            'password' => 'password',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+         );
 
-``database.php`` contains how to connect to your MySQL database. Just follow
-inline comments, it's pretty straight forward.
+
+
 
 .. _caldavphpconf:
 

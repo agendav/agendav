@@ -84,7 +84,7 @@ Then you have to edit the file ``pg_hba.conf``, which is usually located at
 ``/var/lib/pgsql/``. Add the following line before other definitions::
 
  # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
- local   agendav     agendav     trust
+ local   agendav     agendav                           md5
 
 Create AgenDAV tables
 *********************
@@ -92,7 +92,7 @@ Create AgenDAV tables
 AgenDAV tables are created by running the provided ``agendavcli`` script.
 
 Before being able to run it, you will have to configure at least your database
-connection details. Follow the steps on :ref:`dbconfig`.
+connection details. Have a look at the :confval:`db` parameter.
 
 After configuring your database connection, just run the script like this::
 
@@ -135,5 +135,5 @@ AgenDAV should run on any other web server software as well.
 Configure AgenDAV
 -----------------
 
-Now you can proceed to configure AgenDAV following the :doc:`configuration`
+Now you can proceed to fully configure AgenDAV following the :doc:`configuration`
 section.
