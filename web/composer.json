@@ -13,8 +13,8 @@
         "doctrine/orm": "~2.4"
     },
     "autoload": {
-        "psr-0": {
-            "AgenDAV": "lib/AgenDAV/",
+        "psr-4": {
+            "AgenDAV\\": "src/",
             "": ["lib/", "lib/caldav-client"]
         }
     }
