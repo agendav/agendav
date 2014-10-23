@@ -116,7 +116,7 @@ class Client
     }
 
     /**
-     * Gets a header
+     * Retrieves a previously set request header
      *
      * @param string $name  Header name
      * @return mixed        String or array of strings in case the header is defined, null otherwise
@@ -131,7 +131,6 @@ class Client
      * Gets last request sent using this client
      *
      * @return GuzzleHttp\Message\RequestInterface     Last request sent
-     * @author Jorge López Pérez <jorge@adobo.org>
      **/
     public function getLastRequest()
     {
