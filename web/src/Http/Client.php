@@ -59,11 +59,8 @@ class Client
     public function __construct(GuzzleClient $guzzle, array $custom_options = array())
     {
         $this->guzzle = $guzzle;
-        $this->options = array(
-            'exceptions' => false, // Do not throw an exception on 4xx/5xx
-        );
+        $this->options = $custom_options;
 
-        $this->options = array_merge($this->options, $custom_options);
         $this->request_headers = array();
     }
 
@@ -144,26 +141,26 @@ class Client
      * @param string $method       HTTP verb
      * @param string $url          URL to send the request to
      * @return void
+     * @throws GuzzleHttp\Exception\BadResponseException On 4xx and 5xx HTTP errors
      **/
     public function request($method, $url, $body = '')
     {
+        $this->setHeader('User-Agent', 'AgenDAV/' . Version::V);
+        $this->options['headers'] = $this->request_headers;
         $this->request = $this->guzzle->createRequest(
             $method,
             $url,
             $this->options
         );
 
-        $this->request->setHeaders($this->request_headers);
-        $this->request->setHeader('User-Agent', 'AgenDAV/' . Version::V);
-
         if ($body !== '') {
             $this->request->setBody($body);
         }
 
-        $this->response = $this->guzzle->send($this->request);
-
         // Clean current headers
         $this->request_headers = array();
+
+        $this->response = $this->guzzle->send($this->request);
 
         return $this->response;
     }

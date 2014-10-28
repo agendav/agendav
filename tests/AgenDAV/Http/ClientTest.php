@@ -60,7 +60,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Should not throw any exceptions at all
+     * Should throw an exception
+     * @expectedException GuzzleHttp\Exception\BadResponseException
      */
     public function testNoExceptions()
     {
