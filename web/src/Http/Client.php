@@ -22,6 +22,7 @@ namespace AgenDAV\Http;
 
 use AgenDAV\Version;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Stream\Stream;
 
 /**
  * HTTP Client for AgenDAV, based on Guzzle
@@ -154,7 +155,7 @@ class Client
         );
 
         if ($body !== '') {
-            $this->request->setBody($body);
+            $this->request->setBody(Stream::factory($body));
         }
 
         // Clean current headers
