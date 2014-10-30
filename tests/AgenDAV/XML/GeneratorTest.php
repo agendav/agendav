@@ -1,10 +1,10 @@
 <?php
-namespace AgenDAV;
+namespace AgenDAV\XML;
 
 /**
  * @author jorge
  */
-class XMLGeneratorTest extends \PHPUnit_Framework_TestCase
+class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testPropfindBody()
     {
@@ -31,6 +31,6 @@ class XMLGeneratorTest extends \PHPUnit_Framework_TestCase
      **/
     public function createXMLGenerator()
     {
-        return new XMLGenerator(false);
+        return new Generator(false);
     }
 }

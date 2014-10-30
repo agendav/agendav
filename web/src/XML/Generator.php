@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV;
+namespace AgenDAV\XML;
 
 use Sabre\XML\Util as XMLUtil;
 
@@ -27,7 +27,7 @@ use Sabre\XML\Util as XMLUtil;
  * Helper class to generate XML
  *
  */
-class XMLGenerator
+class Generator
 {
     /**
      * Generate formatted XML documents
