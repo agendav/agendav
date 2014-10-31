@@ -99,6 +99,48 @@ class Client2
 
         return $result;
     }
+
+
+    /**
+     * Gets the list of calendars owned by current user on a given URL
+     *
+     * @param string $url   URL
+     * @param bool $recurse Whether to recurse (Depth: 1) or not (Depth: 0).
+     *                       Default to true
+     * @return array
+     */
+    public function getCalendars($url, $recurse = true)
+    {
+        $body = $this->xml_generator->propfindBody([
+            '{DAV:}resourcetype',
+            '{DAV:}displayname',
+            '{http://calendarserver.org/ns/}getctag',
+            '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set',
+            '{http://apple.com/ns/ical/}calendar-color',
+            '{http://apple.com/ns/ical/}calendar-order',
+        ]);
+
+        $response = $this->propfind($url, $recurse ? 1 : 0, $body);
+
+        // Adapt the non recursive case
+        if (!$recurse) {
+            $response = [ $url => $response ];
+        }
+
+        $calendars = [];
+        foreach ($response as $href => $properties) {
+            if (!isset($properties['{DAV:}resourcetype'])) {
+                continue;
+            }
+
+            if ($properties['{DAV:}resourcetype']->is('{urn:ietf:params:xml:ns:caldav}calendar')) {
+                $calendars[$href] = $properties;
+            }
+        }
+
+        return $calendars;
+
+    }
     
 
     /**
@@ -131,6 +173,5 @@ class Client2
 
         return $result;
     }
-    
 
 }
