@@ -41,7 +41,7 @@ class Parser
     public function __construct(Array $property_map = [])
     {
         $this->property_map = $property_map;;
-        $this->propertyMap['{DAV:}resourcetype'] = 'Sabre\\DAV\\Property\\ResourceType';
+        $this->property_map['{DAV:}resourcetype'] = 'Sabre\\DAV\\Property\\ResourceType';
     }
     
 
