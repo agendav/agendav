@@ -27,12 +27,18 @@ namespace AgenDAV\Data;
 class Calendar
 {
     /**
+     * URL of this calendar
+     *
+     * @var string
+     */
+    protected $url;
+
+    /**
      * Calendar attributes
      *
      * @var array
-     * @access private
      */
-    private $data;
+    protected $data;
 
     /**
      * Default attributes 
@@ -49,12 +55,19 @@ class Calendar
     );
 
 
-    public function __construct($url, $displayname = '', $getctag = null )
+    /**
+     * Creates a new calendar
+     *
+     * @param string $url   Calendar URL
+     * @param string $displayname   Display name for this calendar
+     * @param array $attributes More attributes for this calendar
+     */
+    public function __construct($url, $displayname = '', $attributes = [])
     {
+        $this->url = $url;
         $this->data = self::$defaults;
-        $this->data['url'] = $url;
         $this->data['displayname'] = $displayname;
-        $this->data['getctag'] = $getctag;
+        $this->data = array_merge($this->data, $attributes);
     }
 
     public function __get($attr)
@@ -62,6 +75,10 @@ class Calendar
         // Backwards compatibility
         if ($attr == 'calendar') {
             $attr = 'url';
+        }
+
+        if ($attr == 'url') {
+            return $this->url;
         }
 
         return array_key_exists($attr, $this->data) ?
@@ -76,6 +93,10 @@ class Calendar
             $attr = 'url';
         }
 
+        if ($attr == 'url') {
+            return $this->url;
+        }
+
         $this->data[$attr] = $value;
     }
 
@@ -88,10 +109,11 @@ class Calendar
      */
     public function getAll()
     {
-        $tmp = $this->data;
+        $data = $this->data;
         // Backwards compatibility
-        $tmp['calendar'] = $tmp['url'];
+        $data['url'] = $this->url;
+        $data['calendar'] = $this->url;
 
-        return $tmp;
+        return $data;
     }
 }
