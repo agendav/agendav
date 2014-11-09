@@ -20,7 +20,7 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use \AgenDAV\XML\Generator;
+use \AgenDAV\Data\Calendar;
 
 class Client2
 {
@@ -134,12 +134,11 @@ class Client2
             }
 
             if ($properties['{DAV:}resourcetype']->is('{urn:ietf:params:xml:ns:caldav}calendar')) {
-                $calendars[$href] = $properties;
+                $calendars[$href] = new Calendar($href, $properties);
             }
         }
 
         return $calendars;
-
     }
     
 

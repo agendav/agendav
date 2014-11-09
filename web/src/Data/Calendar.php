@@ -41,6 +41,14 @@ class Calendar
     protected $data;
 
     /**
+     * Property names including namespaces
+     */
+    const DISPLAYNAME = '{DAV:}displayname';
+    const CTAG = '{http://calendarserver.org/ns/}getctag';
+    const COLOR = '{http://apple.com/ns/ical/}calendar-color';
+    const ORDER = '{http://apple.com/ns/ical/}calendar-order';
+
+    /**
      * Default attributes 
      */
     public static $defaults = array(
@@ -59,45 +67,53 @@ class Calendar
      * Creates a new calendar
      *
      * @param string $url   Calendar URL
-     * @param string $displayname   Display name for this calendar
-     * @param array $attributes More attributes for this calendar
+     * @param array $properties More attributes for this calendar
      */
-    public function __construct($url, $displayname = '', $attributes = [])
+    public function __construct($url, $properties = [])
     {
         $this->url = $url;
-        $this->data = self::$defaults;
-        $this->data['displayname'] = $displayname;
-        $this->data = array_merge($this->data, $attributes);
+        foreach ($properties as $property => $value) {
+            $this->setProperty($property, $value);
+        }
     }
 
-    public function __get($attr)
+    /*
+     * Getter for URL
+     */
+    public function getUrl()
     {
-        // Backwards compatibility
-        if ($attr == 'calendar') {
-            $attr = 'url';
-        }
+        return $this->url;
+    }
+    
 
-        if ($attr == 'url') {
-            return $this->url;
-        }
-
-        return array_key_exists($attr, $this->data) ?
-            $this->data[$attr] :
+    /**
+     * Returns a property value from this calendar
+     *
+     * @param string $property Property to return
+     * @return mixed Stored value, or null if the property is missing
+     */
+    public function getProperty($property)
+    {
+        return array_key_exists($property, $this->data) ?
+            $this->data[$property] :
             null;
     }
 
-    public function __set($attr, $value)
+
+    /**
+     * Sets a property value for this calendar
+     * 
+     * @param string $property  Property name
+     * @param mixed $value  Value
+     */
+    public function setProperty($property, $value)
     {
         // Backwards compatibility
-        if ($attr == 'calendar') {
-            $attr = 'url';
+        if ($property == 'url') {
+            throw new \RuntimeException('Calendar URL cannot be changed');
         }
 
-        if ($attr == 'url') {
-            return $this->url;
-        }
-
-        $this->data[$attr] = $value;
+        $this->data[$property] = $value;
     }
 
     /**
@@ -111,8 +127,7 @@ class Calendar
     {
         $data = $this->data;
         // Backwards compatibility
-        $data['url'] = $this->url;
-        $data['calendar'] = $this->url;
+        $data['url'] = $this->getUrl();
 
         return $data;
     }

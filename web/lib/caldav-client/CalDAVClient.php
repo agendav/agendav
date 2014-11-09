@@ -1051,8 +1051,6 @@ EOFILTER;
 
               $calendar = new Calendar($href);
 
-              $calendar->calendar = $href;
-
               $ok_props = $this->GetOKProps($hnode);
               foreach( $ok_props AS $v ) {
                   switch( $v['tag'] ) {

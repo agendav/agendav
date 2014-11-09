@@ -97,9 +97,11 @@ class Calendar extends MY_Controller
 
         $new_calendar = new CalendarModel(
             $url,
-            $displayname
+            [
+                CalendarModel::DISPLAYNAME => $displayname,
+                CalendarModel::COLOR  => $calendar_color,
+            ]
         );
-        $new_calendar->color = $calendar_color;
 
         $res = $this->client->createCalendar($new_calendar);
 
@@ -222,9 +224,11 @@ class Calendar extends MY_Controller
             // Calendar properties
             $changed_calendar = new CalendarModel(
                 $calendar,
-                $displayname
+                [
+                    CalendarModel::DISPLAYNAME => $displayname,
+                    CalendarModel::COLOR  => $calendar_color,
+                ]
             );
-            $changed_calendar->color = $calendar_color;
 
             $res = $this->client->changeResource($changed_calendar);
         } else if ($is_sharing_enabled) {

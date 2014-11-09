@@ -137,7 +137,7 @@ class CURLClient extends \CalDAVClient implements Client
 
         // Add public URLs
         foreach ($cals as $c) {
-            $c->public_url = $this->urlgenerator->generatePublicURL($c->url);
+            $c->public_url = $this->urlgenerator->generatePublicURL($c->getUrl());
         }
 
         return $cals;
@@ -261,10 +261,10 @@ class CURLClient extends \CalDAVClient implements Client
         
         $xml_text = $xml->Render('propertyupdate', $set, null, 'http://apple.com/ns/ical/:calendar-color');
 
-        $res = $this->DoPROPPATCH($xml_text, $calendar->url);
+        $res = $this->DoPROPPATCH($xml_text, $calendar->getUrl());
         $code = $this->GetHTTPResultCode();
 
-        $this->logger->message('INTERNALS', 'PROPPATCH on ' .  $calendar->url . ' returned HTTP code ' . $code);
+        $this->logger->message('INTERNALS', 'PROPPATCH on ' .  $calendar->getUrl() . ' returned HTTP code ' . $code);
 
         return ($res == true) ? true : $code;
     }
@@ -293,10 +293,10 @@ class CURLClient extends \CalDAVClient implements Client
 
         $xml_text = $xml->Render('C:mkcalendar', $set, null, 'http://apple.com/ns/ical/:calendar-color');
 
-        $res = $this->DoXMLRequest('MKCALENDAR', $xml_text, $calendar->url);
+        $res = $this->DoXMLRequest('MKCALENDAR', $xml_text, $calendar->getUrl());
 
         $code = $this->GetHTTPResultCode();
-        $this->logger->message('INTERNALS', 'MKCALENDAR on '.$calendar->url.' returned HTTP ' . $code);
+        $this->logger->message('INTERNALS', 'MKCALENDAR on '.$calendar->getUrl().' returned HTTP ' . $code);
 
         return ($code[0] == '2') ? true : $code;
     }
