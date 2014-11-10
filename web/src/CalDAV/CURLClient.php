@@ -23,6 +23,7 @@ namespace AgenDAV\CalDAV;
 
 use AgenDAV\URL;
 use AgenDAV\Version;
+use AgenDAV\Data\Calendar;
 
 /**
  * AgenDAV CalDAV client 
@@ -253,12 +254,11 @@ class CURLClient extends \CalDAVClient implements Client
         $xml = new \XMLDocument($ns);
         $set = $xml->NewXMLElement('set');
         $prop = $set->NewElement('prop');
-        $xml->NSElement($prop, 'displayname', $calendar->displayname);
-        $xml->NSElement($prop, 'http://apple.com/ns/ical/:calendar-color', $calendar->color);
+        $xml->NSElement($prop, 'displayname', $calendar->getProperty(Calendar::DISPLAYNAME));
+        $xml->NSElement($prop, 'http://apple.com/ns/ical/:calendar-color', $calendar->getProperty(Calendar::COLOR));
 
         // TODO: associate timezone? AWL doesn't like <CDATA, 
         // gets replaced by html entity
-        
         $xml_text = $xml->Render('propertyupdate', $set, null, 'http://apple.com/ns/ical/:calendar-color');
 
         $res = $this->DoPROPPATCH($xml_text, $calendar->getUrl());
@@ -285,8 +285,8 @@ class CURLClient extends \CalDAVClient implements Client
         $xml = new \XMLDocument($ns);
         $set = $xml->NewXMLElement('set');
         $prop = $set->NewElement('prop');
-        $xml->NSElement($prop, 'displayname', $calendar->displayname);
-        $xml->NSElement($prop, 'http://apple.com/ns/ical/:calendar-color', $calendar->color);
+        $xml->NSElement($prop, 'displayname', $calendar->getProperty(Calendar::DISPLAYNAME));
+        $xml->NSElement($prop, 'http://apple.com/ns/ical/:calendar-color', $calendar->getProperty(Calendar::COLOR));
 
         // TODO: associate timezone? AWL doesn't like <CDATA, 
         // gets replaced by html entity

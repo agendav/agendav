@@ -19,7 +19,11 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use \AgenDAV\Data\Calendar as CalendarModel;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Serializer\JsonApiSerializer;
+use AgenDAV\Data\Calendar as CalendarModel;
+use AgenDAV\Data\Transformer\CalendarTransformer;
 
 class Calendar extends MY_Controller
 {
@@ -65,11 +69,11 @@ class Calendar extends MY_Controller
     function all() {
         $calendarfinder = $this->container['calendarfinder'];
         $calendars = $calendarfinder->getAll();
-        $calendar_attrs = array();
-        foreach ($calendars as $calendar => $calobj) {
-            $calendar_attrs[$calendar] = $calobj->getAll();
-        }
-        $this->output->set_output(json_encode($calendar_attrs));
+        $fractal = new Manager();
+        $fractal->setSerializer(new JsonApiSerializer());
+        $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
+
+        $this->output->set_output($fractal->createData($collection)->toJson());
     }
 
     /**

@@ -84,7 +84,6 @@ class Calendar
     {
         return $this->url;
     }
-    
 
     /**
      * Returns a property value from this calendar

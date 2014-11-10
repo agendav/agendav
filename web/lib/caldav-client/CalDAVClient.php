@@ -1055,21 +1055,29 @@ EOFILTER;
               foreach( $ok_props AS $v ) {
                   switch( $v['tag'] ) {
                       case 'http://calendarserver.org/ns/:getctag':
-                          $calendar->getctag = isset($v['value']) ?
-                              $v['value'] : '';
+                          $calendar->setProperty(
+                            Calendar::CTAG,
+                            isset($v['value']) ?  $v['value'] : ''
+                          );
                           break;
                       case 'DAV::displayname':
-                          $calendar->displayname = isset($v['value']) ?
-                              $v['value'] : 'calendar';
+                          $calendar->setProperty(
+                            Calendar::DISPLAYNAME,
+                            isset($v['value']) ?  $v['value'] : 'calendar'
+                          );
                           break;
                       case 'http://apple.com/ns/ical/:calendar-color':
-                          $rgba_color = isset($v['value']) ?
-                              $v['value'] : '#ffffffff';
-                          $calendar->color = $rgba_color;
+                          $rgba_color = isset($v['value']) ?  $v['value'] : '#ffffffff';
+                          $calendar->setProperty(
+                              Calendar::COLOR,
+                              $rgba_color
+                          );
                           break;
                       case 'http://apple.com/ns/ical/:calendar-order':
-                          $calendar->order = isset($v['value']) ?
-                              $v['value'] : '1';
+                          $calendar->setProperty(
+                              Calendar::ORDER,
+                              isset($v['value']) ?  $v['value'] : '1'
+                          );
                           break;
                   }
               }
