@@ -49,21 +49,6 @@ class Calendar
     const ORDER = '{http://apple.com/ns/ical/}calendar-order';
 
     /**
-     * Default attributes 
-     */
-    public static $defaults = array(
-        'displayname' => '',
-        'getctag' => null,
-        'order' => null,
-        'color' => null,
-        'shared' => false,
-        'is_default' => false,
-        'grantee' => array(),
-        'rw' => true,
-    );
-
-
-    /**
      * Creates a new calendar
      *
      * @param string $url   Calendar URL
@@ -113,21 +98,5 @@ class Calendar
         }
 
         $this->data[$property] = $value;
-    }
-
-    /**
-     * Returns all calendar attributes. Useful for JSON encoding until PHP 5.4 JsonSerializable
-     * is widely available
-     * 
-     * @access public
-     * @return array
-     */
-    public function getAll()
-    {
-        $data = $this->data;
-        // Backwards compatibility
-        $data['url'] = $this->getUrl();
-
-        return $data;
     }
 }
