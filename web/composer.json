@@ -14,7 +14,8 @@
         "doctrine/orm": "~2.4",
         "guzzlehttp/guzzle": "dev-master",
         "sabre/xml": "0.0.5",
-        "sabre/dav": "~2.0"
+        "sabre/dav": "~2.0",
+        "league/fractal": "~0.10"
     },
     "autoload": {
         "psr-4": {

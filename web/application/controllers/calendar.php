@@ -19,7 +19,11 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use \AgenDAV\Data\Calendar as CalendarModel;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Serializer\JsonApiSerializer;
+use AgenDAV\Data\Calendar as CalendarModel;
+use AgenDAV\Data\Transformer\CalendarTransformer;
 
 class Calendar extends MY_Controller
 {
@@ -65,11 +69,11 @@ class Calendar extends MY_Controller
     function all() {
         $calendarfinder = $this->container['calendarfinder'];
         $calendars = $calendarfinder->getAll();
-        $calendar_attrs = array();
-        foreach ($calendars as $calendar => $calobj) {
-            $calendar_attrs[$calendar] = $calobj->getAll();
-        }
-        $this->output->set_output(json_encode($calendar_attrs));
+        $fractal = new Manager();
+        $fractal->setSerializer(new JsonApiSerializer());
+        $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
+
+        $this->output->set_output($fractal->createData($collection)->toJson());
     }
 
     /**
@@ -97,9 +101,11 @@ class Calendar extends MY_Controller
 
         $new_calendar = new CalendarModel(
             $url,
-            $displayname
+            [
+                CalendarModel::DISPLAYNAME => $displayname,
+                CalendarModel::COLOR  => $calendar_color,
+            ]
         );
-        $new_calendar->color = $calendar_color;
 
         $res = $this->client->createCalendar($new_calendar);
 
@@ -222,9 +228,11 @@ class Calendar extends MY_Controller
             // Calendar properties
             $changed_calendar = new CalendarModel(
                 $calendar,
-                $displayname
+                [
+                    CalendarModel::DISPLAYNAME => $displayname,
+                    CalendarModel::COLOR  => $calendar_color,
+                ]
             );
-            $changed_calendar->color = $calendar_color;
 
             $res = $this->client->changeResource($changed_calendar);
         } else if ($is_sharing_enabled) {

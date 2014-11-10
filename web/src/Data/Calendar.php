@@ -41,79 +41,62 @@ class Calendar
     protected $data;
 
     /**
-     * Default attributes 
+     * Property names including namespaces
      */
-    public static $defaults = array(
-        'displayname' => '',
-        'getctag' => null,
-        'order' => null,
-        'color' => null,
-        'shared' => false,
-        'is_default' => false,
-        'grantee' => array(),
-        'rw' => true,
-    );
-
+    const DISPLAYNAME = '{DAV:}displayname';
+    const CTAG = '{http://calendarserver.org/ns/}getctag';
+    const COLOR = '{http://apple.com/ns/ical/}calendar-color';
+    const ORDER = '{http://apple.com/ns/ical/}calendar-order';
 
     /**
      * Creates a new calendar
      *
      * @param string $url   Calendar URL
-     * @param string $displayname   Display name for this calendar
-     * @param array $attributes More attributes for this calendar
+     * @param array $properties More attributes for this calendar
      */
-    public function __construct($url, $displayname = '', $attributes = [])
+    public function __construct($url, $properties = [])
     {
         $this->url = $url;
-        $this->data = self::$defaults;
-        $this->data['displayname'] = $displayname;
-        $this->data = array_merge($this->data, $attributes);
+        foreach ($properties as $property => $value) {
+            $this->setProperty($property, $value);
+        }
     }
 
-    public function __get($attr)
+    /*
+     * Getter for URL
+     */
+    public function getUrl()
     {
-        // Backwards compatibility
-        if ($attr == 'calendar') {
-            $attr = 'url';
-        }
-
-        if ($attr == 'url') {
-            return $this->url;
-        }
-
-        return array_key_exists($attr, $this->data) ?
-            $this->data[$attr] :
-            null;
-    }
-
-    public function __set($attr, $value)
-    {
-        // Backwards compatibility
-        if ($attr == 'calendar') {
-            $attr = 'url';
-        }
-
-        if ($attr == 'url') {
-            return $this->url;
-        }
-
-        $this->data[$attr] = $value;
+        return $this->url;
     }
 
     /**
-     * Returns all calendar attributes. Useful for JSON encoding until PHP 5.4 JsonSerializable
-     * is widely available
-     * 
-     * @access public
-     * @return array
+     * Returns a property value from this calendar
+     *
+     * @param string $property Property to return
+     * @return mixed Stored value, or null if the property is missing
      */
-    public function getAll()
+    public function getProperty($property)
     {
-        $data = $this->data;
-        // Backwards compatibility
-        $data['url'] = $this->url;
-        $data['calendar'] = $this->url;
+        return array_key_exists($property, $this->data) ?
+            $this->data[$property] :
+            null;
+    }
 
-        return $data;
+
+    /**
+     * Sets a property value for this calendar
+     * 
+     * @param string $property  Property name
+     * @param mixed $value  Value
+     */
+    public function setProperty($property, $value)
+    {
+        // Backwards compatibility
+        if ($property == 'url') {
+            throw new \RuntimeException('Calendar URL cannot be changed');
+        }
+
+        $this->data[$property] = $value;
     }
 }

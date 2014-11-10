@@ -15,9 +15,9 @@ foreach ($calendar_list as $cal):
   </td>
   <td style="text-align: center">
     <input type="hidden" name="calendar[<?php echo $i ?>][name]" value="<?php echo
-	$cal->calendar?>" />
+	$cal->getUrl() ?>" />
     <input type="checkbox" name="calendar[<?php echo $i ?>][hide]"
-	value="1"<?php echo (isset($hidden_calendars[$cal->calendar])) ? ' checked="checked"' : ''?>>
+	value="1"<?php echo (isset($hidden_calendars[$cal->getUrl()])) ? ' checked="checked"' : ''?>>
   </td>
  </tr>
 <?php

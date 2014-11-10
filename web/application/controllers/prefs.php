@@ -83,7 +83,7 @@ class Prefs extends MY_Controller
 
         $calendar_ids_and_dn = array();
         foreach ($calendar_list as $cal) {
-            $calendar_ids_and_dn[$cal->calendar] = $cal->displayname;
+            $calendar_ids_and_dn[$cal->getUrl()] = $cal->displayname;
         }
 
         $data_prefs = array(

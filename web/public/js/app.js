@@ -1070,7 +1070,9 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       shared_calendars = document.createDocumentFragment(),
       collected_event_sources = [];
 
-    $.each(data, function(key, calendar) {
+    var calendars = data.calendars;
+
+    $.each(calendars, function(key, calendar) {
       count++;
 
       // Some values need to be generated
