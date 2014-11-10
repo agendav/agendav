@@ -55,6 +55,14 @@ class MY_Controller extends CI_Controller
             return Doctrine\ORM\EntityManager::create($db_options, $setup);
         });
 
+        // Fractal manager
+        $this->container['fractal'] = $this->container->share(function($container) {
+            $fractal = new League\Fractal\Manager();
+            $fractal->setSerializer(new League\Fractal\Serializer\JsonApiSerializer());
+
+            return $fractal;
+        });
+
         // Preferences repository
         $this->container['preferences_repository'] = $this->container->share(function($container) {
             $em = $container['entity_manager'];

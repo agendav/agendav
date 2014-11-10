@@ -19,9 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-use League\Fractal\Serializer\JsonApiSerializer;
 use AgenDAV\Data\Calendar as CalendarModel;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 
@@ -69,8 +67,7 @@ class Calendar extends MY_Controller
     function all() {
         $calendarfinder = $this->container['calendarfinder'];
         $calendars = $calendarfinder->getAll();
-        $fractal = new Manager();
-        $fractal->setSerializer(new JsonApiSerializer());
+        $fractal = $this->container['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
 
         $this->output->set_output($fractal->createData($collection)->toJson());
