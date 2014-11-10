@@ -34,7 +34,7 @@ class Calendar
     protected $url;
 
     /**
-     * Calendar attributes
+     * Calendar properties
      *
      * @var array
      */
@@ -52,7 +52,7 @@ class Calendar
      * Creates a new calendar
      *
      * @param string $url   Calendar URL
-     * @param array $properties More attributes for this calendar
+     * @param array $properties More properties for this calendar
      */
     public function __construct($url, $properties = [])
     {
@@ -98,5 +98,15 @@ class Calendar
         }
 
         $this->data[$property] = $value;
+    }
+
+    /**
+     * Returns all properties set for this calendar, excluding the URL
+     *
+     * @return array Properties (associative array), in Clark notation
+     */
+    public function getAllProperties()
+    {
+        return $this->data;
     }
 }
