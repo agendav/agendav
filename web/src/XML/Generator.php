@@ -86,6 +86,39 @@ class Generator
         return $dom->saveXML();
     }
 
+    /**
+     * Generates a MKCALENDAR body XML
+     *
+     * @param array $properties Associative array, keys are in Clark notation
+     */
+    public function mkCalendarBody(array $properties)
+    {
+        $dom = $this->emptyDocument();
+        $mkcalendar = $dom->createElementNS('urn:ietf:params:xml:ns:caldav', 'C:mkcalendar');
+        $set = $dom->createElement('d:set');
+        $prop = $dom->createElement('d:prop');
+
+        $used_namespaces = array();
+
+        foreach ($properties as $property => $value) {
+            list($ns, $name) = XMLUtil::parseClarkNotation($property);
+
+            $this->addNamespacePrefix($ns);
+            $used_namespaces[] = $ns;
+
+            $element = $dom->createElement(self::$known_ns[$ns] . ':' . $name, $value);
+            $prop->appendChild($element);
+        }
+
+        $set->appendChild($prop);
+        $mkcalendar->appendChild($set);
+        $dom->appendChild($mkcalendar);
+
+        $this->setXmlnsOnElement($mkcalendar, $used_namespaces);
+
+        return $dom->saveXML();
+    }
+
 
     /**
      * Generates the base \DOMDocument
