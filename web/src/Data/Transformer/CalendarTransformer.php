@@ -34,7 +34,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'calendar' => $calendar->getUrl(),
             'displayname' => $calendar->getProperty(Calendar::DISPLAYNAME),
             'color' => $calendar->getProperty(Calendar::COLOR),
-            'order' => $calendar->getProperty(Calendar::ORDER),
+            'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
         ];
     }
