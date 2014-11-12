@@ -140,6 +140,20 @@ class Client2
 
         return $calendars;
     }
+
+    /**
+     * Creates a calendar collection
+     *
+     * @param AgenDAV\Data\Calendar $calendar   Calendar that we want to create
+     * @return void
+     */
+    public function createCalendar(\AgenDAV\Data\Calendar $calendar)
+    {
+        $calendar_properties = $calendar->getAllProperties();
+        $body = $this->xml_generator->mkCalendarBody($calendar_properties);
+
+        $this->http_client->request('MKCALENDAR', $calendar->getUrl(), $body);
+    }
     
 
     /**
@@ -172,5 +186,6 @@ class Client2
 
         return $result;
     }
+
 
 }
