@@ -43,6 +43,8 @@ class Generator
         'http://apple.com/ns/ical/' => 'A',
     );
 
+    protected $used_namespaces;
+
 
     /**
      * Creates a new XML generator
@@ -52,6 +54,7 @@ class Generator
     public function __construct($formatted = true)
     {
         $this->formatted = $formatted;
+        $this->clearUsedNamespaces();
     }
 
     /**
@@ -63,25 +66,14 @@ class Generator
     public function propfindBody(array $properties)
     {
         $dom = $this->emptyDocument();
+        $this->addUsedNamespace('DAV:');
         $propfind = $dom->createElementNS('DAV:', 'd:propfind');
-        $prop = $dom->createElement('d:prop');
-
-        $used_namespaces = array();
-
-        foreach ($properties as $property) {
-            list($ns, $name) = XMLUtil::parseClarkNotation($property);
-
-            $this->addNamespacePrefix($ns);
-            $used_namespaces[] = $ns;
-
-            $element = $dom->createElement(self::$known_ns[$ns] . ':' . $name);
-            $prop->appendChild($element);
-        }
+        $prop = $this->propertyList('d:prop', $properties, $dom, false);
 
         $propfind->appendChild($prop);
         $dom->appendChild($propfind);
 
-        $this->setXmlnsOnElement($propfind, $used_namespaces);
+        $this->setXmlnsOnElement($propfind, $this->getUsedNamespaces());
 
         return $dom->saveXML();
     }
@@ -94,31 +86,57 @@ class Generator
     public function mkCalendarBody(array $properties)
     {
         $dom = $this->emptyDocument();
+        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
         $mkcalendar = $dom->createElementNS('urn:ietf:params:xml:ns:caldav', 'C:mkcalendar');
         $set = $dom->createElement('d:set');
-        $prop = $dom->createElement('d:prop');
+        $prop = $this->propertyList('d:prop', $properties, $dom);
 
-        $used_namespaces = array();
-
-        foreach ($properties as $property => $value) {
-            list($ns, $name) = XMLUtil::parseClarkNotation($property);
-
-            $this->addNamespacePrefix($ns);
-            $used_namespaces[] = $ns;
-
-            $element = $dom->createElement(self::$known_ns[$ns] . ':' . $name, $value);
-            $prop->appendChild($element);
-        }
 
         $set->appendChild($prop);
         $mkcalendar->appendChild($set);
         $dom->appendChild($mkcalendar);
 
-        $this->setXmlnsOnElement($mkcalendar, $used_namespaces);
+        $this->setXmlnsOnElement($mkcalendar, $this->getUsedNamespaces());
 
         return $dom->saveXML();
     }
 
+
+    /**
+     * Returns a <tag>[...]</tag> group of tags for a given list
+     * of properties and values
+     *
+     * Doesn't modify the original document
+     *
+     * @param string $tag_name Wrapping tag name, including prefix
+     * @param array $properties Associative array, keys are in Clark notation
+     * @param \DOMDocument $document DOM document to be used to generate
+     *                               new XML documents
+     * @param bool $use_values  read values from the array too. Defaults to true
+     * @return \DOMElement
+     */
+    protected function propertyList($tag_name, array $properties, \DOMDocument $document, $use_values = true)
+    {
+        $result = $document->createElement($tag_name);
+        if (!$use_values) {
+            $properties = array_flip($properties);
+        }
+        foreach ($properties as $property => $value) {
+            list($ns, $name) = XMLUtil::parseClarkNotation($property);
+
+            $this->addUsedNamespace($ns);
+
+            $tag_name = $this->getPrefixForNamespace($ns) . ':' . $name;
+            if ($use_values) {
+                $element = $document->createElement($tag_name, $value);
+            } else {
+                $element = $document->createElement($tag_name);
+            }
+            $result->appendChild($element);
+        }
+
+        return $result;
+    }
 
     /**
      * Generates the base \DOMDocument
@@ -130,19 +148,9 @@ class Generator
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = $this->formatted;
 
-        return $dom;
-    }
+        $this->clearUsedNamespaces();
 
-    /**
-     * Adds a common namespace prefix for unknown namespaces
-     *
-     * @return void
-     **/
-    private function addNamespacePrefix($namespace)
-    {
-        if (!isset(self::$known_ns[$namespace])) {
-            self::$known_ns[$namespace] = 'x' . count(self::$known_ns);
-        }
+        return $dom;
     }
 
 
@@ -155,10 +163,9 @@ class Generator
      **/
     protected function setXmlnsOnElement(\DOMElement $element, array $only_ns = array())
     {
+        $add_ns = self::$known_ns;
         if (count($only_ns) !== 0) {
-            $add_ns = array_intersect_key(self::$known_ns, array_flip($only_ns));
-        } else {
-            $add_ns = self::$known;
+            $add_ns = array_intersect_key(self::$known_ns, $only_ns);
         }
 
         foreach ($add_ns as $ns => $prefix) {
@@ -167,5 +174,47 @@ class Generator
 
         return $element;
     }
-}
 
+    /**
+     * Clears the list of used namespaces
+     */
+    protected function clearUsedNamespaces()
+    {
+        $this->used_namespaces = [];
+    }
+
+    /**
+     * Adds a new used namespace
+     *
+     * @param string $namespace New namespace
+     */
+    protected function addUsedNamespace($namespace)
+    {
+        if (!isset(self::$known_ns[$namespace])) {
+            self::$known_ns[$namespace] = 'x' . count(self::$known_ns);
+        }
+        $this->used_namespaces[$namespace] = self::$known_ns[$namespace];
+    }
+
+    /**
+     * Returns the list of used namespaces
+     *
+     * @return array Used namespaces
+     */
+    protected function getUsedNamespaces()
+    {
+        return $this->used_namespaces;
+    }
+
+    /**
+     * Returns the prefix for a namespace
+     *
+     * @param string $namespace Namespace
+     * @return string prefix, false if not known
+     */
+    protected function getPrefixForNamespace($namespace)
+    {
+        return isset(self::$known_ns[$namespace])
+            ? self::$known_ns[$namespace] : false;
+    }
+}
