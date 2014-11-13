@@ -157,6 +157,9 @@ class Client2
 
     /**
      * Modifies an existing calendar
+     *
+     * @param \AgenDAV\Data\Calendar $calendar
+     * @return void
      */
     public function updateCalendar(\AgenDAV\Data\Calendar $calendar)
     {
@@ -164,6 +167,17 @@ class Client2
         $body = $this->xml_generator->proppatchBody($calendar_properties);
 
         $this->http_client->request('PROPPATCH', $calendar->getUrl(), $body);
+    }
+
+    /**
+     * Deletes a calendar from the server
+     *
+     * @param \AgenDAV\Data\Calendar $calendar
+     * @return void
+     */
+    public function deleteCalendar(\AgenDAV\Data\Calendar $calendar)
+    {
+        $this->http_client->request('DELETE', $calendar->getUrl());
     }
 
     /**
