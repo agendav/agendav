@@ -200,6 +200,23 @@ class Client2
     }
 
     /**
+     * Fetches all events from a calendar that are in the range of [start, end)
+     *
+     * @param \AgenDAV\Data\Calendar $calendar
+     * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
+     * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
+     * @return array Associative array of events: 
+     *               [ 'resource1.ics' => [ properties ],
+     *                 'resource2.ics' => [ properties ],
+     *                 ...
+     *               ]
+     */
+    public function fetchEventsFromCalendar(\AgenDAV\Data\Calendar $calendar, $start, $end)
+    {
+        return $this->report($calendar->getUrl(), $start, $end);
+    }
+
+    /**
      * Issues a PROPFIND and parses the response
      *
      * @param string $url   URL
@@ -215,6 +232,26 @@ class Client2
         $contents = $response->getBody()->getContents();
         $single_element_expected = ($depth === 0);
         $result = $this->xml_parser->extractPropertiesFromMultistatus($contents, $single_element_expected);
+
+        return $result;
+    }
+
+    /**
+     * Issues a REPORT and parses the response
+     *
+     * @param string $url   URL
+     * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
+     * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
+     * @result array key-value array, where keys are paths and properties are values
+     */
+    public function report($url, $start, $end)
+    {
+        $body = $this->xml_generator->reportBody($start, $end);
+        $this->http_client->setHeader('Depth', 1);
+        $response = $this->http_client->request('REPORT', $url, $body);
+
+        $contents = $response->getBody()->getContents();
+        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents);
 
         return $result;
     }
