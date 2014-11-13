@@ -3,7 +3,7 @@ namespace AgenDAV\XML;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testParseMultiStatus()
+    public function testExtractPropertiesFromMultistatus()
     {
         $body = <<<EOBODY
 <?xml version="1.0" encoding="utf-8"?>
@@ -18,22 +18,35 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             </d:prop>
             <d:status>HTTP/1.1 200 OK</d:status>
         </d:propstat>
+        <d:propstat>
+            <d:prop>
+                <d:notfound />
+                <d:alsonotfound />
+            </d:prop>
+            <d:status>HTTP/1.1 404 Not Found</d:status>
+        </d:propstat>
     </d:response>
 </d:multistatus>
 EOBODY;
 
         $parser = new Parser();
 
-        $result = $parser->parseMultiStatus($body);
+        $result = $parser->extractPropertiesFromMultistatus($body);
         $this->assertEquals(
             $result,
             [
                 '/cal.php/' => [
-                    200 => [
-                        '{DAV:}current-user-principal' => '/cal.php/principals/demo/',
-                    ],
+                    '{DAV:}current-user-principal' => '/cal.php/principals/demo/',
                 ],
             ]
+        );
+
+        // Test with $single_element enabled
+        $result = $parser->extractPropertiesFromMultistatus($body, true);
+        $this->assertEquals(
+            $result,
+            [ '{DAV:}current-user-principal' => '/cal.php/principals/demo/' ],
+            'Single element on extractPropertiesFromMultistatus is not working'
         );
     }
 
@@ -44,7 +57,7 @@ EOBODY;
     public function testInvalidXML()
     {
         $parser = new Parser();
-        $parser->parseMultiStatus('this is clearly not an xml document');
+        $parser->extractPropertiesFromMultistatus('this is clearly not an xml document');
     }
 
 
@@ -74,13 +87,12 @@ EOBODY;
 EOBODY;
 
         $parser = new Parser();
-        $result = $parser->parseMultiStatus($body);
+        $result = $parser->extractPropertiesFromMultistatus($body);
 
         $this->assertInstanceOf(
             '\Sabre\DAV\Property\ResourceType',
-            $result['/cal.php/calendars/demo/default/'][200]['{DAV:}resourcetype']
+            $result['/cal.php/calendars/demo/default/']['{DAV:}resourcetype']
         );
     }
-    
 
 }

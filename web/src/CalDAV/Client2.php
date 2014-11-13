@@ -213,19 +213,8 @@ class Client2
         $response = $this->http_client->request('PROPFIND', $url, $body);
 
         $contents = $response->getBody()->getContents();
-        $parsed_response = $this->xml_parser->parseMultistatus($contents);
-
-        // If depth was 0, we only return the top item
-        if ($depth === 0) {
-            reset($parsed_response);
-            $result = current($parsed_response);
-            return isset($result[200])?$result[200]:[];
-        }
-
-        $result = [];
-        foreach($parsed_response as $href => $statusList) {
-            $result[$href] = isset($statusList[200])?$statusList[200]:[];
-        }
+        $single_element_expected = ($depth === 0);
+        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents, $single_element_expected);
 
         return $result;
     }
