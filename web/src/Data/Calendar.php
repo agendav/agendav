@@ -3,7 +3,7 @@
 namespace AgenDAV\Data;
 
 /*
- * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -47,6 +47,25 @@ class Calendar
     const CTAG = '{http://calendarserver.org/ns/}getctag';
     const COLOR = '{http://apple.com/ns/ical/}calendar-color';
     const ORDER = '{http://apple.com/ns/ical/}calendar-order';
+
+    /**
+     * Read only properties that CalDAV servers will refuse to store
+     */
+    public static $readonly_properties = [
+        '{DAV:}:owner',
+        '{DAV:}:principal-collection-set',
+        '{http://calendarserver.org/ns/}getctag',
+        '{urn:ietf:params:xml:ns:caldav}:calendar-user-address-set',
+        '{urn:ietf:params:xml:ns:caldav}:schedule-inbox-URL',
+        '{urn:ietf:params:xml:ns:caldav}:schedule-outbox-URL',
+        '{DAV:}:getetag',
+        '{DAV:}:getcontentlength',
+        '{DAV:}:getcontenttype',
+        '{DAV:}:getlastmodified',
+        '{DAV:}:creationdate',
+        '{DAV:}:lockdiscovery',
+        '{DAV:}:supportedlock',
+    ];
 
     /**
      * Creates a new calendar
@@ -108,5 +127,19 @@ class Calendar
     public function getAllProperties()
     {
         return $this->data;
+    }
+
+    /**
+     * Returns all writable properties set for this calendar. Properties from
+     * self::$readonly_properties are not returned by this method
+     *
+     * @return array Properties (associative array), in Clark notation
+     */
+    public function getWritableProperties()
+    {
+        return array_diff_key(
+            $this->data,
+            array_flip(self::$readonly_properties)
+        );
     }
 }

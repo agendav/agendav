@@ -22,13 +22,25 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllProperties()
     {
-        $c = new Calendar('/path');
-        $c->setProperty(Calendar::DISPLAYNAME,  'Test');
-        $c->setProperty('{urn:fake}attr', 'value');
+        $properties = [
+            Calendar::DISPLAYNAME => 'Test',
+            Calendar::CTAG => '123',
+            '{urn:fake}attr' => 'value',
+        ];
+        $c = new Calendar('/path', $properties);
 
         $this->assertEquals(
             $c->getAllProperties(),
-            [Calendar::DISPLAYNAME => 'Test', '{urn:fake}attr' => 'value']
+            $properties
+        );
+
+        // Test if getWritableProperties returns any readonly properties
+        $writable_properties = $c->getWritableProperties();
+
+        $this->assertArrayNotHasKey(
+            Calendar::CTAG,
+            $writable_properties,
+            'Readonly properties are returned by getWritableProperties'
         );
 
     }
