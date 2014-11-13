@@ -149,7 +149,7 @@ class Client2
      * @throws \UnexpectedValueException In case the server replies with a 2xx code but
      *                                   valid calendars are not found
      */
-    public function getCalendar($url)
+    public function getCalendarByUrl($url)
     {
         $result = $this->getCalendars($url, false);
         if (count($result) === 0) {
