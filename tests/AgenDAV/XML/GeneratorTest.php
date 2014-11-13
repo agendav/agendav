@@ -75,6 +75,19 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
 
+    public function testEventsReportBody()
+    {
+        $generator = $this->createXMLGenerator();
+        $body = $generator->reportBody(
+            '20141113T143400Z',
+            '20141114T143400Z'
+        );
+
+        $expected = '<?xml version="1.0" encoding="UTF-8"?>
+<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:"><d:prop><d:getetag/><C:calendar-data/></d:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="20141113T143400Z" end="20141114T143400Z"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+
+        $this->assertXmlStringEqualsXmlString($expected, $body);
+    }
 
     /**
      * Create a new XMLGenerator without output formatting

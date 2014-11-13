@@ -114,7 +114,7 @@ class Generator
     {
         $dom = $this->emptyDocument();
         $this->addUsedNamespace('DAV:');
-        $propertyupdate= $dom->createElementNS('DAV:', 'd:propertyupdate');
+        $propertyupdate = $dom->createElementNS('DAV:', 'd:propertyupdate');
         $set = $dom->createElement('d:set');
         $prop = $this->propertyList('d:prop', $properties, $dom);
 
@@ -123,6 +123,51 @@ class Generator
         $dom->appendChild($propertyupdate);
 
         $this->setXmlnsOnElement($propertyupdate, $this->getUsedNamespaces());
+
+        return $dom->saveXML();
+    }
+
+    /**
+     * Generates the REPORT XML body to get a list of events within a given range
+     *
+     * @param string $start Timestamp on YmdTHisZ format (UTC)
+     * @param string $end Timestamp on YmdTHisZ format (UTC)
+     * @return string
+     */
+    public function reportBody($start, $end)
+    {
+        $dom = $this->emptyDocument();
+        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
+        $calendarquery = $dom->createElementNS('urn:ietf:params:xml:ns:caldav', 'C:calendar-query');
+
+        // Usual properties we need from events
+        $properties = [
+            '{DAV:}getetag',
+            '{urn:ietf:params:xml:ns:caldav}calendar-data',
+        ];
+        $prop = $this->propertyList('d:prop', $properties, $dom, false);
+
+        $calendarquery->appendChild($prop);
+
+        $filter = $dom->createElement('C:filter');
+        $filter_vcalendar  = $dom->createElement('C:comp-filter');
+        $filter_vcalendar->setAttribute('name', 'VCALENDAR');
+        $filter_vevent = $dom->createElement('C:comp-filter');
+        $filter_vevent->setAttribute('name', 'VEVENT');
+
+        $time_range = $dom->createElement('C:time-range');
+        $time_range->setAttribute('start', $start);
+        $time_range->setAttribute('end', $end);
+
+        $filter_vevent->appendChild($time_range);
+        $filter_vcalendar->appendChild($filter_vevent);
+        $filter->appendChild($filter_vcalendar);
+
+        $calendarquery->appendChild($filter);
+
+        $dom->appendchild($calendarquery);
+
+        $this->setXmlnsOnElement($calendarquery, $this->getUsedNamespaces());
 
         return $dom->saveXML();
     }
