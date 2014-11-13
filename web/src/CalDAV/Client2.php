@@ -149,7 +149,7 @@ class Client2
      */
     public function createCalendar(\AgenDAV\Data\Calendar $calendar)
     {
-        $calendar_properties = $calendar->getAllProperties();
+        $calendar_properties = $calendar->getWritableProperties();
         $body = $this->xml_generator->mkCalendarBody($calendar_properties);
 
         $this->http_client->request('MKCALENDAR', $calendar->getUrl(), $body);
