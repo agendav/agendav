@@ -42,6 +42,21 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
 
+    /**
+     * Make sure that the body doesn't contain a <set><prop></prop></set> group
+     */
+    public function testMkCalendarBodyWithoutProperties()
+    {
+        $generator = $this->createXMLGenerator();
+
+        $body = $generator->mkCalendarBody([]);
+
+        $expected = '<?xml version="1.0" encoding="UTF-8"?>
+<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav"></C:mkcalendar>';
+
+        $this->assertXmlStringEqualsXmlString($expected, $body);
+    }
+
     public function testproppatchBody()
     {
         $generator = $this->createXMLGenerator();

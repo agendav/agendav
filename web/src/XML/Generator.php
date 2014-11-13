@@ -89,12 +89,14 @@ class Generator
         $dom = $this->emptyDocument();
         $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
         $mkcalendar = $dom->createElementNS('urn:ietf:params:xml:ns:caldav', 'C:mkcalendar');
-        $set = $dom->createElement('d:set');
-        $prop = $this->propertyList('d:prop', $properties, $dom);
+        if (count($properties) != 0) {
+            $set = $dom->createElement('d:set');
+            $prop = $this->propertyList('d:prop', $properties, $dom);
 
 
-        $set->appendChild($prop);
-        $mkcalendar->appendChild($set);
+            $set->appendChild($prop);
+            $mkcalendar->appendChild($set);
+        }
         $dom->appendChild($mkcalendar);
 
         $this->setXmlnsOnElement($mkcalendar, $this->getUsedNamespaces());
