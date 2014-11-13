@@ -76,6 +76,7 @@ class Calendar
     public function __construct($url, $properties = [])
     {
         $this->url = $url;
+        $this->data = [];
         foreach ($properties as $property => $value) {
             $this->setProperty($property, $value);
         }
