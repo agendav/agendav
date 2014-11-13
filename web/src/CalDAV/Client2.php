@@ -154,7 +154,17 @@ class Client2
 
         $this->http_client->request('MKCALENDAR', $calendar->getUrl(), $body);
     }
-    
+
+    /**
+     * Modifies an existing calendar
+     */
+    public function updateCalendar(\AgenDAV\Data\Calendar $calendar)
+    {
+        $calendar_properties = $calendar->getWritableProperties();
+        $body = $this->xml_generator->proppatchBody($calendar_properties);
+
+        $this->http_client->request('PROPPATCH', $calendar->getUrl(), $body);
+    }
 
     /**
      * Issues a PROPFIND and parses the response
