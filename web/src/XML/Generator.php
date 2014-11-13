@@ -82,6 +82,7 @@ class Generator
      * Generates a MKCALENDAR body XML
      *
      * @param array $properties Associative array, keys are in Clark notation
+     * @return string XML body
      */
     public function mkCalendarBody(array $properties)
     {
@@ -97,6 +98,29 @@ class Generator
         $dom->appendChild($mkcalendar);
 
         $this->setXmlnsOnElement($mkcalendar, $this->getUsedNamespaces());
+
+        return $dom->saveXML();
+    }
+
+    /**
+     * Generates the XML body for a PROPPATCH request
+     *
+     * @param array $properties Associative array, keys are in Clark notation
+     * @return string XML body
+     */
+    public function proppatchBody(array $properties)
+    {
+        $dom = $this->emptyDocument();
+        $this->addUsedNamespace('DAV:');
+        $propertyupdate= $dom->createElementNS('DAV:', 'd:propertyupdate');
+        $set = $dom->createElement('d:set');
+        $prop = $this->propertyList('d:prop', $properties, $dom);
+
+        $set->appendChild($prop);
+        $propertyupdate->appendChild($set);
+        $dom->appendChild($propertyupdate);
+
+        $this->setXmlnsOnElement($propertyupdate, $this->getUsedNamespaces());
 
         return $dom->saveXML();
     }

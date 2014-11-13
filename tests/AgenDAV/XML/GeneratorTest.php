@@ -41,8 +41,24 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
-    
 
+    public function testproppatchBody()
+    {
+        $generator = $this->createXMLGenerator();
+
+        $properties = [
+            Calendar::DISPLAYNAME => 'Calendar name',
+            Calendar::COLOR => '#f0f0f0aa',
+            '{urn:fake}attr' => 'value',
+        ];
+
+        $body = $generator->proppatchBody($properties);
+
+        $expected = '<?xml version="1.0" encoding="UTF-8"?>
+<d:propertyupdate xmlns:d="DAV:" xmlns:A="http://apple.com/ns/ical/" xmlns:x4="urn:fake"><d:set><d:prop><d:displayname>Calendar name</d:displayname><A:calendar-color>#f0f0f0aa</A:calendar-color><x4:attr>value</x4:attr></d:prop></d:set></d:propertyupdate>';
+
+        $this->assertXmlStringEqualsXmlString($expected, $body);
+    }
 
 
     /**
