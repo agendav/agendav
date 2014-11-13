@@ -102,7 +102,7 @@ class Client2
 
 
     /**
-     * Gets the list of calendars owned by current user on a given URL
+     * Gets the list of calendars accessible by current user on a given URL
      *
      * @param string $url   URL
      * @param bool $recurse Whether to recurse (Depth: 1) or not (Depth: 0).
@@ -139,6 +139,25 @@ class Client2
         }
 
         return $calendars;
+    }
+
+    /**
+     * Gets a calendar details
+     *
+     * @param string $url   URL
+     * @param \AgenDAV\Data\Calendar    Found calendar
+     * @throws \UnexpectedValueException In case the server replies with a 2xx code but
+     *                                   valid calendars are not found
+     */
+    public function getCalendar($url)
+    {
+        $result = $this->getCalendars($url, false);
+        if (count($result) === 0) {
+            throw new \UnexpectedValueException('Calendar not found at ' . $url);
+        }
+
+        reset($result);
+        return current($result);
     }
 
     /**
