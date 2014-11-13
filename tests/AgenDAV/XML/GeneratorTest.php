@@ -19,9 +19,17 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             '{http://fake.namespace.org}calendar-color'
         )));
 
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>
-<d:propfind xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" xmlns:x3="http://fake.namespace.org"><d:prop><d:resourcetype/><C:calendar-home-set/><A:calendar-color/><x3:calendar-color/></d:prop></d:propfind>';
-
+        $expected = <<<EOXML
+<?xml version="1.0" encoding="UTF-8"?>
+<d:propfind xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" xmlns:x3="http://fake.namespace.org">
+<d:prop>
+    <d:resourcetype/>
+    <C:calendar-home-set/>
+    <A:calendar-color/>
+    <x3:calendar-color/>
+</d:prop>
+</d:propfind>
+EOXML;
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
 
@@ -36,8 +44,17 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         $body = $generator->mkCalendarBody($properties);
 
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>
-<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:x4="urn:fake"><d:set><d:prop><d:displayname>Calendar name</d:displayname><x4:attr>value</x4:attr></d:prop></d:set></C:mkcalendar>';
+        $expected = <<<EOXML
+<?xml version="1.0" encoding="UTF-8"?>
+<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:x4="urn:fake">
+    <d:set>
+        <d:prop>
+            <d:displayname>Calendar name</d:displayname>
+            <x4:attr>value</x4:attr>
+        </d:prop>
+    </d:set>
+</C:mkcalendar>
+EOXML;
 
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
@@ -51,8 +68,10 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         $body = $generator->mkCalendarBody([]);
 
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>
-<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav"></C:mkcalendar>';
+        $expected = <<<EOXML
+<?xml version="1.0" encoding="UTF-8"?>
+<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav"></C:mkcalendar>
+EOXML;
 
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
@@ -69,8 +88,18 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         $body = $generator->proppatchBody($properties);
 
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>
-<d:propertyupdate xmlns:d="DAV:" xmlns:A="http://apple.com/ns/ical/" xmlns:x4="urn:fake"><d:set><d:prop><d:displayname>Calendar name</d:displayname><A:calendar-color>#f0f0f0aa</A:calendar-color><x4:attr>value</x4:attr></d:prop></d:set></d:propertyupdate>';
+        $expected = <<<EOXML
+<?xml version="1.0" encoding="UTF-8"?>
+<d:propertyupdate xmlns:d="DAV:" xmlns:A="http://apple.com/ns/ical/" xmlns:x4="urn:fake">
+<d:set>
+    <d:prop>
+        <d:displayname>Calendar name</d:displayname>
+        <A:calendar-color>#f0f0f0aa</A:calendar-color>
+        <x4:attr>value</x4:attr>
+    </d:prop>
+</d:set>
+</d:propertyupdate>
+EOXML;
 
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
@@ -83,8 +112,22 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             '20141114T143400Z'
         );
 
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>
-<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:"><d:prop><d:getetag/><C:calendar-data/></d:prop><C:filter><C:comp-filter name="VCALENDAR"><C:comp-filter name="VEVENT"><C:time-range start="20141113T143400Z" end="20141114T143400Z"/></C:comp-filter></C:comp-filter></C:filter></C:calendar-query>';
+        $expected = <<<EOXML
+<?xml version="1.0" encoding="UTF-8"?>
+<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:">
+    <d:prop>
+        <d:getetag/>
+        <C:calendar-data/>
+    </d:prop>
+    <C:filter>
+        <C:comp-filter name="VCALENDAR">
+            <C:comp-filter name="VEVENT">
+                <C:time-range start="20141113T143400Z" end="20141114T143400Z"/>
+            </C:comp-filter>
+        </C:comp-filter>
+    </C:filter>
+</C:calendar-query>
+EOXML;
 
         $this->assertXmlStringEqualsXmlString($expected, $body);
     }
