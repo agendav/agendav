@@ -288,8 +288,10 @@ class Event extends MY_Controller
             if ($p['recurrence_type'] != 'none') {
                 if (isset($p['recurrence_until']) &&
                         !empty($p['recurrence_until'])) {
-                    $p['recurrence_until'] .= date($this->time_format,
-                            mktime(0, 0)); // Tricky
+                            $p['recurrence_until'] .= date(
+                                $this->time_format,
+                                $end->getTimestamp()
+                            );
                 }
 
                 $rrule = $this->recurrence->build($p, $rrule_err);
