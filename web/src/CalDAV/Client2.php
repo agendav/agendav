@@ -205,7 +205,7 @@ class Client2
      * @param \AgenDAV\Data\Calendar $calendar
      * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
      * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
-     * @return array Associative array of events: 
+     * @return array Associative array of events:
      *               [ 'resource1.ics' => [ properties ],
      *                 'resource2.ics' => [ properties ],
      *                 ...
@@ -274,5 +274,41 @@ class Client2
         return $result;
     }
 
+    /**
+     * Puts a VCALENDAR text object on the given URL
+     *
+     * @param string $url
+     * @param string $body VCALENDAR body
+     * @param string $etag Optional etag to avoid overwriting an updated calendar
+     *                     object
+     * @return Guzzle\Http\Message\Response
+     */
+    public function putEvent($url, $body, $etag = null)
+    {
+        // New event, so it should not overwrite any existing events
+        if ($etag === null) {
+            $this->http_client->setHeader('If-None-Match', '*');
+        } else {
+            $this->http_client->setHeader('If-Match', $etag);
+        }
 
+        return $this->http_client->request('PUT', $url, $body);
+    }
+
+    /**
+     * Deletes a VCALENDAR text object on the given URL
+     *
+     * @param string $url
+     * @param string $etag Optional etag to avoid deleting an updated calendar
+     *                     object
+     * @return Guzzle\Http\Message\Response
+     */
+    public function deleteEvent($url, $etag = null)
+    {
+        // New event, so it should not overwrite any existing events
+        if ($etag !== null) {
+            $this->http_client->setHeader('If-Match', $etag);
+        }
+        return $this->http_client->request('DELETE', $url);
+    }
 }
