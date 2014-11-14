@@ -36,9 +36,9 @@ class Client2
 
 
     /**
-     * @param AgenDAV\Http\Client $http_client
-     * @param AgenDAV\XML\Generator $xml_generator
-     * @param AgenDAV\XML\Parser $xml_parser
+     * @param \AgenDAV\Http\Client $http_client
+     * @param \AgenDAV\XML\Generator $xml_generator
+     * @param \AgenDAV\XML\Parser $xml_parser
      */
     public function __construct(
         \AgenDAV\Http\Client $http_client,

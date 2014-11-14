@@ -141,8 +141,8 @@ class Client
      *
      * @param string $method       HTTP verb
      * @param string $url          URL to send the request to
-     * @return void
-     * @throws GuzzleHttp\Exception\BadResponseException On 4xx and 5xx HTTP errors
+     * @return \Guzzle\Http\Message\Response
+     * @throws \GuzzleHttp\Exception\BadResponseException On 4xx and 5xx HTTP errors
      **/
     public function request($method, $url, $body = '')
     {
