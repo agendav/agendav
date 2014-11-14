@@ -3,6 +3,7 @@
 namespace AgenDAV\XML;
 
 use Sabre\XML\Util as XMLUtil;
+use AgenDAV\CalDAV\ComponentFilter;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -130,11 +131,10 @@ class Generator
     /**
      * Generates the REPORT XML body to get a list of events within a given range
      *
-     * @param string $start Timestamp on YmdTHisZ format (UTC)
-     * @param string $end Timestamp on YmdTHisZ format (UTC)
+     * @param \AgenDAV\CalDAV\ComponentFilter $component_filter Filter for this report
      * @return string
      */
-    public function reportBody($start, $end)
+    public function reportBody(\AgenDAV\CalDAV\ComponentFilter $component_filter)
     {
         $dom = $this->emptyDocument();
         $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
@@ -155,11 +155,10 @@ class Generator
         $filter_vevent = $dom->createElement('C:comp-filter');
         $filter_vevent->setAttribute('name', 'VEVENT');
 
-        $time_range = $dom->createElement('C:time-range');
-        $time_range->setAttribute('start', $start);
-        $time_range->setAttribute('end', $end);
+        // Use the $filter argument to generate this part
+        $filter_conditions = $component_filter->generateFilterXML($dom);
+        $filter_vevent->appendChild($filter_conditions);
 
-        $filter_vevent->appendChild($time_range);
         $filter_vcalendar->appendChild($filter_vevent);
         $filter->appendChild($filter_vcalendar);
 

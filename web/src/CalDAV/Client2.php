@@ -213,7 +213,8 @@ class Client2
      */
     public function fetchEventsFromCalendar(\AgenDAV\Data\Calendar $calendar, $start, $end)
     {
-        return $this->report($calendar->getUrl(), $start, $end);
+        $time_range_filter = new TimeRangeFilter($start, $end);
+        return $this->report($calendar->getUrl(), $time_range_filter);
     }
 
     /**
@@ -240,13 +241,13 @@ class Client2
      * Issues a REPORT and parses the response
      *
      * @param string $url   URL
-     * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
-     * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
+     * @param string \AgenDAV\CalDAV\ComponentFilter DOMElement to be added as
+     *                                               a filter for the report
      * @result array key-value array, where keys are paths and properties are values
      */
-    public function report($url, $start, $end)
+    public function report($url, ComponentFilter $filter)
     {
-        $body = $this->xml_generator->reportBody($start, $end);
+        $body = $this->xml_generator->reportBody($filter);
         $this->http_client->setHeader('Depth', 1);
         $response = $this->http_client->request('REPORT', $url, $body);
 

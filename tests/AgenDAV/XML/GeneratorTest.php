@@ -2,6 +2,7 @@
 namespace AgenDAV\XML;
 
 use AgenDAV\Data\Calendar;
+use \Mockery as m;
 
 /**
  * @author jorge
@@ -107,10 +108,13 @@ EOXML;
     public function testEventsReportBody()
     {
         $generator = $this->createXMLGenerator();
-        $body = $generator->reportBody(
-            '20141113T143400Z',
-            '20141114T143400Z'
-        );
+        $fake_filter = m::mock('\AgenDAV\CalDAV\ComponentFilter')
+            ->shouldReceive('generateFilterXML')
+            ->once()
+            ->andReturn(new \DOMElement('test'))
+            ->getMock();
+
+        $body = $generator->reportBody($fake_filter);
 
         $expected = <<<EOXML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -122,7 +126,7 @@ EOXML;
     <C:filter>
         <C:comp-filter name="VCALENDAR">
             <C:comp-filter name="VEVENT">
-                <C:time-range start="20141113T143400Z" end="20141114T143400Z"/>
+                <test />
             </C:comp-filter>
         </C:comp-filter>
     </C:filter>
