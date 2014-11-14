@@ -218,6 +218,23 @@ class Client2
     }
 
     /**
+     * Fetches all events from a calendar that are in the range of [start, end)
+     *
+     * @param \AgenDAV\Data\Calendar $calendar
+     * @param string $uid Event UID
+     * @return array Associative array of event:
+     *               [ 'resource1.ics' => [ properties ],
+     *                 'resource2.ics' => [ properties ],
+     *                 ...
+     *               ]
+     */
+    public function fetchEventByUid(\AgenDAV\Data\Calendar $calendar, $uid)
+    {
+        $uid_filter = new UidFilter($uid);
+        return $this->report($calendar->getUrl(), $uid_filter);
+    }
+
+    /**
      * Issues a PROPFIND and parses the response
      *
      * @param string $url   URL
