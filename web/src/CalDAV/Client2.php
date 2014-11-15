@@ -247,7 +247,7 @@ class Client2
         $this->http_client->setHeader('Depth', $depth);
         $response = $this->http_client->request('PROPFIND', $url, $body);
 
-        $contents = $response->getBody()->getContents();
+        $contents = (string)$response->getBody();
         $single_element_expected = ($depth === 0);
         $result = $this->xml_parser->extractPropertiesFromMultistatus($contents, $single_element_expected);
 
@@ -268,7 +268,7 @@ class Client2
         $this->http_client->setHeader('Depth', 1);
         $response = $this->http_client->request('REPORT', $url, $body);
 
-        $contents = $response->getBody()->getContents();
+        $contents = (string)$response->getBody();
         $result = $this->xml_parser->extractPropertiesFromMultistatus($contents);
 
         return $result;
