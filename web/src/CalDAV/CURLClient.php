@@ -73,7 +73,7 @@ class CURLClient extends \CalDAVClient implements Client
         parent::__construct(
             $this->urlgenerator->getBaseURL(),
             $this->app_user->getUserName(),
-            $this->app_user->getPasswd(),
+            $this->app_user->getPassword(),
             $options
         );
 

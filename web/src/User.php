@@ -1,6 +1,6 @@
-<?php 
+<?php
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,19 +23,19 @@ namespace AgenDAV;
 use AgenDAV\Session\Session;
 
 /**
- * Represents the current AgenDAV user 
+ * Represents the current AgenDAV user
  */
 class User
 {
     /**
-     * User name 
+     * User name
      *
      * @var string
      */
     private $username;
 
     /**
-     * Password provided by the user 
+     * Password provided by the user
      *
      * @var string
      * @access private
@@ -43,7 +43,7 @@ class User
     private $password;
 
     /**
-     * Additional user properties 
+     * Additional user properties
      *
      * @var mixed
      * @access private
@@ -51,7 +51,7 @@ class User
     private $properties;
 
     /**
-     * Whether current user is authenticated or not 
+     * Whether current user is authenticated or not
      *
      * @var boolean
      * @access private
@@ -59,7 +59,7 @@ class User
     private $is_authenticated = false;
 
     /**
-     * Session manager 
+     * Session manager
      *
      * @var Session
      * @access private
@@ -67,34 +67,18 @@ class User
     private $session = null;
 
     /**
-     * Encryption manager 
-     *
-     * @var Object
-     * @access private
-     */
-    private $encrypt;
-
-    /**
      * Creates a user instance. Loads data from session, if available
      *
-     * @param Session $session Session manager
-     * @param Object $encrypt Encryption manager
+     * @param AgenDAV\Session\Session $session Session manager
      * @access public
      * @return void
      */
-    public function __construct(Session $session, $encrypt) {
+    public function __construct(Session $session) {
         $this->session = $session;
-        $this->encrypt = $encrypt;
 
         // TODO other properties!
         foreach (array('username', 'password') as $n) {
             if (null !== $current = $this->session->get($n)) {
-
-                // Decrypt password
-                if ($n == 'password') {
-                    //$current = $this->encrypt->decode($current);
-                }
-
                 $this->$n = $current;
             }
         }
@@ -126,7 +110,7 @@ class User
      *
      * @return string Password
      */
-    public function getPasswd() {
+    public function getPassword() {
         return $this->password;
     }
 
