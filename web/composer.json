@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "require": {
         "pimple/pimple": "1.0.0",
         "monolog/monolog": "1.*",
@@ -12,10 +11,11 @@
         "keboola/php-encryption": "~0.2.1",
         "mockery/mockery": "~0.9.1",
         "doctrine/orm": "~2.4",
-        "guzzlehttp/guzzle": "dev-master",
+        "guzzlehttp/guzzle": "~5.0.3",
         "sabre/xml": "0.0.5",
         "sabre/dav": "~2.0",
-        "league/fractal": "~0.10"
+        "league/fractal": "~0.10",
+        "guzzlehttp/log-subscriber": "~1.0"
     },
     "autoload": {
         "psr-4": {
