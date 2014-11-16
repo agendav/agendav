@@ -51,14 +51,6 @@ class User
     private $properties;
 
     /**
-     * Whether current user is authenticated or not
-     *
-     * @var boolean
-     * @access private
-     */
-    private $is_authenticated = false;
-
-    /**
      * Session manager
      *
      * @var Session
@@ -76,11 +68,9 @@ class User
     public function __construct(Session $session) {
         $this->session = $session;
 
-        // TODO other properties!
-        foreach (array('username', 'password') as $n) {
-            if (null !== $current = $this->session->get($n)) {
-                $this->$n = $current;
-            }
+        if ($session->isAuthenticated()) {
+            $this->username = $session->get('username');
+            $this->password = $session->get('password');
         }
     }
 

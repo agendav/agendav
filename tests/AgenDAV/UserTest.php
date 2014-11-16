@@ -19,6 +19,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->with('password')
             ->andReturn('password_value');
 
+        $session->shouldReceive('isAuthenticated')
+            ->andReturn(true);
+
         $user = new User($session);
 
         $this->assertEquals($user->getUsername(), 'username_value');
