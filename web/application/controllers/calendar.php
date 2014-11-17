@@ -22,6 +22,7 @@
 use League\Fractal\Resource\Collection;
 use AgenDAV\Data\Calendar as CalendarModel;
 use AgenDAV\Data\Transformer\CalendarTransformer;
+use AgenDAV\Uuid;
 
 class Calendar extends MY_Controller
 {
@@ -91,7 +92,7 @@ class Calendar extends MY_Controller
         }
 
         // Generate URL
-        $url = $this->urlgenerator->generateCalendarHomeSet($this->user->getUsername()) . $this->icshelper->generate_guid();
+        $url = $this->urlgenerator->generateCalendarHomeSet($this->user->getUsername()) . Uuid::generate();
 
         // Add transparency to color
         $calendar_color = $this->toRGBA($calendar_color);

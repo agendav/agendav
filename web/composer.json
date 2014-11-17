@@ -15,7 +15,8 @@
         "sabre/xml": "0.0.5",
         "sabre/dav": "~2.0",
         "league/fractal": "~0.10",
-        "guzzlehttp/log-subscriber": "~1.0"
+        "guzzlehttp/log-subscriber": "~1.0",
+        "rhumsaa/uuid": "~2.8.0"
     },
     "autoload": {
         "psr-4": {
