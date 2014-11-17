@@ -298,27 +298,19 @@ Here you will configure every single aspect of your CalDAV server.
 
 .. confval:: caldav_http_auth_method
 
-   You can specify which HTTP authentication method does your CalDAV server
-   require. Use any of the cURL ``CURLOPT_HTTPAUTH`` valid values (see
-   http://www.php.net/manual/en/function.curl-setopt.php), or leave it empty
-   to make AgenDAV auto-detect which authentication method to use.
-
-   Using the auto-detect feature will slow down requests when using Basic
-   auth. If you know which authentication method does your server use you're
-   advised to set the right value on this option.
+   You have to specify which HTTP authentication method does your CalDAV server
+   require. Both basic and digest authentication methods are supported.
 
    Example::
    
-    // Automatic guess
-    $config['caldav_http_auth_method'] = null;
-
     // SabreDAV
-    $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
+    $config['caldav_http_auth_method'] = 'digest';
 
     // DAViCal
-    $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+    $config['caldav_http_auth_method'] = 'basic';
 
-   .. versionadded:: 1.2.5
+   .. versionchanged:: 2.0.0
+      Old `CURL*` values are not supported anymore. Needs ``basic`` or ``digest``.
 
 
 .. confval:: caldav_principal_template

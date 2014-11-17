@@ -13,20 +13,14 @@
  * CalDAV servers support Basic Authentication, but you should check your
  * server documentation.
  *
- * It is recommended to use a fixed value for this. If you don't set it,
- * CalDAV client will have to negotiate with server on each request and
- * perfomance will be worse (mainly when Basic auth is used)
- *
- * Possible values can be found at
- * http://www.php.net/manual/es/function.curl-setopt.php (CURLOPT_HTTPAUTH)
+ * Valid values are 'basic' and 'digest'
  *
  * Examples:
- *  Automatic guess: $config['caldav_http_auth_method'] = null;
- *  SabreDAV: $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
- *  DAViCal: $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+ *  SabreDAV: $config['caldav_http_auth_method'] = 'digest';
+ *  DAViCal: $config['caldav_http_auth_method'] = 'basic';
  */
 
-$config['caldav_http_auth_method'] = null;
+$config['caldav_http_auth_method'] = 'basic';
 
 
 /*******************
