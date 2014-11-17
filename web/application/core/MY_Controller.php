@@ -126,48 +126,41 @@ class MY_Controller extends CI_Controller
             );
         });
 
-        // CalDAV client
-        $cfg_client = array(
-            'auth' => $this->config->item('caldav_http_auth_method'),
-            'useragent' => 'AgenDAV v' . \AgenDAV\Version::V,
-        );
-        $this->container['client'] = $this->container->share(function($container) use ($ci_logger, $cfg_client) {
-            return new \AgenDAV\CalDAV\CURLClient(
-                $container['user'],
-                $container['urlgenerator'],
-                $ci_logger,
-                $cfg_client
+        // Guzzle HTTP client
+        $config_guzzle = [
+            'base_url' => $this->config->item('caldav_base_url'),
+        ];
+        $this->container['guzzle_http'] = $this->container->share(function($container) use ($config_guzzle) {
+            return new \GuzzleHttp\Client($config_guzzle);
+        });
+
+        // AgenDAV HTTP client, based on Guzzle
+        $auth_type = $this->config->item('caldav_http_auth_method');
+        $this->container['http_client'] = $this->container->share(function($container) use ($auth_type) {
+            return \AgenDAV\Http\ClientFactory::create(
+                $container['guzzle_http'],
+                $container['session'],
+                $auth_type
             );
         });
 
-        // Calendar sources
-        $this->container['channels/calendarhomeset'] = $this->container->share(function($container) use ($enable_calendar_sharing, $ci_shared_calendars) {
-            $homeset = new \AgenDAV\CalendarChannels\CalendarHomeSet($container['client']);
-            if ($enable_calendar_sharing === true) {
-                $homeset->configure(array('shares' => $ci_shared_calendars));
-            }
-            return $homeset;
-        });
-        $this->container['channels/sharedcalendars'] = $this->container->share(function($container) use ($ci_shared_calendars) {
-            $shared = new \AgenDAV\CalendarChannels\SharedCalendars($container['client'], $ci_shared_calendars);
-            $user = $container['user'];
-            $shared->configure(array('username' => $user->getUsername()));
-
-            return $shared;
+        // XML generator
+        $this->container['xml_generator'] = $this->container->share(function($container) {
+            return new \AgenDAV\XML\Generator();
         });
 
-        // Calendar finder
-        $this->container['calendarfinder'] = $this->container->share(function($container) use ($enable_calendar_sharing) {
-            $calendar_finder = new \AgenDAV\CalendarFinder();
+        // XML parser
+        $this->container['xml_parser'] = $this->container->share(function($container) {
+            return new \AgenDAV\XML\Parser();
+        });
 
-            $calendar_finder->registerChannel($container['channels/calendarhomeset']);
-
-            // Sharing enabled?
-            if ($enable_calendar_sharing === true) {
-                $calendar_finder->registerChannel($container['channels/sharedcalendars']);
-            }
-
-            return $calendar_finder;
+        // CalDAV client
+        $this->container['caldav_client'] = $this->container->share(function($container) {
+            return new \AgenDAV\CalDAV\Client2(
+                $container['http_client'],
+                $container['xml_generator'],
+                $container['xml_parser']
+            );
         });
 
         // ACL generator
