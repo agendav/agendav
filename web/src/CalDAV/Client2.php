@@ -52,6 +52,26 @@ class Client2
     }
 
     /**
+     * Checks if the HTTP client can access the configured base URL by
+     * sending an OPTIONS request. It will fail if a) provided credentials are
+     * not valid or b) can't find 'calendar-access' in the DAV header
+     *
+     * @return boolean
+     */
+    public function canAuthenticate()
+    {
+        try {
+            $response = $this->http_client->request('OPTIONS', '');
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            // Invalid authentication
+            return false;
+        }
+
+        return ($response->hasHeader('DAV') &&
+            preg_match('/calendar-access/', $response->getHeader('DAV')));
+    }
+
+    /**
      * Retrieves DAV:current-user-principal for the current authenticated
      * user
      *
