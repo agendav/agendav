@@ -20,6 +20,7 @@
  */
 
 use AgenDAV\Data\Reminder;
+use AgenDAV\Data\Calendar;
 use AgenDAV\DateHelper;
 
 class Event extends MY_Controller
@@ -45,7 +46,7 @@ class Event extends MY_Controller
             die();
         }
         $this->user = $this->container['user'];
-        $this->client = $this->container['client'];
+        $this->client = $this->container['caldav_client'];
 
         $this->date_format_pref = $this->config->item('default_date_format');
         $this->time_format_pref = $this->config->item('default_time_format');
@@ -86,6 +87,7 @@ class Event extends MY_Controller
             log_message('ERROR', 'Calendar events request with no calendar name');
             $err = 400;
         }
+        $calendar = new Calendar($calendar);
 
         $start = $this->input->get('start', true);
         $end = $this->input->get('end', true);
@@ -96,10 +98,10 @@ class Event extends MY_Controller
             );
             $err = 400;
         } else if ($err == 0) {
-            $returned_events = $this->client->fetchEvents($calendar, $start, $end);
+            $returned_events = $this->client->fetchEventsFromCalendar($calendar, $start, $end);
             $time_fetch = microtime(true);
             $parsed =
-                $this->icshelper->expand_and_parse_events($returned_events, $start, $end, $calendar);
+                $this->icshelper->expand_and_parse_events($returned_events, $start, $end, $calendar->getUrl());
 
             $time_end = microtime(true);
 
@@ -108,7 +110,7 @@ class Event extends MY_Controller
             $total_time = sprintf('%.4F', $time_end - $time_start);
 
 
-            log_message('INTERNALS', 'Sent ' .  count($parsed) . ' event(s) from ' . $calendar
+            log_message('INTERNALS', 'Sent ' .  count($parsed) . ' event(s) from ' . $calendar->getUrl()
                         .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
 
             $this->output->set_header("X-Fetch-Time: " . $total_fetch);
