@@ -213,7 +213,12 @@ class Calendar extends MY_Controller
                 ]
             );
 
-            $res = $this->client->updateCalendar($changed_calendar);
+            $res = true;
+            try {
+                $this->client->updateCalendar($changed_calendar);
+            } catch (\Exception $e) {
+                $res = false;
+            }
         } else if ($is_sharing_enabled) {
             // If this a shared calendar, store settings locally
             $props = array(
@@ -331,9 +336,7 @@ class Calendar extends MY_Controller
             $this->answerWithSuccess();
         } else {
             // There was an error
-            $this->answerWithException(
-                $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $res))
-            );
+            $this->answerWithError($this->i18n->_('messages', 'error_denied'));
         }
 
     }
