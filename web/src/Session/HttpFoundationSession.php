@@ -44,7 +44,6 @@ class HttpFoundationSession implements Session
     public function __construct(SessionStorageInterface $storage)
     {
         $this->session = new InternalSession($storage);
-        $this->session->start();
     }
 
     /**
