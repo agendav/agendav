@@ -31,8 +31,9 @@ class Calendar extends MY_Controller
     private $user;
     private $client;
     private $prefs;
-    private $urlgenerator;
     private $preferences_repository;
+
+    protected $calendar_home_set;
 
     function __construct() {
         parent::__construct();
@@ -50,9 +51,9 @@ class Calendar extends MY_Controller
 
         $this->prefs = $this->preferences_repository->userPreferences($this->user->getUsername());
 
-        $this->urlgenerator = $this->container['urlgenerator'];
+        $this->client = $this->container['caldav_client'];
 
-        $this->client = $this->container['client'];
+        $this->calendar_home_set = $this->container['session']->get('calendar_home_set');
 
         $this->output->set_content_type('application/json');
     }
@@ -66,8 +67,7 @@ class Calendar extends MY_Controller
      * other users with the current one)
      */
     function all() {
-        $calendarfinder = $this->container['calendarfinder'];
-        $calendars = $calendarfinder->getAll();
+        $calendars = $this->client->getCalendars($this->calendar_home_set);
         $fractal = $this->container['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
 
@@ -83,7 +83,7 @@ class Calendar extends MY_Controller
 
         // Display name
         if (empty($displayname)) {
-            $this->_throw_exception($this->i18n->_('messages', 'error_calname_missing'));
+            $this->answerWithException($this->i18n->_('messages', 'error_calname_missing'));
         }
 
         // Default color
@@ -92,7 +92,7 @@ class Calendar extends MY_Controller
         }
 
         // Generate URL
-        $url = $this->urlgenerator->generateCalendarHomeSet($this->user->getUsername()) . Uuid::generate();
+        $url = $this->calendar_home_set . Uuid::generate();
 
         // Add transparency to color
         $calendar_color = $this->toRGBA($calendar_color);
@@ -105,19 +105,14 @@ class Calendar extends MY_Controller
             ]
         );
 
-        $res = $this->client->createCalendar($new_calendar);
-
-        if ($res !== true) {
-            switch ($res) {
-                case '403':
-                    $this->_throw_error($this->i18n->_('messages', 'error_denied'));
-                    break;
-                default:
-                    $this->_throw_error($this->i18n->_('messages', 'error_unknownhttpcode'));
-            }
-        } else {
-            $this->_throw_success();
+        try {
+            $this->client->createCalendar($new_calendar);
+        } catch (\Exception $e) {
+            $this->answerWithError($this->i18n->_('messages', 'error_denied'));
+            return;
         }
+
+        $this->answerWithSuccess();
     }
 
 
@@ -128,8 +123,10 @@ class Calendar extends MY_Controller
         $calendar = $this->input->post('calendar', true);
         if ($calendar === false) {
             log_message('ERROR', 'Call to delete_calendar() without calendar');
-            $this->_throw_error($this->i18n->_('messages', 'error_interfacefailure'));
+            $this->answerWithError($this->i18n->_('messages', 'error_interfacefailure'));
         }
+
+        $calendar = new CalendarModel($calendar);
 
         if (isset($shares[$calendar])) {
             $this_calendar_shares = array_values($shares[$calendar]);
@@ -139,27 +136,13 @@ class Calendar extends MY_Controller
         }
 
         // Proceed to remove calendar from CalDAV server
-        $res = $this->client->deleteResource($calendar, null);
-
-        if ($res === true) {
-            $this->_throw_success($calendar);
-        } else {
-            // There was an error
-            $params = array();
-            switch ($res) {
-                case '404':
-                    $usermsg = 'error_eventnotfound';
-                    break;
-                case '412':
-                    $usermsg = 'error_eventchanged';
-                    break;
-                default:
-                    $usermsg = 'error_unknownhttpcode'; 
-                    $params = array('%res' => $res);
-                    break;
-            }
-            $this->_throw_exception($this->i18n->_('messages', $usermsg, $params));
+        try {
+            $this->client->deleteCalendar($calendar);
+        } catch (\Exception $e) {
+            $this->answerWithError($this->i18n->_('messages', 'error_denied'));
+            return;
         }
+        $this->answerWithSuccess($calendar->getUrl());
     }
 
     /**
@@ -185,14 +168,12 @@ class Calendar extends MY_Controller
                 false || ($is_sharing_enabled && $is_shared_calendar === false)) {
             log_message('ERROR', 
                     'Call to modify_calendar() with incomplete parameters');
-            $this->_throw_error($this->i18n->_('messages',
+            $this->answerWithError($this->i18n->_('messages',
                         'error_interfacefailure'));
         }
 
         // Calculate boolean value for is_shared_calendar
-        $is_shared_calendar = ($is_shared_calendar === false ?
-                false :
-                ($is_shared_calendar == 'true'));
+        $is_shared_calendar = $is_shared_calendar === 'true';
 
 
         // Retrieve ID on shared calendars table
@@ -211,7 +192,7 @@ class Calendar extends MY_Controller
                 log_message('ERROR', 
                         'Call to modify_calendar() with shared calendar, '
                         .'but no sid was found');
-                $this->_throw_error($this->i18n->_('messages',
+                $this->answerWithError($this->i18n->_('messages',
                             'error_interfacefailure'));
             }
 
@@ -232,7 +213,7 @@ class Calendar extends MY_Controller
                 ]
             );
 
-            $res = $this->client->changeResource($changed_calendar);
+            $res = $this->client->updateCalendar($changed_calendar);
         } else if ($is_sharing_enabled) {
             // If this a shared calendar, store settings locally
             $props = array(
@@ -246,10 +227,10 @@ class Calendar extends MY_Controller
                     $props);
             if ($success !== true) {
                 if ($success == '404') {
-                    $this->_throw_exception($this->i18n->_('messages',
+                    $this->answerWithException($this->i18n->_('messages',
                                 'error_calendarnotfound'));
                 } else {
-                    $this->_throw_exception(
+                    $this->answerWithException(
                             $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $success))
                     );
                 }
@@ -260,7 +241,7 @@ class Calendar extends MY_Controller
             // Tried to modify a shared calendar when sharing is disabled
             log_message('ERROR',
                     'Tried to modify the shared calendar ' . $calendar .' when calendar sharing is disabled');
-            $this->_throw_exception($this->i18n->_('messages', 'error_interfacefailure'));
+            $this->answerWithException($this->i18n->_('messages', 'error_interfacefailure'));
         }
 
         // Set ACLs
@@ -347,10 +328,10 @@ class Calendar extends MY_Controller
         }
 
         if ($res === true) {
-            $this->_throw_success();
+            $this->answerWithSuccess();
         } else {
             // There was an error
-            $this->_throw_exception(
+            $this->answerWithException(
                 $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $res))
             );
         }
@@ -360,7 +341,7 @@ class Calendar extends MY_Controller
     /**
      * Throws an exception message
      */
-    function _throw_exception($message) {
+    private function answerWithException($message) {
         $this->output->set_output(json_encode(array(
                         'result' => 'EXCEPTION',
                         'message' => $message)));
@@ -371,7 +352,8 @@ class Calendar extends MY_Controller
     /**
      * Throws an error message
      */
-    function _throw_error($message) {
+    private function answerWithError($message) {
+        $this->output->set_status_header(500);
         $this->output->set_output(json_encode(array(
                         'result' => 'ERROR',
                         'message' => $message)));
@@ -382,7 +364,8 @@ class Calendar extends MY_Controller
     /**
      * Throws a success message
      */
-    function _throw_success($message = '') {
+    private function answerWithSuccess($message = '') {
+        $this->output->set_status_header(200);
         $this->output->set_output(json_encode(array(
                         'result' => 'SUCCESS',
                         'message' => $message)));
