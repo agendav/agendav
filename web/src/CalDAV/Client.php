@@ -190,6 +190,7 @@ class Client
     {
         $calendar_properties = $calendar->getWritableProperties();
         $body = $this->xml_generator->mkCalendarBody($calendar_properties);
+        $this->http_client->setContentTypeXML();
 
         $this->http_client->request('MKCALENDAR', $calendar->getUrl(), $body);
     }
@@ -204,6 +205,7 @@ class Client
     {
         $calendar_properties = $calendar->getWritableProperties();
         $body = $this->xml_generator->proppatchBody($calendar_properties);
+        $this->http_client->setContentTypeXML();
 
         $this->http_client->request('PROPPATCH', $calendar->getUrl(), $body);
     }
@@ -265,6 +267,7 @@ class Client
     public function propfind($url, $depth, $body)
     {
         $this->http_client->setHeader('Depth', $depth);
+        $this->http_client->setContentTypeXML();
         $response = $this->http_client->request('PROPFIND', $url, $body);
 
         $contents = (string)$response->getBody();
@@ -284,8 +287,9 @@ class Client
      */
     public function report($url, ComponentFilter $filter)
     {
-        $body = $this->xml_generator->reportBody($filter);
         $this->http_client->setHeader('Depth', 1);
+        $this->http_client->setContentTypeXML();
+        $body = $this->xml_generator->reportBody($filter);
         $response = $this->http_client->request('REPORT', $url, $body);
 
         $contents = (string)$response->getBody();
@@ -305,6 +309,8 @@ class Client
      */
     public function putEvent($url, $body, $etag = null)
     {
+        $this->http_client->setContentTypeiCalendar();
+
         // New event, so it should not overwrite any existing events
         if ($etag === null) {
             $this->http_client->setHeader('If-None-Match', '*');
