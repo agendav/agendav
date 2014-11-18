@@ -156,7 +156,7 @@ class MY_Controller extends CI_Controller
 
         // CalDAV client
         $this->container['caldav_client'] = $this->container->share(function($container) {
-            return new \AgenDAV\CalDAV\Client2(
+            return new \AgenDAV\CalDAV\Client(
                 $container['http_client'],
                 $container['xml_generator'],
                 $container['xml_parser']
