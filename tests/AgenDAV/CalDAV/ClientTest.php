@@ -130,6 +130,65 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /** @expectedException \UnexpectedValueException */
+    public function testGetCalendarHomeSetNotFound()
+    {
+        $this->xml_generator->shouldReceive('propfindBody')
+            ->andReturn('returned_body_from_xml_generator')
+            ->once();
+        $response = new Response(207, [], Stream::factory('fake_response'));
+        $this->http_client->shouldReceive('setHeader')
+            ->with('Depth', 0)
+            ->once()
+            ->ordered();
+        $this->http_client->shouldReceive('setContentTypeXML')
+            ->once()
+            ->ordered();
+        $this->http_client->shouldReceive('request')
+            ->with('PROPFIND', '/principal/url', 'returned_body_from_xml_generator')
+            ->andReturn($response)
+            ->once()
+            ->ordered();
+        $this->xml_parser->shouldReceive('extractPropertiesFromMultistatus')
+            ->with('fake_response', true)
+            ->andReturn([])
+            ->once();
+
+        $caldav_client = $this->createCalDAVClient();
+
+        $caldav_client->getCalendarHomeSet('/principal/url');
+    }
+
+    public function testGetCalendarHomeSuccess()
+    {
+        $this->xml_generator->shouldReceive('propfindBody')
+            ->andReturn('returned_body_from_xml_generator')
+            ->once();
+        $response = new Response(207, [], Stream::factory('fake_response'));
+        $this->http_client->shouldReceive('setHeader')
+            ->with('Depth', 0)
+            ->once()
+            ->ordered();
+        $this->http_client->shouldReceive('setContentTypeXML')
+            ->once()
+            ->ordered();
+        $this->http_client->shouldReceive('request')
+            ->with('PROPFIND', '/principal/url', 'returned_body_from_xml_generator')
+            ->andReturn($response)
+            ->once()
+            ->ordered();
+        $this->xml_parser->shouldReceive('extractPropertiesFromMultistatus')
+            ->with('fake_response', true)
+            ->andReturn(['/calendar/home/set'])
+            ->once();
+
+        $caldav_client = $this->createCalDAVClient();
+
+        $this->assertEquals(
+            '/calendar/home/set',
+            $caldav_client->getCalendarHomeSet('/principal/url')
+        );
+    }
 
     /**
      * Create CalDAV client using other mocks
