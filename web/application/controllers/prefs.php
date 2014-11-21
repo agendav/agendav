@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -20,6 +20,7 @@
  */
 
 use AgenDAV\Data\Preferences;
+use AgenDAV\Data\Calendar;
 
 class Prefs extends MY_Controller
 {
@@ -83,7 +84,7 @@ class Prefs extends MY_Controller
 
         $calendar_ids_and_dn = array();
         foreach ($calendar_list as $cal) {
-            $calendar_ids_and_dn[$cal->getUrl()] = $cal->displayname;
+            $calendar_ids_and_dn[$cal->getUrl()] = $cal->getProperty(Calendar::DISPLAYNAME);
         }
 
         $data_prefs = array(
