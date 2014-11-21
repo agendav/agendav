@@ -21,6 +21,7 @@ namespace AgenDAV\CalDAV;
  */
 
 use \AgenDAV\Data\Calendar;
+use \AgenDAV\Data\Event;
 
 class Client
 {
@@ -227,16 +228,14 @@ class Client
      * @param \AgenDAV\Data\Calendar $calendar
      * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
      * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
-     * @return array Associative array of events:
-     *               [ 'resource1.ics' => [ properties ],
-     *                 'resource2.ics' => [ properties ],
-     *                 ...
-     *               ]
+     * @return array Array of Event objects
      */
     public function fetchEventsFromCalendar(\AgenDAV\Data\Calendar $calendar, $start, $end)
     {
         $time_range_filter = new TimeRangeFilter($start, $end);
-        return $this->report($calendar->getUrl(), $time_range_filter);
+        $data = $this->report($calendar->getUrl(), $time_range_filter);
+
+        return $this->parseEventCollection($data, $calendar);
     }
 
     /**
@@ -244,25 +243,21 @@ class Client
      *
      * @param \AgenDAV\Data\Calendar $calendar
      * @param string $uid Event UID
-     * @return array Associative array of properties from event:
-     *               [ '{DAV:}getetag' => '...',
-     *                 '{urn:ietf:params:xml:ns:caldav}calendar-data' => 'BEGIN:...',
-     *                 ...
-     *               ]
+     * @return \AgenDAV\Data\Event
      */
     public function fetchEventByUid(\AgenDAV\Data\Calendar $calendar, $uid)
     {
         $uid_filter = new UidFilter($uid);
-        $result = $this->report($calendar->getUrl(), $uid_filter);
+        $data = $this->report($calendar->getUrl(), $uid_filter);
 
-        if (count($result) === 0) {
+        if (count($data) === 0) {
             throw new \UnexpectedValueException('Event '.$uid.' not found at ' . $calendar->getUrl());
         }
 
+        $result = $this->parseEventCollection($data, $calendar);
+
         reset($result);
-        $href = current(array_keys($result));
         $event = current($result);
-        $event['href'] = $href;
 
         return $event;
     }
@@ -310,17 +305,18 @@ class Client
     }
 
     /**
-     * Puts a VCALENDAR text object on the given URL
+     * Puts an event on the CalDAV server
      *
-     * @param string $url
-     * @param string $body VCALENDAR body
-     * @param string $etag Optional etag to avoid overwriting an updated calendar
-     *                     object
+     * @param AgenDAV\Data\Event
      * @return Guzzle\Http\Message\Response
      */
-    public function putEvent($url, $body, $etag = null)
+    public function putEvent(Event $event)
     {
         $this->http_client->setContentTypeiCalendar();
+
+        $etag = $event->getEtag();
+        $url = $event->getUrl();
+        $body = $event->getContents();
 
         // New event, so it should not overwrite any existing events
         if ($etag === null) {
@@ -333,19 +329,47 @@ class Client
     }
 
     /**
-     * Deletes a VCALENDAR text object on the given URL
+     * Deletes an Event from the CalDAV server
      *
-     * @param string $url
-     * @param string $etag Optional etag to avoid deleting an updated calendar
-     *                     object
+     * @param AgenDAV\Data\Event
      * @return Guzzle\Http\Message\Response
      */
-    public function deleteEvent($url, $etag = null)
+    public function deleteEvent(Event $event)
     {
+        $etag = $event->getEtag();
+        $url = $event->getUrl();
+
         // New event, so it should not overwrite any existing events
         if ($etag !== null) {
             $this->http_client->setHeader('If-Match', $etag);
         }
         return $this->http_client->request('DELETE', $url);
+    }
+
+
+
+    /**
+     * Converts a pre-parsed REPORT response to an array of events
+     *
+     * @param array Data returned by report()
+     * @param AgenDAV\Data\Calendar $calendar Calendar these events come from
+     * @return array of Event
+     */
+    protected function parseEventCollection(array $events_data, Calendar $calendar)
+    {
+        $result = [];
+
+        foreach ($events_data as $url => $data) {
+            $event = new Event($data[Event::DATA]);
+            $event->setCalendar($calendar);
+            $event->setUrl($url);
+            if (isset($data[Event::ETAG])) {
+                $event->setEtag($data[Event::ETAG]);
+            }
+
+            $result[] = $event;
+        }
+
+        return $result;
     }
 }
