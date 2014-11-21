@@ -150,12 +150,12 @@ class Icshelper {
         $date_start = new DateTime($start, $utc);
         $date_end = new DateTime($end, $utc);
 
-        foreach ($resources as $r) {
-            $event_href = $r['href'];
-            $event_etag = $r['etag'];
+        foreach ($resources as $url => $properties) {
+            $event_href = $url;
+            $event_etag = $properties['{DAV:}getetag'];
 
             $ical = new vcalendar($this->config);
-            $res = $ical->parse($r['data']);
+            $res = $ical->parse($properties['{urn:ietf:params:xml:ns:caldav}calendar-data']);
             if ($res === FALSE) {
                 log_message('ERROR', 
                         "Couldn't parse event with href=" . $calendar . '/'

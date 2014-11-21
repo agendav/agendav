@@ -56,15 +56,19 @@ class Login extends MY_Controller {
             // Check authentication against server
             $user = $this->input->post('user', true);
             $passwd = $this->input->post('passwd', false);
-            $app_user = $this->container['user'];
-            $app_user->setCredentials($user, $passwd);
 
-            $caldav_client = $this->container['client'];
+            $http_client = $this->container['http_client'];
+            $http_client->setAuthentication($user, $passwd, $this->config->item('caldav_http_auth_method'));
+            $caldav_client = $this->container['caldav_client'];
 
 
-            if ($caldav_client->checkAuthentication()) {
+            if ($caldav_client->canAuthenticate()) {
                 $session->set('username', $user);
                 $session->set('password', $passwd);
+                $principal_url = $caldav_client->getCurrentUserPrincipal();
+                $calendar_home_set = $caldav_client->getCalendarHomeSet($principal_url);
+                $session->set('principal_url', $principal_url);
+                $session->set('calendar_home_set', $calendar_home_set);
                 redirect("/main");
                 $this->output->_display();
                 die();

@@ -2,7 +2,7 @@
 namespace AgenDAV\Http;
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -165,4 +165,21 @@ class Client
 
         return $this->response;
     }
+
+    /**
+     * Sets Content-Type for next request to be XML
+     */
+    public function setContentTypeXML()
+    {
+        $this->setHeader('Content-Type', 'application/xml; charset=utf-8');
+    }
+
+    /**
+     * Sets Content-Type for next request to be an iCalendar resource
+     */
+    public function setContentTypeiCalendar()
+    {
+        $this->setHeader('Content-Type', 'text/calendar');
+    }
+
 }
