@@ -19,7 +19,6 @@
 
 // Useful names
 var ved = 'div.view_event_details';
-var ced = '#com_event_dialog';
 var dustbase = {};
 
 
@@ -95,8 +94,8 @@ $(document).ready(function() {
       editable: true,
       firstDay: AgenDAVConf.prefs_firstday,
       timeFormat: {
-        agenda: AgenDAVConf.prefs_timeformat + '{ - ' 
-          + AgenDAVConf.prefs_timeformat + '}',
+        agenda: AgenDAVConf.prefs_timeformat + '{ - ' +
+          AgenDAVConf.prefs_timeformat + '}',
         '': AgenDAVConf.prefs_timeformat
       },
       columnFormat: {
@@ -180,7 +179,7 @@ $(document).ready(function() {
       // if you define dayClick and select there is some kind of
       // collision between them.
       select: slots_drag_callback,
-      
+
       // Useful for creating events in agenda view
       selectHelper: select_helper,
 
@@ -190,9 +189,9 @@ $(document).ready(function() {
 
 
     // Refresh link
-    $('<span id="button-refresh" class="fc-button-refresh">'
-      +'<i class="icon-refresh"></i> '
-      +t('labels', 'refresh') + '</span>')
+    $('<span id="button-refresh" class="fc-button-refresh">' +
+      '<i class="icon-refresh"></i> ' +
+      t('labels', 'refresh') + '</span>')
       .appendTo('#calendar_view td.fc-header-right')
       .button()
       .on('click', function() {
@@ -202,7 +201,7 @@ $(document).ready(function() {
 
     // Date picker above calendar
     dust.render('datepicker_button', dustbase, function(err, out) {
-      if (err != null) {
+      if (err !== null) {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
       } else {
@@ -213,7 +212,7 @@ $(document).ready(function() {
           changeYear: true,
           closeText: t('labels', 'cancel'),
           onSelect: function(date, text) {
-            var d = $('#datepicker_fullcalendar').datepicker('getDate');  
+            var d = $('#datepicker_fullcalendar').datepicker('getDate');
             $('#calendar_view').fullCalendar('gotoDate', d);
           }
         })
@@ -225,9 +224,8 @@ $(document).ready(function() {
         });
       }
     });
-    
 
-    $('#calendar_view').fullCalendar('renderEvent', 
+    $('#calendar_view').fullCalendar('renderEvent',
       {
         title: 'Little portal',
         start: '1985-02-15T00:00:00Z',
@@ -331,10 +329,7 @@ $(document).ready(function() {
     }
 
     // Printing
-    
     setup_print_tweaks();
-    
-
 
 
     // User menu
@@ -435,7 +430,7 @@ var remove_data = function remove_data(name) {
 
 /**
  * Sends a form via AJAX.
- * 
+ *
  * This way we respect CodeIgniter CSRF tokens
  */
 var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
@@ -504,7 +499,7 @@ var show_dialog = function show_dialog(template, data, title, buttons,
   divname, width, pre_func) {
 
   dust.render(template, dustbase.push(data), function(err, out) {
-    if (err != null) {
+    if (err !== null) {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
     } else {
@@ -521,8 +516,10 @@ var show_dialog = function show_dialog(template, data, title, buttons,
           var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
           add_button_icons(buttons);
         },
-        close: function(ev, ui) { $(this).remove(); }
-      })
+        close: function(ev, ui) {
+          $(this).remove();
+        }
+      });
     }
   });
 };
@@ -541,7 +538,7 @@ var destroy_dialog = function destroy_dialog(name) {
  */
 var set_default_datepicker_options = function set_default_datepicker_options() {
   // Localization (TODO: make this configurable!)
-$.datepicker.regional['custom'] = {
+$.datepicker.regional.custom = {
   closeText: t('labels', 'close'),
   prevText: t('labels', 'previous'),
   nextText: t('labels', 'next'),
@@ -555,9 +552,9 @@ $.datepicker.regional['custom'] = {
   firstDay: AgenDAVConf.prefs_firstday,
   isRTL: false,
   showMonthAfterYear: false,
-  yearSuffix: ''};  
+  yearSuffix: ''};
 
-$.datepicker.setDefaults($.datepicker.regional['custom']);
+$.datepicker.setDefaults($.datepicker.regional.custom);
 $.datepicker.setDefaults({constrainInput: true});
 $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
 };
@@ -670,7 +667,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
             function(data) {
               // Problem with form data
               show_error(t('messages', 'error_invalidinput'), data);
-            },   
+            },
             function(data) {
               // Do nothing
             });
@@ -696,7 +693,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
         handle_repetitions('#event_edit_dialog', data);
 
         // TODO recurrence rules
-        
+
         // Reminders
         reminders_manager();
       }
@@ -793,7 +790,7 @@ var handle_repetitions = function handle_repetitions(where, data) {
       var notempty, $select_this;
       $recurrence_ends.show();
       notempty = $recurrence_ends.find(':input:text[value!=""]');
-      if (notempty.length == 0) {
+      if (notempty.length === 0) {
         $select_this = $recurrence_ends.find(':input:radio:first');
       } else {
         $select_this = notempty.first().prev(':input:radio');
@@ -889,7 +886,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
   var title = t('labels', 'modifycalendar');
 
   var data = calendar_obj;
-  $.extend(data, { 
+  $.extend(data, {
     applyid: 'calendar_modify_form',
     frm: {
       action: form_url,
@@ -899,7 +896,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
   });
 
   // Buttons for modification dialog
-  var buttons_and_actions = 
+  var buttons_and_actions =
     [
       {
         'text': t('labels', 'deletecalendar'),
@@ -935,7 +932,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
         'click': function() { destroy_dialog('#calendar_modify_dialog'); }
       }
     ];
-  
+
   // On shared calendars, don't show 'Remove calendar'
   if (data.shared === true) {
     buttons_and_actions.splice(0, 1);
@@ -980,7 +977,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
   show_dialog('calendar_delete_dialog',
     data,
     title,
-    [ 
+    [
     {
       'text': t('labels', 'yes'),
       'class': 'addicon btn-icon-calendar-delete',
@@ -1007,7 +1004,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
             function(data) {
               show_error(t('messages', 'error_caldelete'), data);
             },
-            function() {}); 
+            function() {});
 
       }
     },
@@ -1076,7 +1073,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       count++;
 
       // Some values need to be generated
-      if (calendar.color === undefined || calendar.color === false || calendar.color == null) {
+      if (calendar.color === undefined || calendar.color === false || calendar.color === null) {
         calendar.color = AgenDAVConf.default_calendar_color;
       } else {
         calendar.color = calendar.color.substr(0,7);
@@ -1093,7 +1090,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         collected_event_sources.push($(li).data().eventsource);
       }
 
-      if (calendar.shared == true) {
+      if (calendar.shared === true) {
         count_shared++;
         shared_calendars.appendChild(li[0]);
       } else {
@@ -1103,7 +1100,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
     });
 
     // No calendars?
-    if (count == 0) {
+    if (count === 0) {
       // Some CalDAV servers (e.g. DAViCal) create first calendar on first
       // login. Let's reload calendar list again
       var last_calendar_count = get_data('last_calendar_count');
@@ -1125,7 +1122,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         .appendChild(own_calendars);
 
       // Hide unused block
-      if (count_shared == 0) {
+      if (count_shared === 0) {
         $('#shared_calendar_list').hide();
       } else {
         $('#shared_calendar_list ul')[0]
@@ -1162,8 +1159,8 @@ var generate_event_source = function generate_event_source(calendar) {
         if (jqXHR.status !== undefined && jqXHR.status == 401) {
           session_expired();
         } else {
-          show_error(t('messages', 'error_interfacefailure'), 
-          t('messages', 
+          show_error(t('messages', 'error_interfacefailure'),
+          t('messages',
             'error_loadevents', { '%cal' : calendar }));
         }
       }
@@ -1174,7 +1171,7 @@ var generate_event_source = function generate_event_source(calendar) {
 
 /**
  * Keeps session alive
- * 
+ *
  * n = refresh interval in miliseconds
  */
 var session_refresh = function session_refresh(n) {
@@ -1233,7 +1230,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   eventsource.borderColor = data.bordercolor;
 
   // Shared calendars
-  if (data.shared !== undefined && data.shared == true && data.rw == '0') {
+  if (data.shared !== undefined && data.shared === true && data.rw == '0') {
     eventsource.editable = false;
   }
 
@@ -1242,7 +1239,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   var $out;
 
   dust.render('calendar_list_entry', dustbase.push(data), function(err, out) {
-    if (err != null) {
+    if (err !== null) {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
     } else {
@@ -1277,7 +1274,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
  * Gets calendar data from its internal name
  */
 var get_calendar_data = function get_calendar_data(c) {
-  var data = undefined;
+  var data;
 
   $('.calendar_list li.available_calendar').each(function(index) {
     var thiscal = $(this).data();
@@ -1307,7 +1304,7 @@ var get_calendar_displayname = function get_calendar_displayname(c) {
  * Reloads an event source
  */
 var reload_event_source = function reload_event_source(cal) {
-  var eventsource = undefined;
+  var eventsource;
 
   $('.calendar_list li.available_calendar').each(function(index) {
     var thiscal = $(this).data();
@@ -1338,7 +1335,7 @@ var timestamp = function timestamp(d) {
  * Returns a full date+time string which is easily parseable
  */
 var fulldatetimestring = function fulldatetimestring(d) {
-  if (d != undefined) {
+  if (d !== undefined) {
     return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
   } else {
     return undefined;
@@ -1351,10 +1348,9 @@ var fulldatetimestring = function fulldatetimestring(d) {
 var fg_for_bg = function fg_for_bg(color) {
   var colr = parseInt(color.substr(1), 16);
 
-  var is_dark = (colr >>> 16) // R
-    + ((colr >>> 8) & 0x00ff) // G 
-    + (colr & 0x0000ff) // B
-    < 500;
+  var is_dark = (colr >>> 16) + // R
+    ((colr >>> 8) & 0x00ff) + // G
+    (colr & 0x0000ff) < 500; // B
 
   return (is_dark) ? '#ffffff' : '#000000';
 };
@@ -1382,10 +1378,10 @@ var share_manager = function share_manager() {
 
   share_manager_no_entries_placeholder();
 
-  manager.on('click', 
+  manager.on('click',
     '.calendar_share_delete', function(event) {
       $(this).parent().parent()
-        .fadeOut('fast', function() { 
+        .fadeOut('fast', function() {
           $(this).remove();
           share_manager_no_entries_placeholder();
         });
@@ -1405,7 +1401,7 @@ var share_manager = function share_manager() {
           return;
         }
 
-        lastXhr = $.getJSON(AgenDAVConf.base_app_url + 'caldav2json/principal_search', 
+        lastXhr = $.getJSON(AgenDAVConf.base_app_url + 'caldav2json/principal_search',
           request, function(data, status, xhr) {
           user_autocomplete_cache[term] = data;
           if (xhr === lastXhr) {
@@ -1425,17 +1421,17 @@ var share_manager = function share_manager() {
     .data('autocomplete')._renderItem = function(ul, item) {
       return $('<li></li>')
         .data('item.autocomplete', item)
-        .append('<a><i class="icon-user"></i> ' + item.displayname
-        + '<span style="font-style: italic">'
-        + ' &lt;' + item.email + '&gt;</span></a>')
+        .append('<a><i class="icon-user"></i> ' + item.displayname +
+        '<span style="font-style: italic">' +
+        ' &lt;' + item.email + '&gt;</span></a>')
         .appendTo(ul);
     };
 
-  new_entry_form.on('click', 
+  new_entry_form.on('click',
     '#calendar_share_add_button', function(event) {
     var new_user = $('#calendar_share_add_username').val();
     var access = $('#calendar_share_add_write_access').val();
-    if (new_user != '') {
+    if (new_user !== '') {
       // Check if new_user is already on list
       var already_added = false;
       manager.find('span.username')
@@ -1453,9 +1449,9 @@ var share_manager = function share_manager() {
         };
 
         dust.render('calendar_share_row',
-            dustbase.push(new_row_data), 
+            dustbase.push(new_row_data),
             function(err, out) {
-              if (err != null) {
+              if (err !== null) {
                 show_error(t('messages', 'error_interfacefailure'),
                   err.message);
               } else {
@@ -1500,10 +1496,10 @@ var reminders_manager = function reminders_manager() {
 
   reminders_manager_no_entries_placeholder();
 
-  manager.on('click', 
+  manager.on('click',
     '.reminder_delete', function(event) {
       $(this).parent().parent()
-        .fadeOut('fast', function() { 
+        .fadeOut('fast', function() {
           $(this).remove();
           reminders_manager_no_entries_placeholder();
         });
@@ -1532,7 +1528,7 @@ var reminders_manager = function reminders_manager() {
 
       dust.render('reminder_row',
         dustbase.push(formdata), function(err, out) {
-        if (err != null) {
+        if (err !== null) {
           show_error(t('messages', 'error_interfacefailure'),
             err.message);
         } else {
@@ -1561,7 +1557,7 @@ var reminders_manager_no_entries_placeholder = function reminders_manager_no_ent
   } else {
     $('#reminders_no_rows').hide();
   }
-}
+};
 
 
 
@@ -1582,7 +1578,7 @@ var event_render_callback = function event_render_callback(event, element) {
   // Icons
   var icons = [];
 
-  if (event.rrule != undefined) {
+  if (event.rrule !== undefined) {
     icons.push('icon-repeat');
   }
   if (event.reminders.length > 0) {
@@ -1590,7 +1586,7 @@ var event_render_callback = function event_render_callback(event, element) {
   }
 
   // Prepend icons
-  if (icons.length != 0) {
+  if (icons.length !== 0) {
     var icon_html = $('<span class="fc-event-icons"></span>');
     $.each(icons, function(n, i) {
       icon_html.append('<i class="' + i + '"></i>');
@@ -1602,7 +1598,7 @@ var event_render_callback = function event_render_callback(event, element) {
   }
 
   dust.render('event_details_popup', dustbase.push(data), function(err, out) {
-    if (err != null) {
+    if (err !== null) {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
     } else {
@@ -1655,7 +1651,7 @@ var event_render_callback = function event_render_callback(event, element) {
               if(e.keyCode === $.ui.keyCode.ESCAPE) {
                 api.hide(e);
               }
-            })
+            });
 
             // Icons
             var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
@@ -1675,7 +1671,7 @@ var event_render_callback = function event_render_callback(event, element) {
 /**
  * Event click
  */
-var event_click_callback = function event_click_callback(event, 
+var event_click_callback = function event_click_callback(event,
     jsEvent, view) {
   var current_event = get_data('current_event');
 
@@ -1799,7 +1795,7 @@ var event_delete_dialog = function event_delete_dialog() {
   show_dialog('event_delete_dialog',
     data,
     title,
-    [ 
+    [
       {
         'text': t('labels', 'yes'),
         'class': 'addicon btn-icon-event-delete',
@@ -1884,7 +1880,7 @@ var initialize_date_and_time_pickers = function initialize_date_and_time_pickers
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
   return $.cookie(AgenDAVConf.csrf_cookie_name);
-}
+};
 
 // Loading indicator
 var loading = function loading(status) {
@@ -1897,7 +1893,7 @@ var loading = function loading(status) {
     $refresh.button('option', 'disabled', true);
     $loading.show();
   }
-}
+};
 
 // Printing helpers
 
@@ -1941,6 +1937,6 @@ var calendar_list = function calendar_list() {
   }
 
   return result;
-}
+};
 
 // vim: sw=2 tabstop=2
