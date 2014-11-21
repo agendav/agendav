@@ -119,7 +119,6 @@ class Event extends MY_Controller
         } else {
             $this->output->set_status_header($err, 'Error');
         }
-            
     }
 
     /**
@@ -143,30 +142,16 @@ class Event extends MY_Controller
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         } else {
-            $res = $this->client->deleteResource(
-                    $calendar . $href,
-                    $etag);
-            if ($res === true) {
-                $this->_throw_success();
-            } else {
-                // There was an error
-                $params = array();
-                switch ($res) {
-                    case '404':
-                        $usermsg = 'error_eventnotfound';
-                        break;
-                    case '412':
-                        $usermsg = 'error_eventchanged';
-                        break;
-                    default:
-                        $usermsg = 'error_unknownhttpcode';
-                        $params['%res'] = $res;
-                        break;
-                }
-
+            try {
+                $res = $this->client->deleteEvent($href, $etag);
+            } catch (\Exception $e) {
+                $usermsg = 'error_unknownhttpcode';
+                $params['%res'] = $res->getStatusCode();
                 $msg = $this->i18n->_('messages', $usermsg, $params);
                 $this->_throw_exception($msg);
+                return;
             }
+            $this->_throw_success();
         }
     }
 
@@ -363,56 +348,53 @@ class Event extends MY_Controller
             }
         }
 
-            
         // Is this a new event or a modification?
 
         // Valid destination calendar? 
-        if (!$this->client->isAccessible($p['calendar'])) {
+        try {
+            $dest_calendar = $this->client->getCalendarByUrl($p['calendar']);
+        } catch (\UnexpectedValueException $e) {
             $this->_throw_exception(
                     $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $p['calendar']))
             );
-        } else {
-            $calendar = $p['calendar'];
+            return;
         }
 
         if (!isset($p['modification'])) {
             // New event (resource)
             $new_uid = $this->icshelper->new_resource($p,
                     $resource, $this->tz, $reminders);
-            $href = $new_uid . '.ics';
+            $href = $dest_calendar->getUrl() . $new_uid . '.ics';
             $etag = '*';
         } else {
             // Load existing resource
-
             // Valid original calendar?
-            if (!isset($p['original_calendar'])) {
-                $this->_throw_exception($this->i18n->_('messages', 'error_interfacefailure'));
-            } else {
-                $original_calendar = $p['original_calendar'];
-            }
-
-            if (!$this->client->isAccessible($original_calendar)) {
+            try {
+                $original_calendar = $this->client->getCalendarByUrl($p['original_calendar']);
+            } catch (\UnexpectedValueException $e) {
                 $this->_throw_exception(
-                    $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $original_calendar))
+                    $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $p['original_calendar']))
                 );
+                return;
             }
 
             $uid = $p['uid'];
-            $href = $p['href'];
+            $orig_href = $p['href'];
+            $href = $dest_calendar->getUrl() . $uid . '.ics';
             $etag = $p['etag'];
 
-            $res = $this->client->fetchEntryByUid($original_calendar, $uid);
+            $res = $this->client->fetchEventByUid($original_calendar, $uid);
 
             if (count($res) == 0) {
                 $this->_throw_error($this->i18n->_('messages', 'error_eventnotfound'));
             }
 
-            if ($etag != $res['etag']) {
+            if ($etag != $res['{DAV:}getetag']) {
                 $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
             }
 
 
-            $resource = $this->icshelper->parse_icalendar($res['data']);
+            $resource = $this->icshelper->parse_icalendar($res['{urn:ietf:params:xml:ns:caldav}calendar-data']);
             $timezones = $this->icshelper->get_timezones($resource);
             $vevent = null;
             // TODO: recurrence-id?
@@ -467,7 +449,7 @@ class Event extends MY_Controller
             }
 
             // Moving event between calendars
-            if ($original_calendar != $calendar) {
+            if ($original_calendar != $dest_calendar) {
                 // We will need this etag later
                 $original_etag = $etag;
                 $etag = '*';
@@ -475,14 +457,10 @@ class Event extends MY_Controller
         }
 
         // PUT on server
-        $new_etag = $this->client->putResource(
-                $calendar . $href,
-                $resource->createCalendar(),
-                $etag);
-
-        // Error
-        if (is_array($new_etag)) {
-            $code = current($new_etag);
+        try {
+            $this->client->putEvent($href, $resource->createCalendar(), $etag);
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $code = $e->getResponse()->getStatusCode();
             switch ($code) {
                 case '412':
                     // TODO new events + already used UIDs!
@@ -501,28 +479,30 @@ class Event extends MY_Controller
                     $this->_throw_error($this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $code[0])));
                     break;
             }
-        } else {
-            // Remove original event
-            if (isset($p['modification']) && $original_calendar != $calendar) {
-                $res = $this->client->deleteResource(
-                        $original_calendar . $href,
-                        $original_etag
-                );
-                if ($res !== true) {
-                    // There was an error
-                    $this->_throw_exception('');
-                }
-            }
 
-            // Return a list of affected calendars (original_calendar, new
-            // calendar)
-            $affected_calendars = array($calendar);
-            if (isset($original_calendar) && $original_calendar != $calendar) {
-                $affected_calendars[] = $original_calendar;
-            }
-
-            $this->_throw_success($affected_calendars);
+            return;
         }
+
+        // Remove original event
+        if (isset($p['modification']) && $original_calendar !== $dest_calendar) {
+            try {
+                $this->client->deleteEvent(
+                    $orig_href,
+                    $original_etag
+                );
+            } catch (\Exception $e) {
+                $this->_throw_exception('');
+            }
+        }
+
+        // Return a list of affected calendars (original_calendar, new
+        // calendar)
+        $affected_calendars = array($dest_calendar->getUrl());
+        if (isset($original_calendar) && $original_calendar !== $dest_calendar) {
+            $affected_calendars[] = $original_calendar->getUrl();
+        }
+
+        $this->_throw_success($affected_calendars);
     }
 
 
@@ -561,20 +541,30 @@ class Event extends MY_Controller
             $dur_string = preg_replace($pattern, '\1PT\2M', $minuteDelta);
         }
 
-        // Load resource
-        $resource = $this->client->fetchEntryByUid($calendar, $uid);
-
-        if (count($resource) == 0) {
-            $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
+        try {
+            $calendar = $this->client->getCalendarByUrl($calendar);
+        } catch (\UnexpectedValueException $e) {
+            $this->_throw_exception(
+                $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $calendar))
+            );
+            return;
         }
 
-        if ($etag != $resource['etag']) {
+        // Load resource
+        try {
+            $resource = $this->client->fetchEventByUid($calendar, $uid);
+        } catch (\Exception $e) {
+            $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
+            return;
+        }
+
+        if ($etag != $resource['{DAV:}getetag']) {
             $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
         }
 
         // We're prepared to modify the event
         $href = $resource['href'];
-        $ical = $this->icshelper->parse_icalendar($resource['data']);
+        $ical = $this->icshelper->parse_icalendar($resource['{urn:ietf:params:xml:ns:caldav}calendar-data']);
         $timezones = $this->icshelper->get_timezones($ical);
         $vevent = null;
         // TODO: recurrence-id?
@@ -675,36 +665,30 @@ class Event extends MY_Controller
         }
 
         // PUT on server
-        $new_etag = $this->client->putResource(
-                $calendar . $href,
-                $ical->createCalendar(),
-                $etag
-        );
-
-
-        // Error
-        if (is_array($new_etag)) {
-            $new_etag = current($new_etag);
-            switch ($new_etag) {
+        try {
+            $response = $this->client->putEvent($href, $ical->createCalendar(), $etag);
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $code = $e->getResponse()->getStatusCode();
+            switch ($code) {
                 case '412':
                     $this->_throw_exception( $this->i18n->_('messages', 'error_eventchanged'));
                     break;
                 default:
-                    $this->_throw_error( $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $new_etag)));
+                    $this->_throw_error( $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $code)));
                     break;
             }
-        } else {
-            // Send new information about this event
-            $info = $this->icshelper->parse_vevent_fullcalendar(
-                    $new_vevent,
-                    $href,
-                    $new_etag,
-                    $calendar,
-                    $tz,
-                    $timezones
-            );
-            $this->_throw_success($info);
+            return;
         }
+        // Send new information about this event
+        $info = $this->icshelper->parse_vevent_fullcalendar(
+            $new_vevent,
+            $href,
+            $response->getHeader('Etag'),
+            $calendar->getUrl(),
+            $tz,
+            $timezones
+        );
+        $this->_throw_success($info);
     }
 
     /**
