@@ -449,7 +449,7 @@ class Event extends MY_Controller
             }
 
             // Moving event between calendars
-            if ($original_calendar != $dest_calendar) {
+            if ($original_calendar->getUrl() !== $dest_calendar->getUrl()) {
                 // We will need this etag later
                 $original_etag = $etag;
                 $etag = '*';
@@ -484,7 +484,7 @@ class Event extends MY_Controller
         }
 
         // Remove original event
-        if (isset($p['modification']) && $original_calendar !== $dest_calendar) {
+        if (isset($p['modification']) && $original_calendar->getUrl() !== $dest_calendar->getUrl()) {
             try {
                 $this->client->deleteEvent(
                     $orig_href,
@@ -498,7 +498,7 @@ class Event extends MY_Controller
         // Return a list of affected calendars (original_calendar, new
         // calendar)
         $affected_calendars = array($dest_calendar->getUrl());
-        if (isset($original_calendar) && $original_calendar !== $dest_calendar) {
+        if (isset($original_calendar) && $original_calendar->getUrl() !== $dest_calendar->getUrl()) {
             $affected_calendars[] = $original_calendar->getUrl();
         }
 
