@@ -240,20 +240,31 @@ class Client
     }
 
     /**
-     * Fetches all events from a calendar that are in the range of [start, end)
+     * Fetches the event that has the specified UID
      *
      * @param \AgenDAV\Data\Calendar $calendar
      * @param string $uid Event UID
-     * @return array Associative array of event:
-     *               [ 'resource1.ics' => [ properties ],
-     *                 'resource2.ics' => [ properties ],
+     * @return array Associative array of properties from event:
+     *               [ '{DAV:}getetag' => '...',
+     *                 '{urn:ietf:params:xml:ns:caldav}calendar-data' => 'BEGIN:...',
      *                 ...
      *               ]
      */
     public function fetchEventByUid(\AgenDAV\Data\Calendar $calendar, $uid)
     {
         $uid_filter = new UidFilter($uid);
-        return $this->report($calendar->getUrl(), $uid_filter);
+        $result = $this->report($calendar->getUrl(), $uid_filter);
+
+        if (count($result) === 0) {
+            throw new \UnexpectedValueException('Event '.$uid.' not found at ' . $calendar->getUrl());
+        }
+
+        reset($result);
+        $href = current(array_keys($result));
+        $event = current($result);
+        $event['href'] = $href;
+
+        return $event;
     }
 
     /**
