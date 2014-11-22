@@ -593,7 +593,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     return;
   }
 
-  var form_url = AgenDAVConf.base_app_url + 'event/modify';
+  var form_url = AgenDAVConf.base_app_url + 'events/modify';
   var title;
 
   // Transform Date to Moment objects
@@ -1149,7 +1149,7 @@ var generate_event_source = function generate_event_source(calendar) {
   var ajax_options = {
       // If #calendar is not used, Fullcalendar will be confused when
       // calling removeEventSource, and will remove all calendars
-      url: AgenDAVConf.base_app_url + 'event/all#' + calendar,
+      url: AgenDAVConf.base_app_url + 'events/all#' + calendar,
       cache: false,
       // TODO make timezone configurable
       data: {
@@ -1739,7 +1739,7 @@ var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDe
  */
 var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
   var params = {
-    url: AgenDAVConf.base_app_url + 'event/alter',
+    url: AgenDAVConf.base_app_url + 'events/alter',
     data: {
       uid: event.uid,
       calendar: event.calendar,
@@ -1772,7 +1772,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
 // Delete link
 // TODO: check for rrule/recurrence-id (EXDATE, etc)
 var event_delete_dialog = function event_delete_dialog() {
-  var form_url = AgenDAVConf.base_app_url + 'event/delete';
+  var form_url = AgenDAVConf.base_app_url + 'events/delete';
   var title = t('labels', 'deleteevent');
 
   var data = get_data('current_event');

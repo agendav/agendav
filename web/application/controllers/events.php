@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,7 +23,7 @@ use AgenDAV\Data\Reminder;
 use AgenDAV\Data\Calendar;
 use AgenDAV\DateHelper;
 
-class Event extends MY_Controller
+class Events extends MY_Controller
 {
 
     private $time_format;
