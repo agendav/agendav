@@ -828,7 +828,7 @@ var update_single_event = function update_single_event(event, new_data) {
 // Triggers a dialog for creating calendars
 var calendar_create_dialog = function calendar_create_dialog() {
 
-  var form_url = AgenDAVConf.base_app_url + 'calendar/create';
+  var form_url = AgenDAVConf.base_app_url + 'calendars/create';
   var title = t('labels', 'newcalendar');
 
   var data = {
@@ -849,7 +849,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
         'class': 'addicon btn-icon-calendar-add',
         'click': function() {
           var params = {
-            url: AgenDAVConf.base_app_url + 'calendar/create',
+            url: AgenDAVConf.base_app_url + 'calendars/create',
             data: $('#calendar_create_form').serializeObject()
           };
           destroy_dialog('#calendar_create_dialog');
@@ -882,7 +882,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
 // Triggers a dialog for editing calendars
 var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
 
-  var form_url = AgenDAVConf.base_app_url + 'calendar/modify';
+  var form_url = AgenDAVConf.base_app_url + 'calendars/modify';
   var title = t('labels', 'modifycalendar');
 
   var data = calendar_obj;
@@ -961,7 +961,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
  */
 var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
   destroy_dialog('#calendar_modify_dialog');
-  var form_url = AgenDAVConf.base_app_url + 'calendar/delete';
+  var form_url = AgenDAVConf.base_app_url + 'calendars/delete';
   var title = t('labels', 'deletecalendar');
 
   var data = calendar_obj;
@@ -983,7 +983,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
       'class': 'addicon btn-icon-calendar-delete',
       'click': function() {
         var params = {
-          url: AgenDAVConf.base_app_url + 'calendar/delete',
+          url: AgenDAVConf.base_app_url + 'calendars/delete',
           data: $('#calendar_delete_form').serializeObject()
         };
 
@@ -1029,7 +1029,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   }
 
   var updcalendar_ajax_req = $.ajax({
-    url: AgenDAVConf.base_app_url + 'calendar/all',
+    url: AgenDAVConf.base_app_url + 'calendars/all',
     cache: false,
     dataType: 'json'
   });

@@ -20,11 +20,11 @@
  */
 
 use League\Fractal\Resource\Collection;
-use AgenDAV\Data\Calendar as CalendarModel;
+use AgenDAV\Data\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use AgenDAV\Uuid;
 
-class Calendar extends MY_Controller
+class Calendars extends MY_Controller
 {
 
     private $calendar_colors;
@@ -97,11 +97,11 @@ class Calendar extends MY_Controller
         // Add transparency to color
         $calendar_color = $this->toRGBA($calendar_color);
 
-        $new_calendar = new CalendarModel(
+        $new_calendar = new Calendar(
             $url,
             [
-                CalendarModel::DISPLAYNAME => $displayname,
-                CalendarModel::COLOR  => $calendar_color,
+                Calendar::DISPLAYNAME => $displayname,
+                Calendar::COLOR  => $calendar_color,
             ]
         );
 
@@ -126,7 +126,7 @@ class Calendar extends MY_Controller
             $this->answerWithError($this->i18n->_('messages', 'error_interfacefailure'));
         }
 
-        $calendar = new CalendarModel($calendar);
+        $calendar = new Calendar($calendar);
 
         if (isset($shares[$calendar])) {
             $this_calendar_shares = array_values($shares[$calendar]);
@@ -205,11 +205,11 @@ class Calendar extends MY_Controller
         // Proceed to modify calendar
         if (!$is_shared_calendar) {
             // Calendar properties
-            $changed_calendar = new CalendarModel(
+            $changed_calendar = new Calendar(
                 $calendar,
                 [
-                    CalendarModel::DISPLAYNAME => $displayname,
-                    CalendarModel::COLOR  => $calendar_color,
+                    Calendar::DISPLAYNAME => $displayname,
+                    Calendar::COLOR  => $calendar_color,
                 ]
             );
 
