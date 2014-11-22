@@ -244,6 +244,7 @@ class Client
      * @param \AgenDAV\Data\Calendar $calendar
      * @param string $uid Event UID
      * @return \AgenDAV\Data\Event
+     * @throws \UnexpectedValueException if event is not found
      */
     public function fetchEventByUid(\AgenDAV\Data\Calendar $calendar, $uid)
     {
