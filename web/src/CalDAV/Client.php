@@ -77,6 +77,7 @@ class Client
      * user
      *
      * @return string   Principal URL
+     * @throws \UnexpectedValueException if no current-user-principal is returned
      */
     public function getCurrentUserPrincipal()
     {
@@ -102,6 +103,7 @@ class Client
      *
      * @param string $principal_url Principal URL
      * @return string   Calendar home set for given principal
+     * @throws \UnexpectedValueException if no calendar-home-set is returned
      */
     public function getCalendarHomeSet($principal_url)
     {
