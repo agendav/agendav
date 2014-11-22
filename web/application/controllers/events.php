@@ -21,6 +21,7 @@
 
 use AgenDAV\Data\Reminder;
 use AgenDAV\Data\Calendar;
+use AgenDAV\Data\Event;
 use AgenDAV\DateHelper;
 
 class Events extends MY_Controller
@@ -142,8 +143,10 @@ class Events extends MY_Controller
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         } else {
+            // Simulate an event on $href
+            $event = new Event('', $href);
             try {
-                $res = $this->client->deleteEvent($href, $etag);
+                $res = $this->client->deleteEvent($event);
             } catch (\Exception $e) {
                 $usermsg = 'error_unknownhttpcode';
                 $params['%res'] = $res->getStatusCode();
@@ -383,18 +386,20 @@ class Events extends MY_Controller
             $href = $dest_calendar->getUrl() . $uid . '.ics';
             $etag = $p['etag'];
 
-            $res = $this->client->fetchEventByUid($original_calendar, $uid);
-
-            if (count($res) == 0) {
+            try {
+                $original_event = $this->client->fetchEventByUid($original_calendar, $uid);
+            } catch (\UnexpectedValueException $e) {
                 $this->_throw_error($this->i18n->_('messages', 'error_eventnotfound'));
+                return;
             }
 
-            if ($etag != $res['{DAV:}getetag']) {
+            if ($etag != $original_event->getEtag()) {
                 $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
+                return;
             }
 
 
-            $resource = $this->icshelper->parse_icalendar($res['{urn:ietf:params:xml:ns:caldav}calendar-data']);
+            $resource = $this->icshelper->parse_icalendar($original_event->getContents());
             $timezones = $this->icshelper->get_timezones($resource);
             $vevent = null;
             // TODO: recurrence-id?
@@ -456,15 +461,21 @@ class Events extends MY_Controller
             }
         }
 
+        $new_event = new Event($resource->createCalendar());
+        $new_event->setUrl($href);
+        $new_event->setCalendar($dest_calendar);
+        $new_event->setEtag($etag);
         // PUT on server
         try {
-            $this->client->putEvent($href, $resource->createCalendar(), $etag);
+            $this->client->putEvent($new_event);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             $code = $e->getResponse()->getStatusCode();
             switch ($code) {
                 case '412':
                     // TODO new events + already used UIDs!
                     if (isset($p['modification'])) {
+                        var_export($etag);
+                        var_export($new_event->getEtag());
                         $this->_throw_exception( $this->i18n->_('messages', 'error_eventchanged'));
                     } else {
                         // Already used UID on new event. What a bad luck!
@@ -486,10 +497,7 @@ class Events extends MY_Controller
         // Remove original event
         if (isset($p['modification']) && $original_calendar->getUrl() !== $dest_calendar->getUrl()) {
             try {
-                $this->client->deleteEvent(
-                    $orig_href,
-                    $original_etag
-                );
+                $this->client->deleteEvent($original_event);
             } catch (\Exception $e) {
                 $this->_throw_exception('');
             }
@@ -558,13 +566,13 @@ class Events extends MY_Controller
             return;
         }
 
-        if ($etag != $resource['{DAV:}getetag']) {
+        if ($etag != $resource->getEtag()) {
             $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
         }
 
         // We're prepared to modify the event
-        $href = $resource['href'];
-        $ical = $this->icshelper->parse_icalendar($resource['{urn:ietf:params:xml:ns:caldav}calendar-data']);
+        $href = $resource->getUrl();
+        $ical = $this->icshelper->parse_icalendar($resource->getContents());
         $timezones = $this->icshelper->get_timezones($ical);
         $vevent = null;
         // TODO: recurrence-id?
@@ -664,9 +672,13 @@ class Events extends MY_Controller
             $this->_throw_error($this->i18n->_('messages', 'error_internalgen'));
         }
 
+        $new_event = new Event($ical->createCalendar());
+        $new_event->setUrl($href);
+        $new_event->setCalendar($calendar);
+        $new_event->setEtag($etag);
         // PUT on server
         try {
-            $response = $this->client->putEvent($href, $ical->createCalendar(), $etag);
+            $response = $this->client->putEvent($new_event);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             $code = $e->getResponse()->getStatusCode();
             switch ($code) {

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -19,6 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Data\Event;
 use AgenDAV\Data\Reminder;
 use AgenDAV\DateHelper;
 use AgenDAV\Uuid;
@@ -137,12 +138,12 @@ class Icshelper {
      * Expands a list of resources to repeated events, depending on
      * recurrence rules and recurrence exceptions/modifications
      *
-     * @param array()   $resources  Resources returned by GetEvents
+     * @param array   $resources  array of Events
      * @param int       $start      Start timestamp
      * @param int       $end        End timestamp
      * @param string        $calendar       Current calendar
      */
-    function expand_and_parse_events($resources, $start, $end, $calendar) {
+    function expand_and_parse_events(array $resources, $start, $end, $calendar) {
         $result = array();
 
         // Dates
@@ -150,16 +151,14 @@ class Icshelper {
         $date_start = new DateTime($start, $utc);
         $date_end = new DateTime($end, $utc);
 
-        foreach ($resources as $url => $properties) {
-            $event_href = $url;
-            $event_etag = $properties['{DAV:}getetag'];
+        foreach ($resources as $resource) {
+            $event_href = $resource->getUrl();
+            $event_etag = $resource->getEtag();
 
             $ical = new vcalendar($this->config);
-            $res = $ical->parse($properties['{urn:ietf:params:xml:ns:caldav}calendar-data']);
+            $res = $ical->parse($resource->getContents());
             if ($res === FALSE) {
-                log_message('ERROR', 
-                        "Couldn't parse event with href=" . $calendar . '/'
-                        .$event_href);
+                log_message('ERROR', "Couldn't parse event with href=" . $event_href);
             }
             $ical->sort();
 
@@ -171,14 +170,6 @@ class Icshelper {
             $ey = intval($date_end->format('Y'));
             $em = intval($date_end->format('m'));
             $ed = intval($date_end->format('d'));
-
-            /*
-            log_message('INTERNALS', 'Pidiendo expansión para ' . $sy . '-'
-                    . $sm . '-' . $sd . ' a ' . $ey . '-' . $em . '-' .
-                    $ed);
-            log_message('INTERNALS', $event_href);
-            log_message('INTERNALS', $r['data']);
-            */
 
             $expand = $ical->selectComponents($sy, $sm, $sd, $ey, $em, $ed,
                     'vevent', false, true, false);
@@ -216,7 +207,6 @@ class Icshelper {
         }
 
         return $result;
-        
     }
 
     /**
