@@ -313,7 +313,7 @@ class Calendar extends MY_Controller
                     $this->shared_calendars->store(
                             $this_sid,
                             $this->user->getUsername(),
-                            $internal_calendar,
+                            $calendar,
                             $share['username'],
                             null,                   // Preserve options
                             $share['rw']);
