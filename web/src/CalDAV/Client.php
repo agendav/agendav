@@ -130,7 +130,7 @@ class Client
      * @param string $url   URL
      * @param bool $recurse Whether to recurse (Depth: 1) or not (Depth: 0).
      *                       Default to true
-     * @return array
+     * @return array        Associative array, [url => Calendar]
      */
     public function getCalendars($url, $recurse = true)
     {

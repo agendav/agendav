@@ -11,6 +11,7 @@ use GuzzleHttp\Subscriber\History as GuzzleHistory;
 use AgenDAV\Http\Client as HttpClient;
 use AgenDAV\XML\Generator;
 use AgenDAV\XML\Parser;
+use AgenDAV\Data\Calendar;
 
 /**
  * @author jorge
@@ -267,12 +268,132 @@ BODY;
         $client = $this->createCalDAVClient($response);
         $calendars = $client->getCalendars('/calendar-home');
 
+        // Only two calendars should be detected
+        $this->assertCount(2, $calendars);
+
         $url_first = '/cal.php/calendars/demo/first/';
         $url_second = '/cal.php/calendars/demo/second/';
-        $this->assertArrayHasKey('/cal.php/calendars/demo/first/', $calendars);
-        $this->assertArrayHasKey('/cal.php/calendars/demo/second/', $calendars);
+        $this->assertArrayHasKey($url_first, $calendars);
+        $this->assertArrayHasKey($url_second, $calendars);
+
+        $first_calendar = $calendars[$url_first];
+        $this->assertEquals('First calendar', $first_calendar->getProperty(Calendar::DISPLAYNAME));
+        $this->assertEquals('44', $first_calendar->getProperty(Calendar::CTAG));
+        $this->assertEquals('#ff4e50ff', $first_calendar->getProperty(Calendar::COLOR));
+
+        $second_calendar = $calendars[$url_second];
+        $this->assertEquals('Second calendar', $second_calendar->getProperty(Calendar::DISPLAYNAME));
+        $this->assertEquals('15', $second_calendar->getProperty(Calendar::CTAG));
+        $this->assertEquals('#3e4147ff', $second_calendar->getProperty(Calendar::COLOR));
+
+        $this->validatePropfindRequest(
+          [
+            '{DAV:}resourcetype',
+            '{DAV:}displayname',
+            '{http://calendarserver.org/ns/}getctag',
+            '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set',
+            '{http://apple.com/ns/ical/}calendar-color',
+            '{http://apple.com/ns/ical/}calendar-order',
+          ],
+          '/calendar-home',
+          1
+        );
     }
 
+    public function testGetCalendarsNoRecurse()
+    {
+        $body = <<<BODY
+<?xml version="1.0" encoding="utf-8"?>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">
+  <d:response>
+    <d:href>/cal.php/calendars/demo/single/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>First calendar</d:displayname>
+        <cs:getctag>44</cs:getctag>
+        <cal:supported-calendar-component-set>
+          <cal:comp name="VEVENT"/>
+          <cal:comp name="VTODO"/>
+        </cal:supported-calendar-component-set>
+        <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/">#ff4e50ff</x4:calendar-color>
+        <d:resourcetype>
+          <d:collection/>
+          <cal:calendar/>
+        </d:resourcetype>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+    <d:propstat>
+      <d:prop>
+        <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
+      </d:prop>
+      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:propstat>
+  </d:response>
+</d:multistatus>
+BODY;
+        $response = new Response(
+            207,
+            [],
+            Stream::factory($body)
+        );
+
+        $client = $this->createCalDAVClient($response);
+
+        $fake_calendar_url = '/cal.php/calendars/demo/single/';
+        $calendars = $client->getCalendars($fake_calendar_url, false);
+
+        $this->assertCount(1, $calendars);
+
+        $this->assertArrayHasKey($fake_calendar_url, $calendars);
+
+        $calendar = $calendars[$fake_calendar_url];
+        $this->assertEquals('First calendar', $calendar->getProperty(Calendar::DISPLAYNAME));
+        $this->assertEquals('44', $calendar->getProperty(Calendar::CTAG));
+        $this->assertEquals('#ff4e50ff', $calendar->getProperty(Calendar::COLOR));
+
+        $this->validatePropfindRequest(
+          [
+            '{DAV:}resourcetype',
+            '{DAV:}displayname',
+            '{http://calendarserver.org/ns/}getctag',
+            '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set',
+            '{http://apple.com/ns/ical/}calendar-color',
+            '{http://apple.com/ns/ical/}calendar-order',
+          ],
+          $fake_calendar_url,
+          0
+        );
+
+        // Reuse this test for getCalendarByUrl
+        $client = $this->createCalDAVClient($response);
+
+        $fake_calendar_url = '/cal.php/calendars/demo/single/';
+        $calendar = $client->getCalendarByUrl($fake_calendar_url);
+
+        $this->assertInstanceOf(
+          '\AgenDAV\Data\Calendar',
+          $calendar
+        );
+    }
+
+    public function testCreateCalendar()
+    {
+      $response = new Response(201);
+      $client = $this->createCalDAVClient($response);
+
+      $properties = [
+        Calendar::DISPLAYNAME => 'Calendar name',
+        Calendar::CTAG => 'x',
+      ];
+      $calendar = new Calendar(
+        '/fake/calendar',
+        $properties
+      );
+
+      $client->createCalendar($calendar);
+      $this->validateMkCalendarRequest($calendar);
+    }
 
     /**
      * Create CalDAV client using mocked responses
@@ -326,6 +447,22 @@ BODY;
         );
         $this->assertEquals(
             $this->xml_generator->propfindBody($properties),
+            (string)$request->getBody()
+        );
+    }
+
+    protected function validateMkCalendarRequest(Calendar $calendar)
+    {
+        $this->assertCount(1, $this->history);
+        $request = $this->history->getLastRequest();
+        $this->assertEquals('MKCALENDAR', $request->getMethod());
+        $this->assertEquals($calendar->getUrl(), $request->getUrl());
+        $this->assertEquals(
+            'application/xml; charset=utf-8',
+            $request->getHeader('Content-Type')
+        );
+        $this->assertEquals(
+            $this->xml_generator->mkCalendarBody($calendar->getWritableProperties()),
             (string)$request->getBody()
         );
     }
