@@ -83,7 +83,19 @@ BODY;
     {
         $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
-<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"><d:response><d:href>/cal.php/</d:href><d:propstat><d:prop><d:current-user-principal><d:href>/cal.php/principals/demo/</d:href></d:current-user-principal></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">
+  <d:response>
+    <d:href>/cal.php/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:current-user-principal>
+          <d:href>/cal.php/principals/demo/</d:href>
+        </d:current-user-principal>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+</d:multistatus>
 BODY;
         $response = new Response(207, [], Stream::factory($body));
         $caldav_client = $this->createCalDAVClient($response);
@@ -117,7 +129,19 @@ BODY;
     {
         $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
-<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"><d:response><d:href>/cal.php/principals/demo/</d:href><d:propstat><d:prop><cal:calendar-home-set><d:href>/cal.php/calendars/demo/</d:href></cal:calendar-home-set></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">
+  <d:response>
+    <d:href>/cal.php/principals/demo/</d:href>
+    <d:propstat>
+      <d:prop>
+        <cal:calendar-home-set>
+          <d:href>/cal.php/calendars/demo/</d:href>
+        </cal:calendar-home-set>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+</d:multistatus>
 BODY;
         $response = new Response(207, [], Stream::factory($body));
         $caldav_client = $this->createCalDAVClient($response);
@@ -132,7 +156,121 @@ BODY;
             '/principal/url',
             0
         );
+    }
 
+    public function testGetCalendarsRecursive()
+    {
+        $body = <<<BODY
+<?xml version="1.0" encoding="utf-8"?>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">
+  <d:response>
+    <d:href>/cal.php/calendars/demo/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:resourcetype>
+          <d:collection/>
+        </d:resourcetype>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+    <d:propstat>
+      <d:prop>
+        <d:displayname/>
+        <cs:getctag/>
+        <cal:supported-calendar-component-set/>
+        <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/"/>
+        <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
+      </d:prop>
+      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/cal.php/calendars/demo/first/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>First calendar</d:displayname>
+        <cs:getctag>44</cs:getctag>
+        <cal:supported-calendar-component-set>
+          <cal:comp name="VEVENT"/>
+          <cal:comp name="VTODO"/>
+        </cal:supported-calendar-component-set>
+        <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/">#ff4e50ff</x4:calendar-color>
+        <d:resourcetype>
+          <d:collection/>
+          <cal:calendar/>
+        </d:resourcetype>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+    <d:propstat>
+      <d:prop>
+        <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
+      </d:prop>
+      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/cal.php/calendars/demo/second/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>Second calendar</d:displayname>
+        <cs:getctag>15</cs:getctag>
+        <cal:supported-calendar-component-set>
+          <cal:comp name="VEVENT"/>
+          <cal:comp name="VTODO"/>
+        </cal:supported-calendar-component-set>
+        <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/">#3e4147ff</x4:calendar-color>
+        <d:resourcetype>
+          <d:collection/>
+          <cal:calendar/>
+        </d:resourcetype>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+    <d:propstat>
+      <d:prop>
+        <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
+      </d:prop>
+      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/cal.php/calendars/demo/outbox/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:resourcetype>
+          <d:collection/>
+          <cal:schedule-outbox/>
+        </d:resourcetype>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+    <d:propstat>
+      <d:prop>
+        <d:displayname/>
+        <cs:getctag/>
+        <cal:supported-calendar-component-set/>
+        <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/"/>
+        <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
+      </d:prop>
+      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:propstat>
+  </d:response>
+</d:multistatus>
+BODY;
+        $response = new Response(
+            207,
+            [],
+            Stream::factory($body)
+        );
+
+        $client = $this->createCalDAVClient($response);
+        $calendars = $client->getCalendars('/calendar-home');
+
+        $url_first = '/cal.php/calendars/demo/first/';
+        $url_second = '/cal.php/calendars/demo/second/';
+        $this->assertArrayHasKey('/cal.php/calendars/demo/first/', $calendars);
+        $this->assertArrayHasKey('/cal.php/calendars/demo/second/', $calendars);
     }
 
 
