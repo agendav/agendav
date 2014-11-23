@@ -38,13 +38,17 @@ class Generator
     /**
      * Known namespaces
      */
-    static $known_ns = array(
+    protected $known_ns = array(
         'DAV:' => 'd',
         'urn:ietf:params:xml:ns:caldav' => 'C',
         'http://apple.com/ns/ical/' => 'A',
     );
 
+    /** @var array */
     protected $used_namespaces;
+
+    /** @var int */
+    private $prefix_count;
 
 
     /**
@@ -55,6 +59,7 @@ class Generator
     public function __construct($formatted = true)
     {
         $this->formatted = $formatted;
+        $this->prefix_count = 0;
         $this->clearUsedNamespaces();
     }
 
@@ -233,9 +238,9 @@ class Generator
      **/
     protected function setXmlnsOnElement(\DOMElement $element, array $only_ns = array())
     {
-        $add_ns = self::$known_ns;
+        $add_ns = $this->known_ns;
         if (count($only_ns) !== 0) {
-            $add_ns = array_intersect_key(self::$known_ns, $only_ns);
+            $add_ns = array_intersect_key($this->known_ns, $only_ns);
         }
 
         foreach ($add_ns as $ns => $prefix) {
@@ -260,10 +265,11 @@ class Generator
      */
     protected function addUsedNamespace($namespace)
     {
-        if (!isset(self::$known_ns[$namespace])) {
-            self::$known_ns[$namespace] = 'x' . count(self::$known_ns);
+        if (!isset($this->known_ns[$namespace])) {
+            $this->known_ns[$namespace] = 'x' . $this->prefix_count;
+            $this->prefix_count++;
         }
-        $this->used_namespaces[$namespace] = self::$known_ns[$namespace];
+        $this->used_namespaces[$namespace] = $this->known_ns[$namespace];
     }
 
     /**
@@ -284,7 +290,7 @@ class Generator
      */
     protected function getPrefixForNamespace($namespace)
     {
-        return isset(self::$known_ns[$namespace])
-            ? self::$known_ns[$namespace] : false;
+        return isset($this->known_ns[$namespace])
+            ? $this->known_ns[$namespace] : false;
     }
 }
