@@ -395,6 +395,35 @@ BODY;
       $this->validateMkCalendarRequest($calendar);
     }
 
+    public function testUpdateCalendar()
+    {
+      $response = new Response(200);
+      $client = $this->createCalDAVClient($response);
+
+      $properties = [
+        Calendar::DISPLAYNAME => 'Calendar name',
+        Calendar::CTAG => 'x',
+      ];
+      $calendar = new Calendar(
+        '/fake/calendar',
+        $properties
+      );
+
+      $client->updateCalendar($calendar);
+      $this->validateProppatchRequest($calendar);
+    }
+
+    public function testDeleteCalendar()
+    {
+      $response = new Response(204);
+      $client = $this->createCalDAVClient($response);
+
+      $calendar = new Calendar('/fake/calendar');
+
+      $client->deleteCalendar($calendar);
+      $this->validateDeleteCalendarRequest($calendar);
+    }
+
     /**
      * Create CalDAV client using mocked responses
      */
@@ -465,5 +494,29 @@ BODY;
             $this->xml_generator->mkCalendarBody($calendar->getWritableProperties()),
             (string)$request->getBody()
         );
+    }
+
+    protected function validateProppatchRequest(Calendar $calendar)
+    {
+        $this->assertCount(1, $this->history);
+        $request = $this->history->getLastRequest();
+        $this->assertEquals('PROPPATCH', $request->getMethod());
+        $this->assertEquals($calendar->getUrl(), $request->getUrl());
+        $this->assertEquals(
+            'application/xml; charset=utf-8',
+            $request->getHeader('Content-Type')
+        );
+        $this->assertEquals(
+            $this->xml_generator->proppatchBody($calendar->getWritableProperties()),
+            (string)$request->getBody()
+        );
+    }
+
+    protected function validateDeleteCalendarRequest(Calendar $calendar)
+    {
+        $this->assertCount(1, $this->history);
+        $request = $this->history->getLastRequest();
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals($calendar->getUrl(), $request->getUrl());
     }
 }
