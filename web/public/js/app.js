@@ -93,22 +93,12 @@ $(document).ready(function() {
       selectable: true,
       editable: true,
       firstDay: AgenDAVConf.prefs_firstday,
-      timeFormat: {
-        agenda: AgenDAVConf.prefs_timeformat + '{ - ' +
-          AgenDAVConf.prefs_timeformat + '}',
-        '': AgenDAVConf.prefs_timeformat
-      },
+      timeFormat: AgenDAVConf.prefs_timeformat,
       columnFormat: {
         month: t('formats', 'column_week_fullcalendar'),
         week: t('formats', 'column_week_fullcalendar'),
         day: t('formats', 'column_day_fullcalendar'),
         table: t('formats', 'column_table_fullcalendar')
-      },
-      titleFormat: {
-        month: t('formats', 'title_month_fullcalendar'),
-        week: t('formats', 'title_week_fullcalendar'),
-        day: t('formats', 'title_day_fullcalendar'),
-        table: t('formats', 'title_table_fullcalendar')
       },
       weekMode: 'liquid',
       height: calendar_height(),
@@ -191,7 +181,7 @@ $(document).ready(function() {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
       } else {
-        $('#calendar_view span.fc-button-next')
+        $('#calendar_view button.fc-next-button')
           .after(out);
         $('#datepicker_fullcalendar')
         .datepicker({
@@ -335,6 +325,7 @@ $(document).ready(function() {
         event: 'unfocus'
       }
     });
+
 });
 
 

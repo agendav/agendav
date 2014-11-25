@@ -31,14 +31,14 @@ class DateHelper
             '24' => array(
                 'strftime' => '%H:%M',
                 'date' => 'H:i',
-                'fullcalendar' => 'HH:mm',
+                'fullcalendar' => 'H:mm',
                 'moment' => 'HH:mm',
                 ),
             '12' => array(
                 'strftime' => '%l:%M',  // %P will be simulated, not working
                                         // in all systems
                 'date' => 'h:i a', // Match timepicker format
-                'fullcalendar' => 'h(:mm)tt',
+                'fullcalendar' => 'h(:mm)a',
                 'moment' => 'hh:mm A',
                 ));
 
