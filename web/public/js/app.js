@@ -700,8 +700,8 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   var $recurrence_until = $(where).find('input.recurrence_until');
   var $allday = $(where).find('input.allday');
 
-  $start_time.timePicker(AgenDAVConf.timepicker_base);
-  $end_time.timePicker(AgenDAVConf.timepicker_base);
+  $start_time.timepicker(AgenDAVConf.timepicker_base);
+  $end_time.timepicker(AgenDAVConf.timepicker_base);
   $start_date.datepicker(
       {
         onSelect: function(dateText, inst) {
@@ -745,8 +745,9 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   $(where)
     .on('change', 'input.start_time', function() {
       var duration = $end_time.data('duration');
-      var new_end = moment($.timePicker($start_time).getTime()).add('minutes', duration);
-      $.timePicker($end_time).setTime(new_end.toDate());
+      var start_js = $start_time.timepicker('getTime');
+      var new_end = moment(start_js).add('minutes', duration);
+      $end_time.timepicker('setTime', new_end.toDate());
     })
     .on('change', 'input.end_time', function() {
       $end_time.data('duration', calculate_event_duration($start_time, $end_time));
@@ -758,8 +759,10 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
  * Calculates the difference between two timepicker inputs
  */
 var calculate_event_duration = function calculate_event_duration(start, end) {
-  var end_time_moment = moment($.timePicker(end).getTime());
-  var start_time_moment = moment($.timePicker(start).getTime());
+  var end_js = $(end).timepicker('getTime');
+  var end_time_moment = moment(end_js);
+  var start_js = $(start).timepicker('getTime');
+  var start_time_moment = moment(start_js);
 
   return end_time_moment.diff(start_time_moment, 'minutes');
 };
@@ -1859,7 +1862,7 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
 // Initializes datepickers and timepickers
 var initialize_date_and_time_pickers = function initialize_date_and_time_pickers(obj) {
   obj.find('.needs-datepicker').datepicker();
-  obj.find('.needs-timepicker').timePicker(AgenDAVConf.timepicker_base);
+  obj.find('.needs-timepicker').timepicker(AgenDAVConf.timepicker_base);
 };
 
 

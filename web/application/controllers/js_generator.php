@@ -106,9 +106,11 @@ class Js_generator extends MY_Controller
             ),
             'prefs_firstday' => $this->config->item('default_first_day'),
             'timepicker_base' => array(
-                'show24Hours' => $this->config->item('default_time_format') == '24',
-                'separator' => ':',
+                'timeFormat' => ($this->config->item('default_time_format') === '24')
+                            ? 'H:i' : 'h:i A',
                 'step' => 30,
+                'maxTime' => ($this->config->item('default_time_format') === '24')
+                            ? '23:30' : '11:30 PM',
             ),
             'csrf_cookie_name' => $this->config->item('cookie_prefix') 
                                 . $this->config->item('csrf_cookie_name'),
