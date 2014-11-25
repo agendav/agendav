@@ -93,6 +93,11 @@ class Events extends MY_Controller
         $start = $this->input->get('start', true);
         $end = $this->input->get('end', true);
 
+        $start = preg_replace('/-/', '', $start);
+        $end = preg_replace('/-/', '', $end);
+        $start .= 'T000000Z';
+        $end .= 'T000000Z';
+
         if ($err == 0 && ($start === false || $end === false)) {
             // Something is wrong here
             log_message('ERROR', 'Requested events from ' . $calendar .' with no start/end'

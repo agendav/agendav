@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -110,24 +110,14 @@ $(document).ready(function() {
         day: t('formats', 'title_day_fullcalendar'),
         table: t('formats', 'title_table_fullcalendar')
       },
-      currentTimeIndicator: true,
       weekMode: 'liquid',
       height: calendar_height(),
       windowResize: function(view) {
         var new_height = calendar_height();
         $(this).fullCalendar('option', 'height', new_height);
       },
-      overflowRender: function(data, element) {
-        element.html(
-          t('messages', 'more_events', { '%count':  data.count })
-        );
-        element.on('click', function(event) {
-          $('#calendar_view').fullCalendar('gotoDate', data.date);
-          $('#calendar_view').fullCalendar('changeView', 'agendaDay');
-        });
-      },
       header: {
-        left:   'month,agendaWeek,agendaDay table',
+        left:   'month,agendaWeek,agendaDay',
         center: 'title',
         right:  'today prev,next'
       },
@@ -144,10 +134,6 @@ $(document).ready(function() {
         future: t('labels', 'future'),
         week: 'W'
       },
-      // list/table options
-      listSections: 'smart',
-      listRange: 30,
-      listPage: 7,
 
       monthNames: month_names_long(),
       monthNamesShort: month_names_short(),
@@ -192,7 +178,7 @@ $(document).ready(function() {
     $('<span id="button-refresh" class="fc-button-refresh">' +
       '<i class="icon-refresh"></i> ' +
       t('labels', 'refresh') + '</span>')
-      .appendTo('#calendar_view td.fc-header-right')
+      .appendTo('#calendar_view div.fc-right')
       .button()
       .on('click', function() {
         update_calendar_list(true);

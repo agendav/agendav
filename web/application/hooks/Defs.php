@@ -23,15 +23,15 @@ class Defs {
     static $jsfiles= array(
             'libs/jquery-1.11.1.js',
             'libs/jquery-ui.js',
+            'libs/moment.js',
             'libs/jquery.freeow.min.js',
-            'libs/fullcalendar.js',
             'libs/jquery.colorPicker.js',
             'libs/jquery.qtip.min.js',
             'libs/jquery.colorhelpers.js',
             'libs/jquery.timePicker.20110318.js',
             'libs/jquery.cookie.js',
             'libs/jquery.serializeobject.js',
-            'libs/moment.js',
+            'libs/fullcalendar.js',
             'translation.js',
             'libs/dust-core-1.0.0.js',
             'templates/templates.js',
@@ -53,6 +53,7 @@ class Defs {
             );
     static $printcssfiles = array(
             'app.print.css',
+            'fullcalendar.print.css',
             );
 
     function definitions() {
