@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -21,8 +21,8 @@
 class Defs {
     // Leave jQuery and jQuery UI the two first scripts
     static $jsfiles= array(
-            'libs/jquery-1.7.2.min.js',
-            'libs/jquery-ui-1.8.23.custom.min.js',
+            'libs/jquery-1.11.1.js',
+            'libs/jquery-ui.js',
             'libs/jquery.freeow.min.js',
             'libs/fullcalendar.js',
             'libs/jquery.colorPicker.js',
@@ -41,7 +41,9 @@ class Defs {
 
     static $cssfiles = array(
             'bootstrap.agendav.css',
-            'Aristo_20111229.css',
+            'jquery-ui.css',
+            'jquery-ui.structure.css',
+            'jquery-ui.theme.css',
             'fullcalendar.css',
             'jquery.qtip.min.css',
             'timePicker.css',
