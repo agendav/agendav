@@ -1593,7 +1593,7 @@ var event_render_callback = function event_render_callback(event, element) {
     });
 
     if (!element.hasClass('fc-event-row')) {
-      element.find('.fc-event-title').after(icon_html);
+      element.find('.fc-event-inner').prepend(icon_html);
     }
   }
 
