@@ -586,7 +586,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
 
     if (data.view == 'month') {
       data.start = AgenDAVDateAndTime.approxNearest(data.start);
-      data.end = AgenDAVDateAndTime.approxNearest(data.end).add('hours', 1);
+      data.end = AgenDAVDateAndTime.approxNearest(data.end).add(1, 'hours');
     } else {
       // Any other view
       if (data.allDay === false || data.allDay === undefined) {
@@ -1669,13 +1669,23 @@ var event_click_callback = function event_click_callback(event,
 /**
  * Calendar slots dragging
  */
-var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDay, jsEvent, view) {
-  var pass_allday = (view.name == 'month') ? false : allDay;
+var slots_drag_callback = function slots_drag_callback(start, end, jsEvent, view) {
+  var pass_allday = false;
+
+  // In month view, start and end are passed as date-only moment objects
+  if (view.name != 'month' && !start.hasTime()) {
+    pass_allday = true;
+  }
+
+  if (view.name == 'month' || pass_allday === true) {
+    end.subtract(1, 'day');
+  }
+
   var data = {
-      start: startDate,
-      end: endDate,
-      allDay: pass_allday,
-      view: view.name
+    start: start,
+    end: end,
+    allDay: pass_allday,
+    view: view.name
   };
 
   // Unselect every single day/slot
