@@ -801,8 +801,8 @@ var handle_repetitions = function handle_repetitions(where, data) {
  */
 var update_single_event = function update_single_event(event, new_data) {
   $.each(new_data, function (i, v) {
-      event[i] = v;
-      });
+    event[i] = v;
+  });
 
   $('#calendar_view').fullCalendar('updateEvent', event);
 };
@@ -1698,27 +1698,27 @@ var slots_drag_callback = function slots_drag_callback(start, end, jsEvent, view
  * Event resizing
  */
 
-var event_resize_callback = function event_resize_callback(event, dayDelta, minuteDelta, revertFunc,
-  jsEvent, ui, view ) {
+var event_resize_callback = function event_resize_callback(event, delta, revertFunc, jsEvent, ui, view ) {
+  var allDay = !event.start.hasTime();
 
-      event_alter('resize', event, dayDelta, minuteDelta, event.allDay, revertFunc, jsEvent, ui, view);
+  event_alter('resize', event, delta, allDay, revertFunc, jsEvent, ui, view);
 };
 
 /**
  * Event drag and drop
  */
 
-var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDelta, allDay,
-      revertFunc, jsEvent, ui, view) {
+var event_drop_callback = function event_drop_callback(event, delta, revertFunc, jsEvent, ui, view) {
+  var allDay = !event.start.hasTime();
 
-      event_alter('drag', event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
+  event_alter('drag', event, delta, allDay, revertFunc, jsEvent, ui, view);
 };
 
 
 /**
  * Event alter via drag&drop or resizing it
  */
-var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+var event_alter = function event_alter(alterType, event, delta, allDay, revertFunc, jsEvent, ui, view) {
   var params = {
     url: AgenDAVConf.base_app_url + 'events/alter',
     data: {
@@ -1726,8 +1726,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
       calendar: event.calendar,
       etag: event.etag,
       view: view.name,
-      dayDelta: dayDelta,
-      minuteDelta: minuteDelta,
+      delta: delta.asMinutes(),
       allday: allDay,
       was_allday: event.orig_allday,
       timezone: event.timezone,

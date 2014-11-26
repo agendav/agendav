@@ -527,16 +527,14 @@ class Events extends MY_Controller
         $uid = $this->input->post('uid', true);
         $calendar = $this->input->post('calendar', true);
         $etag = $this->input->post('etag', true);
-        $dayDelta = $this->input->post('dayDelta', true);
-        $minuteDelta = $this->input->post('minuteDelta', true);
+        $delta = $this->input->post('delta', true);
         $allday = $this->input->post('allday', true);
         $was_allday = $this->input->post('was_allday', true);
         $view = $this->input->post('view', true);
         $type = $this->input->post('type', true);
 
         if ($uid === false || $calendar === false ||
-                $etag === false || $dayDelta === false || 
-                $minuteDelta === false || 
+                $etag === false || $delta === false ||
                 $view === false || $allday === false ||
                 $type === false || $was_allday === false) {
             $this->_throw_error($this->i18n->_('messages',
@@ -545,14 +543,7 @@ class Events extends MY_Controller
 
         // Generate a duration string
         $pattern = '/^(-)?([0-9]+)$/';
-        if ($view == 'month') {
-            $dur_string = preg_replace($pattern, '\1P\2D', $dayDelta);
-        } else {
-            // Going the easy way O:) 1D = 1440M
-            $val = intval($minuteDelta) + intval($dayDelta)*1440;
-            $minuteDelta = strval($val);
-            $dur_string = preg_replace($pattern, '\1PT\2M', $minuteDelta);
-        }
+        $dur_string = preg_replace($pattern, '\1PT\2M', $delta);
 
         try {
             $calendar = $this->client->getCalendarByUrl($calendar);
