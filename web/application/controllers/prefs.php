@@ -28,6 +28,7 @@ class Prefs extends MY_Controller
     private $prefs;
     private $preferences_repository;
     private $user;
+    private $client;
 
     function __construct() {
         parent::__construct();
@@ -39,6 +40,7 @@ class Prefs extends MY_Controller
 
         $this->user = $this->container['user'];
         $this->preferences_repository = $this->container['preferences_repository'];
+        $this->client = $this->container['caldav_client'];
 
 
         // Preferences
@@ -46,7 +48,6 @@ class Prefs extends MY_Controller
     }
 
     function index() {
-        $calendarfinder = $this->container['calendarfinder'];
 
         // Layout components
         $components = array();
@@ -72,7 +73,9 @@ class Prefs extends MY_Controller
 
 
         // Calendar list
-        $calendar_list = $calendarfinder->getAll();
+        // TODO show shared calendars too
+        $calendar_home = $this->container['session']->get('calendar_home_set');
+        $calendar_list = $this->client->getCalendars($calendar_home);
 
         // TODO refactor this part
         $hidden_calendars = $this->prefs->hidden_calendars;
