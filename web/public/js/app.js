@@ -737,7 +737,7 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
     .on('change', 'input.start_time', function() {
       var duration = $end_time.data('duration');
       var start_js = $start_time.timepicker('getTime');
-      var new_end = moment(start_js).add('minutes', duration);
+      var new_end = moment(start_js).add(duration, 'minutes');
       $end_time.timepicker('setTime', new_end.toDate());
     })
     .on('change', 'input.end_time', function() {
