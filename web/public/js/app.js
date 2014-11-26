@@ -156,8 +156,9 @@ $(document).ready(function() {
       // collision between them.
       select: slots_drag_callback,
 
-      // Useful for creating events in agenda view
-      selectHelper: select_helper,
+
+      // Use default select helper. Useful for creating events in agenda view
+      selectHelper: false,
 
       eventResize: event_resize_callback,
       eventDrop: event_drop_callback
@@ -1691,17 +1692,6 @@ var slots_drag_callback = function slots_drag_callback(start, end, jsEvent, view
   // Unselect every single day/slot
   $('#calendar_view').fullCalendar('unselect');
   event_edit_dialog('new', data);
-};
-
-/**
- * Select helper
- */
-
-var select_helper = function select_helper(start,end) {
-  return $('<div style="border: 1px solid black; background-color: #f0f0f0;" class="selecthelper"/>')
-    .text(
-        $.fullCalendar.formatDates(start, end,
-          AgenDAVConf.prefs_timeformat + '{ - ' + AgenDAVConf.prefs_timeformat + '}'));
 };
 
 /**
