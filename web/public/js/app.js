@@ -195,7 +195,8 @@ $(document).ready(function() {
         .prev()
         .button()
         .on('click', function() {
-          $('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
+          var current_date = $('#calendar_view').fullCalendar('getDate').toDate();
+          $('#datepicker_fullcalendar').datepicker('setDate', current_date);
           $('#datepicker_fullcalendar').datepicker('show');
         });
       }
