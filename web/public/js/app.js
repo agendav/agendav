@@ -1563,7 +1563,7 @@ var event_render_callback = function event_render_callback(event, element) {
   if (event.rrule !== undefined) {
     icons.push('icon-repeat');
   }
-  if (event.reminders.length > 0) {
+  if (event.reminders !== undefined && event.reminders.length > 0) {
     icons.push('icon-bell');
   }
 
