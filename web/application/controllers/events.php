@@ -93,6 +93,11 @@ class Events extends MY_Controller
         $start = $this->input->get('start', true);
         $end = $this->input->get('end', true);
 
+        $start = preg_replace('/-/', '', $start);
+        $end = preg_replace('/-/', '', $end);
+        $start .= 'T000000Z';
+        $end .= 'T000000Z';
+
         if ($err == 0 && ($start === false || $end === false)) {
             // Something is wrong here
             log_message('ERROR', 'Requested events from ' . $calendar .' with no start/end'
@@ -522,16 +527,14 @@ class Events extends MY_Controller
         $uid = $this->input->post('uid', true);
         $calendar = $this->input->post('calendar', true);
         $etag = $this->input->post('etag', true);
-        $dayDelta = $this->input->post('dayDelta', true);
-        $minuteDelta = $this->input->post('minuteDelta', true);
+        $delta = $this->input->post('delta', true);
         $allday = $this->input->post('allday', true);
         $was_allday = $this->input->post('was_allday', true);
         $view = $this->input->post('view', true);
         $type = $this->input->post('type', true);
 
         if ($uid === false || $calendar === false ||
-                $etag === false || $dayDelta === false || 
-                $minuteDelta === false || 
+                $etag === false || $delta === false ||
                 $view === false || $allday === false ||
                 $type === false || $was_allday === false) {
             $this->_throw_error($this->i18n->_('messages',
@@ -540,14 +543,7 @@ class Events extends MY_Controller
 
         // Generate a duration string
         $pattern = '/^(-)?([0-9]+)$/';
-        if ($view == 'month') {
-            $dur_string = preg_replace($pattern, '\1P\2D', $dayDelta);
-        } else {
-            // Going the easy way O:) 1D = 1440M
-            $val = intval($minuteDelta) + intval($dayDelta)*1440;
-            $minuteDelta = strval($val);
-            $dur_string = preg_replace($pattern, '\1PT\2M', $minuteDelta);
-        }
+        $dur_string = preg_replace($pattern, '\1PT\2M', $delta);
 
         try {
             $calendar = $this->client->getCalendarByUrl($calendar);
@@ -691,15 +687,10 @@ class Events extends MY_Controller
             }
             return;
         }
-        // Send new information about this event
-        $info = $this->icshelper->parse_vevent_fullcalendar(
-            $new_vevent,
-            $href,
-            $response->getHeader('Etag'),
-            $calendar->getUrl(),
-            $tz,
-            $timezones
-        );
+        // Send info about modified event
+        $info = [
+            'etag' => $response->getHeader('ETag'),
+        ];
         $this->_throw_success($info);
     }
 

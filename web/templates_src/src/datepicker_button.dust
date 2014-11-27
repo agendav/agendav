@@ -2,4 +2,4 @@
 <span class="fc-button-datepicker">
  <i class="icon-calendar" title="{@i18n type="labels" name="choose_date"/}"></i>
  </span>
-<input type="hidden" id="datepicker_fullcalendar" />
+<input type="text" style="width: 0;height: 0;border:0;" id="datepicker_fullcalendar" />

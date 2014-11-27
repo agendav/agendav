@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -93,41 +93,21 @@ $(document).ready(function() {
       selectable: true,
       editable: true,
       firstDay: AgenDAVConf.prefs_firstday,
-      timeFormat: {
-        agenda: AgenDAVConf.prefs_timeformat + '{ - ' +
-          AgenDAVConf.prefs_timeformat + '}',
-        '': AgenDAVConf.prefs_timeformat
-      },
+      timeFormat: AgenDAVConf.prefs_timeformat,
       columnFormat: {
         month: t('formats', 'column_week_fullcalendar'),
         week: t('formats', 'column_week_fullcalendar'),
         day: t('formats', 'column_day_fullcalendar'),
         table: t('formats', 'column_table_fullcalendar')
       },
-      titleFormat: {
-        month: t('formats', 'title_month_fullcalendar'),
-        week: t('formats', 'title_week_fullcalendar'),
-        day: t('formats', 'title_day_fullcalendar'),
-        table: t('formats', 'title_table_fullcalendar')
-      },
-      currentTimeIndicator: true,
       weekMode: 'liquid',
       height: calendar_height(),
       windowResize: function(view) {
         var new_height = calendar_height();
         $(this).fullCalendar('option', 'height', new_height);
       },
-      overflowRender: function(data, element) {
-        element.html(
-          t('messages', 'more_events', { '%count':  data.count })
-        );
-        element.on('click', function(event) {
-          $('#calendar_view').fullCalendar('gotoDate', data.date);
-          $('#calendar_view').fullCalendar('changeView', 'agendaDay');
-        });
-      },
       header: {
-        left:   'month,agendaWeek,agendaDay table',
+        left:   'month,agendaWeek,agendaDay',
         center: 'title',
         right:  'today prev,next'
       },
@@ -144,10 +124,6 @@ $(document).ready(function() {
         future: t('labels', 'future'),
         week: 'W'
       },
-      // list/table options
-      listSections: 'smart',
-      listRange: 30,
-      listPage: 7,
 
       monthNames: month_names_long(),
       monthNamesShort: month_names_short(),
@@ -166,6 +142,9 @@ $(document).ready(function() {
       slotMinutes: 30,
       firstHour: 8,
 
+      // Limit cell heignt
+      eventLimit: true,
+
       allDayDefault: false,
 
       loading: function(bool) {
@@ -180,8 +159,9 @@ $(document).ready(function() {
       // collision between them.
       select: slots_drag_callback,
 
-      // Useful for creating events in agenda view
-      selectHelper: select_helper,
+
+      // Use default select helper. Useful for creating events in agenda view
+      selectHelper: false,
 
       eventResize: event_resize_callback,
       eventDrop: event_drop_callback
@@ -192,7 +172,7 @@ $(document).ready(function() {
     $('<span id="button-refresh" class="fc-button-refresh">' +
       '<i class="icon-refresh"></i> ' +
       t('labels', 'refresh') + '</span>')
-      .appendTo('#calendar_view td.fc-header-right')
+      .appendTo('#calendar_view div.fc-right')
       .button()
       .on('click', function() {
         update_calendar_list(true);
@@ -205,7 +185,7 @@ $(document).ready(function() {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
       } else {
-        $('#calendar_view span.fc-button-next')
+        $('#calendar_view button.fc-next-button')
           .after(out);
         $('#datepicker_fullcalendar')
         .datepicker({
@@ -219,7 +199,8 @@ $(document).ready(function() {
         .prev()
         .button()
         .on('click', function() {
-          $('#datepicker_fullcalendar').datepicker('setDate', $('#calendar_view').fullCalendar('getDate'));
+          var current_date = $('#calendar_view').fullCalendar('getDate').toDate();
+          $('#datepicker_fullcalendar').datepicker('setDate', current_date);
           $('#datepicker_fullcalendar').datepicker('show');
         });
       }
@@ -338,7 +319,7 @@ $(document).ready(function() {
       position: { my: 'top center', at: 'bottom center' },
       style: {
         tip: true,
-        classes: 'ui-tooltip-bootstrap agendav-menu'
+        classes: 'qtip-bootstrap agendav-menu'
       },
       show: {
         event: 'click',
@@ -349,6 +330,7 @@ $(document).ready(function() {
         event: 'unfocus'
       }
     });
+
 });
 
 
@@ -608,7 +590,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
 
     if (data.view == 'month') {
       data.start = AgenDAVDateAndTime.approxNearest(data.start);
-      data.end = AgenDAVDateAndTime.approxNearest(data.end).add('hours', 1);
+      data.end = AgenDAVDateAndTime.approxNearest(data.end).add(1, 'hours');
     } else {
       // Any other view
       if (data.allDay === false || data.allDay === undefined) {
@@ -714,8 +696,8 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   var $recurrence_until = $(where).find('input.recurrence_until');
   var $allday = $(where).find('input.allday');
 
-  $start_time.timePicker(AgenDAVConf.timepicker_base);
-  $end_time.timePicker(AgenDAVConf.timepicker_base);
+  $start_time.timepicker(AgenDAVConf.timepicker_base);
+  $end_time.timepicker(AgenDAVConf.timepicker_base);
   $start_date.datepicker(
       {
         onSelect: function(dateText, inst) {
@@ -759,8 +741,9 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   $(where)
     .on('change', 'input.start_time', function() {
       var duration = $end_time.data('duration');
-      var new_end = moment($.timePicker($start_time).getTime()).add('minutes', duration);
-      $.timePicker($end_time).setTime(new_end.toDate());
+      var start_js = $start_time.timepicker('getTime');
+      var new_end = moment(start_js).add(duration, 'minutes');
+      $end_time.timepicker('setTime', new_end.toDate());
     })
     .on('change', 'input.end_time', function() {
       $end_time.data('duration', calculate_event_duration($start_time, $end_time));
@@ -772,8 +755,10 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
  * Calculates the difference between two timepicker inputs
  */
 var calculate_event_duration = function calculate_event_duration(start, end) {
-  var end_time_moment = moment($.timePicker(end).getTime());
-  var start_time_moment = moment($.timePicker(start).getTime());
+  var end_js = $(end).timepicker('getTime');
+  var end_time_moment = moment(end_js);
+  var start_js = $(start).timepicker('getTime');
+  var start_time_moment = moment(start_js);
 
   return end_time_moment.diff(start_time_moment, 'minutes');
 };
@@ -812,17 +797,6 @@ var handle_repetitions = function handle_repetitions(where, data) {
     $recurrence_ends.find('input:radio:checked').trigger('change');
   }
 
-};
-
-/*
- * Updates a single event fetching it from server
- */
-var update_single_event = function update_single_event(event, new_data) {
-  $.each(new_data, function (i, v) {
-      event[i] = v;
-      });
-
-  $('#calendar_view').fullCalendar('updateEvent', event);
 };
 
 // Triggers a dialog for creating calendars
@@ -1581,7 +1555,7 @@ var event_render_callback = function event_render_callback(event, element) {
   if (event.rrule !== undefined) {
     icons.push('icon-repeat');
   }
-  if (event.reminders.length > 0) {
+  if (event.reminders !== undefined && event.reminders.length > 0) {
     icons.push('icon-bell');
   }
 
@@ -1592,9 +1566,7 @@ var event_render_callback = function event_render_callback(event, element) {
       icon_html.append('<i class="' + i + '"></i>');
     });
 
-    if (!element.hasClass('fc-event-row')) {
-      element.find('.fc-event-title').after(icon_html);
-    }
+    element.find('.fc-title').append(icon_html)
   }
 
   dust.render('event_details_popup', dustbase.push(data), function(err, out) {
@@ -1616,7 +1588,7 @@ var event_render_callback = function event_render_callback(event, element) {
           viewport: $('#calendar_view')
         },
         style: {
-          classes: 'view_event_details ui-tooltip-bootstrap',
+          classes: 'view_event_details qtip-bootstrap qtip-shadow',
           tip: true
         },
         show: {
@@ -1688,13 +1660,23 @@ var event_click_callback = function event_click_callback(event,
 /**
  * Calendar slots dragging
  */
-var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDay, jsEvent, view) {
-  var pass_allday = (view.name == 'month') ? false : allDay;
+var slots_drag_callback = function slots_drag_callback(start, end, jsEvent, view) {
+  var pass_allday = false;
+
+  // In month view, start and end are passed as date-only moment objects
+  if (view.name != 'month' && !start.hasTime()) {
+    pass_allday = true;
+  }
+
+  if (view.name == 'month' || pass_allday === true) {
+    end.subtract(1, 'day');
+  }
+
   var data = {
-      start: startDate,
-      end: endDate,
-      allDay: pass_allday,
-      view: view.name
+    start: start,
+    end: end,
+    allDay: pass_allday,
+    view: view.name
   };
 
   // Unselect every single day/slot
@@ -1703,41 +1685,30 @@ var slots_drag_callback = function slots_drag_callback(startDate, endDate, allDa
 };
 
 /**
- * Select helper
- */
-
-var select_helper = function select_helper(start,end) {
-  return $('<div style="border: 1px solid black; background-color: #f0f0f0;" class="selecthelper"/>')
-    .text(
-        $.fullCalendar.formatDates(start, end,
-          AgenDAVConf.prefs_timeformat + '{ - ' + AgenDAVConf.prefs_timeformat + '}'));
-};
-
-/**
  * Event resizing
  */
 
-var event_resize_callback = function event_resize_callback(event, dayDelta, minuteDelta, revertFunc,
-  jsEvent, ui, view ) {
+var event_resize_callback = function event_resize_callback(event, delta, revertFunc, jsEvent, ui, view ) {
+  var allDay = !event.start.hasTime();
 
-      event_alter('resize', event, dayDelta, minuteDelta, event.allDay, revertFunc, jsEvent, ui, view);
+  event_alter('resize', event, delta, allDay, revertFunc, jsEvent, ui, view);
 };
 
 /**
  * Event drag and drop
  */
 
-var event_drop_callback = function event_drop_callback(event, dayDelta, minuteDelta, allDay,
-      revertFunc, jsEvent, ui, view) {
+var event_drop_callback = function event_drop_callback(event, delta, revertFunc, jsEvent, ui, view) {
+  var allDay = !event.start.hasTime();
 
-      event_alter('drag', event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
+  event_alter('drag', event, delta, allDay, revertFunc, jsEvent, ui, view);
 };
 
 
 /**
  * Event alter via drag&drop or resizing it
  */
-var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+var event_alter = function event_alter(alterType, event, delta, allDay, revertFunc, jsEvent, ui, view) {
   var params = {
     url: AgenDAVConf.base_app_url + 'events/alter',
     data: {
@@ -1745,8 +1716,7 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
       calendar: event.calendar,
       etag: event.etag,
       view: view.name,
-      dayDelta: dayDelta,
-      minuteDelta: minuteDelta,
+      delta: delta.asMinutes(),
       allday: allDay,
       was_allday: event.orig_allday,
       timezone: event.timezone,
@@ -1758,7 +1728,8 @@ var event_alter = function event_alter(alterType, event, dayDelta, minuteDelta, 
 
   proceed_send_ajax_form(params,
       function(data) {
-        update_single_event(event, data);
+        event.etag = data.etag;
+        $('#calendar_view').fullCalendar('updateEvent', event);
       },
       function(data) {
         show_error(t('messages', 'error_modfailed'), data);
@@ -1873,7 +1844,7 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
 // Initializes datepickers and timepickers
 var initialize_date_and_time_pickers = function initialize_date_and_time_pickers(obj) {
   obj.find('.needs-datepicker').datepicker();
-  obj.find('.needs-timepicker').timePicker(AgenDAVConf.timepicker_base);
+  obj.find('.needs-timepicker').timepicker(AgenDAVConf.timepicker_base);
 };
 
 
