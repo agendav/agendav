@@ -796,17 +796,6 @@ var handle_repetitions = function handle_repetitions(where, data) {
 
 };
 
-/*
- * Updates a single event fetching it from server
- */
-var update_single_event = function update_single_event(event, new_data) {
-  $.each(new_data, function (i, v) {
-    event[i] = v;
-  });
-
-  $('#calendar_view').fullCalendar('updateEvent', event);
-};
-
 // Triggers a dialog for creating calendars
 var calendar_create_dialog = function calendar_create_dialog() {
 
@@ -1738,7 +1727,8 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
 
   proceed_send_ajax_form(params,
       function(data) {
-        update_single_event(event, data);
+        event.etag = data.etag;
+        $('#calendar_view').fullCalendar('updateEvent', event);
       },
       function(data) {
         show_error(t('messages', 'error_modfailed'), data);

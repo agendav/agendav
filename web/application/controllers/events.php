@@ -687,15 +687,10 @@ class Events extends MY_Controller
             }
             return;
         }
-        // Send new information about this event
-        $info = $this->icshelper->parse_vevent_fullcalendar(
-            $new_vevent,
-            $href,
-            $response->getHeader('Etag'),
-            $calendar->getUrl(),
-            $tz,
-            $timezones
-        );
+        // Send info about modified event
+        $info = [
+            'etag' => $response->getHeader('ETag'),
+        ];
         $this->_throw_success($info);
     }
 
