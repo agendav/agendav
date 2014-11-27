@@ -248,36 +248,6 @@ div.share_info {
   background-image: url(../img/button-icons/calendar_edit.png) !important;
 }
 
-.fc-border-separate td {
-  border-color: #cbcbcb !important;
-}
-
-.fc-border-separate th.fc-first,
-.fc-border-separate td.fc-first {
-  border-left: 1px solid #b6b6b6 !important;
-}
-
-.fc-border-separate th.fc-last,
-.fc-border-separate td.fc-last {
-  border-right: 1px solid #b6b6b6 !important;
-}
-
-td.fc-other-month {
-  background-color: #f9f9f9;
-  border-style: dotted;
-  border-color: #bfbfbf;
-}
-
-td.fc-sat, td.fc-sun {
-  background-color: #eaeaea;
-}
-
-td.fc-today {
-  background-color: #FFFFCC !important;
-  font-weight: bold;
-  border: 2px solid #D2D267;
-}
-
 div.selecthelper {
   filter: ~"alpha(opacity=50)";
   opacity: 0.5;
@@ -288,27 +258,24 @@ div.selecthelper {
   cursor: default !important;
 }
 
-.fc-event .fc-event-inner {
+span.fc-title {
   font-size: 1.1em !important;
 }
 
-.fc-event-hori .fc-event-inner {
-  padding: 2px 0;
-  height: @baseLineHeight;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-}
-
 span.fc-event-icons {
-  font-size: 90%;
+  font-size: 80%;
   float: right;
   margin-right: 5px;
 
   i {
     margin-right: 2px;
   }
+}
+
+td.fc-day-number.fc-today {
+  font-weight: bold;
+  color: #3A6440;
+  font-size: 110%;
 }
 
 #loading {
