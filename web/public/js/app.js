@@ -142,6 +142,9 @@ $(document).ready(function() {
       slotMinutes: 30,
       firstHour: 8,
 
+      // Limit cell heignt
+      eventLimit: true,
+
       allDayDefault: false,
 
       loading: function(bool) {
