@@ -266,48 +266,6 @@ class Client
     }
 
     /**
-     * Issues a PROPFIND and parses the response
-     *
-     * @param string $url   URL
-     * @param int $depth   Depth header
-     * @param string $body  Request body
-     * @result array key-value array, where keys are paths and properties are values
-     */
-    public function propfind($url, $depth, $body)
-    {
-        $this->http_client->setHeader('Depth', $depth);
-        $this->http_client->setContentTypeXML();
-        $response = $this->http_client->request('PROPFIND', $url, $body);
-
-        $contents = (string)$response->getBody();
-        $single_element_expected = ($depth === 0);
-        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents, $single_element_expected);
-
-        return $result;
-    }
-
-    /**
-     * Issues a REPORT and parses the response
-     *
-     * @param string $url   URL
-     * @param string \AgenDAV\CalDAV\ComponentFilter DOMElement to be added as
-     *                                               a filter for the report
-     * @result array key-value array, where keys are paths and properties are values
-     */
-    public function report($url, ComponentFilter $filter)
-    {
-        $this->http_client->setHeader('Depth', 1);
-        $this->http_client->setContentTypeXML();
-        $body = $this->xml_generator->reportBody($filter);
-        $response = $this->http_client->request('REPORT', $url, $body);
-
-        $contents = (string)$response->getBody();
-        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents);
-
-        return $result;
-    }
-
-    /**
      * Puts an event on the CalDAV server
      *
      * @param AgenDAV\Data\Event
@@ -347,6 +305,48 @@ class Client
             $this->http_client->setHeader('If-Match', $etag);
         }
         return $this->http_client->request('DELETE', $url);
+    }
+
+    /**
+     * Issues a PROPFIND and parses the response
+     *
+     * @param string $url   URL
+     * @param int $depth   Depth header
+     * @param string $body  Request body
+     * @result array key-value array, where keys are paths and properties are values
+     */
+    protected function propfind($url, $depth, $body)
+    {
+        $this->http_client->setHeader('Depth', $depth);
+        $this->http_client->setContentTypeXML();
+        $response = $this->http_client->request('PROPFIND', $url, $body);
+
+        $contents = (string)$response->getBody();
+        $single_element_expected = ($depth === 0);
+        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents, $single_element_expected);
+
+        return $result;
+    }
+
+    /**
+     * Issues a REPORT and parses the response
+     *
+     * @param string $url   URL
+     * @param string \AgenDAV\CalDAV\ComponentFilter DOMElement to be added as
+     *                                               a filter for the report
+     * @result array key-value array, where keys are paths and properties are values
+     */
+    protected function report($url, ComponentFilter $filter)
+    {
+        $this->http_client->setHeader('Depth', 1);
+        $this->http_client->setContentTypeXML();
+        $body = $this->xml_generator->reportBody($filter);
+        $response = $this->http_client->request('REPORT', $url, $body);
+
+        $contents = (string)$response->getBody();
+        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents);
+
+        return $result;
     }
 
 
