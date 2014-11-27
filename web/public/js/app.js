@@ -1587,7 +1587,7 @@ var event_render_callback = function event_render_callback(event, element) {
           viewport: $('#calendar_view')
         },
         style: {
-          classes: 'view_event_details ui-tooltip-bootstrap',
+          classes: 'view_event_details qtip-bootstrap qtip-shadow',
           tip: true
         },
         show: {
