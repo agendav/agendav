@@ -319,7 +319,7 @@ $(document).ready(function() {
       position: { my: 'top center', at: 'bottom center' },
       style: {
         tip: true,
-        classes: 'ui-tooltip-bootstrap agendav-menu'
+        classes: 'qtip-bootstrap agendav-menu'
       },
       show: {
         event: 'click',
