@@ -22,8 +22,8 @@ class Defs {
     // Leave jQuery and jQuery UI the two first scripts
     static $jsfiles= array(
             'libs/jquery-1.11.1.js',
-            'libs/jquery-ui.js',
             'libs/moment.js',
+            'libs/jquery-ui.js',
             'libs/jquery.timepicker.js',
             'libs/jquery.freeow.min.js',
             'libs/jquery.colorPicker.js',
@@ -37,7 +37,6 @@ class Defs {
             'libs/dust-core-1.0.0.js',
             'templates/templates.js',
             'datetime.js',
-            'libs/fullcalendar-lang-all.js',
             'app.js',
             );
 
