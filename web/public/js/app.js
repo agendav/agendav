@@ -1566,7 +1566,7 @@ var event_render_callback = function event_render_callback(event, element) {
       icon_html.append('<i class="' + i + '"></i>');
     });
 
-    element.find('.fc-title').append(icon_html);
+    element.find('.fc-title').after(icon_html);
   }
 
   dust.render('event_details_popup', dustbase.push(data), function(err, out) {
