@@ -27,6 +27,7 @@ class Defs {
             'libs/jquery.timepicker.js',
             'libs/jquery.freeow.min.js',
             'libs/jquery.colorPicker.js',
+            'libs/imagesloaded.pkg.min.js',
             'libs/jquery.qtip.js',
             'libs/jquery.colorhelpers.js',
             'libs/jquery.cookie.js',
