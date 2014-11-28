@@ -31,6 +31,14 @@ if ($additional_js !== FALSE && is_array($additional_js)) {
 foreach ($js as $jsfile) {
 	echo script_tag('js/' . $jsfile);
 }
+
+// Load language
+$lang = $this->config->item('default_language');
+$lang_rels = $this->config->item('lang_rels');
+
+if (isset($lang_rels[$lang])) {
+  echo script_tag('js/fullcalendar/lang/' . $lang_rels[$lang]['fullcalendar'] . '.js');
+}
 ?>
 
 <?php

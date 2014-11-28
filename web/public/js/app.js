@@ -94,12 +94,6 @@ $(document).ready(function() {
       editable: true,
       firstDay: AgenDAVConf.prefs_firstday,
       timeFormat: AgenDAVConf.prefs_timeformat,
-      columnFormat: {
-        month: t('formats', 'column_week_fullcalendar'),
-        week: t('formats', 'column_week_fullcalendar'),
-        day: t('formats', 'column_day_fullcalendar'),
-        table: t('formats', 'column_table_fullcalendar')
-      },
       weekMode: 'liquid',
       height: calendar_height(),
       windowResize: function(view) {
@@ -112,32 +106,7 @@ $(document).ready(function() {
         right:  'today prev,next'
       },
 
-      listTexts: {
-        until: t('labels', 'repeatuntil'),
-        past: t('labels', 'pastevents'),
-        today: t('labels', 'today'),
-        tomorrow: t('labels', 'tomorrow'),
-        thisWeek: t('labels', 'thisweek'),
-        nextWeek: t('labels', 'nextweek'),
-        thisMonth: t('labels', 'thismonth'),
-        nextMonth: t('labels', 'nextmonth'),
-        future: t('labels', 'future'),
-        week: 'W'
-      },
-
-      monthNames: month_names_long(),
-      monthNamesShort: month_names_short(),
-      dayNames: day_names_long(),
-      dayNamesShort: day_names_short(),
-      buttonText: {
-        today: t('labels', 'today'),
-        month: t('labels', 'month'),
-        week: t('labels', 'week'),
-        day: t('labels', 'day'),
-        table: t('labels', 'tableview')
-      },
       theme: true, // use jQuery UI themeing
-      allDayText: t('labels', 'allday'),
       axisFormat: AgenDAVConf.prefs_timeformat,
       slotMinutes: 30,
       firstHour: 8,
@@ -519,26 +488,8 @@ var destroy_dialog = function destroy_dialog(name) {
  * Sets datepicker options
  */
 var set_default_datepicker_options = function set_default_datepicker_options() {
-  // Localization (TODO: make this configurable!)
-$.datepicker.regional.custom = {
-  closeText: t('labels', 'close'),
-  prevText: t('labels', 'previous'),
-  nextText: t('labels', 'next'),
-  currentText: t('labels', 'today'),
-  monthNames: month_names_long(),
-  monthNamesShort: month_names_short(),
-  dayNames: day_names_long(),
-  dayNamesShort: day_names_short(),
-  dayNamesMin: day_names_short(),
-  weekHeader: 'Sm',
-  firstDay: AgenDAVConf.prefs_firstday,
-  isRTL: false,
-  showMonthAfterYear: false,
-  yearSuffix: ''};
-
-$.datepicker.setDefaults($.datepicker.regional.custom);
-$.datepicker.setDefaults({constrainInput: true});
-$.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
+  $.datepicker.setDefaults({constrainInput: true});
+  $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
 };
 
 /**
