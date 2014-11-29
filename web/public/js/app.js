@@ -322,7 +322,7 @@ var show_error = function show_error(title, message) {
   $('#popup').freeow(title, message,
     {
       classes: ['popup_error'],
-      autoHide: false,
+      autoHide: true,
       showStyle: {
         opacity: 1,
         left: 0
