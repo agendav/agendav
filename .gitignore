@@ -11,3 +11,6 @@ web/composer.phar
 vagrant_ansible_inventory_default
 phpunit.phar
 *.sqlite
+
+node_modules/
+bower_components/
