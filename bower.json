@@ -1,0 +1,30 @@
+{
+  "name": "AgenDAV",
+  "version": "2.0.0",
+  "homepage": "https://agendav.org",
+  "authors": [
+    "Jorge López Pérez <jorge@adobo.org>"
+  ],
+  "description": "A CalDAV web client",
+  "main": "public/index.php",
+  "keywords": [
+    "CalDAV",
+    "calendar"
+  ],
+  "license": "GPL3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "fullcalendar": "~2.2.3",
+    "jquery-ui": "~1.11.2",
+    "font-awesome": "~4.2.0",
+    "jquery": "~1.11.1"
+  }
+}
