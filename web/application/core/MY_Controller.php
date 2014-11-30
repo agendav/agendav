@@ -126,12 +126,41 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // HTTP connection logger
+        $log_path = $this->config->item('log_path');
+        $this->container['http_logger'] = $this->container->share(function($container) use ($log_path) {
+            $logger = new \Monolog\Logger('http');
+            $handler = new \Monolog\Handler\StreamHandler($log_path . 'http.log', \Monolog\Logger::DEBUG);
+            $formatter = new \Monolog\Formatter\LineFormatter(
+                "[%datetime%] %context% %extra% %message%\n",
+                null,                                           // Default date format
+                true,                                           // Allow line breaks
+                true                                            // Ignore empty contexts/extra
+            );
+            $handler->setFormatter($formatter);
+            $logger->pushHandler($handler);
+            $logger->pushProcessor(new \Monolog\Processor\WebProcessor);
+
+            return $logger;
+        });
+
         // Guzzle HTTP client
         $config_guzzle = [
             'base_url' => $this->config->item('caldav_base_url'),
         ];
-        $this->container['guzzle_http'] = $this->container->share(function($container) use ($config_guzzle) {
-            return new \GuzzleHttp\Client($config_guzzle);
+        $enable_http_logging = $this->config->item('enable_http_logging');
+        $this->container['guzzle_http'] = $this->container->share(function($container) use ($config_guzzle, $enable_http_logging) {
+            $client = new \GuzzleHttp\Client($config_guzzle);
+
+            if ($enable_http_logging === true) {
+                $log_subscriber = new GuzzleHttp\Subscriber\Log\LogSubscriber(
+                    $container['http_logger'],
+                    \GuzzleHttp\Subscriber\Log\Formatter::DEBUG
+                );
+                $client->getEmitter()->attach($log_subscriber);
+            }
+
+            return $client;
         });
 
         // AgenDAV HTTP client, based on Guzzle

@@ -45,6 +45,20 @@ $config['enable_debug']= FALSE;
 
 /*
 |--------------------------------------------------------------------------
+| Enable HTTP logging
+|--------------------------------------------------------------------------
+|
+| Set this to true to log all requests and responses made by AgenDAV to
+| $log_path/http.log
+|
+| Be careful when enabling this setting, performance will be affected and
+| log file will grow very fast.
+|
+*/
+$config['enable_http_logging']= FALSE;
+
+/*
+|--------------------------------------------------------------------------
 | Encryption Key
 |--------------------------------------------------------------------------
 |

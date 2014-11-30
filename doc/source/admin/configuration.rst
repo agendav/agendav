@@ -39,6 +39,21 @@ setting.
 
    .. versionadded:: 1.3.0
 
+.. confval:: enable_http_logging
+
+   Logs every HTTP requests and responses that AgenDAV has sent/received.
+
+   The log will be written at :confval:`log_path` on a single file called ``http.log``.
+
+   Be careful when enabling this setting. Responses are usually large, so your ``http.log`` will
+   grow really fast.
+
+   Example::
+
+     $config['enable_http_logging'] = FALSE;
+
+   .. versionadded:: 2.0.0
+
 .. confval:: show_in_log
 
    .. deprecated:: 1.3.0

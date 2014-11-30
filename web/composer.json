@@ -1,7 +1,7 @@
 {
     "require": {
         "pimple/pimple": "1.0.0",
-        "monolog/monolog": "1.*",
+        "monolog/monolog": "~1.11",
         "doctrine/dbal": "~2.4",
         "symfony/http-foundation": "~2.5.3",
         "doctrine/migrations": "1.0.*@dev",
