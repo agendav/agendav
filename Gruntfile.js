@@ -14,6 +14,14 @@ module.exports = function(grunt) {
       }
     },
 
+    copy: {
+        development: {
+            files: [
+                { expand: true, cwd: 'bower_components/font-awesome/fonts', src: ['**'], dest: 'web/public/font/' },
+            ],
+        }
+    },
+
     watch: {
       less: {
         files: ['./web/assets/stylesheets/*.less'],
@@ -26,6 +34,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('default', [ 'dist' ]);
 
