@@ -41,7 +41,7 @@ class Defs {
             );
 
     static $cssfiles = array(
-            'bootstrap.agendav.css',
+            'agendav.css',
             'jquery-ui.css',
             'jquery-ui.structure.css',
             'jquery-ui.theme.css',
@@ -50,7 +50,6 @@ class Defs {
             'freeow.css',
             'jquery.timepicker.css',
             'colorpicker.css',
-            'app.css',
             );
     static $printcssfiles = array(
             'app.print.css',

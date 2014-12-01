@@ -139,7 +139,7 @@ $(document).ready(function() {
 
     // Refresh link
     $('<span id="button-refresh" class="fc-button-refresh">' +
-      '<i class="icon-refresh"></i> ' +
+      '<i class="fa fa-refresh"></i> ' +
       t('labels', 'refresh') + '</span>')
       .appendTo('#calendar_view div.fc-right')
       .button()
@@ -215,8 +215,8 @@ $(document).ready(function() {
           .removeClass('hide_all')
           .addClass('show_all')
           .find('i')
-            .removeClass('icon-eye-close')
-            .addClass('icon-eye-open');
+            .removeClass('fa-eye-slash')
+            .addClass('fa-eye');
       } else {
         $.map(shared_cals, function(e, i) {
           show_calendar($(e));
@@ -225,8 +225,8 @@ $(document).ready(function() {
           .removeClass('show_all')
           .addClass('hide_all')
           .find('i')
-            .removeClass('icon-eye-open')
-            .addClass('icon-eye-close');
+            .removeClass('fa-eye')
+            .addClass('fa-eye-slash');
       }
     });
 
@@ -280,25 +280,6 @@ $(document).ready(function() {
 
     // Printing
     setup_print_tweaks();
-
-
-    // User menu
-    $('#usermenu').qtip({
-      content: $('#usermenu_content'),
-      position: { my: 'top center', at: 'bottom center' },
-      style: {
-        tip: true,
-        classes: 'qtip-bootstrap agendav-menu'
-      },
-      show: {
-        event: 'click',
-        effect: false,
-        delay: 0
-      },
-      hide: {
-        event: 'unfocus'
-      }
-    });
 
 });
 
@@ -1346,7 +1327,7 @@ var share_manager = function share_manager() {
     .data('autocomplete')._renderItem = function(ul, item) {
       return $('<li></li>')
         .data('item.autocomplete', item)
-        .append('<a><i class="icon-user"></i> ' + item.displayname +
+        .append('<a><i class="fa fa-user"></i> ' + item.displayname +
         '<span style="font-style: italic">' +
         ' &lt;' + item.email + '&gt;</span></a>')
         .appendTo(ul);
@@ -1504,17 +1485,17 @@ var event_render_callback = function event_render_callback(event, element) {
   var icons = [];
 
   if (event.rrule !== undefined) {
-    icons.push('icon-repeat');
+    icons.push('fa-repeat');
   }
   if (event.reminders !== undefined && event.reminders.length > 0) {
-    icons.push('icon-bell');
+    icons.push('fa-bell-o');
   }
 
   // Prepend icons
   if (icons.length !== 0) {
     var icon_html = $('<span class="fc-event-icons"></span>');
     $.each(icons, function(n, i) {
-      icon_html.append('<i class="' + i + '"></i>');
+      icon_html.append('<i class="fa ' + i + '"></i>');
     });
 
     element.find('.fc-title').after(icon_html);

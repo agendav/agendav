@@ -1,20 +1,22 @@
-<div class="navbar">
- <div class="navbar-inner">
+<div class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
-   <span class="brand"><?php echo $title ?></span>
-   <p class="navbar-text pull-right" id="loading">
+    <div class="navbar-header">
+       <span class="navbar-brand"><?php echo $title ?></span>
+   </div>
+   <p class="navbar-text navbar-right" id="loading">
    <?php echo img(array('src' => 'img/loading.gif')); ?>
    </p>
-<?php 
-if (isset($logged_in)):
-?>
-   <ul class="nav pull-right">
-    <li class="dropdown" id="usermenu"><a href="#"><span class="username"><?php echo
-	$username ?></span><b class="caret"></b></a></li>
+   <ul class="nav navbar-nav navbar-right" id="usermenu">
+    <li><?php echo anchor(
+      'prefs',
+      '<i title="'.$this->i18n->_('labels', 'preferences').'" class="fa fa-lg fa-wrench"></i>',
+      array('class' => 'prefs')
+    )?></li>
+    <li><?php echo anchor(
+      'main/logout',
+      '<i title="'.$this->i18n->_('labels', 'logout').'" class="fa fa-lg fa-power-off"></i>',
+      array('class' => 'logout')
+    )?></li>
    </ul>
-<?php
-endif;
-?>
   </div>
- </div>
 </div>

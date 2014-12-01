@@ -7,11 +7,11 @@ default_calendar{/default_calendar}">
  <span class="icons">
  {?shared}
   {@eq key="{rw}" value="0"}
-  <i title="{@i18n type="labels" name="readonly"/}" class="icon-lock"></i>
+  <i title="{@i18n type="labels" name="readonly"/}" class="fa fa-lock"></i>
   {/eq}
  {:else}
   {?share_with}
-  <i title="{@i18n type="labels" name="currentlysharing"/}" class="icon-share"></i>
+  <i title="{@i18n type="labels" name="currentlysharing"/}" class="fa fa-share"></i>
   {/share_with}
  {/shared}
 
@@ -20,5 +20,5 @@ default_calendar{/default_calendar}">
  {?grantor}
  title="{@i18n type="messages" name="info_sharedby" user="{grantor}"/}"
  {/grantor}>{displayname}</span>
- <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton icon-cogs"></i>
+ <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton fa fa-cogs"></i>
 </li>

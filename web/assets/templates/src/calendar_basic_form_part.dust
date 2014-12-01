@@ -13,7 +13,7 @@ class="calendar_color pick_color input-mini" maxlength="7" size="7" />
 {>form_element_end/}
 {?public_url}
  <div class="public_url_container">
-  <i class="icon-link icon-large"></i> 
+  <i class="fa fa-lg fa-link"></i> 
   <a href="{public_url}">
   {@i18n type="labels" name="publicurl"/}</p>
   </a>

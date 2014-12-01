@@ -7,9 +7,9 @@
 {/add}
 
 {?is_absolute}
-<i class="icon-calendar icon-large"></i>
+<i class="fa fa-lg fa-calendar"></i>
 {:else}
-<i class="icon-time icon-large"></i>
+<i class="fa fa-lg fa-clock-o"></i>
 {/is_absolute}
 </td>
 <td class="form-inline">

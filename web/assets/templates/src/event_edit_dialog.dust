@@ -3,19 +3,19 @@
 
 <ul>
     <li><a href="#tabs-general">
-     <i class="tab-icon icon-tag"></i>
+     <i class="tab-icon fa fa-tag"></i>
      {@i18n type="labels" name="generaloptions" /}</a>
     </li>
     <li><a href="#tabs-recurrence">
-    <i class="tab-icon icon-repeat"></i>
+    <i class="tab-icon fa fa-repeat"></i>
      {@i18n type="labels" name="repeatoptions" /}</a>
     </li>
     <li><a href="#tabs-reminders">
-    <i class="tab-icon icon-bell"></i>
+    <i class="tab-icon fa fa-bell"></i>
      {@i18n type="labels" name="remindersoptions" /}</a>
     </li>
     <li><a href="#tabs-workgroup">
-    <i class="tab-icon icon-group"></i>
+    <i class="tab-icon fa fa-group"></i>
      {@i18n type="labels" name="workgroupoptions" /}</a>
     </li>
 </ul>

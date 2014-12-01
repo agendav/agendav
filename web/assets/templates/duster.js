@@ -3,7 +3,7 @@
 // by Dan McGrady http://dmix.ca
 
 var src_path = "./src/"; // directory of dust templates are stored with .dust file extension
-var public_path = "../public/js/templates/"; // directory where the compiled .js files should be saved to
+var public_path = "../../public/js/templates/"; // directory where the compiled .js files should be saved to
 
 var fs = require('fs');                                                                        
 var dust = require('dustjs-linkedin');

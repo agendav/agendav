@@ -63,6 +63,7 @@ body {
 }
 
 /* jQuery UI font override */
+/*
 .ui-widget { 
   .fontoverride;
   
@@ -70,6 +71,7 @@ body {
     .fontoverride(1em);
   } 
 }
+*/
 
 .ui-button, .ui-dialog .ui-dialog-buttonpane button,
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
@@ -372,45 +374,6 @@ div.calendar_color {
   padding: 0 3px;
 }
 
-#usermenu_content {
-  display: none;
-  ul {
-    list-style: none;
-    background: #fff;
-    margin: 0;
-    padding: 5px 0;
-
-    &:hover {
-      cursor: default !important;
-    }
-
-    li {
-      font-size: 14px;
-      list-style: none;
-      & > a {
-        display: block;
-        line-height: 28px;
-        padding: 0 5px 5px 30px;
-        background-position: 8px center;
-        background-repeat: no-repeat;
-        &.prefs {
-          background-image: url(../img/setting_tools.png);
-        }
-
-        &.logout {
-          background-image: url(../img/exit.png);
-        }
-
-        &:hover {
-          background-color: #08c;
-          color: #fff !important;
-          text-decoration: none;
-        }
-      }
-
-    }
-  }
-}
 
 i.tab-icon {
   margin-right: 4px;
