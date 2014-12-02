@@ -25,7 +25,7 @@ AgenDAVDateAndTime.approxNearest = function approxNearest(dt) {
         .hours(now.hours())
         .minutes(0)
         .seconds(0)
-        .add('minutes', minutes);
+        .add(minutes, 'minutes');
 
     return result;
 };
@@ -40,11 +40,11 @@ AgenDAVDateAndTime.endDate = function endDate(end, start) {
     var generated_end;
 
     if (end === undefined || end === null) {
-        generated_end = moment(start).add('hours', 1);
+        generated_end = moment(start).add(1, 'hours');
     } else {
         generated_end = moment(end);
         if (start.diff(generated_end) == 0) {
-            generated_end = moment(start).add('hours', 1);
+            generated_end = moment(start).add(1, 'hours');
         }
     }
 
