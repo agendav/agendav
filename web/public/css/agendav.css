@@ -6791,6 +6791,8 @@ body {
   } 
 }
 */
+td.fc-event-container,
+div.fc-event-container,
 .ui-button,
 .ui-dialog .ui-dialog-buttonpane button,
 .ui-tabs .ui-tabs-nav li a,
