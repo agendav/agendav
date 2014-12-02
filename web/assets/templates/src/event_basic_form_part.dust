@@ -23,13 +23,27 @@
 {>form_element_end/}
 
 {>form_element_start for="start_date" label="startdate" /}
-<input name="start_date" type="text" size="15" maxlength="10" value="{start_date}" class="start_date form-control" />
-<input name="start_time" type="text" size="15" maxlength="10" value="{start_time}" class="time start_time form-control" />
+<div class="row">
+ <div class="col-sm-4">
+  <input name="start_date" type="text" size="15" maxlength="10" value="{start_date}"
+   class="start_date form-control" />
+ </div>
+ <div class="col-sm-3">
+    <input name="start_time" type="text" size="15" maxlength="10" value="{start_time}" 
+    class="time start_time form-control" />
+ </div>
+</div>
 {>form_element_end/}
 
 {>form_element_start for="end_date" label="enddate" /}
-<input name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date form-control" />
-<input name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time form-control" />
+<div class="row">
+ <div class="col-sm-4">
+  <input name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date form-control" />
+ </div>
+ <div class="col-sm-3">
+  <input name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time form-control" />
+ </div>
+</div>
 {>form_element_end/}
 
 {>form_element_start for="allday" label="alldayform" /}

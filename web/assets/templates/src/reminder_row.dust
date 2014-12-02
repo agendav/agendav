@@ -15,9 +15,9 @@
 <td class="form-inline">
 {?is_absolute}
 <input type="text" 
-name="{^add}reminders[tdate][]{:else}tdate{/add}" class="input-small needs-datepicker" maxlength="10" value="{tdate}" />
+name="{^add}reminders[tdate][]{:else}tdate{/add}" class="form-control needs-datepicker" maxlength="10" value="{tdate}" />
 
-<input type="text" name="{^add}reminders[ttime][]{:else}ttime{/add}" class="input-mini needs-timepicker" maxlength="10" value="{ttime}" />
+<input type="text" name="{^add}reminders[ttime][]{:else}ttime{/add}" class="form-control needs-timepicker" maxlength="10" value="{ttime}" />
 
 
 {^add}
@@ -26,20 +26,20 @@ name="{^add}reminders[tdate][]{:else}tdate{/add}" class="input-small needs-datep
 <input type="hidden" name="reminders[before][]" value="" />
 {/add}
 {:else}
-<input name="{^add}reminders[qty][]{:else}qty{/add}" class="input-mini" maxlength="4" value="{qty}" />
-<select class="input-small" name="{^add}reminders[interval][]{:else}interval{/add}">
+<input name="{^add}reminders[qty][]{:else}qty{/add}" class="form-control" maxlength="4" value="{qty}" />
+<select class="form-control" name="{^add}reminders[interval][]{:else}interval{/add}">
  <option value="min"{@eq key="{interval}" value="min"} selected="true"{/eq}>{@i18n type="labels" name="minutes"/}</option>
  <option value="hour"{@eq key="{interval}" value="hour"} selected="true"{/eq}>{@i18n type="labels" name="hours"/}</option>
  <option value="day"{@eq key="{interval}" value="day"} selected="true"{/eq}>{@i18n type="labels" name="days"/}</option>
  <option value="week"{@eq key="{interval}" value="week"} selected="true"{/eq}>{@i18n type="labels" name="weeks"/}</option>
 </select>
 
-<select class="input-small" name="{^add}reminders[before][]{:else}before{/add}">
+<select class="form-control" name="{^add}reminders[before][]{:else}before{/add}">
  <option value="true"{?before} selected="true"{/before}>{@i18n type="labels" name="before"/}</option>
  <option value="false"{^before}{^add} selected="true"{/add}{/before}>{@i18n type="labels" name="after"/}</option>
 </select>
 
-<select class="input-small" name="{^add}reminders[relatedStart][]{:else}relatedStart{/add}">
+<select class="form-control" name="{^add}reminders[relatedStart][]{:else}relatedStart{/add}">
  <option value="true"{?relatedStart} selected="true"{/relatedStart}>{@i18n type="labels" name="start"/}</option>
  <option value="false"{^relatedStart}{^add} selected="true"{/add}{/relatedStart}>{@i18n type="labels" name="end"/}</option>
 </select>

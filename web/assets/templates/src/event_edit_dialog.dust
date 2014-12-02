@@ -42,7 +42,7 @@
 
 <div id="tabs-workgroup">
 {>form_element_start for="class" label="privacy" /}
-<select name="class" type="text" class="input-medium">
+<select name="class" type="text" class="form-control">
  <option value="PUBLIC"{@eq key="{icalendar_class}" value="PUBLIC"} selected="selected"{/eq}>{@i18n type="labels" name="public"/}</option>
  <option value="PRIVATE"{@eq key="{icalendar_class}" value="PRIVATE"} selected="selected"{/eq}>{@i18n type="labels" name="private"/}</option>
  <option value="CONFIDENTIAL"{@eq key="{icalendar_class}" value="CONFIDENTIAL"} selected="selected"{/eq}>{@i18n type="labels" name="confidential"/}</option>
@@ -50,7 +50,7 @@
 {>form_element_end/}
 
 {>form_element_start for="transp" label="transp" /}
-<select name="transp" type="text" class="input-medium">
+<select name="transp" type="text" class="form-control">
  <option value="OPAQUE"{@eq key="{transp}" value="OPAQUE"} selected="selected"{/eq}>{@i18n type="labels" name="opaque"/}</option>
  <option value="TRANSPARENT"{@eq key="{transp}" value="TRANSPARENT"} selected="selected"{/eq}>{@i18n type="labels" name="transparent"/}</option>
 </select>

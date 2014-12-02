@@ -4,12 +4,13 @@
 <input type="hidden" name="is_shared_calendar"
 value="{?shared}true{:else}false{/shared}" />
 {>form_element_start for="displayname" label="displayname" /}
-<input name="displayname" type="text" size="25" maxlength="255" value="{?displayname}{displayname}{/displayname}" class="displayname input-medium" />
+<input name="displayname" type="text" size="25" maxlength="255" 
+value="{?displayname}{displayname}{/displayname}" class="displayname form-control" />
 {>form_element_end/}
 {>form_element_start for="color" label="color" /}
 <input name="calendar_color"
 value="{?color}{color}{:else}{default_calendar_color}{/color}" 
-class="calendar_color pick_color input-mini" maxlength="7" size="7" />
+class="calendar_color pick_color form-control" maxlength="7" size="7" />
 {>form_element_end/}
 {?public_url}
  <div class="public_url_container">
