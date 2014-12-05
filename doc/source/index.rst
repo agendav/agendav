@@ -17,4 +17,5 @@ Contents:
 
    admin/index
    translations
+   development/index
    releasenotes

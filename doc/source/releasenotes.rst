@@ -3,10 +3,10 @@
 Release notes
 =============
 
-.. _v1.3.0:
+.. _v2.0.0:
 
 
-1.3.0 (2012-XX-YY)
+2.0.0 (?)
 ------------------
 
 * AgenDAV uses now `Composer <http://getcomposer.org>`_. If you are using the

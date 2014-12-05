@@ -53,7 +53,7 @@ Next step is downloading latest AgenDAV dependencies using Composer. If you
 already have Composer installed, just run::
 
  $ cd web/
- $ php composer.phar update
+ $ composer.phar install
 
 If you're upgrading from AgenDAV 1.2.x, you will need to install Composer.
 Follow the instructions you'll find in the installation section.
@@ -63,31 +63,14 @@ Follow the instructions you'll find in the installation section.
 Database upgrade
 ----------------
 
-.. note::
-
-   AgenDAV <= 1.2.5.1 have a bug that makes database upgrades to fail,
-   complaining about a missing ``migration_lang.php`` file. If you have
-   AgenDAV configured to use a language other than English, set
-   :confval:`default_language` to ``en`` before running ``agendav dbupdate``
-
-The database upgrade process included in AgenDAV since 1.2.5 lets you
+The database upgrade process included in AgenDAV lets you
 apply the latest schema changes without having to deal with ``.sql`` files
 and with no need to check which files you should apply to your current
 version.
 
 Just use the provided ``bin/agendavcli`` script this way::
 
-  $ ./bin/agendavcli dbupdate
+  $ ./bin/agendavcli migrations:migrate
 
 Please, note that this requires you have created a ``database.php`` file with
 a valid configuration to connect your database.
-
-
-.. note::
-
-   On Windows systems you may have some issues running ``agendavcli``. You can
-   use the following command::
-
-     cd web/public
-     php-cli.exe index.php cli dbupdate
-

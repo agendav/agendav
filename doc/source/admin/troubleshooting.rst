@@ -59,14 +59,18 @@ with::
 	define('ENVIRONMENT', 'development');
 
 
-Capture traffic
----------------
+Enable HTTP logging
+-------------------
 
 Sometimes CalDAV servers send unexpected data to AgenDAV or AgenDAV tries to
-do an unsupported operation on your CalDAV server. When this happens it's a
-good idea to run a traffic capture tool (like ``tcpdump`` or ``Wireshark``)
-to see what's happening under the hood. This is only possible if you use
-plain HTTP on your AgenDAV<->CalDAV server communication.
+do an unsupported operation on your CalDAV server. Knowing what happened under
+the hood is really useful to spot configuration errors or AgenDAV bugs.
+
+Since AgenDAV 2.0.0 is possible to enable HTTP traffic logging to get a log of
+requests and responses. See the :confval:`enable_http_logging` setting to learn
+how to enable it.
+
+
 
 Debug your browser status
 -------------------------
