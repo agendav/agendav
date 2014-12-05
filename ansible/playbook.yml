@@ -30,6 +30,7 @@
         sudo: yes
         with_items:
             - curl
+            - git
             - php5
             - php5-cli
             - php5-curl

@@ -13,20 +13,14 @@
  * CalDAV servers support Basic Authentication, but you should check your
  * server documentation.
  *
- * It is recommended to use a fixed value for this. If you don't set it,
- * CalDAV client will have to negotiate with server on each request and
- * perfomance will be worse (mainly when Basic auth is used)
- *
- * Possible values can be found at
- * http://www.php.net/manual/es/function.curl-setopt.php (CURLOPT_HTTPAUTH)
+ * Valid values are 'basic' and 'digest'
  *
  * Examples:
- *  Automatic guess: $config['caldav_http_auth_method'] = null;
- *  SabreDAV: $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
- *  DAViCal: $config['caldav_http_auth_method'] = CURLAUTH_BASIC;
+ *  SabreDAV: $config['caldav_http_auth_method'] = 'digest';
+ *  DAViCal: $config['caldav_http_auth_method'] = 'basic';
  */
 
-$config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
+$config['caldav_http_auth_method'] = 'digest';
 
 
 /*******************
@@ -43,7 +37,7 @@ $config['caldav_http_auth_method'] = CURLAUTH_DIGEST;
  * Please, do NOT add trailing slash
  */
 
-$config['caldav_base_url'] = 'http://localhost:81';
+$config['caldav_base_url'] = 'http://localhost:81/cal.php';
 
 /*
  * CalDAV principal PATH template
@@ -51,10 +45,13 @@ $config['caldav_base_url'] = 'http://localhost:81';
  *
  * Do not use a full URL, use a relative path to be appended to your caldav_base_url
  *
+ * Remember to add your CalDAV server relative path if needed
+ *
  * %u will be replaced by an username. Please, add trailing slash
  *
  * Some examples:
  * - DAViCal: /caldav.php/%u/
+ * - DAViCal under non-root path: /davical/caldav.php/%u/
  * - SabreDAV: /calendarserver.php/principals/%u/
  * - Apple Calendar Server: /users/%u/
  */
@@ -67,11 +64,14 @@ $config['caldav_principal_template'] = '/cal.php/principals/%u/';
  *
  * Do not use a full URL, use a relative path to be appended to your caldav_base_url
  *
- * %u will be replaced by an username. Please, add trailing slash
+ * Remember to add your CalDAV server relative path if needed
+ *
+ * %u will be replaced by a username. Please, add trailing slash
  *
  * Some samples:
  *
  * - DAViCal: /caldav.php/%u/
+ * - DAViCal under non-root path: /davical/caldav.php/%u/
  * - SabreDAV: /calendarserver.php/calendars/%u/
  * - Apple Calendar Server: /calendars/users/%u/
  */
@@ -83,10 +83,11 @@ $config['caldav_calendar_homeset_template'] = '/cal.php/calendars/%u/';
  * ====================================
  *
  * Please, do NOT add trailing slash.
+ * If your CalDAV server is placed under a relative path, don't specify it here
  * Will be shown to users only when 'show_public_caldav_url' is enabled
  */
 
-$config['caldav_public_base_url'] = 'http://192.168.100.10:81';
+$config['caldav_public_base_url'] = 'http://localhost:8081';
 
 
 /*******************
@@ -103,57 +104,38 @@ $config['caldav_public_base_url'] = 'http://192.168.100.10:81';
 
 $config['enable_calendar_sharing'] = false;
 
-// Default permissions for calendar owner
-$config['owner_permissions'] = array('all', 'read', 'unlock', 'read-acl',
-		'read-current-user-privilege-set', 'write-acl', 'C:read-free-busy',
-		'write', 'write-properties', 'write-content', 'bind', 'unbind');
-
-// Permissions for sharing calendars using the 'read' profile
-$config['read_profile_permissions'] = array('C:read-free-busy', 'read');
-
-// Permissions for sharing calendars using the 'read+write' profile
-$config['read_write_profile_permissions'] = array('C:read-free-busy',
-		'read', 'write');
-
-// Authenticated users default permissions
-$config['default_permissions'] = array('C:read-free-busy');
-
-/**
- * Permissions for calendar sharing
- *
- * Read your CalDAV server documentation about permissions before changing this option.
- * Default values should work OK 
- *
- * 'owner' entry contains the permissions for the resource owner when sharing a calendar
- * 'authenticated' entry contains the default permissions for every authenticated user
- * 'unauthenticated' entry contains the permissions for anonymous users (empty by default)
- * 'share_read' entry contains permissions for read-only users on shared calendars
- * 'share_rw' entry contains permissions for read+write users on shared calendars
- *
- * You can use the following namespaces:
- *   Default namespace: DAV
- *   Other namespaces: C: (urn:ietf:params:xml:ns:caldav)
- */
-$config['acl_permissions'] = array(
+$config['permissions'] = array(
+    // Permissions for calendar owner
     'owner' => array(
-        'all',
+        array('DAV:', 'all'),
+        array('DAV:', 'read'),
+        array('DAV:', 'unlock'),
+        array('DAV:', 'read-acl'),
+        array('DAV:', 'read-current-user-privilege-set'),
+        array('DAV:', 'write-acl'),
+        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
+        array('DAV:', 'write'),
+        array('DAV:', 'write-properties'),
+        array('DAV:', 'write-content'),
+        array('DAV:', 'bind'),
+        array('DAV:', 'unbind'),
     ),
 
-    'authenticated' => array(
-        'read-current-user-privilege-set',
-        'C:read-free-busy'
+    // Permissions for sharing calendars using the 'read' profile
+    'read' => array(
+        array('DAV:', 'read'),
+        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
     ),
-    'unauthenticated' => array(
+
+    // Permissions for sharing calendars using the 'read+write' profile
+    'read_write' => array(
+        array('DAV:', 'read'),
+        array('DAV:', 'write'),
+        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
     ),
-    'share_read' => array(
-        'read-current-user-privilege-set',
-        'C:read-free-busy',
-        'read'
-    ),
-    'share_rw' => array(
-        'read-current-user-privilege-set',
-        'C:read-free-busy',
-        'read',
-        'write'
-    ),
+
+    // Authenticated users default permissions
+    'default' => array(
+        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
+    )
 );
