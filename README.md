@@ -2,6 +2,8 @@ AgenDAV - CalDAV web client
 ===========================
 
 [![Build Status](https://travis-ci.org/adobo/agendav.svg?branch=develop)](https://travis-ci.org/adobo/agendav)
+[![Develop docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](http://agendav.readthedocs.org/en/develop/)
+[![Stable docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](http://agendav.readthedocs.org/en/latest/)
 
 AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones. It's released under
