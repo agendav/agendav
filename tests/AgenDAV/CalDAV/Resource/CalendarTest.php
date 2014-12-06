@@ -1,5 +1,5 @@
 <?php
-namespace AgenDAV\Data;
+namespace AgenDAV\CalDAV\Resource;
 
 class CalendarTest extends \PHPUnit_Framework_TestCase
 {

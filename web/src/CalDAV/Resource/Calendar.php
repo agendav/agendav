@@ -1,6 +1,6 @@
 <?php 
 
-namespace AgenDAV\Data;
+namespace AgenDAV\CalDAV\Resource;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -22,7 +22,7 @@ namespace AgenDAV\Data;
  */
 
 /**
- * Stores information about a calendar collection 
+ * Stores information about a calendar collection
  */
 class Calendar
 {

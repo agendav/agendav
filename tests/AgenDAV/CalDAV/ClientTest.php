@@ -11,7 +11,7 @@ use GuzzleHttp\Subscriber\History as GuzzleHistory;
 use AgenDAV\Http\Client as HttpClient;
 use AgenDAV\XML\Generator;
 use AgenDAV\XML\Parser;
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Event;
 
 /**
@@ -373,7 +373,7 @@ BODY;
         $calendar = $client->getCalendarByUrl($fake_calendar_url);
 
         $this->assertInstanceOf(
-          '\AgenDAV\Data\Calendar',
+          '\AgenDAV\CalDAV\Resource\Calendar',
           $calendar
         );
     }

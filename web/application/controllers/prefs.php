@@ -20,7 +20,7 @@
  */
 
 use AgenDAV\Data\Preferences;
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 
 class Prefs extends MY_Controller
 {

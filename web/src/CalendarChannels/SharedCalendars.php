@@ -89,7 +89,7 @@ class SharedCalendars implements IChannel
      * After retrieving them from the database, calendars are fetched from CalDAV server too
      * 
      * @access public
-     * @return Array [path => \AgenDAV\Data\Calendar]
+     * @return Array [path => \AgenDAV\CalDAV\Resource\Calendar]
      */
     public function getCalendars()
     {

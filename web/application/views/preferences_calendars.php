@@ -11,7 +11,7 @@ foreach ($calendar_list as $cal):
 ?>
  <tr>
   <td>
-  <?php echo $cal->getProperty(AgenDAV\Data\Calendar::DISPLAYNAME) ?>
+  <?php echo $cal->getProperty(AgenDAV\CalDAV\Resource\Calendar::DISPLAYNAME) ?>
   </td>
   <td style="text-align: center">
     <input type="hidden" name="calendar[<?php echo $i ?>][name]" value="<?php echo

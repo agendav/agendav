@@ -20,7 +20,7 @@
  */
 
 use AgenDAV\Data\Reminder;
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Event;
 use AgenDAV\DateHelper;
 

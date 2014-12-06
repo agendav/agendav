@@ -5,7 +5,7 @@ namespace AgenDAV\Data\Transformer;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\JsonApiSerializer;
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 
 class CalendarTransformerTest extends \PHPUnit_Framework_TestCase
 {

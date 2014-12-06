@@ -21,7 +21,7 @@ namespace AgenDAV\Data;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 
 /**
  * Stores information about an event (in contents format)
@@ -51,7 +51,7 @@ class Event
     /**
      * Calendar this event is stored at
      *
-     * @var AgenDAV\Data\Calendar
+     * @var AgenDAV\CalDAV\Resource\Calendar
      */
     protected $calendar;
 
@@ -122,7 +122,7 @@ class Event
     /*
      * Getter for calendar
      *
-     * @return AgenDAV\Data\Calendar
+     * @return AgenDAV\CalDAV\Resource\Calendar
      */
     public function getCalendar()
     {
@@ -132,7 +132,7 @@ class Event
     /*
      * Setter for calendar
      *
-     * @param AgenDAV\Data\Calendar $calendar
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function setCalendar(Calendar $calendar)
     {

@@ -78,7 +78,7 @@ class CalendarHomeSet implements IChannel
      * Gets current user calendars 
      * 
      * @access public
-     * @return Array [path => \AgenDAV\Data\Calendar]
+     * @return Array [path => \AgenDAV\CalDAV\Resource\Calendar]
      */
     public function getCalendars()
     {

@@ -22,7 +22,7 @@ namespace AgenDAV\Data\Transformer;
  */
 
 use League\Fractal;
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 
 
 class CalendarTransformer extends Fractal\TransformerAbstract

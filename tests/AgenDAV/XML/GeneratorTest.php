@@ -1,7 +1,7 @@
 <?php
 namespace AgenDAV\XML;
 
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 use \Mockery as m;
 
 /**

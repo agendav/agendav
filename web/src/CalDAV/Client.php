@@ -20,7 +20,7 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use \AgenDAV\Data\Calendar;
+use \AgenDAV\CalDAV\Resource\Calendar;
 use \AgenDAV\Data\Event;
 
 class Client
@@ -168,7 +168,7 @@ class Client
      * Gets a calendar details
      *
      * @param string $url   URL
-     * @param \AgenDAV\Data\Calendar    Found calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar    Found calendar
      * @throws \UnexpectedValueException In case the server replies with a 2xx code but
      *                                   valid calendars are not found
      */
@@ -186,10 +186,10 @@ class Client
     /**
      * Creates a calendar collection
      *
-     * @param AgenDAV\Data\Calendar $calendar   Calendar that we want to create
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
      * @return void
      */
-    public function createCalendar(\AgenDAV\Data\Calendar $calendar)
+    public function createCalendar(Calendar $calendar)
     {
         $calendar_properties = $calendar->getWritableProperties();
         $body = $this->xml_generator->mkCalendarBody($calendar_properties);
@@ -201,10 +201,10 @@ class Client
     /**
      * Modifies an existing calendar
      *
-     * @param \AgenDAV\Data\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @return void
      */
-    public function updateCalendar(\AgenDAV\Data\Calendar $calendar)
+    public function updateCalendar(Calendar $calendar)
     {
         $calendar_properties = $calendar->getWritableProperties();
         $body = $this->xml_generator->proppatchBody($calendar_properties);
@@ -216,10 +216,10 @@ class Client
     /**
      * Deletes a calendar from the server
      *
-     * @param \AgenDAV\Data\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @return void
      */
-    public function deleteCalendar(\AgenDAV\Data\Calendar $calendar)
+    public function deleteCalendar(Calendar $calendar)
     {
         $this->http_client->request('DELETE', $calendar->getUrl());
     }
@@ -227,12 +227,12 @@ class Client
     /**
      * Fetches all events from a calendar that are in the range of [start, end)
      *
-     * @param \AgenDAV\Data\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
      * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
      * @return array Array of Event objects
      */
-    public function fetchEventsFromCalendar(\AgenDAV\Data\Calendar $calendar, $start, $end)
+    public function fetchEventsFromCalendar(Calendar $calendar, $start, $end)
     {
         $time_range_filter = new TimeRangeFilter($start, $end);
         $data = $this->report($calendar->getUrl(), $time_range_filter);
@@ -243,12 +243,12 @@ class Client
     /**
      * Fetches the event that has the specified UID
      *
-     * @param \AgenDAV\Data\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param string $uid Event UID
      * @return \AgenDAV\Data\Event
      * @throws \UnexpectedValueException if event is not found
      */
-    public function fetchEventByUid(\AgenDAV\Data\Calendar $calendar, $uid)
+    public function fetchEventByUid(Calendar $calendar, $uid)
     {
         $uid_filter = new UidFilter($uid);
         $data = $this->report($calendar->getUrl(), $uid_filter);
@@ -355,7 +355,7 @@ class Client
      * Converts a pre-parsed REPORT response to an array of events
      *
      * @param array Data returned by report()
-     * @param AgenDAV\Data\Calendar $calendar Calendar these events come from
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these events come from
      * @return array of Event
      */
     protected function parseEventCollection(array $events_data, Calendar $calendar)

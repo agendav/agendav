@@ -20,7 +20,7 @@
  */
 
 use League\Fractal\Resource\Collection;
-use AgenDAV\Data\Calendar;
+use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use AgenDAV\Uuid;
 
