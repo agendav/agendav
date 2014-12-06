@@ -36,7 +36,7 @@ foreach ($js as $jsfile) {
 $lang = $this->config->item('default_language');
 $lang_rels = $this->config->item('lang_rels');
 
-if (isset($lang_rels[$lang])) {
+if (isset($lang_rels[$lang]) && isset($lang_rels[$lang]['fullcalendar'])) {
   echo script_tag('js/fullcalendar/lang/' . $lang_rels[$lang]['fullcalendar'] . '.js');
 }
 ?>

@@ -7,7 +7,8 @@
 $config['lang_rels'] = array(
         'en' => array(
                 'codeigniter' => 'english',
-                'fullcalendar' => 'en',
+                // Fullcalendar uses English by default, so there is no
+                // 'en.js' file
         ),
         'es_ES' => array(
                 'codeigniter' => 'spanish',
