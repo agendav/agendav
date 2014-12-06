@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\Data\Event;
+use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\Data\Reminder;
 use AgenDAV\DateHelper;
 use AgenDAV\Uuid;
@@ -138,7 +138,7 @@ class Icshelper {
      * Expands a list of resources to repeated events, depending on
      * recurrence rules and recurrence exceptions/modifications
      *
-     * @param array   $resources  array of Events
+     * @param array   $resources  array of CalendarObject
      * @param int       $start      Start timestamp
      * @param int       $end        End timestamp
      * @param string        $calendar       Current calendar
@@ -193,7 +193,7 @@ class Icshelper {
                         'vevent', true, true, false);
                 if ($expand === FALSE) {
                     log_message('WARNING',
-                            'Event ' . $calendar . $event_href . ' cannot be expanded.');
+                            'CalendarObject ' . $calendar . $event_href . ' cannot be expanded.');
                 } else {
                     foreach($expand as $event) {
                         $tz = $this->detect_tz($event, $timezones);

@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV\Data;
+namespace AgenDAV\CalDAV\Resource;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -24,9 +24,10 @@ namespace AgenDAV\Data;
 use AgenDAV\CalDAV\Resource\Calendar;
 
 /**
- * Stores information about an event (in contents format)
+ * Represents a calendar object (with iCalendar contents) that is placed
+ * on a calendar collection
  */
-class Event
+class CalendarObject
 {
     /**
      * Some property names required from outside
@@ -35,28 +36,28 @@ class Event
     const ETAG = '{DAV:}getetag';
 
     /**
-     * Event iCalendar contents
+     * iCalendar contents
      *
      * @var string
      */
     protected $contents;
 
     /**
-     * URL of this event
+     * URL of this object
      *
      * @var string
      */
     protected $url;
 
     /**
-     * Calendar this event is stored at
+     * Calendar this object is stored at
      *
      * @var AgenDAV\CalDAV\Resource\Calendar
      */
     protected $calendar;
 
     /**
-     * Event Etag
+     * Object Etag
      *
      * @var string
      */
@@ -69,7 +70,7 @@ class Event
      * @param Calendar $calendar
      * @param string $etag
      */
-    public function __construct($contents, $url = null, $calendar = null, $etag = null)
+    public function __construct($contents, $url = null, Calendar $calendar = null, $etag = null)
     {
         $this->contents = $contents;
         $this->url = $url;

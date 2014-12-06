@@ -12,7 +12,7 @@ use AgenDAV\Http\Client as HttpClient;
 use AgenDAV\XML\Generator;
 use AgenDAV\XML\Parser;
 use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\Data\Event;
+use AgenDAV\CalDAV\Resource\CalendarObject;
 
 /**
  * @author jorge
@@ -427,7 +427,7 @@ BODY;
 
 
 
-    public function testFetchEventsFromCalendar()
+    public function testFetchObjectsFromCalendar()
     {
       $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
@@ -500,32 +500,32 @@ BODY;
 
       $start = '20141101T000000Z';
       $end = '20141201T000000Z';
-      $events = $client->fetchEventsFromCalendar($calendar, $start, $end);
+      $objects = $client->fetchObjectsOnCalendar($calendar, $start, $end);
 
-      $this->assertCount(2, $events);
+      $this->assertCount(2, $objects);
       $this->assertEquals(
           '/cal.php/calendars/demo/fake/c160fd13-829d-4d59-96d2-92fc0f9e6787.ics',
-          $events[0]->getUrl()
+          $objects[0]->getUrl()
       );
-      $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $events[0]->getEtag());
-      $this->assertEquals($calendar, $events[0]->getCalendar());
-      $this->assertNotEmpty($events[0]->getContents());
+      $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $objects[0]->getEtag());
+      $this->assertEquals($calendar, $objects[0]->getCalendar());
+      $this->assertNotEmpty($objects[0]->getContents());
 
       $this->assertEquals(
           '/cal.php/calendars/demo/fake/e2f43f04-030d-4c79-9c8b-d20c87ca5f9d.ics',
-          $events[1]->getUrl()
+          $objects[1]->getUrl()
       );
-      $this->assertEquals('"cf03e087c6bf4f8473f5f76cf17d65fd"', $events[1]->getEtag());
-      $this->assertEquals($calendar, $events[1]->getCalendar());
-      $this->assertNotEmpty($events[1]->getContents());
+      $this->assertEquals('"cf03e087c6bf4f8473f5f76cf17d65fd"', $objects[1]->getEtag());
+      $this->assertEquals($calendar, $objects[1]->getCalendar());
+      $this->assertNotEmpty($objects[1]->getContents());
 
-      $this->validateFetchEventsRequest($calendar, new TimeRangeFilter($start, $end));
+      $this->validateFetchObjectsRequest($calendar, new TimeRangeFilter($start, $end));
     }
 
     /**
      * @expectedException \UnexpectedValueException
      */
-    public function testFetchEventByUidNonExistant()
+    public function testFetchObjectByUidNonExistant()
     {
         $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
@@ -540,7 +540,7 @@ BODY;
         $client = $this->createCalDAVClient($response);
         $calendar = new Calendar('/cal.php/calendars/demo/fake');
 
-        $client->fetchEventByUid($calendar, 'xxxx');
+        $client->fetchObjectByUid($calendar, 'xxxx');
     }
 
     public function testFetchEventByUidOK()
@@ -586,50 +586,50 @@ BODY;
         $client = $this->createCalDAVClient($response);
         $calendar = new Calendar('/cal.php/calendars/demo/fake');
 
-        $event = $client->fetchEventByUid($calendar, 'c160fd13-829d-4d59-96d2-92fc0f9e6787');
+        $object = $client->fetchObjectByUid($calendar, 'c160fd13-829d-4d59-96d2-92fc0f9e6787');
 
-        $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $event->getEtag());
-        $this->assertEquals($calendar, $event->getCalendar());
-        $this->assertNotEmpty($event->getContents());
+        $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $object->getEtag());
+        $this->assertEquals($calendar, $object->getCalendar());
+        $this->assertNotEmpty($object->getContents());
 
-        $this->validateFetchEventsRequest($calendar, new UidFilter('c160fd13-829d-4d59-96d2-92fc0f9e6787'));
+        $this->validateFetchObjectsRequest($calendar, new UidFilter('c160fd13-829d-4d59-96d2-92fc0f9e6787'));
     }
 
-    public function testPutEventNew()
+    public function testPutObjectNew()
     {
         $response = new Response(201);
         $client = $this->createCalDAVClient($response);
 
-        $event = new Event('/url');
-        $event->setContents('This sould be an iCalendar resource');
+        $object = new CalendarObject('/url');
+        $object->setContents('This sould be an iCalendar resource');
 
-        $client->putEvent($event);
-        $this->validatePutEventRequest($event);
+        $client->uploadCalendarObject($object);
+        $this->validatePutObjectRequest($object);
     }
 
-    public function testPutEventExisting()
+    public function testPutObjectExisting()
     {
         $response = new Response(200);
         $client = $this->createCalDAVClient($response);
 
-        $event = new Event('/url');
-        $event->setContents('This sould be an iCalendar resource');
-        $event->setEtag('test_etag');
+        $object = new CalendarObject('/url');
+        $object->setContents('This sould be an iCalendar resource');
+        $object->setEtag('test_etag');
 
-        $client->putEvent($event);
-        $this->validatePutEventRequest($event);
+        $client->uploadCalendarObject($object);
+        $this->validatePutObjectRequest($object);
     }
 
-    public function testDeleteEventWithEtag()
+    public function testDeleteObjectWithEtag()
     {
         $response = new Response(200);
         $client = $this->createCalDAVClient($response);
 
-        $event = new Event('/url');
-        $event->setEtag('test_etag');
+        $object = new CalendarObject('/url');
+        $object->setEtag('test_etag');
 
-        $client->deleteEvent($event);
-        $this->validateDeleteEventRequest($event);
+        $client->deleteCalendarObject($object);
+        $this->validateDeleteObjectRequest($object);
     }
 
     /**
@@ -728,7 +728,7 @@ BODY;
         $this->assertEquals($calendar->getUrl(), $request->getUrl());
     }
 
-    protected function validateFetchEventsRequest(Calendar $calendar, ComponentFilter $filter)
+    protected function validateFetchObjectsRequest(Calendar $calendar, ComponentFilter $filter)
     {
         $this->assertCount(1, $this->history);
         $request = $this->history->getLastRequest();
@@ -746,47 +746,47 @@ BODY;
         );
     }
 
-    protected function validatePutEventRequest(Event $event)
+    protected function validatePutObjectRequest(CalendarObject $object)
     {
         $this->assertCount(1, $this->history);
         $request = $this->history->getLastRequest();
         $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals($event->getUrl(), $request->getUrl());
+        $this->assertEquals($object->getUrl(), $request->getUrl());
         $this->assertEquals(
             'text/calendar',
             $request->getHeader('Content-Type')
         );
 
-        if ($event->getEtag() === null) {
+        if ($object->getEtag() === null) {
             $this->assertEquals(
                 '*',
                 $request->getHeader('If-None-Match')
             );
         } else {
             $this->assertEquals(
-                $event->getEtag(),
+                $object->getEtag(),
                 $request->getHeader('If-Match')
             );
         }
 
         $this->assertEquals(
-            $event->getContents(),
+            $object->getContents(),
             (string)$request->getBody()
         );
     }
 
-    protected function validateDeleteEventRequest(Event $event)
+    protected function validateDeleteObjectRequest(CalendarObject $object)
     {
         $this->assertCount(1, $this->history);
         $request = $this->history->getLastRequest();
         $this->assertEquals('DELETE', $request->getMethod());
-        if ($event->getEtag() !== null) {
+        if ($object->getEtag() !== null) {
             $this->assertEquals(
-                $event->getEtag(),
+                $object->getEtag(),
                 $request->getHeader('If-Match')
             );
         }
-        $this->assertEquals($event->getUrl(), $request->getUrl());
+        $this->assertEquals($object->getUrl(), $request->getUrl());
     }
 
 }

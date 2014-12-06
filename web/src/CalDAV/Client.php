@@ -21,7 +21,7 @@ namespace AgenDAV\CalDAV;
  */
 
 use \AgenDAV\CalDAV\Resource\Calendar;
-use \AgenDAV\Data\Event;
+use \AgenDAV\CalDAV\Resource\CalendarObject;
 
 class Client
 {
@@ -225,61 +225,61 @@ class Client
     }
 
     /**
-     * Fetches all events from a calendar that are in the range of [start, end)
+     * Fetches all objects from a calendar that are in the range of [start, end)
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
      * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
-     * @return array Array of Event objects
+     * @return array Array of CalendarObject
      */
-    public function fetchEventsFromCalendar(Calendar $calendar, $start, $end)
+    public function fetchObjectsOnCalendar(Calendar $calendar, $start, $end)
     {
         $time_range_filter = new TimeRangeFilter($start, $end);
         $data = $this->report($calendar->getUrl(), $time_range_filter);
 
-        return $this->parseEventCollection($data, $calendar);
+        return $this->buildObjectCollection($data, $calendar);
     }
 
     /**
-     * Fetches the event that has the specified UID
+     * Fetches the calendar object that has the specified UID
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param string $uid Event UID
-     * @return \AgenDAV\Data\Event
-     * @throws \UnexpectedValueException if event is not found
+     * @param string $uid Calendar object UID
+     * @return \AgenDAV\CalDAV\Resource\CalendarObject
+     * @throws \UnexpectedValueException if calendar object is not found
      */
-    public function fetchEventByUid(Calendar $calendar, $uid)
+    public function fetchObjectByUid(Calendar $calendar, $uid)
     {
         $uid_filter = new UidFilter($uid);
         $data = $this->report($calendar->getUrl(), $uid_filter);
 
         if (count($data) === 0) {
-            throw new \UnexpectedValueException('Event '.$uid.' not found at ' . $calendar->getUrl());
+            throw new \UnexpectedValueException('Object '.$uid.' not found at ' . $calendar->getUrl());
         }
 
-        $result = $this->parseEventCollection($data, $calendar);
+        $result = $this->buildObjectCollection($data, $calendar);
 
         reset($result);
-        $event = current($result);
+        $calendar_object = current($result);
 
-        return $event;
+        return $calendar_object;
     }
 
     /**
-     * Puts an event on the CalDAV server
+     * Puts an calendar object on the CalDAV server, inside its parent collection
      *
-     * @param AgenDAV\Data\Event
+     * @param AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
      * @return Guzzle\Http\Message\Response
      */
-    public function putEvent(Event $event)
+    public function uploadCalendarObject(CalendarObject $calendar_object)
     {
         $this->http_client->setContentTypeiCalendar();
 
-        $etag = $event->getEtag();
-        $url = $event->getUrl();
-        $body = $event->getContents();
+        $etag = $calendar_object->getEtag();
+        $url = $calendar_object->getUrl();
+        $body = $calendar_object->getContents();
 
-        // New event, so it should not overwrite any existing events
+        // New object, so it should not overwrite any existing objects
         if ($etag === null) {
             $this->http_client->setHeader('If-None-Match', '*');
         } else {
@@ -290,17 +290,17 @@ class Client
     }
 
     /**
-     * Deletes an Event from the CalDAV server
+     * Deletes a calendar object from the CalDAV server
      *
-     * @param AgenDAV\Data\Event
+     * @param AgenDAV\CalDAV\Resource\CalendarObject
      * @return Guzzle\Http\Message\Response
      */
-    public function deleteEvent(Event $event)
+    public function deleteCalendarObject(CalendarObject $calendar_object)
     {
-        $etag = $event->getEtag();
-        $url = $event->getUrl();
+        $etag = $calendar_object->getEtag();
+        $url = $calendar_object->getUrl();
 
-        // New event, so it should not overwrite any existing events
+        // Existing object, so it should not delete without checking ETags
         if ($etag !== null) {
             $this->http_client->setHeader('If-Match', $etag);
         }
@@ -352,25 +352,25 @@ class Client
 
 
     /**
-     * Converts a pre-parsed REPORT response to an array of events
+     * Converts a pre-parsed REPORT response to an array of CalendarObject
      *
      * @param array Data returned by report()
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these events come from
-     * @return array of Event
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these objects come from
+     * @return array of CalendarObject
      */
-    protected function parseEventCollection(array $events_data, Calendar $calendar)
+    protected function buildObjectCollection(array $raw_data, Calendar $calendar)
     {
         $result = [];
 
-        foreach ($events_data as $url => $data) {
-            $event = new Event($data[Event::DATA]);
-            $event->setCalendar($calendar);
-            $event->setUrl($url);
-            if (isset($data[Event::ETAG])) {
-                $event->setEtag($data[Event::ETAG]);
+        foreach ($raw_data as $url => $data) {
+            $object = new CalendarObject($data[CalendarObject::DATA]);
+            $object->setCalendar($calendar);
+            $object->setUrl($url);
+            if (isset($data[CalendarObject::ETAG])) {
+                $object->setEtag($data[CalendarObject::ETAG]);
             }
 
-            $result[] = $event;
+            $result[] = $object;
         }
 
         return $result;

@@ -30,7 +30,7 @@ class UidFilter implements ComponentFilter
     protected $uid;
 
     /**
-     * @param string $uid Event uid
+     * @param string $uid Calendar object uid
      */
     public function __construct($uid)
     {
