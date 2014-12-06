@@ -363,9 +363,8 @@ class Client
         $result = [];
 
         foreach ($raw_data as $url => $data) {
-            $object = new CalendarObject($data[CalendarObject::DATA]);
+            $object = new CalendarObject($url, $data[CalendarObject::DATA]);
             $object->setCalendar($calendar);
-            $object->setUrl($url);
             if (isset($data[CalendarObject::ETAG])) {
                 $object->setEtag($data[CalendarObject::ETAG]);
             }

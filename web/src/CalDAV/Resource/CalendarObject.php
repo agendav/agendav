@@ -65,17 +65,13 @@ class CalendarObject
 
 
     /**
-     * @param string $contents
      * @param string $url
-     * @param Calendar $calendar
-     * @param string $etag
+     * @param string $contents
      */
-    public function __construct($contents, $url = null, Calendar $calendar = null, $etag = null)
+    public function __construct($url, $contents = null)
     {
-        $this->contents = $contents;
         $this->url = $url;
-        $this->calendar = $calendar;
-        $this->etag = $etag;
+        $this->contents = $contents;
     }
 
     /*

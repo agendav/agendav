@@ -149,7 +149,7 @@ class Events extends MY_Controller
                         'error_interfacefailure'));
         } else {
             // Simulate an event on $href
-            $object = new CalendarObject('', $href);
+            $object = new CalendarObject($href);
             try {
                 $res = $this->client->deleteCalendarObject($object);
             } catch (\Exception $e) {
@@ -466,8 +466,7 @@ class Events extends MY_Controller
             }
         }
 
-        $new_object = new CalendarObject($resource->createCalendar());
-        $new_object->setUrl($href);
+        $new_object = new CalendarObject($href, $resource->createCalendar());
         $new_object->setCalendar($dest_calendar);
         $new_object->setEtag($etag);
         // PUT on server
@@ -666,8 +665,7 @@ class Events extends MY_Controller
             $this->_throw_error($this->i18n->_('messages', 'error_internalgen'));
         }
 
-        $new_object = new CalendarObject($ical->createCalendar());
-        $new_object->setUrl($href);
+        $new_object = new CalendarObject($href, $ical->createCalendar());
         $new_object->setCalendar($calendar);
         $new_object->setEtag($etag);
         // PUT on server
