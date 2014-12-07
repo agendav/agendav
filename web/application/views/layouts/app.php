@@ -3,12 +3,12 @@ echo $header;
 echo $navbar;
 ?>
 <div class="container-fluid">
- <div class="row">
-  <div class="col-md-2" id="sidebar">
+ <div class="wrapper">
+  <div id="sidebar">
    <?php echo $sidebar; ?>
   </div>
 
-  <div class="col-md-10">
+  <div id="content">
    <?php echo $content; ?>
   </div>
  </div>

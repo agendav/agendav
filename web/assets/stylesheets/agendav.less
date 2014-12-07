@@ -97,8 +97,17 @@ span.username {
   background: url(../img/user.png) transparent left center no-repeat;
 }
 
+#wrapper {
+    .make-row();
+}
+
 #sidebar {
+  .make-md-column(2);
   max-width: 200px;
+}
+
+#content {
+  .make-md-column(10);
 }
 
 #footer {
