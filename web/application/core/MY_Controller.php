@@ -183,12 +183,19 @@ class MY_Controller extends CI_Controller
             return new \AgenDAV\XML\Parser();
         });
 
+        // XML toolkit
+        $this->container['xml_toolkit'] = $this->container->share(function($container) {
+            return new \AgenDAV\XML\Toolkit(
+                $container['xml_parser'],
+                $container['xml_generator']
+            );
+        });
+
         // CalDAV client
         $this->container['caldav_client'] = $this->container->share(function($container) {
             return new \AgenDAV\CalDAV\Client(
                 $container['http_client'],
-                $container['xml_generator'],
-                $container['xml_parser']
+                $container['xml_toolkit']
             );
         });
 

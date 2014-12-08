@@ -9,6 +9,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Subscriber\Mock as GuzzleMock;
 use GuzzleHttp\Subscriber\History as GuzzleHistory;
 use AgenDAV\Http\Client as HttpClient;
+use AgenDAV\XML\Toolkit;
 use AgenDAV\XML\Generator;
 use AgenDAV\XML\Parser;
 use AgenDAV\CalDAV\Resource\Calendar;
@@ -643,7 +644,8 @@ BODY;
         $guzzle->getEmitter()->attach($this->history);
         $this->http_client = new HttpClient($guzzle);
 
-        return new Client($this->http_client, $this->xml_generator, $this->xml_parser);
+        $xml_toolkit = new Toolkit($this->xml_parser, $this->xml_generator);
+        return new Client($this->http_client, $xml_toolkit);
     }
 
 

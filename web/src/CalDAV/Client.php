@@ -29,27 +29,21 @@ class Client
 
     protected $http_client;
 
-    /** @type AgenDAV\XML\Generator XML generator */
-    protected $xml_generator;
-
-    /** @type AgenDAV\XML\Parser XML parser */
-    protected $xml_parser;
+    /** @type AgenDAV\XML\Toolkit XML toolkit  */
+    protected $xml_toolkit;
 
 
     /**
      * @param \AgenDAV\Http\Client $http_client
-     * @param \AgenDAV\XML\Generator $xml_generator
-     * @param \AgenDAV\XML\Parser $xml_parser
+     * @param \AgenDAV\XML\Toolkit $xml_toolkit
      */
     public function __construct(
         \AgenDAV\Http\Client $http_client,
-        \AgenDAV\XML\Generator $xml_generator,
-        \AgenDAV\XML\Parser $xml_parser
+        \AgenDAV\XML\Toolkit $xml_toolkit
     )
     {
         $this->http_client = $http_client;
-        $this->xml_generator = $xml_generator;
-        $this->xml_parser = $xml_parser;
+        $this->xml_toolkit = $xml_toolkit;
     }
 
     /**
@@ -81,9 +75,10 @@ class Client
      */
     public function getCurrentUserPrincipal()
     {
-        $body = $this->xml_generator->propfindBody([
-            '{DAV:}current-user-principal'
-        ]);
+        $body = $this->xml_toolkit->generateRequestBody(
+            'PROPFIND',
+            [ '{DAV:}current-user-principal' ]
+        );
 
         $response = $this->propfind('', 0, $body);
 
@@ -107,9 +102,10 @@ class Client
      */
     public function getCalendarHomeSet($principal_url)
     {
-        $body = $this->xml_generator->propfindBody([
-            '{urn:ietf:params:xml:ns:caldav}calendar-home-set'
-        ]);
+        $body = $this->xml_toolkit->generateRequestBody(
+            'PROPFIND',
+            [ '{urn:ietf:params:xml:ns:caldav}calendar-home-set' ]
+        );
 
         $response = $this->propfind($principal_url, 0, $body);
 
@@ -134,14 +130,17 @@ class Client
      */
     public function getCalendars($url, $recurse = true)
     {
-        $body = $this->xml_generator->propfindBody([
+        $body = $this->xml_toolkit->generateRequestBody(
+            'PROPFIND',
+            [
             '{DAV:}resourcetype',
             '{DAV:}displayname',
             '{http://calendarserver.org/ns/}getctag',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set',
             '{http://apple.com/ns/ical/}calendar-color',
             '{http://apple.com/ns/ical/}calendar-order',
-        ]);
+            ]
+        );
 
         $response = $this->propfind($url, $recurse ? 1 : 0, $body);
 
@@ -192,7 +191,10 @@ class Client
     public function createCalendar(Calendar $calendar)
     {
         $calendar_properties = $calendar->getWritableProperties();
-        $body = $this->xml_generator->mkCalendarBody($calendar_properties);
+        $body = $this->xml_toolkit->generateRequestBody(
+            'MKCALENDAR',
+            $calendar_properties
+        );
         $this->http_client->setContentTypeXML();
 
         $this->http_client->request('MKCALENDAR', $calendar->getUrl(), $body);
@@ -207,7 +209,10 @@ class Client
     public function updateCalendar(Calendar $calendar)
     {
         $calendar_properties = $calendar->getWritableProperties();
-        $body = $this->xml_generator->proppatchBody($calendar_properties);
+        $body = $this->xml_toolkit->generateRequestBody(
+            'PROPPATCH',
+            $calendar_properties
+        );
         $this->http_client->setContentTypeXML();
 
         $this->http_client->request('PROPPATCH', $calendar->getUrl(), $body);
@@ -323,7 +328,7 @@ class Client
 
         $contents = (string)$response->getBody();
         $single_element_expected = ($depth === 0);
-        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents, $single_element_expected);
+        $result = $this->xml_toolkit->parseMultiStatus($contents, $single_element_expected);
 
         return $result;
     }
@@ -340,11 +345,11 @@ class Client
     {
         $this->http_client->setHeader('Depth', 1);
         $this->http_client->setContentTypeXML();
-        $body = $this->xml_generator->reportBody($filter);
+        $body = $this->xml_toolkit->generateRequestBody('REPORT', $filter);
         $response = $this->http_client->request('REPORT', $url, $body);
 
         $contents = (string)$response->getBody();
-        $result = $this->xml_parser->extractPropertiesFromMultistatus($contents);
+        $result = $this->xml_toolkit->parseMultiStatus($contents);
 
         return $result;
     }
