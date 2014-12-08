@@ -22,6 +22,7 @@ namespace AgenDAV\Event\Parser;
  */
 
 use AgenDAV\Event;
+use AgenDAV\Event\Parser;
 use AgenDAV\Event\VObjectEvent;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCalendar;

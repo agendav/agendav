@@ -29,7 +29,7 @@ use Sabre\VObject\Component\VEvent;
  * VObject implementation of Events
  *
  */
-class VObjectEvent extends Event
+class VObjectEvent implements Event
 {
     protected $vcalendar;
 
@@ -70,6 +70,16 @@ class VObjectEvent extends Event
 
     public function isAllDay()
     {
+    }
+
+    public function isRecurrent()
+    {
+        return $this->is_recurrent;
+    }
+
+    public function isExpanded()
+    {
+        return $this->is_expanded;
     }
 
     protected function checkIfRecurrent($is_expanded)
