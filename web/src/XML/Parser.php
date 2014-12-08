@@ -45,7 +45,7 @@ class Parser
     }
 
     /**
-     * Parses and returns an XML string from a multistatus.
+     * Parses a multistatus response.
      *
      * By default, returns an associative array containing all the OK properties for
      * each resource found:
@@ -66,6 +66,7 @@ class Parser
      * @param string $body XML multistatus body
      * @param boolean $single_element If set to true, only the first resource
      *                                properties will be returned
+     * @return array
      */
     public function extractPropertiesFromMultistatus($body, $single_element = false)
     {
