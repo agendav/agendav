@@ -979,7 +979,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       count++;
 
       // Some values need to be generated
-      if (calendar.color === undefined || calendar.color === false || calendar.color === null) {
+      if (calendar.color === undefined || calendar.color === null) {
         calendar.color = AgenDAVConf.default_calendar_color;
       } else {
         calendar.color = calendar.color.substr(0,7);

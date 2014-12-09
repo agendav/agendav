@@ -45,4 +45,18 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetEmptyOrNullProperty()
+    {
+        $calendar = new Calendar(
+            '/path',
+            [
+                'EMPTY' => '',
+                'NULL' => null,
+            ]
+        );
+
+        $this->assertNull($calendar->getProperty('EMPTY'));
+        $this->assertNull($calendar->getProperty('NULL'));
+    }
+
 }

@@ -98,9 +98,11 @@ class Calendar
      */
     public function getProperty($property)
     {
-        return array_key_exists($property, $this->data) ?
-            $this->data[$property] :
-            null;
+        if (array_key_exists($property, $this->data) && !empty($this->data[$property])) {
+            return $this->data[$property];
+        }
+
+        return null;
     }
 
 
