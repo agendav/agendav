@@ -48,11 +48,7 @@ $(document).ready(function() {
 
 
 
-  // Login page: focus first input field
-  if ($('body').hasClass('loginpage')) {
-    $('input:submit').button();
-    $('input[name="user"]').focus();
-  } else if ($('body').hasClass('prefspage')) {
+  if ($('body').hasClass('prefspage')) {
     $('#prefs_tabs').tabs();
     $('#prefs_buttons button').button();
     $('#return_button').on('click', function() {

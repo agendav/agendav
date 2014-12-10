@@ -78,10 +78,10 @@ if ( ! function_exists('formelement'))
 {
     function formelement($label, $input, $help = '') {
         ?>
-            <div class="control-group">
+            <div class="form-group">
             <?php 
-            echo form_label($label, '', array('class' => 'control-label'));
-            echo '<div class="controls">' . $input;
+            echo form_label($label, '', array('class' => 'col-sm-3 control-label'));
+            echo '<div class="col-sm-9">' . $input;
             if (!empty($help)) {
                 echo '<p class="help-block">'.$help.'</p>';
             }

@@ -36,7 +36,7 @@ if (isset($logo)) {
 		  'value' => set_value('user'),
 		  'maxlength' => '40',
 		  'size' => '15',
-		  'class' => 'input-medium',
+		  'class' => 'form-control',
 		  'autofocus' => 'autofocus',
 		  );
   echo formelement(
@@ -49,13 +49,13 @@ if (isset($logo)) {
 		  'id' => 'login_passwd',
 		  'value' => '',
 		  'maxlength' => '100',
-		  'class' => 'input-medium',
+		  'class' => 'form-control',
 		  'size' => '15',
 		  );
   echo formelement(
 		  $this->i18n->_('labels', 'password'),
 		  form_password($password));
-  echo form_submit('login', $this->i18n->_('labels', 'login'));
+  echo form_submit('login', $this->i18n->_('labels', 'login'), 'class="btn btn-success"');
   echo form_close();
  ?>
 </div>
