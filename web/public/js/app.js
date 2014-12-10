@@ -49,12 +49,6 @@ $(document).ready(function() {
 
 
   if ($('body').hasClass('prefspage')) {
-    $('#prefs_tabs').tabs();
-    $('#prefs_buttons button').button();
-    $('#return_button').on('click', function() {
-      window.location = AgenDAVConf.base_app_url;
-      return false;
-    });
     $('#save_button').on('click', function() {
       var thisform = $('#prefs_form');
       proceed_send_ajax_form(thisform,

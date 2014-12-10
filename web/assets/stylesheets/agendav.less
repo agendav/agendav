@@ -15,6 +15,7 @@
 @import "@{bootstrap}/scaffolding.less";
 @import "@{bootstrap}/type.less";
 @import "@{bootstrap}/grid.less";
+@import "@{bootstrap}/tables.less";
 @import "@{bootstrap}/forms.less";
 @import "@{bootstrap}/buttons.less";
 
@@ -377,6 +378,7 @@ div.calendar_color {
 
 #prefs_buttons {
   margin-bottom: 10px;
+  .pull-right;
 }
 
 
@@ -395,6 +397,10 @@ span.table_title {
 
 #calendar_view.printing {
     width: 8.3in !important;
+}
+
+div.preferences-container {
+  .make-md-column(7);
 }
 
 

@@ -5,8 +5,9 @@ if (isset($logo)) {
 ?>
 
  <div id="shortcuts" class="block">
-   <div id="shortcut_add_event"><?php echo $this->i18n->_('labels',
-		   'createevent')?></div>
+   <button id="shortcut_add_event" class="btn btn-default btn-block">
+        <i class="fa fa-plus"></i> <?php echo $this->i18n->_('labels', 'createevent')?>
+   </button>
  </div>
 
  <div class="calendar_list ui-widget block" id="own_calendar_list">

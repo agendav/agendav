@@ -83,7 +83,7 @@ if ( ! function_exists('formelement'))
             echo form_label($label, '', array('class' => 'col-sm-3 control-label'));
             echo '<div class="col-sm-9">' . $input;
             if (!empty($help)) {
-                echo '<p class="help-block">'.$help.'</p>';
+                echo '<span class="help-block">'.$help.'</span>';
             }
             echo '</div>';
             ?>
