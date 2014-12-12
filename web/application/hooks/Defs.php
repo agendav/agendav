@@ -23,6 +23,7 @@ class Defs {
     static $jsfiles= array(
             'libs/jquery-1.11.1.js',
             'libs/moment.js',
+            'libs/button.js',
             'libs/jquery-ui.js',
             'libs/jquery.timepicker.js',
             'libs/jquery.freeow.min.js',

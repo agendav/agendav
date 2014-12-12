@@ -238,11 +238,6 @@ $(document).ready(function() {
      *************************************************************/
 
     $('#shortcut_add_event')
-      .button({
-        icons: {
-          primary: 'ui-icon-plusthick'
-        }
-      })
       .on('click', function() {
         var start = $('#calendar_view').fullCalendar('getDate');
         var data = {
@@ -998,7 +993,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       } else {
         // Calendar list received empty twice
         show_error(t('messages','notice_no_calendars'), '');
-        $('#shortcut_add_event').button('disable');
+        $('#shortcut_add_event').attr('disabled', 'disabled');
       }
     } else {
       set_data('last_calendar_count', count);
@@ -1021,7 +1016,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
           collected_event_sources[count]);
       }
 
-      $('#shortcut_add_event').button('enable');
+      $('#shortcut_add_event').removeAttr('disabled');
 
     }
   });

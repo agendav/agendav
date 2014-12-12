@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         development: {
             files: [
                 { expand: true, cwd: 'bower_components/font-awesome/fonts', src: ['**'], dest: 'web/public/font/' },
+                { expand: true, cwd: 'bower_components/bootstrap/js', src: ['button.js'], dest: 'web/public/js/libs/' },
             ],
         }
     },
