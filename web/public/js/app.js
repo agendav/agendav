@@ -127,17 +127,6 @@ $(document).ready(function() {
     });
 
 
-    // Refresh link
-    $('<span id="button-refresh" class="fc-button-refresh">' +
-      '<i class="fa fa-refresh"></i> ' +
-      t('labels', 'refresh') + '</span>')
-      .appendTo('#calendar_view div.fc-right')
-      .button()
-      .on('click', function() {
-        update_calendar_list(true);
-      })
-      .before('<span class="fc-header-space">');
-
     // Date picker above calendar
     dust.render('datepicker_button', dustbase, function(err, out) {
       if (err !== null) {
@@ -1778,12 +1767,9 @@ var get_csrf_token = function get_csrf_token() {
 // Loading indicator
 var loading = function loading(status) {
   var $loading = $('#loading');
-  var $refresh = $('#button-refresh');
   if (status === false) {
-    $refresh.button('option', 'disabled', false);
     $loading.hide();
   } else {
-    $refresh.button('option', 'disabled', true);
     $loading.show();
   }
 };
