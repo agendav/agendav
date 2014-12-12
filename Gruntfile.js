@@ -27,12 +27,12 @@ module.exports = function(grunt) {
     dust: {
         defalts: {
             files: {
-                "web/public/js/templates/templates.js": "web/assets/templates/src/*.dust"
+                "web/public/js/templates/templates.js": "web/assets/templates/*.dust"
             },
             options: {
                 wrapper: false,
                 runtime: false,
-                basePath: "web/assets/templates/src/"
+                basePath: "web/assets/templates/"
             }
         }
     },
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         tasks: ['less:development']
       },
       dust: {
-        files: ['./web/assets/templates/src/*.dust'],
+        files: ['./web/assets/templates/*.dust'],
         tasks: ['dust']
       }
     }
