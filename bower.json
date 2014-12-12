@@ -25,6 +25,7 @@
     "fullcalendar": "~2.2.3",
     "jquery-ui": "~1.11.2",
     "font-awesome": "~4.2.0",
-    "jquery": "~1.11.1"
+    "jquery": "~1.11.1",
+    "dustjs-linkedin": "~2.5.1"
   }
 }

@@ -35,7 +35,7 @@ class Defs {
             'libs/jquery.serializeobject.js',
             'libs/fullcalendar.js',
             'translation.js',
-            'libs/dust-core-1.0.0.js',
+            'templates/dust-core.js',
             'templates/templates.js',
             'datetime.js',
             'app.js',

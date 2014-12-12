@@ -19,7 +19,21 @@ module.exports = function(grunt) {
             files: [
                 { expand: true, cwd: 'bower_components/font-awesome/fonts', src: ['**'], dest: 'web/public/font/' },
                 { expand: true, cwd: 'bower_components/bootstrap/js', src: ['button.js'], dest: 'web/public/js/libs/' },
+                { expand: true, cwd: 'bower_components/dustjs-linkedin/dist', src: ['dust-core.js'], dest: 'web/public/js/templates/' },
             ],
+        }
+    },
+
+    dust: {
+        defalts: {
+            files: {
+                "web/public/js/templates/templates.js": "web/assets/templates/src/*.dust"
+            },
+            options: {
+                wrapper: false,
+                runtime: false,
+                basePath: "web/assets/templates/src/"
+            }
         }
     },
 
@@ -27,6 +41,10 @@ module.exports = function(grunt) {
       less: {
         files: ['./web/assets/stylesheets/*.less'],
         tasks: ['less:development']
+      },
+      dust: {
+        files: ['./web/assets/templates/src/*.dust'],
+        tasks: ['dust']
       }
     }
   });
@@ -36,6 +54,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-dust');
 
   grunt.registerTask('default', [ 'dist' ]);
 
