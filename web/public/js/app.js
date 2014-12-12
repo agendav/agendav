@@ -91,9 +91,9 @@ $(document).ready(function() {
         $(this).fullCalendar('option', 'height', new_height);
       },
       header: {
-        left:   'month,agendaWeek,agendaDay',
+        right:   'month,agendaWeek,agendaDay',
         center: 'title',
-        right:  'today prev,next'
+        left:  'today prev,next'
       },
 
       theme: true, // use jQuery UI themeing
