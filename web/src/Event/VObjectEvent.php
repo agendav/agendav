@@ -22,6 +22,7 @@ namespace AgenDAV\Event;
  */
 
 use AgenDAV\Event;
+use AgenDAV\Event\VObjectExpandedEvent;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 
@@ -33,43 +34,15 @@ class VObjectEvent implements Event
 {
     protected $vcalendar;
 
-    protected $is_expanded;
-
     protected $is_recurrent;
 
     /**
      * @param mixed VCalendar $vcalendar
      */
-    public function __construct(VCalendar $vcalendar, $is_expanded = false)
+    public function __construct(VCalendar $vcalendar)
     {
         $this->vcalendar = $vcalendar;
-
-        $this->is_expanded = $is_expanded;
-        $this->is_recurrent = $this->checkIfRecurrent($is_expanded);
-    }
-
-    public function getSummary()
-    {
-    }
-
-    public function getLocation()
-    {
-    }
-
-    public function getDescription()
-    {
-    }
-
-    public function getStart()
-    {
-    }
-
-    public function getEnd()
-    {
-    }
-
-    public function isAllDay()
-    {
+        $this->is_recurrent = $this->checkIfRecurrent();
     }
 
     public function isRecurrent()
@@ -77,18 +50,40 @@ class VObjectEvent implements Event
         return $this->is_recurrent;
     }
 
-    public function isExpanded()
+    public function expand(\DateTime $start, \DateTime $end)
     {
-        return $this->is_expanded;
+        $expanded_vcalendar = clone $this->vcalendar;
+        $expanded_vcalendar->expand($start, $end);
+
+        $result = [];
+        $rrule = null;
+
+        if ($this->isRecurrent()) {
+            $rrule = $this->vcalendar->VEVENT[0]->RRULE;
+        }
+
+        foreach ($expanded_vcalendar->VEVENT as $vevent) {
+            if ($rrule !== null) {
+                $vevent->RRULE = $rrule;
+            }
+
+            $result[] = new VObjectExpandedEvent($vevent);
+        }
+
+        return $result;
     }
 
-    protected function checkIfRecurrent($is_expanded)
+    protected function checkIfRecurrent()
     {
         $count = count($this->vcalendar->VEVENT);
 
+        if ($count > 1) {
+            return true;
+        }
+
         $vevent_0 = $this->vcalendar->VEVENT[0];
 
-        if ($is_expanded === true || $count > 1 || isset($vevent_0->RRULE)) {
+        if (isset($vevent_0->RRULE)) {
             return true;
         }
 

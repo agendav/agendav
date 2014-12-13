@@ -22,14 +22,23 @@ namespace AgenDAV;
  */
 
 /**
- * This interface models an Event
+ * This interface models an event instance (also known as 'expanded event')
  *
  */
-interface Event
+interface ExpandedEvent
 {
     public function isRecurrent();
 
-    public function expand(\DateTime $start, \DateTime $end);
+    public function getSummary();
 
+    public function getLocation();
+
+    public function getDescription();
+
+    public function getStart();
+
+    public function getEnd();
+
+    public function isAllDay();
 }
 
