@@ -65,10 +65,10 @@ class Prefs extends MY_Controller
         $data_calendar['logo'] = custom_logo($logo, $title);
         $data_calendar['title'] = $title;
 
-        $components['header'] = 
+        $components['header'] =
             $this->load->view('common_header', $data_header, true);
 
-        $components['navbar'] = 
+        $components['navbar'] =
             $this->load->view('navbar', $data_header, true);
 
 
@@ -83,7 +83,12 @@ class Prefs extends MY_Controller
             $hidden_calendars = array();
         }
 
+        // Default calendar
         $default_calendar = $this->prefs->default_calendar;
+
+        // User timezone
+        $timezone = $this->prefs->get('timezone', $this->config->item('default_timezone'));
+        $available_timezones = $this->timezonemanager->getAvailableTimezoneIdentifiers();
 
         $calendar_ids_and_dn = array();
         foreach ($calendar_list as $cal) {
@@ -94,6 +99,8 @@ class Prefs extends MY_Controller
                 'calendar_list' => $calendar_list,
                 'calendar_ids_and_dn' => $calendar_ids_and_dn,
                 'default_calendar' => $default_calendar,
+                'timezone' => $timezone,
+                'available_timezones' => $available_timezones,
                 'hidden_calendars' => $hidden_calendars,
                 );
 
@@ -115,18 +122,26 @@ class Prefs extends MY_Controller
     function save() {
         $calendar = $this->input->post('calendar', true);
         $default_calendar = $this->input->post('default_calendar', true);
+        $timezone = $this->input->post('timezone', true);
 
         if (!is_array($calendar)) {
             log_message('ERROR',
                 'Preferences save attempt with invalid calendars array');
-            $this->_throw_error($this->i18n->_('messages', 
+            $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         }
 
         if ($default_calendar === FALSE) {
             log_message('ERROR',
                 'Preferences save attempt with default_calendar not set');
-            $this->_throw_error($this->i18n->_('messages', 
+            $this->_throw_error($this->i18n->_('messages',
+                        'error_interfacefailure'));
+        }
+
+        if ($timezone === FALSE) {
+            log_message('ERROR',
+                'Preferences save attempt with timezone not set');
+            $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         }
 
@@ -135,6 +150,9 @@ class Prefs extends MY_Controller
 
         // Default calendar
         $current_prefs->default_calendar = $default_calendar;
+
+        // Timezone
+        $current_prefs->timezone = $timezone;
 
         // Calendar processing
         $hidden_calendars = array();
