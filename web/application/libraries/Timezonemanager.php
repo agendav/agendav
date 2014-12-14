@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -31,12 +31,37 @@ class Timezonemanager {
         $this->timezones = array();
     }
 
+    /**
+     * Returns a timezone object, caching it
+     *
+     * @param string $name Timezone name
+     * @return \DateTimeZone
+     */
     public function getTz($name) {
         return (isset($this->timezones[$name])) ?
             $this->timezones[$name] :
             $this->createTz($name);
     }
 
+    /**
+     * Returns an array of timezone names
+     *
+     * @return Array (key = value)
+     */
+    public function getAvailableTimezoneIdentifiers()
+    {
+        $timezones = \DateTimeZone::listIdentifiers();
+
+        // Builds a new array using timezone identifiers as both key and value
+        return array_combine($timezones, $timezones);
+    }
+
+    /**
+     * Creates a DateTimeZone object and caches it
+     *
+     * @param string $name Timezone name
+     * @return \DateTimeZone
+     */
     private function createTz($name) {
         try {
             $tz = new DateTimeZone($name);
