@@ -56,6 +56,22 @@ class Preferences
         }
     }
 
+    /**
+     * Gets an user preference
+     *
+     * @param string $name Preference name
+     * @param mixed $default_value Default value if preference is not set
+     * @return mixed Preference value, or default_value if it is not set
+     */
+    public function get($name, $default_value = null)
+    {
+        if (array_key_exists($name, $this->options)) {
+            return $this->options[$name];
+        }
+
+        return $default_value;
+    }
+
     public function setUsername($username)
     {
         $this->username = $username;

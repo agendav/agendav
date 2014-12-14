@@ -29,4 +29,13 @@ class PreferencesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($prefs->i2, 'v2');
     }
 
+    public function testGetMethod()
+    {
+        $prefs = new Preferences();
+        $prefs->exists = 'This one exists';
+
+        $this->assertEquals('This one exists', $prefs->get('exists', 'default'));
+        $this->assertEquals('default', $prefs->get('does_not_exist', 'default'));
+    }
+
 }
