@@ -29,7 +29,7 @@ interface Event
 {
     public function isRecurrent();
 
-    public function expand(\DateTime $start, \DateTime $end);
+    public function expand(\DateTime $start, \DateTime $end, $url = null, $etag = null);
 
 }
 

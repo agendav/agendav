@@ -21,8 +21,8 @@ namespace AgenDAV\Event;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\ExpandedEvent;
 use AgenDAV\Event;
+use AgenDAV\EventInstance;
 use Sabre\VObject\DateTimeParser;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
@@ -31,21 +31,63 @@ use Sabre\VObject\Component\VEvent;
  * VObject implementation of expanded events (event instances)
  */
 
-class VObjectExpandedEvent implements ExpandedEvent
+class VObjectEventInstance implements EventInstance
 {
 
     protected $vevent;
+
+    protected $url;
+
+    protected $etag;
 
     /**
      * @param mixed $vevent
      * @param mixed $is_recurrent
      */
     public function __construct(
-        VEvent $vevent
+        VEvent $vevent,
+        $url = null,
+        $etag = null
     )
     {
         $this->vevent = $vevent;
+        $this->url = $url;
+        $this->etag = $etag;
         $this->is_recurrent = isset($vevent->RRULE);
+    }
+
+    /*
+     * Getter for url
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /*
+     * Setter for url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /*
+     * Getter for etag
+     */
+    public function getEtag()
+    {
+        return $this->etag;
+    }
+
+    /*
+     * Setter for etag
+     */
+    public function setEtag($etag)
+    {
+        $this->etag = $etag;
+        return $this;
     }
 
     public function isRecurrent()
@@ -55,17 +97,17 @@ class VObjectExpandedEvent implements ExpandedEvent
 
     public function getSummary()
     {
-        return $this->vevent->SUMMARY;
+        return (string) $this->vevent->SUMMARY;
     }
 
     public function getLocation()
     {
-        return $this->vevent->LOCATION;
+        return (string) $this->vevent->LOCATION;
     }
 
     public function getDescription()
     {
-        return $this->vevent->DESCRIPTION;
+        return (string) $this->vevent->DESCRIPTION;
     }
 
     public function getStart()

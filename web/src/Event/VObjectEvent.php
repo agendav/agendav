@@ -22,7 +22,7 @@ namespace AgenDAV\Event;
  */
 
 use AgenDAV\Event;
-use AgenDAV\Event\VObjectExpandedEvent;
+use AgenDAV\Event\VObjectEventInstance;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 
@@ -50,7 +50,7 @@ class VObjectEvent implements Event
         return $this->is_recurrent;
     }
 
-    public function expand(\DateTime $start, \DateTime $end)
+    public function expand(\DateTime $start, \DateTime $end, $url = null, $etag = null)
     {
         $expanded_vcalendar = clone $this->vcalendar;
         $expanded_vcalendar->expand($start, $end);
@@ -67,7 +67,7 @@ class VObjectEvent implements Event
                 $vevent->RRULE = $rrule;
             }
 
-            $result[] = new VObjectExpandedEvent($vevent);
+            $result[] = new VObjectEventInstance($vevent, $url, $etag);
         }
 
         return $result;
