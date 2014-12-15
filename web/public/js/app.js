@@ -133,8 +133,8 @@ $(document).ready(function() {
       show_error(t('messages', 'error_interfacefailure'),
         err.message);
       } else {
-        $('#calendar_view button.fc-next-button')
-          .after(out);
+        $('#calendar_view .fc-center')
+          .append(out);
         $('#datepicker_fullcalendar')
         .datepicker({
           changeYear: true,
@@ -145,7 +145,6 @@ $(document).ready(function() {
           }
         })
         .prev()
-        .button()
         .on('click', function() {
           var current_date = $('#calendar_view').fullCalendar('getDate').toDate();
           $('#datepicker_fullcalendar').datepicker('setDate', current_date);
