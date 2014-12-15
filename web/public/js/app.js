@@ -208,22 +208,6 @@ $(document).ready(function() {
       }
     });
 
-    // Help tooltips
-    $('#sidebar div.buttons').find('img[title],span[title],a[title]').qtip({
-      position: {
-        my: 'top left',
-        at: 'bottom left'
-      },
-      show: {
-        delay: 600
-      },
-      style: {
-        classes: 'ui-tooltip-bootstrap',
-        tip: true
-      }
-    });
-
-
     // Create calendar
     $('#calendar_add')
       .on('click', calendar_create_dialog);
@@ -1129,20 +1113,6 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
       // Disable text selection on this (useful for dblclick)
       $out.disableSelection();
-
-      $out.find('span[title],i[title]').qtip({
-        position: {
-          my: 'top left',
-          at: 'bottom left'
-        },
-        show: {
-          delay: 600
-        },
-        style: {
-          classes: 'ui-tooltip-bootstrap',
-          tip: true
-        }
-      });
     }
   });
 
