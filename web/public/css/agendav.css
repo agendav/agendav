@@ -7454,7 +7454,7 @@ button.close {
   content: "\f20c";
 }
 body {
-  background: url("../img/bg_11.png") #c6c8cd top left repeat-x;
+  background-color: #faf9f7;
 }
 /* jQuery UI font override */
 /*
