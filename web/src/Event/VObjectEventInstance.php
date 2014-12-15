@@ -90,6 +90,11 @@ class VObjectEventInstance implements EventInstance
         return $this;
     }
 
+    public function getUid()
+    {
+        return (string) $this->vevent->UID;
+    }
+
     public function isRecurrent()
     {
         return $this->is_recurrent;
@@ -115,6 +120,11 @@ class VObjectEventInstance implements EventInstance
         return $this->vevent->DTSTART->getDateTime();
     }
 
+    public function getTimeZone()
+    {
+        return $this->getStart()->getDateTimeZone();
+    }
+
     public function getEnd()
     {
         if (isset($this->vevent->DTEND)) {
@@ -134,6 +144,26 @@ class VObjectEventInstance implements EventInstance
         }
 
         return $end;
+    }
+
+    public function getRecurrenceRule()
+    {
+        return (string) $this->vevent->RRULE;
+    }
+
+    public function getClass()
+    {
+        return (string) $this->vevent->CLASS;
+    }
+
+    public function getTransp()
+    {
+        return (string) $this->vevent->TRANSP;
+    }
+
+    public function getRecurrenceId()
+    {
+        return (string) $this->vevent->{'RECURRENCE-ID'};
     }
 
     public function isAllDay()

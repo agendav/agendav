@@ -39,14 +39,34 @@ class EventInstanceTransformer extends Fractal\TransformerAbstract
 
     public function transform(EventInstance $event)
     {
-        return [
+        $result = [
             'calendar' => $this->calendar->getUrl(),
-            'url' => $event->getUrl(),
+            'href' => $event->getUrl(),
+            'uid' => $event->getUid(),
             'title' => $event->getSummary(),
             'start' => $event->getStart()->format('c'),
             'end' => $event->getEnd()->format('c'),
             'allDay' => $event->isAllDay(),
+            // TODO think about going without orig_allday
+            'orig_allday' => $event->isAllDay(),
+            'location' => $event->getLocation(),
+            'icalendar_class' => $event->getClass(),
+            'transp' => $event->getTransp(),
             'description' => $event->getDescription(),
         ];
+
+        $result['id'] = $result['calendar'] . $result['uid'];
+
+        if ($event->isRecurrent()) {
+            $result['rrule'] = $event->getRecurrenceRule();
+            $result['recurrence_id'] = $event->getRecurrenceId();
+
+            // Append RECURRENCE-ID to generated id
+            $result['id'] .= '@' . $result['recurrence_id'];
+        }
+
+        // TODO reminders
+
+        return $result;
     }
 }
