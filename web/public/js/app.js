@@ -558,7 +558,6 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'event_edit_dialog',
       550,
       function() {
-        $('#event_edit_dialog').tabs();
         $('#event_edit_dialog').find('input.summary').focus();
         handle_date_and_time('#event_edit_dialog', data);
         handle_repetitions('#event_edit_dialog', data);
@@ -810,7 +809,6 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     500,
     function() {
       $('input.pick_color').colorPicker();
-      $('#calendar_modify_dialog_tabs').tabs();
 
       if (AgenDAVConf.enable_calendar_sharing === true && data.shared !== true) {
         share_manager();

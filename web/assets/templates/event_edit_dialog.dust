@@ -1,60 +1,62 @@
 <div id="event_edit_dialog">
 {>form_open applyclass="form-horizontal" applyid="event_edit_form" /}
 
-<ul>
-    <li><a href="#tabs-general">
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a role="tab" href="#tabs-general" data-toggle="tab">
      <i class="tab-icon fa fa-tag"></i>
      {@i18n type="labels" name="generaloptions" /}</a>
     </li>
-    <li><a href="#tabs-recurrence">
+    <li role="presentation"><a role="tab" href="#tabs-recurrence" data-toggle="tab">
     <i class="tab-icon fa fa-repeat"></i>
      {@i18n type="labels" name="repeatoptions" /}</a>
     </li>
-    <li><a href="#tabs-reminders">
+    <li role="presentation"><a role="tab" href="#tabs-reminders" data-toggle="tab">
     <i class="tab-icon fa fa-bell"></i>
      {@i18n type="labels" name="remindersoptions" /}</a>
     </li>
-    <li><a href="#tabs-workgroup">
+    <li role="presentation"><a role="tab" href="#tabs-workgroup" data-toggle="tab">
     <i class="tab-icon fa fa-group"></i>
      {@i18n type="labels" name="workgroupoptions" /}</a>
     </li>
 </ul>
 
-<div id="tabs-general">
-{>event_basic_form_part/}
-</div>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tabs-general">
+    {>event_basic_form_part/}
+    </div>
 
-<div id="tabs-recurrence">
-{^unparseable_rrule}
-{>repeat_rule_form:recurrence_components/}
-{:else}
-<input type="hidden" name="unparseable_rrule" value="true" />
-{@i18n type="messages" name="info_repetition_unparseable" /}
-<pre>
-{rrule}
-</pre>
-{/unparseable_rrule}
-</div>
+    <div role="tabpanel" class="tab-pane" id="tabs-recurrence">
+    {^unparseable_rrule}
+    {>repeat_rule_form:recurrence_components/}
+    {:else}
+    <input type="hidden" name="unparseable_rrule" value="true" />
+    {@i18n type="messages" name="info_repetition_unparseable" /}
+    <pre>
+    {rrule}
+    </pre>
+    {/unparseable_rrule}
+    </div>
 
-<div id="tabs-reminders">
-{>reminders_table /}
-</div>
+    <div role="tabpanel" class="tab-pane" id="tabs-reminders">
+    {>reminders_table /}
+    </div>
 
-<div id="tabs-workgroup">
-{>form_element_start for="class" label="privacy" /}
-<select name="class" type="text" class="form-control">
- <option value="PUBLIC"{@eq key="{icalendar_class}" value="PUBLIC"} selected="selected"{/eq}>{@i18n type="labels" name="public"/}</option>
- <option value="PRIVATE"{@eq key="{icalendar_class}" value="PRIVATE"} selected="selected"{/eq}>{@i18n type="labels" name="private"/}</option>
- <option value="CONFIDENTIAL"{@eq key="{icalendar_class}" value="CONFIDENTIAL"} selected="selected"{/eq}>{@i18n type="labels" name="confidential"/}</option>
-</select>
-{>form_element_end/}
+    <div role="tabpanel" class="tab-pane" id="tabs-workgroup">
+    {>form_element_start for="class" label="privacy" /}
+    <select name="class" type="text" class="form-control">
+     <option value="PUBLIC"{@eq key="{icalendar_class}" value="PUBLIC"} selected="selected"{/eq}>{@i18n type="labels" name="public"/}</option>
+     <option value="PRIVATE"{@eq key="{icalendar_class}" value="PRIVATE"} selected="selected"{/eq}>{@i18n type="labels" name="private"/}</option>
+     <option value="CONFIDENTIAL"{@eq key="{icalendar_class}" value="CONFIDENTIAL"} selected="selected"{/eq}>{@i18n type="labels" name="confidential"/}</option>
+    </select>
+    {>form_element_end/}
 
-{>form_element_start for="transp" label="transp" /}
-<select name="transp" type="text" class="form-control">
- <option value="OPAQUE"{@eq key="{transp}" value="OPAQUE"} selected="selected"{/eq}>{@i18n type="labels" name="opaque"/}</option>
- <option value="TRANSPARENT"{@eq key="{transp}" value="TRANSPARENT"} selected="selected"{/eq}>{@i18n type="labels" name="transparent"/}</option>
-</select>
-{>form_element_end/}
-</div>
+    {>form_element_start for="transp" label="transp" /}
+    <select name="transp" type="text" class="form-control">
+     <option value="OPAQUE"{@eq key="{transp}" value="OPAQUE"} selected="selected"{/eq}>{@i18n type="labels" name="opaque"/}</option>
+     <option value="TRANSPARENT"{@eq key="{transp}" value="TRANSPARENT"} selected="selected"{/eq}>{@i18n type="labels" name="transparent"/}</option>
+    </select>
+    {>form_element_end/}
+    </div>
+</div><!-- tab-content -->
 {>form_close/}
 </div>
