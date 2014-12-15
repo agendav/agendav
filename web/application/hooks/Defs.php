@@ -25,6 +25,7 @@ class Defs {
             'libs/moment.js',
             'libs/button.js',
             'libs/jquery-ui.js',
+            'libs/tab.js',
             'libs/jquery.timepicker.js',
             'libs/jquery.freeow.min.js',
             'libs/jquery.colorPicker.js',
