@@ -29,7 +29,7 @@ if (isset($logo)) {
   </div><!-- block contents -->
  </div><!-- block -->
 
- <div class="calendar_list ui-widget block" id="shared_calendar_list">
+ <div class="calendar_list shared_calendars ui-widget block" id="shared_calendar_list">
   <div class="ui-widget-header ui-corner-all">
   <?php echo $this->i18n->_('labels', 'shared_calendars')?>
   </div>
