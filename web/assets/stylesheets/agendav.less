@@ -150,19 +150,16 @@ div.block {
 
 .calendar_list {
   ul, li {
-    list-style: none;
     cursor: default;
-    padding: 0;
-    margin: 0;
   }
 
   li {
     width: inherit;
-    overflow: hidden;
     white-space: nowrap;
-    padding: 4px;
     display: block;
     text-overflow: ellipsis;
+    margin-top: 6px;
+    margin-bottom: 6px;
 
     i.cfg {
       display: none;
@@ -193,9 +190,8 @@ div.block {
       font-weight: bold;
     }
 
-    &.transparent div.calendar_color {
-      background-color: #ffffff !important;
-      border: 1px solid #e0e0e0 !important;
+    &.hidden_calendar, &.hidden_calendar i {
+      color: #eaeaea !important;
     }
   }
 }

@@ -7545,18 +7545,15 @@ div.block .buttons {
 }
 .calendar_list ul,
 .calendar_list li {
-  list-style: none;
   cursor: default;
-  padding: 0;
-  margin: 0;
 }
 .calendar_list li {
   width: inherit;
-  overflow: hidden;
   white-space: nowrap;
-  padding: 4px;
   display: block;
   text-overflow: ellipsis;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 .calendar_list li i.cfg {
   display: none;
@@ -7581,9 +7578,9 @@ div.block .buttons {
 .calendar_list li.default_calendar {
   font-weight: bold;
 }
-.calendar_list li.transparent div.calendar_color {
-  background-color: #ffffff !important;
-  border: 1px solid #e0e0e0 !important;
+.calendar_list li.hidden_calendar,
+.calendar_list li.hidden_calendar i {
+  color: #eaeaea !important;
 }
 /* overlay starts */
 .view_event_details {

@@ -15,7 +15,7 @@ if (isset($logo)) {
   <?php echo
   $this->i18n->_('labels', 'calendars')?></div>
   <div class="ui-widget-content">
-   <ul>
+   <ul class="fa-ul">
    </ul>
    <div class="buttons">
     <?php echo img(array(
@@ -34,7 +34,7 @@ if (isset($logo)) {
   <?php echo $this->i18n->_('labels', 'shared_calendars')?>
   </div>
   <div class="ui-widget-content">
-   <ul>
+   <ul class="fa-ul">
    </ul>
    <div class="buttons">
     <span id="toggle_all_shared_calendars" class="pseudobutton hide_all"

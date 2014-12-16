@@ -176,7 +176,7 @@ $(document).ready(function() {
       calendar_modify_dialog($(calentry[0]).data());
     })
     .on('click', 'li.available_calendar', function(e) {
-      // Make calendar transparent
+      // Make calendar hidden
       toggle_calendar($(this));
     });
 
@@ -936,7 +936,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   });
 
   updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
-    var was_transparent = {};
+    var was_hidden = {};
 
     // Remove old eventSources and remove every list item
     $('.calendar_list li.available_calendar').each(function(index) {
@@ -944,8 +944,8 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       $('#calendar_view').fullCalendar('removeEventSource',
         data.eventsource);
 
-      if ($(this).hasClass('transparent')) {
-        was_transparent[data.calendar] = true;
+      if ($(this).hasClass('hidden_calendar')) {
+        was_hidden[data.calendar] = true;
       }
 
       $(this).remove();
@@ -974,8 +974,8 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
       var li = generate_calendar_entry(calendar);
 
-      if (was_transparent[calendar.calendar]) {
-        li.addClass('transparent');
+      if (was_hidden[calendar.calendar]) {
+        li.addClass('hidden_calendar');
       } else {
         collected_event_sources.push($(li).data().eventsource);
       }
@@ -1728,18 +1728,18 @@ var modify_event_handler = function modify_event_handler() {
 // Shows a calendar
 var show_calendar = function show_calendar(calendar_obj) {
   $('#calendar_view').fullCalendar('addEventSource', calendar_obj.data().eventsource);
-  calendar_obj.removeClass('transparent');
+  calendar_obj.removeClass('hidden_calendar');
 };
 
 // Hides a calendar
 var hide_calendar = function hide_calendar(calendar_obj) {
   $('#calendar_view').fullCalendar('removeEventSource', calendar_obj.data().eventsource);
-  calendar_obj.addClass('transparent');
+  calendar_obj.addClass('hidden_calendar');
 };
 
 // Toggles calendar visibility
 var toggle_calendar = function toggle_calendar(calendar_obj) {
-  if (calendar_obj.hasClass('transparent')) {
+  if (calendar_obj.hasClass('hidden_calendar')) {
     show_calendar(calendar_obj);
   } else {
     hide_calendar(calendar_obj);

@@ -1,8 +1,5 @@
-<li class="available_calendar{?default_calendar} 
-default_calendar{/default_calendar}">
- <div class="calendar_color" 
- style="background-color:
- {?color}{color}{:else}{default_calendar_color}{/color}; border-color: {bordercolor}"></div>
+<li class="available_calendar{?default_calendar} default_calendar{/default_calendar}">
+ <i class="calendar_color fa fa-lg fa-square fa-li" style="color: {?color}{color}{:else}{default_calendar_color}{/color}"></i>
 
  <span class="icons">
  {?shared}
