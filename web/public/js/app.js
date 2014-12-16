@@ -382,10 +382,27 @@ var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFun
 
 /**
  * Generates a dialog
+ *
+ * Parameters:
+ *
+ *  template: dust.js template name
+ *  data: data to be passed to the template
+ *  title: dialog title
+ *  buttons: list of buttons
+ *  divname: div where the dialog will be placed at
+ *  width: dialog width
+ *  pre_func: function to be called before showing the dialog
  */
 
-var show_dialog = function show_dialog(template, data, title, buttons,
-  divname, width, pre_func) {
+var show_dialog = function show_dialog(params) {
+
+  var template = params.template;
+  var data = params.data;
+  var title = params.title;
+  var buttons = params.buttons;
+  var divname = params.divname;
+  var width = params.width;
+  var pre_func = params.pre_func;
 
   dust.render(template, dustbase.push(data), function(err, out) {
     if (err !== null) {
@@ -400,7 +417,9 @@ var show_dialog = function show_dialog(template, data, title, buttons,
         minWidth: width,
         modal: true,
         open: function(event, ui) {
-          pre_func();
+          if (pre_func !== undefined) {
+            pre_func();
+          }
           $('#' + divname).dialog('option', 'position', 'center');
           var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
           add_button_icons(buttons);
@@ -551,23 +570,24 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     }
   ];
 
-  show_dialog('event_edit_dialog',
-      data,
-      title,
-      buttons,
-      'event_edit_dialog',
-      550,
-      function() {
-        $('#event_edit_dialog').find('input.summary').focus();
-        handle_date_and_time('#event_edit_dialog', data);
-        handle_repetitions('#event_edit_dialog', data);
+  show_dialog({
+    template: 'event_edit_dialog',
+    data: data,
+    title: title,
+    buttons: buttons,
+    divname: 'event_edit_dialog',
+    width: 550,
+    pre_func: function() {
+      $('#event_edit_dialog').find('input.summary').focus();
+      handle_date_and_time('#event_edit_dialog', data);
+      handle_repetitions('#event_edit_dialog', data);
 
-        // TODO recurrence rules
+      // TODO recurrence rules
 
-        // Reminders
-        reminders_manager();
-      }
-  );
+      // Reminders
+      reminders_manager();
+    }
+  });
 };
 
 
@@ -702,43 +722,47 @@ var calendar_create_dialog = function calendar_create_dialog() {
     }
   };
 
-  show_dialog('calendar_create_dialog',
-    data,
-    title,
-    [
-      {
-        'text': t('labels', 'create'),
-        'class': 'addicon btn-icon-calendar-add',
-        'click': function() {
-          var params = {
-            url: AgenDAVConf.base_app_url + 'calendars/create',
-            data: $('#calendar_create_form').serializeObject()
-          };
-          destroy_dialog('#calendar_create_dialog');
-          proceed_send_ajax_form(params,
-            function(data) {
-              update_calendar_list(false);
-            },
-            function(data) {
-              // Problem with form data
-              show_error(t('messages', 'error_invalidinput'), data);
-            },
-            function(data) {
-              // Do nothing
-            });
-          }
-      },
-      {
-        'text': t('labels', 'cancel'),
-        'class': 'addicon btn-icon-cancel',
-        'click': function() { destroy_dialog('#calendar_create_dialog'); }
-      }
-    ],
-    'calendar_create_dialog',
-    400,
-    function() {
+  var buttons = [
+  {
+    'text': t('labels', 'create'),
+    'class': 'addicon btn-icon-calendar-add',
+    'click': function() {
+      var params = {
+        url: AgenDAVConf.base_app_url + 'calendars/create',
+        data: $('#calendar_create_form').serializeObject()
+      };
+      destroy_dialog('#calendar_create_dialog');
+      proceed_send_ajax_form(params,
+          function(data) {
+            update_calendar_list(false);
+          },
+          function(data) {
+            // Problem with form data
+            show_error(t('messages', 'error_invalidinput'), data);
+          },
+          function(data) {
+            // Do nothing
+          });
+    }
+  },
+  {
+    'text': t('labels', 'cancel'),
+    'class': 'addicon btn-icon-cancel',
+    'click': function() { destroy_dialog('#calendar_create_dialog'); }
+  }
+  ];
+
+  show_dialog({
+    template: 'calendar_create_dialog',
+    data: data,
+    title: title,
+    buttons: buttons,
+    divname: 'calendar_create_dialog',
+    width: 400,
+    pre_func: function() {
       $('input.pick_color').colorPicker();
-    });
+    }
+  });
 };
 
 // Triggers a dialog for editing calendars
@@ -800,20 +824,21 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     buttons_and_actions.splice(0, 1);
   }
 
-
-  show_dialog('calendar_modify_dialog',
-    data,
-    title,
-    buttons_and_actions,
-    'calendar_modify_dialog',
-    500,
-    function() {
+  show_dialog({
+    template: 'calendar_modify_dialog',
+    data: data,
+    title: title,
+    buttons: buttons_and_actions,
+    divname: 'calendar_modify_dialog',
+    width: 500,
+    pre_func: function() {
       $('input.pick_color').colorPicker();
 
       if (AgenDAVConf.enable_calendar_sharing === true && data.shared !== true) {
         share_manager();
       }
-    });
+    }
+  });
 };
 
 
@@ -835,49 +860,53 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
     }
   });
 
-  show_dialog('calendar_delete_dialog',
-    data,
-    title,
-    [
-    {
-      'text': t('labels', 'yes'),
-      'class': 'addicon btn-icon-calendar-delete',
-      'click': function() {
-        var params = {
-          url: AgenDAVConf.base_app_url + 'calendars/delete',
-          data: $('#calendar_delete_form').serializeObject()
-        };
+  var buttons = [
+  {
+    'text': t('labels', 'yes'),
+    'class': 'addicon btn-icon-calendar-delete',
+    'click': function() {
+      var params = {
+        url: AgenDAVConf.base_app_url + 'calendars/delete',
+        data: $('#calendar_delete_form').serializeObject()
+      };
 
-        destroy_dialog('#calendar_delete_dialog');
+      destroy_dialog('#calendar_delete_dialog');
 
-        proceed_send_ajax_form(params,
-            function(removed_calendar) {
-              // Just remove deleted calendar
-              $('.calendar_list li.available_calendar').each(function(index) {
-                var thiscal = $(this).data();
-                if (thiscal.calendar == removed_calendar) {
-                  $('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
-                  $(this).remove();
-                  return false; // stop looking for calendar
-                }
-              });
-            },
-            function(data) {
-              show_error(t('messages', 'error_caldelete'), data);
-            },
-            function() {});
+      proceed_send_ajax_form(params,
+          function(removed_calendar) {
+            // Just remove deleted calendar
+            $('.calendar_list li.available_calendar').each(function(index) {
+              var thiscal = $(this).data();
+              if (thiscal.calendar == removed_calendar) {
+                $('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
+                $(this).remove();
+                return false; // stop looking for calendar
+              }
+            });
+          },
+          function(data) {
+            show_error(t('messages', 'error_caldelete'), data);
+          },
+          function() {});
 
-      }
-    },
-    {
-      'text': t('labels', 'cancel'),
-      'class': 'addicon btn-icon-cancel',
-      'click': function() { destroy_dialog('#calendar_delete_dialog'); }
     }
-  ],
-  'calendar_delete_dialog',
-  500,
-  function() { });
+  },
+  {
+    'text': t('labels', 'cancel'),
+    'class': 'addicon btn-icon-cancel',
+    'click': function() { destroy_dialog('#calendar_delete_dialog'); }
+  }
+  ];
+
+  show_dialog({
+    template: 'calendar_delete_dialog',
+    data: data,
+    title: title,
+    buttons: buttons,
+    divname: 'calendar_delete_dialog',
+    width: 500
+  });
+
 };
 
 /*
@@ -1636,41 +1665,44 @@ var event_delete_dialog = function event_delete_dialog() {
     }
   });
 
-  show_dialog('event_delete_dialog',
-    data,
-    title,
-    [
-      {
-        'text': t('labels', 'yes'),
-        'class': 'addicon btn-icon-event-delete',
-        'click': function() {
-          var thisform = $('#event_delete_form');
-          proceed_send_ajax_form(thisform,
-            function(rdata) {
-              $('#calendar_view').fullCalendar('removeEvents', data.id);
-            },
-            function(rdata) {
-              show_error(t('messages', 'error_event_not_deleted'), data);
-            },
-            function() {});
+  var buttons = [
+  {
+    'text': t('labels', 'yes'),
+    'class': 'addicon btn-icon-event-delete',
+    'click': function() {
+      var thisform = $('#event_delete_form');
+      proceed_send_ajax_form(thisform,
+          function(rdata) {
+            $('#calendar_view').fullCalendar('removeEvents', data.id);
+          },
+          function(rdata) {
+            show_error(t('messages', 'error_event_not_deleted'), data);
+          },
+          function() {});
 
-          // Destroy dialog
-          destroy_dialog('#event_delete_dialog');
-        }
-      },
-      {
-        'text': t('labels', 'cancel'),
-        'class': 'addicon btn-icon-cancel',
-        'click': function() { destroy_dialog('#event_delete_dialog'); }
-      }
-    ],
-    'event_delete_dialog',
-    400,
-    function() {});
+      // Destroy dialog
+      destroy_dialog('#event_delete_dialog');
+    }
+  },
+  {
+    'text': t('labels', 'cancel'),
+    'class': 'addicon btn-icon-cancel',
+    'click': function() { destroy_dialog('#event_delete_dialog'); }
+  }
+  ];
 
-    // Close tooltip
-    $(ved).qtip('hide');
-    return false;
+  show_dialog({
+    template: 'event_delete_dialog',
+    data: data,
+    title: title,
+    buttons: buttons,
+    divname: 'event_delete_dialog',
+    width: 400
+  });
+
+  // Close tooltip
+  $(ved).qtip('hide');
+  return false;
 };
 
 // Edit/Modify link
