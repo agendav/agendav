@@ -7653,6 +7653,9 @@ div.share_info {
   width: 350px;
   margin: 0.5em auto 0.5em auto;
 }
+div.shared_calendars {
+  display: none;
+}
 /* 
  * Dialog buttons
  * --------------
