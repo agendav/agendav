@@ -128,29 +128,22 @@ $(document).ready(function() {
 
 
     // Date picker above calendar
-    dust.render('datepicker_button', dustbase, function(err, out) {
-      if (err !== null) {
-      show_error(t('messages', 'error_interfacefailure'),
-        err.message);
-      } else {
-        $('#calendar_view .fc-center')
-          .append(out);
-        $('#datepicker_fullcalendar')
-        .datepicker({
-          changeYear: true,
-          closeText: t('labels', 'cancel'),
-          onSelect: function(date, text) {
-            var d = $('#datepicker_fullcalendar').datepicker('getDate');
-            $('#calendar_view').fullCalendar('gotoDate', d);
-          }
-        })
-        .prev()
+    render_template('datepicker_button', {}, function(out) {
+      $('#calendar_view .fc-center').append(out);
+      $('#datepicker_fullcalendar') .datepicker({
+        changeYear: true,
+        closeText: t('labels', 'cancel'),
+        onSelect: function(date, text) {
+          var d = $('#datepicker_fullcalendar').datepicker('getDate');
+          $('#calendar_view').fullCalendar('gotoDate', d);
+        }
+      })
+      .prev()
         .on('click', function() {
           var current_date = $('#calendar_view').fullCalendar('getDate').toDate();
           $('#datepicker_fullcalendar').datepicker('setDate', current_date);
           $('#datepicker_fullcalendar').datepicker('show');
         });
-      }
     });
 
     $('#calendar_view').fullCalendar('renderEvent',
@@ -404,31 +397,26 @@ var show_dialog = function show_dialog(params) {
   var width = params.width;
   var pre_func = params.pre_func;
 
-  dust.render(template, dustbase.push(data), function(err, out) {
-    if (err !== null) {
-      show_error(t('messages', 'error_interfacefailure'),
-        err.message);
-    } else {
-      $('body').append(out);
-      $('#' + divname).dialog({
-        autoOpen: true,
-        buttons: buttons,
-        title: title,
-        minWidth: width,
-        modal: true,
-        open: function(event, ui) {
-          if (pre_func !== undefined) {
-            pre_func();
-          }
-          $('#' + divname).dialog('option', 'position', 'center');
-          var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
-          add_button_icons(buttons);
-        },
-        close: function(ev, ui) {
-          $(this).remove();
+  render_template(template, data, function(out) {
+    $('body').append(out);
+    $('#' + divname).dialog({
+      autoOpen: true,
+      buttons: buttons,
+      title: title,
+      minWidth: width,
+      modal: true,
+      open: function(event, ui) {
+        if (pre_func !== undefined) {
+          pre_func();
         }
-      });
-    }
+        $('#' + divname).dialog('option', 'position', 'center');
+        var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
+        add_button_icons(buttons);
+      },
+      close: function(ev, ui) {
+        $(this).remove();
+      }
+    });
   });
 };
 
@@ -1128,19 +1116,14 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 
   var $out;
 
-  dust.render('calendar_list_entry', dustbase.push(data), function(err, out) {
-    if (err !== null) {
-      show_error(t('messages', 'error_interfacefailure'),
-        err.message);
-    } else {
-      $out = $(out);
+  render_template('calendar_list_entry', data, function(out) {
+    $out = $(out);
 
-      // Associate data + eventsource to new list item
-      $out.data(data);
+    // Associate data + eventsource to new list item
+    $out.data(data);
 
-      // Disable text selection on this (useful for dblclick)
-      $out.disableSelection();
-    }
+    // Disable text selection on this (useful for dblclick)
+    $out.disableSelection();
   });
 
   return $out;
@@ -1324,21 +1307,14 @@ var share_manager = function share_manager() {
           rw: access
         };
 
-        dust.render('calendar_share_row',
-            dustbase.push(new_row_data),
-            function(err, out) {
-              if (err !== null) {
-                show_error(t('messages', 'error_interfacefailure'),
-                  err.message);
-              } else {
-                manager.find('tbody').append(out);
+        render_template('calendar_share_row', new_row_data, function(out) {
+          manager.find('tbody').append(out);
 
-                // Reset form
-                $('#calendar_share_add_username').val('');
-                $('#calendar_share_add_write_access').val('0');
+          // Reset form
+          $('#calendar_share_add_username').val('');
+          $('#calendar_share_add_write_access').val('0');
 
-                share_manager_no_entries_placeholder();
-              }
+          share_manager_no_entries_placeholder();
         });
       }
     }
@@ -1402,20 +1378,14 @@ var reminders_manager = function reminders_manager() {
     if (proceed === true) {
       var $new_reminder_row = $(this).closest('tr');
 
-      dust.render('reminder_row',
-        dustbase.push(formdata), function(err, out) {
-        if (err !== null) {
-          show_error(t('messages', 'error_interfacefailure'),
-            err.message);
-        } else {
-          manager.find('tbody').append(out);
+      render_template('reminder_row', formdata, function(out) {
+        manager.find('tbody').append(out);
 
-          $new_reminder_row.find('input').val('');
-          $new_reminder_row.find('select').val('');
+        $new_reminder_row.find('input').val('');
+        $new_reminder_row.find('select').val('');
 
-          initialize_date_and_time_pickers(tab_reminders);
-          reminders_manager_no_entries_placeholder();
-        }
+        initialize_date_and_time_pickers(tab_reminders);
+        reminders_manager_no_entries_placeholder();
       });
 
     }
@@ -1471,74 +1441,69 @@ var event_render_callback = function event_render_callback(event, element) {
     element.find('.fc-title').after(icon_html);
   }
 
-  dust.render('event_details_popup', dustbase.push(data), function(err, out) {
-    if (err !== null) {
-      show_error(t('messages', 'error_interfacefailure'),
-        err.message);
-    } else {
-      element.qtip({
-        content: {
-          text: out,
-          title: {
-            text: event.title,
-            button: true
-          }
-        },
-        position: {
-          my: 'bottom center',
-          at: 'top center',
-          viewport: $('#calendar_view')
-        },
-        style: {
-          classes: 'view_event_details qtip-bootstrap qtip-shadow',
-          tip: true
-        },
-        show: {
-          target: $('#calendar_view'),
-          event: false,
-          solo: $('#calendar_view'),
-          effect: false
-        },
-        hide: {
-          fixed: true,
-          event: 'unfocus',
-          effect: false
-        },
+  render_template('event_details_popup', data, function(out) {
+    element.qtip({
+      content: {
+        text: out,
+        title: {
+          text: event.title,
+          button: true
+        }
+      },
+      position: {
+        my: 'bottom center',
+        at: 'top center',
+        viewport: $('#calendar_view')
+      },
+      style: {
+        classes: 'view_event_details qtip-bootstrap qtip-shadow',
+        tip: true
+      },
+      show: {
+        target: $('#calendar_view'),
+        event: false,
+        solo: $('#calendar_view'),
+        effect: false
+      },
+      hide: {
+        fixed: true,
+        event: 'unfocus',
+        effect: false
+      },
 
-        events: {
-          show: function (event, api) {
-            // Attach modify and delete events
-            $(this)
+      events: {
+        show: function (event, api) {
+          // Attach modify and delete events
+          $(this)
             .find('button.link_delete_event')
             .off('click')
             .on('click', function() {
               event_delete_dialog();
             })
-            .end()
+          .end()
             .find('button.link_modify_event')
             .off('click')
             .on('click', function() {
               modify_event_handler();
             });
 
-            $(window).on('keydown.tooltipevents', function(e) {
-              if(e.keyCode === $.ui.keyCode.ESCAPE) {
-                api.hide(e);
-              }
-            });
+          $(window).on('keydown.tooltipevents', function(e) {
+            if(e.keyCode === $.ui.keyCode.ESCAPE) {
+              api.hide(e);
+            }
+          });
 
-            // Icons
-            var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
-            add_button_icons(links);
-          },
+          // Icons
+          var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
+          add_button_icons(links);
+        },
 
-          hide: function (event, api) {
-            remove_data('current_event');
-            $(window).off('keydown.tooltipevents');
-          }
+        hide: function (event, api) {
+          remove_data('current_event');
+          $(window).off('keydown.tooltipevents');
         }
-      });
-    }
+      }
+    });
   });
 };
 
@@ -1810,6 +1775,20 @@ var calendar_list = function calendar_list() {
   }
 
   return result;
+};
+
+
+// Renders a template
+//
+var render_template = function render(template_name, template_data, callback) {
+  dust.render(template_name, dustbase.push(template_data), function(err, out) {
+    if (err !== null) {
+      show_error(t('messages', 'error_interfacefailure'), err.message);
+      return;
+    }
+
+    callback(out);
+  });
 };
 
 // vim: sw=2 tabstop=2
