@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     },
 
     dust: {
-        defalts: {
+        defaults: {
             files: {
                 "web/public/js/templates/templates.js": "web/assets/templates/*.dust"
             },
