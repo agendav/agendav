@@ -26,6 +26,7 @@
     "jquery-ui": "~1.11.2",
     "font-awesome": "~4.2.0",
     "jquery": "~1.11.1",
-    "dustjs-linkedin": "~2.5.1"
+    "dustjs-linkedin": "~2.5.1",
+    "dustjs-helpers": "linkedin/dustjs-helpers#~1.5.0"
   }
 }
