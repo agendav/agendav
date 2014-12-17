@@ -36,6 +36,8 @@ class VObjectEvent implements Event
 
     protected $is_recurrent;
 
+    protected $exceptions;
+
     /**
      * @param mixed VCalendar $vcalendar
      */
@@ -43,6 +45,11 @@ class VObjectEvent implements Event
     {
         $this->vcalendar = $vcalendar;
         $this->is_recurrent = $this->checkIfRecurrent();
+        $this->exceptions = [];
+
+        if ($this->is_recurrent) {
+            $this->exceptions = $this->findRecurrenceExceptions($vcalendar);
+        }
     }
 
     public function isRecurrent()
@@ -73,6 +80,12 @@ class VObjectEvent implements Event
         return $result;
     }
 
+    public function isException($recurrence_id)
+    {
+        return isset($this->exceptions[$recurrence_id]);
+    }
+
+
     protected function checkIfRecurrent()
     {
         $count = count($this->vcalendar->VEVENT);
@@ -88,6 +101,20 @@ class VObjectEvent implements Event
         }
 
         return false;
+    }
+
+    protected function findRecurrenceExceptions(VCalendar $vcalendar)
+    {
+        $result = [];
+        foreach ($vcalendar->VEVENT as $vevent) {
+            $recurrence_id = $vevent->{'RECURRENCE-ID'};
+            if ($recurrence_id !== null) {
+                $recurrence_id = (string)$recurrence_id;
+                $result[$recurrence_id] = true;
+            }
+        }
+
+        return $result;
     }
 }
 

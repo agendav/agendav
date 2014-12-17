@@ -31,5 +31,13 @@ interface Event
 
     public function expand(\DateTime $start, \DateTime $end, $url = null, $etag = null);
 
+    /**
+     * Checks if a RECURRENCE-ID string (that could be the result of
+     * expanding a recurrent event) was an exception to the rule or not
+     *
+     * @param string $recurrence_id RECURRENCE-ID value
+     * @return boolean
+     */
+    public function isException($recurrence_id);
 }
 
