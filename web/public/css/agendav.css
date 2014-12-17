@@ -4769,10 +4769,10 @@ a.list-group-item-danger.active:focus {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .panel-body {
-  padding: 15px;
+  padding: 5px;
 }
 .panel-heading {
-  padding: 10px 15px;
+  padding: 5px 10px;
   border-bottom: 1px solid transparent;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
@@ -4790,7 +4790,7 @@ a.list-group-item-danger.active:focus {
   color: inherit;
 }
 .panel-footer {
-  padding: 10px 15px;
+  padding: 5px;
   background-color: #f5f5f5;
   border-top: 1px solid #dddddd;
   border-bottom-right-radius: 3px;
@@ -4831,8 +4831,8 @@ a.list-group-item-danger.active:focus {
 .panel > .table caption,
 .panel > .table-responsive > .table caption,
 .panel > .panel-collapse > .table caption {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .panel > .table:first-child,
 .panel > .table-responsive:first-child > .table:first-child {
@@ -7530,18 +7530,8 @@ label.suboption {
 div#logo {
   text-align: center;
 }
-div.block {
-  position: relative;
-  margin: 0 auto 5% auto;
-}
-div.block .ui-widget-header {
-  padding: 0.4em 1em 0.3em 1em;
-}
-div.block .buttons {
+div.panel-body .buttons {
   text-align: right;
-}
-#calendar_add {
-  margin: 5px;
 }
 .calendar_list ul,
 .calendar_list li {
@@ -7682,8 +7672,9 @@ div.selecthelper {
 .fc-button {
   cursor: default !important;
 }
-span.fc-title {
-  font-size: 1.1em !important;
+.fc-event {
+  font-size: 13px !important;
+  line-height: 1.42857143 !important;
 }
 span.fc-event-icons {
   font-size: 90%;
