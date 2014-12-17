@@ -37,6 +37,7 @@ class Defs {
             'libs/fullcalendar.js',
             'translation.js',
             'templates/dust-core.js',
+            'templates/dust-helpers.js',
             'templates/templates.js',
             'datetime.js',
             'app.js',

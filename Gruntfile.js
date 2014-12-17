@@ -21,6 +21,7 @@ module.exports = function(grunt) {
                 { expand: true, cwd: 'bower_components/bootstrap/js', src: ['button.js', 'tab.js'], dest: 'web/public/js/libs/' },
                 { expand: true, cwd: 'bower_components/bootstrap/fonts', src: ['**'], dest: 'web/public/font/' },
                 { expand: true, cwd: 'bower_components/dustjs-linkedin/dist', src: ['dust-core.js'], dest: 'web/public/js/templates/' },
+                { expand: true, cwd: 'bower_components/dustjs-helpers/dist', src: ['dust-helpers.js'], dest: 'web/public/js/templates/' },
             ],
         }
     },
