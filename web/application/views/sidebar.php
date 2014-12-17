@@ -10,30 +10,24 @@ if (isset($logo)) {
    </button>
  </div>
 
- <div class="calendar_list ui-widget block" id="own_calendar_list">
-  <div class="ui-widget-header ui-corner-all">
-  <?php echo
-  $this->i18n->_('labels', 'calendars')?></div>
-  <div class="ui-widget-content">
+ <div class="calendar_list panel panel-default" id="own_calendar_list">
+  <div class="panel-heading">
+    <h3 class="panel-title"><?php echo $this->i18n->_('labels', 'calendars')?></h3>
+  </div>
+  <div class="panel-body">
    <ul class="fa-ul">
    </ul>
    <div class="buttons">
-    <?php echo img(array(
-				'id' => 'calendar_add',
-				'class' => 'pseudobutton',
-				'src' => 'img/calendar_add.png',
-				'alt' => $this->i18n->_('labels', 'create'),
-				'title' => $this->i18n->_('labels', 'create'),
-				)); ?>
+   <i title="<?php echo  $this->i18n->_('labels', 'create')?>" id="calendar_add" class="pseudobutton fa fa-plus"></i>
    </div>
-  </div><!-- block contents -->
- </div><!-- block -->
+  </div><!-- panel-body -->
+ </div><!-- panel -->
 
- <div class="calendar_list shared_calendars ui-widget block" id="shared_calendar_list">
-  <div class="ui-widget-header ui-corner-all">
-  <?php echo $this->i18n->_('labels', 'shared_calendars')?>
+ <div class="calendar_list panel panel-default shared_calendars " id="shared_calendar_list">
+  <div class="panel-heading">
+    <h3 class="panel-title"><?php echo $this->i18n->_('labels', 'shared_calendars')?></h3>
   </div>
-  <div class="ui-widget-content">
+  <div class="panel-body">
    <ul class="fa-ul">
    </ul>
    <div class="buttons">
@@ -41,8 +35,8 @@ if (isset($logo)) {
     title="<?php echo $this->i18n->_('labels', 'toggleallcalendars')?>"
     ><i class="fa fa-eye-slash fa-lg"></i></span>
    </div>
-  </div>
- </div><!-- block -->
+  </div><!-- panel-body -->
+ </div><!-- panel -->
 
  <div id="footer">
 <?php
