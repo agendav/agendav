@@ -371,7 +371,7 @@ class Icshelper {
 
 
         // Internal fullCalendar id
-        $this_event['id'] = $calendar . $this_event['uid'];
+        $this_event['id'] = $calendar . $this_event['uid'] . '@' . $start->format(\DateTime::ISO8601);
 
 
 
