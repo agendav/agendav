@@ -1019,6 +1019,10 @@ var update_calendar_list = function update_calendar_list(maskbody) {
     var calendars = data.calendars;
 
     $.each(calendars, function(key, calendar) {
+      // This is a hidden calendar
+      if (AgenDAVUserPrefs.hidden_calendars[calendar.calendar] !== undefined) {
+        return true; // Equivalent to 'continue' inside a $.each
+      }
       count++;
 
       // Some values need to be generated
@@ -1032,6 +1036,10 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         (calendar.fg == '#000000' ? 0.8 : 1.8)).toString();
 
       var li = generate_calendar_entry(calendar);
+
+      if (calendar.calendar === AgenDAVUserPrefs.default_calendar) {
+        li.addClass('default_calendar');
+      }
 
       if (was_hidden[calendar.calendar]) {
         li.addClass('hidden_calendar');
