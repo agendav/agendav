@@ -7697,13 +7697,8 @@ td.fc-day-number.fc-today {
   height: 20px;
   display: none;
 }
-div.calendar_color {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
+i.calendar_color {
   margin-right: 6px;
-  border-width: 1px;
-  border-style: solid;
 }
 .pseudobutton {
   color: #8C8C8C;
