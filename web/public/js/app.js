@@ -190,7 +190,6 @@ $(document).ready(function() {
         },
 
         hide: function (event, api) {
-          remove_data('current_event');
           $(window).off('keydown.tooltipevents');
         }
       }
@@ -1527,7 +1526,10 @@ var event_click_callback = function event_click_callback(event,
     event_data.disable_actions = true;
   }
 
-  if (event_data === get_data('current_event')) {
+  var previous_event = get_data('current_event');
+  if (previous_event !== undefined && event_data.id === get_data('current_event').id) {
+    remove_data('current_event');
+    return;
   }
 
   set_data('current_event', event_data);
