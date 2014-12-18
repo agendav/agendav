@@ -7530,6 +7530,9 @@ label.suboption {
 div#logo {
   text-align: center;
 }
+#sidebar div.block {
+  margin-bottom: 15px;
+}
 div.panel-body .buttons {
   text-align: right;
 }
