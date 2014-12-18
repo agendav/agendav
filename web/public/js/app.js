@@ -158,7 +158,7 @@ $(document).ready(function() {
       },
       hide: {
         fixed: true,
-        event: 'unfocus',
+        event: 'unfocus click',
         effect: false
       },
 
@@ -191,6 +191,7 @@ $(document).ready(function() {
 
         hide: function (event, api) {
           $(window).off('keydown.tooltipevents');
+          remove_data('current_event');
         }
       }
 
@@ -1524,12 +1525,6 @@ var event_click_callback = function event_click_callback(event,
 
   if (caldata.shared === true && caldata.rw == '0') {
     event_data.disable_actions = true;
-  }
-
-  var previous_event = get_data('current_event');
-  if (previous_event !== undefined && event_data.id === get_data('current_event').id) {
-    remove_data('current_event');
-    return;
   }
 
   set_data('current_event', event_data);
