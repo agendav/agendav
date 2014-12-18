@@ -158,7 +158,7 @@ $(document).ready(function() {
       },
       hide: {
         fixed: true,
-        event: 'unfocus click',
+        event: 'unfocus',
         effect: false
       },
 
