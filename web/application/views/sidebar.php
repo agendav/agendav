@@ -10,7 +10,7 @@ if (isset($logo)) {
    </button>
  </div>
 
- <div class="calendar_list panel panel-default" id="own_calendar_list">
+ <div class="block calendar_list panel panel-default" id="own_calendar_list">
   <div class="panel-heading">
     <h3 class="panel-title"><?php echo $this->i18n->_('labels', 'calendars')?></h3>
   </div>
@@ -23,7 +23,7 @@ if (isset($logo)) {
   </div><!-- panel-body -->
  </div><!-- panel -->
 
- <div class="calendar_list panel panel-default shared_calendars " id="shared_calendar_list">
+ <div class="block calendar_list panel panel-default shared_calendars " id="shared_calendar_list">
   <div class="panel-heading">
     <h3 class="panel-title"><?php echo $this->i18n->_('labels', 'shared_calendars')?></h3>
   </div>
