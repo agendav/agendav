@@ -124,11 +124,8 @@ class Prefs extends MY_Controller
         $default_calendar = $this->input->post('default_calendar', true);
         $timezone = $this->input->post('timezone', true);
 
-        if (!is_array($calendar)) {
-            log_message('ERROR',
-                'Preferences save attempt with invalid calendars array');
-            $this->_throw_error($this->i18n->_('messages',
-                        'error_interfacefailure'));
+        if ($calendar === false) {
+            $calendar = [];
         }
 
         if ($default_calendar === FALSE) {
@@ -157,15 +154,9 @@ class Prefs extends MY_Controller
         // Calendar processing
         $hidden_calendars = array();
 
-        foreach ($calendar as $c) {
-            if (!isset($c['name'])) {
-                log_message('ERROR',
-                        'Skipping invalid calendar when saving preferences, '
-                        .'name not found');
-            } else {
-                if (isset($c['hide']) && $c['hide'] == '1') {
-                    $hidden_calendars[$c['name']] = true;
-                }
+        foreach ($calendar as $url => $settings) {
+            if (isset($settings['hide'])) {
+                $hidden_calendars[$url] = true;
             }
         }
 

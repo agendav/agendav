@@ -8,16 +8,14 @@
 <tbody>
 <?php
 foreach ($calendar_list as $cal):
+    $url = $cal->getUrl();
 ?>
  <tr>
   <td>
   <?php echo $cal->getProperty(AgenDAV\CalDAV\Resource\Calendar::DISPLAYNAME) ?>
   </td>
   <td style="text-align: center">
-    <input type="hidden" name="calendar[][name]" value="<?php echo
-	$cal->getUrl() ?>" />
-    <input type="checkbox" name="calendar[][hide]"
-	value="1"<?php echo (isset($hidden_calendars[$cal->getUrl()])) ? ' checked="checked"' : ''?>>
+  <input type="checkbox" name="calendar[<?php echo $url ?>][hide]" value="1"<?php echo (isset($hidden_calendars[$url])) ? ' checked="checked"' : ''?>>
   </td>
  </tr>
 <?php
