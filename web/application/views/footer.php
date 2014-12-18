@@ -1,3 +1,5 @@
+<div id="event_details">
+</div>
 <div id="popup" class="freeow freeow-top-right"></div>
 <?php
 $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');

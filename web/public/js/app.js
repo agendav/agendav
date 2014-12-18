@@ -18,8 +18,8 @@
  */
 
 // Useful names
-var ved = 'div.view_event_details';
 var dustbase = {};
+var event_details_popup;
 
 
 $(document).ready(function() {
@@ -125,6 +125,77 @@ $(document).ready(function() {
       eventResize: event_resize_callback,
       eventDrop: event_drop_callback
     });
+
+    // Event details popup
+    event_details_popup = $('#event_details').qtip({
+      id: 'event_details',
+      prerender: false,
+      content: {
+        text: '.',
+        title: {
+          button: true
+        }
+      },
+      position: {
+        my: 'bottom center',
+        at: 'top center',
+        target: 'mouse',
+        viewport: $('#calendar_view'),
+        adjust: {
+          mouse: false,
+          scroll: false
+        }
+      },
+      style: {
+        classes: 'view_event_details qtip-bootstrap qtip-shadow',
+        tip: true
+      },
+      show: {
+        target: $('#calendar_view'),
+        event: false,
+        solo: $('#calendar_view'),
+        effect: false
+      },
+      hide: {
+        fixed: true,
+        event: 'unfocus',
+        effect: false
+      },
+
+      events: {
+        show: function (event, api) {
+          // Attach modify and delete events
+          $(this)
+            .find('button.link_delete_event')
+            .off('click')
+            .on('click', function() {
+              event_delete_dialog();
+            })
+          .end()
+            .find('button.link_modify_event')
+            .off('click')
+            .on('click', function() {
+              modify_event_handler();
+            });
+
+          $(window).on('keydown.tooltipevents', function(e) {
+            if(e.keyCode === $.ui.keyCode.ESCAPE) {
+              api.hide(e);
+            }
+          });
+
+          // Icons
+          var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
+          add_button_icons(links);
+        },
+
+        hide: function (event, api) {
+          remove_data('current_event');
+          $(window).off('keydown.tooltipevents');
+        }
+      }
+
+    }).qtip('api');
 
 
     // Date picker above calendar
@@ -1411,16 +1482,6 @@ var reminders_manager_no_entries_placeholder = function reminders_manager_no_ent
  * Event render
  */
 var event_render_callback = function event_render_callback(event, element) {
-  var caldata = get_calendar_data(event.calendar);
-  var data = $.extend({},
-    event,
-    { caldata: caldata });
-
-  if (caldata !== undefined && caldata.shared === true &&
-    caldata.rw == '0') {
-    $.extend(data, { disable_actions: true });
-  }
-
   // Icons
   var icons = [];
 
@@ -1441,70 +1502,6 @@ var event_render_callback = function event_render_callback(event, element) {
     element.find('.fc-title').after(icon_html);
   }
 
-  render_template('event_details_popup', data, function(out) {
-    element.qtip({
-      content: {
-        text: out,
-        title: {
-          text: event.title,
-          button: true
-        }
-      },
-      position: {
-        my: 'bottom center',
-        at: 'top center',
-        viewport: $('#calendar_view')
-      },
-      style: {
-        classes: 'view_event_details qtip-bootstrap qtip-shadow',
-        tip: true
-      },
-      show: {
-        target: $('#calendar_view'),
-        event: false,
-        solo: $('#calendar_view'),
-        effect: false
-      },
-      hide: {
-        fixed: true,
-        event: 'unfocus',
-        effect: false
-      },
-
-      events: {
-        show: function (event, api) {
-          // Attach modify and delete events
-          $(this)
-            .find('button.link_delete_event')
-            .off('click')
-            .on('click', function() {
-              event_delete_dialog();
-            })
-          .end()
-            .find('button.link_modify_event')
-            .off('click')
-            .on('click', function() {
-              modify_event_handler();
-            });
-
-          $(window).on('keydown.tooltipevents', function(e) {
-            if(e.keyCode === $.ui.keyCode.ESCAPE) {
-              api.hide(e);
-            }
-          });
-
-          // Icons
-          var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
-          add_button_icons(links);
-        },
-
-        hide: function (event, api) {
-          remove_data('current_event');
-          $(window).off('keydown.tooltipevents');
-        }
-      }
-    });
-  });
 };
 
 /**
@@ -1512,15 +1509,39 @@ var event_render_callback = function event_render_callback(event, element) {
  */
 var event_click_callback = function event_click_callback(event,
     jsEvent, view) {
-  var current_event = get_data('current_event');
 
-  if (current_event == event) {
-    $(ved).qtip('hide');
-    remove_data('current_event');
-  } else {
-    set_data('current_event', event);
-    $(this).qtip('show', jsEvent);
+  var caldata = get_calendar_data(event.calendar);
+
+  if (caldata === undefined) {
+    show_error(t('messages', 'error_interfacefailure'),
+        t('messages', 'error_calendarnotfound', {'%calendar' : event.calendar }));
+    return;
   }
+
+  var event_data = $.extend({},
+    event,
+    { caldata: caldata }
+  );
+
+  if (caldata.shared === true && caldata.rw == '0') {
+    event_data.disable_actions = true;
+  }
+
+  if (event_data === get_data('current_event')) {
+  }
+
+  set_data('current_event', event_data);
+
+  // Event details popup
+  render_template('event_details_popup', event_data, function(out) {
+    event_details_popup.set({
+      'content.text': out,
+      'content.title': event_data.title,
+    })
+    .reposition(jsEvent)
+    .show(jsEvent);
+  });
+
 
 };
 
@@ -1666,7 +1687,7 @@ var event_delete_dialog = function event_delete_dialog() {
   });
 
   // Close tooltip
-  $(ved).qtip('hide');
+  event_details_popup.hide();
   return false;
 };
 
@@ -1683,7 +1704,7 @@ var modify_event_handler = function modify_event_handler() {
   }
 
   // Close tooltip
-  $(ved).qtip('hide');
+  event_details_popup.hide();
 
   event_edit_dialog('modify', event_data);
 
