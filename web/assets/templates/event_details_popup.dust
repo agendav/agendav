@@ -13,7 +13,7 @@
 
 {?description}
 <dt>{@i18n type="labels" name="description"/}</dt>
-<dd>{formatted_description}</dd>
+<dd>{description}</dd>
 {/description}
 
 {?rrule}
