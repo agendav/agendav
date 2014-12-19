@@ -141,8 +141,14 @@ class Js_generator extends MY_Controller
             $this->user->getUsername()
         );
 
+        $data_preferences = [
+            'default_calendar' => $preferences->get('default_calendar', null),
+            'hidden_calendars' => $preferences->get('hidden_calendars', []),
+            'timezone' => $preferences->get('timezone', $this->config->item('default_timezone')),
+        ];
+
         $this->load->view('js_code/userprefs', array(
-            'preferences' => $preferences->getAll(),
+            'preferences' => $data_preferences,
         ));
     }
 
