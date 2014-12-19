@@ -545,13 +545,6 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
   var form_url = AgenDAVConf.base_app_url + 'events/modify';
   var title;
 
-  // Transform Date to Moment objects
-  if (data.start === undefined) {
-    data.start = moment();
-  } else {
-    data.start = moment(data.start);
-  }
-
   if (type == 'new') {
     title = t('labels', 'createevent');
 
@@ -1713,6 +1706,15 @@ var modify_event_handler = function modify_event_handler() {
 
   // Close tooltip
   event_details_popup.hide();
+
+
+  // Adapt for editing all day events. Fullcalendar uses exclusive ends,
+  // so the real end date for all day events has to be altered here
+  if (event_data.allDay === true) {
+    var adapted_end = moment(event_data.end);
+    adapted_end.subtract(1, 'days');
+    event_data.end = adapted_end;
+  }
 
   event_edit_dialog('modify', event_data);
 
