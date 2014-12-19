@@ -17,6 +17,7 @@ use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\Event\Parser as EventParser;
 use AgenDAV\CalDAV\Share\Permissions;
 use AgenDAV\CalDAV\Share\ACL;
+use AgenDAV\Event\Parser as EventParser;
 
 /**
  * @author jorge
