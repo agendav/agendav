@@ -69,14 +69,21 @@ AgenDAVDateAndTime.formatEventDates = function formatEventDates(event_data) {
         return result;
     }
 
-    result = start.format('LLLL');
+    result = start.format('LL') + " " + this.formatTime(start);
 
-    var end_format_string = 'LLLL';
+    var end_string = end.format('LL') + " " + this.formatTime(end);
     if (start.isSame(end, 'day')) {
-        end_format_string = 'LT'; // Just show the time
+        end_string = this.formatTime(end); // Just show the time
     }
-    result += " - " + end.format(end_format_string);
+    result += " - " + end_string;
 
     return result;
+};
 
+
+/**
+ * Returns a moment object time formatted
+ */
+AgenDAVDateAndTime.formatTime = function formatTime(datetime) {
+    return datetime.format(AgenDAVConf.prefs_timeformat_moment);
 };
