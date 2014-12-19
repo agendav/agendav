@@ -322,10 +322,6 @@ class Icshelper {
                     $description = $val;
                     $this_event['description'] = 
                         preg_replace('/\\\n|\\\r/', "\n", $description);
-
-                    // Format
-                    $this_event['formatted_description'] =
-                        preg_replace('/\\\n|\\\r/', '<br />', $description);
                     break;
                 case 'rrule':
                     $this_event['recurrence_components'] = $val;
