@@ -43,10 +43,39 @@ AgenDAVDateAndTime.endDate = function endDate(end, start) {
         generated_end = moment(start).add(1, 'hours');
     } else {
         generated_end = moment(end);
-        if (start.diff(generated_end) == 0) {
+        if (start.diff(generated_end) === 0) {
             generated_end = moment(start).add(1, 'hours');
         }
     }
 
     return generated_end;
+};
+
+/**
+ * Parses a set of start and end moment objects and returns them formatted
+ */
+AgenDAVDateAndTime.formatEventDates = function formatEventDates(event_data) {
+    var result = '';
+    var start = event_data.start;
+    var end = event_data.end;
+
+    if (event_data.allDay === true) {
+        result = start.format('LL');
+        if (!start.isSame(end, 'day')) {
+            result += " - " + end.format('LL');
+        }
+
+        return result;
+    }
+
+    result = start.format('LLLL');
+
+    var end_format_string = 'LLLL';
+    if (start.isSame(end, 'day')) {
+        end_format_string = 'LT'; // Just show the time
+    }
+    result += " - " + end.format(end_format_string);
+
+    return result;
+
 };
