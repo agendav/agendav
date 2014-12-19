@@ -406,8 +406,6 @@ class Icshelper {
             $start->setTime(0, 0, 0);
             $end->setTime(0, 0, 0);
 
-            $end->sub(new DateInterval('P1D'))->add(new
-                    DateInterval('PT1H'));
 
             if (isset($this_event['expanded'])) {
                 $orig_start->setTime(0, 0, 0);

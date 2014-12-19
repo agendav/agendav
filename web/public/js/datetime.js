@@ -56,10 +56,11 @@ AgenDAVDateAndTime.endDate = function endDate(end, start) {
  */
 AgenDAVDateAndTime.formatEventDates = function formatEventDates(event_data) {
     var result = '';
-    var start = event_data.start;
-    var end = event_data.end;
+    var start = moment(event_data.start);
+    var end = moment(event_data.end);
 
     if (event_data.allDay === true) {
+        end.subtract(1, 'days');
         result = start.format('LL');
         if (!start.isSame(end, 'day')) {
             result += " - " + end.format('LL');
