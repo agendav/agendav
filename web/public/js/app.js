@@ -1535,6 +1535,9 @@ var event_click_callback = function event_click_callback(event,
     event_data.disable_actions = true;
   }
 
+  event_data.readable_dates = AgenDAVDateAndTime.formatEventDates(event_data);
+  //event_data.readable_dates = event_data.formatted_start + " " + event_data.formatted_end;
+
   set_data('current_event', event_data);
 
   // Event details popup

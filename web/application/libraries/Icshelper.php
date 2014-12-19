@@ -445,45 +445,6 @@ class Icshelper {
             $this_event['orig_end'] = $orig_end->format(DateTime::ISO8601);
         }
 
-        // Readable dates for start and end
-
-        // Keep all day events as they are (UTC)
-        $system_tz = date_default_timezone_get();
-        if (!isset($this_event['allDay']) 
-                || $this_event['allDay']  !== TRUE) {
-            date_default_timezone_set($this->tz->getName());
-        }
-
-        // Load date format
-        $date_format = $this->CI->i18n->_('formats', 'full_date_strftime');
-
-        $this_event['formatted_start'] = strftime($date_format, $ts_start); 
-
-        if (isset($this_event['allDay']) && $this_event['allDay'] == TRUE) {
-            // Next day?
-            if ($start->format('Ymd') == $end->format('Ymd')) {
-                $this_event['formatted_end'] =
-                    '('.$this->CI->i18n->_('labels', 'allday').')';
-            } else {
-                $this_event['formatted_end'] = strftime($date_format, $ts_end); 
-            }
-        } else {
-            // Are they in the same day?
-            $this_event['formatted_start'] .= ' ' 
-                . $this->CI->dates->strftime_time($ts_start, $start);
-            if ($start->format('Ymd') == $end->format('Ymd')) {
-                $this_event['formatted_end'] =
-                    $this->CI->dates->strftime_time($ts_end, $end);
-            } else {
-                $this_event['formatted_end'] =
-                    strftime($date_format, $ts_end) . ' ' .
-                    $this->CI->dates->strftime_time($ts_end, $end);
-            }
-        }
-
-        // Restore TZ
-        date_default_timezone_set($system_tz);
-
         // Empty title?
         if (!isset($this_event['title'])) {
             $this_event['title'] = $this->CI->i18n->_('labels', 'untitled');
