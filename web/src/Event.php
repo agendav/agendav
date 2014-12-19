@@ -39,5 +39,12 @@ interface Event
      * @return boolean
      */
     public function isException($recurrence_id);
+
+    /**
+     * Returns an iCalendar string representation of this event
+     *
+     * @return string
+     */
+    public function render();
 }
 

@@ -85,6 +85,13 @@ class VObjectEvent implements Event
         return isset($this->exceptions[$recurrence_id]);
     }
 
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        return $this->vcalendar->serialize();
+    }
 
     protected function checkIfRecurrent()
     {

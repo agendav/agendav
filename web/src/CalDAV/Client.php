@@ -287,7 +287,7 @@ class Client
 
         $etag = $calendar_object->getEtag();
         $url = $calendar_object->getUrl();
-        $body = $calendar_object->getContents();
+        $body = $calendar_object->getRenderedEvent();
 
         // New object, so it should not overwrite any existing objects
         if ($etag === null) {

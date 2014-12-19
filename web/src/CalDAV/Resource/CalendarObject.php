@@ -159,6 +159,14 @@ class CalendarObject
         return $this;
     }
 
+    /**
+     * Gets all event instances for a range of dates. If the event is not
+     * recurrent, a single instance will be returned
+     *
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return AgenDAV\EventInstance[]
+     */
     public function getEventInstances(\DateTime $start, \DateTime $end)
     {
         $events = $this->getEvent()->expand(
@@ -170,4 +178,16 @@ class CalendarObject
 
         return $events;
     }
+
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    public function getRenderedEvent()
+    {
+        return $this->getEvent()->render();
+    }
+
 }
