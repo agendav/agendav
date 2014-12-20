@@ -38,6 +38,8 @@ class VObjectEvent implements Event
 
     protected $exceptions;
 
+    protected $uid;
+
     /**
      * @param mixed VCalendar $vcalendar
      */
@@ -50,11 +52,18 @@ class VObjectEvent implements Event
         if ($this->is_recurrent) {
             $this->exceptions = $this->findRecurrenceExceptions($vcalendar);
         }
+
+        $this->uid = $this->findUid();
     }
 
     public function isRecurrent()
     {
         return $this->is_recurrent;
+    }
+
+    public function getUid()
+    {
+        return $this->uid;
     }
 
     public function expand(\DateTime $start, \DateTime $end)
@@ -122,6 +131,17 @@ class VObjectEvent implements Event
         }
 
         return $result;
+    }
+
+    protected function findUid()
+    {
+        $base_component = $this->vcalendar->getBaseComponent('VEVENT');
+
+        if ($base_component === null) {
+            throw new \LogicException('Called findUid on an empty Event');
+        }
+
+        return $base_component->UID;
     }
 }
 

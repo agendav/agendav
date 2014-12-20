@@ -35,6 +35,11 @@ interface Event
     public function isRecurrent();
 
     /**
+     * Returns the UID for all event instances under this event
+     */
+    public function getUid();
+
+    /**
      * Gets all event instances for a range of dates. If the event is not
      * recurrent, a single instance will be returned
      *
