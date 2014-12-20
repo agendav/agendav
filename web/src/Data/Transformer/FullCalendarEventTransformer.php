@@ -24,24 +24,16 @@ namespace AgenDAV\Data\Transformer;
 use League\Fractal;
 use AgenDAV\EventInstance;
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Event\FullCalendarEvent;
 
-class EventInstanceTransformer extends Fractal\TransformerAbstract
+class FullCalendarEventTransformer extends Fractal\TransformerAbstract
 {
-    private $calendar;
-
-    /**
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
-     */
-    public function __construct(Calendar $calendar)
+    public function transform(FullCalendarEvent $fc_event)
     {
-        $this->calendar = $calendar;
-    }
-
-    public function transform(EventInstance $event)
-    {
+        $event = $fc_event->getEvent();
         $result = [
-            'calendar' => $this->calendar->getUrl(),
-            'href' => $event->getUrl(),
+            'calendar' => $fc_event->getCalendarUrl(),
+            'href' => $fc_event->getUrl(),
             'uid' => $event->getUid(),
             'title' => $event->getSummary(),
             'start' => $event->getStart()->format('c'),

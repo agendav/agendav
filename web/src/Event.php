@@ -27,9 +27,22 @@ namespace AgenDAV;
  */
 interface Event
 {
+    /**
+     * Checks if current event is recurrent
+     *
+     * @return bool
+     */
     public function isRecurrent();
 
-    public function expand(\DateTime $start, \DateTime $end, $url = null, $etag = null);
+    /**
+     * Gets all event instances for a range of dates. If the event is not
+     * recurrent, a single instance will be returned
+     *
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return AgenDAV\EventInstance[]
+     */
+    public function expand(\DateTime $start, \DateTime $end);
 
     /**
      * Checks if a RECURRENCE-ID string (that could be the result of

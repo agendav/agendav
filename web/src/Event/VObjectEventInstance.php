@@ -36,58 +36,15 @@ class VObjectEventInstance implements EventInstance
 
     protected $vevent;
 
-    protected $url;
-
-    protected $etag;
-
     /**
      * @param mixed $vevent
-     * @param mixed $is_recurrent
      */
     public function __construct(
-        VEvent $vevent,
-        $url = null,
-        $etag = null
+        VEvent $vevent
     )
     {
         $this->vevent = $vevent;
-        $this->url = $url;
-        $this->etag = $etag;
         $this->is_recurrent = isset($vevent->RRULE);
-    }
-
-    /*
-     * Getter for url
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /*
-     * Setter for url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    /*
-     * Getter for etag
-     */
-    public function getEtag()
-    {
-        return $this->etag;
-    }
-
-    /*
-     * Setter for etag
-     */
-    public function setEtag($etag)
-    {
-        $this->etag = $etag;
-        return $this;
     }
 
     public function getUid()

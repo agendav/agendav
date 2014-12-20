@@ -27,14 +27,6 @@ namespace AgenDAV;
  */
 interface EventInstance
 {
-    public function getUrl();
-
-    public function getEtag();
-
-    public function setUrl($url);
-
-    public function setEtag($etag);
-
     public function isRecurrent();
 
     public function getSummary();

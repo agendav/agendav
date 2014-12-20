@@ -22,7 +22,8 @@
 use AgenDAV\Data\Reminder;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
-use AgenDAV\Data\Transformer\EventInstanceTransformer;
+use AgenDAV\Event\FullCalendarEvent;
+use AgenDAV\Data\Transformer\FullCalendarEventTransformer;
 use AgenDAV\Data\Serializer\PlainSerializer;;
 use AgenDAV\DateHelper;
 use League\Fractal\Resource\Collection;
@@ -113,15 +114,20 @@ class Events extends MY_Controller
             $time_fetch = microtime(true);
             $result = [];
 
-
             foreach ($objects as $object) {
-                $instances = $object->getEventInstances($start_obj, $end_obj);
-                $result = array_merge($result, $instances);
+                $master_event = $object->getEvent();
+                $instances = $master_event->expand($start_obj, $end_obj);
+                $fullcalendar_events = FullCalendarEvent::generateFrom(
+                    $object,
+                    $calendar,
+                    $instances
+                );
+                $result = array_merge($result, $fullcalendar_events);
             }
 
             $fractal = $this->container['fractal'];
             $fractal->setSerializer(new PlainSerializer);
-            $transformer = new EventInstanceTransformer($calendar);
+            $transformer = new FullCalendarEventTransformer();
             $collection = new Collection($result, $transformer);
 
             $time_end = microtime(true);

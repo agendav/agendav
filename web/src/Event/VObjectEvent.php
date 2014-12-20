@@ -57,7 +57,7 @@ class VObjectEvent implements Event
         return $this->is_recurrent;
     }
 
-    public function expand(\DateTime $start, \DateTime $end, $url = null, $etag = null)
+    public function expand(\DateTime $start, \DateTime $end)
     {
         $expanded_vcalendar = clone $this->vcalendar;
         $expanded_vcalendar->expand($start, $end);
@@ -74,7 +74,7 @@ class VObjectEvent implements Event
                 $vevent->RRULE = $rrule;
             }
 
-            $result[] = new VObjectEventInstance($vevent, $url, $etag);
+            $result[] = new VObjectEventInstance($vevent);
         }
 
         return $result;
