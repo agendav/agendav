@@ -198,6 +198,16 @@ $(document).ready(function() {
     }).qtip('api');
 
 
+    // Refresh link
+    $('<button id="button-refresh" class="btn btn-default">' +
+      '<i class="fa fa-refresh"></i> ' +
+      t('labels', 'refresh') + '</button>')
+      .appendTo('#calendar_view div.fc-right')
+      .on('click', function() {
+        update_calendar_list(true);
+      })
+      .before('<span class="fc-header-space">');
+
     // Date picker above calendar
     render_template('datepicker_button', {}, function(out) {
       $('#calendar_view .fc-center').append(out);
@@ -1756,9 +1766,12 @@ var get_csrf_token = function get_csrf_token() {
 // Loading indicator
 var loading = function loading(status) {
   var $loading = $('#loading');
+  var $refresh = $('#button-refresh');
   if (status === false) {
+    $refresh.removeAttr('disabled');
     $loading.hide();
   } else {
+    $refresh.attr('disabled', 'disabled');
     $loading.show();
   }
 };
