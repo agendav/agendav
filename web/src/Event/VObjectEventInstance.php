@@ -40,9 +40,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * @param mixed $vevent
      */
-    public function __construct(
-        VEvent $vevent
-    )
+    public function __construct(VEvent $vevent)
     {
         $this->vevent = $vevent;
         $this->is_recurrent = isset($vevent->RRULE);
@@ -189,6 +187,27 @@ class VObjectEventInstance implements EventInstance
         return $vevent;
     }
 
+    /**
+     * Adds (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
+     *
+     * @return void
+     */
+    public function updateChangeProperties()
+    {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        if (!isset($this->vevent->CREATED) || !isset($this->vevent->DTSTAMP)) {
+            $this->vevent->CREATED = $now;
+            $this->vevent->DTSTAMP = $now;
+        }
+
+        $this->vevent->{'LAST-MODIFIED'} = $now;
+        $sequence = 0;
+        if (isset($this->vevent->SEQUENCE)) {
+            $sequence = $this->vevent->SEQUENCE->getValue() + 1;
+        }
+        $this->vevent->SEQUENCE = $sequence;
+    }
+
     protected function setAllDay(
         \Sabre\VObject\Property\ICalendar\DateTime $property,
         $all_day = false
@@ -198,4 +217,5 @@ class VObjectEventInstance implements EventInstance
             $property['VALUE'] = 'DATE';
         }
     }
+
 }

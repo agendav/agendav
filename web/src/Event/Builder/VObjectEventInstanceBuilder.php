@@ -41,6 +41,8 @@ class VObjectEventInstanceBuilder implements EventInstanceBuilder
      */
     public function createFor(\AgenDAV\Event $event)
     {
-        return $event->createEventInstance();
+        $result = $event->createEventInstance();
+
+        return $result;
     }
 }

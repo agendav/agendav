@@ -60,5 +60,12 @@ interface EventInstance
     public function setStart(\DateTime $start, $all_day = false);
 
     public function setEnd(\DateTime $end, $all_day = false);
+
+    /**
+     * Adds (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
+     *
+     * @return void
+     */
+    public function updateChangeProperties();
 }
 

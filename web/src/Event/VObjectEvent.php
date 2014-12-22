@@ -144,12 +144,16 @@ class VObjectEvent implements Event
         // VObject sets a RECURRENCE-ID when expanding, so let's see if
         // this is a result of expanding or an actual recurrence exception
         $recurrence_id = $instance->getRecurrenceId();
+
+        // TODO implement support for recurrent events
+        // TODO (important) merge current VEVENT properties with new VEVENT
         if ($this->isException($recurrence_id)) {
             // Not supported
             throw new \Exception('Recurrent events modification is not supported');
         }
 
         $instance->removeRecurrenceId();
+        $instance->updateChangeProperties();
         $vevent = $instance->getInternalVEvent();
 
         $base = $this->vcalendar->getBaseComponent('VEVENT');
