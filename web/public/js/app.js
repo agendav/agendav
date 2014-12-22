@@ -166,13 +166,13 @@ $(document).ready(function() {
         show: function (event, api) {
           // Attach modify and delete events
           $(this)
-            .find('button.link_delete_event')
+            .find('.remove')
             .off('click')
             .on('click', function() {
               event_delete_dialog();
             })
           .end()
-            .find('button.link_modify_event')
+            .find('.modify')
             .off('click')
             .on('click', function() {
               modify_event_handler();
@@ -183,10 +183,6 @@ $(document).ready(function() {
               api.hide(e);
             }
           });
-
-          // Icons
-          var links = api.elements.tooltip.find('div.actions').find('button.addicon').button();
-          add_button_icons(links);
         },
 
         hide: function (event, api) {
