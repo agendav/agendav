@@ -175,6 +175,20 @@ class VObjectEventInstance implements EventInstance
         $this->setAllDay($this->vevent->DTEND, $all_day);
     }
 
+    public function removeRecurrenceId()
+    {
+        if (isset($this->vevent->{'RECURRENCE-ID'})) {
+            $this->vevent->remove('RECURRENCE-ID');
+        }
+    }
+
+    public function getInternalVEvent()
+    {
+        $vevent = clone $this->vevent;
+
+        return $vevent;
+    }
+
     protected function setAllDay(
         \Sabre\VObject\Property\ICalendar\DateTime $property,
         $all_day = false

@@ -55,6 +55,8 @@ interface EventInstance
 
     public function setTransp($transp);
 
+    public function getRecurrenceId();
+
     public function setStart(\DateTime $start, $all_day = false);
 
     public function setEnd(\DateTime $end, $all_day = false);

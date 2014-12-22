@@ -22,6 +22,7 @@ namespace AgenDAV\Event;
  */
 
 use AgenDAV\Event;
+use AgenDAV\EventInstance;
 use AgenDAV\Event\VObjectEventInstance;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
@@ -127,6 +128,36 @@ class VObjectEvent implements Event
         $vevent->UID = $this->uid;
 
         return new VObjectEventInstance($vevent);
+    }
+
+
+    /**
+     * Adds an event instance to this event
+     */
+    public function addEventInstance(EventInstance $instance)
+    {
+        // Check if UID matches
+        if ($instance->getUid() !== $this->getUid()) {
+            throw new \InvalidArgumentException('Event instance UID and self do not match');
+        }
+
+        // VObject sets a RECURRENCE-ID when expanding, so let's see if
+        // this is a result of expanding or an actual recurrence exception
+        $recurrence_id = $instance->getRecurrenceId();
+        if ($this->isException($recurrence_id)) {
+            // Not supported
+            throw new \Exception('Recurrent events modification is not supported');
+        }
+
+        $instance->removeRecurrenceId();
+        $vevent = $instance->getInternalVEvent();
+
+        $base = $this->vcalendar->getBaseComponent('VEVENT');
+        if ($base === null) {
+            $this->vcalendar->add($vevent);
+        } else {
+            $this->vcalendar->VEVENT = $vevent;
+        }
     }
 
     protected function checkIfRecurrent()
