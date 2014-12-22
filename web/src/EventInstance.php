@@ -35,10 +35,28 @@ interface EventInstance
 
     public function getDescription();
 
+    public function getClass();
+
+    public function getTransp();
+
     public function getStart();
 
     public function getEnd();
 
     public function isAllDay();
+
+    public function setSummary($summary);
+
+    public function setLocation($location);
+
+    public function setDescription($description);
+
+    public function setClass($class);
+
+    public function setTransp($transp);
+
+    public function setStart(\DateTime $start, $all_day = false);
+
+    public function setEnd(\DateTime $end, $all_day = false);
 }
 

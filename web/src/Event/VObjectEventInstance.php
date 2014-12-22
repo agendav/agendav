@@ -26,6 +26,7 @@ use AgenDAV\EventInstance;
 use Sabre\VObject\DateTimeParser;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
+use Sabre\VObject\Property\ICalendar\DateTime;
 
 /**
  * VObject implementation of expanded events (event instances)
@@ -130,5 +131,57 @@ class VObjectEventInstance implements EventInstance
         }
 
         return false;
+    }
+
+    public function setSummary($summary)
+    {
+        $this->vevent->SUMMARY = $summary;
+    }
+
+    public function setLocation($location)
+    {
+        $this->vevent->LOCATION = $location;
+    }
+
+    public function setDescription($description)
+    {
+        $this->vevent->DESCRIPTION = $description;
+    }
+
+    public function setClass($class)
+    {
+        $this->vevent->CLASS = $class;
+    }
+
+    public function setTransp($transp)
+    {
+        $this->vevent->TRANSP = $transp;
+    }
+
+    public function setStart(\DateTime $start, $all_day = false)
+    {
+        $this->vevent->DTSTART = $start;
+        $this->setAllDay($this->vevent->DTSTART, $all_day);
+    }
+
+    public function setEnd(\DateTime $end, $all_day = false)
+    {
+        // We prefer DTEND to DURATION
+        if (isset($this->vevent->DURATION)) {
+            $this->vevent->remove('DURATION');
+        }
+
+        $this->vevent->DTEND = $end;
+        $this->setAllDay($this->vevent->DTEND, $all_day);
+    }
+
+    protected function setAllDay(
+        \Sabre\VObject\Property\ICalendar\DateTime $property,
+        $all_day = false
+    )
+    {
+        if ($all_day === true) {
+            $property['VALUE'] = 'DATE';
+        }
     }
 }
