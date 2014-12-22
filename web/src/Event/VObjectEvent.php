@@ -111,6 +111,24 @@ class VObjectEvent implements Event
         return $this->vcalendar->serialize();
     }
 
+    /**
+     * Creates a new VObjectInstance for this event
+     *
+     * @return \AgenDAV\Event\VObjectEventInstance
+     * @throws \LogicException If $event has no UID assigned
+     */
+    public function createEventInstance()
+    {
+        if ($this->uid === null) {
+            throw new \LogicException('Event has not been assigned a UID yet!');
+        }
+
+        $vevent = $this->vcalendar->create('VEVENT');
+        $vevent->UID = $this->uid;
+
+        return new VObjectEventInstance($vevent);
+    }
+
     protected function checkIfRecurrent()
     {
         $count = count($this->vcalendar->VEVENT);

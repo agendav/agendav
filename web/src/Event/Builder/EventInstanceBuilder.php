@@ -21,33 +21,17 @@ namespace AgenDAV\Event\Builder;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\Uuid;
-use AgenDAV\Event;
-use AgenDAV\Event\VObjectEvent;
-use Sabre\VObject\Component\VCalendar;
-
 /**
- * Class used to generate new VObjectEvents
+ * Interface to generate a new EventInstance
  */
-class VObjectEventBuilder implements EventBuilder
+interface EventInstanceBuilder
 {
     /**
-     * Creates an empty Event object
+     * Creates an empty EventInstance object
      *
-     * @param string $uid Optional UID for this event
-     * @return \AgenDAV\Event
+     * @param \AgenDAV\Event $event Event this instance will be attached to
+     * @return \AgenDAV\EventInstance
+     * @throws \LogicException If $event has no UID assigned
      */
-    public function create($uid = null)
-    {
-        $vcalendar = new VCalendar();
-
-        if ($uid === null) {
-            $uid = \AgenDAV\Uuid::generate();
-        }
-
-        $event = new VObjectEvent($vcalendar);
-        $event->setUid($uid);
-
-        return $event;
-    }
+    public function createFor(\AgenDAV\Event $event);
 }
