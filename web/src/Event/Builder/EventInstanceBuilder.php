@@ -34,4 +34,26 @@ interface EventInstanceBuilder
      * @throws \LogicException If $event has no UID assigned
      */
     public function createFor(\AgenDAV\Event $event);
+
+    /**
+     * Creates an EventInstance object after receiving an array of properties
+     * with the following keys:
+     *
+     * summary
+     * location
+     * start_date
+     * start_time
+     * end_date
+     * end_time
+     * allday
+     * description
+     * class
+     * transp
+     * TODO: recurrence rules, reminders, recurrence-id
+     *
+     * @param \AgenDAV\Event $event Parent event
+     * @param array $attributes
+     * @return \AgenDAV\EventInstance
+     */
+    public function createFromInput(\AgenDAV\Event $event, array $attributes);
 }

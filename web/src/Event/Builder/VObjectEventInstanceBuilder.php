@@ -45,4 +45,69 @@ class VObjectEventInstanceBuilder implements EventInstanceBuilder
 
         return $result;
     }
+
+    /**
+     * Creates an EventInstance object after receiving an array of properties
+     * with the following keys:
+     *
+     * summary
+     * location
+     * start_date
+     * start_time
+     * end_date
+     * end_time
+     * allday
+     * description
+     * class
+     * transp
+     * TODO: recurrence rules, reminders, recurrence-id
+     *
+     * @param \AgenDAV\Event $event Parent event
+     * @param array $attributes
+     * @return \AgenDAV\EventInstance
+     */
+    public function createFromInput(\AgenDAV\Event $event, array $attributes)
+    {
+        $instance = $this->createFor($event);
+        foreach ($attributes as $key => $value) {
+            $this->assignProperty($instance, $key, $value);
+        }
+
+        // TODO: set DTSTART and DTEND
+        /*
+            case 'start_date':
+            case 'start_time':
+            case 'end_date':
+            case 'end_time':
+            case 'allday':
+         */
+
+        return $instance;
+    }
+
+
+    protected function assignProperty(
+        \AgenDAV\Event\VObjectEventInstance $instance,
+        $key,
+        $value
+    )
+    {
+        switch ($key) {
+            case 'summary':
+                $instance->setSummary($value);
+                break;
+            case 'location':
+                $instance->setLocation($value);
+                break;
+            case 'description':
+                $instance->setDescription($value);
+                break;
+            case 'class':
+                $instance->setClass($value);
+                break;
+            case 'transp':
+                $instance->setTransp($value);
+                break;
+        }
+    }
 }
