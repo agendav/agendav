@@ -1261,24 +1261,6 @@ var reload_event_source = function reload_event_source(cal) {
 
 };
 
-/*
- * Round a Date timestamp
- */
-var timestamp = function timestamp(d) {
-  return Math.round(d.getTime()/1000);
-};
-
-/*
- * Returns a full date+time string which is easily parseable
- */
-var fulldatetimestring = function fulldatetimestring(d) {
-  if (d !== undefined) {
-    return $.fullCalendar.formatDate(d, 'yyyyMMddHHmmss');
-  } else {
-    return undefined;
-  }
-};
-
 /**
  * Returns a foreground color for a given background
  */
