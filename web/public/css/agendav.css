@@ -7596,10 +7596,6 @@ div.panel-body .buttons {
 .view_event_details span.rrule_raw_value {
   font-family: monospace;
 }
-.view_event_details .actions {
-  margin-top: 5px;
-  text-align: right;
-}
 .view_event_details .ui-tooltip-content {
   line-height: 150%;
 }
@@ -7749,4 +7745,16 @@ div.preferences-container {
 }
 .nav-tabs {
   margin-bottom: 15px;
+}
+a.remove,
+button.remove {
+  color: #d9534f;
+}
+div.actions {
+  border-top: 1px solid #eeeeee;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+div.actions span.right {
+  float: right;
 }
