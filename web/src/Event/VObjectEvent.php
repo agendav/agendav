@@ -66,6 +66,15 @@ class VObjectEvent implements Event
         return $this->uid;
     }
 
+    public function setUid($uid)
+    {
+        if ($this->uid !== null) {
+            throw new \LogicException('Existing uids cannot be changed');
+        }
+
+        $this->uid = $uid;
+    }
+
     public function expand(\DateTime $start, \DateTime $end)
     {
         $expanded_vcalendar = clone $this->vcalendar;
@@ -138,7 +147,7 @@ class VObjectEvent implements Event
         $base_component = $this->vcalendar->getBaseComponent('VEVENT');
 
         if ($base_component === null) {
-            throw new \LogicException('Called findUid on an empty Event');
+            return null;
         }
 
         return $base_component->UID;
