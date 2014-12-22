@@ -50,17 +50,17 @@ $(document).ready(function() {
 
   if ($('body').hasClass('prefspage')) {
     $('#save_button').on('click', function() {
-      var thisform = $('#prefs_form');
-      proceed_send_ajax_form(thisform,
-        function(data) {
+      send_form({
+        form_object: $('#prefs_form'),
+        success: function(data) {
           show_success(
             t('messages', 'info_prefssaved'),
             '');
         },
-        function(data) {
+        exception: function(data) {
           show_error(t('messages', 'error_invalidinput'), data);
-        },
-        function(data) { });
+        }
+      });
     });
   } else if ($('body').hasClass('calendarpage')) {
     set_default_datepicker_options();
@@ -390,11 +390,21 @@ var remove_data = function remove_data(name) {
 /**
  * Sends a form via AJAX.
  *
- * This way we respect CodeIgniter CSRF tokens
+ * Parameters:
+ *
+ *  form_object: form element object
+ *  success: success callback
+ *  exception: exception callback
+ *  error: error callback
+ *
  */
-var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFunc, exceptionFunc,
-    errorFunc) {
+var send_form = function send_form(params) {
   var url, data;
+
+  var formObj = params.form_object;
+  var successFunc = params.success || function() {};
+  var exceptionFunc = params.exception || function() {};
+  var errorFunc = params.error || function() {};
 
   if (formObj instanceof jQuery) {
     url = $(formObj).attr('action');
@@ -602,23 +612,21 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'text': t('labels', 'save'),
       'class': 'addicon btn-icon-event-edit',
       'click': function() {
-        var thisform = $('#event_edit_form');
-        proceed_send_ajax_form(thisform,
-            function(data) {
-              // Reload only affected calendars
-              $.each(data, function(k, cal) {
-                reload_event_source(cal);
-              });
-
-              destroy_dialog('#event_edit_dialog');
-            },
-            function(data) {
-              // Problem with form data
-              show_error(t('messages', 'error_invalidinput'), data);
-            },
-            function(data) {
-              // Do nothing
+        send_form({
+          form_object: $('#event_edit_form'),
+          success: function(data) {
+            // Reload only affected calendars
+            $.each(data, function(k, cal) {
+              reload_event_source(cal);
             });
+
+            destroy_dialog('#event_edit_dialog');
+          },
+          exception: function(data) {
+            // Problem with form data
+            show_error(t('messages', 'error_invalidinput'), data);
+          }
+        });
       }
     },
     {
@@ -785,22 +793,20 @@ var calendar_create_dialog = function calendar_create_dialog() {
     'text': t('labels', 'create'),
     'class': 'addicon btn-icon-calendar-add',
     'click': function() {
-      var params = {
+      var fake_form = {
         url: AgenDAVConf.base_app_url + 'calendars/create',
         data: $('#calendar_create_form').serializeObject()
       };
       destroy_dialog('#calendar_create_dialog');
-      proceed_send_ajax_form(params,
-          function(data) {
-            update_calendar_list(false);
-          },
-          function(data) {
-            // Problem with form data
-            show_error(t('messages', 'error_invalidinput'), data);
-          },
-          function(data) {
-            // Do nothing
-          });
+      send_form({
+        form_object: fake_form,
+        success: function(data) {
+          update_calendar_list(false);
+        },
+        exception: function(data) {
+          show_error(t('messages', 'error_invalidinput'), data);
+        }
+      });
     }
   },
   {
@@ -853,20 +859,18 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
         'text': t('labels', 'save'),
         'class': 'addicon btn-icon-calendar-edit',
         'click': function() {
-        var thisform = $('#calendar_modify_form');
 
-        proceed_send_ajax_form(thisform,
-          function(data) {
-            destroy_dialog('#calendar_modify_dialog');
-            // TODO remove specific calendar and update only its events
-            update_calendar_list(false);
-          },
-          function(data) {
-            // Problem with form data
-            show_error(t('messages', 'error_invalidinput'), data);
-          },
-          function(data) {
-            // Do nothing
+          send_form({
+            form_object: $('#calendar_modify_form'),
+            success: function(data) {
+              destroy_dialog('#calendar_modify_dialog');
+              // TODO remove specific calendar and update only its events
+              update_calendar_list(false);
+            },
+            exception: function(data) {
+              // Problem with form data
+              show_error(t('messages', 'error_invalidinput'), data);
+            }
           });
         }
       },
@@ -923,30 +927,30 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
     'text': t('labels', 'yes'),
     'class': 'addicon btn-icon-calendar-delete',
     'click': function() {
-      var params = {
+      var fake_form = {
         url: AgenDAVConf.base_app_url + 'calendars/delete',
         data: $('#calendar_delete_form').serializeObject()
       };
 
       destroy_dialog('#calendar_delete_dialog');
 
-      proceed_send_ajax_form(params,
-          function(removed_calendar) {
-            // Just remove deleted calendar
-            $('.calendar_list li.available_calendar').each(function(index) {
-              var thiscal = $(this).data();
-              if (thiscal.calendar == removed_calendar) {
-                $('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
-                $(this).remove();
-                return false; // stop looking for calendar
-              }
-            });
-          },
-          function(data) {
-            show_error(t('messages', 'error_caldelete'), data);
-          },
-          function() {});
-
+      send_form({
+        form_object: fake_form,
+        success: function(removed_calendar) {
+          // Just remove deleted calendar
+          $('.calendar_list li.available_calendar').each(function(index) {
+            var thiscal = $(this).data();
+            if (thiscal.calendar == removed_calendar) {
+              $('#calendar_view').fullCalendar('removeEventSource', thiscal.eventsource);
+              $(this).remove();
+              return false; // stop looking for calendar
+            }
+          });
+        },
+        exception: function(data) {
+          show_error(t('messages', 'error_caldelete'), data);
+        }
+      });
     }
   },
   {
@@ -1585,7 +1589,7 @@ var event_drop_callback = function event_drop_callback(event, delta, revertFunc,
  * Event alter via drag&drop or resizing it
  */
 var event_alter = function event_alter(alterType, event, delta, allDay, revertFunc, jsEvent, ui, view) {
-  var params = {
+  var fake_form = {
     url: AgenDAVConf.base_app_url + 'events/alter',
     data: {
       uid: event.uid,
@@ -1600,20 +1604,22 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
     }
   };
 
-  params.data[AgenDAVConf.csrf_token_name] = get_csrf_token();
+  fake_form.data[AgenDAVConf.csrf_token_name] = get_csrf_token();
 
-  proceed_send_ajax_form(params,
-      function(data) {
-        event.etag = data.etag;
-        $('#calendar_view').fullCalendar('updateEvent', event);
-      },
-      function(data) {
-        show_error(t('messages', 'error_modfailed'), data);
-        revertFunc();
-      },
-      function() {
-        revertFunc();
-      });
+  send_form({
+    form_object: fake_form,
+    success: function(data) {
+      event.etag = data.etag;
+      $('#calendar_view').fullCalendar('updateEvent', event);
+    },
+    exception: function(data) {
+      show_error(t('messages', 'error_modfailed'), data);
+      revertFunc();
+    },
+    error: function() {
+      revertFunc();
+    }
+  });
 };
 
 // Delete link
@@ -1645,14 +1651,15 @@ var event_delete_dialog = function event_delete_dialog() {
     'class': 'addicon btn-icon-event-delete',
     'click': function() {
       var thisform = $('#event_delete_form');
-      proceed_send_ajax_form(thisform,
-          function(rdata) {
+      send_form({
+        form_object: thisform,
+        success: function(rdata) {
             $('#calendar_view').fullCalendar('removeEvents', data.id);
           },
-          function(rdata) {
+        exception: function(rdata) {
             show_error(t('messages', 'error_event_not_deleted'), data);
-          },
-          function() {});
+        }
+      });
 
       // Destroy dialog
       destroy_dialog('#event_delete_dialog');
