@@ -56,3 +56,32 @@ The credentials for this environment are:
 
 * Username: ``demo``
 * Password: ``demo``
+
+Working with scripts and stylesheets
+------------------------------------
+
+AgenDAV uses some widely known tools to help on development, such as
+`Grunt <http://gruntjs.com/>`_, `Less <http://lesscss.org/>`_ and `Bower <http://bower.io/>`_.
+
+How to modify AgenDAV stylesheets
+*********************************
+
+Stylesheets are built using the Less pre-processor. They are written as ``.less`` files and
+can be found inside the ``web/assets/stylesheets`` directory.
+
+You have to compile the stylesheets after modifying a ``.less`` file.
+
+Working with grunt
+******************
+
+Perhaps you already have them installed on your local machine, but to make
+things simpler you already have them installed on the virtual machine.
+
+If you are going to work on AgenDAV stylesheets or templates, you could benefit
+from running the following command inside the virtual machine (i.e. run first ``vagrant ssh``)::
+
+    $ cd /vagrant
+    $ grunt watch
+
+If you keep that session open, a Grunt task will look for modified ``.less`` and ``.dust`` files and
+will compile them for you.
