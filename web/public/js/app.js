@@ -612,6 +612,19 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'text': t('labels', 'save'),
       'class': 'addicon btn-icon-event-edit',
       'click': function() {
+        // Generate start and end times
+        var start = AgenDAVDateAndTime.combineDateAndTime(
+            $(this).find('input.start_date'),
+            $(this).find('input.start_time')
+        );
+        var end = AgenDAVDateAndTime.combineDateAndTime(
+            $(this).find('input.end_date'),
+            $(this).find('input.end_time')
+        );
+
+        $(this).find('input.start').val(start);
+        $(this).find('input.end').val(end);
+
         send_form({
           form_object: $('#event_edit_form'),
           success: function(data) {

@@ -22,6 +22,8 @@
 </select>
 {>form_element_end/}
 
+<input class="start" name="start" type="hidden" value="">
+
 {>form_element_start for="start_date" label="startdate" /}
 <div class="row">
  <div class="col-sm-4">
@@ -35,6 +37,7 @@
 </div>
 {>form_element_end/}
 
+<input class="end" name="end" type="hidden" value="">
 {>form_element_start for="end_date" label="enddate" /}
 <div class="row">
  <div class="col-sm-4">
