@@ -87,3 +87,14 @@ AgenDAVDateAndTime.formatEventDates = function formatEventDates(event_data) {
 AgenDAVDateAndTime.formatTime = function formatTime(datetime) {
     return datetime.format(AgenDAVConf.prefs_timeformat_moment);
 };
+
+/**
+ * Receives a datepicker input and a timepicker input, and returns
+ * a string in ISO8601 format
+ */
+AgenDAVDateAndTime.combineDateAndTime = function combineDateAndTime(datepicker, timepicker) {
+    var result = datepicker.datepicker('getDate');
+    result = timepicker.timepicker('getTime', result);
+
+    return moment(result).toISOString();
+};
