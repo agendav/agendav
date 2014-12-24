@@ -1227,25 +1227,19 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
 /**
  * Gets calendar data from its internal name
  */
-var get_calendar_data = function get_calendar_data(c) {
-  var data;
+var get_calendar_data = function get_calendar_data(calendar_url) {
+  var matches = $('.calendar_list').find('[data-calendar-url="'+calendar_url+'"]');
 
-  $('.calendar_list li.available_calendar').each(function(index) {
-    var thiscal = $(this).data();
-    if (thiscal.calendar == c) {
-      data = thiscal;
-      return false; // stop looking for calendar
-    }
-  });
-
-  return data;
+  if (matches.length == 1) {
+    return $(matches[0]).data();
+  }
 };
 
 /**
  * Gets calendar display name from its internal name
  */
-var get_calendar_displayname = function get_calendar_displayname(c) {
-  var data = get_calendar_data(c);
+var get_calendar_displayname = function get_calendar_displayname(calendar_url) {
+  var data = get_calendar_data(calendar_url);
 
   if (data === undefined || data.displayname === undefined) {
     return '(?)';
