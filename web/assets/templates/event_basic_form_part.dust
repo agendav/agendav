@@ -7,7 +7,7 @@
 {/uid}
 
 {>form_element_start for="summary" label="summary" /}
-<input name="summary" type="text" size="25" maxlength="255" value="{title}" class="summary form-control" />
+<input required name="summary" type="text" size="25" maxlength="255" value="{title}" class="summary form-control" />
 {>form_element_end/}
 
 {>form_element_start for="location" label="location" /}
@@ -27,11 +27,11 @@
 {>form_element_start for="start_date" label="startdate" /}
 <div class="row">
  <div class="col-sm-4">
-  <input name="start_date" type="text" size="15" maxlength="10" value="{start_date}"
+  <input required name="start_date" type="text" size="15" maxlength="10" value="{start_date}"
    class="start_date form-control" />
  </div>
  <div class="col-sm-3">
-    <input name="start_time" type="text" size="15" maxlength="10" value="{start_time}" 
+    <input required name="start_time" type="text" size="15" maxlength="10" value="{start_time}" 
     class="time start_time form-control" />
  </div>
 </div>
@@ -41,10 +41,10 @@
 {>form_element_start for="end_date" label="enddate" /}
 <div class="row">
  <div class="col-sm-4">
-  <input name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date form-control" />
+  <input required name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date form-control" />
  </div>
  <div class="col-sm-3">
-  <input name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time form-control" />
+  <input required name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time form-control" />
  </div>
 </div>
 {>form_element_end/}
