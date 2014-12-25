@@ -27,11 +27,8 @@ use AgenDAV\Uuid;
 class Calendars extends MY_Controller
 {
 
-    private $calendar_colors;
     private $user;
     private $client;
-    private $prefs;
-    private $preferences_repository;
 
     protected $calendar_home_set;
 
@@ -45,11 +42,6 @@ class Calendars extends MY_Controller
         }
 
         $this->user = $this->container['user'];
-        $this->preferences_repository = $this->container['preferences_repository'];
-
-        $this->calendar_colors = $this->config->item('calendar_colors');
-
-        $this->prefs = $this->preferences_repository->userPreferences($this->user->getUsername());
 
         $this->client = $this->container['caldav_client'];
 
