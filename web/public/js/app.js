@@ -409,6 +409,11 @@ var send_form = function send_form(params) {
   if (formObj instanceof jQuery) {
     url = $(formObj).attr('action');
     data = $(formObj).serialize();
+    if (!check_required_fields(formObj)) {
+      loading(false);
+      show_error(t('messages', 'error_empty_fields'), '');
+      return;
+    }
   } else {
     url = formObj.url;
     data = formObj.data;
@@ -708,12 +713,15 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
 
   // All day checkbox
   $(where).on('change', 'input.allday', function() {
-    if ($(this).is(':checked')) {
+    if ($(this).prop('checked')) {
+      $start_time.prop('required', false);
+      $end_time.prop('required', false);
+
       $start_time.hide();
       $end_time.hide();
     } else {
-      $end_date.removeAttr('disabled');
-      $end_date.removeClass('ui-state-disabled');
+      $start_time.prop('required', true);
+      $end_time.prop('required', true);
 
       $start_time.show();
       $end_time.show();
@@ -1821,5 +1829,23 @@ var render_template = function render(template_name, template_data, callback) {
     callback(out);
   });
 };
+
+// Check required fields
+// Returns false if any of the required fields has no value
+var check_required_fields = function check_required_fields(form) {
+  var result = true;
+  form.find('input:required').each(function() {
+    if ($(this).val() === '') {
+      $(this).parent().addClass('has-error');
+      $(this).focus();
+      result = false;
+      return true; // Skip to next iteration
+    }
+
+    $(this).parent().removeClass('has-error');
+  });
+
+  return result;
+}
 
 // vim: sw=2 tabstop=2

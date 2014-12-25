@@ -247,6 +247,7 @@ $messages['error_calname_missing'] = 'Empty calendar name';
 $messages['error_calcolor_missing'] = 'Color must be supplied';
 $messages['error_mkcalendar'] = 'Server refused to create calendar. Please, check your creation parameters';
 $messages['error_shareunknownusers'] = 'Some of the users you specified do not exist';
+$messages['error_empty_fields'] = 'Some required fields are empty';
 
 $messages['help_defaultcalendar'] = 'New events will be placed in this calendar by default. Set here your most used calendar';
 $messages['help_timezone'] = 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone';
