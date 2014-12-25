@@ -140,13 +140,7 @@ class Recurrence {
             $res['COUNT'] = $opts['recurrence_count'];
         } else if (isset($opts['recurrence_until']) &&
                 !empty($opts['recurrence_until'])) {
-            $date =
-                DateHelper::frontEndToDateTime(
-                    $opts['recurrence_until'],
-                    $this->date_format_pref,
-                    $this->time_format_pref,
-                    $this->CI->timezonemanager->getTz('UTC')
-                );
+            $date = $opts['recurrence_until'];
             if ($date === FALSE) {
                 $rrule_err = $this->CI->i18n->_('messages',
                         'error_bogusrepeatrule');

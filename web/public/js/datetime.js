@@ -89,12 +89,18 @@ AgenDAVDateAndTime.formatTime = function formatTime(datetime) {
 };
 
 /**
- * Receives a datepicker input and a timepicker input, and returns
+ * Receives a datepicker input and an optional timepicker input, and returns
  * a string in ISO8601 format
  */
-AgenDAVDateAndTime.combineDateAndTime = function combineDateAndTime(datepicker, timepicker) {
+AgenDAVDateAndTime.convertISO8601 = function convertISO8601(datepicker, timepicker, allday) {
     var result = datepicker.datepicker('getDate');
-    result = timepicker.timepicker('getTime', result);
 
+    // Events with no time set (all day, recurrences, etc)
+    if (timepicker === undefined || allday === true) {
+        // This should be an UTC date
+        return moment(result).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+    }
+
+    result = timepicker.timepicker('getTime', result);
     return moment(result).toISOString();
 };

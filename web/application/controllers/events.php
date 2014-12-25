@@ -203,19 +203,9 @@ class Events extends MY_Controller
         $this->form_validation
             ->set_rules('summary', $this->i18n->_('labels', 'summary'), 'required');
         $this->form_validation
-            ->set_rules('start_date', $this->i18n->_('labels', 'startdate'),
-                    'required|callback__valid_date');
-        $this->form_validation
-            ->set_rules('end_date', $this->i18n->_('labels', 'enddate'),
-                    'required|callback__valid_date');
-        $this->form_validation
             ->set_rules('recurrence_count', $this->i18n->_('labels',
                         'repeatcount'),
                     'callback__empty_or_natural_no_zero');
-        $this->form_validation
-            ->set_rules('recurrence_until', $this->i18n->_('labels',
-                        'repeatuntil'),
-                    'callback__empty_or_valid_date');
 
         if ($this->form_validation->run() === false) {
             $this->_throw_exception(validation_errors());
@@ -237,54 +227,19 @@ class Events extends MY_Controller
         // If not, generate our own values
         if (isset($p['allday']) && $p['allday'] == 'true') {
             // Start and end days, 00:00
-            $str_start = $p['start_date'] . ' ' . date($this->time_format, mktime(0,0));
-            $str_end = $p['end_date'] . ' ' . date($this->time_format, mktime(0,0));
-            $start = DateHelper::frontEndToDateTime(
-                $str_start,
-                $this->date_format_pref,
-                $this->time_format_pref,
-                $this->tz_utc
-            );
-            $end = DateHelper::frontEndToDateTime(
-                $str_end,
-                $this->date_format_pref,
-                $this->time_format_pref,
-                $this->tz_utc
-            );
+            $start = DateHelper::frontEndToDateTime($p['start'], $this->tz_utc);
+            $end = DateHelper::frontEndToDateTime($p['end'], $this->tz_utc);
+
             // Add 1 day (iCalendar needs this)
             $end->add(new DateInterval('P1D'));
         } else {
-            // Create new form validation rules
-            $this->form_validation
-                ->set_rules('start_time', $this->i18n->_('labels',
-                            'starttime'),
-                        'required|callback__valid_time');
-            $this->form_validation
-                ->set_rules('end_time', $this->i18n->_('labels',
-                            'endtime'),
-                        'required|callback__valid_time');
-
             if ($this->form_validation->run() === false) {
                 $this->_throw_exception(validation_errors());
             }
 
             // 2. Check if start date <= end date
-            $str_start = $p['start_date'] . ' ' . $p['start_time'];
-            $str_end = $p['end_date'] . ' ' . $p['end_time'];
-
-            $start = DateHelper::frontEndToDateTime(
-                $str_start,
-                $this->date_format_pref,
-                $this->time_format_pref,
-                $tz
-            );
-
-            $end = DateHelper::frontEndToDateTime(
-                $str_end,
-                $this->date_format_pref,
-                $this->time_format_pref,
-                $tz
-            );
+            $start = DateHelper::frontEndToDateTime($p['start'], $tz);
+            $end = DateHelper::frontEndToDateTime($p['end'], $tz);
 
             if ($end->getTimestamp() < $start->getTimestamp()) {
                 $this->_throw_exception($this->i18n->_('messages',
@@ -300,12 +255,19 @@ class Events extends MY_Controller
 
         if (isset($p['recurrence_type'])) {
             if ($p['recurrence_type'] != 'none') {
-                if (isset($p['recurrence_until']) &&
-                        !empty($p['recurrence_until'])) {
-                            $p['recurrence_until'] .= date(
-                                $this->time_format,
-                                $end->getTimestamp()
+                if (isset($p['recurrence_until_date']) &&
+                        !empty($p['recurrence_until_date'])) {
+                            $end_of_recurrence = DateHelper::frontEndToDateTime(
+                                $p['recurrence_until_date'],
+                                $this->tz_utc
                             );
+
+                            $end_of_recurrence->setTime(
+                                (int) $start->format('G'),
+                                (int) $start->format('i')
+                            );
+
+                            $p['recurrence_until'] = $end_of_recurrence;
                 }
 
                 $rrule = $this->recurrence->build($p, $rrule_err);
@@ -344,13 +306,8 @@ class Events extends MY_Controller
                      false);
 
                 if ($data_reminders['is_absolute'][$i]) {
-                    $str = $data_reminders['tdate'][$i] . ' ' . $data_reminders['ttime'][$i];
-                    $when = DateHelper::frontEndToDateTime(
-                        $str,
-                        $this->date_format_pref,
-                        $this->time_format_pref,
-                        $this->tz
-                    );
+                    $str = $data_reminders['when'][$i];
+                    $when = DateHelper::frontEndToDateTime($str, $this->tz);
                     $when->setTimezone($this->tz_utc);
                     $this_reminder = Reminder::createFrom($when);
                 } else {
@@ -713,56 +670,10 @@ class Events extends MY_Controller
      * Input validators
      */
 
-    // Validate date format
-    public function _valid_date($d)
-    {
-        $str = $d . ' ' . date($this->time_format);
-        try {
-            $obj = DateHelper::frontEndToDateTime(
-                $str,
-                $this->date_format_pref,
-                $this->time_format_pref,
-                $this->tz
-            );
-        } catch (\InvalidArgumentException $e) {
-            $this->form_validation->set_message('_valid_date',
-                    $this->i18n->_('messages', 'error_invaliddate'));
-            return false;
-        }
-
-        return true;
-    }
-
-    // Validate date format (or empty string)
-    public function _empty_or_valid_date($d)
-    {
-        return empty($d) || $this->_valid_date($d);
-    }
-
     // Validate empty or > 0
     public function _empty_or_natural_no_zero($n)
     {
         return empty($n) || intval($n) > 0;
-    }
-
-    // Validate time format
-    public function _valid_time($t)
-    {
-        $str = date($this->date_format) .' '. $t;
-        try {
-            $obj = DateHelper::frontEndToDateTime(
-                $str,
-                $this->date_format_pref,
-                $this->time_format_pref,
-                $this->tz
-            );
-        } catch (\InvalidArgumentException $e) {
-            $this->form_validation->set_message('_valid_time',
-                    $this->i18n->_('messages', 'error_invalidtime'));
-            return false;
-        } 
-
-        return true;
     }
 
 

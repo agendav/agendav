@@ -21,5 +21,6 @@
 <label class="radio">
  <input type="radio" name="ends" value="until" />
  <input type="text" name="recurrence_until" class="recurrence_until form-control" maxlength="10" size="15" value="{UNTIL}" />
+ <input type="hidden" class="recurrence_until_date" name="recurrence_until_date" />
 </label>
 {>form_element_end /}

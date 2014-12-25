@@ -176,24 +176,23 @@ class DateHelper
     }
 
     /**
-     * Creates a DateTime object from a string formatted by frontend (such as
-     * m/d/Y H:i).
+     * Creates a DateTime object from a ISO8601 string coming from the
+     * frontend
      *
      * @param string $str String coming from frontend
-     * @param string $date_format Expected date format
-     * @param string $time_format Expected time format
      * @param \DateTimeZone $tz Timezone to use
      * @access public
      * @return \DateTime Date and time parsed from initial string
      * @throws \InvalidArgumentException
      */
-    public static function frontEndToDateTime($str, $date_format, $time_format, \DateTimeZone $tz)
+    public static function frontEndToDateTime($str, \DateTimeZone $tz)
     {
-        $format = self::getDateFormatFor('date', $date_format) 
-            . ' '
-            .  self::getTimeFormatFor('date', $time_format);
+        $format = 'Y-m-d\TH:i:s.u\Z';
 
-        return self::createDateTime($format, $str, $tz);
+        $result = self::createDateTime($format, $str, new \DateTimeZone('UTC'));
+        $result->setTimeZone($tz);
+
+        return $result;
     }
 
     /**
