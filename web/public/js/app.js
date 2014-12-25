@@ -806,15 +806,11 @@ var calendar_create_dialog = function calendar_create_dialog() {
     'text': t('labels', 'create'),
     'class': 'addicon btn-icon-calendar-add',
     'click': function() {
-      var fake_form = {
-        url: AgenDAVConf.base_app_url + 'calendars/create',
-        data: $('#calendar_create_form').serializeObject()
-      };
-      destroy_dialog('#calendar_create_dialog');
       send_form({
-        form_object: fake_form,
+        form_object: $('#calendar_create_form'),
         success: function(data) {
           update_calendar_list(false);
+          destroy_dialog('#calendar_create_dialog');
         },
         exception: function(data) {
           show_error(t('messages', 'error_invalidinput'), data);
