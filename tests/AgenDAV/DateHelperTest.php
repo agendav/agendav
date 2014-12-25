@@ -81,19 +81,15 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testFrontendToDatetimeExample()
     {
-        $str = '07/10/2012 13:05';
-        $dt = DateHelper::frontendToDateTime($str, 'dmy', '24', $this->utc);
+        $str = '2014-12-15T19:45:00.000Z';
 
-        $this->assertEquals($dt->format('YmdHi'), '201210071305');
+        $dt = DateHelper::frontendToDateTime($str, $this->utc);
+        $this->assertEquals('201412151945', $dt->format('YmdHi'));
+
+        $dt = DateHelper::frontendToDateTime($str, new \DateTimeZone('Europe/Madrid'));
+        $this->assertEquals('201412152045', $dt->format('YmdHi'));
     }
 
-    public function testFrontendToDatetime12()
-    {
-        $str = '07/10/2012 1:12PM';
-        $dt = DateHelper::frontendToDateTime($str, 'dmy', '12', $this->utc);
-
-        $this->assertEquals($dt->format('YmdHi'), '201210071312');
-    }
 
     public function testFullcalendarToDateTime()
     {

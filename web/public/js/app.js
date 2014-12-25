@@ -618,17 +618,35 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'class': 'addicon btn-icon-event-edit',
       'click': function() {
         // Generate start and end times
-        var start = AgenDAVDateAndTime.combineDateAndTime(
+        var start = AgenDAVDateAndTime.convertISO8601(
             $(this).find('input.start_date'),
-            $(this).find('input.start_time')
+            $(this).find('input.start_time'),
+            $(this).find('input.allday').prop('checked')
         );
-        var end = AgenDAVDateAndTime.combineDateAndTime(
+        var end = AgenDAVDateAndTime.convertISO8601(
             $(this).find('input.end_date'),
-            $(this).find('input.end_time')
+            $(this).find('input.end_time'),
+            $(this).find('input.allday').prop('checked')
         );
 
         $(this).find('input.start').val(start);
         $(this).find('input.end').val(end);
+
+        if ($(this).find('input.recurrence_until').val() !== '') {
+          $(this).find('input.recurrence_until_date').val(
+              AgenDAVDateAndTime.convertISO8601($(this).find('input.recurrence_until'))
+          );
+        }
+
+
+        // Reminders
+        $('#reminders_table .absolute_reminder').each(function() {
+          var when = AgenDAVDateAndTime.convertISO8601(
+            $(this).find('input.date'),
+            $(this).find('input.time')
+          );
+          $(this).find('.when').val(when);
+        });
 
         send_form({
           form_object: $('#event_edit_form'),

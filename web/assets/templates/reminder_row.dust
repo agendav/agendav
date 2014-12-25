@@ -1,4 +1,4 @@
-<tr>
+<tr class="reminder {?is_absolute}absolute_reminder{/is_absolute}">
 <td>
 
 <input type="hidden" name="{^add}reminders[is_absolute][]{:else}is_absolute{/add}" value="{?is_absolute}true{:else}false{/is_absolute}" />
@@ -15,10 +15,11 @@
 <td class="form-inline">
 {?is_absolute}
 <input type="text" 
-name="{^add}reminders[tdate][]{:else}tdate{/add}" class="form-control needs-datepicker" maxlength="10" value="{tdate}" />
+name="{^add}reminders[tdate][]{:else}tdate{/add}" class="date form-control needs-datepicker" maxlength="10" value="{tdate}" />
 
-<input type="text" name="{^add}reminders[ttime][]{:else}ttime{/add}" class="form-control needs-timepicker" maxlength="10" value="{ttime}" />
+<input type="text" name="{^add}reminders[ttime][]{:else}ttime{/add}" class="time form-control needs-timepicker" maxlength="10" value="{ttime}" />
 
+<input type="hidden" name="{^add}reminders[when][]{:else}when{/add}" class="when" />
 
 {^add}
 <input type="hidden" name="reminders[qty][]" value="" />
