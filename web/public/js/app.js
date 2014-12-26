@@ -50,8 +50,10 @@ $(document).ready(function() {
 
   if ($('body').hasClass('prefspage')) {
     $('#save_button').on('click', function() {
+      var new_preferences = $('#prefs_form').serialize();
       send_form({
         form_object: $('#prefs_form'),
+        data: new_preferences,
         success: function(data) {
           show_success(
             t('messages', 'info_prefssaved'),
@@ -392,23 +394,25 @@ var remove_data = function remove_data(name) {
  *
  * Parameters:
  *
- *  form_object: form element object
+ *  form_object: form element object. Used to get the action URL and to perform
+ *               checks on required fields
+ *  data: data to be sent
  *  success: success callback
  *  exception: exception callback
  *  error: error callback
  *
  */
 var send_form = function send_form(params) {
-  var url, data;
+  var url;
 
   var formObj = params.form_object;
+  var data = params.data;
   var successFunc = params.success || function() {};
   var exceptionFunc = params.exception || function() {};
   var errorFunc = params.error || function() {};
 
   if (formObj instanceof jQuery) {
     url = $(formObj).attr('action');
-    data = $(formObj).serialize();
     if (!check_required_fields(formObj)) {
       loading(false);
       show_error(t('messages', 'error_empty_fields'), '');
@@ -620,8 +624,20 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
         // Generate start and end times
         generate_iso8601_values($(this));
 
+        var event_details = $('#event_edit_form').serializeObject();
+
+        // Clean some event_details fields
+        delete event_details.start_date;
+        delete event_details.start_time;
+        delete event_details.end_date;
+        delete event_details.end_time;
+        delete event_details.tdate;
+        delete event_details.ttime;
+        delete event_details.qty;
+
         send_form({
           form_object: $('#event_edit_form'),
+          data: event_details,
           success: function(data) {
             // Reload only affected calendars
             $.each(data, function(k, cal) {
@@ -804,8 +820,11 @@ var calendar_create_dialog = function calendar_create_dialog() {
     'text': t('labels', 'create'),
     'class': 'addicon btn-icon-calendar-add',
     'click': function() {
+      var calendar_data = $('#calendar_create_form').serialize();
+
       send_form({
         form_object: $('#calendar_create_form'),
+        data: calendar_data,
         success: function(data) {
           update_calendar_list(false);
           destroy_dialog('#calendar_create_dialog');
@@ -867,8 +886,11 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
         'class': 'addicon btn-icon-calendar-edit',
         'click': function() {
 
+          var calendar_data = $('#calendar_modify_form').serialize();
+
           send_form({
             form_object: $('#calendar_modify_form'),
+            data: calendar_data,
             success: function(data) {
               destroy_dialog('#calendar_modify_dialog');
               // TODO remove specific calendar and update only its events
@@ -1651,9 +1673,11 @@ var event_delete_dialog = function event_delete_dialog() {
     'text': t('labels', 'yes'),
     'class': 'addicon btn-icon-event-delete',
     'click': function() {
-      var thisform = $('#event_delete_form');
+      var event_delete_details = $('#event_delete_form').serialize();
+
       send_form({
-        form_object: thisform,
+        form_object: $('#event_delete_form'),
+        data: event_delete_details,
         success: function(rdata) {
             $('#calendar_view').fullCalendar('removeEvents', data.id);
           },
