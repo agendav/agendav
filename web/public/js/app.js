@@ -618,35 +618,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'class': 'addicon btn-icon-event-edit',
       'click': function() {
         // Generate start and end times
-        var start = AgenDAVDateAndTime.convertISO8601(
-            $(this).find('input.start_date'),
-            $(this).find('input.start_time'),
-            $(this).find('input.allday').prop('checked')
-        );
-        var end = AgenDAVDateAndTime.convertISO8601(
-            $(this).find('input.end_date'),
-            $(this).find('input.end_time'),
-            $(this).find('input.allday').prop('checked')
-        );
-
-        $(this).find('input.start').val(start);
-        $(this).find('input.end').val(end);
-
-        if ($(this).find('input.recurrence_until').val() !== '') {
-          $(this).find('input.recurrence_until_date').val(
-              AgenDAVDateAndTime.convertISO8601($(this).find('input.recurrence_until'))
-          );
-        }
-
-
-        // Reminders
-        $('#reminders_table .absolute_reminder').each(function() {
-          var when = AgenDAVDateAndTime.convertISO8601(
-            $(this).find('input.date'),
-            $(this).find('input.time')
-          );
-          $(this).find('.when').val(when);
-        });
+        generate_iso8601_values($(this));
 
         send_form({
           form_object: $('#event_edit_form'),
@@ -1864,6 +1836,55 @@ var check_required_fields = function check_required_fields(form) {
   });
 
   return result;
-}
+};
+
+/*
+ * Automatically converts all datepickers + timepickers into
+ * ISO8601 strings.
+ *
+ * Looks for .generate-iso8601 wrapping divs, which will have:
+ *
+ * - An input.date
+ * - An input.time
+ * - An input.generated, which will get the ISO8601 string value
+ *
+ * The wrapping div can also have a data-only-date-if-checked attribute,
+ * which will contain a selector pointing to a checkbox. If it is checked,
+ * then the time part will be ignored
+ */
+var generate_iso8601_values = function generate_iso8601_values(element) {
+  var matches = $(element).find('div.generate-iso8601');
+
+  $.each(matches, function(index, div) {
+    var datepicker = $(div).find('input.date');
+    var timepicker = $(div).find('input.time');
+
+    // Skip this match if the date field is not filled
+    if (datepicker.val() === '') {
+      $(div).find('input.generated').val('');
+      return true;
+    }
+
+    var ignore_time = false;
+    var ignore_time_data = $(div).data('only-date-if-checked');
+
+    if (ignore_time_data !== undefined) {
+      ignore_time = $(ignore_time_data + ":checked").length === 1;
+    }
+
+
+    $(div).find('input.generated').val(
+        AgenDAVDateAndTime.convertISO8601(
+          datepicker,
+          timepicker,
+          ignore_time
+        )
+    );
+
+  });
+
+};
+
+
 
 // vim: sw=2 tabstop=2

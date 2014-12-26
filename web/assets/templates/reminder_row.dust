@@ -14,12 +14,13 @@
 </td>
 <td class="form-inline">
 {?is_absolute}
+<div class="generate-iso8601">
+<input type="hidden" name="{^add}reminders[when][]{:else}when{/add}" class="generated" />
 <input type="text" 
 name="{^add}reminders[tdate][]{:else}tdate{/add}" class="date form-control needs-datepicker" maxlength="10" value="{tdate}" />
 
 <input type="text" name="{^add}reminders[ttime][]{:else}ttime{/add}" class="time form-control needs-timepicker" maxlength="10" value="{ttime}" />
-
-<input type="hidden" name="{^add}reminders[when][]{:else}when{/add}" class="when" />
+</div>
 
 {^add}
 <input type="hidden" name="reminders[qty][]" value="" />

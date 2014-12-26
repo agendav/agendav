@@ -22,32 +22,35 @@
 </select>
 {>form_element_end/}
 
-<input class="start" name="start" type="hidden" value="">
-
+<div class="generate-iso8601" data-only-date-if-checked="input.allday">
+<input class="generated" type="hidden" name="start" />
 {>form_element_start for="start_date" label="startdate" /}
 <div class="row">
  <div class="col-sm-4">
   <input required name="start_date" type="text" size="15" maxlength="10" value="{start_date}"
-   class="start_date form-control" />
+   class="start_date date form-control" />
  </div>
  <div class="col-sm-3">
     <input required name="start_time" type="text" size="15" maxlength="10" value="{start_time}" 
-    class="time start_time form-control" />
+    class="start_time time form-control" />
  </div>
 </div>
 {>form_element_end/}
+</div>
 
-<input class="end" name="end" type="hidden" value="">
+<div class="generate-iso8601" data-only-date-if-checked="input.allday">
+ <input class="generated" type="hidden" name="end">
 {>form_element_start for="end_date" label="enddate" /}
 <div class="row">
  <div class="col-sm-4">
-  <input required name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date form-control" />
+  <input required name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date date form-control" />
  </div>
  <div class="col-sm-3">
-  <input required name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time form-control" />
+  <input required name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time time form-control" />
  </div>
 </div>
 {>form_element_end/}
+</div>
 
 {>form_element_start for="allday" label="alldayform" /}
 <input type="checkbox" name="allday" class="allday" value="true" {?allDay}checked="checked"{/allDay} />

@@ -18,9 +18,11 @@
   <input type="text" name="recurrence_count" class="recurrence_count form-control" maxlength="3" value="{COUNT}" /> 
   {@i18n type="labels" name="occurrences" /}
 </label>
+ <div class="generate-iso8601">
 <label class="radio">
  <input type="radio" name="ends" value="until" />
- <input type="text" name="recurrence_until" class="recurrence_until form-control" maxlength="10" size="15" value="{UNTIL}" />
- <input type="hidden" class="recurrence_until_date" name="recurrence_until_date" />
+  <input type="hidden" class="generated" name="recurrence_until_date" />
+  <input type="text" name="recurrence_until" class="recurrence_until date form-control" maxlength="10" size="15" value="{UNTIL}" />
 </label>
+ </div>
 {>form_element_end /}
