@@ -9,20 +9,26 @@
 {>form_element_end /}
 
 {>form_element_start for="" label="ends" class="recurrence_ends" /}
-<label class="radio">
+<div class="radio">
+ <label>
  <input type="radio" name="ends" value="never" /> {@i18n type="labels" name="never" /}
-</label>
-<label class="radio">
+ </label>
+</div>
+<div class="radio">
+ <label>
  <input type="radio" name="ends" value="count" />
   {@i18n type="labels" name="after" /} 
   <input type="text" name="recurrence_count" class="recurrence_count form-control" maxlength="3" value="{COUNT}" /> 
   {@i18n type="labels" name="occurrences" /}
-</label>
+ </label>
+</div>
  <div class="generate-iso8601">
-<label class="radio">
+<div class="radio">
+ <label>
  <input type="radio" name="ends" value="until" />
   <input type="hidden" class="generated" name="recurrence_until_date" />
   <input type="text" name="recurrence_until" class="recurrence_until date form-control" maxlength="10" size="15" value="{UNTIL}" />
 </label>
+</div>
  </div>
 {>form_element_end /}
