@@ -137,6 +137,9 @@
       - name: install bower dependencies
         command: bower install chdir=/vagrant
 
+      - name: run grunt
+        command: grunt chdir=/vagrant
+
   handlers:
       - name: restart mysql
         sudo: yes
