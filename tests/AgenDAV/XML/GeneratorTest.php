@@ -2,6 +2,8 @@
 namespace AgenDAV\XML;
 
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\CalDAV\Share\Permissions;
+use AgenDAV\CalDAV\Share\ACL;
 use \Mockery as m;
 
 /**
@@ -145,6 +147,68 @@ EOXML;
 EOXML;
 
         $this->assertXmlStringEqualsXmlString($expected, $body);
+    }
+
+
+    public function testACLGenerator()
+    {
+        $permissions = new permissions([
+            'owner' => [ '{DAV:}all', '{urn:he:man}master-of-universe' ],
+            'default' => [ '{urn:ietf:params:xml:ns:caldav}read-free-busy' ],
+            'read-write' => [ '{DAV:}write' ],
+            'read-only' => [ '{DAV:}read' ],
+        ]);
+
+        $acl = new ACL($permissions);
+        $acl->addGrant('/jorge', 'read-write');
+        $acl->addGrant('/rigodon', 'read-only');
+
+        $generator = $this->createXMLGenerator();
+        $generated_acl = $generator->aclBody($acl);
+
+        $expected_acl = <<<ACLBODY
+<?xml version="1.0" encoding="UTF-8"?>
+<d:acl xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:x0="urn:he:man">
+  <d:ace>
+    <d:principal>
+      <d:property>
+        <d:owner/>
+      </d:property>
+    </d:principal>
+    <d:grant>
+      <d:all/>
+      <x0:master-of-universe/>
+    </d:grant>
+  </d:ace>
+  <d:ace>
+    <d:principal>
+      <d:authenticated/>
+    </d:principal>
+    <d:grant>
+      <C:read-free-busy/>
+    </d:grant>
+  </d:ace>
+  <d:ace>
+    <d:principal>
+      <d:href>/jorge</d:href>
+    </d:principal>
+    <d:grant>
+      <d:write/>
+    </d:grant>
+  </d:ace>
+  <d:ace>
+    <d:principal>
+      <d:href>/rigodon</d:href>
+    </d:principal>
+    <d:grant>
+      <d:read/>
+    </d:grant>
+  </d:ace>
+</d:acl>
+ACLBODY;
+
+        $this->assertXmlStringEqualsXmlString($expected_acl, $generated_acl);
+
     }
 
     /**
