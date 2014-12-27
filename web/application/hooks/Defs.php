@@ -21,7 +21,7 @@
 class Defs {
     // Leave jQuery and jQuery UI the two first scripts
     static $jsfiles= array(
-            'libs/jquery-1.11.1.js',
+            'libs/jquery.js',
             'libs/moment.js',
             'libs/button.js',
             'libs/jquery-ui.js',

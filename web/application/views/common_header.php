@@ -10,16 +10,20 @@ href="<?php echo base_url() . 'favicon.ico';?>" />
  
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <?php
-if (ENVIRONMENT == 'development') {
+if (ENVIRONMENT == 'production') {
+	echo link_tag('build/css/agendav-' . \AgenDAV\Version::V . '.min.css');
+	echo link_tag(array(
+				'href' => 'build/css/agendav-print-' . \AgenDAV\Version::V . '.min.css',
+				'type' => 'text/css',
+				'rel' => 'stylesheet',
+				'media' => 'print',
+				)
+			);
+	$css = [];
+	$printcss = [];
+} else {
 	$css = Defs::$cssfiles;
 	$printcss = Defs::$printcssfiles;
-} else {
-	$css = array(
-			'agendav-' . \AgenDAV\Version::V . '.css',
-			);
-	$printcss = array(
-			'agendav-' . \AgenDAV\Version::V . '.print.css',
-			);
 }
 
 foreach ($css as $cssfile) {
