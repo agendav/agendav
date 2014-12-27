@@ -140,6 +140,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-dust');
 
   grunt.registerTask('default', [ 'copy:development', 'less', 'dust' ]);
-  grunt.registerTask('dist', [ 'less', 'dust', 'copy', 'uglify', 'cssmin' ]);
+  grunt.registerTask('dist', [ 'less', 'dust', 'copy', 'concat', 'uglify', 'cssmin' ]);
 
 };
