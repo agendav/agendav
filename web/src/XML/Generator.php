@@ -4,6 +4,7 @@ namespace AgenDAV\XML;
 
 use Sabre\XML\Util as XMLUtil;
 use AgenDAV\CalDAV\ComponentFilter;
+use AgenDAV\CalDAV\Share\ACL;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -169,10 +170,40 @@ class Generator
 
         $calendarquery->appendChild($filter);
 
-        $dom->appendchild($calendarquery);
+        $dom->appendChild($calendarquery);
 
         $this->setXmlnsOnElement($calendarquery, $this->getUsedNamespaces());
 
+        return $dom->saveXML();
+    }
+
+    /**
+     * Generates an XML body suitable for an ACL operation
+     *
+     * @param \AgenDAV\CalDAV\Share\ACL $acl ACL definition to be applied
+     * @return string XML generated body
+     */
+    public function aclBody(ACL $acl)
+    {
+        $dom = $this->emptyDocument();
+        $this->addUsedNamespace('DAV:');
+        $acl_elem = $dom->createElementNS('DAV:', 'd:acl');
+
+        $dom->appendChild($acl_elem);
+
+        $ace_owner = $this->generateAceTag($dom, 'owner', null, $acl->getOwnerPrivileges());
+        $acl_elem->appendChild($ace_owner);
+
+        $ace_default = $this->generateAceTag($dom, 'default', null, $acl->getDefaultPrivileges());
+        $acl_elem->appendChild($ace_default);
+
+        $grants = $acl->getGrantsPrivileges();
+        foreach ($grants as $principal => $privileges) {
+            $ace_grant = $this->generateAceTag($dom, 'grant', $principal, $privileges);
+            $acl_elem->appendChild($ace_grant);
+        }
+
+        $this->setXmlnsOnElement($acl_elem, $this->getUsedNamespaces());
         return $dom->saveXML();
     }
 
@@ -293,4 +324,65 @@ class Generator
         return isset($this->known_ns[$namespace])
             ? $this->known_ns[$namespace] : false;
     }
+
+    /**
+     * Generates a <d:ace> element, which is used on ACLs
+     *
+     * @param \DOMDocument $document
+     * @param string $type one of 'owner', 'default' or 'grant'
+     * @param array $privileges
+     */
+    protected function generateAceTag(
+        \DOMDocument $document,
+        $type,
+        $principal = null,
+        array $privileges
+    )
+    {
+        $ace = $document->createElement('d:ace');
+
+        // Affected principals
+        $principal = $this->generatePrincipalForAce($document, $type, $principal);
+        $ace->appendChild($principal);
+
+        // List of privileges
+        $grant = $this->propertyList('d:grant', $privileges, $document, false);
+
+        $ace->appendChild($grant);
+
+        return $ace;
+    }
+
+    /**
+     * Returns a <principal> tag for an <ace>
+     *
+     * @param \DOMDocument $document
+     * @param string $type one of 'owner', 'default' or 'grant'
+     * @param string $principal Used when $type is 'grant'
+     * @return \DOMElement
+     */
+    protected function generatePrincipalForAce(\DOMDocument $document, $type, $principal = '')
+    {
+        $principal_elem = $document->createElement('d:principal');
+
+        if ($type === 'owner') {
+            $property = $document->createElement('d:property');
+            $owner = $document->createElement('d:owner');
+            $property->appendChild($owner);
+            $principal_elem->appendChild($property);
+        }
+
+        if ($type === 'default') {
+            $authenticated = $document->createElement('d:authenticated');
+            $principal_elem->appendChild($authenticated);
+        }
+
+        if ($type === 'grant') {
+            $href = $document->createElement('d:href', $principal);
+            $principal_elem->appendChild($href);
+        }
+
+        return $principal_elem;
+    }
+
 }
