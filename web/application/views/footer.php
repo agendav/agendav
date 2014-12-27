@@ -6,7 +6,7 @@ $enable_calendar_sharing = $this->config->item('enable_calendar_sharing');
 $base = base_url();
 $relative = preg_replace('/^http[s]:\/\/[^\/]+/', '', $base);
 ?>
- 
+
 <script language="JavaScript" type="text/javascript" src="<?php echo
 site_url('js_generator/siteconf')?>"></script>
 <?php
@@ -17,10 +17,12 @@ site_url('js_generator/userprefs')?>"></script>
 <?php
 endif;
 
-$js = (ENVIRONMENT == 'development' ? 
-		Defs::$jsfiles : 
-		array('jquery-base-' . AgenDAV\Version::V . '.js', 
-			'agendav-' .  AgenDAV\Version::V . '.js'));
+if (ENVIRONMENT === 'production') {
+  $js = [];
+  echo script_tag('build/js/agendav-' .  AgenDAV\Version::V . '.min.js');
+} else {
+  $js = Defs::$jsfiles;
+}
 
 // Additional JS files
 $additional_js = $this->config->item('additional_js');
