@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV;
 
 use \AgenDAV\CalDAV\Resource\Calendar;
 use \AgenDAV\CalDAV\Resource\CalendarObject;
+use \AgenDAV\CalDAV\Share\ACL;
 
 class Client
 {
@@ -310,6 +311,21 @@ class Client
             $this->http_client->setHeader('If-Match', $etag);
         }
         return $this->http_client->request('DELETE', $url);
+    }
+
+    /**
+     * Sets an ACL on a calendar
+     *
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Share\ACL $acl
+     * @return Guzzle\Http\Message\Response
+     */
+    public function applyACL(Calendar $calendar, ACL $acl)
+    {
+        $url = $calendar->getUrl();
+        $body = $this->xml_toolkit->generateRequestBody('ACL', $acl);
+
+        return $this->http_client->request('ACL', $url, $body);
     }
 
     /**

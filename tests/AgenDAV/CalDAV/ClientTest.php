@@ -14,6 +14,8 @@ use AgenDAV\XML\Generator;
 use AgenDAV\XML\Parser;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
+use AgenDAV\CalDAV\Share\Permissions;
+use AgenDAV\CalDAV\Share\ACL;
 
 /**
  * @author jorge
@@ -633,6 +635,30 @@ BODY;
         $this->validateDeleteObjectRequest($object);
     }
 
+    public function testACL()
+    {
+        $response = new Response(200);
+        $client = $this->createCalDAVClient($response);
+
+        $acl = m::mock('\AgenDAV\CalDAV\Share\ACL')
+          ->shouldReceive('getOwnerPrivileges')
+          ->andReturn([ '{DAV:}all' ]);
+
+        $acl->shouldReceive('getDefaultPrivileges')
+          ->andReturn(['{DAV:}minimal']);
+
+        $acl->shouldReceive('getGrantsPrivileges')
+          ->andReturn([
+            '/u1' => ['{DAV:}write'],
+            '/u2' => ['{DAV:}read'],
+          ]);
+
+        $calendar = new Calendar('/url');
+
+        $client->applyACL($calendar, $acl->getMock());
+        $this->validateACLRequest($calendar, $acl->getMock());
+    }
+
     /**
      * Create CalDAV client using mocked responses
      */
@@ -789,6 +815,19 @@ BODY;
             );
         }
         $this->assertEquals($object->getUrl(), $request->getUrl());
+    }
+
+    protected function validateACLRequest(Calendar $calendar, ACL $acl)
+    {
+        $this->assertCount(1, $this->history);
+        $request = $this->history->getLastRequest();
+        $this->assertEquals('ACL', $request->getMethod());
+        $this->assertEquals($calendar->getUrl(), $request->getUrl());
+
+        $this->assertEquals(
+            $this->xml_generator->aclBody($acl),
+            (string)$request->getBody()
+        );
     }
 
 }
