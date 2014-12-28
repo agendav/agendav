@@ -208,7 +208,20 @@ class MY_Controller extends CI_Controller
         // ACL generator
         if ($enable_calendar_sharing === true) {
             $cfg_permissions = $this->config->item('permissions');
-            // TODO
+
+            $this->container['permissions'] = $this->container->share(
+                function($container) use ($cfg_permissions) {
+                    return new \AgenDAV\CalDAV\Share\Permissions(
+                        $cfg_permissions
+                    );
+                }
+            );
+
+            $this->container['acl'] = function($c) {
+                return new \AgenDAV\CalDAV\Share\ACL(
+                    $c['permissions']
+                );
+            };
         }
     }
 }
