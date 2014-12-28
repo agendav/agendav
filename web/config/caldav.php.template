@@ -104,41 +104,41 @@ $config['caldav_public_base_url'] = 'https://public.server';
  * support WebDAV ACLs disable sharing
  */
 
-$config['enable_calendar_sharing'] = true;
+$config['enable_calendar_sharing'] = false;
 
-$config['permissions'] = array(
-    // Permissions for calendar owner
-    'owner' => array(
-        array('DAV:', 'all'),
-        array('DAV:', 'read'),
-        array('DAV:', 'unlock'),
-        array('DAV:', 'read-acl'),
-        array('DAV:', 'read-current-user-privilege-set'),
-        array('DAV:', 'write-acl'),
-        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
-        array('DAV:', 'write'),
-        array('DAV:', 'write-properties'),
-        array('DAV:', 'write-content'),
-        array('DAV:', 'bind'),
-        array('DAV:', 'unbind'),
-    ),
+$config['permissions'] = [
+    // Privileges for calendar owner
+    'owner' => [
+        '{DAV:}all',
+        '{DAV:}read',
+        '{DAV:}unlock',
+        '{DAV:}read-acl',
+        '{DAV:}read-current-user-privilege-set',
+        '{DAV:}write-acl',
+        '{urn:ietf:params:xml:ns:caldav}read-free-busy',
+        '{DAV:}write',
+        '{DAV:}write-properties',
+        '{DAV:}write-content',
+        '{DAV:}bind',
+        '{DAV:}unbind',
+    ],
 
-    // Permissions for sharing calendars using the 'read' profile
-    'read' => array(
-        array('DAV:', 'read'),
-        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
-    ),
+    // Privileges for principals with "read-only" access
+    'read-only' => [
+        '{DAV:}read',
+        '{urn:ietf:params:xml:ns:caldav}read-free-busy',
+    ],
 
-    // Permissions for sharing calendars using the 'read+write' profile
-    'read_write' => array(
-        array('DAV:', 'read'),
-        array('DAV:', 'write'),
-        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
-    ),
+    // Privileges for principals with "read-write" access
+    'read-write' => [
+        '{DAV:}read',
+        '{DAV:}write',
+        '{urn:ietf:params:xml:ns:caldav}read-free-busy',
+    ],
 
-    // Authenticated users default permissions
-    'default' => array(
-        array('urn:ietf:params:xml:ns:caldav', 'read-free-busy'),
-    )
-);
+    // Authenticated users default privileges
+    'default' => [
+        '{urn:ietf:params:xml:ns:caldav}read-free-busy',
+    ]
+];
 
