@@ -76,8 +76,9 @@ class Toolkit
      * Generates the XML body for a request
      *
      * @param string $request   One of MKCALENDAR, PROPFIND, PROPPATCH or REPORT
-     * @param mixed $parameters array of properties, or a \AgenDAV\CalDAV\ComponentFilter
-     *                          object if $request is REPORT
+     * @param mixed $parameters array of properties, \AgenDAV\CalDAV\ComponentFilter
+     *                          object if $request is REPORT or \AgenDAV\CalDAV\Share\ACL
+     *                          if $request is ACL
      * @return string XML body
      * @throws \InvalidArgumentException if $request is not recognized
      */
@@ -92,6 +93,8 @@ class Toolkit
                 return $this->generator->proppatchBody($parameters);
             case 'REPORT':
                 return $this->generator->reportBody($parameters);
+            case 'ACL':
+                return $this->generator->aclBody($parameters);
             default:
                 throw new \InvalidArgumentException(
                     'Unrecognized REQUEST type ' . $request . '. Could not generate body'
