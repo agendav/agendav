@@ -50,15 +50,12 @@ class Calendars extends MY_Controller
         $this->output->set_content_type('application/json');
     }
 
-    function index() {
-    }
-
-
     /**
      * Retrieve a list of calendars (owned by current user or shared by
      * other users with the current one)
      */
-    function all() {
+    public function index()
+    {
         $calendars = $this->client->getCalendars($this->calendar_home_set);
         $fractal = $this->container['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
