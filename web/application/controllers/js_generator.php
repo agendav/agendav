@@ -28,13 +28,12 @@ class Js_generator extends MY_Controller
     private $not_enforced = array(
             'siteconf',
             );
-    private $user;
+    private $username;
 
     private $preferences_repository;
 
     function __construct() {
         parent::__construct();
-        $this->user = $this->container['user'];
         $this->preferences_repository = $this->container['preferences_repository'];
 
         if (!in_array($this->uri->segment(2), $this->not_enforced) &&
@@ -43,6 +42,8 @@ class Js_generator extends MY_Controller
             echo $expire;
             die();
         }
+
+        $this->username = $this->container['session']->get('username');
 
         $this->output->set_content_type('text/javascript');
     }
@@ -137,9 +138,7 @@ class Js_generator extends MY_Controller
                 'Cache-Control: post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache'); 
 
-        $preferences = $this->preferences_repository->userPreferences(
-            $this->user->getUsername()
-        );
+        $preferences = $this->preferences_repository->userPreferences($this->username);
 
         $data_preferences = [
             'default_calendar' => $preferences->get('default_calendar', null),

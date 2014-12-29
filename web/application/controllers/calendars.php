@@ -27,10 +27,13 @@ use AgenDAV\Uuid;
 class Calendars extends MY_Controller
 {
 
-    private $user;
+    private $current_username;
+
     private $client;
 
     protected $calendar_home_set;
+
+    protected $sharing_enabled;
 
     function __construct() {
         parent::__construct();
@@ -41,11 +44,12 @@ class Calendars extends MY_Controller
             die();
         }
 
-        $this->user = $this->container['user'];
+        $this->sharing_enabled = $this->config->item('enable_calendar_sharing');
+
+        $this->current_username = $this->container['session']->get('username');
+        $this->calendar_home_set = $this->container['session']->get('calendar_home_set');
 
         $this->client = $this->container['caldav_client'];
-
-        $this->calendar_home_set = $this->container['session']->get('calendar_home_set');
 
         $this->output->set_content_type('application/json');
     }
@@ -57,6 +61,10 @@ class Calendars extends MY_Controller
     public function index()
     {
         $calendars = $this->client->getCalendars($this->calendar_home_set);
+
+        if ($this->sharing_enabled) {
+        }
+
         $fractal = $this->container['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
 
@@ -138,8 +146,6 @@ class Calendars extends MY_Controller
      * Modifies a calendar
      */
     function modify() {
-        $is_sharing_enabled =
-            $this->config->item('enable_calendar_sharing');
         $calendar = $this->input->post('calendar', true);
         $displayname = $this->input->post('displayname', true);
         $calendar_color = $this->input->post('calendar_color', true);
@@ -154,7 +160,7 @@ class Calendars extends MY_Controller
         $share_with = $this->input->post('share_with', true);
 
         if ($calendar === false || $displayname === false || $calendar_color ===
-                false || ($is_sharing_enabled && $is_shared_calendar === false)) {
+                false || ($this->sharing_enabled && $is_shared_calendar === false)) {
             log_message('ERROR', 
                     'Call to modify_calendar() with incomplete parameters');
             $this->answerWithError($this->i18n->_('messages',
@@ -166,12 +172,11 @@ class Calendars extends MY_Controller
 
 
         // Retrieve ID on shared calendars table
-        if ($is_sharing_enabled && $is_shared_calendar) {
+        if ($this->sharing_enabled && $is_shared_calendar) {
             $current_calendar_shares =
                 $this->shared_calendars->usersWithAccessTo($calendar);
-            $current_user = $this->user->getUsername();
             foreach ($current_calendar_shares as $sh) {
-                if ($sh['username'] == $current_user) {
+                if ($sh['username'] === $this->current_username) {
                     $sid = $sh['sid'];
                     break;
                 }
@@ -208,7 +213,7 @@ class Calendars extends MY_Controller
             } catch (\Exception $e) {
                 $res = false;
             }
-        } else if ($is_sharing_enabled) {
+        } else if ($this->sharing_enabled) {
             // If this a shared calendar, store settings locally
             $props = array(
                 'displayname' => $displayname,
@@ -217,7 +222,7 @@ class Calendars extends MY_Controller
             $success = $this->shared_calendars->store($sid,
                     null,
                     $calendar,
-                    $this->user->getUsername(),
+                    $this->current_username,
                     $props);
             if ($success !== true) {
                 if ($success == '404') {
@@ -239,7 +244,7 @@ class Calendars extends MY_Controller
         }
 
         // Set ACLs
-        if ($is_sharing_enabled && $res === true && !$is_shared_calendar) {
+        if ($this->sharing_enabled && $res === true && !$is_shared_calendar) {
             $set_shares = array();
 
             if (is_array($share_with) && isset($share_with['sid']) 
@@ -301,7 +306,7 @@ class Calendars extends MY_Controller
 
                     $this->shared_calendars->store(
                             $this_sid,
-                            $this->user->getUsername(),
+                            $this->current_username,
                             $internal_calendar,
                             $share['username'],
                             null,                   // Preserve options

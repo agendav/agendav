@@ -27,10 +27,11 @@ class Prefs extends MY_Controller
 
     private $prefs;
     private $preferences_repository;
-    private $user;
+    private $username;
     private $client;
 
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // Force authentication
@@ -38,17 +39,17 @@ class Prefs extends MY_Controller
             redirect('/login');
         }
 
-        $this->user = $this->container['user'];
+        $this->username = $this->container['session']->get('username');
         $this->preferences_repository = $this->container['preferences_repository'];
         $this->client = $this->container['caldav_client'];
 
 
         // Preferences
-        $this->prefs = $this->preferences_repository->userPreferences($this->user->getUsername());;
+        $this->prefs = $this->preferences_repository->userPreferences($this->username);
     }
 
-    function index() {
-
+    public function index()
+    {
         // Layout components
         $components = array();
         $title = $this->config->item('site_title');
@@ -56,7 +57,7 @@ class Prefs extends MY_Controller
         $data_header = array(
                 'title' => $title,
                 'logged_in' => true,
-                'username' => $this->user->getUsername(),
+                'username' => $this->username,
                 'body_class' => array('prefspage'),
                 );
 
@@ -142,8 +143,7 @@ class Prefs extends MY_Controller
                         'error_interfacefailure'));
         }
 
-        $current_user = $this->user->getUsername();
-        $current_prefs = $this->preferences_repository->userPreferences($current_user);
+        $current_prefs = $this->preferences_repository->userPreferences($this->username);
 
         // Default calendar
         $current_prefs->default_calendar = $default_calendar;
@@ -163,7 +163,7 @@ class Prefs extends MY_Controller
         $current_prefs->hidden_calendars = $hidden_calendars;
 
         // Save preferences
-        $this->preferences_repository->save($current_user, $current_prefs);
+        $this->preferences_repository->save($this->username, $current_prefs);
 
         $this->container['session']->set('prefs', $current_prefs->getAll());
         $this->_throw_success();
