@@ -1,8 +1,8 @@
-<?php 
+<?php
 namespace AgenDAV;
 
 /*
- * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -20,31 +20,119 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Repositories\SharesRepository;
+use AgenDAV\CalDAV\Client;
+use AgenDAV\CalDAV\Resource\Calendar;
+
+/**
+ * This class is used to find all accessible calendars for an user
+ */
 class CalendarFinder
 {
-    private $logger;
+    /** @var boolean */
+    protected $sharing_enabled;
 
-    private $channels;
+    /** @var \AgenDAV\CalDAV\Client */
+    protected $client;
 
+    /** @var \AgenDAV\Repositories\SharesRepository */
+    protected $shares_repository;
 
-    public function __construct()
+    /** @var \AgenDAV\Session\Session */
+    protected $session;
+
+    /**
+     * @param \AgenDAV\Session\Session $session
+     * @param \AgenDAV\CalDAV\Client $client
+     */
+    public function __construct(Session $session, Client $client)
     {
-        $this->channels = array();
+        $this->sharing_enabled = false;
+        $this->client = $client;
+        $this->session = $session;
     }
 
-    public function registerChannel(\AgenDAV\CalendarChannels\IChannel $channel)
+    /**
+     * Sets the shares repository for this finder. Until it is called,
+     * the finder disables all functionalities related to shared calendars
+     *
+     * @param \AgenDAV\Repositories\SharesRepository $shares_repository
+     */
+    public function setSharesRepository(SharesRepository $shares_repository)
     {
-        $this->channels[] = $channel;
+        $this->sharing_enabled = true;
+        $this->shares_repository = $shares_repository;
     }
 
-    public function getAll()
+    /**
+     * Returns all calendars for the current user
+     *
+     * @return \AgenDAV\CalDAV\Resource\Calendar[] Array of calendars
+     */
+    public function getCalendars()
     {
-        $calendars = array();
+        $calendar_home_set = $this->session->get('calendar_home_set');
 
-        foreach ($this->channels as $c) {
-            $calendars = array_merge($calendars, $c->getCalendars());
+        $result = $this->client->getCalendars($calendar_home_set);
+
+        if ($this->sharing_enabled) {
+            // Add share info to own calendars
+            // TODO
+
+            // And load calendars shared with current user
+            $username = $this->session->get('username');
+            $shared_calendars = $this->getSharedCalendars($username);
         }
 
-        return $calendars;
+        $result = array_merge($result, $shared_calendars);
+
+        return $result;
+    }
+
+    /**
+     * Gets shared calendars
+     *
+     * @return \AgenDAV\CalDAV\Resource\Calendar[]
+     */
+    protected function getSharedCalendars($username)
+    {
+        $result = [];
+
+        $shares = $this->shares_repository->getSharesFor($username);
+        foreach ($shares as $share) {
+            $calendar_url = $share->getPath();
+            $calendar = $this->client->getCalendarByUrl($calendar_url);
+
+            $custom_properties = $share->getProperties();
+            $this->applySharedProperties($calendar, $custom_properties);
+
+            $result[] = $calendar;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Applies custom properties to a calendar
+     *
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param Array $properties
+     * @return void
+     */
+    protected function applySharedProperties(Calendar $calendar, array $properties)
+    {
+        // These are not real properties (with their XML namespace)
+        foreach ($properties as $property => $value) {
+            switch ($property) {
+                case 'displayname':
+                    $calendar->setProperty(Calendar::DISPLAYNAME, $value);
+                    break;
+                case 'color':
+                    $calendar->setProperty(Calendar::COLOR, $value);
+                    break;
+                default:
+                    // Ignore it
+            }
+        }
     }
 }
