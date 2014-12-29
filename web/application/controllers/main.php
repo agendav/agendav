@@ -22,20 +22,18 @@
 class Main extends MY_Controller
 {
 
-    private $user;
-
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // Force authentication
         if (!$this->container['session']->isAuthenticated()) {
             redirect('/login');
         }
-
-        $this->user = $this->container['user'];
     }
 
-    function index() {
+    public function index()
+    {
         // Layout components
         $components = array();
         $title = $this->config->item('site_title');
@@ -43,7 +41,6 @@ class Main extends MY_Controller
         $data_header = array(
                 'title' => $title,
                 'logged_in' => true,
-                'username' => $this->user->getUsername(),
                 'body_class' => array('calendarpage'),
                 );
 

@@ -23,15 +23,6 @@
  */
 class Conf extends MY_Controller
 {
-
-    /**
-     * Current user
-     *
-     * @var \AgenDAV\User
-     * @access private
-     */
-    private $user;
-
     private $options = array(
         'format_column_month',
         'format_column_week',

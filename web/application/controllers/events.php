@@ -35,7 +35,6 @@ class Events extends MY_Controller
     private $tz;
     private $tz_utc;
 
-    private $user;
     private $client;
 
     function __construct() {
@@ -46,7 +45,6 @@ class Events extends MY_Controller
             $this->output->_display();
             die();
         }
-        $this->user = $this->container['user'];
         $this->client = $this->container['caldav_client'];
 
         $this->date_format_pref = $this->config->item('default_date_format');

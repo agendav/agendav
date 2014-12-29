@@ -22,9 +22,8 @@
 class Caldav2json extends MY_Controller
 {
 
-    private $user;
-
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         if (!$this->container['session']->isAuthenticated()) {
@@ -32,18 +31,14 @@ class Caldav2json extends MY_Controller
             $this->output->_display();
             die();
         }
-        $this->user = $this->container['user'];
-
         $this->output->set_content_type('application/json');
-    }
-
-    function index() {
     }
 
     /**
      * Searchs a principal using provided data
      */
-    function principal_search() {
+    public function principal_search()
+    {
         $result = array();
         $term = $this->input->get('term', true);
         $client = $this->container['client'];

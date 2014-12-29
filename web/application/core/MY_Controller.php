@@ -119,13 +119,6 @@ class MY_Controller extends CI_Controller
 
         $this->container['session']->initialize();
 
-        // User
-        $this->container['user'] = $this->container->share(function($container) {
-            return new \AgenDAV\User(
-                $container['session']
-            );
-        });
-
         // HTTP connection logger
         $log_path = $this->config->item('log_path');
         $this->container['http_logger'] = $this->container->share(function($container) use ($log_path) {
