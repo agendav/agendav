@@ -1010,7 +1010,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   }
 
   var updcalendar_ajax_req = $.ajax({
-    url: AgenDAVConf.base_app_url + 'calendars/all',
+    url: AgenDAVConf.base_app_url + 'calendars',
     cache: false,
     dataType: 'json'
   });
@@ -1138,7 +1138,7 @@ var generate_event_source = function generate_event_source(calendar) {
   var ajax_options = {
       // If #calendar is not used, Fullcalendar will be confused when
       // calling removeEventSource, and will remove all calendars
-      url: AgenDAVConf.base_app_url + 'events/all#' + calendar,
+      url: AgenDAVConf.base_app_url + 'events#' + calendar,
       cache: false,
       // TODO make timezone configurable
       data: {

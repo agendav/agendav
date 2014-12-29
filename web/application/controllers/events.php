@@ -65,10 +65,6 @@ class Events extends MY_Controller
         $this->output->set_content_type('application/json');
     }
 
-    public function index()
-    {
-    }
-
     /**
      * Returns all events from a given calendar
      *
@@ -77,7 +73,7 @@ class Events extends MY_Controller
      * @access public
      * @return void
      */
-    public function all()
+    public function index()
     {
         $returned_events = array();
         $err = 0;
