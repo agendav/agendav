@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AgenDAV\CalDAV\Resource;
 
@@ -41,6 +41,29 @@ class Calendar
     protected $data;
 
     /**
+     * Writable calendar
+     *
+     * @var boolean
+     */
+    protected $writable;
+
+    /**
+     * Owner of this calendar.
+     *
+     * Required on shared calendars
+     *
+     * @var string
+     */
+    protected $owner;
+
+    /**
+     * Grantees for this calendar, when working on shared calendars
+     *
+     * @var string[]
+     */
+    protected $grantees;
+
+    /**
      * Property names including namespaces
      */
     const DISPLAYNAME = '{DAV:}displayname';
@@ -80,6 +103,7 @@ class Calendar
         foreach ($properties as $property => $value) {
             $this->setProperty($property, $value);
         }
+        $this->writable = true;
     }
 
     /*
@@ -108,7 +132,7 @@ class Calendar
 
     /**
      * Sets a property value for this calendar
-     * 
+     *
      * @param string $property  Property name
      * @param mixed $value  Value
      */
@@ -144,5 +168,57 @@ class Calendar
             $this->data,
             array_flip(self::$readonly_properties)
         );
+    }
+
+    /*
+     * Getter for writable
+     *
+     * @return boolean
+     */
+    public function isWritable()
+    {
+        return $this->writable;
+    }
+
+    /*
+     * Setter for writable
+     *
+     * @param boolean $writable
+     */
+    public function setWritable($writable)
+    {
+        $this->writable = $writable;
+    }
+
+    /*
+     * Getter for owner
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+    /*
+     * Setter for owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
+    /*
+     * Getter for grantees
+     */
+    public function getGrantees()
+    {
+        return $this->grantees;
+    }
+
+    /*
+     * Setter for grantees
+     */
+    public function setGrantees(array $grantees)
+    {
+        $this->grantees = $grantees;
     }
 }

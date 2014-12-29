@@ -59,4 +59,29 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($calendar->getProperty('NULL'));
     }
 
+    public function testWritable()
+    {
+        $calendar = new Calendar('/url');
+        $this->assertTrue($calendar->isWritable(), 'Calendars should be writable by default');
+
+        $calendar->setWritable(false);
+        $this->assertFalse($calendar->isWritable());
+    }
+
+    public function testOwner()
+    {
+        $calendar = new Calendar('/url');
+
+        $calendar->setOwner('jorge');
+        $this->assertEquals('jorge', $calendar->getOwner());
+    }
+
+    public function testGrantees()
+    {
+        $calendar = new Calendar('/url');
+
+        $calendar->setGrantees(['first', 'second']);;
+        $this->assertEquals(['first', 'second'], $calendar->getGrantees());
+    }
+
 }
