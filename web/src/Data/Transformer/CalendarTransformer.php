@@ -36,6 +36,8 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'color' => $calendar->getProperty(Calendar::COLOR),
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
+            'shared' => $calendar->isSharedWithMe(),
+            'writable' => $calendar->isWritable(),
             'shares' => [],
         ];
 
