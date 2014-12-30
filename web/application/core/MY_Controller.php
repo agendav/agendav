@@ -192,6 +192,14 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // Calendar finder
+        $this->container['calendar_finder'] = $this->container->share(function($container) {
+            return new \AgenDAV\CalendarFinder(
+                $container['session'],
+                $container['caldav_client']
+            );
+        });
+
         // Sharing support enabled
         if ($enable_calendar_sharing === true) {
 
@@ -200,6 +208,11 @@ class MY_Controller extends CI_Controller
                 $em = $container['entity_manager'];
                 return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
             });
+
+            // Add the shares repository to the calendar finder service
+            $this->container['calendar_finder']->setSharesRepository(
+                $this->container['shares_repository']
+            );
 
             // Privileges and permissions configuration
             $cfg_permissions = $this->config->item('permissions');

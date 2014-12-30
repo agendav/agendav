@@ -60,10 +60,7 @@ class Calendars extends MY_Controller
      */
     public function index()
     {
-        $calendars = $this->client->getCalendars($this->calendar_home_set);
-
-        if ($this->sharing_enabled) {
-        }
+        $calendars = $this->container['calendar_finder']->getCalendars();
 
         $fractal = $this->container['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');

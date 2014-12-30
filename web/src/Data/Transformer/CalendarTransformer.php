@@ -29,13 +29,25 @@ class CalendarTransformer extends Fractal\TransformerAbstract
 {
     public function transform(Calendar $calendar)
     {
-        return [
+        $result = [
             'url' => $calendar->getUrl(),
             'calendar' => $calendar->getUrl(),
             'displayname' => $calendar->getProperty(Calendar::DISPLAYNAME),
             'color' => $calendar->getProperty(Calendar::COLOR),
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
+            'shares' => [],
         ];
+
+        $shares = $calendar->getShares();
+        foreach ($shares as $share) {
+            $result['shares'][$share->getSid()] = [
+                'sid' => $share->getSid(),
+                'grantee' => $share->getGrantee(),
+                'writable' => $share->isWritable(),
+            ];
+        }
+
+        return $result;
     }
 }
