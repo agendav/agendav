@@ -20,6 +20,7 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Session\Session;
 use AgenDAV\Repositories\SharesRepository;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\CalDAV\Resource\Calendar;
@@ -76,15 +77,15 @@ class CalendarFinder
         $result = $this->client->getCalendars($calendar_home_set);
 
         if ($this->sharing_enabled) {
+            $username = $this->session->get('username');
             // Add share info to own calendars
-            // TODO
+            $this->addSharedInfoAsOwner($result);
 
             // And load calendars shared with current user
-            $username = $this->session->get('username');
             $shared_calendars = $this->getSharedCalendars($username);
-        }
 
-        $result = array_merge($result, $shared_calendars);
+            $result = array_merge($result, $shared_calendars);
+        }
 
         return $result;
     }
@@ -101,7 +102,14 @@ class CalendarFinder
         $shares = $this->shares_repository->getSharesFor($username);
         foreach ($shares as $share) {
             $calendar_url = $share->getPath();
-            $calendar = $this->client->getCalendarByUrl($calendar_url);
+            try {
+                $calendar = $this->client->getCalendarByUrl($calendar_url);
+            } catch (\Exception $e) {
+                // ACL was probably removed or modified. Ignore this calendar
+                continue;
+            }
+
+            $calendar->setOwner($share->getGrantor());
 
             $custom_properties = $share->getProperties();
             $this->applySharedProperties($calendar, $custom_properties);
@@ -133,6 +141,20 @@ class CalendarFinder
                 default:
                     // Ignore it
             }
+        }
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    protected function addSharedInfoAsOwner(Array $calendars)
+    {
+        foreach ($calendars as $calendar) {
+            $calendar_url = $calendar->getUrl();
+            $shares = $this->shares_repository->getSharesOnCalendar($calendar_url);
+            $calendar->setShares($shares);
         }
     }
 }
