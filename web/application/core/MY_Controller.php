@@ -192,10 +192,17 @@ class MY_Controller extends CI_Controller
             );
         });
 
-        // ACL generator
+        // Sharing support enabled
         if ($enable_calendar_sharing === true) {
-            $cfg_permissions = $this->config->item('permissions');
 
+            // Shares repository
+            $this->container['shares_repository'] = $this->container->share(function($container) {
+                $em = $container['entity_manager'];
+                return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
+            });
+
+            // Privileges and permissions configuration
+            $cfg_permissions = $this->config->item('permissions');
             $this->container['permissions'] = $this->container->share(
                 function($container) use ($cfg_permissions) {
                     return new \AgenDAV\CalDAV\Share\Permissions(
@@ -204,6 +211,7 @@ class MY_Controller extends CI_Controller
                 }
             );
 
+            // ACL objects
             $this->container['acl'] = function($c) {
                 return new \AgenDAV\CalDAV\Share\ACL(
                     $c['permissions']
