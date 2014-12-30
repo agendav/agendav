@@ -109,6 +109,7 @@ class CalendarFinder
                 continue;
             }
 
+            $calendar->setShared(true);
             $calendar->setOwner($share->getGrantor());
 
             $custom_properties = $share->getProperties();

@@ -35,6 +35,9 @@ class CalendarTransformerTest extends \PHPUnit_Framework_TestCase
                     'color' => '#ff0000ff',
                     'order' => 3,
                     'ctag' => 'abcdefg',
+                    'shared' => false,
+                    'writable' => true,
+                    'shares' => [],
                     ]
                 ]
             ]
