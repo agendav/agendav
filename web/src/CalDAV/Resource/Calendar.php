@@ -21,6 +21,8 @@ namespace AgenDAV\CalDAV\Resource;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \AgenDAV\Data\Share;
+
 /**
  * Stores information about a calendar collection
  */
@@ -57,11 +59,11 @@ class Calendar
     protected $owner;
 
     /**
-     * Grantees for this calendar, when working on shared calendars
+     * Shares for this calendar, when working on shared calendars
      *
-     * @var string[]
+     * @var \AgenDAV\Data\Share[]
      */
-    protected $grantees;
+    protected $shares;
 
     /**
      * Property names including namespaces
@@ -103,7 +105,9 @@ class Calendar
         foreach ($properties as $property => $value) {
             $this->setProperty($property, $value);
         }
+
         $this->writable = true;
+        $this->shares = [];
     }
 
     /*
@@ -207,18 +211,52 @@ class Calendar
     }
 
     /*
-     * Getter for grantees
+     * Getter for shares
+     *
+     * @return \AgenDAV\Data\Share[]
      */
-    public function getGrantees()
+    public function getShares()
     {
-        return $this->grantees;
+        return $this->shares;
     }
 
     /*
-     * Setter for grantees
+     * Setter for shares
+     *
+     * @param \AgenDAV\Data\Share[]
      */
-    public function setGrantees(array $grantees)
+    public function setShares(array $shares)
     {
-        $this->grantees = $grantees;
+        $this->shares = $shares;
     }
+
+    /**
+     * Adds a new share to this calendar
+     *
+     * @param \AgenDAV\Data\Share $share
+     */
+    public function addShare(Share $share)
+    {
+        $this->shares[] = $share;
+    }
+
+    /**
+     * Removes a Share from this calendar
+     *
+     * @param \AgenDAV\Data\Share $share
+     * @return boolean true if the share was found and removed, false otherwise
+     */
+    public function removeShare(Share $share_to_remove)
+    {
+        $searched_sid = $share_to_remove->getSid();
+        foreach ($this->shares as $position => $share) {
+            if ($share->getSid() === $searched_sid) {
+                unset($this->shares[$position]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

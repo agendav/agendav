@@ -53,6 +53,15 @@ class Share
     /** @Column(type="boolean") */
     private $rw;
 
+
+    /*
+     * Setter for sid
+     */
+    public function setSid($sid)
+    {
+        $this->sid = $sid;
+    }
+
     /*
      * Getter for sid
      */
