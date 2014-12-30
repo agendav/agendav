@@ -1,6 +1,8 @@
 <?php
 namespace AgenDAV\CalDAV\Resource;
 
+use AgenDAV\Data\Share;
+
 class CalendarTest extends \PHPUnit_Framework_TestCase
 {
     public function testSet()
@@ -76,12 +78,36 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('jorge', $calendar->getOwner());
     }
 
-    public function testGrantees()
+    public function testShares()
     {
-        $calendar = new Calendar('/url');
+        $calendar = new Calendar('/calendar1');
 
-        $calendar->setGrantees(['first', 'second']);;
-        $this->assertEquals(['first', 'second'], $calendar->getGrantees());
+        $this->assertEquals([], $calendar->getShares(), 'Shares should start empty');
+        $share_1 = new Share();
+        $share_2 = new Share();
+
+        $share_1->setSid(1);
+        $share_1->setGrantor('jorge');
+        $share_1->setGrantee('demo');
+        $share_1->setPath('/calendar1');
+
+        $share_2->setSid(2);
+        $share_2->setGrantor('jorge');
+        $share_2->setGrantee('second');
+        $share_2->setPath('/calendar1');
+
+        $shares = [ $share_1, $share_2 ];
+        $calendar->setShares($shares);
+        $this->assertCount(2, $calendar->getShares());
+
+        $calendar->removeShare($share_1);
+        $this->assertCount(1, $calendar->getShares());
+        $remaining_share = $calendar->getShares();
+        $remaining_share = current($remaining_share);
+        $this->assertEquals(2, $remaining_share->getSid());
+
+        $calendar->addShare($share_1);
+        $this->assertCount(2, $calendar->getShares());
     }
 
 }
