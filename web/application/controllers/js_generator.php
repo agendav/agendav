@@ -117,9 +117,14 @@ class Js_generator extends MY_Controller
                                 . $this->config->item('csrf_cookie_name'),
             'csrf_token_name' => $this->config->item('csrf_token_name'),
             'calendar_colors' => $this->config->item('calendar_colors'),
+            'show_public_caldav_url' => $this->config->item('show_public_caldav_url'),
         );
 
         $options['default_calendar_color'] = '#' . $options['calendar_colors'][0];
+
+        if ($this->config->item('show_public_caldav_url')) {
+            $options['caldav_public_base_url'] = $this->config->item('caldav_public_base_url');
+        }
 
         $this->load->view('js_code/siteconf', array(
             'options' => $options,
