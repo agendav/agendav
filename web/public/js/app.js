@@ -871,6 +871,10 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     }
   });
 
+  if (AgenDAVConf.show_public_caldav_url === true) {
+    data.public_url = AgenDAVConf.caldav_public_base_url + data.url;
+  }
+
   // Buttons for modification dialog
   var buttons_and_actions =
     [
