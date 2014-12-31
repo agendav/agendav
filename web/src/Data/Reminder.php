@@ -42,9 +42,9 @@ class Reminder
      * @param \DateInterval $when
      * @param integer $position
      */
-    public function __construct($when, $position = null)
+    public function __construct(\DateInterval $when, $position = null)
     {
-        $this->when = clone $when;
+        $this->when = $when;
         $this->position = $position;
     }
 
@@ -65,5 +65,100 @@ class Reminder
         $position = isset($input['position']) ? $input['position'] : null;
 
         return new self($interval, $position);
+    }
+
+    /**
+     * Gets an iCalcreator VALARM and creates a new Reminder.
+     *
+     * If the VALARM is not supported by AgenDAV, a null value will be returned
+     *
+     * @param ...
+     * @return AgenDAV\Data\Reminder|null
+     */
+    public static function createFromiCalcreator($valarm, $position)
+    {
+        $trigger = $valarm->getProperty('trigger');
+        if ($trigger['relatedStart'] === false || $trigger['before'] === false) {
+            return null;
+        }
+
+        $units = [
+            'min' => 1,
+            'hour' => 60,
+            'day' => 1440,
+            'week' => 10080,
+        ];
+
+        $total_minutes = 0;
+        foreach ($units as $unit => $minutes) {
+            if (isset($trigger[$unit])) {
+                $total_minutes += $trigger[$unit]*$minutes;
+            }
+        }
+
+        $used_unit = '';
+        $count = 0;
+
+        foreach ($units as $unit => $minutes) {
+            if ($total_minutes % $minutes === 0) {
+                $used_unit = $unit;
+                $count = $total_minutes/$minutes;
+                break;
+            }
+        }
+
+        if ($used_unit === '') {
+            return null;
+        }
+
+        $string = $count . ' ' . $used_unit;
+        $interval = \DateInterval::createFromDateString($string);
+
+        return new self($interval, $position);
+    }
+
+    public function generateVAlarm()
+    {
+        $valarm = new \valarm; // Ugghh
+
+        $valarm->setProperty(
+            'trigger',
+            [
+                $this->interval => $this->qty,
+                'relatedStart' => true,
+                'before' => true,
+            ]
+        );
+        $valarm->setProperty('action', 'DISPLAY');
+        $valarm->setProperty('description', 'Reminder set in AgenDAV');
+
+        return $valarm;
+    }
+
+    /**
+     * Parses current date interval
+     */
+    public function getParsedWhen()
+    {
+        $dateinterval_units = [
+            'i' => 'minutes',
+            'h' => 'hours',
+            'd' => 'days',
+            'm' => 'months',
+        ];
+
+
+        foreach ($dateinterval_units as $key => $unit_name) {
+            if ($this->when->{$key} !== 0) {
+                return [
+                    $this->when->{$key},
+                    $unit_name,
+                ];
+            }
+        }
+
+
+        // No exact match found. It's a probably a 'right on start' reminder
+        return [ 0, 'minutes' ];
     }
 }
