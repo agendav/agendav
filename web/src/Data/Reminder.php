@@ -72,13 +72,14 @@ class Reminder
      *
      * If the VALARM is not supported by AgenDAV, a null value will be returned
      *
-     * @param ...
+     * @param \valarm $valarm iCalcreator VALARM object
+     * @param integer $position Position of this VALARM inside the VEVENT
      * @return AgenDAV\Data\Reminder|null
      */
     public static function createFromiCalcreator($valarm, $position)
     {
         $trigger = $valarm->getProperty('trigger');
-        if ($trigger['relatedStart'] === false || $trigger['before'] === false) {
+        if ($trigger['relatedStart'] === false) {
             return null;
         }
 
@@ -94,6 +95,12 @@ class Reminder
             if (isset($trigger[$unit])) {
                 $total_minutes += $trigger[$unit]*$minutes;
             }
+        }
+
+        // Discard this VALARM if its 'before' property is false and
+        // it is triggered just on start
+        if ($trigger['before'] === false && $total_minutes !== 0) {
+            return null;
         }
 
         $used_unit = '';
@@ -160,5 +167,13 @@ class Reminder
 
         // No exact match found. It's a probably a 'right on start' reminder
         return [ 0, 'minutes' ];
+    }
+
+    /*
+     * Getter for position
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 }
