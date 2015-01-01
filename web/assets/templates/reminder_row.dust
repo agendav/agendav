@@ -1,14 +1,15 @@
 <div class="form-group row reminder">
     <div class="col-md-12">
         <div class="col-md-2">
-            <input class="form-control" type="text" name="reminders[][count]" value="{?count}{count}{:else}0{/count}"/>
+            <input type="hidden" name="reminders[position][]" value="{position}" />
+            <input class="form-control" type="text" name="reminders[count][]" value="{?count}{count}{:else}0{/count}"/>
         </div>
         <div class="col-md-4">
-            <select class="form-control" name="reminders[][unit]">
-                <option value="minutes">{@i18n type="labels" name="minutes"/}</option>
-                <option value="hours">{@i18n type="labels" name="hours"/}</option>
-                <option value="days">{@i18n type="labels" name="days"/}</option>
-                <option value="weeks">{@i18n type="labels" name="weeks"/}</option>
+            <select class="form-control" name="reminders[unit][]">
+                <option value="minutes"{@eq key="{unit}" value="minutes"} selected="selected"{/eq}>{@i18n type="labels" name="minutes"/}</option>
+                <option value="hours"{@eq key="{unit}" value="hours"} selected="selected"{/eq}>{@i18n type="labels" name="hours"/}</option>
+                <option value="days"{@eq key="{unit}" value="days"} selected="selected"{/eq}>{@i18n type="labels" name="days"/}</option>
+                <option value="months"{@eq key="{unit}" value="months"} selected="selected"{/eq}>{@i18n type="labels" name="months"/}</option>
             </select>
         </div>
         <div class="col-md-4">

@@ -291,37 +291,16 @@ class Events extends MY_Controller
 
         if (isset($p['reminders']) && is_array($p['reminders'])) {
             $data_reminders = $p['reminders'];
-            $num_reminders = count($data_reminders['is_absolute']);
+            $num_reminders = count($data_reminders['count']);
 
-            for($i=0;$i<$num_reminders;$i++) {
-                $this_reminder = null;
-                $data_reminders['is_absolute'][$i] =
-                    ($data_reminders['is_absolute'][$i] == 'true' ? true :
-                     false);
+            for ($i=0;$i<$num_reminders;$i++) {
+                $reminder_params = [
+                    'position' => $data_reminders['position'][$i],
+                    'count' => $data_reminders['count'][$i],
+                    'unit' => $data_reminders['unit'][$i],
+                ];
+                $this_reminder = Reminder::createFromInput($reminder_params);
 
-                if ($data_reminders['is_absolute'][$i]) {
-                    $str = $data_reminders['when'][$i];
-                    $when = DateHelper::frontEndToDateTime($str, $this->tz);
-                    $when->setTimezone($this->tz_utc);
-                    $this_reminder = Reminder::createFrom($when);
-                } else {
-                    $when = array(
-                            'before' => ($data_reminders['before'][$i] ==
-                                'true'),
-                            'relatedStart' =>
-                            ($data_reminders['relatedStart'][$i] == 'true'),
-                            );
-                    $interval = $data_reminders['interval'][$i];
-                    $when[$interval] = $data_reminders['qty'][$i];
-
-                    $this_reminder = Reminder::createFrom($when);
-                }
-
-                if (!empty($data_reminders['order'][$i])) {
-                    $this_reminder->order = $data_reminders['order'][$i];
-                }
-
-                log_message('INTERNALS', 'Adding reminder ' .  $this_reminder);
                 $reminders[] = $this_reminder;
             }
         }

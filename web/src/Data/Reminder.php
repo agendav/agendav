@@ -62,7 +62,7 @@ class Reminder
         $string = $input['count'] . ' ' . $input['unit'];
         $interval = \DateInterval::createFromDateString($string);
 
-        $position = isset($input['position']) ? $input['position'] : null;
+        $position = !empty($input['position']) ? $input['position'] : null;
 
         return new self($interval, $position);
     }
@@ -128,10 +128,20 @@ class Reminder
     {
         $valarm = new \valarm; // Ugghh
 
+        list($count, $unit) = $this->getParsedWhen();
+
+        $unit_names = [
+            'minutes' => 'min',
+            'hours' => 'hour',
+            'days' => 'day',
+            'weeks' => 'week',
+            'months' => 'month',
+        ];
+
         $valarm->setProperty(
             'trigger',
             [
-                $this->interval => $this->qty,
+                $unit_names[$unit] => $count,
                 'relatedStart' => true,
                 'before' => true,
             ]
@@ -148,25 +158,46 @@ class Reminder
     public function getParsedWhen()
     {
         $dateinterval_units = [
-            'i' => 'minutes',
-            'h' => 'hours',
-            'd' => 'days',
-            'm' => 'months',
+            'i' => 1,
+            'h' => 60,
+            'd' => 1440,
+            'm' => 40320,
         ];
 
 
-        foreach ($dateinterval_units as $key => $unit_name) {
+        $count_minutes = 0;
+
+        foreach ($dateinterval_units as $key => $minutes) {
             if ($this->when->{$key} !== 0) {
+                $count_minutes = $this->when->{$key} * $minutes;
+                break;
+            }
+        }
+
+        if ($count_minutes === 0) {
+            return [ 0, 'minutes' ];
+        }
+
+        $units = [
+            'months' => 40320,
+            'weeks' => 10080,
+            'days' => 1440,
+            'hours' => 60,
+            'minutes' => 1,
+        ];
+
+        foreach ($units as $unit => $minutes) {
+            if ($count_minutes % $minutes === 0) {
+                $count = $count_minutes/$minutes;
                 return [
-                    $this->when->{$key},
-                    $unit_name,
+                    $count,
+                    $unit
                 ];
             }
         }
 
-
-        // No exact match found. It's a probably a 'right on start' reminder
-        return [ 0, 'minutes' ];
+        // What happened?
+        return [99999, 'months'];
     }
 
     /*
