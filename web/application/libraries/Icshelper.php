@@ -451,11 +451,16 @@ class Icshelper {
         $this_event['visible_reminders'] = array();
         $this_event['reminders'] = array();
 
-        $valarms = $this->parse_valarms($vevent, $timezones);
+        $reminders = $this->parse_valarms($vevent, $timezones);
 
-        foreach ($valarms as $order => $reminder) {
-            $this_event['visible_reminders'][] = $order;
-            $this_event['reminders'][] = $reminder;
+        foreach ($reminders as $reminder) {
+            list($count, $unit) = $reminder->getParsedWhen();
+            $this_event['visible_reminders'][] = $reminder->getPosition();
+            $this_event['reminders'][] = [
+                'position' => $reminder->getPosition(),
+                'count' => $count,
+                'unit' => $unit,
+            ];
         }
 
         return $this_event;
@@ -909,36 +914,18 @@ class Icshelper {
     function parse_valarms($vevent, $timezones = array()) {
         $parsed_reminders = array();
 
-        $order = 0;
+        $position = 0;
         while ($valarm = $vevent->getComponent('valarm')) {
-            $order++;
-            // TODO parse more actions
+            $position++;
             $action = $valarm->getProperty('action');
-            if ($action == 'DISPLAY') {
-                $trigger = $valarm->getProperty('trigger');
-                $reminder = null;
+            if ($action !== 'DISPLAY') {
+                continue;
+            }
 
-                if (isset($trigger['before'])) {
-                    // Related to event start/end
-                    $reminder = Reminder::createFrom($trigger);
-                } else {
-                    // Absolute date-time trigger
-                    $tz = $this->detect_tz($valarm, $timezones, 'trigger');
-                    $datetime = $this->CI->dates->idt2datetime($trigger, $tz);
-                    // Use default timezone
-                    $datetime->setTimezone($this->tz);
+            $reminder = Reminder::createFromiCalcreator($valarm, $position);
 
-                    $reminder = Reminder::createFrom($datetime);
-                    $reminder->tdate =
-                        $datetime->format($this->date_frontend_format);
-                    $reminder->ttime =
-                        $datetime->format($this->time_frontend_format);
-                }
-
-                if ($reminder !== null) {
-                    $reminder->order = $order;
-                    $parsed_reminders[$order] = $reminder;
-                }
+            if ($reminder !== null) {
+                $parsed_reminders[$position] = $reminder;
             }
         }
 
@@ -951,13 +938,12 @@ class Icshelper {
      */
     function set_valarms(&$resource, $reminders, $old_visible_reminders =
             array()) {
-        foreach ($reminders as $r) {
-            $valarm = new valarm();
-            $valarm = $r->assign_properties($valarm);
-            if ($r->order !== FALSE) {
-                $resource = $this->replace_component($resource,
-                        'valarm', $r->order, $valarm);
-                unset($old_visible_reminders[$r->order]);
+        foreach ($reminders as $reminder) {
+            $valarm = $reminder->generateVAlarm();
+            $current_position = $reminder->getPosition();
+            if ($current_position !== null) {
+                $resource = $this->replace_component($resource, 'valarm', $current_position, $valarm);
+                unset($old_visible_reminders[$current_position]);
             } else {
                 $resource->setComponent($valarm);
             }

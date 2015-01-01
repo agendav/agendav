@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 namespace AgenDAV\Data;
 
 /*
- * Copyright 2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -25,110 +25,186 @@ use \AgenDAV\DateHelper;
 
 class Reminder
 {
-    public $type, $order = FALSE;
-    public $is_absolute;
-    public $before;
-    public $qty, $interval;
-    public $relatedStart;
-    public $absdatetime, $tdate, $ttime;
+    /**
+     * Stores the position for this reminder in the original
+     * event
+     *
+     * @var integer
+     */
+    protected $position;
 
-    public static $intervals = array(
-            'week' => 10080,
-            'day' => 1440,
-            'hour' => 60,
-            'min' => 1,
-            );
+    /**
+     * @var \DateInterval
+     */
+    protected $when;
 
-    public function __construct() {
-        // TODO add more types
-        $this->type = 'DISPLAY';
-    }
-
-    public static function createFrom($when) {
-        $new_reminder = new Reminder();
-        if (is_array($when)) {
-            // Related to start/end
-            $new_reminder->is_absolute = FALSE;
-            $new_reminder->parse_trigger($when);
-        } else {
-            // Absolute
-            $new_reminder->is_absolute = TRUE;
-            $new_reminder->absdatetime = $when;
-        }
-
-        return $new_reminder;
-    }
-
-
-    public function parse_trigger($trigger) {
-        $this->before = $trigger['before'];
-        $this->relatedStart = $trigger['relatedStart'];
-        $this->approx_trigger($trigger);
-    }
-
-    private function approx_trigger($trigger) {
-        $minutes = 0;
-        foreach (self::$intervals as $u => $m) {
-            if (isset($trigger[$u])) {
-                $minutes += $trigger[$u]*$m;
-            }
-        }
-
-        if ($minutes == 0) {
-            $use_unit = 'min';
-            // Fix 'before'
-            $this->before = TRUE;
-        } else {
-            // Decide a measure
-            $use_unit = '';
-            foreach (self::$intervals as $unit => $q) {
-                if ($minutes % $q == 0) {
-                    $use_unit = $unit;
-                    break;
-                }
-            }
-        }
-
-        $this->qty = $minutes/self::$intervals[$use_unit];
-        $this->interval = $use_unit;
+    /**
+     * @param \DateInterval $when
+     * @param integer $position
+     */
+    public function __construct(\DateInterval $when, $position = null)
+    {
+        $this->when = $when;
+        $this->position = $position;
     }
 
     /**
-     * Assigns the trigger, action and description for the given VALARM
-     component
+     * Parses an input array and returns a Reminder
+     *
+     * @param array $input Key-value based array. Expected keys are:
+     *                     - count: number of <units>
+     *                     - unit: one of minutes, hours or days
+     *                     - position (optional)
+     * @return AgenDAV\Data\Reminder
      */
-    public function assign_properties(&$valarm) {
-        if ($this->is_absolute) {
-            $valarm->setProperty('trigger',
-                    DateHelper::DateTimeToiCalendar($this->absdatetime, 'DATE-TIME'),
-                    array('VALUE' => 'DATE-TIME'));
-        } else {
-            $valarm->setProperty('trigger',
-                    array(
-                        $this->interval => $this->qty,
-                        'relatedStart' => $this->relatedStart,
-                        'before' => $this->before,
-                        ));
+    public static function createFromInput(array $input)
+    {
+        $string = $input['count'] . ' ' . $input['unit'];
+        $interval = \DateInterval::createFromDateString($string);
+
+        $position = !empty($input['position']) ? $input['position'] : null;
+
+        return new self($interval, $position);
+    }
+
+    /**
+     * Gets an iCalcreator VALARM and creates a new Reminder.
+     *
+     * If the VALARM is not supported by AgenDAV, a null value will be returned
+     *
+     * @param \valarm $valarm iCalcreator VALARM object
+     * @param integer $position Position of this VALARM inside the VEVENT
+     * @return AgenDAV\Data\Reminder|null
+     */
+    public static function createFromiCalcreator($valarm, $position)
+    {
+        $trigger = $valarm->getProperty('trigger');
+        if ($trigger['relatedStart'] === false) {
+            return null;
         }
 
-        $valarm->setProperty('action', $this->type);
-        // TODO store description
-        $valarm->setProperty('description', 'AgenDAV');
+        $units = [
+            'min' => 1,
+            'hour' => 60,
+            'day' => 1440,
+            'week' => 10080,
+        ];
 
-        log_message('INTERNALS', 'Returning VALARM ' .
-                $valarm->createComponent($x));
+        $total_minutes = 0;
+        foreach ($units as $unit => $minutes) {
+            if (isset($trigger[$unit])) {
+                $total_minutes += $trigger[$unit]*$minutes;
+            }
+        }
+
+        // Discard this VALARM if its 'before' property is false and
+        // it is triggered just on start
+        if ($trigger['before'] === false && $total_minutes !== 0) {
+            return null;
+        }
+
+        $used_unit = '';
+        $count = 0;
+
+        foreach ($units as $unit => $minutes) {
+            if ($total_minutes % $minutes === 0) {
+                $used_unit = $unit;
+                $count = $total_minutes/$minutes;
+                break;
+            }
+        }
+
+        if ($used_unit === '') {
+            return null;
+        }
+
+        $string = $count . ' ' . $used_unit;
+        $interval = \DateInterval::createFromDateString($string);
+
+        return new self($interval, $position);
+    }
+
+    public function generateVAlarm()
+    {
+        $valarm = new \valarm; // Ugghh
+
+        list($count, $unit) = $this->getParsedWhen();
+
+        $unit_names = [
+            'minutes' => 'min',
+            'hours' => 'hour',
+            'days' => 'day',
+            'weeks' => 'week',
+            'months' => 'month',
+        ];
+
+        $valarm->setProperty(
+            'trigger',
+            [
+                $unit_names[$unit] => $count,
+                'relatedStart' => true,
+                'before' => true,
+            ]
+        );
+        $valarm->setProperty('action', 'DISPLAY');
+        $valarm->setProperty('description', 'Reminder set in AgenDAV');
 
         return $valarm;
     }
 
+    /**
+     * Parses current date interval
+     */
+    public function getParsedWhen()
+    {
+        $dateinterval_units = [
+            'i' => 1,
+            'h' => 60,
+            'd' => 1440,
+            'm' => 40320,
+        ];
 
-    public function __toString() {
-        if ($this->is_absolute) {
-            return 'R[' . $this->absdatetime->format('c') . ']';
-        } else {
-            return 'R[' . $this->qty . ' ' . $this->interval .
-                ' ' . ($this->before ? 'before' : 'after') . 
-                ' ' . ($this->relatedStart ? 'start' : 'end') . ']';
+
+        $count_minutes = 0;
+
+        foreach ($dateinterval_units as $key => $minutes) {
+            if ($this->when->{$key} !== 0) {
+                $count_minutes = $this->when->{$key} * $minutes;
+                break;
+            }
         }
+
+        if ($count_minutes === 0) {
+            return [ 0, 'minutes' ];
+        }
+
+        $units = [
+            'months' => 40320,
+            'weeks' => 10080,
+            'days' => 1440,
+            'hours' => 60,
+            'minutes' => 1,
+        ];
+
+        foreach ($units as $unit => $minutes) {
+            if ($count_minutes % $minutes === 0) {
+                $count = $count_minutes/$minutes;
+                return [
+                    $count,
+                    $unit
+                ];
+            }
+        }
+
+        // What happened?
+        return [99999, 'months'];
+    }
+
+    /*
+     * Getter for position
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 }

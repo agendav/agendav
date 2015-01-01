@@ -1,0 +1,23 @@
+{#visible_reminders}
+<input type="hidden" name="visible_reminders[{.}]" value="1" />
+{/visible_reminders}
+
+<p class="text-center" id="no_reminders">
+  {@i18n type="messages" name="info_noreminders"/}
+</p>
+
+<div class="text-center" id="reminders">
+{#reminders}
+{>reminder_row /}
+{/reminders}
+</div>
+
+<div class="text-right">
+    <a href="javascript:void(0)" id="new_reminder">
+    <i class="fa fa-plus"></i> {@i18n type="labels" name="add_reminder"/}
+    </a>
+</div>
+
+
+<hr>
+<small class="alert">{@i18n type="messages" name="info_reminders_no_effect_on_agendav"/}</small>

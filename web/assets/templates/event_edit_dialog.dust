@@ -38,7 +38,7 @@
     </div>
 
     <div role="tabpanel" class="tab-pane" id="tabs-reminders">
-    {>reminders_table /}
+    {>reminders /}
     </div>
 
     <div role="tabpanel" class="tab-pane" id="tabs-workgroup">

@@ -1,65 +1,24 @@
-<tr class="reminder {?is_absolute}absolute_reminder{/is_absolute}">
-<td>
-
-<input type="hidden" name="{^add}reminders[is_absolute][]{:else}is_absolute{/add}" value="{?is_absolute}true{:else}false{/is_absolute}" />
-{^add}
-<input type="hidden" name="reminders[order][]" value="{order}" />
-{/add}
-
-{?is_absolute}
-<i class="fa fa-lg fa-calendar"></i>
-{:else}
-<i class="fa fa-lg fa-clock-o"></i>
-{/is_absolute}
-</td>
-<td class="form-inline">
-{?is_absolute}
-<div class="generate-iso8601">
-<input type="hidden" name="{^add}reminders[when][]{:else}when{/add}" class="generated" />
-<input type="text" 
-name="{^add}reminders[tdate][]{:else}tdate{/add}" class="date form-control needs-datepicker" maxlength="10" value="{tdate}" />
-
-<input type="text" name="{^add}reminders[ttime][]{:else}ttime{/add}" class="time form-control needs-timepicker" maxlength="10" value="{ttime}" />
+<div class="form-group row reminder">
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <input type="hidden" name="reminders[position][]" value="{position}" />
+            <input class="form-control" type="text" name="reminders[count][]" value="{?count}{count}{:else}0{/count}"/>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" name="reminders[unit][]">
+                <option value="minutes"{@eq key="{unit}" value="minutes"} selected="selected"{/eq}>{@i18n type="labels" name="minutes"/}</option>
+                <option value="hours"{@eq key="{unit}" value="hours"} selected="selected"{/eq}>{@i18n type="labels" name="hours"/}</option>
+                <option value="days"{@eq key="{unit}" value="days"} selected="selected"{/eq}>{@i18n type="labels" name="days"/}</option>
+                <option value="months"{@eq key="{unit}" value="months"} selected="selected"{/eq}>{@i18n type="labels" name="months"/}</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <p class="form-control-static">{@i18n type="labels" name="before" /}</p>
+        </div>
+        <div class="col-md-2">
+            <p class="form-control-static">
+                <a href="javascript:void(0)" class="remove"><i class="fa fa-remove fa-fw"></i></a>
+            </p>
+        </div>
+    </div>
 </div>
-
-{^add}
-<input type="hidden" name="reminders[qty][]" value="" />
-<input type="hidden" name="reminders[interval][]" value="" />
-<input type="hidden" name="reminders[before][]" value="" />
-{/add}
-{:else}
-<input name="{^add}reminders[qty][]{:else}qty{/add}" class="form-control" maxlength="4" value="{qty}" />
-<select class="form-control" name="{^add}reminders[interval][]{:else}interval{/add}">
- <option value="min"{@eq key="{interval}" value="min"} selected="true"{/eq}>{@i18n type="labels" name="minutes"/}</option>
- <option value="hour"{@eq key="{interval}" value="hour"} selected="true"{/eq}>{@i18n type="labels" name="hours"/}</option>
- <option value="day"{@eq key="{interval}" value="day"} selected="true"{/eq}>{@i18n type="labels" name="days"/}</option>
- <option value="week"{@eq key="{interval}" value="week"} selected="true"{/eq}>{@i18n type="labels" name="weeks"/}</option>
-</select>
-
-<select class="form-control" name="{^add}reminders[before][]{:else}before{/add}">
- <option value="true"{?before} selected="true"{/before}>{@i18n type="labels" name="before"/}</option>
- <option value="false"{^before}{^add} selected="true"{/add}{/before}>{@i18n type="labels" name="after"/}</option>
-</select>
-
-<select class="form-control" name="{^add}reminders[relatedStart][]{:else}relatedStart{/add}">
- <option value="true"{?relatedStart} selected="true"{/relatedStart}>{@i18n type="labels" name="start"/}</option>
- <option value="false"{^relatedStart}{^add} selected="true"{/add}{/relatedStart}>{@i18n type="labels" name="end"/}</option>
-</select>
-
-{^add}
-<input type="hidden" name="reminders[tdate][]" value="" />
-<input type="hidden" name="reminders[ttime][]" value="" />
-{/add}
-
-{/is_absolute}
-</td>
-<td>
-{?add}
-<img src="{base_url}img/add.png" class="reminder_add_button pseudobutton" alt="{@i18n type="labels" name="add"/}" title="{@i18n type="labels" name="add"/}" />
-{:else}
-<img src="{base_url}img/delete.png" class="reminder_delete pseudobutton" alt="{@i18n type="labels" name="delete"/}" title="{@i18n type="labels" name="delete"/}" />
-{/add}
-</td>
-
-</tr>
-
