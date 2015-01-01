@@ -176,7 +176,7 @@ $labels['weeks'] = 'weeks';
 $labels['remindersoptions'] = 'Reminders';
 $labels['reminder'] = 'Reminder';
 
-$labels['newreminder'] = 'New reminder:';
+$labels['add_reminder'] = 'Add reminder';
 
 $labels['before'] = 'before';
 $labels['after'] = 'after';
@@ -255,3 +255,5 @@ $messages['help_timezone'] = 'Choose your current timezone. This will affect how
 $messages['info_prefssaved'] = 'Preferences saved';
 
 $messages['more_events'] = '+ %count events';
+
+$messages['info_reminders_no_effect_on_agendav'] = 'Note: reminders will only have effect on CalDAV clients that load this calendar';
