@@ -1433,53 +1433,20 @@ var share_manager_no_entries_placeholder = function share_manager_no_entries_pla
 var reminders_manager = function reminders_manager() {
 
   var tab_reminders = $('#tabs-reminders');
-  var manager = $('#reminders_table');
-
-  initialize_date_and_time_pickers(tab_reminders);
+  var manager = $('#reminders');
 
   reminders_manager_no_entries_placeholder();
 
-  manager.on('click',
-    '.reminder_delete', function(event) {
-      $(this).parent().parent()
-        .fadeOut('fast', function() {
-          $(this).remove();
-          reminders_manager_no_entries_placeholder();
-        });
+  manager.on('click', '.remove', function(event) {
+      $(this).closest('.reminder').remove();
+      reminders_manager_no_entries_placeholder();
+  });
+
+  manager.parent().on('click', '#new_reminder', function(event) {
+    render_template('reminder_row', {}, function(out) {
+      $('#reminders').append(out);
+      reminders_manager_no_entries_placeholder();
     });
-
-  manager.parent().on('click', 'img.reminder_add_button', function(event) {
-    var formdata = $(this).closest('tbody').serializeObject();
-    // Basic validations
-    var proceed = false;
-    var regexp_num = /^[0-9]+$/;
-
-    if (formdata.is_absolute === false) {
-      if (formdata.qty !== '' && regexp_num.test(formdata.qty) &&
-        formdata.interval !== '' && formdata.before !== '') {
-
-        proceed = true;
-      }
-    } else {
-      if (formdata.tdate !== '' && formdata.ttime !== '') {
-        proceed = true;
-      }
-    }
-
-    if (proceed === true) {
-      var $new_reminder_row = $(this).closest('tr');
-
-      render_template('reminder_row', formdata, function(out) {
-        manager.find('tbody').append(out);
-
-        $new_reminder_row.find('input').val('');
-        $new_reminder_row.find('select').val('');
-
-        initialize_date_and_time_pickers(tab_reminders);
-        reminders_manager_no_entries_placeholder();
-      });
-
-    }
   });
 };
 
@@ -1488,11 +1455,11 @@ var reminders_manager = function reminders_manager() {
  */
 
 var reminders_manager_no_entries_placeholder = function reminders_manager_no_entries_placeholder() {
-  var manager = $('#reminders_table');
-  if (manager.find('tbody tr').length == 1) {
-    $('#reminders_no_rows').show();
+  var manager = $('#reminders');
+  if (manager.find('.reminder').length === 0) {
+    $('#no_reminders').show();
   } else {
-    $('#reminders_no_rows').hide();
+    $('#no_reminders').hide();
   }
 };
 
