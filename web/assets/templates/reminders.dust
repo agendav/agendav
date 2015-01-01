@@ -1,8 +1,15 @@
+{#visible_reminders}
+<input type="hidden" name="visible_reminders[{.}]" value="1" />
+{/visible_reminders}
+
 <p class="text-center" id="no_reminders">
   {@i18n type="messages" name="info_noreminders"/}
 </p>
 
 <div class="text-center" id="reminders">
+{#reminders}
+{>reminder_row /}
+{/reminders}
 </div>
 
 <div class="text-right">

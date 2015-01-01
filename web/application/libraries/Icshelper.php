@@ -938,13 +938,12 @@ class Icshelper {
      */
     function set_valarms(&$resource, $reminders, $old_visible_reminders =
             array()) {
-        foreach ($reminders as $r) {
-            $valarm = new valarm();
-            $valarm = $r->assign_properties($valarm);
-            if ($r->order !== FALSE) {
-                $resource = $this->replace_component($resource,
-                        'valarm', $r->order, $valarm);
-                unset($old_visible_reminders[$r->order]);
+        foreach ($reminders as $reminder) {
+            $valarm = $reminder->generateVAlarm();
+            $current_position = $reminder->getPosition();
+            if ($current_position !== null) {
+                $resource = $this->replace_component($resource, 'valarm', $current_position, $valarm);
+                unset($old_visible_reminders[$current_position]);
             } else {
                 $resource->setComponent($valarm);
             }
