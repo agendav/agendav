@@ -86,6 +86,10 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
         $dt = DateHelper::frontendToDateTime($str, $this->utc);
         $this->assertEquals('201412151945', $dt->format('YmdHi'));
 
+        // No timezone specified. Should use UTC
+        $dt = DateHelper::frontendToDateTime($str);
+        $this->assertEquals('201412151945', $dt->format('YmdHi'));
+
         $dt = DateHelper::frontendToDateTime($str, new \DateTimeZone('Europe/Madrid'));
         $this->assertEquals('201412152045', $dt->format('YmdHi'));
     }

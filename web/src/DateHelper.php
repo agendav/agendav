@@ -185,12 +185,14 @@ class DateHelper
      * @return \DateTime Date and time parsed from initial string
      * @throws \InvalidArgumentException
      */
-    public static function frontEndToDateTime($str, \DateTimeZone $tz)
+    public static function frontEndToDateTime($str, \DateTimeZone $tz = null)
     {
         $format = 'Y-m-d\TH:i:s.u\Z';
 
         $result = self::createDateTime($format, $str, new \DateTimeZone('UTC'));
-        $result->setTimeZone($tz);
+        if ($tz !== null) {
+            $result->setTimeZone($tz);
+        }
 
         return $result;
     }
