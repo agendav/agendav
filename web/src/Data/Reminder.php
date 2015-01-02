@@ -68,7 +68,7 @@ class Reminder
     }
 
     /**
-     * Gets an iCalcreator VALARM and creates a new Reminder.
+     * Receives an iCalcreator VALARM and creates a new Reminder.
      *
      * If the VALARM is not supported by AgenDAV, a null value will be returned
      *
@@ -206,5 +206,15 @@ class Reminder
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /*
+     * Getter for when
+     *
+     * @return \DateInterval
+     */
+    public function getWhen()
+    {
+        return $this->when;
     }
 }
