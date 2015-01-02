@@ -35,6 +35,8 @@ class Defs {
             'libs/jquery.cookie.js',
             'libs/jquery.serializeobject.js',
             'libs/fullcalendar.js',
+            'libs/rrule.js',
+            'libs/nlp.js',
             'translation.js',
             'templates/dust-core.js',
             'templates/dust-helpers.js',

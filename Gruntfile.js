@@ -21,6 +21,7 @@ module.exports = function(grunt) {
                 { expand: true, cwd: 'bower_components/bootstrap/fonts', src: ['**'], dest: 'web/public/font/' },
                 { expand: true, cwd: 'bower_components/dustjs-linkedin/dist', src: ['dust-core.js'], dest: 'web/public/js/templates/' },
                 { expand: true, cwd: 'bower_components/dustjs-helpers/dist', src: ['dust-helpers.js'], dest: 'web/public/js/templates/' },
+                { expand: true, cwd: 'bower_components/rrule/lib', src: ['rrule.js', 'nlp.js'], dest: 'web/public/js/libs/' },
             ],
         },
 
@@ -79,6 +80,8 @@ module.exports = function(grunt) {
             'web/public/js/templates/dust-helpers.js',
             'web/public/js/templates/templates.js',
             'web/public/js/datetime.js',
+            'web/public/js/libs/rrule.js',
+            'web/public/js/libs/nlp.js',
             'web/public/js/app.js',
           ],
           dest: 'web/public/build/js/agendav-<%= pkg.version %>.js'
