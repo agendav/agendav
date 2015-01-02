@@ -18,12 +18,7 @@
 
 {?rrule}
 <dt>{@i18n type="labels" name="repeat"/}</dt>
-{?rrule_explained}
-<dd>{@i18n type="messages" name="info_repetition_human" explanation="{rrule_explained}"/}</dd>
- {:else}
-<dd>{@i18n type="messages" name="info_repetition_unparseable"/} <span
-class="rrule_raw_value">{rrule}</span></dd>
- {/rrule_explained}
+<dd>{rrule_explained}<span
 {/rrule}
 
 {#reminders}

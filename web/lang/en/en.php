@@ -18,6 +18,7 @@
 
 $labels = array();
 $messages = array();
+$rrule = array();
 
 // Labels
 $labels['username'] = 'User name';
@@ -255,3 +256,28 @@ $messages['info_prefssaved'] = 'Preferences saved';
 $messages['more_events'] = '+ %count events';
 
 $messages['info_reminders_no_effect_on_agendav'] = 'Note: reminders will only have effect on CalDAV clients that load this calendar';
+
+// RRULE translation helpers
+$rrule['every'] = 'every';
+$rrule['until'] = 'until';
+$rrule['day'] = 'day';
+$rrule['days'] = 'days';
+$rrule['week'] = 'week';
+$rrule['weeks'] = 'weeks';
+$rrule['month'] = 'month';
+$rrule['months'] = 'months';
+$rrule['year'] = 'year';
+$rrule['years'] = 'years';
+$rrule['for'] = 'for';
+$rrule['on'] = 'on';
+$rrule['time'] = 'time';
+$rrule['times'] = 'times';
+$rrule['weekday'] = 'weekday';
+$rrule['weekdays'] = 'weekdays';
+$rrule['in'] = 'in';
+$rrule['on the'] = 'on the';
+$rrule['and'] = 'and';
+$rrule['or'] = 'or';
+$rrule['the'] = 'the';
+$rrule['last'] = 'last';
+
