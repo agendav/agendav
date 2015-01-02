@@ -153,4 +153,67 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
             $recurrence_2->generateiCalcreatorData('DATE')
         );
     }
+
+    public function testCreateFromiCalcreator()
+    {
+        $parts = [
+            'FREQ' => 'DAILY',
+        ];
+        $recurrence = Recurrence::createFromiCalcreator($parts);
+
+        $this->assertEquals('DAILY', $recurrence->getFrequency());
+        $this->assertNull($recurrence->getUntil());
+        $this->assertNull($recurrence->getCount());
+        $this->assertEquals(1, $recurrence->getInterval());
+
+        $parts = [
+            'FREQ' => 'WEEKLY',
+            'INTERVAL' => '2',
+            'COUNT' => '3',
+        ];
+        $recurrence = Recurrence::createFromiCalcreator($parts);
+
+        $this->assertEquals('WEEKLY', $recurrence->getFrequency());
+        $this->assertNull($recurrence->getUntil());
+        $this->assertEquals(3, $recurrence->getCount());
+        $this->assertEquals(2, $recurrence->getInterval());
+
+        $parts = [
+            'FREQ' => 'DAILY',
+            'UNTIL' => [
+                'year' => '2015',
+                'month' => '01',
+                'day' => '02',
+                'hour' => '14',
+                'minute' => '18',
+                'second' => '00',
+                'tz' => 'UTC',
+            ],
+        ];
+        $recurrence = Recurrence::createFromiCalcreator($parts);
+
+        $now = new \DateTime('2015-01-02 14:18:00', new \DateTimeZone('UTC'));
+        $this->assertEquals('DAILY', $recurrence->getFrequency());
+        $this->assertEquals($now, $recurrence->getUntil());
+        $this->assertNull($recurrence->getCount());
+        $this->assertEquals(1, $recurrence->getInterval());
+
+        // Until with DATE instead of DATE-TIME
+        $parts = [
+            'FREQ' => 'DAILY',
+            'UNTIL' => [
+                'year' => '2015',
+                'month' => '01',
+                'day' => '02',
+                'tz' => 'UTC',
+            ],
+        ];
+        $recurrence = Recurrence::createFromiCalcreator($parts);
+
+        $now = new \DateTime('2015-01-02 00:00:00', new \DateTimeZone('UTC'));
+        $this->assertEquals('DAILY', $recurrence->getFrequency());
+        $this->assertEquals($now, $recurrence->getUntil());
+        $this->assertNull($recurrence->getCount());
+        $this->assertEquals(1, $recurrence->getInterval());
+    }
 }
