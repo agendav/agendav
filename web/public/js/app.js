@@ -1514,6 +1514,11 @@ var event_click_callback = function event_click_callback(event,
     event_data.disable_actions = true;
   }
 
+  if (event_data.rrule !== undefined) {
+    var rrule = RRule.fromString(event_data.rrule);
+    event_data.rrule_explained = explain_rrule(rrule);
+  }
+
   event_data.readable_dates = AgenDAVDateAndTime.formatEventDates(event_data);
 
   set_data('current_event', event_data);
@@ -1878,6 +1883,15 @@ var generate_iso8601_values = function generate_iso8601_values(element) {
 
   });
 
+};
+
+/**
+ * Generates an human readable explanation of a RRULE
+ *
+ * @param RRule rrule
+ */
+var explain_rrule = function explain_rrule(rrule) {
+  return rrule.toText(rrule_gettext, AgenDAVConf.i18n.rrule);
 };
 
 

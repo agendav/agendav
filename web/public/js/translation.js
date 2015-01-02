@@ -50,6 +50,13 @@ function t(mtype, s, params) {
 }
 
 /**
+ * Callback used to translate RRULE explanations
+ */
+var rrule_gettext = function rrule_gettext(id) {
+	return AgenDAVConf.i18n.rrule[id] || id;
+};
+
+/**
  * Returns an array of labels using the parameter 'arr' as the index for
  * the desired labels
  */
