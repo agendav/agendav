@@ -186,6 +186,32 @@ class Recurrence
     }
 
     /**
+     * Generates a RRULE data array for iCalcreator
+     *
+     * @param string $type One of DATE-TIME/DATE
+     * @return array
+     */
+    public function generateiCalcreatorData($type = 'DATE-TIME')
+    {
+        $result = [];
+
+        $result['FREQ'] = $this->frequency;
+        if ($this->interval != 1) {
+            $result['INTERVAL'] = $this->interval;
+        }
+
+        if ($this->count !== null) {
+            $result['COUNT'] = $this->count;
+        }
+
+        if ($this->until !== null) {
+            $result['UNTIL'] = DateHelper::dateTimeToiCalendar($this->until, $type);
+        }
+
+        return $result;
+    }
+
+    /**
      * Generates a new Recurrence with the arguments received on the
      * input array
      *
