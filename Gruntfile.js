@@ -22,6 +22,7 @@ module.exports = function(grunt) {
                 { expand: true, cwd: 'bower_components/dustjs-linkedin/dist', src: ['dust-core.js'], dest: 'web/public/js/templates/' },
                 { expand: true, cwd: 'bower_components/dustjs-helpers/dist', src: ['dust-helpers.js'], dest: 'web/public/js/templates/' },
                 { expand: true, cwd: 'bower_components/rrule/lib', src: ['rrule.js', 'nlp.js'], dest: 'web/public/js/libs/' },
+                { expand: true, cwd: 'bower_components/es5-shim', src: ['es5-shim.js'], dest: 'web/public/js/libs/' },
             ],
         },
 
