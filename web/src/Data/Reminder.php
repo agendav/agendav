@@ -21,8 +21,6 @@ namespace AgenDAV\Data;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use \AgenDAV\DateHelper;
-
 class Reminder
 {
     /**
