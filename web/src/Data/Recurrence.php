@@ -251,4 +251,41 @@ class Recurrence
 
         return $recurrence;
     }
+
+    /**
+     * Generates a new Recurrence with the arguments received on the
+     * input array From iCalcreator
+     *
+     *  @param array $parts An array from iCalcreator describing a RRULE
+     *  @throws \InvalidArgumentException|\LogicException (see setCount and setUntil)
+     *  @return \AgenDAV\Data\Recurrence
+     */
+    public static function createFromiCalcreator(array $parts)
+    {
+        $data = [];
+        $names = [
+            'FREQ' => 'frequency',
+            'INTERVAL' => 'interval',
+            'COUNT' => 'count',
+        ];
+
+        foreach ($names as $original => $new_name) {
+            if (!empty($parts[$original])) {
+                $data[$new_name] = $parts[$original];
+            }
+        }
+
+
+        $result = self::createFromInput($data);
+
+        if (!empty($parts['UNTIL'])) {
+            $until = DateHelper::iCalcreatorToDateTime(
+                $parts['UNTIL'],
+                new \DateTimeZone('UTC')
+            );
+            $result->setUntil($until);
+        }
+
+        return $result;
+    }
 }
