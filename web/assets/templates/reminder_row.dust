@@ -9,6 +9,7 @@
                 <option value="minutes"{@eq key="{unit}" value="minutes"} selected="selected"{/eq}>{@i18n type="labels" name="minutes"/}</option>
                 <option value="hours"{@eq key="{unit}" value="hours"} selected="selected"{/eq}>{@i18n type="labels" name="hours"/}</option>
                 <option value="days"{@eq key="{unit}" value="days"} selected="selected"{/eq}>{@i18n type="labels" name="days"/}</option>
+                <option value="weeks"{@eq key="{unit}" value="weeks"} selected="selected"{/eq}>{@i18n type="labels" name="weeks"/}</option>
                 <option value="months"{@eq key="{unit}" value="months"} selected="selected"{/eq}>{@i18n type="labels" name="months"/}</option>
             </select>
         </div>
