@@ -13,7 +13,7 @@
             </select>
         </div>
         <div class="col-md-4">
-            <p class="form-control-static">{@i18n type="labels" name="before" /}</p>
+            <p class="form-control-static">{@i18n type="labels" name="before_start" /}</p>
         </div>
         <div class="col-md-2">
             <p class="form-control-static">

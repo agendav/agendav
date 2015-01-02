@@ -6,4 +6,4 @@
  {@eq value="days"}{@i18n type="labels" name="days"/}{/eq}
 {/select} 
 
-{@i18n type="labels" name="before"/} {@i18n type="labels" name="start" /}
+{@i18n type="labels" name="before_start"/}

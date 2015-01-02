@@ -165,20 +165,18 @@ $labels['defaultcalendar'] = 'Default calendar';
 
 $labels['toggleallcalendars'] = 'Show/hide all';
 
-$labels['popup'] = 'Pop-up';
-$labels['email'] = 'Email';
-
 $labels['minutes'] = 'minutes';
 $labels['hours'] = 'hours';
 $labels['days'] = 'days';
 $labels['weeks'] = 'weeks';
+$labels['months'] = 'months';
 
 $labels['remindersoptions'] = 'Reminders';
 $labels['reminder'] = 'Reminder';
 
 $labels['add_reminder'] = 'Add reminder';
 
-$labels['before'] = 'before';
+$labels['before_start'] = 'before start';
 $labels['after'] = 'after';
 
 $labels['start'] = 'start';
