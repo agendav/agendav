@@ -112,4 +112,45 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($recurrence->getCount());
         $this->assertEquals(1, $recurrence->getInterval());
     }
+
+    public function testGenerateiCalcreatorData()
+    {
+        $recurrence = new Recurrence('YEARLY');
+        $this->assertEquals(
+            [
+            'FREQ' => 'YEARLY'
+            ],
+            $recurrence->generateiCalcreatorData()
+        );
+
+        $recurrence->setInterval(3);
+        $this->assertEquals(
+            [
+            'FREQ' => 'YEARLY',
+            'INTERVAL' => 3,
+            ],
+            $recurrence->generateiCalcreatorData()
+        );
+
+        $recurrence_2 = new Recurrence('DAILY');
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $recurrence_2->setUntil($now);
+
+        $this->assertEquals(
+            [
+            'FREQ' => 'DAILY',
+            'UNTIL' => $now->format('Ymd\THis\Z'),
+            ],
+            $recurrence_2->generateiCalcreatorData()
+        );
+
+        // Test DATE instead of DATE-TIME
+        $this->assertEquals(
+            [
+            'FREQ' => 'DAILY',
+            'UNTIL' => $now->format('Ymd'),
+            ],
+            $recurrence_2->generateiCalcreatorData('DATE')
+        );
+    }
 }
