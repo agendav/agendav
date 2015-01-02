@@ -215,5 +215,14 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($now, $recurrence->getUntil());
         $this->assertNull($recurrence->getCount());
         $this->assertEquals(1, $recurrence->getInterval());
+
+        // Unsupported RRULE
+        $parts = [
+            'FREQ' => 'YEARLY',
+            'BYMONTH' => 11,
+        ];
+        $recurrence = Recurrence::createFromiCalcreator($parts);
+
+        $this->assertNull($recurrence);
     }
 }

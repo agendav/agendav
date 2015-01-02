@@ -254,15 +254,26 @@ class Recurrence
 
     /**
      * Generates a new Recurrence with the arguments received on the
-     * input array From iCalcreator
+     * input array From iCalcreator.
+     *
+     * If RRULE is not understood by this parser, a null value will be returned
      *
      *  @param array $parts An array from iCalcreator describing a RRULE
      *  @throws \InvalidArgumentException|\LogicException (see setCount and setUntil)
-     *  @return \AgenDAV\Data\Recurrence
+     *  @return \AgenDAV\Data\Recurrence|null
      */
     public static function createFromiCalcreator(array $parts)
     {
         $data = [];
+
+        $supported_components = ['FREQ', 'INTERVAL', 'COUNT', 'UNTIL'];
+
+        // Look for unsupported properties
+        $other_keys = array_diff_key($parts, array_flip($supported_components));
+        if (count($other_keys) > 0) {
+            return null;
+        }
+
         $names = [
             'FREQ' => 'frequency',
             'INTERVAL' => 'interval',
