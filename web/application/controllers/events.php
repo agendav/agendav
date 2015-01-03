@@ -244,42 +244,11 @@ class Events extends MY_Controller
         $p['dtstart'] = $start;
         $p['dtend'] = $end;
 
-        // Recurrence checks
-        unset($p['rrule']);
-
-        if (isset($p['recurrence_type'])) {
-            if ($p['recurrence_type'] != 'none') {
-                if (isset($p['recurrence_until_date']) &&
-                        !empty($p['recurrence_until_date'])) {
-                            $end_of_recurrence = DateHelper::frontEndToDateTime(
-                                $p['recurrence_until_date'],
-                                $this->tz_utc
-                            );
-
-                            $end_of_recurrence->setTime(
-                                (int) $start->format('G'),
-                                (int) $start->format('i')
-                            );
-
-                            $p['recurrence_until'] = $end_of_recurrence;
-                }
-
-                $rrule = $this->recurrence->build($p, $rrule_err);
-                if (false === $rrule) {
-                    // Couldn't build rrule
-                    log_message('ERROR', 'Error building RRULE (' . $rrule_err .')');
-                    $this->_throw_exception($this->i18n->_('messages',
-                            'error_bogusrepeatrule') . ': ' . $rrule_err);
-                }
-            } else {
-                // Deleted RRULE
-                // TODO in the future, consider recurrence-id and so
-                $rrule = '';
-            }
-
-            $p['rrule'] = $rrule;
+        // RRULE (iCalcreator needs it like this)
+        if (!empty($p['rrule'])) {
+            parse_str(strtr($p['rrule'], ';', '&'), $sliced_rrule);
+            $p['rrule'] = $sliced_rrule;
         }
-
 
         // Reminders
         $reminders = array();
@@ -383,7 +352,7 @@ class Events extends MY_Controller
                     );
 
             // Only change RRULE when we are able to
-            if (isset($p['rrule'])) {
+            if (!empty($p['rrule'])) {
                 $properties['rrule'] = $p['rrule'];
             }
 
