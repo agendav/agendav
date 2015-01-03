@@ -73,7 +73,9 @@ $(document).ready(function() {
       base_url: AgenDAVConf.base_url,
       base_app_url: AgenDAVConf.base_app_url,
       csrf_token_name: AgenDAVConf.csrf_token_name,
-      enable_calendar_sharing: AgenDAVConf.enable_calendar_sharing
+      enable_calendar_sharing: AgenDAVConf.enable_calendar_sharing,
+      // Sorry for this!
+      numbers1to60: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
     });
 
     // Default colorpicker options
@@ -670,9 +672,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     pre_func: function() {
       $('#event_edit_dialog').find('input.summary').focus();
       handle_date_and_time('#event_edit_dialog', data);
-      handle_repetitions('#event_edit_dialog', data);
-
-      // TODO recurrence rules
+      AgenDAVRepeat.handleForm($('#tabs-recurrence'));
 
       // Reminders
       reminders_manager();
@@ -691,7 +691,7 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   var $end_time = $(where).find('input.end_time');
   var $start_date = $(where).find('input.start_date');
   var $end_date = $(where).find('input.end_date');
-  var $recurrence_until = $(where).find('input.recurrence_until');
+  var $repeat_until = $(where).find('input.repeat_until');
   var $allday = $(where).find('input.allday');
 
   $start_time.timepicker(AgenDAVConf.timepicker_base);
@@ -701,20 +701,20 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
         onSelect: function(dateText, inst) {
           // End date can't be previous to start date
           set_mindate($(this).datepicker('getDate'),
-            [ $end_date, $recurrence_until ]
+            [ $end_date, $repeat_until ]
             );
 
         }
       });
   $end_date.datepicker();
-  $recurrence_until.datepicker();
+  $repeat_until.datepicker();
 
   // Calculate initial event duration
   $end_time.data('duration', calculate_event_duration($start_time, $end_time));
 
   // First time datepicker is run we need to set minDate on end date
   set_mindate(data.start,
-      [ $end_date, $recurrence_until ]
+      [ $end_date, $repeat_until ]
       );
 
   // All day checkbox
@@ -762,42 +762,6 @@ var calculate_event_duration = function calculate_event_duration(start, end) {
   var start_time_moment = moment(start_js);
 
   return end_time_moment.diff(start_time_moment, 'minutes');
-};
-
-var handle_repetitions = function handle_repetitions(where, data) {
-  var $recurrence_type = $(where).find('select.recurrence_type');
-  var $recurrence_ends = $(where).find('div.recurrence_ends');
-
-  $recurrence_type.on('change', function() {
-    var newval = $(this).val();
-    if (newval == 'none') {
-      $recurrence_ends.hide();
-    } else {
-      var notempty, $select_this;
-      $recurrence_ends.show();
-      notempty = $recurrence_ends.find(':input:text[value!=""]');
-      if (notempty.length === 0) {
-        $select_this = $recurrence_ends.find(':input:radio:first');
-      } else {
-        $select_this = notempty.first().prev(':input:radio');
-      }
-
-      $select_this.trigger('click');
-
-    }
-  });
-  $recurrence_type.trigger('change');
-
-
-  $recurrence_ends.on('change', 'input:radio', function() {
-    $(this).siblings(':input:text').prop('disabled', false);
-    // Disable all other options
-    $(this).parent().siblings().find(':input:text').val('').prop('disabled', true);
-  });
-  if ($recurrence_ends.is(':visible')) {
-    $recurrence_ends.find('input:radio:checked').trigger('change');
-  }
-
 };
 
 // Triggers a dialog for creating calendars
@@ -1516,7 +1480,7 @@ var event_click_callback = function event_click_callback(event,
 
   if (event_data.rrule !== undefined) {
     var rrule = RRule.fromString(event_data.rrule);
-    event_data.rrule_explained = explain_rrule(rrule);
+    event_data.rrule_explained = AgenDAVRepeat.explainRRule(rrule);
   }
 
   event_data.readable_dates = AgenDAVDateAndTime.formatEventDates(event_data);
@@ -1884,16 +1848,6 @@ var generate_iso8601_values = function generate_iso8601_values(element) {
   });
 
 };
-
-/**
- * Generates an human readable explanation of a RRULE
- *
- * @param RRule rrule
- */
-var explain_rrule = function explain_rrule(rrule) {
-  return rrule.toText(rrule_gettext, AgenDAVConf.i18n.rrule);
-};
-
 
 
 // vim: sw=2 tabstop=2

@@ -178,16 +178,18 @@ $labels['reminder'] = 'Reminder';
 $labels['add_reminder'] = 'Add reminder';
 
 $labels['before_start'] = 'before start';
-$labels['after'] = 'after';
+$labels['after'] = 'After';
 
 $labels['start'] = 'start';
 $labels['end'] = 'end';
 
 $labels['ends'] = 'Ends:';
-$labels['never'] = 'never';
+$labels['never'] = 'Never';
 $labels['occurrences'] = 'occurrences';
 
 $labels['timezone'] = 'Timezone';
+$labels['every'] = 'Every';
+$labels['repeat_explanation'] = 'This event repeats';
 
 
 // Messages

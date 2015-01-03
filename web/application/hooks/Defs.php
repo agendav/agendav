@@ -42,6 +42,7 @@ class Defs {
             'templates/dust-helpers.js',
             'templates/templates.js',
             'datetime.js',
+            'repeat-form.js',
             'app.js',
             );
 

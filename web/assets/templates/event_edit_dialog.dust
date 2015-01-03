@@ -26,15 +26,7 @@
     </div>
 
     <div role="tabpanel" class="tab-pane" id="tabs-recurrence">
-    {^unparseable_rrule}
-    {>repeat_rule_form:recurrence_components/}
-    {:else}
-    <input type="hidden" name="unparseable_rrule" value="true" />
-    {@i18n type="messages" name="info_repetition_unparseable" /}
-    <pre>
-    {rrule}
-    </pre>
-    {/unparseable_rrule}
+    {>repeat_rule_form/}
     </div>
 
     <div role="tabpanel" class="tab-pane" id="tabs-reminders">
