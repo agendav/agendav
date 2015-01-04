@@ -1,7 +1,7 @@
 <input type="hidden" name="rrule" id="rrule" value="{rrule}">
 
 {>form_element_start for="frequency" label="repeat" /}
- <select name="frequency" class="repeat_type form-control" id="repeat_frequency">
+ <select name="repeat_frequency" class="repeat_type form-control" id="repeat_frequency">
   <option value="none">{@i18n type="labels" name="repeatno"/}</option>
   <option value="daily">{@i18n type="labels" name="repeatdaily"/}</option>
   <option value="weekly">{@i18n type="labels" name="repeatweekly"/}</option>
@@ -22,10 +22,34 @@
 </div>
 {>form_element_end /}
 
+{>form_element_start for="byday" label="repeat_by_day" class="container_repeat_by_day" /}
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="sunday"> {@i18n type="labels" name="sunday_short" /}
+ </label>
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="monday"> {@i18n type="labels" name="monday_short" /}
+ </label>
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="tuesday"> {@i18n type="labels" name="tuesday_short" /}
+ </label>
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="wednesday"> {@i18n type="labels" name="wednesday_short" /}
+ </label>
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="thursday"> {@i18n type="labels" name="thursday_short" /}
+ </label>
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="friday"> {@i18n type="labels" name="friday_short" /}
+ </label>
+ <label class="checkbox-inline">
+  <input class="secondary" type="checkbox" name="repeat_by_day" value="saturday"> {@i18n type="labels" name="saturday_short" /}
+ </label>
+{>form_element_end /}
+
 {>form_element_start for="" label="ends" class="container_repeat_ends" /}
 <div class="row">
  <div class="col-md-5">
-     <select name="ends" class="repeat_ends form-control">
+     <select name="repeat_ends" class="repeat_ends form-control">
       <option value="never">{@i18n type="labels" name="never"/}</option>
       <option value="after">{@i18n type="labels" name="after"/}</option>
       <option value="date">{@i18n type="labels" name="choose_date"/}</option>

@@ -189,6 +189,7 @@ $labels['occurrences'] = 'occurrences';
 
 $labels['timezone'] = 'Timezone';
 $labels['every'] = 'Every';
+$labels['repeat_by_day'] = 'Repeat on';
 $labels['repeat_explanation'] = 'This event repeats';
 
 
