@@ -247,12 +247,16 @@ class Events extends MY_Controller
         // RRULE (iCalcreator needs it like this)
         if (!empty($p['rrule'])) {
             parse_str(strtr($p['rrule'], ';', '&'), $sliced_rrule);
-            // Some properties need to be splitted
-            foreach ($sliced_rrule as $component => $value) {
-                if (preg_match('/,/', $value)) {
-                    $sliced_rrule[$component] = preg_split('/,/', $value);
-                }
+
+            // iCalcreator and its API, great as usual
+            if (isset($sliced_rrule['BYDAY'])) {
+                $all_values = preg_split('/,/', $sliced_rrule['BYDAY']);
+                $sliced_rrule['BYDAY'] = array_map(
+                    function($day) { return ['DAY' => $day]; },
+                    $all_values
+                );
             }
+
             $p['rrule'] = $sliced_rrule;
         }
 
