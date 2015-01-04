@@ -15,9 +15,9 @@
 {>form_element_start for="interval" label="every" /}
 <div class="col-md-3">
     <select name="repeat_interval" class="secondary repeat_interval form-control">
-    {#numbers1to60}
+    {#numbers1to31}
      <option value="{.}">{.}</option>
-    {/numbers1to60}
+    {/numbers1to31}
     </select>
 </div>
 {>form_element_end /}
@@ -46,6 +46,17 @@
  </label>
 {>form_element_end /}
 
+{>form_element_start for="repeat_by_month_day" label="repeat_by_month_day" class="container_repeat_by_month_day" /}
+<div class="col-md-3">
+    <select name="repeat_by_month_day" class="secondary repeat_by_month_day form-control">
+     <option value="">-</option>
+    {#numbers1to31}
+     <option value="{.}">{.}</option>
+    {/numbers1to31}
+    </select>
+</div>
+{>form_element_end /}
+
 {>form_element_start for="" label="ends" class="container_repeat_ends" /}
 <div class="row">
  <div class="col-md-5">
@@ -59,9 +70,9 @@
    <div class="container_repeat_count">
       <div class="col-md-6">
         <select name="repeat_count" class="secondary repeat_count form-control">
-        {#numbers1to60}
+        {#numbers1to31}
          <option value="{.}">{.}</option>
-        {/numbers1to60}
+        {/numbers1to31}
         </select>
       </div>
       <div class="col-md-6">
