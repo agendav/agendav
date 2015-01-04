@@ -87,7 +87,7 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
   $.each(data, function(i, field) {
     var value = field.value;
 
-    if (value === '') {
+    if (value === '' || value === '-') {
       // Skip this one
       return true;
     }
@@ -102,9 +102,12 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
       options.freq = AgenDAVRepeat.getRRuleJsFrequency(value);
     }
 
-    if (field.name === 'repeat_by_day' 
-      && AgenDAVRepeat.shouldConsider(frequency, field.name)) {
+    if (field.name === 'repeat_by_day' && AgenDAVRepeat.shouldConsider(frequency, field.name)) {
       by_day.push(AgenDAVRepeat.getRRuleJsByDay(value));
+    }
+
+    if (field.name === 'repeat_by_month_day' && AgenDAVRepeat.shouldConsider(frequency, field.name)) {
+      options.bymonthday = value;
     }
 
     if (field.name === 'repeat_interval') {
@@ -209,6 +212,7 @@ AgenDAVRepeat.explainRRule = function explainRRule(rrule) {
  */
 AgenDAVRepeat.allOptionalFields = [
   'repeat_by_day',
+  'repeat_by_month_day'
 ];
 
 /**
@@ -226,7 +230,7 @@ AgenDAVRepeat.getFieldsForFrequency = function getFieldsForFrequency(frequency) 
   }
 
   if (frequency === 'monthly') {
-    return [];
+    return ['repeat_by_month_day'];
   }
 
   if (frequency === 'yearly') {
