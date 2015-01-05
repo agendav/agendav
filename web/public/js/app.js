@@ -680,6 +680,9 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     pre_func: function() {
       $('#event_edit_dialog').find('input.summary').focus();
       handle_date_and_time('#event_edit_dialog', data);
+      if (data.rrule !== undefined && data.rrule !== '') {
+        AgenDAVRepeat.setRepeatRuleOnForm(data.rrule, $('#tabs-recurrence'));
+      }
       AgenDAVRepeat.handleForm($('#tabs-recurrence'));
 
       // Reminders
@@ -699,7 +702,7 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   var $end_time = $(where).find('input.end_time');
   var $start_date = $(where).find('input.start_date');
   var $end_date = $(where).find('input.end_date');
-  var $repeat_until = $(where).find('input.repeat_until');
+  var $repeat_until = $('#repeat_until');
   var $allday = $(where).find('input.allday');
 
   $start_time.timepicker(AgenDAVConf.timepicker_base);

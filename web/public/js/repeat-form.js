@@ -10,14 +10,14 @@ var AgenDAVRepeat = AgenDAVRepeat || {};
  * @param jQuery $form jQuery element containing the form
  */
 AgenDAVRepeat.handleForm = function handleForm($form) {
-  var $repeat_type = $form.find('select.repeat_type');
-  var $repeat_ends = $form.find('select.repeat_ends');
+  var $repeat_frequency = $('#repeat_frequency');
+  var $repeat_ends = $('#repeat_ends');
 
   $form.on('change', 'input,select.secondary', function(e) {
-    $repeat_type.trigger('change');
+    $repeat_frequency.trigger('change');
   });
 
-  $repeat_type.on('change', function() {
+  $repeat_frequency.on('change', function() {
     var frequency = parseInt($(this).val());
 
     if (frequency === -1) {
@@ -67,7 +67,7 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
   });
 
   // Trigger it for the first time
-  $repeat_type.trigger('change');
+  $repeat_frequency.trigger('change');
 };
 
 
@@ -174,6 +174,19 @@ AgenDAVRepeat.getRRuleJsByDay = function getRRuleJsByDay(day) {
 };
 
 /**
+ * Translates a BYDAY integer into its <option> value. Required when receiving
+ * a built RRule
+ *
+ * @param int byday value
+ * @return string
+ */
+AgenDAVRepeat.getLabelForByDay = function gettLabelForByDay(day) {
+  var days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+  return days[day];
+};
+
+/**
  * Generates an human readable explanation of a RRULE
  *
  * @param RRule rrule
@@ -247,4 +260,59 @@ AgenDAVRepeat.shouldConsider = function shouldConsider(frequency, field) {
   }
 
   return true;
+};
+
+/**
+ * Modifies DOM to match a given RRULE
+ *
+ * @param string rrule
+ * @param jQuery form
+ */
+AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
+  var rrulejs = RRule.fromString(rrule);
+
+  for (var param in rrulejs.origOptions) {
+    var value = rrulejs.options[param];
+
+    if (param === 'freq') {
+      $('#repeat_frequency').val(value);
+      continue;
+    }
+
+    if (param === 'interval') {
+      $('#repeat_interval').val(value);
+      continue;
+    }
+
+    if (param === 'count') {
+      $('#repeat_count').val(value);
+      $('#repeat_ends').val('after');
+      continue;
+    }
+
+    if (param === 'until') {
+      $('#repeat_until').datepicker('setDate', value);
+      $('#repeat_ends').val('date');
+      continue;
+    }
+
+    if (param === 'bymonthday') {
+      // TODO: special values
+      $('#repeat_by_month_day').val(value);
+      continue;
+    }
+
+    if (param === 'byweekday') {
+      for (var i=0;i<value.length;i++) {
+        var label = AgenDAVRepeat.getLabelForByDay(value[i]);
+        $('.container_repeat_by_day [value=' + label + ']').prop('checked', true);
+      }
+      continue;
+    }
+
+
+    // Oops, unsupported property!
+    // TODO
+    console.log('Ooops, property ' + param + ' not supported');
+  }
 };

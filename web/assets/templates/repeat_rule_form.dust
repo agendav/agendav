@@ -1,7 +1,7 @@
 <input type="hidden" name="rrule" id="rrule" value="{rrule}">
 
 {>form_element_start for="frequency" label="repeat" /}
- <select name="repeat_frequency" class="repeat_type form-control" id="repeat_frequency">
+ <select name="repeat_frequency" class="form-control" id="repeat_frequency">
   <option value="-1">{@i18n type="labels" name="repeatno"/}</option>
   <option value="{daily}">{@i18n type="labels" name="repeatdaily"/}</option>
   <option value="{weekly}">{@i18n type="labels" name="repeatweekly"/}</option>
@@ -14,7 +14,7 @@
 
 {>form_element_start for="interval" label="every" /}
 <div class="col-md-3">
-    <select name="repeat_interval" class="secondary repeat_interval form-control">
+    <select name="repeat_interval" class="secondary form-control" id ="repeat_interval">
     {#numbers1to31}
      <option value="{.}">{.}</option>
     {/numbers1to31}
@@ -48,7 +48,7 @@
 
 {>form_element_start for="repeat_by_month_day" label="repeat_by_month_day" class="container_repeat_by_month_day" /}
 <div class="col-md-3">
-    <select name="repeat_by_month_day" class="secondary repeat_by_month_day form-control">
+    <select name="repeat_by_month_day" class="secondary form-control" id="repeat_by_month_day">
      <option value="">-</option>
     {#numbers1to31}
      <option value="{.}">{.}</option>
@@ -60,7 +60,7 @@
 {>form_element_start for="" label="ends" class="container_repeat_ends" /}
 <div class="row">
  <div class="col-md-5">
-     <select name="repeat_ends" class="repeat_ends form-control">
+     <select name="repeat_ends" class="form-control" id="repeat_ends">
       <option value="never">{@i18n type="labels" name="never"/}</option>
       <option value="after">{@i18n type="labels" name="after"/}</option>
       <option value="date">{@i18n type="labels" name="choose_date"/}</option>
@@ -69,7 +69,7 @@
  <div class="col-md-5 container_repeat_ends_options">
    <div class="container_repeat_count">
       <div class="col-md-6">
-        <select name="repeat_count" class="secondary repeat_count form-control">
+        <select name="repeat_count" class="secondary form-control" id="repeat_count">
         {#numbers1to31}
          <option value="{.}">{.}</option>
         {/numbers1to31}
@@ -81,7 +81,7 @@
    </div><!-- container_recurence_count -->
    <div class="generate-iso8601 container_repeat_until">
         <input type="hidden" class="generated" name="repeat_until_date" />
-        <input type="text" name="repeat_until" class="repeat_until date form-control" maxlength="10" size="15"/>
+        <input type="text" name="repeat_until" class="date form-control" id="repeat_until" maxlength="10" size="15"/>
    </div><!-- container_repeat_until -->
  </div><!-- container_repeat_ends_options, inside container_repeat_ends -->
  </div><!-- row, inside container_repeat_ends -->
