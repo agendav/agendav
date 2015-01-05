@@ -192,6 +192,7 @@ $labels['every'] = 'Every';
 $labels['repeat_by_day'] = 'Repeat on';
 $labels['repeat_by_month_day'] = 'Day of month';
 $labels['repeat_explanation'] = 'This event repeats';
+$labels['keep_rrule'] = 'Keep original repeat rule';
 
 
 // Messages

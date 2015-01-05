@@ -680,10 +680,11 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     pre_func: function() {
       $('#event_edit_dialog').find('input.summary').focus();
       handle_date_and_time('#event_edit_dialog', data);
+      AgenDAVRepeat.handleForm($('#tabs-recurrence'));
+
       if (data.rrule !== undefined && data.rrule !== '') {
         AgenDAVRepeat.setRepeatRuleOnForm(data.rrule, $('#tabs-recurrence'));
       }
-      AgenDAVRepeat.handleForm($('#tabs-recurrence'));
 
       // Reminders
       reminders_manager();

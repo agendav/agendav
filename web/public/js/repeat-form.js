@@ -18,9 +18,10 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
   });
 
   $repeat_frequency.on('change', function() {
-    var frequency = parseInt($(this).val());
+    var new_frequency = $(this).val();
+    var frequency = parseInt(new_frequency);
 
-    if (frequency === -1) {
+    if (frequency === -1 || new_frequency === 'keep-original') {
       $form.find('.container_repeat_options').hide();
     } else {
       $form.find('.container_repeat_options').show();
@@ -84,6 +85,10 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
   var ends;
   var by_day = [];
 
+  // Used to keep the original RRULE, when AgenDAV can't
+  // reproduce the same RRULE
+  var keep_original_rrule = false;
+
   $.each(data, function(i, field) {
     var value = field.value;
 
@@ -93,6 +98,13 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
     }
 
     if (field.name === 'repeat_frequency') {
+
+      // Unreproducible RRULE
+      if (value === 'keep-original') {
+        keep_original_rrule = true;
+        return false;
+      }
+
       value = parseInt(value);
 
       // Stop processing if repeat was not set
@@ -133,8 +145,14 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
     options.byweekday = by_day;
   }
 
-  result = new RRule(options);
-  return result;
+  // Special frequency value
+  if (keep_original_rrule === true) {
+    var rrule_original = RRule.fromString($('#rrule_original').val());
+    return rrule_original;
+  }
+
+  return new RRule(options);
+
 };
 
 /**
@@ -297,7 +315,6 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
     }
 
     if (param === 'bymonthday') {
-      // TODO: special values
       $('#repeat_by_month_day').val(value);
       continue;
     }
@@ -305,7 +322,7 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
     if (param === 'byweekday') {
       for (var i=0;i<value.length;i++) {
         var label = AgenDAVRepeat.getLabelForByDay(value[i]);
-        $('.container_repeat_by_day [value=' + label + ']').prop('checked', true);
+        form.find('.container_repeat_by_day [value=' + label + ']').prop('checked', true);
       }
       continue;
     }
@@ -314,5 +331,17 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
     // Oops, unsupported property!
     // TODO
     console.log('Ooops, property ' + param + ' not supported');
+  }
+
+  $('#repeat_frequency').trigger('change');
+
+  // Does this generated RRULE match the original one?
+  var generated_rrule = $('#rrule').val();
+  if (generated_rrule !== rrule) {
+    $('#repeat_frequency').prepend(
+        '<option value="keep-original">'+ t('labels', 'keep_rrule') +'</option>'
+    );
+    $('#repeat_frequency').val('keep-original');
+    $('#repeat_frequency').trigger('change');
   }
 };

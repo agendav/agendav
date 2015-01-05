@@ -1,4 +1,5 @@
 <input type="hidden" name="rrule" id="rrule" value="{rrule}">
+<input type="hidden" name="rrule_original" id="rrule_original" value="{rrule}">
 
 {>form_element_start for="frequency" label="repeat" /}
  <select name="repeat_frequency" class="form-control" id="repeat_frequency">
