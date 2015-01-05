@@ -2,11 +2,11 @@
 
 {>form_element_start for="frequency" label="repeat" /}
  <select name="repeat_frequency" class="repeat_type form-control" id="repeat_frequency">
-  <option value="none">{@i18n type="labels" name="repeatno"/}</option>
-  <option value="daily">{@i18n type="labels" name="repeatdaily"/}</option>
-  <option value="weekly">{@i18n type="labels" name="repeatweekly"/}</option>
-  <option value="monthly">{@i18n type="labels" name="repeatmonthly"/}</option>
-  <option value="yearly">{@i18n type="labels" name="repeatyearly"/}</option>
+  <option value="-1">{@i18n type="labels" name="repeatno"/}</option>
+  <option value="{daily}">{@i18n type="labels" name="repeatdaily"/}</option>
+  <option value="{weekly}">{@i18n type="labels" name="repeatweekly"/}</option>
+  <option value="{monthly}">{@i18n type="labels" name="repeatmonthly"/}</option>
+  <option value="{yearly}">{@i18n type="labels" name="repeatyearly"/}</option>
  </select>
 {>form_element_end /}
 

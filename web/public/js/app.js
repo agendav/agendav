@@ -614,7 +614,15 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       start_date: AgenDAVDateAndTime.extractDate(data.start),
       start_time: AgenDAVDateAndTime.extractTime(data.start),
       end_date: AgenDAVDateAndTime.extractDate(data.end),
-      end_time: AgenDAVDateAndTime.extractTime(data.end)
+      end_time: AgenDAVDateAndTime.extractTime(data.end),
+
+      // RRule constants for frequency
+      // We can't do the same with weekdays, as RRule.MO - .SU don't have
+      // just integer values
+      yearly: RRule.YEARLY,
+      monthly: RRule.MONTHLY,
+      weekly: RRule.WEEKLY,
+      daily: RRule.DAILY
     }
   );
 

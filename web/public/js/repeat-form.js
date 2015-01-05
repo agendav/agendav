@@ -18,9 +18,9 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
   });
 
   $repeat_type.on('change', function() {
-    var frequency = $(this).val();
+    var frequency = parseInt($(this).val());
 
-    if (frequency === 'none') {
+    if (frequency === -1) {
       $form.find('.container_repeat_options').hide();
     } else {
       $form.find('.container_repeat_options').show();
@@ -78,7 +78,7 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
  * @return RRule object
  */
 AgenDAVRepeat.generateRRule = function generateRRule(data) {
-  var frequency = '';
+  var frequency = -1;
   var options = {};
   var result;
   var ends;
@@ -93,13 +93,15 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
     }
 
     if (field.name === 'repeat_frequency') {
+      value = parseInt(value);
+
       // Stop processing if repeat was not set
-      if (value === 'none') {
+      if (value === -1) {
         return false;
       }
 
       frequency = value;
-      options.freq = AgenDAVRepeat.getRRuleJsFrequency(value);
+      options.freq = value;
     }
 
     if (field.name === 'repeat_by_day' && AgenDAVRepeat.shouldConsider(frequency, field.name)) {
@@ -133,30 +135,6 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
 
   result = new RRule(options);
   return result;
-};
-
-/**
- * Translates a frequency value into a rrule.js frequency constant
- *
- * @param string frequency Form value
- * @return RRule constant
- */
-AgenDAVRepeat.getRRuleJsFrequency = function getRRuleJsFrequency(frequency) {
-  if (frequency === 'daily') {
-    return RRule.DAILY;
-  }
-
-  if (frequency === 'weekly') {
-    return RRule.WEEKLY;
-  }
-
-  if (frequency === 'monthly') {
-    return RRule.MONTHLY;
-  }
-
-  if (frequency === 'yearly') {
-    return RRule.YEARLY;
-  }
 };
 
 /**
@@ -221,19 +199,19 @@ AgenDAVRepeat.allOptionalFields = [
  * @param string frequency
  */
 AgenDAVRepeat.getFieldsForFrequency = function getFieldsForFrequency(frequency) {
-  if (frequency === 'daily') {
+  if (frequency === RRule.DAILY) {
     return ['repeat_by_day'];
   }
 
-  if (frequency === 'weekly') {
+  if (frequency === RRule.WEEKLY) {
     return ['repeat_by_day'];
   }
 
-  if (frequency === 'monthly') {
+  if (frequency === RRule.MONTHLY) {
     return ['repeat_by_month_day'];
   }
 
-  if (frequency === 'yearly') {
+  if (frequency === RRule.YEARLY) {
     return [];
   }
 };
