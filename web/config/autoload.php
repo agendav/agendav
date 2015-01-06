@@ -53,7 +53,7 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('encrypt',
-    'timezonemanager', 'dates', 'recurrence', 'icshelper');
+    'timezonemanager', 'dates', 'icshelper');
 
 
 /*
