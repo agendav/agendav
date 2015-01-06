@@ -342,10 +342,7 @@ class Events extends MY_Controller
                     'description' => $p['description'],
                     );
 
-            // Only change RRULE when we are able to
-            if (!empty($p['rrule'])) {
-                $properties['rrule'] = $p['rrule'];
-            }
+            $properties['rrule'] = $p['rrule'];
 
             // CLASS and TRANSP
             if (isset($p['class'])) {
