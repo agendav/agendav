@@ -225,42 +225,21 @@ class Events extends MY_Controller
         $p['dtstart'] = $start;
         $p['dtend'] = $end;
 
-        // Recurrence checks
-        unset($p['rrule']);
+        // RRULE (iCalcreator needs it like this)
+        if (!empty($p['rrule'])) {
+            parse_str(strtr($p['rrule'], ';', '&'), $sliced_rrule);
 
-        if (isset($p['recurrence_type'])) {
-            if ($p['recurrence_type'] != 'none') {
-                if (isset($p['recurrence_until_date']) &&
-                        !empty($p['recurrence_until_date'])) {
-                            $end_of_recurrence = DateHelper::frontEndToDateTime(
-                                $p['recurrence_until_date'],
-                                $this->tz_utc
-                            );
-
-                            $end_of_recurrence->setTime(
-                                (int) $start->format('G'),
-                                (int) $start->format('i')
-                            );
-
-                            $p['recurrence_until'] = $end_of_recurrence;
-                }
-
-                $rrule = $this->recurrence->build($p, $rrule_err);
-                if (false === $rrule) {
-                    // Couldn't build rrule
-                    log_message('ERROR', 'Error building RRULE (' . $rrule_err .')');
-                    $this->_throw_exception($this->i18n->_('messages',
-                            'error_bogusrepeatrule') . ': ' . $rrule_err);
-                }
-            } else {
-                // Deleted RRULE
-                // TODO in the future, consider recurrence-id and so
-                $rrule = '';
+            // iCalcreator and its API, great as usual
+            if (isset($sliced_rrule['BYDAY'])) {
+                $all_values = preg_split('/,/', $sliced_rrule['BYDAY']);
+                $sliced_rrule['BYDAY'] = array_map(
+                    function($day) { return ['DAY' => $day]; },
+                    $all_values
+                );
             }
 
-            $p['rrule'] = $rrule;
+            $p['rrule'] = $sliced_rrule;
         }
-
 
         // Reminders
         $reminders = array();
@@ -363,10 +342,7 @@ class Events extends MY_Controller
                     'description' => $p['description'],
                     );
 
-            // Only change RRULE when we are able to
-            if (isset($p['rrule'])) {
-                $properties['rrule'] = $p['rrule'];
-            }
+            $properties['rrule'] = $p['rrule'];
 
             // CLASS and TRANSP
             if (isset($p['class'])) {

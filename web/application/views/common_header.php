@@ -40,6 +40,11 @@ foreach ($printcss as $pcss) {
 			);
 }
 ?>
+
+<!--[if lt IE 9]>
+<script src="<?php echo base_url() ?>js/libs/es5-shim.js"></script>
+<![endif]-->
+
 </head>
 <?php
 // Body classes

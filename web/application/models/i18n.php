@@ -81,12 +81,40 @@ class I18n extends CI_Model {
         } else {
             $messages = array();
             $labels = array();
+            $rrule = array();
 
             @include($file);
+
+            // Add month names and week day names
+            $rrule['dayNames'] = [
+                $labels['sunday'],
+                $labels['monday'],
+                $labels['tuesday'],
+                $labels['wednesday'],
+                $labels['thursday'],
+                $labels['friday'],
+                $labels['saturday'],
+            ];
+
+            $rrule['monthNames'] = [
+                $labels['january'],
+                $labels['february'],
+                $labels['march'],
+                $labels['april'],
+                $labels['may'],
+                $labels['june'],
+                $labels['july'],
+                $labels['august'],
+                $labels['september'],
+                $labels['october'],
+                $labels['november'],
+                $labels['december'],
+            ];
 
             return array(
                 'messages' => $messages,
                 'labels' => $labels,
+                'rrule' => $rrule,
             );
         }
     }

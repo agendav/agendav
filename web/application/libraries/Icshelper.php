@@ -324,18 +324,11 @@ class Icshelper {
                         preg_replace('/\\\n|\\\r/', "\n", $description);
                     break;
                 case 'rrule':
-                    $this_event['recurrence_components'] = $val;
-                    $new_val = trim($vevent->_format_recur('RRULE',
-                                array($prop)));
-                    $this_event['rrule'] = $new_val;
+                    // iCalcreator prepends the value with ':', so let's
+                    // remove it
+                    $rrule = trim($vevent->_format_recur('', array($prop)));
+                    $this_event['rrule'] = substr($rrule, 1);
 
-                    $explanation =
-                        $this->CI->recurrence->rrule_explain($val);
-                    if ($explanation !== FALSE) {
-                        $this_event['rrule_explained'] = $explanation;
-                    } else {
-                        $this_event['unparseable_rrule'] = TRUE;
-                    }
                     // TODO make it editable when able to parse it
                     $this_event['editable'] = FALSE;
                     break;

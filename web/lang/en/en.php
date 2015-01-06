@@ -18,6 +18,7 @@
 
 $labels = array();
 $messages = array();
+$rrule = array();
 
 // Labels
 $labels['username'] = 'User name';
@@ -177,16 +178,21 @@ $labels['reminder'] = 'Reminder';
 $labels['add_reminder'] = 'Add reminder';
 
 $labels['before_start'] = 'before start';
-$labels['after'] = 'after';
+$labels['after'] = 'After';
 
 $labels['start'] = 'start';
 $labels['end'] = 'end';
 
 $labels['ends'] = 'Ends:';
-$labels['never'] = 'never';
+$labels['never'] = 'Never';
 $labels['occurrences'] = 'occurrences';
 
 $labels['timezone'] = 'Timezone';
+$labels['every'] = 'Every';
+$labels['repeat_by_day'] = 'Repeat on';
+$labels['repeat_by_month_day'] = 'Day of month';
+$labels['repeat_explanation'] = 'This event repeats';
+$labels['keep_rrule'] = 'Keep original repeat rule';
 
 
 // Messages
@@ -235,7 +241,7 @@ $messages['error_event_not_deleted'] = 'Error deleting event';
 $messages['error_loading_calendar_list'] = 'Error reading calendar list';
 $messages['notice_no_calendars'] = 'No calendars available';
 $messages['info_repetition_human'] = 'This event repeats %explanation';
-$messages['info_repetition_unparseable'] = 'This event has recurrence rules associated that this program cannot understand. Raw definition:';
+$messages['info_rrule_not_reproducible'] = 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.';
 $messages['error_calendarnotfound'] = 'Invalid calendar %calendar';
 $messages['error_eventnotfound'] = 'Element not found';
 $messages['error_eventchanged'] = 'Element was modified while you were editing it. Please, refresh.';
@@ -255,3 +261,28 @@ $messages['info_prefssaved'] = 'Preferences saved';
 $messages['more_events'] = '+ %count events';
 
 $messages['info_reminders_no_effect_on_agendav'] = 'Note: reminders will only have effect on CalDAV clients that load this calendar';
+
+// RRULE translation helpers
+$rrule['every'] = 'every';
+$rrule['until'] = 'until';
+$rrule['day'] = 'day';
+$rrule['days'] = 'days';
+$rrule['week'] = 'week';
+$rrule['weeks'] = 'weeks';
+$rrule['month'] = 'month';
+$rrule['months'] = 'months';
+$rrule['year'] = 'year';
+$rrule['years'] = 'years';
+$rrule['for'] = 'for';
+$rrule['on'] = 'on';
+$rrule['time'] = 'time';
+$rrule['times'] = 'times';
+$rrule['weekday'] = 'weekday';
+$rrule['weekdays'] = 'weekdays';
+$rrule['in'] = 'in';
+$rrule['on the'] = 'on the';
+$rrule['and'] = 'and';
+$rrule['or'] = 'or';
+$rrule['the'] = 'the';
+$rrule['last'] = 'last';
+
