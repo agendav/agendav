@@ -7758,3 +7758,13 @@ div.actions {
 div.actions span.right {
   float: right;
 }
+div.container_repeat_options {
+  display: none;
+}
+#repeat_explanation {
+  text-align: center;
+  font-style: italic;
+}
+#repeat_warning_rrule_unreproducible {
+  display: none;
+}
