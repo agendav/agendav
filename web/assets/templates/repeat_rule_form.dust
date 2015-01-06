@@ -1,3 +1,6 @@
+<p id="repeat_warning_rrule_unreproducible" class="text-warning">
+{@i18n type="messages" name="info_rrule_not_reproducible" /}
+</p>
 <input type="hidden" name="rrule" id="rrule" value="{rrule}">
 <input type="hidden" name="rrule_original" id="rrule_original" value="{rrule}">
 
