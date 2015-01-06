@@ -4,11 +4,13 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     less: {
-      options: {
-        compress: false
-      },
-      files: {
-        "./web/public/css/agendav.css": "./web/assets/stylesheets/agendav.less"
+      development: {
+        options: {
+          compress: false
+        },
+        files: {
+          "./web/public/css/agendav.css": "./web/assets/stylesheets/agendav.less"
+        }
       }
     },
 
@@ -126,7 +128,7 @@ module.exports = function(grunt) {
     watch: {
       less: {
         files: ['./web/assets/stylesheets/*.less'],
-        tasks: ['less']
+        tasks: ['less:development']
       },
       dust: {
         files: ['./web/assets/templates/*.dust'],
@@ -143,7 +145,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-dust');
 
-  grunt.registerTask('default', [ 'copy:development', 'less', 'dust' ]);
+  grunt.registerTask('default', [ 'copy:development', 'less:development', 'dust' ]);
   grunt.registerTask('dist', [ 'less', 'dust', 'copy', 'concat', 'uglify', 'cssmin' ]);
 
 };
