@@ -23,7 +23,7 @@
 {>form_element_end/}
 
 <div class="generate-iso8601" data-only-date-if-checked="input.allday">
-<input class="generated" type="hidden" name="start" />
+<input class="generated" type="hidden" name="start" id="start" />
 {>form_element_start for="start_date" label="startdate" /}
 <div class="row">
  <div class="col-sm-4">
@@ -39,7 +39,7 @@
 </div>
 
 <div class="generate-iso8601" data-only-date-if-checked="input.allday">
- <input class="generated" type="hidden" name="end">
+ <input class="generated" type="hidden" name="end" id="end">
 {>form_element_start for="end_date" label="enddate" /}
 <div class="row">
  <div class="col-sm-4">
