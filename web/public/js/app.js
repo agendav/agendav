@@ -631,9 +631,6 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'text': t('labels', 'save'),
       'class': 'addicon btn-icon-event-edit',
       'click': function() {
-        // Generate start and end times
-        generate_iso8601_values($(this));
-
         var event_details = $('#event_edit_form').serializeObject();
 
         // Clean some event_details fields
@@ -744,6 +741,8 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       $start_time.show();
       $end_time.show();
     }
+
+    generate_iso8601_values($(where));
   });
 
   // Update status
@@ -761,6 +760,14 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
     .on('change', 'input.end_time', function() {
       $end_time.data('duration', calculate_event_duration($start_time, $end_time));
     });
+
+    // Update start/end times
+    $('input.date, input.time').on('change', function(event) {
+      generate_iso8601_values($(where));
+    });
+
+    // First start/end generation
+    generate_iso8601_values($(where));
 
 };
 
