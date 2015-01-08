@@ -14,7 +14,7 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
   var $repeat_ends = $('#repeat_ends');
 
   $form.on('change', 'input,select.secondary', function(e) {
-    $repeat_frequency.trigger('change');
+    AgenDAVRepeat.regenerate();
   });
 
   $repeat_frequency.on('change', function() {
@@ -76,7 +76,14 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
   });
 
   // Trigger it for the first time
-  $repeat_frequency.trigger('change');
+  AgenDAVRepeat.regenerate();
+};
+
+/**
+ * Triggers a RRULE regeneration
+ */
+AgenDAVRepeat.regenerate = function regenerate() {
+    $('#repeat_frequency').trigger('change');
 };
 
 
@@ -145,7 +152,9 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
     }
 
     if (field.name === 'repeat_until_date' && ends === 'date') {
-      options.until = moment(value).toDate();
+      options.until = AgenDAVRepeat.generateUntilDate(
+        $('input.allday').is(':checked')
+      );
     }
   });
 
@@ -333,9 +342,9 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
 
     if (param === 'byweekday') {
       // RRule.js bug. Documentation states:
-      //  Currently, rule.options.byweekday isn't equal to 
+      //  Currently, rule.options.byweekday isn't equal to
       //  rule.origOptions.byweekday (which is an inconsistency).
-      // This seems to happen for example when byweekday has a 
+      // This seems to happen for example when byweekday has a
       // "last X of month" format (e.g. -2MO)
 
       if (value === null) {
@@ -354,7 +363,7 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
     console.log('Ooops, property ' + param + ' not supported');
   }
 
-  $('#repeat_frequency').trigger('change');
+  AgenDAVRepeat.regenerate();
 
   // Does this generated RRULE match the original one?
   var generated_rrule = RRule.fromString($('#rrule').val());
@@ -367,6 +376,39 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
     );
     $('#repeat_warning_rrule_unreproducible').show();
     $('#repeat_frequency').val('keep-original');
-    $('#repeat_frequency').trigger('change');
+    AgenDAVRepeat.regenerate();
   }
 };
+
+
+/**
+ * Returns a date with the time from 'start time', suitable for the UNTIL parameter
+ *
+ * @param boolean is_allday
+ * @return Date
+ */
+
+AgenDAVRepeat.generateUntilDate = function generateUntilDate(is_allday) {
+    if ($('#repeats_frequency').val() === '-1' || $('#repeat_ends').val() !== 'date') {
+        return false;
+    }
+
+    var until_date = $('#repeat_until').datepicker('getDate');
+
+    // Empty?
+    if (until_date === null) {
+        return false;
+    }
+
+    var result = moment(until_date);
+
+    if (is_allday === false) {
+        var start = moment($('#start').val());
+        result.set('hour', start.get('hour'));
+        result.set('minute', start.get('minute'));
+        result.set('second', start.get('second'));
+    }
+
+    return result.toDate();
+};
+
