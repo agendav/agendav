@@ -766,6 +766,11 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       generate_iso8601_values($(where));
     });
 
+    // Repeat rule UNTIL update
+    $(where).on('change', 'input.start_time, input.allday', function() {
+      AgenDAVRepeat.regenerate();
+    });
+
     // First start/end generation
     generate_iso8601_values($(where));
 
