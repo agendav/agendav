@@ -77,7 +77,7 @@ class Reminder
     public static function createFromiCalcreator($valarm, $position)
     {
         $trigger = $valarm->getProperty('trigger');
-        if ($trigger['relatedStart'] === false) {
+        if (!isset($trigger['relatedStart']) || $trigger['relatedStart'] === false) {
             return null;
         }
 
