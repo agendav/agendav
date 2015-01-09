@@ -216,7 +216,7 @@ class VObjectEvent implements Event
             throw new \Exception('Recurrent events modification is not supported');
         }
 
-        $instance->removeRecurrenceId();
+        $instance->setRecurrenceId(null);
         $instance->touch();
 
         // Add this event instance (case of empty VCALENDAR) or merge

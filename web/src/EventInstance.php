@@ -162,11 +162,18 @@ interface EventInstance
     public function setEnd(\DateTime $end, $all_day = false);
 
     /**
-     * Remove the RECURRENCE-ID property on this instance
+     * Set the repeat rule for this event
      *
-     * @return void
+     * @param string $rrule
      */
-    public function removeRecurrenceId();
+    public function setRepeatRule($rrule);
+
+    /**
+     * Set the RECURRENCE-ID property for this event
+     *
+     * @param string $recurrence_id
+     */
+    public function setRecurrenceId($recurrence_id);
 
     /**
      * Add (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE

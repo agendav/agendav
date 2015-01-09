@@ -272,6 +272,26 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
+     * Set the repeat rule for this event
+     *
+     * @param string $rrule
+     */
+    public function setRepeatRule($rrule)
+    {
+        $this->setProperty('RRULE', $rrule);
+    }
+
+    /**
+     * Set the RECURRENCE-ID property for this event
+     *
+     * @param string $recurrence_id
+     */
+    public function setRecurrenceId($recurrence_id)
+    {
+        $this->setProperty('RECURRENCE-ID', $recurrence_id);
+    }
+
+    /**
      * Removes the RECURRENCE-ID property on this instance
      *
      * @return void
@@ -316,7 +336,8 @@ class VObjectEventInstance implements EventInstance
         $this->setTransp($source->getTransp());
         $all_day = $source->isAllDay();
         $this->setStart($source->getStart(), $all_day);
-        $this->setStart($source->getStart(), $all_day);
+        $this->setEnd($source->getEnd(), $all_day);
+        $this->setRepeatRule($source->getRepeatRule());
 
         $this->touch();
     }
