@@ -37,6 +37,8 @@ class VObjectEvent implements Event
 
     protected $is_recurrent;
 
+    protected $repeat_rule;
+
     protected $exceptions;
 
     protected $uid;
@@ -47,10 +49,13 @@ class VObjectEvent implements Event
     public function __construct(VCalendar $vcalendar)
     {
         $this->vcalendar = $vcalendar;
-        $this->is_recurrent = $this->checkIfRecurrent();
+        $this->is_recurrent = false;
         $this->exceptions = [];
 
-        if ($this->is_recurrent) {
+        $this->repeat_rule = $this->extractRRule();
+
+        if ($this->repeat_rule !== null) {
+            $this->is_recurrent = true;
             $this->exceptions = $this->findRecurrenceExceptions($vcalendar);
         }
 
@@ -60,6 +65,11 @@ class VObjectEvent implements Event
     public function isRecurrent()
     {
         return $this->is_recurrent;
+    }
+
+    public function getRepeatRule()
+    {
+        return $this->repeat_rule;
     }
 
     public function getUid()
@@ -135,6 +145,10 @@ class VObjectEvent implements Event
             $vevent = clone $base;
         }
 
+        if ($this->isRecurrent()) {
+            $vevent->RRULE = $this->getRepeatRule();
+        }
+
         return new VObjectEventInstance($vevent);
     }
 
@@ -178,21 +192,26 @@ class VObjectEvent implements Event
         }
     }
 
-    protected function checkIfRecurrent()
+    /**
+     * Extracts the RRULE property from the main VEVENT contained in the
+     * VCALENDAR, if any.
+     *
+     * @return string|null RRULE definition, or null if not found
+     */
+    protected function extractRRule()
     {
-        $count = count($this->vcalendar->VEVENT);
 
-        if ($count > 1) {
-            return true;
+        $base = $this->vcalendar->getBaseComponent();
+
+        if ($base === null) {
+            return null;
         }
 
-        $vevent_0 = $this->vcalendar->VEVENT[0];
-
-        if (isset($vevent_0->RRULE)) {
-            return true;
+        if (isset($base->RRULE)) {
+            return (string) $base->RRULE;
         }
 
-        return false;
+        return null;
     }
 
     protected function findRecurrenceExceptions(VCalendar $vcalendar)
@@ -217,7 +236,7 @@ class VObjectEvent implements Event
             return null;
         }
 
-        return $base_component->UID;
+        return (string) $base_component->UID;
     }
 }
 

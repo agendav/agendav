@@ -40,6 +40,11 @@ interface Event
     public function getUid();
 
     /**
+     * Returns the RRULE for all event instances under this event
+     */
+    public function getRepeatRule();
+
+    /**
      * Gets all event instances for a range of dates. If the event is not
      * recurrent, a single instance will be returned
      *
