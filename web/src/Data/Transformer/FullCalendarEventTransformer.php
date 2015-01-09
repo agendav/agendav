@@ -34,6 +34,7 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
         $result = [
             'calendar' => $fc_event->getCalendarUrl(),
             'href' => $fc_event->getUrl(),
+            'etag' => $fc_event->getEtag(),
             'uid' => $event->getUid(),
             'title' => $event->getSummary(),
             'start' => $event->getStart()->format('c'),
