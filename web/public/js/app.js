@@ -1838,7 +1838,8 @@ var check_required_fields = function check_required_fields(form) {
  *
  * The wrapping div can also have a data-only-date-if-checked attribute,
  * which will contain a selector pointing to a checkbox. If it is checked,
- * then the time part will be ignored
+ * then the time part will be ignored and the generated Date will be
+ * specified using UTC
  */
 var generate_iso8601_values = function generate_iso8601_values(element) {
   var matches = $(element).find('div.generate-iso8601');

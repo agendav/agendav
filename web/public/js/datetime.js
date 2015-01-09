@@ -98,7 +98,7 @@ AgenDAVDateAndTime.convertISO8601 = function convertISO8601(datepicker, timepick
     // Events with no time set (all day, recurrences, etc)
     if (timepicker.length === 0 || allday === true) {
         // This should be an UTC date
-        return moment(result).format('YYYY-MM-DDTHH:mm:ss.000') + 'Z';
+        return moment(result).format('YYYY-MM-DDT00:00:00.000') + 'Z';
     }
 
     result = timepicker.timepicker('getTime', result);
