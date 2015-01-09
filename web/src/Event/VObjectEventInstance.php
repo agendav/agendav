@@ -131,29 +131,38 @@ class VObjectEventInstance implements EventInstance
         return false;
     }
 
+    protected function setProperty($property_name, $value)
+    {
+        if (empty($value)) {
+            unset($this->vevent->{$property_name});
+            return;
+        }
+        $this->vevent->{$property_name} = $value;
+    }
+
     public function setSummary($summary)
     {
-        $this->vevent->SUMMARY = $summary;
+        $this->setProperty('SUMMARY', $summary);
     }
 
     public function setLocation($location)
     {
-        $this->vevent->LOCATION = $location;
+        $this->setProperty('LOCATION', $location);
     }
 
     public function setDescription($description)
     {
-        $this->vevent->DESCRIPTION = $description;
+        $this->setProperty('DESCRIPTION', $description);
     }
 
     public function setClass($class)
     {
-        $this->vevent->CLASS = $class;
+        $this->setProperty('CLASS', $class);
     }
 
     public function setTransp($transp)
     {
-        $this->vevent->TRANSP = $transp;
+        $this->setProperty('TRANSP', $transp);
     }
 
     public function setStart(\DateTime $start, $all_day = false)
@@ -175,9 +184,7 @@ class VObjectEventInstance implements EventInstance
 
     public function removeRecurrenceId()
     {
-        if (isset($this->vevent->{'RECURRENCE-ID'})) {
-            $this->vevent->remove('RECURRENCE-ID');
-        }
+        unset($this->vevent->{'RECURRENCE-ID'});
     }
 
     public function getInternalVEvent()
