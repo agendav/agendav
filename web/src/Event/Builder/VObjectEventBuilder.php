@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV;
+namespace AgenDAV\Event\Builder;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -21,24 +21,33 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Uuid;
+use AgenDAV\Event;
+use AgenDAV\Event\VObjectEvent;
+use Sabre\VObject\Component\VCalendar;
+
 /**
- * This interface models an event instance (also known as 'expanded event')
- *
+ * Class used to generate new VObjectEvents
  */
-interface ExpandedEvent
+class VObjectEventBuilder implements EventBuilder
 {
-    public function isRecurrent();
+    /**
+     * Creates an empty Event object
+     *
+     * @param string $uid Optional UID for this event
+     * @return \AgenDAV\Event
+     */
+    public function create($uid = null)
+    {
+        $vcalendar = new VCalendar();
 
-    public function getSummary();
+        if ($uid === null) {
+            $uid = \AgenDAV\Uuid::generate();
+        }
 
-    public function getLocation();
+        $event = new VObjectEvent($vcalendar);
+        $event->setUid($uid);
 
-    public function getDescription();
-
-    public function getStart();
-
-    public function getEnd();
-
-    public function isAllDay();
+        return $event;
+    }
 }
-

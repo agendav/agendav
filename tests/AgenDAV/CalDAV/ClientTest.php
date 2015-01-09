@@ -16,6 +16,7 @@ use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\CalDAV\Share\Permissions;
 use AgenDAV\CalDAV\Share\ACL;
+use AgenDAV\Event\Parser as EventParser;
 
 /**
  * @author jorge
@@ -34,12 +35,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /** @var GuzzleHttp\Subscriber\History */
     protected $history;
 
+    /** @var AgenDAV\Event\Parser */
+    protected $event_parser;
+
 
     public function setUp()
     {
         $this->xml_generator = new Generator();
         $this->xml_parser = new Parser();
         $this->history = new GuzzleHistory();
+        $this->event_parser = m::mock('\AgenDAV\Event\Parser');
     }
 
     public function testCantAuthenticate()
@@ -497,6 +502,13 @@ BODY;
           Stream::factory($body)
       );
 
+      $this->event_parser->shouldReceive('parse')
+        ->times(2)
+        ->andReturn(
+          m::mock('\AgenDAV\Event'),
+          m::mock('\AgenDAV\Event')
+        );
+
       $client = $this->createCalDAVClient($response);
 
       $calendar = new Calendar('/cal.php/calendars/demo/fake/');
@@ -512,7 +524,7 @@ BODY;
       );
       $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $objects[0]->getEtag());
       $this->assertEquals($calendar, $objects[0]->getCalendar());
-      $this->assertNotEmpty($objects[0]->getContents());
+      $this->assertInstanceOf('\AgenDAV\Event', $objects[0]->getEvent());
 
       $this->assertEquals(
           '/cal.php/calendars/demo/fake/e2f43f04-030d-4c79-9c8b-d20c87ca5f9d.ics',
@@ -520,7 +532,7 @@ BODY;
       );
       $this->assertEquals('"cf03e087c6bf4f8473f5f76cf17d65fd"', $objects[1]->getEtag());
       $this->assertEquals($calendar, $objects[1]->getCalendar());
-      $this->assertNotEmpty($objects[1]->getContents());
+      $this->assertInstanceOf('\AgenDAV\Event', $objects[1]->getEvent());
 
       $this->validateFetchObjectsRequest($calendar, new TimeRangeFilter($start, $end));
     }
@@ -586,6 +598,11 @@ BODY;
             Stream::factory($body)
         );
 
+        $this->event_parser->shouldReceive('parse')
+          ->once()
+          ->andReturn(
+            m::mock('\AgenDAV\Event')
+          );
         $client = $this->createCalDAVClient($response);
         $calendar = new Calendar('/cal.php/calendars/demo/fake');
 
@@ -593,7 +610,7 @@ BODY;
 
         $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $object->getEtag());
         $this->assertEquals($calendar, $object->getCalendar());
-        $this->assertNotEmpty($object->getContents());
+        $this->assertInstanceOf('\AgenDAV\Event', $object->getEvent());
 
         $this->validateFetchObjectsRequest($calendar, new UidFilter('c160fd13-829d-4d59-96d2-92fc0f9e6787'));
     }
@@ -603,8 +620,14 @@ BODY;
         $response = new Response(201);
         $client = $this->createCalDAVClient($response);
 
-        $object = new CalendarObject('/url');
-        $object->setContents('This sould be an iCalendar resource');
+        // Twice: the first one for the upload, and the second one for
+        // the validity check
+        $event = m::mock('\AgenDAV\Event')
+          ->shouldReceive('render')->times(2)
+          ->andReturn('iCalendar resource')
+          ->getMock();
+
+        $object = new CalendarObject('/url', $event);
 
         $client->uploadCalendarObject($object);
         $this->validatePutObjectRequest($object);
@@ -615,8 +638,14 @@ BODY;
         $response = new Response(200);
         $client = $this->createCalDAVClient($response);
 
-        $object = new CalendarObject('/url');
-        $object->setContents('This sould be an iCalendar resource');
+        // Twice: the first one for the upload, and the second one for
+        // the validity check
+        $event = m::mock('\AgenDAV\Event')
+          ->shouldReceive('render')->times(2)
+          ->andReturn('iCalendar resource')
+          ->getMock();
+
+        $object = new CalendarObject('/url', $event);
         $object->setEtag('test_etag');
 
         $client->uploadCalendarObject($object);
@@ -671,7 +700,7 @@ BODY;
         $this->http_client = new HttpClient($guzzle);
 
         $xml_toolkit = new Toolkit($this->xml_parser, $this->xml_generator);
-        return new Client($this->http_client, $xml_toolkit);
+        return new Client($this->http_client, $xml_toolkit, $this->event_parser);
     }
 
 
@@ -798,7 +827,7 @@ BODY;
         }
 
         $this->assertEquals(
-            $object->getContents(),
+            $object->getRenderedEvent(),
             (string)$request->getBody()
         );
     }

@@ -22,7 +22,11 @@
 use AgenDAV\Data\Reminder;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
+use AgenDAV\Event\FullCalendarEvent;
+use AgenDAV\Data\Transformer\FullCalendarEventTransformer;
+use AgenDAV\Data\Serializer\PlainSerializer;;
 use AgenDAV\DateHelper;
+use League\Fractal\Resource\Collection;
 
 class Events extends MY_Controller
 {
@@ -99,23 +103,38 @@ class Events extends MY_Controller
             $err = 400;
         } else if ($err == 0) {
             $objects = $this->client->fetchObjectsOnCalendar($calendar, $start, $end);
+            $start_obj = new \DateTime($start);
+            $end_obj = new \DateTime($end);
             $time_fetch = microtime(true);
-            $parsed =
-                $this->icshelper->expand_and_parse_events($objects, $start, $end, $calendar->getUrl());
+            $result = [];
+
+            foreach ($objects as $object) {
+                $master_event = $object->getEvent();
+                $instances = $master_event->expand($start_obj, $end_obj);
+                $fullcalendar_events = FullCalendarEvent::generateFrom(
+                    $object,
+                    $calendar,
+                    $instances
+                );
+                $result = array_merge($result, $fullcalendar_events);
+            }
+
+            $fractal = $this->container['fractal'];
+            $fractal->setSerializer(new PlainSerializer);
+            $transformer = new FullCalendarEventTransformer();
+            $collection = new Collection($result, $transformer);
 
             $time_end = microtime(true);
-
             $total_fetch = sprintf('%.4F', $time_fetch - $time_start);
             $total_parse = sprintf('%.4F', $time_end - $time_fetch);
             $total_time = sprintf('%.4F', $time_end - $time_start);
 
-
-            log_message('INTERNALS', 'Sent ' .  count($parsed) . ' event(s) from ' . $calendar->getUrl()
-                        .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
-
             $this->output->set_header("X-Fetch-Time: " . $total_fetch);
             $this->output->set_header("X-Parse-Time: " . $total_parse);
-            $this->output->set_output(json_encode($parsed));
+            $this->output->set_output($fractal->createData($collection)->toJson());
+
+            log_message('INTERNALS', 'Sent ' .  count($result) . ' event(s) from ' . $calendar->getUrl()
+                        .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
         } else {
             $this->output->set_status_header($err, 'Error');
         }

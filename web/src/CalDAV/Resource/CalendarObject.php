@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV\Resource;
  */
 
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Event;
 
 /**
  * Represents a calendar object (with iCalendar contents) that is placed
@@ -36,11 +37,11 @@ class CalendarObject
     const ETAG = '{DAV:}getetag';
 
     /**
-     * iCalendar contents
+     * Contained event
      *
      * @var string
      */
-    protected $contents;
+    protected $event;
 
     /**
      * URL of this object
@@ -66,32 +67,32 @@ class CalendarObject
 
     /**
      * @param string $url
-     * @param string $contents
+     * @param AgenDAV\Event $event
      */
-    public function __construct($url, $contents = null)
+    public function __construct($url, Event $event = null)
     {
         $this->url = $url;
-        $this->contents = $contents;
+        $this->event = $event;
     }
 
     /*
-     * Getter for contents
+     * Getter for event
      *
-     * @return string
+     * @return AgenDAV\Event
      */
-    public function getContents()
+    public function getEvent()
     {
-        return $this->contents;
+        return $this->event;
     }
 
     /*
-     * Setter for contents
+     * Setter for event
      *
-     * @param string $contents
+     * @param AgenDAV\Event $event
      */
-    public function setContents($contents)
+    public function setEvent($event)
     {
-        $this->contents = $contents;
+        $this->event = $event;
         return $this;
     }
 
@@ -157,4 +158,36 @@ class CalendarObject
         $this->etag = $etag;
         return $this;
     }
+
+    /**
+     * Gets all event instances for a range of dates. If the event is not
+     * recurrent, a single instance will be returned
+     *
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return AgenDAV\EventInstance[]
+     */
+    public function getEventInstances(\DateTime $start, \DateTime $end)
+    {
+        $events = $this->getEvent()->expand(
+            $start,
+            $end,
+            $this->getUrl(),
+            $this->getEtag()
+        );
+
+        return $events;
+    }
+
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    public function getRenderedEvent()
+    {
+        return $this->getEvent()->render();
+    }
+
 }

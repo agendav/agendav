@@ -184,11 +184,17 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // Event parser
+        $this->container['event_parser'] = $this->container->share(function($container) {
+            return new \AgenDAV\Event\Parser\VObjectParser;
+        });
+
         // CalDAV client
         $this->container['caldav_client'] = $this->container->share(function($container) {
             return new \AgenDAV\CalDAV\Client(
                 $container['http_client'],
-                $container['xml_toolkit']
+                $container['xml_toolkit'],
+                $container['event_parser']
             );
         });
 

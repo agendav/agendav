@@ -33,6 +33,9 @@ class Client
     /** @type AgenDAV\XML\Toolkit XML toolkit  */
     protected $xml_toolkit;
 
+    /** @type AgenDAV\Event\Parser Event parser */
+    protected $event_parser;
+
 
     /**
      * @param \AgenDAV\Http\Client $http_client
@@ -40,11 +43,13 @@ class Client
      */
     public function __construct(
         \AgenDAV\Http\Client $http_client,
-        \AgenDAV\XML\Toolkit $xml_toolkit
+        \AgenDAV\XML\Toolkit $xml_toolkit,
+        \AgenDAV\Event\Parser $event_parser
     )
     {
         $this->http_client = $http_client;
         $this->xml_toolkit = $xml_toolkit;
+        $this->event_parser = $event_parser;
     }
 
     /**
@@ -283,7 +288,7 @@ class Client
 
         $etag = $calendar_object->getEtag();
         $url = $calendar_object->getUrl();
-        $body = $calendar_object->getContents();
+        $body = $calendar_object->getRenderedEvent();
 
         // New object, so it should not overwrite any existing objects
         if ($etag === null) {
@@ -384,7 +389,8 @@ class Client
         $result = [];
 
         foreach ($raw_data as $url => $data) {
-            $object = new CalendarObject($url, $data[CalendarObject::DATA]);
+            $event = $this->event_parser->parse($data[CalendarObject::DATA]);
+            $object = new CalendarObject($url, $event);
             $object->setCalendar($calendar);
             if (isset($data[CalendarObject::ETAG])) {
                 $object->setEtag($data[CalendarObject::ETAG]);
