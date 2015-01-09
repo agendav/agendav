@@ -208,6 +208,26 @@ class VObjectEventInstance implements EventInstance
         $this->vevent->SEQUENCE = $sequence;
     }
 
+    /**
+     * Copies basic properties from another EventInstance to this instance
+     *
+     * @param \AgenDAV\EventInstance $source
+     */
+    public function copyPropertiesFrom(EventInstance $source)
+    {
+        // TODO RRULE
+        $this->setSummary($source->getSummary());
+        $this->setLocation($source->getLocation());
+        $this->setDescription($source->getDescription());
+        $this->setClass($source->getClass());
+        $this->setTransp($source->getTransp());
+        $all_day = $source->isAllDay();
+        $this->setStart($source->getStart(), $all_day);
+        $this->setStart($source->getStart(), $all_day);
+
+        $this->updateChangeProperties();
+    }
+
     protected function setAllDay(
         \Sabre\VObject\Property\ICalendar\DateTime $property,
         $all_day = false

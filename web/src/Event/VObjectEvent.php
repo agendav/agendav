@@ -113,10 +113,13 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Creates a new VObjectInstance for this event
+     * Creates a new EventInstance for this event. If the event already
+     * had a base event instance assigned, a copy of it will be returned.
+     *
+     * If not, a clean event instance will be returned.
      *
      * @return \AgenDAV\Event\VObjectEventInstance
-     * @throws \LogicException If $event has no UID assigned
+     * @throws \LogicException If current event has no UID assigned
      */
     public function createEventInstance()
     {
@@ -124,17 +127,25 @@ class VObjectEvent implements Event
             throw new \LogicException('Event has not been assigned a UID yet!');
         }
 
-        $vevent = $this->vcalendar->create('VEVENT');
-        $vevent->UID = $this->uid;
+        $base = $this->vcalendar->getBaseComponent('VEVENT');
+        if ($base === null) {
+            $vevent = $this->vcalendar->create('VEVENT');
+            $vevent->UID = $this->uid;
+        } else {
+            $vevent = clone $base;
+        }
 
         return new VObjectEventInstance($vevent);
     }
 
-
     /**
-     * Adds an event instance to this event
+     * Sets base EventInstance for this event
+     *
+     * @param \AgenDAV\EventInstance $instance
+     * @throws \InvalidArgumentException If event instance UID does not match
+     *                                   current event UID
      */
-    public function addEventInstance(EventInstance $instance)
+    public function setBaseEventInstance(EventInstance $instance)
     {
         // Check if UID matches
         if ($instance->getUid() !== $this->getUid()) {
@@ -145,8 +156,6 @@ class VObjectEvent implements Event
         // this is a result of expanding or an actual recurrence exception
         $recurrence_id = $instance->getRecurrenceId();
 
-        // TODO implement support for recurrent events
-        // TODO (important) merge current VEVENT properties with new VEVENT
         if ($this->isException($recurrence_id)) {
             // Not supported
             throw new \Exception('Recurrent events modification is not supported');
@@ -154,12 +163,17 @@ class VObjectEvent implements Event
 
         $instance->removeRecurrenceId();
         $instance->updateChangeProperties();
-        $vevent = $instance->getInternalVEvent();
 
+        // Add this event instance (case of empty VCALENDAR) or merge
+        // with the existing one to avoid existing properties to be lost
         $base = $this->vcalendar->getBaseComponent('VEVENT');
         if ($base === null) {
+            $vevent = $instance->getInternalVEvent();
             $this->vcalendar->add($vevent);
         } else {
+            $resulting_instance = new VObjectEventInstance($base);
+            $resulting_instance->copyPropertiesFrom($instance);
+            $vevent = $resulting_instance->getInternalVEvent();
             $this->vcalendar->VEVENT = $vevent;
         }
     }

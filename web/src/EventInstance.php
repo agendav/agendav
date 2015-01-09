@@ -27,6 +27,8 @@ namespace AgenDAV;
  */
 interface EventInstance
 {
+    // TODO RRULE
+
     public function isRecurrent();
 
     public function getSummary();
@@ -67,5 +69,12 @@ interface EventInstance
      * @return void
      */
     public function updateChangeProperties();
+
+    /**
+     * Copies basic properties from another EventInstance to this instance
+     *
+     * @param \AgenDAV\EventInstance $source
+     */
+    public function copyPropertiesFrom(EventInstance $source);
 }
 

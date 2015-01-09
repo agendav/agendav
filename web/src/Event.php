@@ -64,5 +64,23 @@ interface Event
      * @return string
      */
     public function render();
+
+    /**
+     * Creates a new EventInstance for this event. If the event already
+     * had a base event instance assigned, a copy of it will be returned.
+     *
+     * If not, a clean event instance will be returned.
+     *
+     * @return \AgenDAV\EventInstance
+     * @throws \LogicException If current event has no UID assigned
+     */
+    public function createEventInstance();
+
+    /**
+     * Sets base EventInstance for this event
+     *
+     * @param \AgenDAV\EventInstance $instance
+     */
+    public function setBaseEventInstance(EventInstance $instance);
 }
 
