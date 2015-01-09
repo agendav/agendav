@@ -222,7 +222,6 @@ class VObjectEventInstance implements EventInstance
      */
     public function copyPropertiesFrom(EventInstance $source)
     {
-        // TODO RRULE
         $this->setSummary($source->getSummary());
         $this->setLocation($source->getLocation());
         $this->setDescription($source->getDescription());

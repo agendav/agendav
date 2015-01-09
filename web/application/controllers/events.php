@@ -31,11 +31,6 @@ use League\Fractal\Resource\Collection;
 class Events extends MY_Controller
 {
 
-    private $time_format;
-    private $time_format_pref;
-    private $date_format;
-    private $date_format_pref;
-
     private $tz;
     private $tz_utc;
 
@@ -50,11 +45,6 @@ class Events extends MY_Controller
             die();
         }
         $this->client = $this->container['caldav_client'];
-
-        $this->date_format_pref = $this->config->item('default_date_format');
-        $this->time_format_pref = $this->config->item('default_time_format');
-        $this->date_format = DateHelper::getDateFormatFor('date', $this->date_format_pref);
-        $this->time_format = DateHelper::getTimeFormatFor('date', $this->time_format_pref);
 
         $this->tz = $this->timezonemanager->getTz(
                 $this->config->item('default_timezone'));
@@ -196,10 +186,6 @@ class Events extends MY_Controller
             ->set_rules('calendar', $this->i18n->_('labels', 'calendar'), 'required');
         $this->form_validation
             ->set_rules('summary', $this->i18n->_('labels', 'summary'), 'required');
-        $this->form_validation
-            ->set_rules('recurrence_count', $this->i18n->_('labels',
-                        'repeatcount'),
-                    'callback__empty_or_natural_no_zero');
 
         if ($this->form_validation->run() === false) {
             $this->_throw_exception(validation_errors());
@@ -614,17 +600,6 @@ class Events extends MY_Controller
         ];
         $this->_throw_success($info);
     }
-
-    /**
-     * Input validators
-     */
-
-    // Validate empty or > 0
-    public function _empty_or_natural_no_zero($n)
-    {
-        return empty($n) || intval($n) > 0;
-    }
-
 
     /**
      * Throws an exception message
