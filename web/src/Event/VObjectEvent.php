@@ -3,7 +3,7 @@
 namespace AgenDAV\Event;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -33,18 +33,25 @@ use Sabre\VObject\Component\VEvent;
  */
 class VObjectEvent implements Event
 {
+    /** @var Sabre\VObject\Component\VCalendar */
     protected $vcalendar;
 
+    /** @var bool */
     protected $is_recurrent;
 
+    /** @var string */
     protected $repeat_rule;
 
+    /** @var string[] */
     protected $exceptions;
 
+    /** @var string */
     protected $uid;
 
     /**
-     * @param mixed VCalendar $vcalendar
+     * Builds a new VObjectEvent
+     *
+     * @param Sabre\VObject\Component\VCalendar $vcalendar
      */
     public function __construct(VCalendar $vcalendar)
     {
@@ -62,21 +69,33 @@ class VObjectEvent implements Event
         $this->uid = $this->findUid();
     }
 
+    /**
+     * Checks if current event is recurrent
+     *
+     * @return bool
+     */
     public function isRecurrent()
     {
         return $this->is_recurrent;
     }
 
-    public function getRepeatRule()
-    {
-        return $this->repeat_rule;
-    }
-
+    /**
+     * Returns the UID for all event instances under this event
+     *
+     * @return string
+     */
     public function getUid()
     {
         return $this->uid;
     }
 
+
+    /**
+     * Sets UID for this event.
+     *
+     * @param string $uid
+     * @throws \LogicException if this event already has an UID assigned
+     */
     public function setUid($uid)
     {
         if ($this->uid !== null) {
@@ -86,21 +105,34 @@ class VObjectEvent implements Event
         $this->uid = $uid;
     }
 
+    /**
+     * Returns the RRULE for all event instances under this event
+     *
+     * @return string
+     */
+    public function getRepeatRule()
+    {
+        return $this->repeat_rule;
+    }
+
+    /**
+     * Gets all event instances for a range of dates. If the event is not
+     * recurrent, a single instance will be returned
+     *
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return AgenDAV\EventInstance[]
+     */
     public function expand(\DateTime $start, \DateTime $end)
     {
         $expanded_vcalendar = clone $this->vcalendar;
         $expanded_vcalendar->expand($start, $end);
 
         $result = [];
-        $rrule = null;
-
-        if ($this->isRecurrent()) {
-            $rrule = $this->vcalendar->VEVENT[0]->RRULE;
-        }
 
         foreach ($expanded_vcalendar->VEVENT as $vevent) {
-            if ($rrule !== null) {
-                $vevent->RRULE = $rrule;
+            if ($this->repeat_rule !== null) {
+                $vevent->RRULE = $this->repeat_rule;
             }
 
             $result[] = new VObjectEventInstance($vevent);
@@ -109,12 +141,21 @@ class VObjectEvent implements Event
         return $result;
     }
 
+    /**
+     * Checks if a RECURRENCE-ID string (that could be the result of
+     * expanding a recurrent event) was an exception to the rule or not
+     *
+     * @param string $recurrence_id RECURRENCE-ID value
+     * @return boolean
+     */
     public function isException($recurrence_id)
     {
         return isset($this->exceptions[$recurrence_id]);
     }
 
     /**
+     * Returns an iCalendar string representation of this event
+     *
      * @return string
      */
     public function render()
@@ -128,7 +169,7 @@ class VObjectEvent implements Event
      *
      * If not, a clean event instance will be returned.
      *
-     * @return \AgenDAV\Event\VObjectEventInstance
+     * @return \AgenDAV\EventInstance
      * @throws \LogicException If current event has no UID assigned
      */
     public function createEventInstance()
@@ -153,7 +194,7 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Sets base EventInstance for this event
+     * Sets the base EventInstance for this event
      *
      * @param \AgenDAV\EventInstance $instance
      * @throws \InvalidArgumentException If event instance UID does not match
@@ -176,7 +217,7 @@ class VObjectEvent implements Event
         }
 
         $instance->removeRecurrenceId();
-        $instance->updateChangeProperties();
+        $instance->touch();
 
         // Add this event instance (case of empty VCALENDAR) or merge
         // with the existing one to avoid existing properties to be lost
@@ -214,6 +255,9 @@ class VObjectEvent implements Event
         return null;
     }
 
+    /**
+     * Gets a list of RECURRENCE-IDs defined for this event
+     */
     protected function findRecurrenceExceptions(VCalendar $vcalendar)
     {
         $result = [];
@@ -228,6 +272,11 @@ class VObjectEvent implements Event
         return $result;
     }
 
+    /**
+     * Finds UID for the base event instance
+     *
+     * @return string
+     */
     protected function findUid()
     {
         $base_component = $this->vcalendar->getBaseComponent('VEVENT');

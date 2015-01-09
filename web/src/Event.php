@@ -3,7 +3,7 @@
 namespace AgenDAV;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -28,19 +28,32 @@ namespace AgenDAV;
 interface Event
 {
     /**
+     * Returns the UID for all event instances under this event
+     *
+     * @return string
+     */
+    public function getUid();
+
+    /**
+     * Sets UID for this event.
+     *
+     * @param string $uid
+     * @throws \LogicException if this event already has an UID assigned
+     */
+    public function setUid($uid);
+
+    /**
      * Checks if current event is recurrent
      *
      * @return bool
      */
     public function isRecurrent();
 
-    /**
-     * Returns the UID for all event instances under this event
-     */
-    public function getUid();
 
     /**
      * Returns the RRULE for all event instances under this event
+     *
+     * @return string
      */
     public function getRepeatRule();
 
@@ -82,9 +95,11 @@ interface Event
     public function createEventInstance();
 
     /**
-     * Sets base EventInstance for this event
+     * Sets the base EventInstance for this event
      *
      * @param \AgenDAV\EventInstance $instance
+     * @throws \InvalidArgumentException If event instance UID does not match
+     *                                   current event UID
      */
     public function setBaseEventInstance(EventInstance $instance);
 }

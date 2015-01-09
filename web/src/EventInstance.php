@@ -3,7 +3,7 @@
 namespace AgenDAV;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,55 +23,160 @@ namespace AgenDAV;
 
 /**
  * This interface models an event instance (also known as 'expanded event')
- *
  */
 interface EventInstance
 {
-    // TODO RRULE
+    /**
+     * Return the UID for this VEVENT
+     *
+     * @return string
+     */
+    public function getUid();
 
-    public function isRecurrent();
-
+    /**
+     * Get the SUMMARY property of this event
+     *
+     * @return string
+     */
     public function getSummary();
 
+    /**
+     * Get the LOCATION property of this event
+     *
+     * @return string
+     */
     public function getLocation();
 
+    /**
+     * Get the DESCRIPTION property of this event
+     *
+     * @return string
+     */
     public function getDescription();
 
+    /**
+     * Get the CLASS property of this event
+     *
+     * @return string
+     */
     public function getClass();
 
+    /**
+     * Get the TRANSP property of this event
+     *
+     * @return string
+     */
     public function getTransp();
 
+    /**
+     * Get the start of this event
+     *
+     * @return \DateTime
+     */
     public function getStart();
 
+    /**
+     * Get the effective end of this event
+     *
+     * @return \DateTime
+     */
     public function getEnd();
 
+    /**
+     * Check if this event is an all day event or not
+     *
+     * @return bool
+     */
     public function isAllDay();
 
-    public function setSummary($summary);
+    /**
+     * Check if this event repeats
+     *
+     * @return bool
+     */
+    public function isRecurrent();
 
-    public function setLocation($location);
+    /**
+     * Get the repeat rule of this event (RRULE)
+     *
+     * @return string
+     */
+    public function getRepeatRule();
 
-    public function setDescription($description);
-
-    public function setClass($class);
-
-    public function setTransp($transp);
-
+    /**
+     * Gets the RECURRENCE-ID property of this instance
+     *
+     * @return string
+     */
     public function getRecurrenceId();
 
+    /**
+     * Set the SUMMARY property for this event
+     *
+     * @param string $summary
+     */
+    public function setSummary($summary);
+
+    /**
+     * Set the LOCATION property for this event
+     *
+     * @param string $location
+     */
+    public function setLocation($location);
+
+    /**
+     * Set the DESCRIPTION property for this event
+     *
+     * @param string $description
+     */
+    public function setDescription($description);
+
+    /**
+     * Set the CLASS property for this event
+     *
+     * @param string $class
+     */
+    public function setClass($class);
+
+    /**
+     * Set the TRANSP property for this event
+     *
+     * @param string $transp
+     */
+    public function setTransp($transp);
+
+    /**
+     * Set the start moment for this instance
+     *
+     * @param \DateTime $start
+     * @param bool $all_day
+     */
     public function setStart(\DateTime $start, $all_day = false);
 
+    /**
+     * Set the end moment for this instance
+     *
+     * @param \DateTime $end
+     * @param bool $all_day
+     */
     public function setEnd(\DateTime $end, $all_day = false);
 
     /**
-     * Adds (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
+     * Remove the RECURRENCE-ID property on this instance
      *
      * @return void
      */
-    public function updateChangeProperties();
+    public function removeRecurrenceId();
 
     /**
-     * Copies basic properties from another EventInstance to this instance
+     * Add (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
+     *
+     * @return void
+     */
+    public function touch();
+
+    /**
+     * Copy basic properties from another EventInstance to this instance
      *
      * @param \AgenDAV\EventInstance $source
      */
