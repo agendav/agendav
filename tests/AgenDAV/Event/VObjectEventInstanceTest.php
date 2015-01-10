@@ -240,11 +240,11 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($vevent->CREATED);
         $this->assertNotNull($vevent->DTSTAMP);
         $this->assertNotNull($vevent->{'LAST-MODIFIED'});
-        $this->assertEquals((string)$vevent->SEQUENCE, '0');
+        $this->assertEquals('0', (string)$vevent->SEQUENCE);
 
         // Increment SEQUENCE
         $instance->touch();
-        $this->assertEquals((string)$vevent->SEQUENCE, '1');
+        $this->assertEquals('1', (string)$vevent->SEQUENCE);
     }
 
     public function testCopyPropertiesFrom()

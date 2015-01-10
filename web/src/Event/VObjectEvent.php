@@ -174,7 +174,7 @@ class VObjectEvent implements Event
      */
     public function createEventInstance()
     {
-        if ($this->uid === null) {
+        if (empty($this->uid)) {
             throw new \LogicException('Event has not been assigned a UID yet!');
         }
 
