@@ -86,6 +86,7 @@ $(document).ready(function() {
     $('#calendar_view').fullCalendar({
       selectable: true,
       editable: true,
+      timezone: AgenDAVUserPrefs.timezone,
       firstDay: AgenDAVConf.prefs_firstday,
       timeFormat: AgenDAVConf.prefs_timeformat,
       weekMode: 'liquid',
@@ -1133,8 +1134,7 @@ var generate_event_source = function generate_event_source(calendar) {
       url: AgenDAVConf.base_app_url + 'events#' + calendar,
       cache: false,
       data: {
-        calendar: calendar,
-        timezone: AgenDAVUserPrefs.timezone
+        calendar: calendar
       },
       error: function (jqXHR, textStatus, errorThrown) {
         if (jqXHR.status !== undefined && jqXHR.status == 401) {
@@ -1205,7 +1205,6 @@ var add_button_icons = function add_button_icons(buttons) {
  */
 var generate_calendar_entry = function generate_calendar_entry(data) {
   var eventsource = generate_event_source(data.calendar);
-  eventsource.ignoreTimezone = true; // Ignore UTC offsets
   eventsource.color = data.color;
   eventsource.textColor = data.fg;
   eventsource.borderColor = data.bordercolor;

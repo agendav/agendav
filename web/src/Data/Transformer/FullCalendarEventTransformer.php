@@ -28,17 +28,40 @@ use AgenDAV\Event\FullCalendarEvent;
 
 class FullCalendarEventTransformer extends Fractal\TransformerAbstract
 {
+
+    /**
+     * Timezone the events will be converted to
+     *
+     * @var \DateTimeZone
+     */
+    protected $timezone;
+
+    /**
+     * Creates a new transformer, specifying the timezone Fullcalendar
+     * is configured to receive the events
+     *
+     * @param \DateTimeZone $timezone
+     */
+    public function __construct(\DateTimeZone $timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
+
     public function transform(FullCalendarEvent $fc_event)
     {
         $event = $fc_event->getEvent();
+        $start = $event->getStart()->setTimeZone($this->timezone);
+        $end = $event->getEnd()->setTimeZone($this->timezone);
+
         $result = [
             'calendar' => $fc_event->getCalendarUrl(),
             'href' => $fc_event->getUrl(),
             'etag' => $fc_event->getEtag(),
             'uid' => $event->getUid(),
             'title' => $event->getSummary(),
-            'start' => $event->getStart()->format('c'),
-            'end' => $event->getEnd()->format('c'),
+            'start' => $start->format('c'),
+            'end' => $end->format('c'),
             'allDay' => $event->isAllDay(),
             // TODO think about going without orig_allday
             'orig_allday' => $event->isAllDay(),

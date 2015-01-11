@@ -116,7 +116,7 @@ class Events extends MY_Controller
 
         $fractal = $this->container['fractal'];
         $fractal->setSerializer(new PlainSerializer);
-        $transformer = new FullCalendarEventTransformer();
+        $transformer = new FullCalendarEventTransformer($tz);
         $collection = new Collection($result, $transformer);
 
         $time_end = microtime(true);
