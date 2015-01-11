@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
- * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -36,7 +36,8 @@ class Events extends MY_Controller
 
     private $client;
 
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         if (!$this->container['session']->isAuthenticated()) {
@@ -63,9 +64,6 @@ class Events extends MY_Controller
      */
     public function index()
     {
-        $returned_events = array();
-        $err = 0;
-
         // For benchmarking
         $time_start = microtime(true);
         $time_end = $time_fetch = -1;
@@ -73,61 +71,65 @@ class Events extends MY_Controller
 
         $calendar = $this->input->get('calendar', true);
         if ($calendar === false) {
-            log_message('ERROR', 'Calendar events request with no calendar name');
-            $err = 400;
+            $this->output->set_status_header(400, 'Missing calendar id');
+            return;
         }
         $calendar = new Calendar($calendar);
 
         $start = $this->input->get('start', true);
         $end = $this->input->get('end', true);
+        $timezone = $this->input->get('timezone', true);
 
-        $start = preg_replace('/-/', '', $start);
-        $end = preg_replace('/-/', '', $end);
-        $start .= 'T000000Z';
-        $end .= 'T000000Z';
-
-        if ($err == 0 && ($start === false || $end === false)) {
+        if ($start === false || $end === false || $timezone === false) {
             // Something is wrong here
-            log_message('ERROR', 'Requested events from ' . $calendar .' with no start/end'
-            );
-            $err = 400;
-        } else if ($err == 0) {
-            $objects = $this->client->fetchObjectsOnCalendar($calendar, $start, $end);
-            $start_obj = new \DateTime($start);
-            $end_obj = new \DateTime($end);
-            $time_fetch = microtime(true);
-            $result = [];
-
-            foreach ($objects as $object) {
-                $master_event = $object->getEvent();
-                $instances = $master_event->expand($start_obj, $end_obj);
-                $fullcalendar_events = FullCalendarEvent::generateFrom(
-                    $object,
-                    $calendar,
-                    $instances
-                );
-                $result = array_merge($result, $fullcalendar_events);
-            }
-
-            $fractal = $this->container['fractal'];
-            $fractal->setSerializer(new PlainSerializer);
-            $transformer = new FullCalendarEventTransformer();
-            $collection = new Collection($result, $transformer);
-
-            $time_end = microtime(true);
-            $total_fetch = sprintf('%.4F', $time_fetch - $time_start);
-            $total_parse = sprintf('%.4F', $time_end - $time_fetch);
-            $total_time = sprintf('%.4F', $time_end - $time_start);
-
-            $this->output->set_header("X-Fetch-Time: " . $total_fetch);
-            $this->output->set_header("X-Parse-Time: " . $total_parse);
-            $this->output->set_output($fractal->createData($collection)->toJson());
-
-            log_message('INTERNALS', 'Sent ' .  count($result) . ' event(s) from ' . $calendar->getUrl()
-                        .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
-        } else {
-            $this->output->set_status_header($err, 'Error');
+            $this->output->set_status_header(400, 'Missing start, end or timezone');
+            return;
         }
+
+        $start .= 'T000000';
+        $end .= 'T000000';
+
+        $tz = $this->timezonemanager->getTz($timezone);
+        $start_obj = DateHelper::createDateTime('Y-m-d\THis', $start, $tz);
+        $end_obj = DateHelper::createDateTime('Y-m-d\THis', $end, $tz);
+
+        $start_obj->setTimeZone($this->tz_utc);
+        $end_obj->setTimeZone($this->tz_utc);
+
+        $start_string = $start_obj->format('Ymd\THis\Z');
+        $end_string = $end_obj->format('Ymd\THis\Z');
+
+        $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
+        $time_fetch = microtime(true);
+        $result = [];
+
+        foreach ($objects as $object) {
+            $master_event = $object->getEvent();
+            $instances = $master_event->expand($start_obj, $end_obj);
+            $fullcalendar_events = FullCalendarEvent::generateFrom(
+                $object,
+                $calendar,
+                $instances
+            );
+            $result = array_merge($result, $fullcalendar_events);
+        }
+
+        $fractal = $this->container['fractal'];
+        $fractal->setSerializer(new PlainSerializer);
+        $transformer = new FullCalendarEventTransformer();
+        $collection = new Collection($result, $transformer);
+
+        $time_end = microtime(true);
+        $total_fetch = sprintf('%.4F', $time_fetch - $time_start);
+        $total_parse = sprintf('%.4F', $time_end - $time_fetch);
+        $total_time = sprintf('%.4F', $time_end - $time_start);
+
+        $this->output->set_header("X-Fetch-Time: " . $total_fetch);
+        $this->output->set_header("X-Parse-Time: " . $total_parse);
+        $this->output->set_output($fractal->createData($collection)->toJson());
+
+        log_message('INTERNALS', 'Sent ' .  count($result) . ' event(s) from ' . $calendar->getUrl()
+            .' ['.$total_fetch.'/'.$total_parse.'/'.$total_time.']');
     }
 
     /**

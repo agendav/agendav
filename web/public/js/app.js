@@ -1132,10 +1132,10 @@ var generate_event_source = function generate_event_source(calendar) {
       // calling removeEventSource, and will remove all calendars
       url: AgenDAVConf.base_app_url + 'events#' + calendar,
       cache: false,
-      // TODO make timezone configurable
       data: {
-        calendar: calendar
-        },
+        calendar: calendar,
+        timezone: AgenDAVUserPrefs.timezone
+      },
       error: function (jqXHR, textStatus, errorThrown) {
         if (jqXHR.status !== undefined && jqXHR.status == 401) {
           session_expired();
