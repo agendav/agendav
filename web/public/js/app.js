@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -569,7 +569,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     return;
   }
 
-  var form_url = AgenDAVConf.base_app_url + 'events/modify';
+  var form_url = AgenDAVConf.base_app_url + 'events/save';
   var title;
 
   if (type == 'new') {
@@ -846,7 +846,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
 // Triggers a dialog for editing calendars
 var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
 
-  var form_url = AgenDAVConf.base_app_url + 'calendars/modify';
+  var form_url = AgenDAVConf.base_app_url + 'calendars/save';
   var title = t('labels', 'modifycalendar');
 
   var data = calendar_obj;
@@ -1568,7 +1568,7 @@ var event_resize_callback = function event_resize_callback(event, delta, revertF
 var event_drop_callback = function event_drop_callback(event, delta, revertFunc, jsEvent, ui, view) {
   var allDay = !event.start.hasTime();
 
-  event_alter('drag', event, delta, allDay, revertFunc, jsEvent, ui, view);
+  event_alter('drop', event, delta, allDay, revertFunc, jsEvent, ui, view);
 };
 
 

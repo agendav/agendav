@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php
 
 /*
  * Copyright 2011-2015 Jorge López Pérez <jorge@adobo.org>
@@ -172,7 +172,7 @@ class Events extends MY_Controller
      * Creates or modifies an existing event
      * TODO: detect if we are defining a new recurrence-id
      */
-    public function modify()
+    public function save()
     {
         // Important data to be filled later
         $etag = '';
@@ -496,7 +496,7 @@ class Events extends MY_Controller
                 */
 
         // Distinguish between these two options
-        if ($type == 'drag') {
+        if ($type == 'drop') {
             // 4 Posibilities
             if ($was_allday == 'true') {
                 if ($allday == 'true') {

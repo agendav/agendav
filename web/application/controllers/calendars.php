@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -35,7 +35,8 @@ class Calendars extends MY_Controller
 
     protected $sharing_enabled;
 
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         if (!$this->container['session']->isAuthenticated()) {
@@ -71,7 +72,8 @@ class Calendars extends MY_Controller
     /**
      * Creates a calendar
      */
-    function create() {
+    public function create()
+    {
         $displayname = $this->input->post('displayname', true);
         $calendar_color = $this->input->post('calendar_color', true);
 
@@ -113,7 +115,8 @@ class Calendars extends MY_Controller
     /**
      * Deletes a calendar
      */
-    function delete() {
+    public function delete()
+    {
         $calendar = $this->input->post('calendar', true);
         if ($calendar === false) {
             log_message('ERROR', 'Call to delete_calendar() without calendar');
@@ -142,7 +145,8 @@ class Calendars extends MY_Controller
     /**
      * Modifies a calendar
      */
-    function modify() {
+    public function save()
+    {
         $calendar = $this->input->post('calendar', true);
         $displayname = $this->input->post('displayname', true);
         $calendar_color = $this->input->post('calendar_color', true);
@@ -335,7 +339,8 @@ class Calendars extends MY_Controller
     /**
      * Throws an exception message
      */
-    private function answerWithException($message) {
+    private function answerWithException($message)
+    {
         $this->output->set_output(json_encode(array(
                         'result' => 'EXCEPTION',
                         'message' => $message)));
@@ -346,7 +351,8 @@ class Calendars extends MY_Controller
     /**
      * Throws an error message
      */
-    private function answerWithError($message) {
+    private function answerWithError($message)
+    {
         $this->output->set_status_header(500);
         $this->output->set_output(json_encode(array(
                         'result' => 'ERROR',
@@ -358,7 +364,8 @@ class Calendars extends MY_Controller
     /**
      * Throws a success message
      */
-    private function answerWithSuccess($message = '') {
+    private function answerWithSuccess($message = '')
+    {
         $this->output->set_status_header(200);
         $this->output->set_output(json_encode(array(
                         'result' => 'SUCCESS',
