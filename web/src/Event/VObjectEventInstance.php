@@ -23,6 +23,7 @@ namespace AgenDAV\Event;
 
 use AgenDAV\Event;
 use AgenDAV\EventInstance;
+use AgenDAV\Data\Reminder;
 use Sabre\VObject\DateTimeParser;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
@@ -37,6 +38,8 @@ class VObjectEventInstance implements EventInstance
 
     protected $vevent;
 
+    protected $reminders;
+
     /**
      * Builds a new VObjectEventInstance
      *
@@ -46,6 +49,7 @@ class VObjectEventInstance implements EventInstance
     {
         $this->vevent = $vevent;
         $this->is_recurrent = isset($vevent->RRULE);
+        $this->reminders = $this->findReminders();
     }
 
     /**
@@ -186,6 +190,16 @@ class VObjectEventInstance implements EventInstance
     public function getRecurrenceId()
     {
         return (string) $this->vevent->{'RECURRENCE-ID'};
+    }
+
+    /**
+     * Returns all recognized reminders for this instance
+     *
+     * @return AgenDAV\Data\Reminder[]
+     */
+    public function getReminders()
+    {
+        return $this->reminders;
     }
 
     /**
@@ -369,6 +383,29 @@ class VObjectEventInstance implements EventInstance
             return;
         }
         $this->vevent->{$property_name} = $value;
+    }
+
+    /**
+     * Finds all VALARMs on this instance
+     *
+     * @return \AgenDAV\Data\Reminder[]
+     */
+    protected function findReminders()
+    {
+        $result = [];
+
+        $valarms = $this->vevent->select('VALARM');
+        $position = 1;
+
+        foreach ($valarms as $valarm) {
+            $reminder = Reminder::createFromVObject($valarm, $position);
+            if ($reminder !== null) {
+                $result[] = $reminder;
+            }
+            $position++;
+        }
+
+        return $result;
     }
 
 }

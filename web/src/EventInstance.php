@@ -111,6 +111,13 @@ interface EventInstance
     public function getRecurrenceId();
 
     /**
+     * Returns all recognized reminders for this instance
+     *
+     * @return AgenDAV\Data\Reminder[]
+     */
+    public function getReminders();
+
+    /**
      * Set the SUMMARY property for this event
      *
      * @param string $summary

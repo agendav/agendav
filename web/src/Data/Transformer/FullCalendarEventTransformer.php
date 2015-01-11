@@ -3,7 +3,7 @@
 namespace AgenDAV\Data\Transformer;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -58,7 +58,20 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
             $result['id'] .= '@' . $result['recurrence_id'];
         }
 
-        // TODO reminders
+        // Reminders
+        $result['visible_reminders'] = [];
+        $result['reminders'] = [];
+
+        $reminders = $event->getReminders();
+        foreach ($reminders as $reminder) {
+            list($count, $unit) = $reminder->getParsedWhen();
+            $result['visible_reminders'][] = $reminder->getPosition();
+            $result['reminders'][] = [
+                'position' => $reminder->getPosition(),
+                'count' => $count,
+                'unit' => $unit,
+            ];
+        }
 
         return $result;
     }

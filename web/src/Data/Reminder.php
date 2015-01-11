@@ -3,7 +3,7 @@
 namespace AgenDAV\Data;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -20,6 +20,10 @@ namespace AgenDAV\Data;
  *  You should have received a copy of the GNU General Public License
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+use Sabre\VObject\Component\VAlarm;
+use Sabre\VObject\Component\VEvent;
+use Sabre\VObject;
 
 class Reminder
 {
@@ -66,60 +70,38 @@ class Reminder
     }
 
     /**
-     * Receives an iCalcreator VALARM and creates a new Reminder.
+     * Receives an VObject VALARM and creates a new Reminder.
      *
      * If the VALARM is not supported by AgenDAV, a null value will be returned
      *
-     * @param \valarm $valarm iCalcreator VALARM object
+     * @param \Sabre\VObject\Component\VAlarm $valarm
      * @param integer $position Position of this VALARM inside the VEVENT
      * @return AgenDAV\Data\Reminder|null
      */
-    public static function createFromiCalcreator($valarm, $position)
+    public static function createFromVObject(VAlarm $valarm, $position)
     {
-        $trigger = $valarm->getProperty('trigger');
-        if (!isset($trigger['relatedStart']) || $trigger['relatedStart'] === false) {
+        $trigger = $valarm->TRIGGER;
+        $value = (string) $trigger['VALUE'];
+        $related = (string) $trigger['RELATED'];
+        if ($value === 'DATE-TIME' || $related === 'END') {
             return null;
         }
 
-        $units = [
-            'min' => 1,
-            'hour' => 60,
-            'day' => 1440,
-            'week' => 10080,
-        ];
-
-        $total_minutes = 0;
-        foreach ($units as $unit => $minutes) {
-            if (isset($trigger[$unit])) {
-                $total_minutes += $trigger[$unit]*$minutes;
-            }
-        }
-
-        // Discard this VALARM if its 'before' property is false and
-        // it is triggered just on start
-        if ($trigger['before'] === false && $total_minutes !== 0) {
+        try {
+            $duration = VObject\DateTimeParser::parseDuration($trigger);
+        } catch (\LogicException $exception) {
+            // Ooops
             return null;
         }
 
-        $used_unit = '';
-        $count = 0;
-
-        foreach ($units as $unit => $minutes) {
-            if ($total_minutes % $minutes === 0) {
-                $used_unit = $unit;
-                $count = $total_minutes/$minutes;
-                break;
-            }
-        }
-
-        if ($used_unit === '') {
+        // Trigger *after* DTSTART
+        if ($duration->invert !== 1) {
             return null;
         }
 
-        $string = $count . ' ' . $used_unit;
-        $interval = \DateInterval::createFromDateString($string);
+        $duration->invert = 0;
 
-        return new self($interval, $position);
+        return new self($duration, $position);
     }
 
     public function generateVAlarm()
