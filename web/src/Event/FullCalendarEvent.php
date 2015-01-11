@@ -97,12 +97,13 @@ class FullCalendarEvent
      *
      * @param AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
      * @param AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param AgenDAV\EventInstance[] $events
+     * @param AgenDAV\EventInstance[] $instances
+     * @return AgenDAV\Event\FullCalendarEvent[]
      */
     public static function generateFrom(
         CalendarObject $calendar_object,
         Calendar $calendar,
-        Array $events
+        Array $instances
     )
     {
         $result = [];
@@ -110,8 +111,8 @@ class FullCalendarEvent
         $etag = $calendar_object->getEtag();
         $calendar_url = $calendar->getUrl();
 
-        foreach ($events as $event) {
-            $result[] = new self($url, $etag, $calendar_url, $event);
+        foreach ($instances as $instance) {
+            $result[] = new self($url, $etag, $calendar_url, $instance);
         }
 
         return $result;
