@@ -123,56 +123,27 @@ class DateHelper
     }
 
     /**
-     * createDateTime 
-     * 
-     * @param string $format 
-     * @param string $str 
-     * @param \DateTimeZone $tz 
-     * @static
-     * @access public
+     * Creates a new \DateTime object using a value, a format string and a
+     * timezone
+     *
+     * @param string $format \DateTime format (see http://php.net/manual/en/datetime.createfromformat.php)
+     * @param string $value Input value that has to match the format above 
+     * @param \DateTimeZone $timezone Time zone the resulting \DateTime will be generated
      * @return \DateTime
      * @throws \InvalidArgumentException
      */
-    public static function createDateTime($format, $str, \DateTimeZone $tz)
+    public static function createDateTime($format, $value, \DateTimeZone $timezone)
     {
-        $dt = \DateTime::createFromFormat($format, $str, $tz);
+        $result = \DateTime::createFromFormat($format, $value, $timezone);
 
         // Check for errors
         $err = \DateTime::getLastErrors();
 
-        if (false === $dt || $err['warning_count']>0) {
+        if (false === $result || $err['warning_count']>0) {
             throw new \InvalidArgumentException('Error building DateTime object');
         }
 
-        return $dt;
-    }
-
-
-    /**
-     * Returns a DatTime object with its timestamp rounded to the nearest multiple of specified factor,
-     * using the provided base time
-     *
-     * @param \DateTime $base Base date and time to start looking for the rounded time
-     * @param int $factor Rounding factor, specified in seconds
-     * @access public
-     * @return \DateTime Resulting DateTime object
-     * @throws \InvalidArgumentException
-     */
-    public static function approximate($base, $factor = 1800)
-    {
-        if (!($base instanceof \DateTime)) {
-            throw new \InvalidArgumentException('approximate() called with no base time');
-        }
-
-        if (!is_int($factor)) {
-            throw new \InvalidArgumentException('approximate() called with invalid factor');
-        }
-
-        $rounded_datetime = clone $base;
-        $ts = $base->getTimestamp();
-        $rounded_datetime->setTimestamp(round(($ts/$factor))*$factor);
-
-        return $rounded_datetime;
+        return $result;
     }
 
     /**
@@ -217,63 +188,9 @@ class DateHelper
     }
 
     /**
-     * Converts a DateTime object to iCalendar DATE-TIME/DATE format
-     * 
-     * @param \DateTime $dt 
-     * @param string $type DATE-TIME or DATE 
-     * @access public
-     * @return void
-     */
-    public static function dateTimeToiCalendar(\DateTime $dt, $type)
-    {
-        $format = 'Ymd';
-
-        if ($type == 'DATE-TIME') {
-            $format .= '\THis';
-        }
-
-        $tz = $dt->getTimeZone();
-
-        if ($tz->getName() == 'UTC' && $type != 'DATE') {
-            $format .= '\Z';
-        }
-
-        return $dt->format($format);
-    }
-
-    /**
-     * Converts a DATE-TIME/DATE array from iCalcreator to a \DateTime object
-     *
-     * @param Array $id_arr Array from iCalcreator (year, month, day, etc)
-     * @param \DateTimeZone $tz Timezone for given input
-     * @static
-     * @access public
-     * @return \DateTime
-     */
-    public static function iCalcreatorToDateTime($icalcreator_data, \DateTimeZone $tz)
-    {
-        $format = 'YmdHis';
-
-        // $tz should be enough
-        unset($icalcreator_data['tz']);
-
-        $str = '';
-        foreach ($icalcreator_data as $k => $v) {
-            $str .= $v;
-        }
-
-        // VALUE=DATE
-        if (!isset($icalcreator_data['hour'])) {
-            $str .= '000000';
-        }
-
-        return self::createDateTime($format, $str, $tz);
-    }
-
-    /**
      * Convertes a DURATION string to a DateInterval
      * Allows the use of '-' in front of the string
-     * 
+     *
      * @param string $str DURATION value
      * @access public
      * @return \DateInterval
@@ -291,59 +208,5 @@ class DateHelper
         $interval->invert = $invert;
 
         return $interval;
-    }
-
-    /**
-     * Converts a X-CURRENT-DTSTART/X-CURRENT-DTEND string to a DateTime
-     * object
-     *
-     * @param string $str 
-     * @param \DateTimeZone $tz 
-     * @access public
-     * @return \DateTime
-     * @throws \InvalidArgumentException
-     */
-    public static function iCalcreatorXCurrentToDateTime($str, \DateTimeZone $tz)
-    {
-        $matches = array();
-        $res = preg_match('/^(\d+)-(\d+)-(\d+)( (\d+):(\d+):(\d+)( (\S+))?)?$/', $str, $matches);
-
-        if ($res === false || $res != 1) {
-            throw new \InvalidArgumentException($str . ' is not an X-CURRENT-DTSTART/DTEND');
-        }
-
-        $y = $matches[1];
-        $m = $matches[2];
-        $d = $matches[3];
-        $h = isset($matches[5]) ? $matches[5] : '00';
-        $i = isset($matches[6]) ? $matches[6] : '00';
-        $s = isset($matches[7]) ? $matches[7] : '00';
-        // Timezone is ignored, we already have $tz
-        //$e = isset($matches[9]) ? $matches[9] : $tz;
-    
-        $format = 'dmY His';
-        $new_str = $d.$m.$y.' '.$h.$i.$s;
-
-        $dt = self::createDateTime($format, $new_str, $tz);
-
-        return $dt;
-    }
-
-
-    /**
-     * Returns formatted time for a given \DateTime
-     *
-     * @param \DateTime $dt 
-     * @param string $time_format 12 or 24
-     * @static
-     * @access public
-     * @return string
-     */
-    public static function formatTime(\DateTime $dt, $time_format)
-    {
-        $format = self::getTimeFormatFor('date', $time_format);
-        $result = $dt->format($format);
-        
-        return $result;
     }
 }

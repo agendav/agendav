@@ -52,8 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('encrypt',
-    'timezonemanager', 'dates', 'icshelper');
+$autoload['libraries'] = array('timezonemanager');
 
 
 /*
