@@ -86,12 +86,9 @@ class Events extends MY_Controller
             return;
         }
 
-        $start .= 'T000000';
-        $end .= 'T000000';
-
         $tz = $this->timezonemanager->getTz($timezone);
-        $start_obj = DateHelper::createDateTime('Y-m-d\THis', $start, $tz);
-        $end_obj = DateHelper::createDateTime('Y-m-d\THis', $end, $tz);
+        $start_obj = DateHelper::fullcalendarToDateTime($start, $tz);
+        $end_obj = DateHelper::fullcalendarToDateTime($end, $tz);
 
         $start_obj->setTimeZone($this->tz_utc);
         $end_obj->setTimeZone($this->tz_utc);

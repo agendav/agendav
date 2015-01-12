@@ -97,10 +97,12 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testFullcalendarToDateTime()
     {
-        $str = '20121007100000';
+        $str = '2012-10-07';
         $dt = DateHelper::fullcalendarToDateTime($str, $this->utc);
 
-        $this->assertEquals($dt->format('YmdHis'), '20121007100000');
+        $expected = new \DateTime('2012-10-07 00:00:00', $this->utc);
+
+        $this->assertEquals($expected, $dt);
     }
 
     public function testDateTimeToiCalendar1()

@@ -198,22 +198,22 @@ class DateHelper
     }
 
     /**
-     * Creates a DateTime object from a date formatted by Fullcalendar
-     * events: yyyymmddHHii).
+     * Creates a DateTime object from a date formatted by FullCalendar
+     * events
      *
-     * @param string $str 
-     * @param \DateTimeZone $tz 
-     * @static
-     * @access public
-     * @return \DateTime
+     * @param string $input String provided by FullCalendar
+     * @param \DateTimeZone $timezone User timezone
+     * @return \DateTime Using the provided timezone
      * @throws \InvalidArgumentException
      */
-    public static function fullcalendarToDateTime($str, \DateTimeZone $tz)
+    public static function fullcalendarToDateTime($input, \DateTimeZone $timezone)
     {
-        $format = 'YmdHis';
-        $dt = self::createDateTime($format, $str, $tz);
+        $format = 'Y-m-d\THis';
+        $input .= 'T000000';
 
-        return $dt;
+        $result = self::createDateTime($format, $input, $timezone);
+
+        return $result;
     }
 
     /**
