@@ -51,18 +51,17 @@ class MY_Log extends CI_Log
         // Debug
         if ($this->config['enable_debug'] == true) {
             $debugfile = $this->config['log_path'] . 'debug.log';
-            $processors = array(
-                new \Monolog\Processor\WebProcessor(),
-                new \Monolog\Processor\IntrospectionProcessor(),
-            );
+            $processors = [
+                new \Monolog\Processor\WebProcessor(null, ['ip', 'http_method', 'url']),
+            ];
             $this->logger->addLogFile($debugfile, \Monolog\Logger::DEBUG, $processors);
         }
     }
 
     function write_log($level = 'error', $msg, $php_error = FALSE)
-    {        
+    {
         $level = strtoupper($level);
-        
+
         return $this->logger->message($level, $msg);
     }
 
@@ -79,4 +78,4 @@ class MY_Log extends CI_Log
         return $this->write_log($level, $message);
     }
 
-} 
+}

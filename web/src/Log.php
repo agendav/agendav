@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace AgenDAV;
 
 use Monolog\Logger;
@@ -32,7 +32,7 @@ class Log extends \Monolog\Logger
 {
 
     /**
-     * Current application context 
+     * Current application context
      *
      * @var Array
      * @access private
@@ -59,7 +59,7 @@ class Log extends \Monolog\Logger
     public function addLogFile($path, $level = Logger::INFO, $processors = array())
     {
         $file_stream = new StreamHandler($path, $level);
-        
+
         $log_format = "[%datetime%] %level_name%: %message% %context% %extra%\n";
         // TODO make timestamp format configurable
         $ts_format = 'Y-m-d H:i:s.u';
@@ -76,6 +76,9 @@ class Log extends \Monolog\Logger
     {
         switch ($level) {
             case 'DEBUG':
+                // Just ignore CodeIgniter DEBUG messages
+                return;
+                break;
             case 'INTERNALS':
                 $level = Logger::DEBUG;
                 break;
