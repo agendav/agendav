@@ -106,6 +106,10 @@ $(document).ready(function() {
       slotMinutes: 30,
       firstHour: 8,
 
+      // Default event durations. Used when dropping events
+      defaultTimedEventDuration: '01:00:00',
+      defaultAllDayEventDuration: { days: 1 },
+
       // Limit cell heignt
       eventLimit: true,
 
@@ -633,6 +637,8 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       'class': 'addicon btn-icon-event-edit',
       'click': function() {
         var event_details = $('#event_edit_form').serializeObject();
+
+        event_details.timezone = AgenDAVUserPrefs.timezone;
 
         // Clean some event_details fields
         delete event_details.start_date;
@@ -1585,7 +1591,7 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
       delta: delta.asMinutes(),
       allday: allDay,
       was_allday: event.orig_allday,
-      timezone: event.timezone,
+      timezone: AgenDAVUserPrefs.timezone,
       type: alterType
     }
   };

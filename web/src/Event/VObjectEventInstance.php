@@ -140,6 +140,8 @@ class VObjectEventInstance implements EventInstance
             return $end;
         }
 
+        // DTEND is non-inclusive for VALUE=DATE
+        // (RFC 5545 - 3.6.1)
         if ($this->isAllDay()) {
             $end->modify('+1 day');
             return $end;
