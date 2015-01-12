@@ -95,6 +95,14 @@ interface Event
     public function createEventInstance();
 
     /**
+     * Gets the base EventInstance for this event, if defined
+     *
+     * @return \AgenDAV\EventInstance|null
+     */
+
+    public function getEventInstance();
+
+    /**
      * Sets the base EventInstance for this event
      *
      * @param \AgenDAV\EventInstance $instance

@@ -234,6 +234,23 @@ class VObjectEvent implements Event
     }
 
     /**
+     * Gets the base EventInstance for this event, if defined
+     *
+     * @return \AgenDAV\EventInstance|null
+     */
+
+    public function getEventInstance()
+    {
+        $vevent = $this->vcalendar->getBaseComponent('VEVENT');
+
+        if ($vevent === null) {
+            return null;
+        }
+
+        return new VObjectEventInstance($vevent);
+    }
+
+    /**
      * Extracts the RRULE property from the main VEVENT contained in the
      * VCALENDAR, if any.
      *
