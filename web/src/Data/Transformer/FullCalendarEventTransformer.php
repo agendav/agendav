@@ -51,8 +51,13 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
     public function transform(FullCalendarEvent $fc_event)
     {
         $event = $fc_event->getEvent();
-        $start = $event->getStart()->setTimeZone($this->timezone);
-        $end = $event->getEnd()->setTimeZone($this->timezone);
+        $start = $event->getStart();
+        $end = $event->getEnd();
+
+        if (!$event->isAllDay()) {
+            $start->setTimeZone($this->timezone);
+            $end->setTimeZone($this->timezone);
+        }
 
         $result = [
             'calendar' => $fc_event->getCalendarUrl(),
