@@ -1587,7 +1587,6 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
       uid: event.uid,
       calendar: event.calendar,
       etag: event.etag,
-      view: view.name,
       delta: delta.asMinutes(),
       allday: allDay,
       was_allday: event.orig_allday,
@@ -1602,6 +1601,7 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
     form_object: fake_form,
     success: function(data) {
       event.etag = data.etag;
+      event.orig_allday = event.allDay;
       $('#calendar_view').fullCalendar('updateEvent', event);
     },
     exception: function(data) {

@@ -428,176 +428,31 @@ class Events extends MY_Controller
 
     /**
      * Resizing an event
+     * TODO: requires some error checking
      */
     public function alter()
     {
         $uid = $this->input->post('uid', true);
         $calendar = $this->input->post('calendar', true);
+        $timezone = $this->input->post('timezone', true);
         $etag = $this->input->post('etag', true);
         $delta = $this->input->post('delta', true);
         $allday = $this->input->post('allday', true);
         $was_allday = $this->input->post('was_allday', true);
-        $view = $this->input->post('view', true);
         $type = $this->input->post('type', true);
 
         if ($uid === false || $calendar === false ||
                 $etag === false || $delta === false ||
-                $view === false || $allday === false ||
-                $type === false || $was_allday === false) {
+                $allday === false || $type === false ||
+                $timezone === false || $was_allday === false) {
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         }
 
-        // Generate a duration string
-        $pattern = '/^(-)?([0-9]+)$/';
-        $dur_string = preg_replace($pattern, '\1PT\2M', $delta);
-
-        try {
-            $calendar = $this->client->getCalendarByUrl($calendar);
-        } catch (\UnexpectedValueException $e) {
-            $this->_throw_exception(
-                $this->i18n->_('messages', 'error_calendarnotfound', array('%calendar' => $calendar))
-            );
-            return;
-        }
-
-        // Load resource
-        try {
-            $resource = $this->client->fetchObjectByUid($calendar, $uid);
-        } catch (\Exception $e) {
-            $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
-            return;
-        }
-
-        if ($etag != $resource->getEtag()) {
-            $this->_throw_error($this->i18n->_('messages', 'error_eventchanged'));
-        }
-
-        // We're prepared to modify the event
-        $href = $resource->getUrl();
-        $ical = $this->icshelper->parse_icalendar($resource->getContents());
-        $timezones = $this->icshelper->get_timezones($ical);
-        $vevent = null;
-        // TODO: recurrence-id?
-        $modify_pos = $this->icshelper->find_component_position($ical, 'VEVENT', array(), $vevent);
-
-        if ($vevent === null) {
-            $this->_throw_error( $this->i18n->_('messages', 'error_eventnotfound'));
-        }
-
-        $tz = $this->icshelper->detect_tz($vevent, $timezones);
-
-        /*
-        log_message('INTERNALS', 'PRE: ['.$tz.'] ' 
-                . $vevent->createComponent($x));
-                */
-
-        // Distinguish between these two options
-        if ($type == 'drop') {
-            // 4 Posibilities
-            if ($was_allday == 'true') {
-                if ($allday == 'true') {
-                    // From all day to all day
-                    $tz = $this->tz_utc;
-                    $new_vevent = $this->icshelper->make_start($vevent, $tz, null, $dur_string, 'DATE');
-                    $new_vevent = $this->icshelper->make_end($new_vevent, $tz, null, $dur_string, 'DATE');
-                } else {
-                    // From all day to normal event
-                    // Use default timezone
-                    $tz = $this->tz;
-
-                    // Add VTIMEZONE
-                    $this->icshelper->add_vtimezone($ical, $tz->getName(), $timezones);
-
-                    // Set start date using default timezone instead of UTC
-                    $start = $this->icshelper->extract_date($vevent,
-                            'DTSTART', $tz);
-                    $start_obj = $start['result'];
-                    $start_obj->add(DateHelper::durationToDateInterval($dur_string));
-                    $new_vevent = $this->icshelper->make_start(
-                            $vevent,
-                            $tz,
-                            $start_obj,
-                            null,
-                            'DATE-TIME',
-                            $tz->getName()
-                    );
-                    $new_vevent = $this->icshelper->make_end(
-                            $new_vevent,
-                            $tz,
-                            $start_obj,
-                            'PT1H',
-                            'DATE-TIME',
-                            $tz->getName()
-                    );
-                }
-            } else {
-                // was_allday = false
-                $force = ($allday == 'true' ? 'DATE' : null);
-                $new_vevent = $this->icshelper->make_start($vevent, $tz, null, $dur_string, $force);
-                if ($allday == 'true') {
-                    $new_start = $this->icshelper->extract_date($new_vevent, 'DTSTART', $tz);
-                    $new_vevent = $this->icshelper->make_end($new_vevent, $tz, $new_start['result'], 'P1D', $force);
-                } else {
-                    $new_vevent = $this->icshelper->make_end($new_vevent, $tz, null, $dur_string, $force);
-                }
-            }
-        } else {
-            $new_vevent = $this->icshelper->make_end($vevent, $tz, null, $dur_string);
-
-            // Check if DTSTART == DTEND
-            $new_dtstart = $this->icshelper->extract_date($new_vevent, 'DTSTART', $tz);
-            $new_dtend = $this->icshelper->extract_date($new_vevent, 'DTEND', $tz);
-            if ($new_dtstart['result'] == $new_dtend['result']) {
-                // Avoid this
-                $new_vevent = $this->icshelper->make_end(
-                        $vevent,
-                        $tz,
-                        null,
-                        ($new_dtend['value'] == 'DATE' ? 'P1D' : 'PT60M')
-                );
-            }
-
-
-        }
-
-        // Apply LAST-MODIFIED update
-        $new_vevent = $this->icshelper->set_last_modified($new_vevent);
-
-        /*
-        log_message('INTERNALS', 'POS: ' .
-                $new_vevent->createComponent($x));
-                */
-
-
-        $ical = $this->icshelper->replace_component($ical, 'vevent', $modify_pos, $new_vevent);
-        if ($ical === false) {
-            $this->_throw_error($this->i18n->_('messages', 'error_internalgen'));
-        }
-
-        $new_object = new CalendarObject($href, $ical->createCalendar());
-        $new_object->setCalendar($calendar);
-        $new_object->setEtag($etag);
-        // PUT on server
-        try {
-            $response = $this->client->uploadCalendarObject($new_object);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            $code = $e->getResponse()->getStatusCode();
-            switch ($code) {
-                case '412':
-                    $this->_throw_exception( $this->i18n->_('messages', 'error_eventchanged'));
-                    break;
-                default:
-                    $this->_throw_error( $this->i18n->_('messages', 'error_unknownhttpcode', array('%res' => $code)));
-                    break;
-            }
-            return;
-        }
-        // Send info about modified event
-        $info = [
-            'etag' => $response->getHeader('ETag'),
-        ];
-        $this->_throw_success($info);
+        $input = $this->input->post(null, true);
+        $api = new AgenDAV\Operation\Event\Alter($this->client);
+        $result = $api->execute($input);
+        $this->_throw_success($result);
     }
 
     /**
