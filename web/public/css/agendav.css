@@ -7456,16 +7456,6 @@ button.close {
 body {
   background-color: #faf9f7;
 }
-/* jQuery UI font override */
-/*
-.ui-widget { 
-  .fontoverride;
-  
-  input, select, textarea, button { 
-    .fontoverride(1em);
-  } 
-}
-*/
 td.fc-event-container,
 div.fc-event-container,
 .ui-button,
@@ -7676,12 +7666,11 @@ div.selecthelper {
   line-height: 1.42857143 !important;
 }
 span.fc-event-icons {
+  margin-left: 3px;
   font-size: 90%;
-  float: right;
-  margin-right: 5px;
 }
 span.fc-event-icons i {
-  margin-left: 3px;
+  margin-right: 2px;
 }
 td.fc-day-number.fc-today {
   font-weight: bold;
