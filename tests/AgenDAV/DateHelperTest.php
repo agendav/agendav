@@ -73,4 +73,44 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
         $d2 = DateHelper::durationToDateInterval('-P1D');
         $this->assertEquals($d2->invert, 1);
     }
+
+    public function testAddMinutesTo()
+    {
+        $datetime_1 = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
+        $datetime_2 = clone $datetime_1;
+
+        $expected_1 = clone $datetime_1;
+        $expected_1->modify('+10 minutes');
+        $expected_2 = clone $datetime_2;
+        $expected_2->modify('-10 minutes');
+
+        DateHelper::addMinutesTo($datetime_1, '10');
+        DateHelper::addMinutesTo($datetime_2, '-10');
+
+        $this->assertEquals($expected_1, $datetime_1);
+        $this->assertEquals($expected_2, $datetime_2);
+    }
+
+    public function testSwitchTimeZone()
+    {
+        $datetime = new \DateTime('2015-01-13 00:00:00', new \DateTimeZone('UTC'));
+
+        $converted = DateHelper::switchTimeZone(
+            $datetime,
+            new \DateTimeZone('America/New_York')
+        );
+
+        $this->assertEquals('2015-01-13 00:00:00', $converted->format('Y-m-d H:i:s'));
+        $this->assertEquals('America/New_York', $converted->getTimeZone()->getName());
+    }
+
+    public function testGetStartOfDayUTC()
+    {
+        $datetime = new \DateTime('2015-01-27 12:03:19', new \DateTimeZone('Europe/London'));
+
+        $start_of_day = DateHelper::getStartOfDayUTC($datetime);
+
+        $this->assertEquals('2015-01-27 00:00:00', $start_of_day->format('Y-m-d H:i:s'));
+        $this->assertEquals('UTC', $start_of_day->getTimeZone()->getName());
+    }
 }

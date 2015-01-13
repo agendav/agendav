@@ -209,4 +209,46 @@ class DateHelper
 
         return $interval;
     }
+
+
+    /**
+     * Adds (or subtracts) an amount of minutes to a \DateTime object.
+     * Modifies original object
+     *
+     * @param \DateTime $datetime
+     * @param string|int $minutes
+     */
+    public static function addMinutesTo(\DateTime $datetime, $minutes)
+    {
+        $datetime->modify($minutes . ' minutes');
+    }
+
+    /**
+     * Converts a \DateTime to a \DateTime with a different timezone,
+     * but keeping the same date and time.
+     *
+     * @param \DateTime $datetime
+     * @param \DateTimeZone $timezone
+     */
+    public static function switchTimeZone(\DateTime $datetime, \DateTimeZone $timezone)
+    {
+        $result = self::createDateTime('YmdHis', $datetime->format('YmdHis'), $timezone);
+
+        return $result;
+    }
+
+    /**
+     * Converts a \DateTime from a timed event to a \DateTime in UTC starting
+     * at 0:00:00 on the same date as the original one
+     *
+     * @param \DateTime $datetime
+     */
+    public static function getStartOfDayUTC(\DateTime $datetime)
+    {
+        $copy = clone $datetime;
+        $copy->setTime(0, 0, 0);
+        $result = self::switchTimeZone($copy, new \DateTimeZone('UTC'));
+
+        return $result;
+    }
 }

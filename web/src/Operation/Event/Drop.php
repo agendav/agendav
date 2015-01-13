@@ -60,41 +60,29 @@ class Drop extends Alter
 
         log_message('INTERNALS', 'Original: start='.$start->format('c').', end=' . $end->format('c'));
 
-        if ($movement === self::ALLDAY_TO_ALLDAY) {
-            $start->modify($minutes . ' minutes');
-            $end->modify($minutes . ' minutes');
+        if ($movement === self::ALLDAY_TO_ALLDAY || $movement === self::TIMED_TO_TIMED) {
+            DateHelper::addMinutesTo($start, $minutes);
+            DateHelper::addMinutesTo($end, $minutes);
         }
 
         if ($movement === self::ALLDAY_TO_TIMED) {
-            $start = DateHelper::createDateTime(
-                'YmdHis',
-                $start->format('YmdHis'),
-                $timezone
-            );
-            $start->modify($minutes . ' minutes');
+            // Original event is in UTC. Switch it to user timezone
+            $start = DateHelper::switchTimeZone($start, $timezone);
+            DateHelper::addMinutesTo($start, $minutes);
 
             // defaultTimedEventDuration (Fullcalendar) is set to 1h
             $end = clone $start;
-            $end->modify('+1 hour');
+            DateHelper::addMinutesTo($end, 60);
         }
 
         if ($movement === self::TIMED_TO_ALLDAY) {
-            $start->setTime(0, 0, 0);
-            $start = DateHelper::createDateTime(
-                'YmdHis',
-                $start->format('YmdHis'),
-                new \DateTimeZone('UTC')
-            );
-            $start->modify($minutes . ' minutes');
+            // Ignore original time, switch to UTC at 00:00:00
+            $start = DateHelper::getStartOfDayUTC($start);
+            DateHelper::addMinutesTo($start, $minutes);
 
             // defaultAllDayEventDuration (Fullcalendar) is set to 1 day
             $end = clone $start;
-            $end->modify('+1 day');
-        }
-
-        if ($movement === self::TIMED_TO_TIMED) {
-            $start->modify($minutes . ' minutes');
-            $end->modify($minutes . ' minutes');
+            DateHelper::addMinutesTo($end, 60*24);
         }
 
         // Update start and end on instance, depending on movement

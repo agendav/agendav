@@ -41,11 +41,9 @@ class Resize extends Alter
         array $input = []
     )
     {
-        $start = $instance->getStart();
         $end = $instance->getEnd();
 
-        $end->modify($minutes .' minutes');
-        $instance->setStart($start, $instance->isAllDay());
+        DateHelper::addMinutesTo($end, $minutes);
         $instance->setEnd($end, $instance->isAllDay());
     }
 
