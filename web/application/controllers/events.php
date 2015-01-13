@@ -430,7 +430,7 @@ class Events extends MY_Controller
      * Resizing an event
      * TODO: requires some error checking
      */
-    public function alter()
+    public function resize()
     {
         $uid = $this->input->post('uid', true);
         $calendar = $this->input->post('calendar', true);
@@ -439,19 +439,46 @@ class Events extends MY_Controller
         $delta = $this->input->post('delta', true);
         $allday = $this->input->post('allday', true);
         $was_allday = $this->input->post('was_allday', true);
-        $type = $this->input->post('type', true);
 
         if ($uid === false || $calendar === false ||
                 $etag === false || $delta === false ||
-                $allday === false || $type === false ||
+                $allday === false ||
                 $timezone === false || $was_allday === false) {
             $this->_throw_error($this->i18n->_('messages',
                         'error_interfacefailure'));
         }
 
         $input = $this->input->post(null, true);
-        $api = new AgenDAV\Operation\Event\Alter($this->client);
-        $result = $api->execute($input);
+        $operation = new AgenDAV\Operation\Event\Resize($this->client);
+        $result = $operation->execute($input);
+        $this->_throw_success($result);
+    }
+
+    /**
+     * Dropping an event
+     * TODO: requires some error checking
+     */
+    public function drop()
+    {
+        $uid = $this->input->post('uid', true);
+        $calendar = $this->input->post('calendar', true);
+        $timezone = $this->input->post('timezone', true);
+        $etag = $this->input->post('etag', true);
+        $delta = $this->input->post('delta', true);
+        $allday = $this->input->post('allday', true);
+        $was_allday = $this->input->post('was_allday', true);
+
+        if ($uid === false || $calendar === false ||
+                $etag === false || $delta === false ||
+                $allday === false ||
+                $timezone === false || $was_allday === false) {
+            $this->_throw_error($this->i18n->_('messages',
+                        'error_interfacefailure'));
+        }
+
+        $input = $this->input->post(null, true);
+        $operation = new AgenDAV\Operation\Event\Drop($this->client);
+        $result = $operation->execute($input);
         $this->_throw_success($result);
     }
 

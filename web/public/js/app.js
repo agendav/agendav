@@ -1582,7 +1582,7 @@ var event_drop_callback = function event_drop_callback(event, delta, revertFunc,
  */
 var event_alter = function event_alter(alterType, event, delta, allDay, revertFunc, jsEvent, ui, view) {
   var fake_form = {
-    url: AgenDAVConf.base_app_url + 'events/alter',
+    url: AgenDAVConf.base_app_url + 'events/' + alterType,
     data: {
       uid: event.uid,
       calendar: event.calendar,
@@ -1591,7 +1591,6 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
       allday: allDay,
       was_allday: event.orig_allday,
       timezone: AgenDAVUserPrefs.timezone,
-      type: alterType
     }
   };
 
