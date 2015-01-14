@@ -2,7 +2,7 @@
 namespace AgenDAV\CalDAV;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -63,7 +63,7 @@ class Client
     {
         try {
             $response = $this->http_client->request('OPTIONS', '');
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (\AgenDAV\Exception\NotAuthenticated $e) {
             // Invalid authentication
             return false;
         }
@@ -77,7 +77,7 @@ class Client
      * user
      *
      * @return string   Principal URL
-     * @throws \UnexpectedValueException if no current-user-principal is returned
+     * @throws \AgenDAV\Exception\NotFound if no current-user-principal is returned
      */
     public function getCurrentUserPrincipal()
     {
@@ -89,7 +89,7 @@ class Client
         $response = $this->propfind('', 0, $body);
 
         if (count($response) === 0) {
-            throw new \UnexpectedValueException('No current-user-principal was returned by the server!');
+            throw new \AgenDAV\Exception\NotFound('No current-user-principal was returned by the server!');
         }
 
         reset($response);
@@ -104,7 +104,7 @@ class Client
      *
      * @param string $principal_url Principal URL
      * @return string   Calendar home set for given principal
-     * @throws \UnexpectedValueException if no calendar-home-set is returned
+     * @throws \AgenDAV\Exception\NotFound if no calendar-home-set is returned
      */
     public function getCalendarHomeSet($principal_url)
     {
@@ -116,7 +116,7 @@ class Client
         $response = $this->propfind($principal_url, 0, $body);
 
         if (count($response) === 0) {
-            throw new \UnexpectedValueException('No calendar-home-set was returned by the server!');
+            throw new \AgenDAV\Exception\NotFound('No calendar-home-set was returned by the server!');
         }
 
         reset($response);
@@ -174,14 +174,14 @@ class Client
      *
      * @param string $url   URL
      * @param \AgenDAV\CalDAV\Resource\Calendar    Found calendar
-     * @throws \UnexpectedValueException In case the server replies with a 2xx code but
-     *                                   valid calendars are not found
+     * @throws \AgenDAV\Exception\NotFound In case the server replies with a 2xx code but
+     *                                     no valid calendars are found
      */
     public function getCalendarByUrl($url)
     {
         $result = $this->getCalendars($url, false);
         if (count($result) === 0) {
-            throw new \UnexpectedValueException('Calendar not found at ' . $url);
+            throw new \AgenDAV\Exception\NotFound('Calendar not found at ' . $url);
         }
 
         reset($result);
@@ -257,7 +257,7 @@ class Client
      * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param string $uid Calendar object UID
      * @return \AgenDAV\CalDAV\Resource\CalendarObject
-     * @throws \UnexpectedValueException if calendar object is not found
+     * @throws \AgenDAV\Exception\NotFound if calendar object is not found
      */
     public function fetchObjectByUid(Calendar $calendar, $uid)
     {
@@ -265,7 +265,7 @@ class Client
         $data = $this->report($calendar->getUrl(), $uid_filter);
 
         if (count($data) === 0) {
-            throw new \UnexpectedValueException('Object '.$uid.' not found at ' . $calendar->getUrl());
+            throw new \AgenDAV\Exception\NotFound('Object '.$uid.' not found at ' . $calendar->getUrl());
         }
 
         $result = $this->buildObjectCollection($data, $calendar);

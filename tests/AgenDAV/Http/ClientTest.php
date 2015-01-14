@@ -61,13 +61,59 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Should throw an exception
-     * @expectedException GuzzleHttp\Exception\BadResponseException
+     * @expectedException AgenDAV\Exception\NotAuthenticated
      */
-    public function testNoExceptions()
+    public function test401()
     {
         $guzzle = new GuzzleClient();
         $response_mock = new Mock(array(
-            'HTTP/1.1 404 Not foundr\nContent-Length: 0\r\n\r\n'
+            'HTTP/1.1 401 Not authenticated\r\nContent-Length: 0\r\n\r\n'
+        ));
+        $guzzle->getEmitter()->attach($response_mock);
+
+        $client = new Client($guzzle);
+        $client->request('GET', '/');
+    }
+
+    /**
+     * Should throw an exception
+     * @expectedException AgenDAV\Exception\PermissionDenied
+     */
+    public function test403()
+    {
+        $guzzle = new GuzzleClient();
+        $response_mock = new Mock(array(
+            'HTTP/1.1 403 Permission denied\r\nContent-Length: 0\r\n\r\n'
+        ));
+        $guzzle->getEmitter()->attach($response_mock);
+
+        $client = new Client($guzzle);
+        $client->request('GET', '/');
+    }
+    /**
+     * Should throw an exception
+     * @expectedException AgenDAV\Exception\NotFound
+     */
+    public function test404()
+    {
+        $guzzle = new GuzzleClient();
+        $response_mock = new Mock(array(
+            'HTTP/1.1 404 Not found\r\nContent-Length: 0\r\n\r\n'
+        ));
+        $guzzle->getEmitter()->attach($response_mock);
+
+        $client = new Client($guzzle);
+        $client->request('GET', '/');
+    }
+    /**
+     * Should throw an exception
+     * @expectedException AgenDAV\Exception\ElementModified
+     */
+    public function test412()
+    {
+        $guzzle = new GuzzleClient();
+        $response_mock = new Mock(array(
+            'HTTP/1.1 412 Precondition failed\r\nContent-Length: 0\r\n\r\n'
         ));
         $guzzle->getEmitter()->attach($response_mock);
 

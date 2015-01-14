@@ -161,7 +161,26 @@ class Client
         // Clean current headers
         $this->request_headers = array();
 
-        $this->response = $this->guzzle->send($this->request);
+        try {
+            $this->response = $this->guzzle->send($this->request);
+        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+            switch ($exception->getCode()) {
+                case 401:
+                    throw new \AgenDAV\Exception\NotAuthenticated($exception);
+                    break;
+                case 403:
+                    throw new \AgenDAV\Exception\PermissionDenied($exception);
+                    break;
+                case 404:
+                    throw new \AgenDAV\Exception\NotFound($exception);
+                    break;
+                case 412:
+                    throw new \AgenDAV\Exception\ElementModified($exception);
+                    break;
+                default:
+                    throw new \AgenDAV\Exception($exception);
+            }
+        }
 
         return $this->response;
     }

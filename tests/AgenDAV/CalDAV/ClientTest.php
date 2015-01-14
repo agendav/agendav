@@ -76,7 +76,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->validateCheckAuthenticatedRequests();
     }
 
-    /** @expectedException \UnexpectedValueException */
+    /** @expectedException \AgenDAV\Exception\NotFound */
     public function testGetCurrentUserPrincipalNotFound()
     {
         $body = <<<BODY
@@ -122,7 +122,7 @@ BODY;
         );
     }
 
-    /** @expectedException \UnexpectedValueException */
+    /** @expectedException \AgenDAV\Exception\NotFound */
     public function testGetCalendarHomeSetNotFound()
     {
         $body = <<<BODY
@@ -538,7 +538,7 @@ BODY;
     }
 
     /**
-     * @expectedException \UnexpectedValueException
+     * @expectedException \AgenDAV\Exception\NotFound
      */
     public function testFetchObjectByUidNonExistant()
     {
