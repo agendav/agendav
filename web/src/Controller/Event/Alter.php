@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV\Operation\Event;
+namespace AgenDAV\Controller\Event;
 
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
@@ -21,43 +21,35 @@ namespace AgenDAV\Operation\Event;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\DateHelper;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\EventInstance;
 
+/**
+ * Note: this controller is not really a controller. CodeIgniter doesn't let you
+ * use arbitrary classes
+ *
+ * TODO when switching to a different framework, redo this controller
+ */
 abstract class Alter
 {
+
     /** @var AgenDAV\CalDAV\Client */
     protected $client;
 
-
     /**
-     * Builds a new event alter handler
-     *
      * @param AgenDAV\CalDAV\Client $client
      */
-    public function __construct(Client $client)
+    public function __construct($client)
     {
         $this->client = $client;
     }
 
     /**
      * Executes this operation
-     *
-     * Receives an input array containing the following keys:
-     *
-     *  - uid
-     *  - calendar
-     *  - timezone
-     *  - etag
-     *  - delta
-     *  - allday
-     *  - was_allday
-     *
-     *  @param Array $input
-     *  @result Array
      */
     public function execute(Array $input)
     {

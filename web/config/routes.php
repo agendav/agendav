@@ -41,6 +41,9 @@
 $route['default_controller'] = "login";
 $route['404_override'] = '';
 
+// Event operations
+$route['events/resize'] = 'resize';
+$route['events/drop'] = 'drop';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

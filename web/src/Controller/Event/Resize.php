@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV\Operation\Event;
+namespace AgenDAV\Controller\Event;
 
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
