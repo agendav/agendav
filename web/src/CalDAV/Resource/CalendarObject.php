@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV\Resource;
  */
 
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Uuid;
 use AgenDAV\Event;
 
 /**
@@ -181,13 +182,30 @@ class CalendarObject
 
 
     /**
-     * undocumented function
+     * Returns the event stored in this object as an iCalendar text resource
      *
-     * @return void
+     * @return string
      */
     public function getRenderedEvent()
     {
         return $this->getEvent()->render();
     }
 
+
+    /**
+     * Creates a new CalendarObject with a given UID
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param string $uid
+     * @return AgenDAV\CalDAV\Resource\CalendarObject
+     */
+    public static function generateOnCalendar(Calendar $calendar, $uid)
+    {
+        $url = $calendar->getUrl() . $uid . '.ics';
+
+        $result = new self($url);
+        $result->setCalendar($calendar);
+
+        return $result;
+    }
 }
