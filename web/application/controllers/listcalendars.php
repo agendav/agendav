@@ -33,7 +33,6 @@ class Listcalendars extends JSONController
         $fractal = $this->container['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
 
-        $this->addHeader('Soy', 'Yo');
         return $fractal->createData($collection)->toArray();
     }
 

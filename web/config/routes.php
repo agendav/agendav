@@ -48,6 +48,9 @@ $route['events/delete'] = 'deleteevent';
 $route['events'] = 'listevents';
 
 // Calendar operations
+$route['calendars/save'] = 'savecalendar';
+$route['calendars/create'] = 'createcalendar';
+$route['calendars/delete'] = 'deletecalendar';
 $route['calendars'] = 'listcalendars';
 
 /* End of file routes.php */

@@ -19,12 +19,13 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Uuid;
 use AgenDAV\JSONController;
-use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
+use League\Fractal\Resource\Collection;
 
-class Deletecalendar extends JSONController
+class Savecalendar extends JSONController
 {
     /**
      * Validates user input
@@ -36,6 +37,8 @@ class Deletecalendar extends JSONController
     {
         $fields = [
             'calendar',
+            'displayname',
+            'calendar_color',
         ];
 
         foreach ($fields as $name) {
@@ -49,12 +52,17 @@ class Deletecalendar extends JSONController
 
     public function execute(array $input)
     {
-        $calendar = new Calendar($input['calendar']);
+        // TODO shared calendars
+        $url = $input['calendar'];
 
-        // Proceed to remove calendar from CalDAV server
-        $this->client->deleteCalendar($calendar);
+        $calendar = new Calendar($url, [
+            Calendar::DISPLAYNAME => $input['displayname'],
+            Calendar::COLOR => $input['calendar_color'],
+        ]);
 
-        return $this->generateSuccess($calendar->getUrl());
+        $this->client->updateCalendar($calendar);
+
+        return $this->generateSuccess();
     }
 
 }
