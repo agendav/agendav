@@ -44,6 +44,7 @@ $route['404_override'] = '';
 // Event operations
 $route['events/resize'] = 'resize';
 $route['events/drop'] = 'drop';
+$route['events/delete'] = 'deleteevent';
 $route['events'] = 'listevents';
 
 /* End of file routes.php */

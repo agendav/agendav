@@ -178,7 +178,7 @@ abstract class JSONController extends \MY_Controller
      *
      * @param string $message
      */
-    protected function generateSuccess($message)
+    protected function generateSuccess($message = '')
     {
         $this->output->set_status_header('200');
         $result = [

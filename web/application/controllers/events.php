@@ -55,42 +55,6 @@ class Events extends MY_Controller
     }
 
     /**
-     * Deletes an event
-     * TODO: control whether we want to remove a single recurrence-id
-     * instead of the whole event
-     */
-    public function delete()
-    {
-        $calendar = $this->input->post('calendar', true);
-        $uid = $this->input->post('uid', true);
-        $href = $this->input->post('href', true);
-        $etag = $this->input->post('etag', true);
-
-        $response = array();
-
-        if ($calendar === false || $uid === false || $href === false ||
-                $etag === false || empty($calendar) || empty($uid) ||
-                empty($href) || empty($calendar) || empty($etag)) {
-            log_message('ERROR', 'Call to delete_event() with no calendar, uid, href or etag');
-            $this->_throw_error($this->i18n->_('messages',
-                        'error_interfacefailure'));
-        } else {
-            // Simulate an event on $href
-            $object = new CalendarObject($href);
-            try {
-                $res = $this->client->deleteCalendarObject($object);
-            } catch (\Exception $e) {
-                $usermsg = 'error_unknownhttpcode';
-                $params['%res'] = $res->getStatusCode();
-                $msg = $this->i18n->_('messages', $usermsg, $params);
-                $this->_throw_exception($msg);
-                return;
-            }
-            $this->_throw_success();
-        }
-    }
-
-    /**
      * Creates or modifies an existing event
      * TODO: detect if we are defining a new recurrence-id
      */
