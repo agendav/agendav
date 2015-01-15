@@ -63,7 +63,11 @@ abstract class JSONController extends \MY_Controller
             $input = $this->input->get(null, true);
         }
 
-        if ($input === false || !$this->validateInput($input)) {
+        if ($input === false) {
+            $input = [];
+        }
+
+        if (!$this->validateInput($input)) {
             $response = $this->generateException(
                 $this->i18n->_('messages', 'error_empty_fields')
             );
@@ -121,7 +125,10 @@ abstract class JSONController extends \MY_Controller
      * @param array $input
      * @return bool
      */
-    abstract protected function validateInput(array $input);
+    protected function validateInput(array $input)
+    {
+        return true;
+    }
 
     /**
      * Performs an operation using the information from input
