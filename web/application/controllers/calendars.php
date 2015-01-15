@@ -56,20 +56,6 @@ class Calendars extends MY_Controller
     }
 
     /**
-     * Retrieve a list of calendars (owned by current user or shared by
-     * other users with the current one)
-     */
-    public function index()
-    {
-        $calendars = $this->container['calendar_finder']->getCalendars();
-
-        $fractal = $this->container['fractal'];
-        $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
-
-        $this->output->set_output($fractal->createData($collection)->toJson());
-    }
-
-    /**
      * Creates a calendar
      */
     public function create()
@@ -111,36 +97,6 @@ class Calendars extends MY_Controller
         $this->answerWithSuccess();
     }
 
-
-    /**
-     * Deletes a calendar
-     */
-    public function delete()
-    {
-        $calendar = $this->input->post('calendar', true);
-        if ($calendar === false) {
-            log_message('ERROR', 'Call to delete_calendar() without calendar');
-            $this->answerWithError($this->i18n->_('messages', 'error_interfacefailure'));
-        }
-
-        $calendar = new Calendar($calendar);
-
-        if (isset($shares[$calendar])) {
-            $this_calendar_shares = array_values($shares[$calendar]);
-            foreach ($this_calendar_shares as $k => $data) {
-                $this->shared_calendars->remove($data['sid']);
-            }
-        }
-
-        // Proceed to remove calendar from CalDAV server
-        try {
-            $this->client->deleteCalendar($calendar);
-        } catch (\Exception $e) {
-            $this->answerWithError($this->i18n->_('messages', 'error_denied'));
-            return;
-        }
-        $this->answerWithSuccess($calendar->getUrl());
-    }
 
     /**
      * Modifies a calendar

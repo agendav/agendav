@@ -474,12 +474,12 @@ var send_form = function send_form(params) {
         t('messages', 'error_internal'),
         data.message
       );
-      errorFunc();
+      errorFunc(data.message);
       return;
     }
 
     set_data('lastoperation', 'success');
-    successFunc(message);
+    successFunc(data.message);
   });
 };
 

@@ -20,42 +20,21 @@
  */
 
 use AgenDAV\JSONController;
+use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\CalDAV\Resource\CalendarObject;
+use AgenDAV\Data\Transformer\CalendarTransformer;
 
-class Deleteevent extends JSONController
+class Listcalendars extends JSONController
 {
-    /**
-     * Validates user input
-     *
-     * @param array $input
-     * @return bool
-     */
-    protected function validateInput(array $input)
-    {
-        $fields = [
-            'calendar',
-            'uid',
-            'href',
-            'etag',
-        ];
-
-        foreach ($fields as $name) {
-            if (empty($input[$name])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public function execute(array $input)
     {
-        $object = new CalendarObject($input['href']);
-        $object->setEtag($input['etag']);
+        $calendars = $this->container['calendar_finder']->getCalendars();
 
-        $this->client->deleteCalendarObject($object);
-        return $this->generateSuccess();
+        $fractal = $this->container['fractal'];
+        $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
+
+        $this->addHeader('Soy', 'Yo');
+        return $fractal->createData($collection)->toArray();
     }
 
 }

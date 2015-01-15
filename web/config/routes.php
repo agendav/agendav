@@ -47,5 +47,8 @@ $route['events/drop'] = 'drop';
 $route['events/delete'] = 'deleteevent';
 $route['events'] = 'listevents';
 
+// Calendar operations
+$route['calendars'] = 'listcalendars';
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

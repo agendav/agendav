@@ -20,10 +20,11 @@
  */
 
 use AgenDAV\JSONController;
+use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\CalDAV\Resource\CalendarObject;
+use AgenDAV\Data\Transformer\CalendarTransformer;
 
-class Deleteevent extends JSONController
+class Listcalendars extends JSONController
 {
     /**
      * Validates user input
@@ -35,9 +36,6 @@ class Deleteevent extends JSONController
     {
         $fields = [
             'calendar',
-            'uid',
-            'href',
-            'etag',
         ];
 
         foreach ($fields as $name) {
@@ -51,11 +49,12 @@ class Deleteevent extends JSONController
 
     public function execute(array $input)
     {
-        $object = new CalendarObject($input['href']);
-        $object->setEtag($input['etag']);
+        $calendar = new Calendar($input['calendar']);
 
-        $this->client->deleteCalendarObject($object);
-        return $this->generateSuccess();
+        // Proceed to remove calendar from CalDAV server
+        $this->client->deleteCalendar($calendar);
+
+        return $this->generateSuccess($calendar->getUrl());
     }
 
 }
