@@ -446,32 +446,40 @@ var send_form = function send_form(params) {
   });
 
   sendform_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-    show_error(t('messages', 'error_interfacefailure'),
-      t('messages', 'error_oops') + ':' + textStatus);
+    // jQuery doesn't handle JSON for responses with 4xx or 5xx codes
+    var data = $.parseJSON(jqXHR.responseText);
+
     set_data('lastoperation', 'failed');
-    errorFunc();
+
+    if (data.result !== 'EXCEPTION' && data.result !== 'ERROR') {
+      show_error(t('messages', 'error_interfacefailure'),
+          t('messages', 'error_oops') + ':' + textStatus);
+      errorFunc(data.message);
+      return;
+    }
+
+    if (data.result === 'EXCEPTION') {
+      exceptionFunc(data.message);
+    }
+
+    if (data.result === 'ERROR') {
+      errorFunc(data.message);
+    }
   });
 
   sendform_ajax_req.done(function(data, textStatus, jqXHR) {
-    // "ERROR", "EXCEPTION" or "SUCCESS"
-    var result = data.result;
-    var message = data.message;
-    if (result == 'ERROR') {
+    if (data.result !== 'SUCCESS') {
       set_data('lastoperation', 'failed');
       show_error(
         t('messages', 'error_internal'),
-        message);
+        data.message
+      );
       errorFunc();
-    } else if (result == 'EXCEPTION') {
-      set_data('lastoperation', 'failed');
-      exceptionFunc(message);
-    } else if (result == 'SUCCESS') {
-      set_data('lastoperation', 'success');
-      successFunc(message);
-    } else {
-      show_error(t('messages', 'error_internal'),
-          t('messages', 'error_oops') + ':' + result);
+      return;
     }
+
+    set_data('lastoperation', 'success');
+    successFunc(message);
   });
 };
 
@@ -1650,7 +1658,7 @@ var event_delete_dialog = function event_delete_dialog() {
             $('#calendar_view').fullCalendar('removeEvents', data.id);
           },
         exception: function(rdata) {
-            show_error(t('messages', 'error_event_not_deleted'), data);
+            show_error(t('messages', 'error_event_not_deleted'), rdata);
         }
       });
 
