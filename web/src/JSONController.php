@@ -33,6 +33,11 @@ abstract class JSONController extends \MY_Controller
      */
     protected $client;
 
+    /**
+     * @var string HTTP method
+     */
+    protected $method = 'POST';
+
     public function __construct()
     {
         parent::__construct();
@@ -42,16 +47,24 @@ abstract class JSONController extends \MY_Controller
     public function index()
     {
         if (!$this->container['session']->isAuthenticated()) {
-            $response = $this->generateError(
+            $response = $this->generateException(
                 $this->i18n->_('messages', 'error_loginagain')
             );
             $this->sendResponse($response);
             return;
         }
 
-        $input = $this->input->post(null, true);
+        // Read input
+        if ($this->method === 'POST') {
+            $input = $this->input->post(null, true);
+        }
+
+        if ($this->method === 'GET') {
+            $input = $this->input->get(null, true);
+        }
+
         if ($input === false || !$this->validateInput($input)) {
-            $response = $this->generateError(
+            $response = $this->generateException(
                 $this->i18n->_('messages', 'error_empty_fields')
             );
             $this->sendResponse($response);
@@ -136,6 +149,7 @@ abstract class JSONController extends \MY_Controller
      */
     protected function generateException($message)
     {
+        $this->output->set_status_header('400');
         $result = [
             'result' => 'EXCEPTION',
             'message' => $message
@@ -151,6 +165,7 @@ abstract class JSONController extends \MY_Controller
      */
     protected function generateError($message)
     {
+        $this->output->set_status_header('500');
         $result = [
             'result' => 'ERROR',
             'message' => $message
@@ -165,12 +180,24 @@ abstract class JSONController extends \MY_Controller
      */
     protected function generateSuccess($message)
     {
+        $this->output->set_status_header('200');
         $result = [
             'result' => 'SUCCESS',
             'message' => $message
         ];
 
         return $result;
+    }
+
+    /**
+     * Adds a header to this response
+     *
+     * @param string $name
+     * @param string $value
+     */
+    protected function addHeader($name, $value)
+    {
+        $this->output->set_header($name . ': ' . $value);
     }
 
 }
