@@ -142,7 +142,7 @@ class CalendarObject
     /*
      * Getter for etag
      *
-     * @return string
+     * @return string|null
      */
     public function getEtag()
     {
@@ -152,7 +152,7 @@ class CalendarObject
     /*
      * Setter for etag
      *
-     * @param string $etag
+     * @param string|null $etag
      */
     public function setEtag($etag)
     {

@@ -45,6 +45,7 @@ $route['404_override'] = '';
 $route['events/resize'] = 'resize';
 $route['events/drop'] = 'drop';
 $route['events/delete'] = 'deleteevent';
+$route['events/save'] = 'saveevent';
 $route['events'] = 'listevents';
 
 // Calendar operations

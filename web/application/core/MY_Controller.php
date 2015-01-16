@@ -207,8 +207,10 @@ class MY_Controller extends CI_Controller
         });
 
         // Event builder
-        $this->container['event_builder'] = $this->container->share(function($container) {
-            return new \AgenDAV\Event\VObjectBuilder();
+        // TODO custom timezone
+        $default_timezone = new \DateTimeZone($this->config->item('default_timezone'));
+        $this->container['event_builder'] = $this->container->share(function($container) use ($default_timezone) {
+            return new \AgenDAV\Event\Builder\VObjectBuilder($default_timezone);
         });
 
         // Sharing support enabled

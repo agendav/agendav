@@ -50,11 +50,11 @@ interface Builder
      *
      * summary
      * location
-     * start_date
-     * start_time
-     * end_date
-     * end_time
+     * start
+     * end
+     * timezone
      * allday
+     * rrule
      * description
      * class
      * transp

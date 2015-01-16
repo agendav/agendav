@@ -108,11 +108,14 @@ abstract class JSONController extends \MY_Controller
             );
 
         } catch (\AgenDAV\Exception $exception) {
+            log_message('INTERNALS', 'Received code ' . $exception->getCode() . ' for input: ' . var_export($input, true));
             return $this->generateError(
                 $this->i18n->_('messages', 'error_unknownhttpcode', ['%res' => $exception->getCode()])
             );
 
         } catch (\Exception $exception) {
+            log_message('INTERNALS', 'Received unknown exception ' . var_export($exception->getMessage(), true)
+                .  ' for input: ' . var_export($input, true));
             return $this->generateError(
                 $this->i18n->_('messages', 'error_oops')
             );

@@ -22,6 +22,7 @@ namespace AgenDAV\Event\Builder;
  */
 
 use AgenDAV\Uuid;
+use AgenDAV\DateHelper;
 use AgenDAV\Event;
 use AgenDAV\Event\Builder;
 use AgenDAV\Event\VObjectEvent;
@@ -30,6 +31,19 @@ use Sabre\VObject\Component\VCalendar;
 
 class VObjectBuilder implements Builder
 {
+    /** @var \DateTimeZone */
+    protected $timezone;
+
+    /**
+     * Creates a new VObjectBuilder, specifying the user default timezone
+     *
+     * @param \DateTimeZone $timezone
+     */
+    public function __construct(\DateTimeZone $timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
     /**
      * Creates an empty Event object
      *
@@ -87,28 +101,21 @@ class VObjectBuilder implements Builder
     public function createEventInstanceWithInput(\AgenDAV\Event $event, array $attributes)
     {
         $instance = $this->createEventInstanceFor($event);
+
+        // Try to assign most simple properties
         foreach ($attributes as $key => $value) {
             $this->assignProperty($instance, $key, $value);
         }
 
-        // TODO: set DTSTART and DTEND
-        /*
-            case 'start_date':
-            case 'start_time':
-            case 'end_date':
-            case 'end_time':
-            case 'allday':
-         */
+        $this->setStartAndEnd($instance, $attributes);
+
+        // TODO reminders
 
         return $instance;
     }
 
 
-    protected function assignProperty(
-        \AgenDAV\Event\VObjectEventInstance $instance,
-        $key,
-        $value
-    )
+    protected function assignProperty(VObjectEventInstance $instance, $key, $value)
     {
         switch ($key) {
             case 'summary':
@@ -126,6 +133,28 @@ class VObjectBuilder implements Builder
             case 'transp':
                 $instance->setTransp($value);
                 break;
+            case 'rrule':
+                $instance->setRepeatRule($value);
+                break;
         }
+    }
+
+    protected function setStartAndEnd(VObjectEventInstance $instance, array $attributes)
+    {
+        $is_all_day = !empty($attributes['allday']) && $attributes['allday'] === 'true';
+
+        if ($is_all_day === true) {
+            $utc = new \DateTimeZone('UTC');
+            $start = DateHelper::frontEndToDateTime($attributes['start'], $utc);
+            $end = DateHelper::frontEndToDateTime($attributes['end'], $utc);
+
+            $end->modify('+1 day');
+        } else {
+            $start = DateHelper::frontEndToDateTime($attributes['start'], $this->timezone);
+            $end = DateHelper::frontEndToDateTime($attributes['end'], $this->timezone);
+        }
+
+        $instance->setStart($start, $is_all_day);
+        $instance->setEnd($end, $is_all_day);
     }
 }
