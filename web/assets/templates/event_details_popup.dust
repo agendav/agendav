@@ -30,10 +30,10 @@
 {^disable_actions}
 <div class="actions">
  <span class="right">
-    <a href="javascript:void(0)" class="modify">{@i18n type="labels" name="modify"/}</a>
+    <a href="javascript:void(0)" data-event-id="{id}" class="modify">{@i18n type="labels" name="modify"/}</a>
  </span>
  <span class="left">
-    <a href="javascript:void(0)" class="remove">{@i18n type="labels" name="delete"/}</a>
+    <a href="javascript:void(0)" data-event-id="{id}" class="remove">{@i18n type="labels" name="delete"/}</a>
  </span>
 </div>
 {/disable_actions}

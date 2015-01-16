@@ -178,13 +178,17 @@ $(document).ready(function() {
             .find('.remove')
             .off('click')
             .on('click', function() {
-              event_delete_dialog();
+              var event_id = $(this).data('event-id');
+
+              event_delete_dialog(event_id);
             })
           .end()
             .find('.modify')
             .off('click')
             .on('click', function() {
-              modify_event_handler();
+              var event_id = $(this).data('event-id');
+
+              modify_event_handler(event_id);
             });
 
           $(window).on('keydown.tooltipevents', function(e) {
@@ -196,7 +200,6 @@ $(document).ready(function() {
 
         hide: function (event, api) {
           $(window).off('keydown.tooltipevents');
-          remove_data('current_event');
         }
       }
 
@@ -446,8 +449,6 @@ var send_form = function send_form(params) {
   });
 
   sendform_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-    set_data('lastoperation', 'failed');
-
     if (textStatus === 'parsererror') {
       console.log(jqXHR.responseText);
       show_error(t('messages', 'error_interfacefailure'), t('messages', 'error_oops'));
@@ -469,13 +470,11 @@ var send_form = function send_form(params) {
 
   sendform_ajax_req.done(function(data, textStatus, jqXHR) {
     if (data.result !== 'SUCCESS') {
-      set_data('lastoperation', 'failed');
       show_error(t('messages', 'error_internal'), '');
       errorFunc('');
       return;
     }
 
-    set_data('lastoperation', 'success');
     successFunc(data.message);
   });
 };
@@ -1266,6 +1265,23 @@ var get_calendar_displayname = function get_calendar_displayname(calendar_url) {
   }
 };
 
+
+/**
+ * Gets an event data from FullCalendar
+ *
+ * @param string id
+ * @return Object|undefined
+ */
+var get_event_data = function get_event_data(id) {
+  var data = $('#calendar_view').fullCalendar('clientEvents', id);
+
+  if (data.length !== 1) {
+    return undefined;
+  }
+
+  return data[0];
+};
+
 /*
  * Reloads an event source
  */
@@ -1519,8 +1535,6 @@ var event_click_callback = function event_click_callback(event,
 
   event_data.readable_dates = AgenDAVDateAndTime.formatEventDates(event_data);
 
-  set_data('current_event', event_data);
-
   // Event details popup
   render_template('event_details_popup', event_data, function(out) {
     event_details_popup.set({
@@ -1620,11 +1634,11 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
 
 // Delete link
 // TODO: check for rrule/recurrence-id (EXDATE, etc)
-var event_delete_dialog = function event_delete_dialog() {
+var event_delete_dialog = function event_delete_dialog(event_id) {
   var form_url = AgenDAVConf.base_app_url + 'events/delete';
   var title = t('labels', 'deleteevent');
 
-  var data = get_data('current_event');
+  var data = get_event_data(event_id);
 
   if (data === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
@@ -1685,16 +1699,18 @@ var event_delete_dialog = function event_delete_dialog() {
 };
 
 // Edit/Modify link
-var modify_event_handler = function modify_event_handler() {
+var modify_event_handler = function modify_event_handler(event_id) {
   // TODO: check for rrule/recurrence-id
   // Clone data about this event
-  var current_event = get_data('current_event');
-  var event_data = $.extend(true, {}, current_event);
-  if (event_data === undefined) {
+  var current_event = get_event_data(event_id);
+
+  if (current_event === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
       t('messages', 'error_current_event_not_loaded'));
     return;
   }
+
+  var event_data = $.extend(true, {}, current_event);
 
   // Close tooltip
   event_details_popup.hide();
