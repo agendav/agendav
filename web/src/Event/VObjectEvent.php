@@ -217,17 +217,18 @@ class VObjectEvent implements Event
         }
 
         $instance->setRecurrenceId(null);
-        $instance->touch();
 
         // Add this event instance (case of empty VCALENDAR) or merge
         // with the existing one to avoid existing properties to be lost
         $base = $this->vcalendar->getBaseComponent('VEVENT');
         if ($base === null) {
+            $instance->touch();
             $vevent = $instance->getInternalVEvent();
             $this->vcalendar->add($vevent);
         } else {
             $resulting_instance = new VObjectEventInstance($base);
             $resulting_instance->copyPropertiesFrom($instance);
+            $resulting_instance->touch();
             $vevent = $resulting_instance->getInternalVEvent();
             $this->vcalendar->VEVENT = $vevent;
         }

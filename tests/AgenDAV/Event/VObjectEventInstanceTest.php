@@ -25,6 +25,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         'TRANSP' => 'OPAQUE',
         'RRULE' => 'FREQ=MONTHLY',
         'RECURRENCE-ID' => '20150109T123456',
+        'SEQUENCE' => '2',
     ];
 
     public function setUp()
@@ -260,6 +261,11 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
         $instance_2->copyPropertiesFrom($instance);
         $this->checkSomeProperties($instance_2, false);
+
+        // copyPropertiesFrom should not touch SEQUENCE
+        $this->assertEquals(null, $vevent_2->SEQUENCE, 'SEQUENCE should not be updated when copying properties'
+        );
+
     }
 
 

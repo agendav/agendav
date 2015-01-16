@@ -354,8 +354,6 @@ class VObjectEventInstance implements EventInstance
         $this->setStart($source->getStart(), $all_day);
         $this->setEnd($source->getEnd(), $all_day);
         $this->setRepeatRule($source->getRepeatRule());
-
-        $this->touch();
     }
 
     /**
