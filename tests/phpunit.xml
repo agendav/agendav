@@ -11,4 +11,9 @@
   <listeners>
     <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
   </listeners>
+  <filter>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory>../web/src/</directory>
+    </whitelist>
+  </filter>
 </phpunit>
