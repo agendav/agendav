@@ -3,7 +3,7 @@
 namespace AgenDAV\Event\Builder;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -21,17 +21,35 @@ namespace AgenDAV\Event\Builder;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Uuid;
 use AgenDAV\Event;
-use AgenDAV\EventInstance;
+use AgenDAV\Event\Builder;
 use AgenDAV\Event\VObjectEvent;
 use AgenDAV\Event\VObjectEventInstance;
-use Sabre\VObject\Component\VEvent;
+use Sabre\VObject\Component\VCalendar;
 
-/**
- * Class used to generate new VObjectEventInstances
- */
-class VObjectEventInstanceBuilder implements EventInstanceBuilder
+class VObjectBuilder implements Builder
 {
+    /**
+     * Creates an empty Event object
+     *
+     * @param string $uid Optional UID for this event
+     * @return \AgenDAV\Event
+     */
+    public function createEvent($uid = null)
+    {
+        $vcalendar = new VCalendar();
+
+        if ($uid === null) {
+            $uid = \AgenDAV\Uuid::generate();
+        }
+
+        $event = new VObjectEvent($vcalendar);
+        $event->setUid($uid);
+
+        return $event;
+    }
+
     /**
      * Creates an empty EventInstance object
      *
@@ -39,7 +57,7 @@ class VObjectEventInstanceBuilder implements EventInstanceBuilder
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createFor(\AgenDAV\Event $event)
+    public function createEventInstanceFor(\AgenDAV\Event $event)
     {
         $result = $event->createEventInstance();
 
@@ -66,9 +84,9 @@ class VObjectEventInstanceBuilder implements EventInstanceBuilder
      * @param array $attributes
      * @return \AgenDAV\EventInstance
      */
-    public function createFromInput(\AgenDAV\Event $event, array $attributes)
+    public function createEventInstanceWithInput(\AgenDAV\Event $event, array $attributes)
     {
-        $instance = $this->createFor($event);
+        $instance = $this->createEventInstanceFor($event);
         foreach ($attributes as $key => $value) {
             $this->assignProperty($instance, $key, $value);
         }

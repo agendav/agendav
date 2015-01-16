@@ -206,6 +206,11 @@ class MY_Controller extends CI_Controller
             );
         });
 
+        // Event builder
+        $this->container['event_builder'] = $this->container->share(function($container) {
+            return new \AgenDAV\Event\VObjectBuilder();
+        });
+
         // Sharing support enabled
         if ($enable_calendar_sharing === true) {
 

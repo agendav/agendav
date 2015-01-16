@@ -1,9 +1,9 @@
 <?php
 
-namespace AgenDAV\Event\Builder;
+namespace AgenDAV\Event;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -22,10 +22,19 @@ namespace AgenDAV\Event\Builder;
  */
 
 /**
- * Interface to generate a new EventInstance
+ * Interface to generate new Events and EventInstances
  */
-interface EventInstanceBuilder
+
+interface Builder
 {
+    /**
+     * Creates an empty Event object
+     *
+     * @param string $uid Optional UID for this event
+     * @return \AgenDAV\Event
+     */
+    public function createEvent($uid = null);
+
     /**
      * Creates an empty EventInstance object
      *
@@ -33,7 +42,7 @@ interface EventInstanceBuilder
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createFor(\AgenDAV\Event $event);
+    public function createEventInstanceFor(\AgenDAV\Event $event);
 
     /**
      * Creates an EventInstance object after receiving an array of properties
@@ -55,5 +64,5 @@ interface EventInstanceBuilder
      * @param array $attributes
      * @return \AgenDAV\EventInstance
      */
-    public function createFromInput(\AgenDAV\Event $event, array $attributes);
+    public function createEventInstanceWithInput(\AgenDAV\Event $event, array $attributes);
 }
