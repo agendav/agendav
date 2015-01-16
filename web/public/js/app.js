@@ -446,17 +446,17 @@ var send_form = function send_form(params) {
   });
 
   sendform_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-    // jQuery doesn't handle JSON for responses with 4xx or 5xx codes
-    var data = $.parseJSON(jqXHR.responseText);
-
     set_data('lastoperation', 'failed');
 
-    if (data.result !== 'EXCEPTION' && data.result !== 'ERROR') {
-      show_error(t('messages', 'error_interfacefailure'),
-          t('messages', 'error_oops') + ':' + textStatus);
-      errorFunc(data.message);
+    if (textStatus === 'parsererror') {
+      console.log(jqXHR.responseText);
+      show_error(t('messages', 'error_interfacefailure'), t('messages', 'error_oops'));
+      errorFunc('');
       return;
     }
+
+    // jQuery doesn't handle JSON for responses with 4xx or 5xx codes
+    var data = $.parseJSON(jqXHR.responseText);
 
     if (data.result === 'EXCEPTION') {
       exceptionFunc(data.message);
@@ -470,11 +470,8 @@ var send_form = function send_form(params) {
   sendform_ajax_req.done(function(data, textStatus, jqXHR) {
     if (data.result !== 'SUCCESS') {
       set_data('lastoperation', 'failed');
-      show_error(
-        t('messages', 'error_internal'),
-        data.message
-      );
-      errorFunc(data.message);
+      show_error(t('messages', 'error_internal'), '');
+      errorFunc('');
       return;
     }
 
