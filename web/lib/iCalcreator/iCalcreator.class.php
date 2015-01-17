@@ -8635,7 +8635,7 @@ class iCalUtilityFunctions {
       $parno           = iCalUtilityFunctions::_existRem( $input['params'], 'VALUE', 'DATE-TIME', $hitval, $parno );
       $input['value']  = iCalUtilityFunctions::_timestamp2date( $year, $parno );
     }
-    elseif( 8 <= strlen( trim( $year ))) { // ex. 2006-08-03 10:12:18
+    elseif( is_string($year) && ( 8 <= strlen( trim( $year )))) { // ex. 2006-08-03 10:12:18
       if( $localtime ) unset ( $month['VALUE'], $month['TZID'] );
       $input['params'] = iCalUtilityFunctions::_setParams( $month, array( 'VALUE' => 'DATE-TIME' ));
       if( isset( $input['params']['TZID'] )) {
