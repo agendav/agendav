@@ -62,14 +62,6 @@ class Defs {
             'fullcalendar.print.css',
             );
 
-    function definitions() {
-        set_include_path(implode(PATH_SEPARATOR, array(
-                        BASEPATH . '../lib/iCalcreator',
-                        get_include_path()
-                        )));
-
-    }
-
     /**
      * Set PHP default timezone. date.timezone has to be set on php.ini, PHP
      * throws some warnings when it is not. Use configuration parameter

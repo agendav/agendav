@@ -10,13 +10,6 @@
 |
 */
 
-$hook['pre_system'] = array(
-		'class' => 'Defs',
-		'function' => 'definitions',
-		'filename' => 'Defs.php',
-		'filepath' => 'hooks',
-		);
-
 // Avoid problems when date.timezone is not set on php.ini
 $hook['pre_controller'] = array(
 		'class' => 'Defs',
