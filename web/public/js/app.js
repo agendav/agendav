@@ -376,29 +376,6 @@ var show_success = function show_success(title, message) {
     });
 };
 
-
-/**
- * Gets data from body
- */
-var get_data = function get_data(name) {
-  return $.data($('body')[0], name);
-};
-
-/**
- * Sets data on body
- */
-var set_data = function set_data(name, value) {
-  $.data($('body')[0], name, value);
-};
-
-/**
- * Removes data from body
- */
-var remove_data = function remove_data(name) {
-  $.removeData($('body')[0], name);
-};
-
-
 /**
  * Sends a form via AJAX.
  *
@@ -1095,42 +1072,44 @@ var update_calendar_list = function update_calendar_list(maskbody) {
     if (count === 0) {
       // Some CalDAV servers (e.g. DAViCal) create first calendar on first
       // login. Let's reload calendar list again
-      var last_calendar_count = get_data('last_calendar_count');
-      if (last_calendar_count === undefined ||
-        last_calendar_count != '0') {
-        set_data('last_calendar_count', 0);
+      var last_calendar_count = $('#calendar_view').data('calendar-count');
+
+      if (last_calendar_count === undefined) {
+        $('#calendar_view').data('calendar-count', 0);
         setTimeout(function() {
           update_calendar_list(false);
         }, 1);
-      } else {
-        // Calendar list received empty twice
-        show_error(t('messages','notice_no_calendars'), '');
-        $('#shortcut_add_event').attr('disabled', 'disabled');
-      }
-    } else {
-      set_data('last_calendar_count', count);
-
-      $('#own_calendar_list ul')[0]
-        .appendChild(own_calendars);
-
-      // Hide unused block
-      if (count_shared === 0) {
-        $('#shared_calendar_list').hide();
-      } else {
-        $('#shared_calendar_list ul')[0]
-          .appendChild(shared_calendars);
-        $('#shared_calendar_list').show();
+        return;
       }
 
-      // Add event sources
-      while (count--) {
-        $('#calendar_view').fullCalendar('addEventSource',
-          collected_event_sources[count]);
-      }
-
-      $('#shortcut_add_event').removeAttr('disabled');
-
+      // Calendar list received empty twice
+      show_error(t('messages','notice_no_calendars'), '');
+      $('#shortcut_add_event').attr('disabled', 'disabled');
+      return;
     }
+
+    $('#calendar_view').data('calendar-count', count);
+
+    $('#own_calendar_list ul')[0]
+      .appendChild(own_calendars);
+
+    // Hide unused block
+    if (count_shared === 0) {
+      $('#shared_calendar_list').hide();
+    } else {
+      $('#shared_calendar_list ul')[0]
+        .appendChild(shared_calendars);
+      $('#shared_calendar_list').show();
+    }
+
+    // Add event sources
+    while (count--) {
+      $('#calendar_view').fullCalendar('addEventSource',
+        collected_event_sources[count]);
+    }
+
+    $('#shortcut_add_event').removeAttr('disabled');
+
   });
 };
 
