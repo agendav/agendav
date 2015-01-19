@@ -27,6 +27,7 @@ use AgenDAV\Event;
 use AgenDAV\Event\Builder;
 use AgenDAV\Event\VObjectEvent;
 use AgenDAV\Event\VObjectEventInstance;
+use AgenDAV\Data\Reminder;
 use Sabre\VObject\Component\VCalendar;
 
 class VObjectBuilder implements Builder
@@ -109,7 +110,8 @@ class VObjectBuilder implements Builder
 
         $this->setStartAndEnd($instance, $attributes);
 
-        // TODO reminders
+        $reminders_input = isset($attributes['reminders']) ? $attributes['reminders'] : null;
+        $this->setReminders($instance, $reminders_input);
 
         return $instance;
     }
@@ -156,5 +158,46 @@ class VObjectBuilder implements Builder
 
         $instance->setStart($start, $is_all_day);
         $instance->setEnd($end, $is_all_day);
+    }
+
+    /**
+     * Sets current instance reminders
+     *
+     * @param array|null $reminders_input
+     */
+    protected function setReminders(VObjectEventInstance $instance, $reminders_input)
+    {
+        $reminders = [];
+
+        if ($reminders_input !== null) {
+            $reminders = $this->buildReminders($reminders_input);
+        }
+
+        $instance->clearReminders();
+        foreach ($reminders as $reminder) {
+            $instance->addReminder($reminder);
+        }
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    protected function buildReminders($input)
+    {
+        $result = [];
+        $total = count($input['unit']);
+
+        for ($i=0;$i<$total;$i++) {
+            $params = [
+                'count' => $input['count'][$i],
+                'unit' => $input['unit'][$i],
+            ];
+
+            $result[] = Reminder::createFromInput($params);
+        }
+
+        return $result;
     }
 }

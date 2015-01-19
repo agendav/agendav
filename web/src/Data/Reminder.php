@@ -104,36 +104,10 @@ class Reminder
         return new self($duration, $position);
     }
 
-    public function generateVAlarm()
-    {
-        $valarm = new \valarm; // Ugghh
-
-        list($count, $unit) = $this->getParsedWhen();
-
-        $unit_names = [
-            'minutes' => 'min',
-            'hours' => 'hour',
-            'days' => 'day',
-            'weeks' => 'week',
-            'months' => 'month',
-        ];
-
-        $valarm->setProperty(
-            'trigger',
-            [
-                $unit_names[$unit] => $count,
-                'relatedStart' => true,
-                'before' => true,
-            ]
-        );
-        $valarm->setProperty('action', 'DISPLAY');
-        $valarm->setProperty('description', 'Reminder set in AgenDAV');
-
-        return $valarm;
-    }
-
     /**
      * Parses current date interval
+     *
+     * @return array [count, unit]
      */
     public function getParsedWhen()
     {
@@ -182,10 +156,22 @@ class Reminder
 
     /*
      * Getter for position
+     *
+     * @return int|null
      */
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /*
+     * Setter for position
+     *
+     * @param int|null $position
+     */
+    public function setPosition($position = null)
+    {
+        $this->position = $position;
     }
 
     /*
@@ -196,5 +182,42 @@ class Reminder
     public function getWhen()
     {
         return $this->when;
+    }
+
+    /**
+     * Returns an ISO8601 representation of current $when
+     *
+     * @return string
+     */
+    public function getISO8601String()
+    {
+        list($count, $unit) = $this->getParsedWhen();
+
+        $template = '';
+
+        // Generate a template for result format
+        switch($unit) {
+            case 'months':
+                $count *= 28;
+                $template = '%dD';
+                break;
+            case 'weeks':
+                $count *= 7;
+                $template = '%dD';
+                break;
+            case 'days':
+                $template = '%dD';
+                break;
+            case 'hours':
+                $template = 'T%dH';
+                break;
+            case 'minutes':
+                $template = 'T%dM';
+                break;
+        }
+
+        $format = '-P' . $template;
+
+        return sprintf($format, $count);
     }
 }

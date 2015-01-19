@@ -204,6 +204,40 @@ class VObjectEventInstance implements EventInstance
         return $this->reminders;
     }
 
+
+    /**
+     * Adds a new reminder
+     *
+     * @param AgenDAV\Data\Reminder
+     */
+    public function addReminder(\AgenDAV\Data\Reminder $reminder)
+    {
+        $this->reminders[] = $reminder;
+        $this->addVAlarm($reminder);
+    }
+
+    /**
+     * Removes all recognized reminders from this instance
+     *
+     * @return void
+     */
+    public function clearReminders()
+    {
+        $reminder_positions = $this->getReminderPositions();
+        $position = 1;
+        $valarms = $this->vevent->select('VALARM');
+        foreach ($valarms as $valarm) {
+            if (!in_array($position, $reminder_positions)) {
+                continue;
+            }
+
+            $this->vevent->remove($valarm);
+        }
+
+        // This should be empty, but let's check it again
+        $this->reminders = $this->findReminders();
+    }
+
     /**
      * Set the SUMMARY property for this event
      *
@@ -354,6 +388,12 @@ class VObjectEventInstance implements EventInstance
         $this->setStart($source->getStart(), $all_day);
         $this->setEnd($source->getEnd(), $all_day);
         $this->setRepeatRule($source->getRepeatRule());
+
+        $this->clearReminders();
+        $reminders = $source->getReminders();
+        foreach ($reminders as $reminder) {
+            $this->addReminder($reminder);
+        }
     }
 
     /**
@@ -408,4 +448,45 @@ class VObjectEventInstance implements EventInstance
         return $result;
     }
 
+    /**
+     * Loops on current recognized reminders and returns all their original
+     * positions on the internal VEVENT, if any
+     *
+     * @return void
+     */
+    protected function getReminderPositions()
+    {
+        $result = [];
+
+        foreach ($this->getReminders() as $reminder) {
+            $position = $reminder->getPosition();
+            if ($position === null) {
+                continue;
+            }
+
+            $result[] = $position;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Adds a VALARM on the internal VEVENT, based on a passed reminder
+     *
+     * @param \AgenDAV\Data\Reminder $reminder
+     * @return \AgenDAV\Data\Reminder $reminder With updated position
+     */
+    protected function addVAlarm(Reminder $reminder)
+    {
+        $valarm = $this->vevent->add('VALARM', [
+            'ACTION' => 'DISPLAY',
+            'DESCRIPTION' => 'Reminder set on AgenDAV',
+            'TRIGGER' => $reminder->getISO8601String(),
+        ]);
+
+        $reminder->setPosition(count($this->vevent->VALARM));
+
+        return $reminder;
+
+    }
 }

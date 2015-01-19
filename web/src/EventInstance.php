@@ -118,6 +118,20 @@ interface EventInstance
     public function getReminders();
 
     /**
+     * Adds a new reminder
+     *
+     * @param AgenDAV\Data\Reminder
+     */
+    public function addReminder(\AgenDAV\Data\Reminder $reminder);
+
+    /**
+     * Removes all recognized reminders from this instance
+     *
+     * @return void
+     */
+    public function clearReminders();
+
+    /**
      * Set the SUMMARY property for this event
      *
      * @param string $summary
