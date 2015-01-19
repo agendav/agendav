@@ -567,10 +567,10 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     } else {
       // Any other view
       if (data.allDay === false || data.allDay === undefined) {
-        data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+        data.end = AgenDAVDateAndTime.endDate(data);
       } else {
         data.start.minutes(0).seconds(0);
-        data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+        data.end = AgenDAVDateAndTime.endDate(data);
       }
     }
   } else {
@@ -581,7 +581,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     }
 
     // end can be null if the iCalendar was defined with DTSTART <= DTEND
-    data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+    data.end = AgenDAVDateAndTime.endDate(data);
   }
 
   // All day events have start_time = end_time = 00:00. Set them to something

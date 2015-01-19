@@ -31,24 +31,23 @@ AgenDAVDateAndTime.approxNearest = function approxNearest(dt) {
 };
 
 /**
- * Generates a Moment object containing the ending date for an event,
- * based on start date and the original end Date object,
- * which could be undefined. In that case the generated ending object will
- * be calculated by adding an hour to the start date
+ * Generates an end date given the actual start and end dates.
+ *
+ * This method just sets the right end date for events with end = start|undefined
+ *
+ * @param Object Event data
  */
-AgenDAVDateAndTime.endDate = function endDate(end, start) {
-    var generated_end;
+AgenDAVDateAndTime.endDate = function endDate(event) {
 
-    if (end === undefined || end === null) {
-        generated_end = moment(start).add(1, 'hours');
-    } else {
-        generated_end = moment(end);
-        if (start.diff(generated_end) === 0) {
-            generated_end = moment(start).add(1, 'hours');
+    if (event.end === undefined || event.end === null || event.start.diff(event.end) === 0) {
+        if (event.allDay === true) {
+            return moment(event.start);
         }
+        return moment(event.start).add(1, 'hours');
     }
 
-    return generated_end;
+    // No issues with the end date
+    return moment(event.end);
 };
 
 /**
