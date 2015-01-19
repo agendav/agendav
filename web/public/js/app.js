@@ -579,6 +579,16 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       data.start = moment(data.orig_start);
       data.end = moment(data.orig_end);
     }
+
+    // end can be null if the iCalendar was defined with DTSTART <= DTEND
+    data.end = AgenDAVDateAndTime.endDate(data.end, data.start);
+  }
+
+  // All day events have start_time = end_time = 00:00. Set them to something
+  // more sensible to have an initial value on each
+  if (data.allDay === true) {
+      data.start = AgenDAVDateAndTime.approxNearest(data.start);
+      data.end = AgenDAVDateAndTime.approxNearest(data.end).add(1, 'hours');
   }
 
   // Set default calendar
