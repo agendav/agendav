@@ -754,7 +754,9 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       var start_js = $start_time.timepicker('getTime');
       var new_end = moment(start_js).add(duration, 'minutes');
       $end_time.timepicker('setTime', new_end.toDate());
+      generate_iso8601_values($(where));
     })
+
     .on('change', 'input.end_time', function() {
       $end_time.data('duration', calculate_event_duration($start_time, $end_time));
     });
