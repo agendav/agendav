@@ -1,7 +1,6 @@
 <div class="form-group row reminder">
     <div class="col-md-12">
         <div class="col-md-2">
-            <input type="hidden" name="reminders[position][]" value="{position}" />
             <input class="form-control" type="text" name="reminders[count][]" value="{?count}{count}{:else}0{/count}"/>
         </div>
         <div class="col-md-4">

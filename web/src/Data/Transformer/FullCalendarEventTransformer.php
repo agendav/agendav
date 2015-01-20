@@ -92,15 +92,12 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
         }
 
         // Reminders
-        $result['visible_reminders'] = [];
         $result['reminders'] = [];
 
         $reminders = $event->getReminders();
         foreach ($reminders as $reminder) {
             list($count, $unit) = $reminder->getParsedWhen();
-            $result['visible_reminders'][] = $reminder->getPosition();
             $result['reminders'][] = [
-                'position' => $reminder->getPosition(),
                 'count' => $count,
                 'unit' => $unit,
             ];
