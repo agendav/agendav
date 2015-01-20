@@ -224,9 +224,10 @@ class VObjectEventInstance implements EventInstance
     public function clearReminders()
     {
         $reminder_positions = $this->getReminderPositions();
-        $position = 1;
+        $position = 0;
         $valarms = $this->vevent->select('VALARM');
         foreach ($valarms as $valarm) {
+            $position++;
             if (!in_array($position, $reminder_positions)) {
                 continue;
             }
@@ -339,16 +340,6 @@ class VObjectEventInstance implements EventInstance
     public function setRecurrenceId($recurrence_id)
     {
         $this->setProperty('RECURRENCE-ID', $recurrence_id);
-    }
-
-    /**
-     * Removes the RECURRENCE-ID property on this instance
-     *
-     * @return void
-     */
-    public function removeRecurrenceId()
-    {
-        unset($this->vevent->{'RECURRENCE-ID'});
     }
 
     /**
