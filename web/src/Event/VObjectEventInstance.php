@@ -36,9 +36,17 @@ use Sabre\VObject\Property\ICalendar\DateTime;
 class VObjectEventInstance implements EventInstance
 {
 
+    /** @var Sabre\VObject\Component\VEvent */
     protected $vevent;
 
+    /** @var AgenDAV\Data\Reminder[] */
     protected $reminders;
+
+    /** @var bool */
+    protected $is_recurrent;
+
+    /** @var bool */
+    protected $is_exception;
 
     /**
      * Builds a new VObjectEventInstance
@@ -50,6 +58,7 @@ class VObjectEventInstance implements EventInstance
         $this->vevent = $vevent;
         $this->is_recurrent = isset($vevent->RRULE);
         $this->reminders = $this->findReminders();
+        $this->is_exception = false;
     }
 
     /**
@@ -340,6 +349,27 @@ class VObjectEventInstance implements EventInstance
     public function setRecurrenceId($recurrence_id)
     {
         $this->setProperty('RECURRENCE-ID', $recurrence_id);
+    }
+
+    /**
+     * Sets the exception status for this instance. This is useful on
+     * recurrent events which have exceptions (with their own RECURRENCE-ID)
+     *
+     * @param bool $is_exception
+     */
+    public function markAsException($is_exception = true)
+    {
+        $this->is_exception = $is_exception;
+    }
+
+    /**
+     * Gets the exception status for this instance
+     *
+     * @return bool
+     */
+    public function isException()
+    {
+        return $this->is_exception;
     }
 
     /**

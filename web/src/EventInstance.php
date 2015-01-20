@@ -197,6 +197,21 @@ interface EventInstance
     public function setRecurrenceId($recurrence_id);
 
     /**
+     * Sets the exception status for this instance. This is useful on
+     * recurrent events which have exceptions (with their own RECURRENCE-ID)
+     *
+     * @param bool $is_exception
+     */
+    public function markAsException($is_exception = true);
+
+    /**
+     * Gets the exception status for this instance
+     *
+     * @return bool
+     */
+    public function isException();
+
+    /**
      * Add (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
      *
      * @return void

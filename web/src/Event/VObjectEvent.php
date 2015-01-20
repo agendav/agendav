@@ -131,11 +131,9 @@ class VObjectEvent implements Event
         $result = [];
 
         foreach ($expanded_vcalendar->VEVENT as $vevent) {
-            if ($this->repeat_rule !== null) {
-                $vevent->RRULE = $this->repeat_rule;
-            }
+            $instance = $this->getExpandedInstance($vevent);
 
-            $result[] = new VObjectEventInstance($vevent);
+            $result[] = $instance;
         }
 
         return $result;
@@ -304,6 +302,31 @@ class VObjectEvent implements Event
         }
 
         return (string) $base_component->UID;
+    }
+
+    /**
+     * Builds a VObjectEventInstance using the passed VEVENT object,
+     * copying the recurrence rule and marking it as an exception in case
+     * it is
+     *
+     * @param \Sabre\VObject\Component\VEvent $vevent
+     * @return \AgenDAV\Event\VObjectEventInstance
+     */
+    protected function getExpandedInstance(VEvent $vevent)
+    {
+        $instance = new VObjectEventInstance($vevent);
+
+        if ($this->repeat_rule !== null) {
+            $vevent->RRULE = $this->repeat_rule;
+
+            $recurrence_id = $instance->getRecurrenceId();
+
+            if ($this->isException($recurrence_id)) {
+                $instance->markAsException();
+            }
+        }
+
+        return $instance;
     }
 }
 
