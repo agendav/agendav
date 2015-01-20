@@ -4,6 +4,7 @@ namespace AgenDAV\Event;
 
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
+use AgenDAV\Data\Reminder;
 
 /**
  * @author jorge
@@ -251,6 +252,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
     public function testCopyPropertiesFrom()
     {
         $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+        $this->setSomeVAlarms($vevent);
         $instance = new VObjectEventInstance($vevent);
         $instance->setStart($this->now);
 
@@ -263,9 +265,63 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $this->checkSomeProperties($instance_2, false);
 
         // copyPropertiesFrom should not touch SEQUENCE
-        $this->assertEquals(null, $vevent_2->SEQUENCE, 'SEQUENCE should not be updated when copying properties'
+        $this->assertEquals(null, $vevent_2->SEQUENCE, 'SEQUENCE should not be updated when copying properties');
+
+        // Reminders should be copied to the resulting instance
+        $this->assertEquals(
+            $instance->getReminders(),
+            $instance_2->getReminders()
+        );
+    }
+
+    public function testGetReminders()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+
+        $this->setSomeVAlarms($vevent);
+
+        $instance = new VObjectEventInstance($vevent);
+        $reminders = $instance->getReminders();
+
+        $this->assertCount(1, $reminders);
+        $reminder = $reminders[0];
+
+        $this->assertEquals([10, 'minutes'], $reminder->getParsedWhen());
+        $this->assertEquals(2, $reminder->getPosition());
+    }
+
+    public function testClearReminders()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+
+        $this->setSomeVAlarms($vevent);
+
+        $instance = new VObjectEventInstance($vevent);
+        $instance->clearReminders();
+
+        $reminders = $instance->getReminders();
+
+        $this->assertCount(0, $instance->getReminders());
+        $this->assertCount(2, $vevent->VALARM);
+    }
+
+    public function testAddReminder()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+        $this->setSomeVAlarms($vevent);
+
+        $instance = new VObjectEventInstance($vevent);
+        $instance->addReminder(
+            new Reminder(new \DateInterval('P3D'), 34)
         );
 
+        $reminders = $instance->getReminders();
+
+        $this->assertCount(2, $reminders);
+
+        $new_reminder = $reminders[1];
+        $this->assertEquals([3, 'days'], $new_reminder->getParsedWhen());
+        $this->assertEquals(4, $new_reminder->getPosition(), 'addReminder did not update the reminder position');
     }
 
 
@@ -281,5 +337,27 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         if ($check_recurrence_id) {
             $this->assertEquals('20150109T123456', $instance->getRecurrenceId());
         }
+    }
+
+    protected function setSomeVAlarms(VEvent $vevent)
+    {
+        // Not recognized by AgenDAV
+        $valarm = $vevent->add('VALARM', [
+            'ACTION' => 'DISPLAY',
+            'TRIGGER' => '-P1DT10M',
+        ]);
+        $valarm->TRIGGER['RELATED'] = 'END';
+
+        // Recognized by AgenDAV
+        $vevent->add('VALARM', [
+            'ACTION' => 'DISPLAY',
+            'TRIGGER' => '-PT10M',
+        ]);
+
+        // Not recognized by AgenDAV
+        $valarm = $vevent->add('VALARM', [
+            'ACTION' => 'DISPLAY',
+        ]);
+        $valarm->TRIGGER = '20150120T123000';
     }
 }
