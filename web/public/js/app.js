@@ -1266,7 +1266,7 @@ var get_calendar_displayname = function get_calendar_displayname(calendar_url) {
 var get_event_data = function get_event_data(id) {
   var data = $('#calendar_view').fullCalendar('clientEvents', id);
 
-  if (data.length !== 1) {
+  if (data.length === 0) {
     return undefined;
   }
 
