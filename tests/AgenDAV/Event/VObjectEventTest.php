@@ -189,4 +189,60 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Mark', $vevent->MYPROPERTY);
         $this->assertEquals('New test summary', $vevent->SUMMARY);
     }
+
+
+    /** @expectedException \Exception */
+    public function testSetBaseEventInstanceRecurrenceId()
+    {
+        $vevent_exception = $this->generateRecurrentEvent();
+        $event = new VObjectEvent($this->vcalendar);
+
+        $instance = new VObjectEventInstance($vevent_exception);
+
+        $event->setBaseEventInstance($instance);
+    }
+
+    public function testGetEventInstanceEmpty()
+    {
+        unset($this->vcalendar->VEVENT);
+
+        $event = new VObjectEvent($this->vcalendar);
+        $this->assertNull($event->getEventInstance());
+    }
+
+    public function testGetEventInstance()
+    {
+        $event = new VObjectEvent($this->vcalendar);
+
+        $instance = $event->getEventInstance();
+        $vevent = $instance->getInternalVEvent();
+        $this->assertEquals($this->vevent, $vevent);
+    }
+
+    public function testGetEventInstanceRecurrenceExceptions()
+    {
+        $this->generateRecurrentEvent();
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        $instance = $event->getEventInstance();
+        $vevent = $instance->getInternalVEvent();
+        $this->assertEquals($this->vevent->serialize(), $vevent->serialize());
+    }
+
+    protected function generateRecurrentEvent()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150120T012345Z';
+
+        // Event instance with RECURRENCE-ID, should not be returned as base
+        // instance
+        $vevent_exception = $this->vcalendar->add('VEVENT', [
+            'UID' => $this->vevent->UID,
+            'RECURRENCE-ID' => '20150121T012345Z',
+            'DTSTART' => '20150121T100000Z',
+        ]);
+
+        return $vevent_exception;
+    }
 }
