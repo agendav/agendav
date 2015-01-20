@@ -324,6 +324,17 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $new_reminder->getPosition(), 'addReminder did not update the reminder position');
     }
 
+    public function testSetRepeatRuleShouldMakeItRecurrent()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+        unset($vevent->RRULE);
+        $instance = new VObjectEventInstance($vevent);
+        $this->assertFalse($instance->isRecurrent());
+
+        $instance->setRepeatRule('FREQ=DAILY');
+        $this->assertTrue($instance->isRecurrent(), 'After adding a RRULE, the instance should be marked as recurrent');
+    }
+
 
     protected function checkSomeProperties(VObjectEventInstance $instance, $check_recurrence_id = true)
     {

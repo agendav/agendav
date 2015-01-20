@@ -317,7 +317,7 @@ class VObjectEvent implements Event
         $instance = new VObjectEventInstance($vevent);
 
         if ($this->repeat_rule !== null) {
-            $vevent->RRULE = $this->repeat_rule;
+            $instance->setRepeatRule($this->repeat_rule);
 
             $recurrence_id = $instance->getRecurrenceId();
 

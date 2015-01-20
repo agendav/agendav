@@ -43,9 +43,6 @@ class VObjectEventInstance implements EventInstance
     protected $reminders;
 
     /** @var bool */
-    protected $is_recurrent;
-
-    /** @var bool */
     protected $is_exception;
 
     /**
@@ -56,7 +53,6 @@ class VObjectEventInstance implements EventInstance
     public function __construct(VEvent $vevent)
     {
         $this->vevent = $vevent;
-        $this->is_recurrent = isset($vevent->RRULE);
         $this->reminders = $this->findReminders();
         $this->is_exception = false;
     }
@@ -180,7 +176,7 @@ class VObjectEventInstance implements EventInstance
      */
     public function isRecurrent()
     {
-        return $this->is_recurrent;
+        return isset($this->vevent->RRULE);
     }
 
     /**
