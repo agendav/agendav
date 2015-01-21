@@ -122,19 +122,7 @@ class MY_Controller extends CI_Controller
         // HTTP connection logger
         $log_path = $this->config->item('log_path');
         $this->container['http_logger'] = $this->container->share(function($container) use ($log_path) {
-            $logger = new \Monolog\Logger('http');
-            $handler = new \Monolog\Handler\StreamHandler($log_path . 'http.log', \Monolog\Logger::DEBUG);
-            $formatter = new \Monolog\Formatter\LineFormatter(
-                "[%datetime%] %context% %extra% %message%\n",
-                null,                                           // Default date format
-                true,                                           // Allow line breaks
-                true                                            // Ignore empty contexts/extra
-            );
-            $handler->setFormatter($formatter);
-            $logger->pushHandler($handler);
-            $logger->pushProcessor(new \Monolog\Processor\WebProcessor);
-
-            return $logger;
+            return \AgenDAV\Log::generateHttpLogger($log_path);
         });
 
         // Guzzle HTTP client

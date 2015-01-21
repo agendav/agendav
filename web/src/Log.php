@@ -99,4 +99,29 @@ class Log extends \Monolog\Logger
         return $this->addRecord($level, $message, $this->context);
     }
 
+    /**
+     * Generates a new HTTP logger
+     *
+     * @param string $log_path
+     * @return \Monolog\Logger
+     */
+    public static function generateHttpLogger($log_path)
+    {
+        $logger = new \Monolog\Logger('http');
+        $handler = new \Monolog\Handler\StreamHandler(
+            $log_path . 'http.log',
+            \Monolog\Logger::DEBUG
+        );
+        $formatter = new \Monolog\Formatter\LineFormatter(
+            "[%datetime%] %context% %extra% %message%\n",
+            null,                                           // Default date format
+            true,                                           // Allow line breaks
+            true                                            // Ignore empty contexts/extra
+        );
+        $handler->setFormatter($formatter);
+        $logger->pushHandler($handler);
+        $logger->pushProcessor(new \Monolog\Processor\WebProcessor);
+
+        return $logger;
+    }
 }
