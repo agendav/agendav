@@ -3,7 +3,7 @@
 namespace AgenDAV;
 
 /*
- * Copyright 2011-2012 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -251,4 +251,18 @@ class DateHelper
 
         return $result;
     }
+
+    /**
+     * Returns an array of timezone names
+     *
+     * @return Array (key = value)
+     */
+    public static function getAllTimeZones()
+    {
+        $timezones = \DateTimeZone::listIdentifiers();
+
+        // Builds a new array using timezone identifiers as both key and value
+        return array_combine($timezones, $timezones);
+    }
+
 }

@@ -20,6 +20,7 @@
  */
 
 use AgenDAV\Data\Preferences;
+use AgenDAV\DateHelper;
 use AgenDAV\CalDAV\Resource\Calendar;
 
 class Prefs extends MY_Controller
@@ -89,7 +90,7 @@ class Prefs extends MY_Controller
 
         // User timezone
         $timezone = $this->prefs->get('timezone', $this->config->item('default_timezone'));
-        $available_timezones = $this->timezonemanager->getAvailableTimezoneIdentifiers();
+        $available_timezones = DateHelper::getAllTimeZones();
 
         $calendar_ids_and_dn = array();
         foreach ($calendar_list as $cal) {

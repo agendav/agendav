@@ -66,7 +66,7 @@ class Listevents extends JSONController
     public function execute(array $input)
     {
         $calendar = new Calendar($input['calendar']);
-        $timezone = $this->timezonemanager->getTz($input['timezone']);
+        $timezone = new \DateTimeZone($input['timezone']);
         $start = DateHelper::fullcalendarToDateTime($input['start'], $timezone);
         $end = DateHelper::fullcalendarToDateTime($input['end'], $timezone);
 
