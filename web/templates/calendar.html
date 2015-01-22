@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% include 'parts/navbar.html' %}
+  <div class="container-fluid">
+   <div class="wrapper">
+
+    <div id="sidebar">
+      {% include 'parts/sidebar.html' %}
+    </div>
+
+    <div id="content">
+      <div id="calendar_view"></div>
+    </div>
+
+   </div>
+  </div>
+{% endblock %}
+
+{% block bottom %}
+  {% include 'parts/bottom.html' %}
+{% endblock %}
