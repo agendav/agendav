@@ -21,7 +21,9 @@
         "symfony/translation": "~2.6",
         "symfony/var-dumper": "~2.6",
         "symfony/twig-bridge": "~2.6",
-        "symfony/security": "~2.6"
+        "symfony/security": "~2.6",
+        "silex/web-profiler": "~1.0",
+        "symfony/config": "~2.6"
     },
     "autoload": {
         "psr-4": {
