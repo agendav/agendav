@@ -8,14 +8,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use AgenDAV\DateHelper;
 
-//Request::setTrustedProxies(array('127.0.0.1'));
+// Trust configured proxies
+Request::setTrustedProxies($app['proxies']);
 
 $app->get('/', function () use ($app) {
     $app['session']->set('jeje', 'jiji');
     return $app['twig']->render(
         'calendar.html',
         [
-            'title' => 'title (TODO)',
             'stylesheets' => $app['stylesheets'],
             'print_stylesheets' => $app['print.stylesheets'],
             'scripts' => [],
@@ -28,7 +28,6 @@ $app->get('/preferences', function () use ($app) {
     return $app['twig']->render(
         'preferences.html',
         [
-            'title' => 'title (TODO)',
             'stylesheets' => $app['stylesheets'],
             'print_stylesheets' => $app['print.stylesheets'],
             'scripts' => [],

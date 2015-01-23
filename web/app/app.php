@@ -18,6 +18,15 @@ $app->register(new TwigServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new DoctrineServiceProvider());
 
+// Add some shared data to twig templates
+$app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+    $twig->addGlobal('title', $app['site.title']);
+    $twig->addGlobal('logo', $app['site.logo']);
+    $twig->addGlobal('footer', $app['site.footer']);
+
+    return $twig;
+}));
+
 
 // Translation
 $app->register(new TranslationServiceProvider(), [

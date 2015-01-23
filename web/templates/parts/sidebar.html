@@ -1,4 +1,8 @@
-{% block logo '' %}
+{%if logo %}
+<div id="logo" class="block">
+  <img src="{{ app.request.basepath }}/img/{{ logo }}" alt="Logo">
+</div>
+{% endif %}
 <div id="shortcuts" class="block">
    <button id="shortcut_add_event" class="btn btn-default btn-block">
      <i class="fa fa-plus"></i> {% trans from "labels" %}createevent{% endtrans %}
@@ -35,4 +39,7 @@
 
  <div id="footer">
    <img src="{{ app.request.basepath }}/img/agendav_small.png" alt="AgenDAV">
+   {% if footer %}
+   <p>{{ footer }}</p>
+   {% endif %}
  </div> <!-- footer -->
