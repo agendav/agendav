@@ -143,20 +143,20 @@ $app['event.builder'] = $app->share(function($app) {
 if ($enable_calendar_sharing === true) {
 
     // Shares repository
-    $this->container['shares_repository'] = $this->container->share(function($container) {
-        $em = $container['orm'];
+    $app['shares_repository'] = $app->share(function($app) {
+        $em = $app['orm'];
         return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
     });
 
     // Add the shares repository to the calendar finder service
-    $this->container['calendar_finder']->setSharesRepository(
-        $this->container['shares_repository']
+    $app['calendar_finder']->setSharesRepository(
+        $app['shares_repository']
     );
 
     // Privileges and permissions configuration
     $cfg_permissions = $this->config->item('permissions');
-    $this->container['permissions'] = $this->container->share(
-        function($container) use ($cfg_permissions) {
+    $app['permissions'] = $app->share(
+        function($app) use ($cfg_permissions) {
             return new \AgenDAV\CalDAV\Share\Permissions(
                 $cfg_permissions
             );
@@ -164,7 +164,7 @@ if ($enable_calendar_sharing === true) {
     );
 
     // ACL objects
-    $this->container['acl'] = function($c) {
+    $app['acl'] = function($c) {
         return new \AgenDAV\CalDAV\Share\ACL(
             $c['permissions']
         );
