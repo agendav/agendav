@@ -24,6 +24,11 @@ $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('logo', $app['site.logo']);
     $twig->addGlobal('footer', $app['site.footer']);
 
+    // Assets
+    $twig->addGlobal('stylesheets', $app['stylesheets']);
+    $twig->addGlobal('print_stylesheets', $app['print.stylesheets']);
+    $twig->addGlobal('scripts', $app['scripts']);
+
     return $twig;
 }));
 

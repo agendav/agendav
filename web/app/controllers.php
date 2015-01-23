@@ -16,9 +16,6 @@ $app->get('/', function () use ($app) {
     return $app['twig']->render(
         'calendar.html',
         [
-            'stylesheets' => $app['stylesheets'],
-            'print_stylesheets' => $app['print.stylesheets'],
-            'scripts' => [],
         ]
     );
 })
@@ -28,9 +25,6 @@ $app->get('/preferences', function () use ($app) {
     return $app['twig']->render(
         'preferences.html',
         [
-            'stylesheets' => $app['stylesheets'],
-            'print_stylesheets' => $app['print.stylesheets'],
-            'scripts' => [],
             'available_timezones' => DateHelper::getAllTimeZones(),
             'timezone' => 'Europe/Madrid',
             'calendars' => [],

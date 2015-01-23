@@ -134,7 +134,7 @@ $app['calendar.finder'] = $app->share(function($app) {
 // Event builder
 // TODO custom timezone
 $app['event.builder'] = $app->share(function($app) {
-    $timezone = new \DateTimeZone($app['timezone.default']);
+    $timezone = new \DateTimeZone($app['defaults.timezone']);
     return new \AgenDAV\Event\Builder\VObjectBuilder($timezone);
 });
 
