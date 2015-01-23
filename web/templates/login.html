@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
+
+{% if errors is defined %}
+<div class="ui-widget loginerrors">
+ <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+  <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+  ERRORS
+  </p>
+  </div>
+</div>
+{% endif %}
+
+{% if logo %}
+<div id="logo" class="block">
+  <img src="{{ app.request.basepath }}/img/{{ logo }}" alt="Logo">
+</div>
+{% endif %}
+
+<div class="loginform ui-corner-all">
+  <form method="post" action="{{ path('login') }}" class="form-horizontal">
+
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="user">{% trans from "labels" %}user{% endtrans %}</label>
+      <div class="col-sm-9"><input name="user" class="form-control" type="text" autofocus="autofocus"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="password">{% trans from "labels" %}password{% endtrans %}</label>
+      <div class="col-sm-9"><input name="password" class="form-control" type="password"></div>
+    </div>
+
+    <input name="login" value="{% trans from "labels" %}login{% endtrans %}" type="submit" class="btn btn-success">
+  </form>
+
+</div>
+</div>
+{% endblock %}

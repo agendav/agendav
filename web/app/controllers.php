@@ -11,8 +11,8 @@ use AgenDAV\DateHelper;
 // Trust configured proxies
 Request::setTrustedProxies($app['proxies']);
 
+
 $app->get('/', function () use ($app) {
-    $app['session']->set('jeje', 'jiji');
     return $app['twig']->render(
         'calendar.html',
         [
@@ -33,7 +33,12 @@ $app->get('/preferences', function () use ($app) {
 })
 ->bind('preferences');
 
+// Authentication
+$app->get('/login', '\AgenDAV\Controller\Authentication::loginAction')->bind('login');
+$app->post('/login', '\AgenDAV\Controller\Authentication::loginPostAction');
+
 $app->get('/logout', function () use ($app) {
+    return "Logout";
 })
 ->bind('logout');
 
