@@ -59,25 +59,21 @@ $app['session.storage.handler'] = $app->share(function($app) {
     return new \AgenDAV\Session\SessionEncrypter($dbal_handler, $encryptor);
 });
 
-/*
 
 // HTTP connection logger
-$log_path = $this->config->item('log_path');
-$this->container['http_logger'] = $this->container->share(function($container) use ($log_path) {
-    return \AgenDAV\Log::generateHttpLogger($log_path);
+$app['monolog.http'] = $app->share(function($app) {
+    return \AgenDAV\Log::generateHttpLogger($app['log.path']);
 });
 
 // Guzzle HTTP client
-$config_guzzle = [
-    'base_url' => $this->config->item('caldav_base_url'),
-];
-$enable_http_logging = $this->config->item('enable_http_logging');
-$this->container['guzzle_http'] = $this->container->share(function($container) use ($config_guzzle, $enable_http_logging) {
-    $client = new \GuzzleHttp\Client($config_guzzle);
+$app['guzzle'] = $app->share(function($app) {
+    $client = new \GuzzleHttp\Client([
+        'base_url' => $app['caldav.baseurl'],
+    ]);
 
-    if ($enable_http_logging === true) {
+    if ($app['debug.http'] === true) {
         $log_subscriber = new GuzzleHttp\Subscriber\Log\LogSubscriber(
-            $container['http_logger'],
+            $app['monolog.http'],
             \GuzzleHttp\Subscriber\Log\Formatter::DEBUG
         );
         $client->getEmitter()->attach($log_subscriber);
@@ -87,62 +83,62 @@ $this->container['guzzle_http'] = $this->container->share(function($container) u
 });
 
 // AgenDAV HTTP client, based on Guzzle
-$auth_type = $this->config->item('caldav_http_auth_method');
-$this->container['http_client'] = $this->container->share(function($container) use ($auth_type) {
+$app['http'] = $app->share(function($app) {
     return \AgenDAV\Http\ClientFactory::create(
-        $container['guzzle_http'],
-        $container['session'],
-        $auth_type
+        $app['guzzle'],
+        $app['session'],
+        $app['caldav.authmethod']
     );
 });
 
 // XML generator
-$this->container['xml_generator'] = $this->container->share(function($container) {
+$app['xml.generator'] = $app->share(function($app) {
     return new \AgenDAV\XML\Generator();
 });
 
 // XML parser
-$this->container['xml_parser'] = $this->container->share(function($container) {
+$app['xml.parser'] = $app->share(function($app) {
     return new \AgenDAV\XML\Parser();
 });
 
 // XML toolkit
-$this->container['xml_toolkit'] = $this->container->share(function($container) {
+$app['xml.toolkit'] = $app->share(function($app) {
     return new \AgenDAV\XML\Toolkit(
-        $container['xml_parser'],
-        $container['xml_generator']
+        $app['xml.parser'],
+        $app['xml.generator']
     );
 });
 
 // Event parser
-$this->container['event_parser'] = $this->container->share(function($container) {
+$app['event.parser'] = $app->share(function($app) {
     return new \AgenDAV\Event\Parser\VObjectParser;
 });
 
 // CalDAV client
-$this->container['caldav_client'] = $this->container->share(function($container) {
+$app['caldav.client'] = $app->share(function($app) {
     return new \AgenDAV\CalDAV\Client(
-        $container['http_client'],
-        $container['xml_toolkit'],
-        $container['event_parser']
+        $app['http.client'],
+        $app['xml.toolkit'],
+        $app['event.parser']
     );
 });
 
 // Calendar finder
-$this->container['calendar_finder'] = $this->container->share(function($container) {
+$app['calendar.finder'] = $app->share(function($app) {
     return new \AgenDAV\CalendarFinder(
-        $container['session'],
-        $container['caldav_client']
+        $app['session'],
+        $app['caldav.client']
     );
 });
 
 // Event builder
 // TODO custom timezone
-$default_timezone = new \DateTimeZone($this->config->item('default_timezone'));
-$this->container['event_builder'] = $this->container->share(function($container) use ($default_timezone) {
-    return new \AgenDAV\Event\Builder\VObjectBuilder($default_timezone);
+$app['event.builder'] = $app->share(function($app) {
+    $timezone = new \DateTimeZone($app['timezone.default']);
+    return new \AgenDAV\Event\Builder\VObjectBuilder($timezone);
 });
 
+/*
 // Sharing support enabled
 if ($enable_calendar_sharing === true) {
 

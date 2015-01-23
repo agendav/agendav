@@ -12,3 +12,12 @@ $app['db.options'] = [
 
 // Encryption key
 $app['encryption.key'] = 'abcdefg';
+
+// Log path
+$app['log.path'] = '/var/log/agendav/';
+
+// Base URL
+$app['caldav.baseurl'] = 'http://localhost:81/';
+
+// Authentication method required by CalDAV server (basic or digest)
+$app['caldav.authmethod'] = 'basic';
