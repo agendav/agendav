@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% include 'parts/navbar.html' %}
+  <div class="container-fluid">
+   <div class="wrapper">
+    <h1>{% trans from "labels" %}preferences{% endtrans %}</h1>
+
+    <div class="preferences-container">
+    <form action="XX" id="prefs_form">
+    <div class="form-group">
+    <label for="timezone">{% trans from "labels" %}timezone{% endtrans %}</label>
+        <select class="form-control" name="timezone">
+            {% for timezone_name in available_timezones %}
+            <option value="{{ timezone_name }}"{% if timezone == timezone_name %} selected="selected"{% endif %}>
+                {{ timezone_name }}
+            </option>
+            {% endfor %}
+        </select>
+        <span class="help-block">{% trans from "messages" %}help_timezone{% endtrans %}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="default_calendar"><?php {% trans from "labels" %}defaultcalendar{% endtrans %}</label>
+        <select class="form-control" name="default_calendar">
+            {% for name, calendar_id in calendars %}
+            <option value="{{ calendar_id }}"{% if default_calendar == calendar_id %} selected="selected"{% endif %}>
+                {{ name }}
+            </option>
+            {% endfor %}
+        </select>
+        <span class="help-block"><?php {% trans from "messages" %}help_defaultcalendar{% endtrans %}</span>
+    </div>
+
+    </form>
+
+    <div id="prefs_buttons">
+        <button id="save_button" class="btn btn-success">{% trans from "labels" %}save{% endtrans %}</button>
+
+        <a href="{{ app.url_generator.generate('calendar') }}" id="return_button" class="btn btn-default"><i class="fa fa-calendar"></i> {% trans from "labels" %}return{% endtrans %}</a>
+    </div>
+
+    </div>
+   </div>
+  </div>
+{% endblock %}
+
+{% block bottom %}
+  {% include 'parts/bottom.html' %}
+{% endblock %}

@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use AgenDAV\DateHelper;
+
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', function () use ($app) {
@@ -22,6 +24,18 @@ $app->get('/', function () use ($app) {
 ->bind('calendar');
 
 $app->get('/preferences', function () use ($app) {
+    return $app['twig']->render(
+        'preferences.html',
+        [
+            'title' => 'title (TODO)',
+            'stylesheets' => $app['stylesheets'],
+            'print_stylesheets' => $app['print.stylesheets'],
+            'scripts' => [],
+            'available_timezones' => DateHelper::getAllTimeZones(),
+            'timezone' => 'Europe/Madrid',
+            'calendars' => [],
+        ]
+    );
 })
 ->bind('preferences');
 
