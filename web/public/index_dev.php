@@ -6,7 +6,11 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 Debug::enable();
 
-$app = require __DIR__.'/../src/app.php';
+$app = require __DIR__.'/../app/app.php';
 require __DIR__.'/../config/dev.php';
-require __DIR__.'/../src/controllers.php';
+
+// Load DIC definitions
+require __DIR__ . '/../app/services.php';
+
+require __DIR__.'/../app/controllers.php';
 $app->run();

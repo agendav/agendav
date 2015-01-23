@@ -6,6 +6,8 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\DoctrineServiceProvider;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 
 $app = new Application();
@@ -13,6 +15,9 @@ $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
+$app->register(new SessionServiceProvider());
+$app->register(new DoctrineServiceProvider());
+
 
 // Translation
 $app->register(new TranslationServiceProvider(), [

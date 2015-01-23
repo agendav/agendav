@@ -11,6 +11,7 @@ use AgenDAV\DateHelper;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', function () use ($app) {
+    $app['session']->set('jeje', 'jiji');
     return $app['twig']->render(
         'calendar.html',
         [

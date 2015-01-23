@@ -19,3 +19,15 @@ $app['print.stylesheets'] = [
     'app.print.css',
     'fullcalendar.print.css',
 ];
+
+// Session parameters
+$app['session.storage.options'] = [
+    'name' => 'agendav_sess',
+    'cookie_lifetime' => 0,
+    'refresh' => 300,
+];
+
+
+
+// Load configuration settings
+require __DIR__ . '/settings.php';

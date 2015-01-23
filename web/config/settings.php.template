@@ -1,0 +1,14 @@
+<?php
+
+// Database settings
+$app['db.options'] = [
+        'dbname' => 'agendav',
+        'user' => 'root',
+        'password' => '',
+        'host' => 'localhost',
+        'driver' => 'pdo_mysql'
+];
+
+
+// Encryption key
+$app['encryption.key'] = 'abcdefg';
