@@ -11,17 +11,19 @@ use AgenDAV\DateHelper;
 // Trust configured proxies
 Request::setTrustedProxies($app['proxies']);
 
+// Authentication
+$app->get('/login', '\AgenDAV\Controller\Authentication::loginAction')->bind('login');
+$app->post('/login', '\AgenDAV\Controller\Authentication::loginAction');
+$app->get('/logout', '\AgenDAV\Controller\Authentication::logoutAction')->bind('logout');
 
-$app->get('/', function () use ($app) {
-    return $app['twig']->render(
-        'calendar.html',
-        [
-        ]
-    );
+
+$controllers = $app['controllers_factory'];
+$controllers->get('/', function () use ($app) {
+    return $app['twig']->render( 'calendar.html', [ ]);
 })
 ->bind('calendar');
 
-$app->get('/preferences', function () use ($app) {
+$controllers->get('/preferences', function () use ($app) {
     return $app['twig']->render(
         'preferences.html',
         [
@@ -33,11 +35,21 @@ $app->get('/preferences', function () use ($app) {
 })
 ->bind('preferences');
 
-// Authentication
-$app->get('/login', '\AgenDAV\Controller\Authentication::loginAction')->bind('login');
-$app->post('/login', '\AgenDAV\Controller\Authentication::loginAction');
+// Require authentication on them
+$controllers->before(function(Request $request, Silex\Application $app) {
+    if ($app['session']->has('username') || in_array($request->get('_route'), ['login', '_profiler'])) {
+        return;
+    }
 
-$app->get('/logout', '\AgenDAV\Controller\Authentication::logoutAction')->bind('logout');
+    if ($request->isXmlHttpRequest()) {
+        return new JsonResponse([], 401);
+    } else {
+        return new RedirectResponse($app['url_generator']->generate('login'));
+    }
+});
+
+$app->mount('/', $controllers);
+
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
