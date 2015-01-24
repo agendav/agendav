@@ -35,12 +35,9 @@ $app->get('/preferences', function () use ($app) {
 
 // Authentication
 $app->get('/login', '\AgenDAV\Controller\Authentication::loginAction')->bind('login');
-$app->post('/login', '\AgenDAV\Controller\Authentication::loginPostAction');
+$app->post('/login', '\AgenDAV\Controller\Authentication::loginAction');
 
-$app->get('/logout', function () use ($app) {
-    return "Logout";
-})
-->bind('logout');
+$app->get('/logout', '\AgenDAV\Controller\Authentication::logoutAction')->bind('logout');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

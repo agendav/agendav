@@ -22,6 +22,7 @@ namespace AgenDAV\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Authentication controller for login/logout actions
@@ -30,11 +31,58 @@ class Authentication
 {
     public function loginAction(Request $request, Application $app)
     {
-        return $app['twig']->render('login.html');
+        $template_vars = [];
+
+        if ($request->isMethod('POST')) {
+            $result = $this->processLogin($request, $app);
+
+            if ($result === true) {
+                return new RedirectResponse(
+                    $app['url_generator']->generate('calendar')
+                );
+            }
+
+            $template_vars['error'] = $result;
+        }
+
+        return $app['twig']->render('login.html', $template_vars);
     }
 
-    public function loginPostAction(Request $request, Application $app)
+    public function logoutAction(Request $request, Application $app)
     {
-        return $app['twig']->render('login.html');
+        $app['session']->clear();
+
+        $url = $app['url_generator']->generate('login');
+        if (!empty($app['logout.redirection'])) {
+            $url = $app['logout.redirection'];
+        }
+
+        return new RedirectResponse($url);
+    }
+
+    protected function processLogin(Request $request, Application $app)
+    {
+        $user = $request->request->get('user');
+        $password = $request->request->get('password');
+
+        if (empty($user) || empty($password)) {
+            return $app['translator']->trans('empty.fields');
+        }
+
+        $app['http.client']->setAuthentication($user, $password, $app['caldav.authmethod']);
+
+        $caldav_client = $app['caldav.client'];
+
+        if (!$caldav_client->canAuthenticate()) {
+            return $app['translator']->trans('auth.error');
+        }
+
+        $app['session']->set('username', $user);
+        $app['session']->set('password', $password);
+        $principal_url = $caldav_client->getCurrentUserPrincipal();
+        $app['session']->set('principal_url', $principal_url);
+        $app['session']->set('calendar_home_set', $caldav_client->getCalendarHomeSet($principal_url));
+
+        return true;
     }
 }

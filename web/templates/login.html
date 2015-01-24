@@ -6,11 +6,11 @@
   <h1>{{ title }}</h1>
 </div>
 
-{% if errors is defined %}
+{% if error is defined %}
 <div class="ui-widget loginerrors">
  <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
   <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
-  ERRORS
+  {{ error|e }}
   </p>
   </div>
 </div>

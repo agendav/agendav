@@ -21,7 +21,6 @@ $app['db.options'] = [
         'driver' => 'pdo_mysql'
 ];
 
-
 // Encryption key
 $app['encryption.key'] = 'abcdefg';
 

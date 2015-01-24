@@ -71,7 +71,7 @@ $app['guzzle'] = $app->share(function($app) {
         'base_url' => $app['caldav.baseurl'],
     ]);
 
-    if ($app['debug.http'] === true) {
+    if (isset($app['http.debug']) && $app['http.debug'] === true) {
         $log_subscriber = new GuzzleHttp\Subscriber\Log\LogSubscriber(
             $app['monolog.http'],
             \GuzzleHttp\Subscriber\Log\Formatter::DEBUG
@@ -83,7 +83,7 @@ $app['guzzle'] = $app->share(function($app) {
 });
 
 // AgenDAV HTTP client, based on Guzzle
-$app['http'] = $app->share(function($app) {
+$app['http.client'] = $app->share(function($app) {
     return \AgenDAV\Http\ClientFactory::create(
         $app['guzzle'],
         $app['session'],
