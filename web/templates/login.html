@@ -6,6 +6,12 @@
   <h1>{{ title }}</h1>
 </div>
 
+{% if logo %}
+<div id="logo" class="block">
+  <img src="{{ app.request.basepath }}/img/{{ logo }}" alt="Logo">
+</div>
+{% endif %}
+
 {% if error is defined %}
 <div class="ui-widget loginerrors">
  <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
@@ -13,12 +19,6 @@
   {{ error|e }}
   </p>
   </div>
-</div>
-{% endif %}
-
-{% if logo %}
-<div id="logo" class="block">
-  <img src="{{ app.request.basepath }}/img/{{ logo }}" alt="Logo">
 </div>
 {% endif %}
 
