@@ -8,6 +8,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
+use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 
 $app = new Application();
@@ -17,6 +18,7 @@ $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new DoctrineServiceProvider());
+$app->register(new MonologServiceProvider());
 
 // Add some shared data to twig templates
 $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {

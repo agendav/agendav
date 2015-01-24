@@ -45,7 +45,11 @@ $app['calendar.colors'] = [
     '3E4147'
 ];
 
-
+// Configure logging (1/2)
+$app['monolog.level'] = 'WARNING';
 
 // Load configuration settings
 require __DIR__ . '/settings.php';
+
+// Configure logging (2/2). Needs log.path
+$app['monolog.logfile'] = $app['log.path'] . '/' . date('Y-m-d') . '.log';

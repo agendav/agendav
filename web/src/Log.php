@@ -109,7 +109,7 @@ class Log extends \Monolog\Logger
     {
         $logger = new \Monolog\Logger('http');
         $handler = new \Monolog\Handler\StreamHandler(
-            $log_path . 'http.log',
+            $log_path . 'http-'. date('Y-m-d') .'.log',
             \Monolog\Logger::DEBUG
         );
         $formatter = new \Monolog\Formatter\LineFormatter(

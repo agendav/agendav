@@ -13,3 +13,5 @@ $app->register(new WebProfilerServiceProvider(), [
     'profiler.cache_dir' => '/tmp'
 ]);
 
+// Enable debug logging
+$app['monolog.level'] = 'DEBUG';
