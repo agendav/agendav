@@ -26,9 +26,13 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class JavaScriptSettings
+class JavaScriptCode
 {
-    public function settings(Request $request, Application $app)
+    /**
+     * Generates JavaScript code to provide the frontend the site configuration
+     * and some user preferences
+     */
+    public function settingsAction(Request $request, Application $app)
     {
         $site_config = $this->getSiteConfig($request, $app);
 
@@ -47,6 +51,17 @@ class JavaScriptSettings
         $response->setExpires(new \DateTime);;
         $response->headers->set('Pragma', 'no-cache');
 
+        return $response;
+    }
+
+    /**
+     * Dumps strings for current user language
+     */
+    public function translationsAction(Request $request, Application $app)
+    {
+        $response = new Response('TODO');
+        $response->headers->set('Content-Type', 'text/javascript');
+        $response->setPrivate();
         return $response;
     }
 

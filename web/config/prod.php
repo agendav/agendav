@@ -50,7 +50,6 @@ $app['scripts'] = [
 $app['session.storage.options'] = [
     'name' => 'agendav_sess',
     'cookie_lifetime' => 0,
-    'refresh' => 300,
 ];
 
 // Calendar colors

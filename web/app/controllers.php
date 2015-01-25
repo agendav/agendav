@@ -39,7 +39,8 @@ $controllers->get('/preferences', function () use ($app) {
 $controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction')->bind('calendars.list');
 
 // Dynamic JavaScript code
-$controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptSettings::settings')->bind('settings.js');
+$controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');
+$controllers->get('/translations', '\AgenDAV\Controller\JavaScriptCode::translationsAction')->bind('translations');
 
 // Require authentication on them
 $controllers->before(function(Request $request, Silex\Application $app) {
