@@ -65,3 +65,6 @@ $app['defaults.weekstart'] = 0;
 
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
+
+// Calendar sharing
+$app['calendar.sharing'] = false;

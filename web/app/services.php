@@ -25,7 +25,7 @@ $app['orm'] = $app->share(function($app) {
         [ __DIR__ . '/../src/Data' ]
     );
 
-    return Doctrine\ORM\EntityManager::create($app['db.settings'], $setup);
+    return Doctrine\ORM\EntityManager::create($app['db.options'], $setup);
 });
 
 // Fractal manager
