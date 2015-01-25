@@ -1,5 +1,7 @@
 <?php
 
+namespace AgenDAV\Controller\Calendars;
+
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
@@ -19,21 +21,23 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\JSONController;
-use League\Fractal\Resource\Collection;
+use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
+use League\Fractal\Resource\Collection;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class Listcalendars extends JSONController
+class Listing extends JSONController
 {
-    public function execute(array $input)
+    public function execute(array $input, Application $app)
     {
-        $calendars = $this->container['calendar_finder']->getCalendars();
+        $calendars = $app['calendar.finder']->getCalendars();
 
-        $fractal = $this->container['fractal'];
+        $fractal = $app['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
 
-        return $fractal->createData($collection)->toArray();
+        return new JsonResponse($fractal->createData($collection)->toArray());
     }
 
 }

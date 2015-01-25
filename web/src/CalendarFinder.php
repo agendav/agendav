@@ -20,10 +20,10 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\Session\Session;
 use AgenDAV\Repositories\SharesRepository;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\CalDAV\Resource\Calendar;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * This class is used to find all accessible calendars for an user
@@ -39,11 +39,11 @@ class CalendarFinder
     /** @var \AgenDAV\Repositories\SharesRepository */
     protected $shares_repository;
 
-    /** @var \AgenDAV\Session\Session */
+    /** @var Symfony\Component\HttpFoundation\Session\Session */
     protected $session;
 
     /**
-     * @param \AgenDAV\Session\Session $session
+     * @param Symfony\Component\HttpFoundation\Session\Session $session
      * @param \AgenDAV\CalDAV\Client $client
      */
     public function __construct(Session $session, Client $client)

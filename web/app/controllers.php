@@ -35,9 +35,12 @@ $controllers->get('/preferences', function () use ($app) {
 })
 ->bind('preferences');
 
+
+$controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction')->bind('calendars.list');
+
 // Require authentication on them
 $controllers->before(function(Request $request, Silex\Application $app) {
-    if ($app['session']->has('username') || in_array($request->get('_route'), ['login', '_profiler'])) {
+    if ($app['session']->has('username')) {
         return;
     }
 

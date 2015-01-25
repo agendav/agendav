@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV;
+namespace AgenDAV\Controller;
 
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
@@ -21,11 +21,15 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\CalDAV\Client;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * This class is used to find all accessible calendars for an user
  */
-abstract class JSONController extends \MY_Controller
+abstract class JSONController
 {
 
     /**
@@ -38,86 +42,94 @@ abstract class JSONController extends \MY_Controller
      */
     protected $method = 'POST';
 
+    /**
+     * @var array
+     */
+    protected $headers;
+
+    /**
+     * Builds a new JSONController
+     */
     public function __construct()
     {
-        parent::__construct();
-        $this->client = $this->container['caldav_client'];
+        $this->headers = [];
     }
 
-    public function index()
+    /**
+     * Executes the action assigned to this controller
+     *
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function doAction(Request $request, Application $app)
     {
-        if (!$this->container['session']->isAuthenticated()) {
-            $response = $this->generateException(
-                $this->i18n->_('messages', 'error_loginagain')
-            );
-            $this->sendResponse($response);
-            return;
-        }
+        $this->client = $app['caldav.client'];
 
         // Read input
         if ($this->method === 'POST') {
-            $input = $this->input->post(null, true);
+            $input = $request->request->all();
         }
 
         if ($this->method === 'GET') {
-            $input = $this->input->get(null, true);
-        }
-
-        if ($input === false) {
-            $input = [];
+            $input = $this->query->all();
         }
 
         if (!$this->validateInput($input)) {
-            $response = $this->generateException(
-                $this->i18n->_('messages', 'error_empty_fields')
+            return $this->generateException(
+                $app['translator']->trans('invalid.input')
             );
-            $this->sendResponse($response);
-            return;
         }
 
-        $response = $this->controlledExecution($input);
-        $this->sendResponse($response);
+        return $this->controlledExecution($input, $app);
     }
 
     /**
      * Proceeds to execute this action, taking care of possible exceptions
      *
      * @param array $input
-     * @result mixed Output to be sent to the browser
+     * @param Silex\Application $app
+     * @return Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function controlledExecution(array $input)
+    protected function controlledExecution(array $input, Application $app)
     {
         try {
-
-            $result = $this->execute($input);
+            $result = $this->execute($input, $app);
             return $result;
 
         } catch (\AgenDAV\Exception\PermissionDenied $exception) {
             return $this->generateException(
-                $this->i18n->_('messages', 'error_denied')
+                $app['translator']->trans('error.denied')
             );
 
         } catch (\AgenDAV\Exception\NotFound $exception) {
             return $this->generateException(
-                $this->i18n->_('messages', 'error_element_not_found')
+                $app['translator']->trans('error.not_found')
             );
 
         } catch (\AgenDAV\Exception\ElementModified $exception) {
             return $this->generateException(
-                $this->i18n->_('messages', 'error_element_changed')
+                $app['translator']->trans('error.element_changed')
             );
 
         } catch (\AgenDAV\Exception $exception) {
-            log_message('INTERNALS', 'Received code ' . $exception->getCode() . ' for input: ' . var_export($input, true));
+            $app['monolog']->addWarning(sprintf(
+                "Received unexpected HTTP code %d for input: %s",
+                $exception->getCode(),
+                var_export($input, true)
+            ));
+
             return $this->generateError(
-                $this->i18n->_('messages', 'error_unknownhttpcode', ['%res' => $exception->getCode()])
+                $app['translator']->trans('error.unexpected_http_code', ['%code%' => $exception->getCode()])
             );
 
         } catch (\Exception $exception) {
-            log_message('INTERNALS', 'Received unknown exception ' . var_export($exception->getMessage(), true)
-                .  ' for input: ' . var_export($input, true));
+            $app['monolog']->addError(sprintf(
+                "Received unexpected exception %s for input: %s",
+                var_export($exception->getMessage(), true),
+                var_export($input, true)
+            ));
+
             return $this->generateError(
-                $this->i18n->_('messages', 'error_oops')
+                $app['translator']->trans('error.internal_error')
             );
         }
     }
@@ -137,66 +149,54 @@ abstract class JSONController extends \MY_Controller
      * Performs an operation using the information from input
      *
      * @param array $input
+     * @param Silex\Application $app
      * @return array
      */
-    abstract protected function execute(array $input);
-
-    /**
-     * Sends data back to the browser
-     *
-     * @param mixed $response
-     */
-    protected function sendResponse($response)
-    {
-        $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($response));
-    }
+    abstract protected function execute(array $input, Application $app);
 
     /**
      * Generates an exception message
      *
      * @param string $message
+     * @return Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function generateException($message)
     {
-        $this->output->set_status_header('400');
         $result = [
             'result' => 'EXCEPTION',
             'message' => $message
         ];
 
-        return $result;
+        return new JsonResponse($result, 400, $this->headers);
     }
 
     /**
      * Generates an error message
      *
-     * @param string $message
+     * @return Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function generateError($message)
     {
-        $this->output->set_status_header('500');
         $result = [
             'result' => 'ERROR',
             'message' => $message
         ];
 
-        return $result;
+        return new JsonResponse($result, 500, $this->headers);
     }
     /**
      * Generates a success message
      *
-     * @param string $message
+     * @return Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function generateSuccess($message = '')
     {
-        $this->output->set_status_header('200');
         $result = [
             'result' => 'SUCCESS',
             'message' => $message
         ];
 
-        return $result;
+        return new JsonResponse($result, 200, $this->headers);
     }
 
     /**
@@ -207,7 +207,7 @@ abstract class JSONController extends \MY_Controller
      */
     protected function addHeader($name, $value)
     {
-        $this->output->set_header($name . ': ' . $value);
+        $this->headers[$name] = $value;
     }
 
 }
