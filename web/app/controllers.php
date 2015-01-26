@@ -40,7 +40,6 @@ $controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction
 
 // Dynamic JavaScript code
 $controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');
-$controllers->get('/translations', '\AgenDAV\Controller\JavaScriptCode::translationsAction')->bind('translations');
 
 // Require authentication on them
 $controllers->before(function(Request $request, Silex\Application $app) {

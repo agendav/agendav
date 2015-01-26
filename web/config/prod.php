@@ -37,7 +37,6 @@ $app['scripts'] = [
     'libs/fullcalendar.js',
     'libs/rrule.js',
     'libs/nlp.js',
-    'translation.js',
     'templates/dust-core.js',
     'templates/dust-helpers.js',
     'templates/templates.js',
@@ -159,3 +158,5 @@ require __DIR__ . '/settings.php';
 
 // Configure logging (2/2). Needs log.path
 $app['monolog.logfile'] = $app['log.path'] . '/' . date('Y-m-d') . '.log';
+
+$app['locale'] = $app['defaults.language'];

@@ -23,9 +23,8 @@ var event_details_popup;
 
 
 $(document).ready(function() {
-  // Load i18n strings
-  // TODO: language
-  load_i18n_strings();
+  // translations is loaded in HTML body (TODO make it more elegant)
+  setTranslations(translations);
 
   // Dust.js i18n helper
   dust.helpers.i18n = function i18n(chunk, context, bodies, params) {
@@ -1888,6 +1887,43 @@ var generate_iso8601_values = function generate_iso8601_values(element) {
 
   });
 
+};
+
+/**
+ * Loads localized strings
+ *
+ * @param data Array of translations
+ */
+var setTranslations = function setTranslations(data) {
+  AgenDAVConf.i18n = data;
+
+  // Localized names
+  set_default_datepicker_options();
+};
+
+/**
+ * Function that translates a given label/message
+ */
+var t = function t(mtype, s, params) {
+  var key = mtype + '.' + s;
+  var result = AgenDAVConf.i18n[key];
+
+  if (result === undefined) {
+    return key;
+  }
+
+  for (var i in params) {
+    result = result.replace(i, params[i]);
+  }
+
+  return result;
+};
+
+/**
+ * Callback used to translate RRULE explanations
+ */
+var rrule_gettext = function rrule_gettext(id) {
+  return t('rrule', id);
 };
 
 

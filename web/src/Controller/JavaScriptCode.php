@@ -54,17 +54,6 @@ class JavaScriptCode
         return $response;
     }
 
-    /**
-     * Dumps strings for current user language
-     */
-    public function translationsAction(Request $request, Application $app)
-    {
-        $response = new Response('TODO');
-        $response->headers->set('Content-Type', 'text/javascript');
-        $response->setPrivate();
-        return $response;
-    }
-
     protected function getSiteConfig(Request $request, Application $app)
     {
         $settings = [
