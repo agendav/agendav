@@ -66,7 +66,7 @@ class Authentication
         $password = $request->request->get('password');
 
         if (empty($user) || empty($password)) {
-            return $app['translator']->trans('empty.fields');
+            return $app['translator']->trans('messages.error_empty_fields');
         }
 
         $app['http.client']->setAuthentication($user, $password, $app['caldav.authmethod']);
@@ -74,7 +74,7 @@ class Authentication
         $caldav_client = $app['caldav.client'];
 
         if (!$caldav_client->canAuthenticate()) {
-            return $app['translator']->trans('auth.error');
+            return $app['translator']->trans('messages.error_auth');
         }
 
         $app['session']->set('username', $user);

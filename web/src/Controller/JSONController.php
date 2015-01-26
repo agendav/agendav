@@ -75,7 +75,7 @@ abstract class JSONController
 
         if (!$this->validateInput($input)) {
             return $this->generateException(
-                $app['translator']->trans('invalid.input')
+                $app['translator']->trans('messages.invalidinput')
             );
         }
 
@@ -97,17 +97,17 @@ abstract class JSONController
 
         } catch (\AgenDAV\Exception\PermissionDenied $exception) {
             return $this->generateException(
-                $app['translator']->trans('error.denied')
+                $app['translator']->trans('messages.error_denied')
             );
 
         } catch (\AgenDAV\Exception\NotFound $exception) {
             return $this->generateException(
-                $app['translator']->trans('error.not_found')
+                $app['translator']->trans('messages.error_element_not_found')
             );
 
         } catch (\AgenDAV\Exception\ElementModified $exception) {
             return $this->generateException(
-                $app['translator']->trans('error.element_changed')
+                $app['translator']->trans('messages.error_element_changed')
             );
 
         } catch (\AgenDAV\Exception $exception) {
@@ -118,7 +118,7 @@ abstract class JSONController
             ));
 
             return $this->generateError(
-                $app['translator']->trans('error.unexpected_http_code', ['%code%' => $exception->getCode()])
+                $app['translator']->trans('messages.error_unexpectedhttpcode', ['%code%' => $exception->getCode()])
             );
 
         } catch (\Exception $exception) {
@@ -129,7 +129,7 @@ abstract class JSONController
             ));
 
             return $this->generateError(
-                $app['translator']->trans('error.internal_error')
+                $app['translator']->trans('messages.error_internal')
             );
         }
     }

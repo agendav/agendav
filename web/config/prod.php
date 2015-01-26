@@ -147,6 +147,9 @@ $app['logout.redirection'] = '';
 // Calendar sharing
 $app['calendar.sharing'] = false;
 
+// Languages
+$app['languages'] = require __DIR__ . '/languages.php';
+
 /**
  * End of default AgenDAV settings
  */

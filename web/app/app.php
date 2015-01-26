@@ -9,7 +9,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
-use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Translation\Loader\PhpFileLoader;
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
@@ -41,9 +41,13 @@ $app->register(new TranslationServiceProvider(), [
 ]);
 
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-    $translator->addLoader('xliff', new XliffFileLoader());
+    $translator->addLoader('php', new PhpFileLoader());
 
-    $translator->addResource('xliff', __DIR__ . '/../translations/labels.en.xliff', 'en', 'labels');
+    $languages = array_keys($app['languages']);
+
+    foreach ($languages as $language) {
+        $translator->addResource('php', __DIR__ . '/../lang/'.$language.'.php', $language);
+    }
 
     return $translator;
 }));
