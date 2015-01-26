@@ -1,5 +1,7 @@
 <?php
 
+namespace AgenDAV\Controller\Event;
+
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
@@ -19,15 +21,17 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\JSONController;
+use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\DateHelper;
 use AgenDAV\Event\FullCalendarEvent;
 use AgenDAV\Data\Transformer\FullCalendarEventTransformer;
 use AgenDAV\Data\Serializer\PlainSerializer;;
 use League\Fractal\Resource\Collection;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class Listevents extends JSONController
+class Listing extends JSONController
 {
     /** @var \DateTimeZone */
     private $utc;
@@ -63,7 +67,7 @@ class Listevents extends JSONController
         return true;
     }
 
-    public function execute(array $input)
+    public function execute(array $input, Application $app)
     {
         $calendar = new Calendar($input['calendar']);
         $timezone = new \DateTimeZone($input['timezone']);
@@ -88,7 +92,7 @@ class Listevents extends JSONController
             $execution_parse_end - $execution_parse_start
         );
 
-        return $this->serializeFullCalendarEvents($fullcalendar_events, $timezone);
+        return $this->serializeFullCalendarEvents($fullcalendar_events, $timezone, $app);
     }
 
 
@@ -134,16 +138,17 @@ class Listevents extends JSONController
      *
      * @param array $events FullCalendar events
      * @param \DateTimeZone $timezone Time zone the user has
+     * @param \Silex\Application $app
      * @return array
      */
-    protected function serializeFullCalendarEvents(array $events, \DateTimeZone $timezone)
+    protected function serializeFullCalendarEvents(array $events, \DateTimeZone $timezone, Application $app)
     {
-        $fractal = $this->container['fractal'];
+        $fractal = $app['fractal'];
         $fractal->setSerializer(new PlainSerializer);
         $transformer = new FullCalendarEventTransformer($timezone);
         $collection = new Collection($events, $transformer);
 
-        return $fractal->createData($collection)->toArray();
+        return new JsonResponse($fractal->createData($collection)->toArray());
     }
 
     /**

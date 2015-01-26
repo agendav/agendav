@@ -70,7 +70,7 @@ abstract class JSONController
         }
 
         if ($this->method === 'GET') {
-            $input = $this->query->all();
+            $input = $request->query->all();
         }
 
         if (!$this->validateInput($input)) {

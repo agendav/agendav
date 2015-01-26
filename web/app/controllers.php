@@ -24,6 +24,7 @@ $controllers->get('/', function () use ($app) {
 ->bind('calendar');
 
 $controllers->get('/preferences', function () use ($app) {
+    // TODO JS for sending preferences back to server
     return $app['twig']->render(
         'preferences.html',
         [
@@ -37,6 +38,7 @@ $controllers->get('/preferences', function () use ($app) {
 
 
 $controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction')->bind('calendars.list');
+$controllers->get('/events', '\AgenDAV\Controller\Event\Listing::doAction')->bind('events.list');
 
 // Dynamic JavaScript code
 $controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');
