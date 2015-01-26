@@ -16,7 +16,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-return [
+$translations = array(
     'labels.username' => 'User name',
     'labels.password' => 'Password',
 
@@ -278,4 +278,6 @@ return [
     'rrule.or' => 'or',
     'rrule.the' => 'the',
     'rrule.last' => 'last',
-];
+);
+
+return $translations;
