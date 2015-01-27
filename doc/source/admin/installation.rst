@@ -104,8 +104,7 @@ Confirm the operation, and your database should be ready.
 Configuring  Apache to serve AgenDAV
 ------------------------------------
 
-Apache has to be configured to point to ``web/public`` directory, using its
-own VirtualHost or just an Alias.
+Apache has to be configured to point to ``web/public`` directory.
 
 Example using a dedicated virtualhost::
 
@@ -115,11 +114,13 @@ Example using a dedicated virtualhost::
   ServerName agendav.host
   ErrorLog logs/agendav_error_log
   CustomLog logs/agendav_access_log common
+
+  <Location />
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+  </Location>
  </VirtualHost>
-
-Example using the Alias directive::
-
- Alias /agendav /path/to/agendav/web/public
 
 .. note::
    Make sure that you have the following PHP settings *disabled*:
@@ -130,7 +131,8 @@ Example using the Alias directive::
 Other web servers
 *****************
 
-AgenDAV should run on any other web server software as well.
+AgenDAV should run on any other web server software as well. Just read the
+`Silex Webserver configuration guide <http://silex.sensiolabs.org/doc/web_servers.html>`_.
 
 Configure AgenDAV
 -----------------

@@ -69,6 +69,10 @@ $app['calendar.colors'] = [
 // Configure logging (1/2)
 $app['monolog.level'] = 'WARNING';
 
+// Languages
+$app['languages'] = require __DIR__ . '/languages.php';
+
+
 
 /**
  * Site configuration
@@ -116,10 +120,10 @@ $app['caldav.authmethod'] = 'basic';
 $app['caldav.publicurls'] = true;
 
 // Whether to show public CalDAV urls
-$app['caldav.baseurl.public'] = 'https://caldav.server.com/';
+$app['caldav.baseurl.public'] = 'https://caldav.server.com';
 
-// Enable calendar sharing
-$app['caldav.sharing'] = false;
+// Calendar sharing
+$app['calendar.sharing'] = false;
 
 // Default timezone
 $app['defaults.timezone'] = 'Europe/Madrid';
@@ -144,12 +148,6 @@ $app['defaults.weekstart'] = 0;
 
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
-
-// Calendar sharing
-$app['calendar.sharing'] = false;
-
-// Languages
-$app['languages'] = require __DIR__ . '/languages.php';
 
 /**
  * End of default AgenDAV settings

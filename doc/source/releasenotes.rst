@@ -14,10 +14,9 @@ Release notes
   have to install it and fetch AgenDAV dependencies. You'll find instructions on
   Installation section.
 
-* ``caldav.php`` configuration file has been mostly rewritten, so you're advised to make a copy of ``caldav.php.template`` and configure AgenDAV again. See :ref:`caldavphpconf`
-
-* AgenDAV now uses a new logging system based on Monolog. :confval:`show_in_log` has been replaced by a
-  new :confval:`enable_debug` option.
+* AgenDAV is now based on `Silex <http://silex.sensiolabs.org/>`_ instead of
+  CodeIgniter. This means a new configuration file and some additional
+  configurations. Follow the installation instructions.
 
 * Database changes are required: TODO
 
