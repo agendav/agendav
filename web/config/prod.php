@@ -32,7 +32,6 @@ $app['scripts'] = [
     'libs/imagesloaded.pkg.min.js',
     'libs/jquery.qtip.js',
     'libs/jquery.colorhelpers.js',
-    'libs/jquery.cookie.js',
     'libs/jquery.serializeobject.js',
     'libs/fullcalendar.js',
     'libs/rrule.js',
@@ -74,7 +73,7 @@ $app['monolog.level'] = 'WARNING';
 /**
  * Site configuration
  *
- * IMPORTANT: These are AgenDAV defaults. Do not change this file, add your 
+ * IMPORTANT: These are AgenDAV defaults. Do not change this file, add your
  * changes to settings.php
  */
 // Site title
