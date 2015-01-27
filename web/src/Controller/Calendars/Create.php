@@ -1,5 +1,7 @@
 <?php
 
+namespace AgenDAV\Controller\Calendars;
+
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
@@ -20,12 +22,14 @@
  */
 
 use AgenDAV\Uuid;
-use AgenDAV\JSONController;
+use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class Createcalendar extends JSONController
+class Create extends JSONController
 {
     /**
      * Validates user input
@@ -49,9 +53,9 @@ class Createcalendar extends JSONController
         return true;
     }
 
-    public function execute(array $input)
+    public function execute(array $input, Application $app)
     {
-        $calendar_home_set = $this->container['session']->get('calendar_home_set');
+        $calendar_home_set = $app['session']->get('calendar_home_set');
         $url = $calendar_home_set . Uuid::generate();
 
         $calendar = new Calendar($url, [

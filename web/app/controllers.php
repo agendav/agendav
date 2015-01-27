@@ -38,7 +38,14 @@ $controllers->get('/preferences', function () use ($app) {
 
 
 $controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction')->bind('calendars.list');
+$controllers->post('/calendars', '\AgenDAV\Controller\Calendars\Create::doAction')->bind('calendar.create');
+$controllers->post('/calendars/delete', '\AgenDAV\Controller\Calendars\Delete::doAction')->bind('calendar.delete');
+$controllers->post('/calendars/save', '\AgenDAV\Controller\Calendars\Save::doAction')->bind('calendar.save');
 $controllers->get('/events', '\AgenDAV\Controller\Event\Listing::doAction')->bind('events.list');
+$controllers->post('/events/drop', '\AgenDAV\Controller\Event\Drop::doAction')->bind('event.drop');
+$controllers->post('/events/resize', '\AgenDAV\Controller\Event\Resize::doAction')->bind('event.resize');
+$controllers->post('/events/delete', '\AgenDAV\Controller\Event\Delete::doAction')->bind('event.delete');
+$controllers->post('/events/save', '\AgenDAV\Controller\Event\Save::doAction')->bind('event.save');
 
 // Dynamic JavaScript code
 $controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');

@@ -1,5 +1,7 @@
 <?php
 
+namespace AgenDAV\Controller\Event;
+
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
@@ -20,22 +22,17 @@
  */
 
 use AgenDAV\Uuid;
-use AgenDAV\JSONController;
+use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
+use Silex\Application;
 
-class Saveevent extends JSONController
+class Save extends JSONController
 {
     /** @var \AgenDAV\Event\Builder */
     protected $builder;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->builder = $this->container['event_builder'];
-    }
 
     /**
      * Validates user input
@@ -66,8 +63,9 @@ class Saveevent extends JSONController
         return true;
     }
 
-    public function execute(array $input)
+    public function execute(array $input, Application $app)
     {
+        $this->builder = $app['event.builder'];
         if ($this->isModification($input)) {
             return $this->modifyObject($input);
         }

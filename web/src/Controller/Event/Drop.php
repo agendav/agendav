@@ -53,12 +53,9 @@ class Drop extends Alter
     )
     {
         $movement = $this->describeMovement($input['was_allday'], $input['allday']);
-        log_message('INTERNALS', 'Resolved that movement = ' . $movement);
 
         $start = $instance->getStart();
         $end = $instance->getEnd();
-
-        log_message('INTERNALS', 'Original: start='.$start->format('c').', end=' . $end->format('c'));
 
         if ($movement === self::ALLDAY_TO_ALLDAY || $movement === self::TIMED_TO_TIMED) {
             DateHelper::addMinutesTo($start, $minutes);
@@ -89,8 +86,6 @@ class Drop extends Alter
         $allday = ($movement & self::ALLDAY_TYPE) !== 0;
         $instance->setStart($start, $allday);
         $instance->setEnd($end, $allday);
-
-        log_message('INTERNALS', 'Finally: start='.$start->format('c').', end=' . $end->format('c'));
     }
 
     /**

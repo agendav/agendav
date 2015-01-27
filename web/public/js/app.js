@@ -770,7 +770,7 @@ var calculate_event_duration = function calculate_event_duration(start, end) {
 // Triggers a dialog for creating calendars
 var calendar_create_dialog = function calendar_create_dialog() {
 
-  var form_url = AgenDAVConf.base_app_url + 'calendars/create';
+  var form_url = AgenDAVConf.base_app_url + 'calendars';
   var title = t('labels', 'newcalendar');
 
   var data = {

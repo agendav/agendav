@@ -1,5 +1,7 @@
 <?php
 
+namespace AgenDAV\Controller\Calendars;
+
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
@@ -19,11 +21,14 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\JSONController;
+use AgenDAV\Uuid;
+use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\CalDAV\Resource\CalendarObject;
+use AgenDAV\Data\Transformer\CalendarTransformer;
+use League\Fractal\Resource\Collection;
+use Silex\Application;
 
-class Deleteevent extends JSONController
+class Save extends JSONController
 {
     /**
      * Validates user input
@@ -35,9 +40,8 @@ class Deleteevent extends JSONController
     {
         $fields = [
             'calendar',
-            'uid',
-            'href',
-            'etag',
+            'displayname',
+            'calendar_color',
         ];
 
         foreach ($fields as $name) {
@@ -49,12 +53,18 @@ class Deleteevent extends JSONController
         return true;
     }
 
-    public function execute(array $input)
+    public function execute(array $input, Application $app)
     {
-        $object = new CalendarObject($input['href']);
-        $object->setEtag($input['etag']);
+        // TODO shared calendars
+        $url = $input['calendar'];
 
-        $this->client->deleteCalendarObject($object);
+        $calendar = new Calendar($url, [
+            Calendar::DISPLAYNAME => $input['displayname'],
+            Calendar::COLOR => $input['calendar_color'],
+        ]);
+
+        $this->client->updateCalendar($calendar);
+
         return $this->generateSuccess();
     }
 

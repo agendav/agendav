@@ -1,5 +1,7 @@
 <?php
 
+namespace AgenDAV\Controller\Calendars;
+
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
@@ -19,12 +21,13 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\JSONController;
+use AgenDAV\Controller\JSONController;
 use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
+use Silex\Application;
 
-class Deletecalendar extends JSONController
+class Delete extends JSONController
 {
     /**
      * Validates user input
@@ -47,7 +50,7 @@ class Deletecalendar extends JSONController
         return true;
     }
 
-    public function execute(array $input)
+    public function execute(array $input, Application $app)
     {
         $calendar = new Calendar($input['calendar']);
 
