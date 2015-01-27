@@ -2,21 +2,12 @@
 <?php
 
 require_once __DIR__ . '/../web/vendor/autoload.php';
-$config_file = __DIR__ . '/../web/config/config.php';
-
-if (!file_exists($config_file) || !is_readable($config_file)) {
-    echo $config_file . " cannot be read\n";
-    exit(255);
-}
-
-// Load DB definition
-require $config_file;
-
-$agendav_db = new \AgenDAV\DB($config['db']);
+$app = require_once __DIR__ . '/../web/app/app.php';
+require __DIR__.'/../web/config/prod.php';
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(
     [
-    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($agendav_db->getConnection()),
+    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($app['db']),
     'dialog' => new \Symfony\Component\Console\Helper\DialogHelper(),
     ]
 );
