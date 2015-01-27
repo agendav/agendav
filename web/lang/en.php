@@ -190,6 +190,8 @@ $translations = array(
     'labels.repeat_explanation' => 'This event repeats',
     'labels.keep_rrule' => 'Keep original repeat rule',
 
+    'labels.language' => 'Language',
+
 
 // Messages
     'messages.error_auth' => 'Invalid username or password',
