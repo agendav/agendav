@@ -2,5 +2,7 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 var translations = {{ app.translator.getMessages().messages|json_encode|raw }};
+var csrf_id = {{ csrf_token.getId()|json_encode|raw }};
+var csrf_value = {{ csrf_token.getValue()|json_encode|raw }};
 //]]>
 </script>

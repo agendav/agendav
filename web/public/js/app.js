@@ -52,7 +52,8 @@ $(document).ready(function() {
     default_calendar_color: AgenDAVConf.default_calendar_color,
     base_url: AgenDAVConf.base_url,
     base_app_url: AgenDAVConf.base_app_url,
-    csrf_token_name: AgenDAVConf.csrf_token_name,
+    csrf_token_name: csrf_id,
+    csrf_token_value: csrf_value,
     enable_calendar_sharing: AgenDAVConf.enable_calendar_sharing,
     // Sorry for this!
     numbers1to31: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
@@ -405,7 +406,8 @@ var send_form = function send_form(params) {
   });
 
   sendform_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-    if (textStatus === 'parsererror') {
+    // Not a JSON response
+    if (jqXHR.getResponseHeader('content-type').indexOf('json') === -1) {
       console.log(jqXHR.responseText);
       show_error(t('messages', 'error_interfacefailure'), t('messages', 'error_oops'));
       errorFunc('');
@@ -581,8 +583,7 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       applyid: 'event_edit_form',
       frm: {
         action: form_url,
-        method: 'post',
-        csrf: get_csrf_token()
+        method: 'post'
       },
       calendars: calendar_list(),
       // Dates and times
@@ -777,8 +778,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
     applyid: 'calendar_create_form',
     frm: {
       action: form_url,
-      method: 'post',
-      csrf: get_csrf_token()
+      method: 'post'
     }
   };
 
@@ -833,8 +833,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     applyid: 'calendar_modify_form',
     frm: {
       action: form_url,
-      method: 'post',
-      csrf: get_csrf_token()
+      method: 'post'
     }
   });
 
@@ -917,8 +916,7 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
     applyid: 'calendar_delete_form',
     frm: {
       action: form_url,
-      method: 'post',
-      csrf: get_csrf_token()
+      method: 'post'
     }
   });
 
@@ -1583,7 +1581,7 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
     }
   };
 
-  fake_form.data[AgenDAVConf.csrf_token_name] = get_csrf_token();
+  fake_form.data[csrf_id] = get_csrf_token();
 
   send_form({
     form_object: fake_form,
@@ -1620,8 +1618,7 @@ var event_delete_dialog = function event_delete_dialog(event_id) {
     applyid: 'event_delete_form',
     frm: {
       action: form_url,
-      method: 'post',
-      csrf: get_csrf_token()
+      method: 'post'
     }
   });
 
@@ -1729,7 +1726,7 @@ var initialize_date_and_time_pickers = function initialize_date_and_time_pickers
 
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
-  return $.cookie(AgenDAVConf.csrf_cookie_name);
+  return csrf_value;
 };
 
 // Loading indicator

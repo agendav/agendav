@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Silex\Application;
 
 use AgenDAV\DateHelper;
 
@@ -15,6 +16,13 @@ Request::setTrustedProxies($app['proxies']);
 $app->get('/login', '\AgenDAV\Controller\Authentication::loginAction')->bind('login');
 $app->post('/login', '\AgenDAV\Controller\Authentication::loginAction');
 $app->get('/logout', '\AgenDAV\Controller\Authentication::logoutAction')->bind('logout');
+
+
+
+// CSRF protection
+$app->before(function(Request $request, Application $app) {
+    return \AgenDAV\Csrf::check($request, $app);
+});
 
 
 $controllers = $app['controllers_factory'];

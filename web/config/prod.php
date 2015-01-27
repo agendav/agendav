@@ -101,6 +101,9 @@ $app['db.options'] = [
 // Encryption key
 $app['encryption.key'] = 'abcdefg';
 
+// CSRF secret
+$app['csrf.secret'] = 'lkjihgfedcba';
+
 // Log path
 $app['log.path'] = '/var/log/agendav/';
 

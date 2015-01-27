@@ -138,6 +138,14 @@ $app['event.builder'] = $app->share(function($app) {
     return new \AgenDAV\Event\Builder\VObjectBuilder($timezone);
 });
 
+
+// CSRF manager that stores tokens inside sessions
+$app['csrf.manager'] = $app->share(function ($app) {
+    $storage = new Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage($app['session']);
+    return new Symfony\Component\Security\Csrf\CsrfTokenManager(null, $storage);
+});
+
+
 /*
 // Sharing support enabled
 if ($enable_calendar_sharing === true) {

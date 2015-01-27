@@ -31,6 +31,9 @@ $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('print_stylesheets', $app['print.stylesheets']);
     $twig->addGlobal('scripts', $app['scripts']);
 
+    // CSRF token
+    $twig->addGlobal('csrf_token', \AgenDAV\Csrf::getCurrentToken($app));
+
     return $twig;
 }));
 
