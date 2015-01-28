@@ -92,7 +92,7 @@ class JavaScriptCode
         return [
             'default_calendar' => $preferences->get('default_calendar', null),
             'hidden_calendars' => $preferences->get('hidden_calendars', []),
-            'timezone' => $preferences->get('timezone', $app['defaults.timezone']),
+            'timezone' => $app['user.timezone'],
         ];
 
     }
