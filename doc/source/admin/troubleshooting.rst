@@ -21,8 +21,16 @@ You can switch to ``development`` environment easily using the provided
 ``index_dev.php`` front controller.
 
 In order to use it, the environment variable ``ENABLE_AGENDAV_DEVELOPMENT`` has to be
-set. Set it on your webserver configuration file. Apache lets you do it using ``SetEnv``
-or ``SetEnvIf``.
+set. It is not enabled by default to avoid any user accessing ``index_dev.php`` on a production
+system.
+
+Environment variables have to be set on your webserver configuration file.
+Apache lets you do it using ``SetEnv``, or even better, using ``SetEnvIf`` to
+restrict the access just to some IPs. Example::
+
+   <Location />
+      SetEnvIf Remote_Addr ^1\.2\.3\.4$ ENABLE_AGENDAV_DEVELOPMENT
+   </Location>
 
 Then point your browser to ``http://your.agendav.host/index_dev.php``. A debugging
 toolbar will appear, logs will be more verbose and a new HTTP debug log will be
