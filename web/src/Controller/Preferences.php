@@ -23,6 +23,7 @@ namespace AgenDAV\Controller;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\DateHelper;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Silex\Application;
 
 /**
@@ -56,5 +57,25 @@ class Preferences
                 'language' => $preferences->get('language', $app['defaults.language']),
             ]
         );
+    }
+
+    public function saveAction(Request $request, Application $app)
+    {
+        $input = $request->request;
+
+        if (!$input->has('language') || !$input->has('timezone') || !$input->has('default_calendar')) {
+            $app->abort('400', $app['translator']->trans('messages.error_empty_fields'));
+        }
+
+        $username = $app['session']->get('username');
+        $preferences = $app['preferences.repository']->userPreferences($username);
+        $preferences->setAll([
+            'language' => $input->get('language'),
+            'timezone' => $input->get('timezone'),
+            'default_calendar' => $input->get('default_calendar'),
+        ]);
+        $app['preferences.repository']->save($username, $preferences);
+
+        return new RedirectResponse($app['url_generator']->generate('calendar'));
     }
 }

@@ -32,6 +32,7 @@ $controllers->get('/', function () use ($app) {
 ->bind('calendar');
 
 $controllers->get('/preferences', '\AgenDAV\Controller\Preferences::indexAction')->bind('preferences');
+$controllers->post('/preferences', '\AgenDAV\Controller\Preferences::saveAction')->bind('preferences.save');
 
 
 $controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction')->bind('calendars.list');
