@@ -48,9 +48,18 @@ $controllers->post('/events/save', '\AgenDAV\Controller\Event\Save::doAction')->
 // Dynamic JavaScript code
 $controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');
 
-// Require authentication on them
+/**
+ * Require being authenticated on every request. If authenticated, just load
+ * current user preferences
+ */
 $controllers->before(function(Request $request, Silex\Application $app) {
+    // If user is already authenticated, get his/her preferences and continue
+    // processing the request
     if ($app['session']->has('username')) {
+        $username = $app['session']->get('username');
+        $preferences = $app['preferences.repository']->userPreferences($username);
+        $app['user.preferences'] = $preferences;
+        $app['locale'] = $preferences->get('language', $app['defaults.language']);
         return;
     }
 

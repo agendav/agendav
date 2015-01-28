@@ -87,8 +87,7 @@ class JavaScriptCode
 
     protected function getPreferences(Request $request, Application $app)
     {
-        $username = $app['session']->get('username');
-        $preferences = $app['preferences.repository']->userPreferences($username);
+        $preferences = $app['user.preferences'];
 
         return [
             'default_calendar' => $preferences->get('default_calendar', null),

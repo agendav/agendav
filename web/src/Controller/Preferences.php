@@ -68,7 +68,7 @@ class Preferences
         }
 
         $username = $app['session']->get('username');
-        $preferences = $app['preferences.repository']->userPreferences($username);
+        $preferences = $app['user.preferences'];
         $preferences->setAll([
             'language' => $input->get('language'),
             'timezone' => $input->get('timezone'),
