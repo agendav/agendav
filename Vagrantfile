@@ -8,6 +8,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 81, host: 8081
 
   config.vm.synced_folder '.', '/vagrant'
+  config.vm.synced_folder './web/var', '/vagrant/web/var',
+    owner: 'www-data', group: 'www-data'
 
   config.vm.provider "virtualbox" do |v|
       v.memory = 1024
