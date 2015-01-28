@@ -110,11 +110,8 @@
       - name: install composer dependencies
         command: /usr/local/bin/composer install chdir=/vagrant/web
 
-      - name: configure agendav (1/2)
-        template: src=agendav/config.php.j2 dest=/vagrant/web/config/config.php backup=yes
-
-      - name: configure agendav (2/2)
-        copy: src=agendav/caldav.php dest=/vagrant/web/config/caldav.php backup=yes
+      - name: configure agendav
+        template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes
 
       - name: apply latest schema updates
         command: /vagrant/bin/agendavcli migrations:migrate --configuration=/vagrant/bin/migrations.yml --no-interaction
