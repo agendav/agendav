@@ -10,6 +10,7 @@
 
 	<Location />
 		SetEnv ENABLE_AGENDAV_DEVELOPMENT
+		SetEnv COMPOSER_VENDOR_DIR "/var/agendav-vendors"
 		RewriteEngine On
 		RewriteCond %{REQUEST_FILENAME} !-f
 		RewriteRule ^ index.php [QSA,L]

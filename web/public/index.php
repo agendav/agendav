@@ -2,7 +2,12 @@
 
 ini_set('display_errors', 0);
 
-require_once __DIR__.'/../vendor/autoload.php';
+$vendor_directory = getenv('COMPOSER_VENDOR_DIR');
+if ($vendor_directory === false) {
+  $vendor_directory = __DIR__.'/../vendor';
+}
+
+require_once $vendor_directory . '/autoload.php';
 
 $app = require __DIR__.'/../app/app.php';
 

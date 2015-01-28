@@ -93,6 +93,14 @@
         file: path=/var/log/agendav state=directory owner=www-data group=vagrant mode=0774
         sudo: yes
 
+      - name: create twig cache directory
+        file: path=/var/cache/twig state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
+
+      - name: create vendors/ directory outside of shared folder
+        file: path=/var/agendav-vendors state=directory owner=vagrant group=www-data mode=0775
+        sudo: yes
+
       - name: check if composer is installed
         stat: path=/usr/local/bin/composer
         register: composer
@@ -108,12 +116,16 @@
         sudo: yes
 
       - name: install composer dependencies
+        environment:
+          COMPOSER_VENDOR_DIR: /var/agendav-vendors
         command: /usr/local/bin/composer install chdir=/vagrant/web
 
       - name: configure agendav
         template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes
 
       - name: apply latest schema updates
+        environment:
+          COMPOSER_VENDOR_DIR: /var/agendav-vendors
         command: /vagrant/bin/agendavcli migrations:migrate --configuration=/vagrant/bin/migrations.yml --no-interaction
 
       - name: change log permissions again

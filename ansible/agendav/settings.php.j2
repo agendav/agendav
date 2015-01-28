@@ -66,3 +66,5 @@ $app['defaults.weekstart'] = 0;
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
 
+// Put twig cache outside the shared folder
+$app['twig.options'] = array('cache' => '/var/cache/twig');

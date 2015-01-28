@@ -1,7 +1,6 @@
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "trusty64"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.hostname = "agendav.dev"
   config.vm.network "forwarded_port", guest: 80, host: 8080

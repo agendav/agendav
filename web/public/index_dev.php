@@ -2,7 +2,12 @@
 
 use Symfony\Component\Debug\Debug;
 
-require_once __DIR__.'/../vendor/autoload.php';
+$vendor_directory = getenv('COMPOSER_VENDOR_DIR');
+if ($vendor_directory === false) {
+  $vendor_directory = __DIR__.'/../vendor';
+}
+
+require_once $vendor_directory . '/autoload.php';
 
 Debug::enable();
 

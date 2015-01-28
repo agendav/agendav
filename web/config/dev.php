@@ -17,7 +17,7 @@ $app['debug'] = true;
 $app['http.debug'] = true;
 
 $app->register(new WebProfilerServiceProvider(), [
-    'profiler.cache_dir' => __DIR__.'/../var/cache/profiler',
+    'profiler.cache_dir' => '/tmp',
 ]);
 
 // Enable debug logging
