@@ -22,14 +22,14 @@ namespace AgenDAV\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
 use AgenDAV\Http\Client;;
-use AgenDAV\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ClientFactory
 {
     public static function create(GuzzleClient $guzzle, Session $session, $auth_type)
     {
         $client = new Client($guzzle);
-        if ($session->isAuthenticated()) {
+        if ($session->has('username') && $session->has('password')) {
             $client->setAuthentication(
                 $session->get('username'),
                 $session->get('password'),

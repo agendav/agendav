@@ -1,0 +1,22 @@
+<div class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <span class="navbar-brand">{{ title }}</span>
+   </div>
+   <p class="navbar-text navbar-right" id="loading">
+   <img src="{{ app.request.basepath }}/img/loading.gif" alt="">
+   </p>
+   <ul class="nav navbar-nav navbar-right" id="usermenu">
+       <li>
+       <a class="prefs" href="{{ app.url_generator.generate('preferences') }}">
+         <i title="{% trans %}labels.preferences{% endtrans %}" class="fa fa-lg fa-wrench"></i>
+       </a>
+       </li>
+       <li>
+       <a class="logout" href="{{ app.url_generator.generate('logout') }}">
+         <i title="{% trans %}labels.logout{% endtrans %}" class="fa fa-lg fa-power-off"></i>
+       </a>
+       </li>
+   </ul>
+  </div>
+</div>

@@ -21,37 +21,45 @@ namespace AgenDAV\Controller\Event;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\JSONController;
+use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\DateHelper;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\EventInstance;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Note: this controller is not really a controller. CodeIgniter doesn't let you
- * use arbitrary classes
- *
- * TODO when switching to a different framework, redo this controller
- */
-abstract class Alter
+abstract class Alter extends JSONController
 {
 
-    /** @var AgenDAV\CalDAV\Client */
-    protected $client;
-
     /**
-     * @param AgenDAV\CalDAV\Client $client
+     * Validates user input
+     *
+     * @param array $input
+     * @return bool
      */
-    public function __construct($client)
+    protected function validateInput(array $input)
     {
-        $this->client = $client;
+        $fields = [
+            'calendar',
+            'timezone',
+            'uid',
+        ];
+
+        foreach ($fields as $name) {
+            if (empty($input[$name])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
      * Executes this operation
      */
-    public function execute(Array $input)
+    public function execute(array $input, Application $app)
     {
         $timezone = new \DateTimeZone($input['timezone']);
         $calendar = $this->client->getCalendarByUrl($input['calendar']);
@@ -75,9 +83,9 @@ abstract class Alter
         $resource->setEvent($event);
         $response = $this->client->uploadCalendarObject($resource);
 
-        return [
+        return $this->generateSuccess([
             'etag' => $response->getHeader('ETag'),
-        ];
+        ]);
     }
 
     /**

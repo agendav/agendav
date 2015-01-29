@@ -75,7 +75,6 @@ module.exports = function(grunt) {
             'web/public/js/libs/imagesloaded.pkg.min.js',
             'web/public/js/libs/jquery.qtip.js',
             'web/public/js/libs/jquery.colorhelpers.js',
-            'web/public/js/libs/jquery.cookie.js',
             'web/public/js/libs/jquery.serializeobject.js',
             'web/public/js/libs/fullcalendar.js',
             'web/public/js/translation.js',

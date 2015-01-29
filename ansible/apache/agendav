@@ -8,6 +8,14 @@
 		Require all granted
 	</Directory>
 
+	<Location />
+		SetEnv ENABLE_AGENDAV_DEVELOPMENT
+		SetEnv COMPOSER_VENDOR_DIR "/var/agendav-vendors"
+		RewriteEngine On
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteRule ^ index.php [QSA,L]
+	</Location>
+
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 
 	# Possible values include: debug, info, notice, warn, error, crit,
