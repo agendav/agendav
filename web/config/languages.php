@@ -13,7 +13,7 @@ return [
     'nl_NL' => 'Nederlands',
     'nb' => 'Norsk bokmål',
     'pl' => 'Polski',
-    'pt_BR' => 'Português',
+    'pt_BR' => 'Português (Brasil)',
     'fi' => 'Suomi',
     'sv_SE' => 'Svenska',
     'ru_RU' => 'Русский',

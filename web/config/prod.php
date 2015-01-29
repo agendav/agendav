@@ -73,6 +73,25 @@ $app['monolog.level'] = 'WARNING';
 // Languages
 $app['languages'] = require __DIR__ . '/languages.php';
 
+// Fullcalendar language packs
+$app['fullcalendar.languages'] = [
+    'br' => 'en', // Missing
+    'ca' => 'ca',
+    'de_DE' => 'de',
+    'et' => 'en', // Missing
+    'en' => 'en',
+    'es_ES' => 'es',
+    'fr_FR' => 'fr',
+    'hr_HR' => 'hr',
+    'it_IT' => 'it',
+    'nl_NL' => 'nl',
+    'nb' => 'en', // Missing
+    'pl' => 'pl',
+    'pt_BR' => 'pt-br',
+    'fi' => 'fi',
+    'sv_SE' => 'sv',
+    'ru_RU' => 'ru',
+];
 
 
 /**

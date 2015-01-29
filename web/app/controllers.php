@@ -27,7 +27,15 @@ $app->before(function(Request $request, Application $app) {
 
 $controllers = $app['controllers_factory'];
 $controllers->get('/', function () use ($app) {
-    return $app['twig']->render( 'calendar.html', [ ]);
+    // Load fullcalendar language pack
+    $scripts = $app['scripts'];
+    $locale = $app['locale'];
+
+    if (isset($app['fullcalendar.languages'][$locale]) && !empty($app['fullcalendar.languages'][$locale])) {
+        $scripts[] = 'fullcalendar/lang/' . $app['fullcalendar.languages'][$locale] . '.js';
+    }
+
+    return $app['twig']->render('calendar.html', [ 'scripts' => $scripts ]);
 })
 ->bind('calendar');
 
