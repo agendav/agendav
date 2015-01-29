@@ -3,7 +3,6 @@ doc/build
 doc/html
 *.swp
 *~
-web/application/controllers/x.php
 web/vendor
 web/composer.phar
 .vagrant
