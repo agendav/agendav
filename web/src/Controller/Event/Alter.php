@@ -30,12 +30,6 @@ use AgenDAV\EventInstance;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Note: this controller is not really a controller. CodeIgniter doesn't let you
- * use arbitrary classes
- *
- * TODO when switching to a different framework, redo this controller
- */
 abstract class Alter extends JSONController
 {
 
