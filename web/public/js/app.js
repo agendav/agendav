@@ -602,6 +602,9 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     }
   );
 
+  // Log to console for debugging purposes
+  console.log(data);
+
   var buttons = [
     {
       'text': t('labels', 'save'),
@@ -1858,7 +1861,8 @@ var generate_iso8601_values = function generate_iso8601_values(element) {
         AgenDAVDateAndTime.convertISO8601(
           datepicker,
           timepicker,
-          ignore_time
+          ignore_time,
+          AgenDAVUserPrefs.timezone
         )
     );
 

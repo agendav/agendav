@@ -25,6 +25,7 @@ module.exports = function(grunt) {
                 { expand: true, cwd: 'bower_components/dustjs-helpers/dist', src: ['dust-helpers.js'], dest: 'web/public/js/templates/' },
                 { expand: true, cwd: 'bower_components/rrule/lib', src: ['rrule.js', 'nlp.js'], dest: 'web/public/js/libs/' },
                 { expand: true, cwd: 'bower_components/es5-shim', src: ['es5-shim.js'], dest: 'web/public/js/libs/' },
+                { expand: true, cwd: 'bower_components/moment-timezone/builds', src: ['moment-timezone-with-data-2010-2020.min.js'], dest: 'web/public/js/libs/' },
             ],
         },
 

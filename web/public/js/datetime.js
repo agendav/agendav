@@ -98,8 +98,14 @@ AgenDAVDateAndTime.formatTime = function formatTime(datetime) {
 /**
  * Receives a datepicker input and an optional timepicker input, and returns
  * a string in ISO8601 format
+ *
+ * @param jQuery datepicker
+ * @param jQuery timepicker
+ * @param bool allday
+ * @param string timezone
+ * @return string
  */
-AgenDAVDateAndTime.convertISO8601 = function convertISO8601(datepicker, timepicker, allday) {
+AgenDAVDateAndTime.convertISO8601 = function convertISO8601(datepicker, timepicker, allday, timezone) {
     var result = datepicker.datepicker('getDate');
 
     // Events with no time set (all day, recurrences, etc)
@@ -109,5 +115,10 @@ AgenDAVDateAndTime.convertISO8601 = function convertISO8601(datepicker, timepick
     }
 
     result = timepicker.timepicker('getTime', result);
-    return moment(result).toISOString();
+
+    // Convert to user timezone
+    return moment.tz(
+                moment(result).format('YYYY-MM-DDTHH:mm:ss.000'),
+                timezone
+            ).toISOString();
 };

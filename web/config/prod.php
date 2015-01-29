@@ -24,6 +24,7 @@ $app['print.stylesheets'] = [
 $app['scripts'] = [
     'libs/jquery.js',
     'libs/moment.js',
+    'libs/moment-timezone-with-data-2010-2020.min.js',
     'libs/button.js',
     'libs/jquery-ui.js',
     'libs/tab.js',
@@ -75,17 +76,17 @@ $app['languages'] = require __DIR__ . '/languages.php';
 
 // Fullcalendar language packs
 $app['fullcalendar.languages'] = [
-    'br' => 'en', // Missing
+    //'br' => 'en', // Missing
     'ca' => 'ca',
     'de_DE' => 'de',
-    'et' => 'en', // Missing
-    'en' => 'en',
+    //'et' => 'en', // Missing
+    //'en' => 'en',
     'es_ES' => 'es',
     'fr_FR' => 'fr',
     'hr_HR' => 'hr',
     'it_IT' => 'it',
     'nl_NL' => 'nl',
-    'nb' => 'en', // Missing
+    //'nb' => 'en', // Missing
     'pl' => 'pl',
     'pt_BR' => 'pt-br',
     'fi' => 'fi',

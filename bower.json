@@ -29,6 +29,7 @@
     "dustjs-linkedin": "~2.5.1",
     "dustjs-helpers": "linkedin/dustjs-helpers#~1.5.0",
     "rrule": "~2.1.0",
-    "es5-shim": "~4.0.5"
+    "es5-shim": "~4.0.5",
+    "moment-timezone": "~0.3.0"
   }
 }

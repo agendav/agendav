@@ -51,7 +51,7 @@ class Preferences
             [
                 'available_timezones' => DateHelper::getAllTimeZones(),
                 'available_languages' => $app['languages'],
-                'timezone' => 'Europe/Madrid',
+                'timezone' => $app['user.timezone'],
                 'calendars' => $calendars_as_options,
                 'default_calendar' => $preferences->get('default_calendar'),
                 'language' => $preferences->get('language', $app['defaults.language']),
