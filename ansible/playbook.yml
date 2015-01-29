@@ -149,6 +149,9 @@
       - name: run grunt
         command: grunt chdir=/vagrant
 
+      - name: Append the COMPOSER_VENDOR_DIR variable to bashrc
+        lineinfile: dest=/home/vagrant/.bashrc line="export COMPOSER_VENDOR_DIR=/var/agendav-vendors"
+
   handlers:
       - name: restart mysql
         sudo: yes
