@@ -105,7 +105,7 @@ $labels['repeatweekly'] = 'Semanalmente';
 $labels['repeatmonthly'] = 'Mensalmente';
 $labels['repeatyearly'] = 'Anualmente';
 
-$labels['repeatcount'] = 'Repetiçoes';
+$labels['repeatcount'] = 'Repetições';
 $labels['repeatuntil'] = 'Até a data';
 
 $labels['explntimes'] = '%n vezes';
@@ -114,7 +114,7 @@ $labels['expluntil'] = 'até %d';
 $labels['privacy'] = 'Visibilidade';
 $labels['public'] = 'Público';
 $labels['private'] = 'Privado';
-$labels['confidential'] = 'Confidencial';
+$labels['confidential'] = 'Confidêncial';
 
 $labels['transp'] = 'Mostrar como';
 $labels['opaque'] = 'Ocupado';
@@ -150,7 +150,7 @@ $labels['yes'] = 'Sim';
 
 $labels['untitled'] = 'Sem título';
 
-$labels['sharewith'] = 'Compartilhado com';
+$labels['sharewith'] = 'Compartilhar com';
 $labels['currentlysharing'] = 'Atualmente compartilhando este calendário';
 $labels['publicurl'] = 'URL para aplicativos de calenrário';
 
@@ -249,4 +249,4 @@ $messages['help_defaultcalendar'] = 'Por padrão, os novos eventos serão coloca
 
 $messages['info_prefssaved'] = 'Preferências salvas';
 
-$messages['more_events'] = '+ %count events';
+$messages['more_events'] = '+ %count eventos';
