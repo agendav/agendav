@@ -68,8 +68,8 @@ $(document).ready(function() {
     selectable: true,
     editable: true,
     timezone: AgenDAVUserPrefs.timezone,
-    firstDay: AgenDAVConf.prefs_firstday,
-    timeFormat: AgenDAVConf.prefs_timeformat,
+    firstDay: AgenDAVUserPrefs.weekstart,
+    timeFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     weekMode: 'liquid',
     height: calendar_height(),
     windowResize: function(view) {
@@ -83,7 +83,7 @@ $(document).ready(function() {
     },
 
     theme: true, // use jQuery UI themeing
-    axisFormat: AgenDAVConf.prefs_timeformat,
+    axisFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     slotMinutes: 30,
     firstHour: 8,
 
@@ -499,7 +499,7 @@ var destroy_dialog = function destroy_dialog(name) {
  */
 var set_default_datepicker_options = function set_default_datepicker_options() {
   $.datepicker.setDefaults({constrainInput: true});
-  $.datepicker.setDefaults({dateFormat: AgenDAVConf.prefs_dateformat});
+  $.datepicker.setDefaults({dateFormat: AgenDAVDateAndTime.datepickerFormat[AgenDAVUserPrefs.date_format]});
 };
 
 /**

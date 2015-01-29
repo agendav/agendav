@@ -46,6 +46,9 @@ $app['preferences.repository'] = $app->share(function($app) {
         'language' => $app['defaults.language'],
         'default_calendar' => null,
         'hidden_calendars' => [],
+        'time_format' => $app['defaults.time_format'],
+        'date_format' => $app['defaults.date_format'],
+        'weekstart' => $app['defaults.weekstart'],
         'timezone' => $app['defaults.timezone'],
     ]);
 

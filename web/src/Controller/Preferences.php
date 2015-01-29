@@ -53,6 +53,9 @@ class Preferences
                 'calendars' => $calendars_as_options,
                 'default_calendar' => $preferences->get('default_calendar'),
                 'language' => $preferences->get('language'),
+                'time_format' => $preferences->get('time_format'),
+                'date_format' => $preferences->get('date_format'),
+                'weekstart' => $preferences->get('weekstart'),
             ]
         );
     }
@@ -61,7 +64,8 @@ class Preferences
     {
         $input = $request->request;
 
-        if (!$input->has('language') || !$input->has('timezone') || !$input->has('default_calendar')) {
+        if (!$input->has('language') || !$input->has('timezone') || !$input->has('default_calendar')
+        || !$input->has('date_format') || !$input->has('time_format') || !$input->has('weekstart')) {
             $app->abort('400', $app['translator']->trans('messages.error_empty_fields'));
         }
 
@@ -70,6 +74,9 @@ class Preferences
         $preferences->setAll([
             'language' => $input->get('language'),
             'timezone' => $input->get('timezone'),
+            'date_format' => $input->get('date_format'),
+            'time_format' => $input->get('time_format'),
+            'weekstart' => $input->get('weekstart'),
             'default_calendar' => $input->get('default_calendar'),
         ]);
         $app['preferences.repository']->save($username, $preferences);

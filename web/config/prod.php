@@ -153,7 +153,7 @@ $app['defaults.timezone'] = 'Europe/Madrid';
 $app['defaults.language'] = 'en';
 
 // Default time format. Options: '12' / '24'
-$app['defaults.time.format'] = '24';
+$app['defaults.time_format'] = '24';
 
 /*
  * Default date format. Options:
@@ -162,7 +162,7 @@ $app['defaults.time.format'] = '24';
  * - dmy: dd-mm-YYYY
  * - mdy: mm-dd-YYYY
  */
-$app['defaults.date.format'] = 'ymd';
+$app['defaults.date_format'] = 'ymd';
 
 // Default first day of week. Options: 0 (Sunday), 1 (Monday)
 $app['defaults.weekstart'] = 0;

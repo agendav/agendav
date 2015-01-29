@@ -121,14 +121,14 @@ instead.
 
    Have a look at directory ``web/lang`` for a list of available languages.
 
-.. confval:: defaults.time.format
+.. confval:: defaults.time_format
 
    Preferred time format: 12 hours (e.g. 3pm / 2:30am) or 24 hours
    (e.g. 15:00 / 2:30).
 
    Set this option using a **string** (``'12'`` or ``'24'``).
 
-.. confval:: defaults.date.format
+.. confval:: defaults.date_format
 
    Default date format.
 

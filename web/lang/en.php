@@ -136,6 +136,9 @@ $translations = array(
     'labels.keep_rrule' => 'Keep original repeat rule',
 
     'labels.language' => 'Language',
+    'labels.date_format' => 'Date format',
+    'labels.time_format' => 'Time format',
+    'labels.weekstart' => 'Week starts on',
 
 
 // Messages

@@ -21,6 +21,41 @@
     </div>
 
     <div class="form-group">
+        <label for="date_format">{% trans %}labels.date_format{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="date_format" {% if date_format == "ymd" %} checked="checked" {% endif %} value="ymd"> {{ "now" | date('Y-m-d') }}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="date_format" {% if date_format == "dmy" %} checked="checked" {% endif %} value="dmy"> {{ "now" | date('d/m/Y') }}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="date_format" {% if date_format == "mdy" %} checked="checked" {% endif %} value="mdy"> {{ "now" | date('m/d/Y') }}
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="time_format">{% trans %}labels.time_format{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="time_format" {% if time_format == "24" %} checked="checked" {% endif %} value="24"> {{ "now" | date('H:i') }}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="time_format" {% if time_format == "12" %} checked="checked" {% endif %} value="12"> {{ "now" | date('h:i a') }}
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="weekstart">{% trans %}labels.weekstart{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="weekstart" {% if weekstart == "0" %} checked="checked" {% endif %} value="0"> {% trans %}labels.sunday_short{% endtrans %}
+        </label>
+          <input type="radio" name="weekstart" {% if weekstart == "1" %} checked="checked" {% endif %} value="1"> {% trans %}labels.monday_short{% endtrans %}
+        </label>
+    </div>
+
+    <div class="form-group">
     <label for="timezone">{% trans %}labels.timezone{% endtrans %}</label>
         <select class="form-control" name="timezone">
             {% for timezone_name in available_timezones %}

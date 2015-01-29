@@ -1,17 +1,39 @@
 var AgenDAVDateAndTime = AgenDAVDateAndTime || {};
 
+// Time formats for fullcalendar axis and time
+AgenDAVDateAndTime.fullCalendarFormat = {
+    '24': 'H:mm',
+    '12': 'h(:mm)a'
+};
+
+// Time and date moment.js formats
+AgenDAVDateAndTime.momentFormat = {
+    '24': 'HH:mm',
+    '12': 'hh:mm A',
+    'ymd': 'YYYY-MM-DD',
+    'dmy': 'DD/MM/YYYY',
+    'mdy': 'MM/DD/YYYY',
+};
+
+// Datepicker  formats
+AgenDAVDateAndTime.datepickerFormat = {
+    'ymd': 'yy-mm-dd',
+    'dmy': 'dd/mm/yy',
+    'mdy': 'mm/dd/yy',
+};
+
 /*
  * Extracts the time from a Date object, and returns it as an string
  */
 AgenDAVDateAndTime.extractTime = function extractTime(dateobj) {
-    return moment(dateobj).format(AgenDAVConf.prefs_timeformat_moment);
+    return moment(dateobj).format(AgenDAVDateAndTime.momentFormat[AgenDAVUserPrefs.time_format]);
 };
 
 /*
  * Extracts the date from a Date object, and returns it as an string
  */
 AgenDAVDateAndTime.extractDate = function extractDate(dateobj) {
-    return moment(dateobj).format(AgenDAVConf.prefs_dateformat_moment);
+    return moment(dateobj).format(AgenDAVDateAndTime.momentFormat[AgenDAVUserPrefs.date_format]);
 };
 
 /*
@@ -76,24 +98,17 @@ AgenDAVDateAndTime.formatEventDates = function formatEventDates(event_data) {
         return result;
     }
 
-    result = start.format('LL') + " " + this.formatTime(start);
+    result = start.format('LL') + " " + this.extractTime(start);
 
-    var end_string = end.format('LL') + " " + this.formatTime(end);
+    var end_string = end.format('LL') + " " + this.extractTime(end);
     if (start.isSame(end, 'day')) {
-        end_string = this.formatTime(end); // Just show the time
+        end_string = this.extractTime(end); // Just show the time
     }
     result += " - " + end_string;
 
     return result;
 };
 
-
-/**
- * Returns a moment object time formatted
- */
-AgenDAVDateAndTime.formatTime = function formatTime(datetime) {
-    return datetime.format(AgenDAVConf.prefs_timeformat_moment);
-};
 
 /**
  * Receives a datepicker input and an optional timepicker input, and returns
