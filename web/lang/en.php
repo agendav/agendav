@@ -20,40 +20,6 @@ $translations = array(
     'labels.username' => 'User name',
     'labels.password' => 'Password',
 
-    'labels.january' => 'January',
-    'labels.february' => 'February',
-    'labels.march' => 'March',
-    'labels.april' => 'April',
-    'labels.may' => 'May',
-    'labels.june' => 'June',
-    'labels.july' => 'July',
-    'labels.august' => 'August',
-    'labels.september' => 'September',
-    'labels.october' => 'October',
-    'labels.november' => 'November',
-    'labels.december' => 'December',
-
-    'labels.january_short' => 'Jan',
-    'labels.february_short' => 'Feb',
-    'labels.march_short' => 'Mar',
-    'labels.april_short' => 'Apr',
-    'labels.may_short' => 'May',
-    'labels.june_short' => 'Jun',
-    'labels.july_short' => 'Jul',
-    'labels.august_short' => 'Aug',
-    'labels.september_short' => 'Sep',
-    'labels.october_short' => 'Oct',
-    'labels.november_short' => 'Nov',
-    'labels.december_short' => 'Dec',
-
-    'labels.sunday' => 'Sunday',
-    'labels.monday' => 'Monday',
-    'labels.tuesday' => 'Tuesday',
-    'labels.wednesday' => 'Wednesday',
-    'labels.thursday' => 'Thursday',
-    'labels.friday' => 'Friday',
-    'labels.saturday' => 'Saturday',
-
     'labels.sunday_short' => 'Sun',
     'labels.monday_short' => 'Mon',
     'labels.tuesday_short' => 'Tue',
@@ -62,28 +28,12 @@ $translations = array(
     'labels.friday_short' => 'Fri',
     'labels.saturday_short' => 'Sat',
 
-    'labels.today' => 'Today',
-    'labels.tomorrow' => 'Tomorrow',
-    'labels.month' => 'month',
-    'labels.week' => 'week',
-    'labels.day' => 'day',
-    'labels.tableview' => 'agenda',
-    'labels.allday' => 'all day',
-    'labels.choose_date' => 'Choose date',
-
-    'labels.thisweek' => 'This week',
-    'labels.nextweek' => 'Next week',
-    'labels.thismonth' => 'This month',
-    'labels.nextmonth' => 'Next month',
-    'labels.future' => 'Future events',
 
     'labels.calendar' => 'Calendar',
     'labels.location' => 'Location',
     'labels.description' => 'Description',
 
     'labels.displayname' => 'Display name',
-    'labels.internalname' => 'Internal name',
-    'labels.optional' => '(optional)',
     'labels.color' => 'Color',
 
     'labels.summary' => 'Summary',
@@ -92,6 +42,7 @@ $translations = array(
     'labels.starttime' => 'Start time',
     'labels.endtime' => 'End time',
     'labels.alldayform' => 'All day',
+    'labels.choose_date' => 'Choose a date',
 
     'labels.repetitionexceptions' => 'Exceptions to recurrent events',
 
@@ -101,9 +52,6 @@ $translations = array(
     'labels.repeatweekly' => 'Weekly',
     'labels.repeatmonthly' => 'Monthly',
     'labels.repeatyearly' => 'Yearly',
-
-    'labels.explntimes' => '%n times',
-    'labels.expluntil' => 'until %d',
 
     'labels.privacy' => 'Privacy',
     'labels.public' => 'Public',
@@ -121,11 +69,12 @@ $translations = array(
 
     'labels.newcalendar' => 'New calendar',
     'labels.modifycalendar' => 'Modify calendar',
+    'labels.deletecalendar' => 'Delete calendar',
 
     'labels.createevent' => 'Create event',
     'labels.editevent' => 'Edit event',
     'labels.deleteevent' => 'Delete event',
-    'labels.deletecalendar' => 'Delete calendar',
+
     'labels.calendars' => 'Calendars',
     'labels.shared_calendars' => 'Shared calendars',
     'labels.refresh' => 'Refresh',
@@ -138,8 +87,6 @@ $translations = array(
     'labels.logout' => 'Log out',
     'labels.modify' => 'Modify',
     'labels.cancel' => 'Cancel',
-    'labels.next' => 'next',
-    'labels.previous' => 'previous',
     'labels.yes' => 'Yes',
 
     'labels.untitled' => 'Untitled',
@@ -151,8 +98,6 @@ $translations = array(
     'labels.access' => 'Access',
     'labels.readonly' => 'Read only',
     'labels.readandwrite' => 'Read and write',
-
-    'labels.pastevents' => 'Past events',
 
     'labels.preferences' => 'Preferences',
     'labels.return' => 'Return',
@@ -195,14 +140,10 @@ $translations = array(
 
 // Messages
     'messages.error_auth' => 'Invalid username or password',
-    'messages.error_invaliddate' => 'Invalid date on field %s',
-    'messages.error_invalidtime' => 'Invalid time on field %s',
     'messages.error_denied' => 'Server refused your request (permission forbidden)',
     'messages.error_notimplemented' => '%feature: still not implemented',
     'messages.error_startgreaterend' => 'End date must be greater than or equal to start date',
-    'messages.error_bogusrepeatrule' => 'Error, check your recurrence parameters',
     'messages.error_internalgen' => 'Internal calendar generation error',
-    'messages.error_internalcalnameinuse' => 'Internal calendar name already being used',
 
     'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
     'messages.info_confirmeventdelete' => 'Are you sure you want to delete the following event?',
@@ -242,10 +183,8 @@ $translations = array(
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
-    'messages.error_internalcalnamemissing' => 'Empty internal calendar name',
     'messages.error_calname_missing' => 'Empty calendar name',
     'messages.error_calcolor_missing' => 'Color must be supplied',
-    'messages.error_mkcalendar' => 'Server refused to create calendar. Please, check your creation parameters',
     'messages.error_shareunknownusers' => 'Some of the users you specified do not exist',
     'messages.error_empty_fields' => 'Some required fields are empty',
 
