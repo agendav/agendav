@@ -1880,13 +1880,18 @@ var setTranslations = function setTranslations(data) {
 
 /**
  * Function that translates a given label/message
+ *
+ * @param string domain Message domain (labels, messages, etc)
+ * @param string key Message to translate
+ * @param Object params Optional parameters
+ * @return string
  */
-var t = function t(mtype, s, params) {
-  var key = mtype + '.' + s;
-  var result = AgenDAVConf.i18n[key];
+var t = function t(domain, key, params) {
+  var full_key = domain + '.' + key;
+  var result = AgenDAVConf.i18n[full_key];
 
   if (result === undefined) {
-    return key;
+    return full_key;
   }
 
   for (var i in params) {
@@ -1898,9 +1903,14 @@ var t = function t(mtype, s, params) {
 
 /**
  * Callback used to translate RRULE explanations
+ * t() is not used because rrule.js expects a 'gettext' type
+ * callback to be received
+ *
+ * @param string key Message identifier
+ * @return string
  */
-var rrule_gettext = function rrule_gettext(id) {
-  return t('rrule', id);
+var rrule_gettext = function rrule_gettext(key) {
+  return t('rrule', key);
 };
 
 
