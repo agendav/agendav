@@ -67,10 +67,10 @@ $controllers->before(function(Request $request, Silex\Application $app) {
         $username = $app['session']->get('username');
         $preferences = $app['preferences.repository']->userPreferences($username);
         $app['user.preferences'] = $preferences;
-        $app['user.timezone'] = $preferences->get('timezone', $app['defaults.timezone']);
+        $app['user.timezone'] = $preferences->get('timezone');
 
         // Set application language
-        $app['locale'] = $preferences->get('language', $app['defaults.language']);
+        $app['locale'] = $preferences->get('language');
         return;
     }
 

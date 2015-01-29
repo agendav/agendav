@@ -44,4 +44,12 @@ interface PreferencesRepository
      * @param \AgenDAV\Data\Preferences $preferences
      */
     public function save($username, \AgenDAV\Data\Preferences $preferences);
+
+    /**
+     * Sets a list of available preferences and their default value
+     *
+     * @param array $defaults key => default value
+     * @return void
+     */
+    public function setDefaults(array $defaults);
 }

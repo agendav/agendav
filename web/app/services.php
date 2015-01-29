@@ -39,7 +39,17 @@ $app['fractal'] = $app->share(function($app) {
 // Preferences repository
 $app['preferences.repository'] = $app->share(function($app) {
     $em = $app['orm'];
-    return new AgenDAV\Repositories\DoctrineOrmPreferencesRepository($em);
+    $repository = new AgenDAV\Repositories\DoctrineOrmPreferencesRepository($em);
+
+    // Default values
+    $repository->setDefaults([
+        'language' => $app['defaults.language'],
+        'default_calendar' => null,
+        'hidden_calendars' => [],
+        'timezone' => $app['defaults.timezone'],
+    ]);
+
+    return $repository;
 });
 
 // Encryption

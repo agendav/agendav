@@ -33,9 +33,7 @@ class Preferences
 {
     public function indexAction(Request $request, Application $app)
     {
-        $preferences = $app['preferences.repository']->userPreferences(
-            $app['session']->get('username')
-        );
+        $preferences = $app['user.preferences'];
 
         $calendars = $app['calendar.finder']->getCalendars();
 
@@ -51,10 +49,10 @@ class Preferences
             [
                 'available_timezones' => DateHelper::getAllTimeZones(),
                 'available_languages' => $app['languages'],
-                'timezone' => $app['user.timezone'],
+                'timezone' => $preferences->get('timezone'),
                 'calendars' => $calendars_as_options,
                 'default_calendar' => $preferences->get('default_calendar'),
-                'language' => $preferences->get('language', $app['defaults.language']),
+                'language' => $preferences->get('language'),
             ]
         );
     }

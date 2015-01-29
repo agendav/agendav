@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -33,6 +33,11 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
      */
     private $em;
 
+    /**
+     * @var array
+     */
+    protected $defaults;
+
 
     /**
      * @param Doctrine\ORM\EntityManager Entity manager
@@ -40,6 +45,7 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+        $this->defaults = [];
     }
 
     /**
@@ -52,7 +58,12 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     {
         $preferences = $this->em->find('AgenDAV\Data\Preferences', $username);
 
-        return $preferences === null ? new Preferences() : $preferences;
+        if ($preferences !== null) {
+            $preferences->addDefaults($this->defaults);
+            return $preferences;
+        }
+
+        return new Preferences($this->defaults);
     }
 
     /**
@@ -66,5 +77,16 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
         $preferences->setUsername($username);
         $this->em->persist($preferences);
         $this->em->flush();
+    }
+
+    /**
+     * Sets a list of available preferences and their default value
+     *
+     * @param array $defaults key => default value
+     * @return void
+     */
+    public function setDefaults(array $defaults)
+    {
+        $this->defaults = $defaults;
     }
 }

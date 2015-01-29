@@ -90,6 +90,24 @@ class Preferences
         $this->options = $options;
     }
 
+    /**
+     * Sets default values for usual preferences. If a preference already
+     * has a value, it will not get overwritten
+     *
+     * @param array $defaults
+     * @return void
+     */
+    public function addDefaults(array $defaults)
+    {
+        foreach ($defaults as $name => $default_value) {
+            if (isset($this->options[$name])) {
+                continue;
+            }
+
+            $this->options[$name] = $default_value;
+        }
+    }
+
     public function to_json() {
         return json_encode($this->options);
     }
