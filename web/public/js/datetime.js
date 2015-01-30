@@ -151,3 +151,15 @@ AgenDAVDateAndTime.convertISO8601 = function convertISO8601(datepicker, timepick
                 timezone
             ).toISOString();
 };
+
+/**
+ * Reads an ISO8601 formatted date and converts it to a moment object in the
+ * provided timezone
+ *
+ * @param string iso8601string
+ * @param string timezone
+ * @return Moment
+ */
+AgenDAVDateAndTime.getMoment = function getMoment(iso8601string, timezone) {
+    return moment.tz(iso8601string, timezone);
+};

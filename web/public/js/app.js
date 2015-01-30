@@ -699,9 +699,6 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   $end_date.datepicker();
   $repeat_until.datepicker();
 
-  // Calculate initial event duration
-  $end_time.data('duration', calculate_event_duration($start_time, $end_time));
-
   // First time datepicker is run we need to set minDate on end date
   set_mindate(data.start,
       [ $end_date, $repeat_until ]
@@ -729,19 +726,24 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   // Update status
   $allday.trigger('change');
 
-
   // Preserve start->end duration
   $(where)
-    .on('change', 'input.start_time', function() {
+    .on('change', 'input.start_time', function(event) {
+      var start = AgenDAVDateAndTime.getMoment(
+          $('#start').val(),
+          AgenDAVUserPrefs.timezone
+      );
       var duration = $end_time.data('duration');
-      var start_js = $start_time.timepicker('getTime');
-      var new_end = moment(start_js).add(duration, 'minutes');
-      $end_time.timepicker('setTime', new_end.toDate());
+
+      var new_end = start.add(duration, 'minutes');
+
+      $end_date.val(AgenDAVDateAndTime.extractDate(new_end));
+      $end_time.val(AgenDAVDateAndTime.extractTime(new_end));
       generate_iso8601_values($(where));
     })
 
-    .on('change', 'input.end_time', function() {
-      $end_time.data('duration', calculate_event_duration($start_time, $end_time));
+    .on('change', 'input.end_time', function(event) {
+      $end_time.data('duration', calculate_event_duration());
     });
 
     // Update start/end times
@@ -749,26 +751,38 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       generate_iso8601_values($(where));
     });
 
-    // Repeat rule UNTIL update
-    $(where).on('change', 'input.start_time, input.allday', function() {
+    // Update repeat rule UNTIL time (start_time) or format (allday)
+    $(where).on('change', 'input.start_time, input.allday', function(event) {
       AgenDAVRepeat.regenerate();
     });
 
     // First start/end generation
     generate_iso8601_values($(where));
 
+    // Calculate initial event duration
+    $end_time.data('duration', calculate_event_duration());
 };
 
 /**
- * Calculates the difference between two timepicker inputs
+ * Calculates the duration of an event
  */
-var calculate_event_duration = function calculate_event_duration(start, end) {
-  var end_js = $(end).timepicker('getTime');
-  var end_time_moment = moment(end_js);
-  var start_js = $(start).timepicker('getTime');
-  var start_time_moment = moment(start_js);
+var calculate_event_duration = function calculate_event_duration() {
+  var start = AgenDAVDateAndTime.getMoment(
+      $('#start').val(),
+      AgenDAVUserPrefs.timezone
+  );
+  var end = AgenDAVDateAndTime.getMoment(
+      $('#end').val(),
+      AgenDAVUserPrefs.timezone
+  );
 
-  return end_time_moment.diff(start_time_moment, 'minutes');
+  var result = end.diff(start, 'minutes');
+
+  if (result < 0) {
+    result *= -1;
+  }
+
+  return result;
 };
 
 // Triggers a dialog for creating calendars
