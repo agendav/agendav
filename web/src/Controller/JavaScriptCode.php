@@ -61,11 +61,6 @@ class JavaScriptCode
             'base_app_url' => $request->getBaseUrl() . '/',
             'agendav_version' => \AgenDAV\Version::V,
             'enable_calendar_sharing' => $app['calendar.sharing'],
-            'timepicker_base' => array(
-                'timeFormat' => ($app['defaults.time_format'] === '24') ? 'H:i' : 'h:i A',
-                'step' => 30,
-                'maxTime' => ($app['defaults.time_format'] === '24') ? '23:30' : '11:30 PM',
-            ),
             'calendar_colors' => $app['calendar.colors'],
             'default_calendar_color' => '#' . $app['calendar.colors'][0],
             'show_public_caldav_url' => $app['caldav.publicurls'],

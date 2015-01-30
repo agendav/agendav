@@ -22,6 +22,20 @@ AgenDAVDateAndTime.datepickerFormat = {
     'mdy': 'mm/dd/yy',
 };
 
+// Timepicker options
+AgenDAVDateAndTime.timepickerSettings = {
+    '12': {
+        'timeFormat': 'h:i A',
+        'step': 30,
+        'maxTime': '11:30 PM'
+    },
+    '24': {
+        'timeFormat': 'H:i',
+        'step': 30,
+        'maxTime': '23:30'
+    }
+};
+
 /*
  * Extracts the time from a Date object, and returns it as an string
  */

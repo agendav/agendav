@@ -684,8 +684,8 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   var $repeat_until = $('#repeat_until');
   var $allday = $(where).find('input.allday');
 
-  $start_time.timepicker(AgenDAVConf.timepicker_base);
-  $end_time.timepicker(AgenDAVConf.timepicker_base);
+  $start_time.timepicker(AgenDAVDateAndTime.timepickerSettings[AgenDAVUserPrefs.time_format]);
+  $end_time.timepicker(AgenDAVDateAndTime.timepickerSettings[AgenDAVUserPrefs.time_format]);
   $start_date.datepicker(
       {
         onSelect: function(dateText, inst) {
@@ -1719,13 +1719,6 @@ var toggle_calendar = function toggle_calendar(calendar_obj) {
     hide_calendar(calendar_obj);
   }
 };
-
-// Initializes datepickers and timepickers
-var initialize_date_and_time_pickers = function initialize_date_and_time_pickers(obj) {
-  obj.find('.needs-datepicker').datepicker();
-  obj.find('.needs-timepicker').timepicker(AgenDAVConf.timepicker_base);
-};
-
 
 // Gets csrf token value
 var get_csrf_token = function get_csrf_token() {
