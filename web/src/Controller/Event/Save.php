@@ -22,6 +22,7 @@ namespace AgenDAV\Controller\Event;
  */
 
 use AgenDAV\Uuid;
+use AgenDAV\DateHelper;
 use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
@@ -46,6 +47,8 @@ class Save extends JSONController
             'calendar',
             'summary',
             'timezone',
+            'start',
+            'end',
         ];
 
         if ($this->isModification($input)) {
@@ -57,6 +60,14 @@ class Save extends JSONController
             if (empty($input[$name])) {
                 return false;
             }
+        }
+
+        // Check if end >= start
+        $start = DateHelper::frontEndToDateTime($input['start'], new \DateTimeZone('UTC'));
+        $end = DateHelper::frontEndToDateTime($input['end'], new \DateTimeZone('UTC'));
+
+        if ($end < $start) {
+            return false;
         }
 
 

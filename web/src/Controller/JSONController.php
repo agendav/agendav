@@ -75,7 +75,7 @@ abstract class JSONController
 
         if (!$this->validateInput($input)) {
             return $this->generateException(
-                $app['translator']->trans('messages.invalidinput')
+                $app['translator']->trans('messages.error_invalidinput')
             );
         }
 
