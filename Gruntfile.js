@@ -14,6 +14,13 @@ module.exports = function(grunt) {
       }
     },
 
+    exec: {
+      patch_rrule: {
+        cwd: 'bower_components/rrule/lib',
+        command: 'patch -p2 < ../../../patches/rrule-date.patch'
+      }
+    },
+
     copy: {
         development: {
             files: [
@@ -144,6 +151,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-dust');
+  grunt.loadNpmTasks('grunt-exec');
 
   grunt.registerTask('default', [ 'copy:development', 'less:development', 'dust' ]);
   grunt.registerTask('dist', [ 'less', 'dust', 'copy', 'concat', 'uglify', 'cssmin' ]);

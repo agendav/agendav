@@ -152,9 +152,9 @@ AgenDAVRepeat.generateRRule = function generateRRule(data) {
     }
 
     if (field.name === 'repeat_until_date' && ends === 'date') {
-      options.until = AgenDAVRepeat.generateUntilDate(
-        $('input.allday').is(':checked')
-      );
+      var is_all_day = $('input.allday').is(':checked');
+      options.until = AgenDAVRepeat.generateUntilDate(is_all_day);
+      options.onlydate = is_all_day;
     }
   });
 
