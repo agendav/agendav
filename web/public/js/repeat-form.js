@@ -231,7 +231,40 @@ AgenDAVRepeat.getLabelForByDay = function gettLabelForByDay(day) {
  * @param RRule rrule
  */
 AgenDAVRepeat.explainRRule = function explainRRule(rrule) {
-  return rrule.toText(rrule_gettext, AgenDAVConf.i18n.rrule);
+  return rrule.toText(rrule_gettext, AgenDAVRepeat.language);
+};
+
+/**
+ * Generates a list of day and month names to be used by rrule.js
+ *
+ * @return Object
+ */
+AgenDAVRepeat.generateLanguage = function generateLanguage() {
+  return {
+    'dayNames': [
+      AgenDAVConf.i18n['labels.sunday'],
+      AgenDAVConf.i18n['labels.monday'],
+      AgenDAVConf.i18n['labels.tuesday'],
+      AgenDAVConf.i18n['labels.wednesday'],
+      AgenDAVConf.i18n['labels.thursday'],
+      AgenDAVConf.i18n['labels.friday'],
+      AgenDAVConf.i18n['labels.saturday']
+    ],
+    'monthNames': [
+      AgenDAVConf.i18n['labels.january'],
+      AgenDAVConf.i18n['labels.february'],
+      AgenDAVConf.i18n['labels.march'],
+      AgenDAVConf.i18n['labels.april'],
+      AgenDAVConf.i18n['labels.may'],
+      AgenDAVConf.i18n['labels.june'],
+      AgenDAVConf.i18n['labels.july'],
+      AgenDAVConf.i18n['labels.august'],
+      AgenDAVConf.i18n['labels.september'],
+      AgenDAVConf.i18n['labels.october'],
+      AgenDAVConf.i18n['labels.november'],
+      AgenDAVConf.i18n['labels.december'],
+    ]
+  };
 };
 
 

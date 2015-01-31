@@ -1887,6 +1887,9 @@ var setTranslations = function setTranslations(data) {
 
   // Localized names
   set_default_datepicker_options();
+
+  // Set RRule language options
+  AgenDAVRepeat.language = AgenDAVRepeat.generateLanguage();
 };
 
 /**
