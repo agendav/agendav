@@ -79,6 +79,7 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
         $result['id'] = $result['calendar'] . $result['uid'];
 
         if ($event->isRecurrent()) {
+            $result['editable'] = false;
             $result['rrule'] = $event->getRepeatRule();
             $recurrence_id = $event->getRecurrenceId();
             $result['recurrence_id'] = $recurrence_id;
