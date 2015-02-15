@@ -197,7 +197,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $vevent_exception = $this->generateRecurrentEvent();
         $event = new VObjectEvent($this->vcalendar);
 
-        $instance = new VObjectEventInstance($vevent_exception);
+        $instance = $event->getEventInstance($vevent_exception->{'RECURRENCE-ID'});
 
         $event->storeInstance($instance);
     }

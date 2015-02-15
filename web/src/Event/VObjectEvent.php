@@ -209,10 +209,8 @@ class VObjectEvent implements Event
 
         // VObject sets a RECURRENCE-ID when expanding, so let's see if
         // this is a result of expanding or an actual recurrence exception
-        $recurrence_id = $instance->getRecurrenceId();
-
         // TODO
-        if ($this->isException($recurrence_id)) {
+        if ($instance->isException()) {
             // Not supported
             throw new \Exception('Recurrent events modification is not supported');
         }
@@ -256,7 +254,7 @@ class VObjectEvent implements Event
         }
 
         if ($recurrence_id !== null) {
-            $vevent = $this->getRecurrenceException($recurrence_id);
+            $vevent = $this->getRecurrenceExceptionVEvent($recurrence_id);
         }
 
         if ($vevent === null) {
@@ -360,14 +358,14 @@ class VObjectEvent implements Event
      * @return \Sabre\VObject\Component\VEvent
      * @throws \LogicException if this event is not recurrent
      */
-    protected function getRecurrenceException($recurrence_id)
+    protected function getRecurrenceExceptionVEvent($recurrence_id)
     {
         if (!$this->isRecurrent()) {
             throw new \LogicException('This event is not recurrent');
         }
 
         if ($this->isException($recurrence_id)) {
-            return $this->findException($recurrence_id);
+            return $this->findExceptionVEvent($recurrence_id);
         }
 
         // Create new VEVENT
@@ -383,7 +381,7 @@ class VObjectEvent implements Event
      * @param string $recurrence_id
      * @return \Sabre\VObject\Component\VEvent|null
      */
-    protected function findException($recurrence_id)
+    protected function findExceptionVEvent($recurrence_id)
     {
         foreach ($this->vcalendar->VEVENT as $vevent) {
             $current_recurrence_id = (string)$vevent->{'RECURRENCE-ID'};
