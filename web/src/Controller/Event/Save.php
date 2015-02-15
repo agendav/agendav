@@ -108,7 +108,7 @@ class Save extends JSONController
         // TODO work with recurrence-ids
         $instance = $this->builder->createEventInstanceWithInput($event, $input);
 
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
         $object->setEvent($event);
         $this->client->uploadCalendarObject($object);
 
@@ -128,7 +128,7 @@ class Save extends JSONController
 
         // TODO work with recurrence-ids
         $instance = $this->builder->createEventInstanceWithInput($event, $input);
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
 
         $object = CalendarObject::generateOnCalendar($destination_calendar, $uid);
         $object->setEtag($input['etag']);

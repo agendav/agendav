@@ -79,7 +79,7 @@ abstract class Alter extends JSONController
 
         $instance->touch();
 
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
         $resource->setEvent($event);
         $response = $this->client->uploadCalendarObject($resource);
 

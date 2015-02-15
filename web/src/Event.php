@@ -95,20 +95,30 @@ interface Event
     public function createEventInstance();
 
     /**
-     * Gets the base EventInstance for this event, if defined
+     * Gets the base EventInstance for this event if $recurrence_id is null,
+     * or the EventInstance for the recurrence exception identified by
+     * $recurrence_id.
      *
+     * If the passed RECURRENCE-ID does not match any existing exceptions,
+     * a new EventInstance will be created with RECURRENCE-ID set
+     *
+     * @param string|null $recurrence_id
      * @return \AgenDAV\EventInstance|null
+     * @throws \LogicException if this event is not recurrent and a $recurrence_id
+     * is specified
      */
 
-    public function getEventInstance();
+    public function getEventInstance($recurrence_id = null);
 
     /**
-     * Sets the base EventInstance for this event
+     * Adds an EventInstance for this event. In case the event is not recurrent,
+     * or it is but this is not an recurrence exception, it will get stored as the
+     * "base" event instance
      *
      * @param \AgenDAV\EventInstance $instance
      * @throws \InvalidArgumentException If event instance UID does not match
      *                                   current event UID
      */
-    public function setBaseEventInstance(EventInstance $instance);
+    public function storeInstance(EventInstance $instance);
 }
 

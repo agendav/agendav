@@ -137,7 +137,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         ]);;
 
         $instance = new VObjectEventInstance($another_vevent);
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
     }
 
     /** @expectedException \Exception */
@@ -149,7 +149,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event = new VObjectEvent($this->vcalendar);
 
         $instance = new VObjectEventInstance($vevent_exception);
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
     }
 
     public function testSetBaseInstanceEmptyEvent()
@@ -162,7 +162,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $instance->setStart(new \DateTime());
         $instance->setRecurrenceId('20150110T100500Z');
 
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
 
         $this->assertEmpty($instance->getRecurrenceId());
     }
@@ -181,7 +181,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $instance->setSummary('New test summary');
         $instance->setRecurrenceId('20150110T100500Z');
 
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
 
         // Check directly on the VCALENDAR object
         $vevent = $this->vcalendar->getBaseComponent();
@@ -199,7 +199,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $instance = new VObjectEventInstance($vevent_exception);
 
-        $event->setBaseEventInstance($instance);
+        $event->storeInstance($instance);
     }
 
     public function testGetEventInstanceEmpty()
@@ -219,7 +219,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->vevent, $vevent);
     }
 
-    public function testGetEventInstanceRecurrenceExceptions()
+    public function testGetEventInstanceBaseOnRecurrentEvent()
     {
         $this->generateRecurrentEvent();
 
@@ -228,6 +228,41 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $instance = $event->getEventInstance();
         $vevent = $instance->getInternalVEvent();
         $this->assertEquals($this->vevent->serialize(), $vevent->serialize());
+    }
+
+
+    /** @expectedException \LogicException */
+    public function testGetEventInstanceOnNonRecurrentEvent()
+    {
+        $event = new VObjectEvent($this->vcalendar);
+        $instance = $event->getEventInstance('TEST');
+    }
+
+    public function testGetEventInstanceForExistingExceptionOnRecurrentEvent()
+    {
+        $exception = $this->generateRecurrentEvent();
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = (string)$exception->{'RECURRENCE-ID'};
+
+        $instance = $event->getEventInstance($recurrence_id);
+        $vevent = $instance->getInternalVEvent();
+        $this->assertEquals($exception->serialize(), $vevent->serialize());
+    }
+
+    public function testGetEventInstanceForNonExistingExceptionOnRecurrentEvent()
+    {
+        $exception = $this->generateRecurrentEvent();
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = '20150127T012345Z';
+
+        $instance = $event->getEventInstance($recurrence_id);
+
+        $this->assertTrue($instance->isException());
+        $this->assertEquals($instance->getRecurrenceId(), $recurrence_id);
     }
 
     protected function generateRecurrentEvent()

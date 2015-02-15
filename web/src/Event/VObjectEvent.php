@@ -192,13 +192,15 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Sets the base EventInstance for this event
+     * Adds an EventInstance for this event. In case the event is not recurrent,
+     * or it is but this is not an recurrence exception, it will get stored as the
+     * "base" event instance
      *
      * @param \AgenDAV\EventInstance $instance
      * @throws \InvalidArgumentException If event instance UID does not match
      *                                   current event UID
      */
-    public function setBaseEventInstance(EventInstance $instance)
+    public function storeInstance(EventInstance $instance)
     {
         // Check if UID matches
         if ($instance->getUid() !== $this->getUid()) {
@@ -209,6 +211,7 @@ class VObjectEvent implements Event
         // this is a result of expanding or an actual recurrence exception
         $recurrence_id = $instance->getRecurrenceId();
 
+        // TODO
         if ($this->isException($recurrence_id)) {
             // Not supported
             throw new \Exception('Recurrent events modification is not supported');
@@ -233,20 +236,39 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Gets the base EventInstance for this event, if defined
+     * Gets the base EventInstance for this event if $recurrence_id is null,
+     * or the EventInstance for the recurrence exception identified by
+     * $recurrence_id.
      *
+     * If the passed RECURRENCE-ID does not match any existing exceptions,
+     * a new EventInstance will be created with RECURRENCE-ID set
+     *
+     * @param string|null $recurrence_id
      * @return \AgenDAV\EventInstance|null
+     * @throws \LogicException if this event is not recurrent and a $recurrence_id
+     * is specified
      */
 
-    public function getEventInstance()
+    public function getEventInstance($recurrence_id = null)
     {
-        $vevent = $this->vcalendar->getBaseComponent('VEVENT');
+        if ($recurrence_id === null) {
+            $vevent = $this->vcalendar->getBaseComponent('VEVENT');
+        }
+
+        if ($recurrence_id !== null) {
+            $vevent = $this->getRecurrenceException($recurrence_id);
+        }
 
         if ($vevent === null) {
             return null;
         }
 
-        return new VObjectEventInstance($vevent);
+        $instance = new VObjectEventInstance($vevent);
+        if ($recurrence_id !== null) {
+            $instance->markAsException();
+        }
+
+        return $instance;
     }
 
     /**
@@ -327,6 +349,50 @@ class VObjectEvent implements Event
         }
 
         return $instance;
+    }
+
+    /**
+     * Gets the VEVENT associated to the passed RECURRENCE-ID.
+     *
+     * If the event is not recurrent, a \LogicException will be thrown
+     *
+     * @param string $recurrence_id
+     * @return \Sabre\VObject\Component\VEvent
+     * @throws \LogicException if this event is not recurrent
+     */
+    protected function getRecurrenceException($recurrence_id)
+    {
+        if (!$this->isRecurrent()) {
+            throw new \LogicException('This event is not recurrent');
+        }
+
+        if ($this->isException($recurrence_id)) {
+            return $this->findException($recurrence_id);
+        }
+
+        // Create new VEVENT
+        $vevent = clone $this->vcalendar->getBaseComponent('VEVENT');
+        $vevent->{'RECURRENCE-ID'} = $recurrence_id;
+
+        return $vevent;
+    }
+
+    /**
+     * Finds an existing recurrence exception by RECURRENCE-ID
+     *
+     * @param string $recurrence_id
+     * @return \Sabre\VObject\Component\VEvent|null
+     */
+    protected function findException($recurrence_id)
+    {
+        foreach ($this->vcalendar->VEVENT as $vevent) {
+            $current_recurrence_id = (string)$vevent->{'RECURRENCE-ID'};
+            if ($current_recurrence_id === $recurrence_id) {
+                return $vevent;
+            }
+        }
+
+        return null;
     }
 }
 
