@@ -8,5 +8,4 @@ script:
   - phpunit --configuration tests/phpunit.xml
 
 before_script:
-  - phpenv config-add .travis-php.ini
   - composer install -d web/
