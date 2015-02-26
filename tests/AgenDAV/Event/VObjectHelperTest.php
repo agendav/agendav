@@ -83,6 +83,36 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSetExceptionVEvent()
+    {
+        $this->addBaseEventAndExceptions();
+
+        $new_exception = $this->vcalendar->create('VEVENT');
+        $new_exception->SUMMARY = 'New exception';
+        $new_exception->{'RECURRENCE-ID'} = '20150302T184900Z';
+
+        VObjectHelper::setExceptionVEvent($this->vcalendar, $new_exception);
+
+        $this->assertEquals(
+            VObjectHelper::findExceptionVEvent($this->vcalendar, '20150302T184900Z'),
+            $new_exception,
+            'VEVENT exceptions are not added'
+        );
+
+        // Add a new VEVENT using the same RECURRENCE-ID. The original one
+        // should be replaced by this one
+        $modified_exception = clone $new_exception;
+        $modified_exception->SUMMARY = 'Modified new exception';
+
+        VObjectHelper::setExceptionVEvent($this->vcalendar, $modified_exception);
+
+        $this->assertEquals(
+            VObjectHelper::findExceptionVEvent($this->vcalendar, '20150302T184900Z'),
+            $modified_exception,
+            'VEVENT exceptions are not replaced'
+        );
+    }
+
     /**
      * Internal function, used to add a base VEVENT and two exceptions
      * to the test VCALENDAR

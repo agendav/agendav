@@ -37,7 +37,7 @@ class VObjectHelper
      *   recurring event
      *
      * @param Sabre\VObject\Component\VCalendar $vcalendar
-     * @param Sabre\VObject\Component\VEvent $vcalendar
+     * @param Sabre\VObject\Component\VEvent $base
      * @return void
      */
     public static function setBaseVEvent(VCalendar $vcalendar, VEvent $base)
@@ -52,6 +52,26 @@ class VObjectHelper
         }
 
         $vcalendar->children[$position] = $base;
+    }
+
+    /**
+     * Sets an exception VEVENT on a VCALENDAR. Replaces the existing exception
+     * if found, adds it otherwise.
+     *
+     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @param Sabre\VObject\Component\VEvent $vevent
+     * @return void
+     */
+    public static function setExceptionVEvent(VCalendar $vcalendar, VEvent $vevent)
+    {
+        $recurrence_id = (string) $vevent->{'RECURRENCE-ID'};
+        $existing = self::findExceptionVEvent($vcalendar, $recurrence_id);
+
+        if ($existing !== null) {
+            $vcalendar->remove($existing);
+        }
+
+        $vcalendar->add($vevent);
     }
 
     /**
