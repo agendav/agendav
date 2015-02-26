@@ -47,21 +47,8 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testSetBaseVEventWithExceptions()
     {
-        $this->vcalendar->add('VEVENT', [
-            'SUMMARY' => 'This vevent will disappear',
-            'DTSTART' => '20150220T184900Z',
-            'RRULE' => 'FREQ=DAILY',
-        ]);
 
-        $this->vcalendar->add('VEVENT', [
-            'SUMMARY' => 'This is an exception',
-            'RECURRENCE-ID' => '20150227T184900Z',
-        ]);
-
-        $this->vcalendar->add('VEVENT', [
-            'SUMMARY' => 'This is an exception',
-            'RECURRENCE-ID' => '20150226T184900Z',
-        ]);
+        $this->addBaseEventAndExceptions();
 
         $vevent = $this->vcalendar->create('VEVENT');
         $vevent->SUMMARY = 'New base vevent';
@@ -71,5 +58,51 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
 
         $this->assertEquals($this->vcalendar->VEVENT, $vevent);
+    }
+
+
+    public function testFindExceptionVEvent()
+    {
+        $this->addBaseEventAndExceptions();
+
+        $unexisting_exception = VObjectHelper::findExceptionVEvent(
+            $this->vcalendar,
+            '20150909T184900Z'
+        );
+
+        $this->assertNull($unexisting_exception);
+
+        $existing_exception = VObjectHelper::findExceptionVEvent(
+            $this->vcalendar,
+            '20150227T184900Z'
+        );
+
+        $this->assertEquals(
+            $existing_exception->SUMMARY,
+            'This is the first exception'
+        );
+    }
+
+    /**
+     * Internal function, used to add a base VEVENT and two exceptions
+     * to the test VCALENDAR
+     */
+    protected function addBaseEventAndExceptions()
+    {
+        $this->vcalendar->add('VEVENT', [
+            'SUMMARY' => 'This vevent will disappear',
+            'DTSTART' => '20150220T184900Z',
+            'RRULE' => 'FREQ=DAILY',
+        ]);
+
+        $this->vcalendar->add('VEVENT', [
+            'SUMMARY' => 'This is the first exception',
+            'RECURRENCE-ID' => '20150227T184900Z',
+        ]);
+
+        $this->vcalendar->add('VEVENT', [
+            'SUMMARY' => 'This is the second exception',
+            'RECURRENCE-ID' => '20150226T184900Z',
+        ]);
     }
 }

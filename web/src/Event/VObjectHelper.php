@@ -53,5 +53,24 @@ class VObjectHelper
 
         $vcalendar->children[$position] = $base;
     }
+
+    /**
+     * Finds an existing recurrence exception by RECURRENCE-ID
+     *
+     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @param string $recurrence_id
+     * @return \Sabre\VObject\Component\VEvent|null
+     */
+    public static function findExceptionVEvent(VCalendar $vcalendar, $recurrence_id)
+    {
+        foreach ($vcalendar->VEVENT as $vevent) {
+            $current_recurrence_id = (string)$vevent->{'RECURRENCE-ID'};
+            if ($current_recurrence_id === $recurrence_id) {
+                return $vevent;
+            }
+        }
+
+        return null;
+    }
 }
 

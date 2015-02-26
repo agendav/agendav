@@ -366,7 +366,7 @@ class VObjectEvent implements Event
         }
 
         if ($this->isException($recurrence_id)) {
-            return $this->findExceptionVEvent($recurrence_id);
+            return VObjectHelper::findExceptionVEvent($this->vcalendar, $recurrence_id);
         }
 
         // Create new VEVENT
@@ -374,24 +374,6 @@ class VObjectEvent implements Event
         $vevent->{'RECURRENCE-ID'} = $recurrence_id;
 
         return $vevent;
-    }
-
-    /**
-     * Finds an existing recurrence exception by RECURRENCE-ID
-     *
-     * @param string $recurrence_id
-     * @return \Sabre\VObject\Component\VEvent|null
-     */
-    protected function findExceptionVEvent($recurrence_id)
-    {
-        foreach ($this->vcalendar->VEVENT as $vevent) {
-            $current_recurrence_id = (string)$vevent->{'RECURRENCE-ID'};
-            if ($current_recurrence_id === $recurrence_id) {
-                return $vevent;
-            }
-        }
-
-        return null;
     }
 }
 
