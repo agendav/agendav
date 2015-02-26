@@ -24,6 +24,7 @@ namespace AgenDAV\Event;
 use AgenDAV\Event;
 use AgenDAV\EventInstance;
 use AgenDAV\Event\VObjectEventInstance;
+use AgenDAV\Event\VObjectHelper;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 
@@ -223,13 +224,13 @@ class VObjectEvent implements Event
         if ($base === null) {
             $instance->touch();
             $vevent = $instance->getInternalVEvent();
-            $this->vcalendar->add($vevent);
+            VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
         } else {
             $resulting_instance = new VObjectEventInstance($base);
             $resulting_instance->copyPropertiesFrom($instance);
             $resulting_instance->touch();
             $vevent = $resulting_instance->getInternalVEvent();
-            $this->vcalendar->VEVENT = $vevent;
+            VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
         }
     }
 
