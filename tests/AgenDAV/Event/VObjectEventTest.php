@@ -191,7 +191,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /** @expectedException \Exception */
+    // TODO
     public function testSetBaseEventInstanceRecurrenceId()
     {
         $vevent_exception = $this->generateRecurrentEvent();
