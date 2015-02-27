@@ -39,9 +39,6 @@ $app['caldav.publicurls'] = true;
 // Whether to show public CalDAV urls
 $app['caldav.baseurl.public'] = 'https://caldav.server.com/';
 
-// Enable calendar sharing
-$app['caldav.sharing'] = false;
-
 // Default timezone
 $app['defaults.timezone'] = 'Europe/Madrid';
 
