@@ -83,7 +83,7 @@ class VObjectHelper
      */
     public static function findExceptionVEvent(VCalendar $vcalendar, $recurrence_id)
     {
-        foreach ($vcalendar->VEVENT as $vevent) {
+        foreach ($vcalendar->select('VEVENT') as $vevent) {
             $current_recurrence_id = (string)$vevent->{'RECURRENCE-ID'};
             if ($current_recurrence_id === $recurrence_id) {
                 return $vevent;

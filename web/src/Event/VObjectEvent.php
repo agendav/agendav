@@ -131,7 +131,7 @@ class VObjectEvent implements Event
 
         $result = [];
 
-        foreach ($expanded_vcalendar->VEVENT as $vevent) {
+        foreach ($expanded_vcalendar->select('VEVENT') as $vevent) {
             $instance = $this->getExpandedInstance($vevent);
 
             $result[] = $instance;
@@ -299,7 +299,7 @@ class VObjectEvent implements Event
     protected function findRecurrenceExceptions(VCalendar $vcalendar)
     {
         $result = [];
-        foreach ($vcalendar->VEVENT as $vevent) {
+        foreach ($vcalendar->select('VEVENT') as $vevent) {
             $recurrence_id = $vevent->{'RECURRENCE-ID'};
             if ($recurrence_id !== null) {
                 $recurrence_id = (string)$recurrence_id;
