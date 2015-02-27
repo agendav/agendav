@@ -290,6 +290,43 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $reminder->getPosition());
     }
 
+    /**
+     * Tests a TRIGGER:0PTS VALARM, which is an alarm set to
+     * 'when the start events' by some CalDAV clients
+     */
+    public function testGetRemindersOnStart()
+    {
+        $ics = <<<ICS
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//dmfs.org//mimedir.icalendar//EN
+BEGIN:VEVENT
+DTSTART;TZID=Europe/Madrid:20150226T220700
+SUMMARY:A test event
+UID:be1554d5-f84c-46d3-aa2d-13d8df860826
+BEGIN:VALARM
+TRIGGER;VALUE=DURATION:PT0S
+ACTION:DISPLAY
+DESCRIPTION:Default Event Notification
+X-WR-ALARMUID:bbea860c-9c38-4b8d-95f8-b28721327d87
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+ICS;
+
+        $this->vcalendar = \Sabre\VObject\Reader::read($ics);
+        $vevent = $this->vcalendar->VEVENT[0];
+
+        $instance = new VObjectEventInstance($vevent);
+        $reminders = $instance->getReminders();
+
+        $this->assertCount(1, $reminders);
+        $reminder = $reminders[0];
+
+        $this->assertEquals([0, 'minutes'], $reminder->getParsedWhen());
+        $this->assertEquals(1, $reminder->getPosition());
+    }
+
     public function testClearReminders()
     {
         $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);

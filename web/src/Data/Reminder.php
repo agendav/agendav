@@ -95,7 +95,7 @@ class Reminder
         }
 
         // Trigger *after* DTSTART
-        if ($duration->invert !== 1) {
+        if ($duration->invert !== 1 && self::countMinutes($duration) !== 0) {
             return null;
         }
 
@@ -111,22 +111,7 @@ class Reminder
      */
     public function getParsedWhen()
     {
-        $dateinterval_units = [
-            'i' => 1,
-            'h' => 60,
-            'd' => 1440,
-            'm' => 40320,
-        ];
-
-
-        $count_minutes = 0;
-
-        foreach ($dateinterval_units as $key => $minutes) {
-            if ($this->when->{$key} !== 0) {
-                $count_minutes = $this->when->{$key} * $minutes;
-                break;
-            }
-        }
+        $count_minutes = self::countMinutes($this->when);
 
         if ($count_minutes === 0) {
             return [ 0, 'minutes' ];
@@ -219,5 +204,32 @@ class Reminder
         $format = '-P' . $template;
 
         return sprintf($format, $count);
+    }
+
+    /**
+     * Counts the minutes of a \DateInterval
+     *
+     * @return int
+     */
+    public static function countMinutes(\DateInterval $dateinterval)
+    {
+        $dateinterval_units = [
+            'i' => 1,
+            'h' => 60,
+            'd' => 1440,
+            'm' => 40320,
+        ];
+
+
+        $count_minutes = 0;
+
+        foreach ($dateinterval_units as $key => $minutes) {
+            if ($dateinterval->{$key} !== 0) {
+                $count_minutes = $dateinterval->{$key} * $minutes;
+                break;
+            }
+        }
+
+        return $count_minutes;
     }
 }
