@@ -18,7 +18,7 @@
 
 {?rrule}
 <dt>{@i18n type="labels" name="repeat"/}</dt>
-<dd>{rrule_explained}<span
+<dd>{rrule_explained}</dd>
 {/rrule}
 
 {#reminders}
