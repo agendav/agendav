@@ -404,7 +404,10 @@ class VObjectEventInstance implements EventInstance
         $all_day = $source->isAllDay();
         $this->setStart($source->getStart(), $all_day);
         $this->setEnd($source->getEnd(), $all_day);
-        $this->setRepeatRule($source->getRepeatRule());
+
+        if (!$this->isException()) {
+            $this->setRepeatRule($source->getRepeatRule());
+        }
 
         $this->clearReminders();
         $reminders = $source->getReminders();

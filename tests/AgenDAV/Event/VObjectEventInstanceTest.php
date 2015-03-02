@@ -58,7 +58,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
         $instance = new VObjectEventInstance($vevent);
 
-        $this->checkSomeProperties($instance);
+        $this->checkSomeProperties($instance, self::$some_properties['RECURRENCE-ID']);
     }
 
     public function testGetStart()
@@ -262,7 +262,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $instance_2 = new VObjectEventInstance($vevent_2);
 
         $instance_2->copyPropertiesFrom($instance);
-        $this->checkSomeProperties($instance_2, false);
+        $this->checkSomeProperties($instance_2);
 
         // copyPropertiesFrom should not touch SEQUENCE
         $this->assertEquals(null, $vevent_2->SEQUENCE, 'SEQUENCE should not be updated when copying properties');
@@ -272,6 +272,28 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
             $instance->getReminders(),
             $instance_2->getReminders()
         );
+    }
+
+    public function testCopyPropertiesOnRecurrenceException()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+        $instance = new VObjectEventInstance($vevent);
+        $instance->setStart($this->now);
+
+        $vevent_2 = $this->vcalendar->add('VEVENT');
+        // copyPropertiesFrom() does not copy UID
+        $vevent_2->UID = self::$some_properties['UID'];
+        $vevent_2->{'RECURRENCE-ID'} = '20150302T001122Z';
+        $instance_2 = new VObjectEventInstance($vevent_2);
+        $instance_2->markAsException();
+
+        $instance_2->copyPropertiesFrom($instance);
+        $this->checkSomeProperties($instance_2, '20150302T001122Z');
+
+        // copyPropertiesFrom should not copy RRULE
+        $this->assertEmpty(
+            $instance_2->getRepeatRule(),
+            'RRULE should not be set when copying properties on recurrence exceptions');
     }
 
     public function testGetReminders()
@@ -373,7 +395,7 @@ ICS;
     }
 
 
-    protected function checkSomeProperties(VObjectEventInstance $instance, $check_recurrence_id = true)
+    protected function checkSomeProperties(VObjectEventInstance $instance, $recurrence_id = false)
     {
         $this->assertEquals('12345', $instance->getUid());
         $this->assertEquals('Test summary', $instance->getSummary());
@@ -381,9 +403,10 @@ ICS;
         $this->assertEquals('Test description', $instance->getDescription());
         $this->assertEquals('PUBLIC', $instance->getClass());
         $this->assertEquals('OPAQUE', $instance->getTransp());
-        $this->assertEquals('FREQ=MONTHLY', $instance->getRepeatRule());
-        if ($check_recurrence_id) {
-            $this->assertEquals('20150109T123456', $instance->getRecurrenceId());
+        if ($recurrence_id !== false) {
+            $this->assertEquals($recurrence_id, $instance->getRecurrenceId());
+        } else {
+            $this->assertEquals('FREQ=MONTHLY', $instance->getRepeatRule());
         }
     }
 
