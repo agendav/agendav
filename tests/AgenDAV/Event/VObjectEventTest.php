@@ -17,8 +17,12 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->vcalendar = new VCalendar;
+        // MYPROPERTY is a sample property used to check if our code copies
+        // all unhandled properties to new instances
         $this->vevent = $this->vcalendar->add('VEVENT', [
             'UID' => '123456',
+            'SUMMARY' => 'Initial event instance',
+            'MYPROPERTY' => 'Check',
         ]);
     }
 
@@ -169,10 +173,6 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
     public function testSetBaseInstanceWithBase()
     {
-        // Set this on the base event instance
-        // to check if it is already there after
-        // merging with the new one
-        $this->vevent->MYPROPERTY = 'Mark';
         $event = new VObjectEvent($this->vcalendar);
 
         $instance = $event->createEventInstance();
@@ -186,21 +186,75 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         // Check directly on the VCALENDAR object
         $vevent = $this->vcalendar->getBaseComponent();
         $this->assertEmpty($vevent->{'RECURRENCE-ID'});
-        $this->assertEquals('Mark', $vevent->MYPROPERTY);
+        $this->assertEquals('Check', $vevent->MYPROPERTY);
         $this->assertEquals('New test summary', $vevent->SUMMARY);
     }
 
 
-    // TODO
-    public function testSetBaseEventInstanceRecurrenceId()
+    /** @expectedException \Exception */
+    public function testStoreInstanceModifyBaseWithExceptions()
+    {
+        $vevent_exception = $this->generateRecurrentEvent();
+        $event = new VObjectEvent($this->vcalendar);
+
+        // Get base instance
+        $instance = $event->getEventInstance();
+        $instance->setSummary('I am trying to modify the base instance');
+
+        $event->storeInstance($instance);
+    }
+
+    public function testStoreInstanceNewException()
+    {
+        $this->generateRecurrentEvent();
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = '20150128T012345Z';
+
+        $new_exception = $event->getEventInstance($recurrence_id);
+        $new_exception->setSummary('I am a new exception');
+        $new_exception->setStart(new \DateTime);
+
+        $event->storeInstance($new_exception);
+
+        $this->assertTrue($event->isException($recurrence_id));
+
+        // Check that base VEVENT is still there
+        $base = $event->getEventInstance();
+        $this->assertEquals(
+           $this->vevent->SUMMARY,
+           $base->getSummary()
+       );
+
+        // Some checks on new instance
+        $this->assertTrue($event->isException($recurrence_id));
+        $retrieved_exception = $event->getEventInstance($recurrence_id);
+        $this->assertEquals(
+            'Check',
+            $retrieved_exception->getInternalVEvent()->{'MYPROPERTY'},
+            'Additional properties are not copied to new exceptions'
+        );
+    }
+
+    public function testStoreInstanceExistingRecurrenceId()
     {
         $vevent_exception = $this->generateRecurrentEvent();
         $event = new VObjectEvent($this->vcalendar);
 
         $recurrence_id = (string)$vevent_exception->{'RECURRENCE-ID'};
         $instance = $event->getEventInstance($recurrence_id);
+        $instance->setSummary('I am an existing exception');
 
         $event->storeInstance($instance);
+
+        // Check that base VEVENT is still there
+        $base = $event->getEventInstance();
+        $this->assertEquals(
+           $this->vevent->SUMMARY,
+           $base->getSummary()
+       );
+
+        $this->assertTrue($event->isException($recurrence_id));
     }
 
     public function testGetEventInstanceEmpty()
@@ -277,6 +331,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
             'UID' => $this->vevent->UID,
             'RECURRENCE-ID' => '20150121T012345Z',
             'DTSTART' => '20150121T100000Z',
+            'ANOTHER-PROPERTY' => 'Check 2',
         ]);
 
         return $vevent_exception;
