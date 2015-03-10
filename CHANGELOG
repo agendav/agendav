@@ -1,11 +1,14 @@
-Release 1.3.0 (2012-?-?)
+Release 2.0.0 (development)
     * Calendar height in month view is now under control. Cells that have
       lots of events have now a '+N events' link to day view for that
       date
-    * Upgraded:
-      - CodeIgniter (to 2.1.3)
-    * Added ru_RU translation (thanks to Anton Dolgov)
-    * Added pl translation (thanks to Andrzej Borowicz)
+    * Dialogs are now client-side generated
+    * Switched to Silex framework
+    * New database abstraction layer (Doctrine DBAL)
+    * New CalDAV client that allows to log HTTP sessions
+    * New iCalendar parser (Sabre VObject)
+    * New repetition rules editor
+    * New reminders editor
 
 Release 1.2.6.2 (2012-10-15)
     * Add missing files
