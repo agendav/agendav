@@ -65,8 +65,10 @@ abstract class Alter extends JSONController
         $calendar = $this->client->getCalendarByUrl($input['calendar']);
         $resource = $this->client->fetchObjectByUid($calendar, $input['uid']);
 
+        $recurrence_id = isset($input['recurrence_id']) ? $input['recurrence_id'] : null;
+
         $event = $resource->getEvent();
-        $instance = $event->getEventInstance(); // TODO: recurrence-id?
+        $instance = $event->getEventInstance($recurrence_id);
 
         if ($instance === null) {
             throw new \UnexpectedValueException('Empty VCALENDAR?');

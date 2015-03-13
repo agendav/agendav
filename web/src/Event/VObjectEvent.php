@@ -283,6 +283,9 @@ class VObjectEvent implements Event
         $instance = new VObjectEventInstance($vevent);
         if ($recurrence_id !== null) {
             $instance->markAsException();
+
+            // Update instance start and end based on RECURRENCE-ID
+            $instance->updateForRecurrenceId($recurrence_id);
         }
 
         return $instance;

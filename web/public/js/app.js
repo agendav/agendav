@@ -1598,14 +1598,17 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
     }
   };
 
+  // Pass RECURRENCE-ID if event is recurrent
+  if (event.rrule !== undefined) {
+      fake_form.data['recurrence_id'] = event.recurrence_id
+  }
+
   fake_form.data[csrf_id] = get_csrf_token();
 
   send_form({
     form_object: fake_form,
     success: function(data) {
-      event.etag = data.etag;
-      event.orig_allday = event.allDay;
-      $('#calendar_view').fullCalendar('updateEvent', event);
+      updateEvents(event.id, (event.rrule !== 'undefined'), data.etag, event.allDay);
     },
     exception: function(data) {
       show_error(t('messages', 'error_modfailed'), data);
@@ -1925,6 +1928,40 @@ var t = function t(domain, key, params) {
  */
 var rrule_gettext = function rrule_gettext(key) {
   return t('rrule', key);
+};
+
+
+/**
+ * Updates Fullcalendar events ETag that match the passed id
+ *
+ * @param string id Event id
+ * @param bool recurrent true if this event repeats
+ * @param string etag
+ * @param bool allday
+ */
+var updateEvents = function updateEvents(id, recurrent, etag, allday) {
+  var filter = id;
+
+  // Look for events with id 'passed_id@*'
+  if (recurrent === true) {
+    filter = function(event) {
+      if (event.id === undefined) {
+        return false;
+      }
+
+      return (event.id.substring(0, id.length + 1) == id + '@');
+    };
+  }
+
+  var events = $('#calendar_view').fullCalendar('clientEvents', filter);
+
+  for (var i=0;i<events.length;i++) {
+    events[i].etag = etag;
+    events[i].orig_allday = allday;
+    $('#calendar_view').fullCalendar('updateEvent', events[i]);
+  }
+
+  return events.length;
 };
 
 

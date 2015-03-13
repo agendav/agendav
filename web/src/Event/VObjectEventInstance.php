@@ -428,6 +428,28 @@ class VObjectEventInstance implements EventInstance
         return $vevent;
     }
 
+    /**
+     * Updates start and end based on the passed RECURRENCE-ID.
+     *
+     * It is useful to generate a new recurrence exception
+     *
+     * @param string $recurrence_id
+     * @return void
+     */
+    public function updateForRecurrenceId($recurrence_id) {
+        $recurrence_moment = new \DateTime($recurrence_id);
+        $new_start = $this->getStart();
+        $new_end = $this->getEnd();
+
+        $diff = $new_start->diff($recurrence_moment);
+
+        $new_start->add($diff);
+        $new_end->add($diff);
+
+        $this->setStart($new_start);
+        $this->setEnd($new_end);
+    }
+
 
     /**
      * Set a property on the internal VEVENT. If a null

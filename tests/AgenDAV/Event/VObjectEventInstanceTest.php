@@ -394,6 +394,26 @@ ICS;
         $this->assertTrue($instance->isRecurrent(), 'After adding a RRULE, the instance should be marked as recurrent');
     }
 
+    public function testUpdateForRecurrenceId()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+
+        $instance = new VObjectEventInstance($vevent);
+        $start = new \DateTime('2015-03-13 21:00:00', new \DateTimeZone('Europe/Madrid'));
+        $end = new \DateTime('2015-03-13 21:45:00', new \DateTimeZone('Europe/Madrid'));
+        $instance->setStart($start);
+        $instance->setEnd($end);
+
+        $new_start = clone $start;
+        $new_start->modify('+1 month');
+        $new_end = clone $end;
+        $new_end->modify('+1 month');
+
+        $instance->updateForRecurrenceId('20150413T200000Z');
+        $this->assertEquals($new_start, $instance->getStart());
+        $this->assertEquals($new_end, $instance->getEnd());
+    }
+
 
     protected function checkSomeProperties(VObjectEventInstance $instance, $recurrence_id = false)
     {
