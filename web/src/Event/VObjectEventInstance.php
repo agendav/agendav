@@ -345,6 +345,17 @@ class VObjectEventInstance implements EventInstance
     public function setRecurrenceId($recurrence_id)
     {
         $this->setProperty('RECURRENCE-ID', $recurrence_id);
+        $recurrence_id = $this->vevent->{'RECURRENCE-ID'};
+
+        if ($recurrence_id === null) {
+            return;
+        }
+
+        // Set VALUE parameter according to the type of event (all-day or not)
+        unset($recurrence_id['VALUE']);
+        if ($this->isAllDay()) {
+            $recurrence_id['VALUE'] = 'DATE';
+        }
     }
 
     /**

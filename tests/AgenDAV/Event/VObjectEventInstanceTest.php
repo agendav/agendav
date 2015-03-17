@@ -435,6 +435,36 @@ ICS;
         $this->assertEquals($new_end, $instance->getEnd());
     }
 
+    public function testSetRecurrenceIdDateTime()
+    {
+        $vevent = $this->vcalendar->add('VEVENT');
+        $instance = new VObjectEventInstance($vevent);
+
+        $instance->setStart(new \DateTime());
+        $instance->setRepeatRule('FREQ=DAILY');
+        $instance->setRecurrenceId('20150318T001122Z');
+
+        $recurrence_id = $vevent->{'RECURRENCE-ID'};
+        $this->assertNull($recurrence_id['VALUE'], 'setRecurrenceId() does not set VALUE=DATE-TIME');
+    }
+
+    public function testSetRecurrenceIdDate()
+    {
+        $vevent = $this->vcalendar->add('VEVENT');
+        $instance = new VObjectEventInstance($vevent);
+
+        $instance->setStart(new \DateTime(), true);
+        $instance->setRepeatRule('FREQ=DAILY');
+        $instance->setRecurrenceId('20150318');
+
+        $recurrence_id = $vevent->{'RECURRENCE-ID'};
+        $this->assertEquals(
+            'DATE',
+            $recurrence_id['VALUE'],
+            'setRecurrenceId() does not set VALUE=DATE for all day events'
+        );
+    }
+
 
     protected function checkSomeProperties(VObjectEventInstance $instance, $recurrence_id = false)
     {
