@@ -414,6 +414,27 @@ ICS;
         $this->assertEquals($new_end, $instance->getEnd());
     }
 
+    public function testUpdateForRecurrenceIdAllDay()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
+
+        $instance = new VObjectEventInstance($vevent);
+        $start = new \DateTime('2015-03-17', new \DateTimeZone('UTC'));
+        $end = new \DateTime('2015-03-18', new \DateTimeZone('UTC'));
+        $instance->setStart($start, true);
+        $instance->setEnd($end, true);
+
+        // Generate new dates for this recurrence
+        $new_start = clone $start;
+        $new_start->modify('+1 month');
+        $new_end = clone $end;
+        $new_end->modify('+1 month');
+
+        $instance->updateForRecurrenceId('20150417');
+        $this->assertEquals($new_start, $instance->getStart());
+        $this->assertEquals($new_end, $instance->getEnd());
+    }
+
 
     protected function checkSomeProperties(VObjectEventInstance $instance, $recurrence_id = false)
     {

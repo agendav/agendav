@@ -436,8 +436,13 @@ class VObjectEventInstance implements EventInstance
      * @param string $recurrence_id
      * @return void
      */
-    public function updateForRecurrenceId($recurrence_id) {
-        $recurrence_moment = new \DateTime($recurrence_id);
+    public function updateForRecurrenceId($recurrence_id)
+    {
+        if ($this->isAllDay()) {
+            $recurrence_moment = new \DateTime($recurrence_id, new \DateTimeZone('UTC'));
+        } else {
+            $recurrence_moment = new \DateTime($recurrence_id);
+        }
         $new_start = $this->getStart();
         $new_end = $this->getEnd();
 
