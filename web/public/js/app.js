@@ -1653,8 +1653,9 @@ var event_delete_dialog = function event_delete_dialog(event_id) {
         form_object: $('#event_delete_form'),
         data: event_delete_details,
         success: function(rdata) {
-            $('#calendar_view').fullCalendar('removeEvents', data.id);
-          },
+          // TODO ask to remove recurrence exceptions
+          removeEvents(data.id, true);
+        },
         exception: function(rdata) {
             show_error(t('messages', 'error_event_not_deleted'), rdata);
         }
@@ -1940,18 +1941,7 @@ var rrule_gettext = function rrule_gettext(key) {
  * @param bool allday
  */
 var updateEvents = function updateEvents(id, recurrent, etag, allday) {
-  var filter = id;
-
-  // Look for events with id 'passed_id@*'
-  if (recurrent === true) {
-    filter = function(event) {
-      if (event.id === undefined) {
-        return false;
-      }
-
-      return (event.id.substring(0, id.length + 1) == id + '@');
-    };
-  }
+  var filter = generateIdFilter(id, recurrent);
 
   var events = $('#calendar_view').fullCalendar('clientEvents', filter);
 
@@ -1962,6 +1952,47 @@ var updateEvents = function updateEvents(id, recurrent, etag, allday) {
   }
 
   return events.length;
+};
+
+/**
+ * Removes Fullcalendar events that match the passed id. Useful for
+ * recurrent events
+ *
+ * @param string id Event id
+ * @param bool recurrent true if this event repeats
+ */
+var removeEvents = function removeEvents(id, recurrent) {
+  // TODO recurrence-ids
+  var filter = generateIdFilter(id, recurrent);
+
+  $('#calendar_view').fullCalendar('removeEvents', filter);
+};
+
+/**
+ * Generates a filter to search for events, based on a given id
+ * and an optional wildcard setting, useful for recurrent events
+ *
+ * @param string id
+ * @param bool wildcard
+ */
+var generateIdFilter = function generateIdFilter(id, wildcard) {
+  var result = id;
+
+  // Look for events with id 'passed_id@*'
+  if (wildcard === true) {
+    var parts = id.split('@');
+    var match_id = parts[0];
+
+    result = function(event) {
+      if (event.id === undefined) {
+        return false;
+      }
+
+      return (event.id.substring(0, match_id.length + 1) == match_id + '@');
+    };
+  }
+
+  return result;
 };
 
 
