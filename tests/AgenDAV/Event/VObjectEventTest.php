@@ -304,6 +304,10 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $instance = $event->getEventInstance($recurrence_id);
         $vevent = $instance->getInternalVEvent();
         $this->assertEquals($exception->serialize(), $vevent->serialize());
+
+        // Check that DTSTART is not modified, as the exception
+        // already existed
+        $this->assertEquals($exception->DTSTART->getDateTime(), $instance->getStart());
     }
 
     public function testGetEventInstanceForNonExistingExceptionOnRecurrentEvent()
@@ -318,6 +322,16 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($instance->isException());
         $this->assertEquals($instance->getRecurrenceId(), $recurrence_id);
+
+        // Check that start and end have been recalculated for this particular
+        // recurrence instance
+        $base_instance = $event->getEventInstance();
+        $start = $base_instance->getStart();
+        $start->modify('+7 days'); // Match the RECURRENCE-ID date
+        $end = $base_instance->getEnd();
+        $end->modify('+7 days'); // Match the RECURRENCE-ID date
+        $this->assertEquals($start, $instance->getStart(), 'Start date is not updated');
+        $this->assertEquals($end, $instance->getEnd(), 'End date is not updated');
     }
 
     protected function generateRecurrentEvent()
