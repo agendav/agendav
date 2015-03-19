@@ -1600,7 +1600,7 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
 
   // Pass RECURRENCE-ID if event is recurrent
   if (event.rrule !== undefined) {
-      fake_form.data['recurrence_id'] = event.recurrence_id
+      fake_form.data.recurrence_id = event.recurrence_id;
   }
 
   fake_form.data[csrf_id] = get_csrf_token();
