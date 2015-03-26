@@ -69,14 +69,17 @@ class VObjectBuilder implements Builder
      * Creates an empty EventInstance object
      *
      * @param \AgenDAV\Event $event Event this instance will be attached to
+     * @param string $recurrence_id
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createEventInstanceFor(\AgenDAV\Event $event)
+    public function createEventInstanceFor(\AgenDAV\Event $event, $recurrence_id = null)
     {
-        $result = $event->createEventInstance();
+        if ($recurrence_id === null) {
+            return $event->createEventInstance();
+        }
 
-        return $result;
+        return $event->getEventInstance($recurrence_id);
     }
 
     /**
@@ -93,7 +96,7 @@ class VObjectBuilder implements Builder
      * description
      * class
      * transp
-     * TODO: recurrence rules, reminders, recurrence-id
+     * recurrence-id
      *
      * @param \AgenDAV\Event $event Parent event
      * @param array $attributes
@@ -101,7 +104,11 @@ class VObjectBuilder implements Builder
      */
     public function createEventInstanceWithInput(\AgenDAV\Event $event, array $attributes)
     {
-        $instance = $this->createEventInstanceFor($event);
+        $recurrence_id = null;
+        if ($event->isRecurrent() && isset($attributes['recurrence_id'])) {
+            $recurrence_id = $attributes['recurrence_id'];
+        }
+        $instance = $this->createEventInstanceFor($event, $recurrence_id);
 
         // Try to assign most simple properties
         foreach ($attributes as $key => $value) {
@@ -136,7 +143,9 @@ class VObjectBuilder implements Builder
                 $instance->setTransp($value);
                 break;
             case 'rrule':
-                $instance->setRepeatRule($value);
+                if (!$instance->isException()) {
+                    $instance->setRepeatRule($value);
+                }
                 break;
         }
     }

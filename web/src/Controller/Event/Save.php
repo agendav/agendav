@@ -105,7 +105,6 @@ class Save extends JSONController
         $object = CalendarObject::generateOnCalendar($calendar, $uid);
         $event = $this->builder->createEvent($uid);
 
-        // TODO work with recurrence-ids
         $instance = $this->builder->createEventInstanceWithInput($event, $input);
 
         $event->storeInstance($instance);
@@ -126,7 +125,6 @@ class Save extends JSONController
         $source_object = $this->client->fetchObjectByUid($source_calendar, $uid);
         $event = $source_object->getEvent();
 
-        // TODO work with recurrence-ids
         $instance = $this->builder->createEventInstanceWithInput($event, $input);
         $event->storeInstance($instance);
 

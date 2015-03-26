@@ -39,10 +39,11 @@ interface Builder
      * Creates an empty EventInstance object
      *
      * @param \AgenDAV\Event $event Event this instance will be attached to
+     * @param string $recurrence_id
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createEventInstanceFor(\AgenDAV\Event $event);
+    public function createEventInstanceFor(\AgenDAV\Event $event, $recurrence_id = null);
 
     /**
      * Creates an EventInstance object after receiving an array of properties
@@ -58,7 +59,7 @@ interface Builder
      * description
      * class
      * transp
-     * TODO: recurrence rules, reminders, recurrence-id
+     * recurrence-id
      *
      * @param \AgenDAV\Event $event Parent event
      * @param array $attributes
