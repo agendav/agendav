@@ -10,8 +10,14 @@ var AgenDAVRepeat = AgenDAVRepeat || {};
  * @param jQuery $form jQuery element containing the form
  */
 AgenDAVRepeat.handleForm = function handleForm($form) {
+  var $fixed_repeat_rule = $('#fixed_repeat_rule');
   var $repeat_frequency = $('#repeat_frequency');
   var $repeat_ends = $('#repeat_ends');
+
+  if ($fixed_repeat_rule.val() == 'true') {
+    $form.find('select, input').attr('disabled', 'disabled');
+    return;
+  }
 
   $form.on('change', 'input,select.secondary', function(e) {
     AgenDAVRepeat.regenerate();

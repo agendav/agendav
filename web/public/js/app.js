@@ -526,15 +526,6 @@ var set_mindate = function set_mindate(mindate, datepickers) {
 // Triggers a dialog for editing/creating events
 var event_edit_dialog = function event_edit_dialog(type, data) {
 
-  // Repetition exceptions not implemented yet
-  if (type == 'modify' && data.recurrence_id !== undefined) {
-    show_error(
-        t('messages', 'error_oops'),
-        t('messages', 'error_notimplemented',
-          { '%feature': t('labels', 'repetitionexceptions') })
-    );
-    return;
-  }
 
   var form_url = AgenDAVConf.base_app_url + 'events/save';
   var title;
@@ -555,11 +546,14 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
       }
     }
   } else {
+    data = jQuery.extend(true, {}, data);
     title = t('labels', 'editevent');
+    /*
     if (data.rrule !== undefined) {
       data.start = moment(data.orig_start);
       data.end = moment(data.orig_end);
     }
+    */
 
     // end can be null if the iCalendar was defined with DTSTART <= DTEND
     data.end = AgenDAVDateAndTime.endDate(data);
@@ -575,6 +569,12 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
   // Set default calendar
   if (data.calendar === undefined) {
     data.calendar = AgenDAVUserPrefs.default_calendar;
+  }
+
+  // Recurrence exceptions
+  if (data.is_exception) {
+    data.fixed_calendar = true;
+    data.fixed_repeat_rule = true;
   }
 
   $.extend(

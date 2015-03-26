@@ -129,6 +129,8 @@ class VObjectEvent implements Event
         $expanded_vcalendar = clone $this->vcalendar;
         $expanded_vcalendar->expand($start, $end);
 
+        $base_instance = $this->getEventInstance();
+
         $result = [];
 
         foreach ($expanded_vcalendar->select('VEVENT') as $vevent) {
