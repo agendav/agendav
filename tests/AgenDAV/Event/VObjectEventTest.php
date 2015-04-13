@@ -99,6 +99,34 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($event->isException('20150110T092100Z'));
     }
 
+    public function testIsExceptionWithEmptyRecurrenceId()
+    {
+        $this->vevent->RRULE = self::$rrule;
+        $vevent = $this->vcalendar->add('VEVENT', [
+            'RECURRENCE-ID' => '20150413T143500',
+        ]);
+
+        $event = new VObjectEvent($this->vcalendar);
+        $this->assertFalse($event->isException(''));
+        $this->assertFalse($event->isException(null));
+    }
+
+    public function testIsExceptionWithTimeZone()
+    {
+        $this->vevent->RRULE = self::$rrule;
+        $vevent = $this->vcalendar->add('VEVENT', [
+            'RECURRENCE-ID' => '20150413T143500',
+        ]);
+
+        $vevent->{'RECURRENCE-ID'}['TZID'] = 'Europe/Madrid';
+
+        $event = new VObjectEvent($this->vcalendar);
+        $this->assertTrue(
+            $event->isException('20150413T123500Z'),
+            'Detection of non-UTC RECURRENCE-IDs is not working'
+        );
+    }
+
     /** @expectedException \LogicException */
     public function testCreateEventInstanceWithNoUid()
     {

@@ -27,6 +27,7 @@ use AgenDAV\Event\VObjectEventInstance;
 use AgenDAV\Event\VObjectHelper;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
+use Sabre\VObject\DateTimeParser;
 
 /**
  * VObject implementation of Events
@@ -43,7 +44,7 @@ class VObjectEvent implements Event
     /** @var string */
     protected $repeat_rule;
 
-    /** @var string[] */
+    /** @var \DateTime[] */
     protected $exceptions;
 
     /** @var string */
@@ -151,7 +152,19 @@ class VObjectEvent implements Event
      */
     public function isException($recurrence_id)
     {
-        return isset($this->exceptions[$recurrence_id]);
+        if (empty($recurrence_id)) {
+            return false;
+        }
+
+        $recurrence_datetime = DateTimeParser::parse($recurrence_id, null); // UTC
+        foreach ($this->exceptions as $exception_datetime) {
+            // Comparing two \DateTime objects with different timezones is allowed
+            if ($recurrence_datetime == $exception_datetime) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -325,10 +338,11 @@ class VObjectEvent implements Event
         $result = [];
         foreach ($vcalendar->select('VEVENT') as $vevent) {
             $recurrence_id = $vevent->{'RECURRENCE-ID'};
-            if ($recurrence_id !== null) {
-                $recurrence_id = (string)$recurrence_id;
-                $result[$recurrence_id] = true;
+            if ($recurrence_id === null) {
+                continue;
             }
+
+            $result[] = $recurrence_id->getDateTime();
         }
 
         return $result;
