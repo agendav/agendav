@@ -65,5 +65,20 @@ class RecurrenceId
     {
         return $this->datetime;
     }
+
+    /**
+     * Checks if a given \DateTime object matches this
+     * recurrence instance.
+     *
+     * Time zones are ignored, as the equals (==) operator for
+     * \DateTime objects behaves like that.
+     *
+     * @param \DateTime $datetime
+     * @return bool true if they match, false otherwise
+     */
+    public function matchesDateTime(\DateTime $datetime)
+    {
+        return $this->datetime == $datetime;
+    }
 }
 
