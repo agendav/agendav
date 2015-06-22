@@ -30,6 +30,22 @@ class RecurrenceIdTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->datetime == $recurrence_id->getDateTime());
     }
 
+    public function testGetString()
+    {
+        $recurrence_id = new RecurrenceId($this->datetime);
+        $this->assertEquals(
+            '20150617T173600Z',
+            $recurrence_id->getString(),
+            'getString() on RECURRENCE-IDs is not working'
+        );
+
+        $this->assertEquals(
+            '20150617',
+            $recurrence_id->getString(true),
+            'getString() on all day RECURRENCE-IDs is not working'
+        );
+    }
+
     public function testMatchesDateTime()
     {
         $recurrence_id = new RecurrenceId($this->datetime);

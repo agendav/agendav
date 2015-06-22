@@ -44,7 +44,7 @@ class RecurrenceId
     }
 
     /**
-     * Creates a new RecurrenceId from a string
+     * Creates a new RecurrenceId from an iCalendar string
      *
      * @param string $recurrence_id_string
      * @return \AgenDAV\Event\RecurrenceId
@@ -64,6 +64,21 @@ class RecurrenceId
     public function getDateTime()
     {
         return $this->datetime;
+    }
+
+    /**
+     * Returns an iCalendar formatted string in UTC
+     *
+     * @param bool $all_day If true, resulting string will be a DATE value
+     * @return string
+     */
+    public function getString($all_day = false)
+    {
+        if ($all_day) {
+            return $this->datetime->format('Ymd');
+        }
+
+        return $this->datetime->format('Ymd\THis\Z');
     }
 
     /**
