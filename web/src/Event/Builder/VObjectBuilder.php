@@ -27,6 +27,7 @@ use AgenDAV\Event;
 use AgenDAV\Event\Builder;
 use AgenDAV\Event\VObjectEvent;
 use AgenDAV\Event\VObjectEventInstance;
+use AgenDAV\Event\RecurrenceId;
 use AgenDAV\Data\Reminder;
 use Sabre\VObject\Component\VCalendar;
 
