@@ -12,18 +12,18 @@
         "mockery/mockery": "~0.9.1",
         "doctrine/orm": "~2.4",
         "guzzlehttp/guzzle": "~5.0.3",
-        "sabre/xml": "0.0.5",
+        "sabre/xml": "~1.0",
         "sabre/dav": "~2.0",
-        "league/fractal": "~0.10",
+        "league/fractal": "~0.12",
         "guzzlehttp/log-subscriber": "~1.0",
-        "rhumsaa/uuid": "~2.8.0",
-        "symfony/dependency-injection": "~2.6",
-        "symfony/translation": "~2.6",
-        "symfony/var-dumper": "~2.6",
-        "symfony/twig-bridge": "~2.6",
-        "symfony/security": "~2.6",
+        "ramsey/uuid": "~2.8.0",
+        "symfony/dependency-injection": "~2.6.0",
+        "symfony/translation": "~2.6.0",
+        "symfony/var-dumper": "~2.6.0",
+        "symfony/twig-bridge": "~2.6.0",
+        "symfony/security": "~2.6.0",
         "silex/web-profiler": "~1.0",
-        "symfony/config": "~2.6"
+        "symfony/config": "~2.6.0"
     },
     "autoload": {
         "psr-4": {

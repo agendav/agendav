@@ -244,6 +244,11 @@ $translations = array(
     'rrule.or' => 'or',
     'rrule.the' => 'the',
     'rrule.last' => 'last',
+
+    'rrule.st' => 'st',
+    'rrule.nd' => 'nd',
+    'rrule.rd' => 'rd',
+    'rrule.th' => 'th',
 );
 
 return $translations;

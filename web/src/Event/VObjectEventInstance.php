@@ -23,6 +23,7 @@ namespace AgenDAV\Event;
 
 use AgenDAV\Event;
 use AgenDAV\EventInstance;
+use AgenDAV\Event\RecurrenceId;
 use AgenDAV\Data\Reminder;
 use Sabre\VObject\DateTimeParser;
 use Sabre\VObject\Component\VCalendar;
@@ -192,11 +193,18 @@ class VObjectEventInstance implements EventInstance
     /**
      * Gets the RECURRENCE-ID property of this instance
      *
-     * @return string
+     * @return AgenDAV\Event\RecurrenceId
      */
     public function getRecurrenceId()
     {
-        return (string) $this->vevent->{'RECURRENCE-ID'};
+        $vobject_recurrence_id = $this->vevent->{'RECURRENCE-ID'};
+        if ($vobject_recurrence_id === null) {
+            return null;
+        }
+
+        $datetime = $vobject_recurrence_id->getDateTime();
+
+        return new RecurrenceId($datetime);
     }
 
     /**
@@ -340,16 +348,17 @@ class VObjectEventInstance implements EventInstance
     /**
      * Set the RECURRENCE-ID property for this event
      *
-     * @param string $recurrence_id
+     * @param AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
-    public function setRecurrenceId($recurrence_id)
+    public function setRecurrenceId(RecurrenceId $recurrence_id = null)
     {
-        $this->setProperty('RECURRENCE-ID', $recurrence_id);
-        $recurrence_id = $this->vevent->{'RECURRENCE-ID'};
-
         if ($recurrence_id === null) {
+            $this->setProperty('RECURRENCE-ID', null);
             return;
         }
+
+        $this->setProperty('RECURRENCE-ID', $recurrence_id->getString());
+        $recurrence_id = $this->vevent->{'RECURRENCE-ID'};
 
         // Set VALUE parameter according to the type of event (all-day or not)
         unset($recurrence_id['VALUE']);
@@ -444,16 +453,13 @@ class VObjectEventInstance implements EventInstance
      *
      * It is useful to generate a new recurrence exception
      *
-     * @param string $recurrence_id
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
      * @return void
      */
-    public function updateForRecurrenceId($recurrence_id)
+    public function updateForRecurrenceId(RecurrenceId $recurrence_id)
     {
-        if ($this->isAllDay()) {
-            $recurrence_moment = new \DateTime($recurrence_id, new \DateTimeZone('UTC'));
-        } else {
-            $recurrence_moment = new \DateTime($recurrence_id);
-        }
+        $recurrence_moment = $recurrence_id->getDateTime();
+
         $new_start = $this->getStart();
         $new_end = $this->getEnd();
 

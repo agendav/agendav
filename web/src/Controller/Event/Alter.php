@@ -27,6 +27,7 @@ use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\DateHelper;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\EventInstance;
+use AgenDAV\Event\RecurrenceId;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -65,7 +66,11 @@ abstract class Alter extends JSONController
         $calendar = $this->client->getCalendarByUrl($input['calendar']);
         $resource = $this->client->fetchObjectByUid($calendar, $input['uid']);
 
-        $recurrence_id = !empty($input['recurrence_id']) ? $input['recurrence_id'] : null;
+        $recurrence_id = null;
+
+        if (!empty($input['recurrence_id'])) {
+            $recurrence_id = RecurrenceId::buildFromString($input['recurrence_id']);
+        }
 
         $event = $resource->getEvent();
         $instance = $event->getEventInstance($recurrence_id);

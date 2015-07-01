@@ -23,6 +23,7 @@ namespace AgenDAV\Event;
 
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
+use AgenDAV\Event\RecurrenceId;
 
 /**
  * This class provides several helper methods to deal with VObject structures
@@ -64,7 +65,8 @@ class VObjectHelper
      */
     public static function setExceptionVEvent(VCalendar $vcalendar, VEvent $vevent)
     {
-        $recurrence_id = (string) $vevent->{'RECURRENCE-ID'};
+        $recurrence_id_datetime = $vevent->{'RECURRENCE-ID'}->getDateTime();
+        $recurrence_id = new RecurrenceId($recurrence_id_datetime);
         $existing = self::findExceptionVEvent($vcalendar, $recurrence_id);
 
         if ($existing !== null) {
@@ -78,14 +80,18 @@ class VObjectHelper
      * Finds an existing recurrence exception by RECURRENCE-ID
      *
      * @param Sabre\VObject\Component\VCalendar $vcalendar
-     * @param string $recurrence_id
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
      * @return \Sabre\VObject\Component\VEvent|null
      */
-    public static function findExceptionVEvent(VCalendar $vcalendar, $recurrence_id)
+    public static function findExceptionVEvent(VCalendar $vcalendar, RecurrenceId $recurrence_id)
     {
         foreach ($vcalendar->select('VEVENT') as $vevent) {
-            $current_recurrence_id = (string)$vevent->{'RECURRENCE-ID'};
-            if ($current_recurrence_id === $recurrence_id) {
+            $current_recurrence_id = $vevent->{'RECURRENCE-ID'};
+            if ($current_recurrence_id === null) {
+                continue;
+            }
+
+            if ($recurrence_id->matchesDateTime($current_recurrence_id->getDateTime())) {
                 return $vevent;
             }
         }

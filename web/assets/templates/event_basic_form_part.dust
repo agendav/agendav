@@ -4,6 +4,9 @@
 <input type="hidden" name="href" value="{href}" />
 <input type="hidden" name="etag" value="{etag}" />
 <input type="hidden" name="original_calendar" value="{calendar}" />
+{?is_exception}
+<input type="hidden" name="recurrence_id" value="{recurrence_id}" />
+{/is_exception}
 {/uid}
 
 {>form_element_start for="summary" label="summary" /}
@@ -15,7 +18,7 @@
 {>form_element_end/}
 
 {>form_element_start for="calendar" label="calendar" /}
-<select name="calendar" class="form-control">
+<select name="calendar" class="form-control"{?fixed_calendar} disabled="disabled"{/fixed_calendar}>
 {#calendars current_calendar=calendar}
  <option value="{url}"{@eq key="{calendar}" value="{current_calendar}"} selected="selected"{/eq}>{displayname}</option>
 {/calendars}

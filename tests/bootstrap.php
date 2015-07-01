@@ -1,3 +1,7 @@
 <?php
+$vendor_directory = getenv('COMPOSER_VENDOR_DIR');
+if ($vendor_directory === false) {
+    $vendor_directory = __DIR__.'/../web/vendor';
+}
 
-include __DIR__ . '/../web/vendor/autoload.php';
+include $vendor_directory . '/autoload.php';

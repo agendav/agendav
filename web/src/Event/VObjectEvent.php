@@ -27,6 +27,7 @@ use AgenDAV\Event\VObjectEventInstance;
 use AgenDAV\Event\VObjectHelper;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
+use Sabre\VObject\DateTimeParser;
 
 /**
  * VObject implementation of Events
@@ -43,7 +44,7 @@ class VObjectEvent implements Event
     /** @var string */
     protected $repeat_rule;
 
-    /** @var string[] */
+    /** @var \DateTime[] */
     protected $exceptions;
 
     /** @var string */
@@ -129,6 +130,8 @@ class VObjectEvent implements Event
         $expanded_vcalendar = clone $this->vcalendar;
         $expanded_vcalendar->expand($start, $end);
 
+        $base_instance = $this->getEventInstance();
+
         $result = [];
 
         foreach ($expanded_vcalendar->select('VEVENT') as $vevent) {
@@ -144,12 +147,24 @@ class VObjectEvent implements Event
      * Checks if a RECURRENCE-ID string (that could be the result of
      * expanding a recurrent event) was an exception to the rule or not
      *
-     * @param string $recurrence_id RECURRENCE-ID value
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
      * @return boolean
      */
-    public function isException($recurrence_id)
+    public function isException(RecurrenceId $recurrence_id = null)
     {
-        return isset($this->exceptions[$recurrence_id]);
+        if ($recurrence_id === null) {
+            return false;
+        }
+
+        $recurrence_datetime = $recurrence_id->getDateTime(); // UTC
+        foreach ($this->exceptions as $exception_datetime) {
+            // Comparing two \DateTime objects with different timezones is allowed
+            if ($recurrence_datetime == $exception_datetime) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -260,13 +275,13 @@ class VObjectEvent implements Event
      * If the passed RECURRENCE-ID does not match any existing exceptions,
      * a new EventInstance will be created with RECURRENCE-ID set
      *
-     * @param string|null $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      * @return \AgenDAV\EventInstance|null
      * @throws \LogicException if this event is not recurrent and a $recurrence_id
      * is specified
      */
 
-    public function getEventInstance($recurrence_id = null)
+    public function getEventInstance(RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
             $vevent = $this->vcalendar->getBaseComponent('VEVENT');
@@ -323,10 +338,11 @@ class VObjectEvent implements Event
         $result = [];
         foreach ($vcalendar->select('VEVENT') as $vevent) {
             $recurrence_id = $vevent->{'RECURRENCE-ID'};
-            if ($recurrence_id !== null) {
-                $recurrence_id = (string)$recurrence_id;
-                $result[$recurrence_id] = true;
+            if ($recurrence_id === null) {
+                continue;
             }
+
+            $result[] = $recurrence_id->getDateTime();
         }
 
         return $result;
@@ -365,7 +381,7 @@ class VObjectEvent implements Event
 
             $recurrence_id = $instance->getRecurrenceId();
 
-            if ($this->isException($recurrence_id)) {
+            if ($recurrence_id !== null && $this->isException($recurrence_id)) {
                 $instance->markAsException();
             }
         }
@@ -378,11 +394,11 @@ class VObjectEvent implements Event
      *
      * If the event is not recurrent, a \LogicException will be thrown
      *
-     * @param string $recurrence_id
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
      * @return \Sabre\VObject\Component\VEvent
      * @throws \LogicException if this event is not recurrent
      */
-    protected function getRecurrenceExceptionVEvent($recurrence_id)
+    protected function getRecurrenceExceptionVEvent(RecurrenceId $recurrence_id)
     {
         if (!$this->isRecurrent()) {
             throw new \LogicException('This event is not recurrent');
@@ -394,7 +410,7 @@ class VObjectEvent implements Event
 
         // Create new VEVENT
         $vevent = clone $this->vcalendar->getBaseComponent('VEVENT');
-        $vevent->{'RECURRENCE-ID'} = $recurrence_id;
+        $vevent->{'RECURRENCE-ID'} = $recurrence_id->getDateTime();
 
         return $vevent;
     }
