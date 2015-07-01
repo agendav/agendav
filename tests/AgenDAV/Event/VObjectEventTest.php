@@ -352,6 +352,32 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($exception->DTSTART->getDateTime(), $instance->getStart());
     }
 
+    /**
+     * This test is used to check if searching for RECURRENCE-IDs works with
+     * different timezones
+     */
+    public function testGetEventInstanceForExistingExceptionWithTimeZoneOnRecurrentEvent()
+    {
+        $datetime = new \DateTime('2015-07-01 13:29:00', new \DateTimeZone('Europe/Madrid'));
+        $exception = $this->generateRecurrentEventWithTimeZone($datetime);
+        $datetime_exception = clone $datetime;
+        $datetime_exception->modify('+1 day');
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        // Using a \DateTime object with the same timezone
+        $recurrence_id = new RecurrenceId($datetime_exception);
+        $instance = $event->getEventInstance($recurrence_id);
+        $vevent = $instance->getInternalVEvent();
+        $this->assertEquals($exception->serialize(), $vevent->serialize());
+
+        // Using a DATE-TIME string
+        $recurrence_id = RecurrenceId::buildFromString('20150702T112900Z');
+        $instance = $event->getEventInstance($recurrence_id);
+        $vevent = $instance->getInternalVEvent();
+        $this->assertEquals($exception->serialize(), $vevent->serialize());
+    }
+
     public function testGetEventInstanceForNonExistingExceptionOnRecurrentEvent()
     {
         $exception = $this->generateRecurrentEvent();
@@ -389,6 +415,29 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
             'DTSTART' => '20150121T100000Z',
             'ANOTHER-PROPERTY' => 'Check 2',
         ]);
+
+        return $vevent_exception;
+    }
+
+    protected function generateRecurrentEventWithTimeZone(\DateTime $original_start)
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = $original_start;
+
+        $tomorrow = clone $original_start;
+        $tomorrow->modify('+1 day');
+
+        $new_tomorrow_dtstart = clone $tomorrow;
+        $new_tomorrow_dtstart->modify('+10 minutes');
+
+        // Event instance with RECURRENCE-ID, should not be returned as base
+        // instance
+        $vevent_exception = $this->vcalendar->add('VEVENT', [
+            'UID' => $this->vevent->UID,
+            'DTSTART' => $new_tomorrow_dtstart,
+            'ANOTHER-PROPERTY' => 'Check 2',
+        ]);
+        $vevent_exception->{'RECURRENCE-ID'} = $tomorrow;
 
         return $vevent_exception;
     }
