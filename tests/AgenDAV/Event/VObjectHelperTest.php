@@ -5,6 +5,7 @@ namespace AgenDAV\Event;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use AgenDAV\Event\VObjectHelper;
+use AgenDAV\Event\RecurrenceId;
 use Mockery as m;
 
 class VObjectHelperTest extends \PHPUnit_Framework_TestCase
@@ -67,14 +68,14 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
 
         $unexisting_exception = VObjectHelper::findExceptionVEvent(
             $this->vcalendar,
-            '20150909T184900Z'
+            RecurrenceId::buildFromString('20150909T184900Z')
         );
 
         $this->assertNull($unexisting_exception);
 
         $existing_exception = VObjectHelper::findExceptionVEvent(
             $this->vcalendar,
-            '20150227T184900Z'
+            RecurrenceId::buildFromString('20150227T184900Z')
         );
 
         $this->assertEquals(
@@ -94,7 +95,9 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         VObjectHelper::setExceptionVEvent($this->vcalendar, $new_exception);
 
         $this->assertEquals(
-            VObjectHelper::findExceptionVEvent($this->vcalendar, '20150302T184900Z'),
+            VObjectHelper::findExceptionVEvent(
+                $this->vcalendar, RecurrenceId::buildFromString('20150302T184900Z')
+            ),
             $new_exception,
             'VEVENT exceptions are not added'
         );
@@ -107,7 +110,9 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         VObjectHelper::setExceptionVEvent($this->vcalendar, $modified_exception);
 
         $this->assertEquals(
-            VObjectHelper::findExceptionVEvent($this->vcalendar, '20150302T184900Z'),
+            VObjectHelper::findExceptionVEvent(
+                $this->vcalendar, RecurrenceId::buildFromString('20150302T184900Z')
+            ),
             $modified_exception,
             'VEVENT exceptions are not replaced'
         );

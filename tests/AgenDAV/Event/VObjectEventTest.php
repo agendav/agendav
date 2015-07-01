@@ -81,10 +81,17 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(4, $instances);
 
         // Make sure all properties match
-        foreach ($instances as $instance) {
+        foreach ($instances as $index => $instance) {
             $this->assertEquals($event->getUid(), $instance->getUid());
             $this->assertEquals(self::$rrule, $instance->getRepeatRule());
-            $this->assertNotNull($instance->getRecurrenceId());
+
+            // First instances doesn't have a RECURRENCE-ID
+            if ($index > 0) {
+                $this->assertNotNull(
+                    $instance->getRecurrenceId(),
+                    'RECURRENCE-ID is not set for expanded instances'
+                );
+            }
         }
     }
 
@@ -96,10 +103,11 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $event = new VObjectEvent($this->vcalendar);
-        $this->assertTrue($event->isException('20150110T092100Z'));
+        $recurrence_id = RecurrenceId::buildFromString('20150110T092100Z');
+        $this->assertTrue($event->isException($recurrence_id));
     }
 
-    public function testIsExceptionWithEmptyRecurrenceId()
+    public function testIsExceptionWithNullRecurrenceId()
     {
         $this->vevent->RRULE = self::$rrule;
         $vevent = $this->vcalendar->add('VEVENT', [
@@ -107,7 +115,6 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $event = new VObjectEvent($this->vcalendar);
-        $this->assertFalse($event->isException(''));
         $this->assertFalse($event->isException(null));
     }
 
@@ -121,8 +128,9 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $vevent->{'RECURRENCE-ID'}['TZID'] = 'Europe/Madrid';
 
         $event = new VObjectEvent($this->vcalendar);
+        $recurrence_id = RecurrenceId::buildFromString('20150413T123500Z');
         $this->assertTrue(
-            $event->isException('20150413T123500Z'),
+            $event->isException($recurrence_id),
             'Detection of non-UTC RECURRENCE-IDs is not working'
         );
     }
@@ -192,11 +200,15 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $instance = $event->createEventInstance();
         $instance->setStart(new \DateTime());
-        $instance->setRecurrenceId('20150110T100500Z');
+        $recurrence_id = RecurrenceId::buildFromString('20150110T100500Z');
+        $instance->setRecurrenceId($recurrence_id);
 
         $event->storeInstance($instance);
 
-        $this->assertEmpty($instance->getRecurrenceId());
+        $this->assertNull(
+            $instance->getRecurrenceId(),
+            'A base instance should not have a RECURRENCE-ID'
+        );
     }
 
     public function testSetBaseInstanceWithBase()
@@ -207,7 +219,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $now = new \DateTime();
         $instance->setStart(new \DateTime(), true);
         $instance->setSummary('New test summary');
-        $instance->setRecurrenceId('20150110T100500Z');
+        $instance->setRecurrenceId(RecurrenceId::buildFromString('20150110T100500Z'));
 
         $event->storeInstance($instance);
 
@@ -237,7 +249,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->generateRecurrentEvent();
         $event = new VObjectEvent($this->vcalendar);
 
-        $recurrence_id = '20150128T012345Z';
+        $recurrence_id = RecurrenceId::buildFromString('20150128T012345Z');
 
         $new_exception = $event->getEventInstance($recurrence_id);
         $new_exception->setSummary('I am a new exception');
@@ -269,7 +281,8 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $vevent_exception = $this->generateRecurrentEvent();
         $event = new VObjectEvent($this->vcalendar);
 
-        $recurrence_id = (string)$vevent_exception->{'RECURRENCE-ID'};
+        $recurrence_id_text = (string)$vevent_exception->{'RECURRENCE-ID'};
+        $recurrence_id = RecurrenceId::buildFromString($recurrence_id_text);
         $instance = $event->getEventInstance($recurrence_id);
         $instance->setSummary('I am an existing exception');
 
@@ -318,7 +331,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
     public function testGetEventInstanceOnNonRecurrentEvent()
     {
         $event = new VObjectEvent($this->vcalendar);
-        $instance = $event->getEventInstance('TEST');
+        $instance = $event->getEventInstance(RecurrenceId::buildFromString('20150601T012345Z'));
     }
 
     public function testGetEventInstanceForExistingExceptionOnRecurrentEvent()
@@ -327,7 +340,8 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $event = new VObjectEvent($this->vcalendar);
 
-        $recurrence_id = (string)$exception->{'RECURRENCE-ID'};
+        $recurrence_id_text = (string)$exception->{'RECURRENCE-ID'};
+        $recurrence_id = RecurrenceId::buildFromString($recurrence_id_text);
 
         $instance = $event->getEventInstance($recurrence_id);
         $vevent = $instance->getInternalVEvent();
@@ -344,7 +358,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $event = new VObjectEvent($this->vcalendar);
 
-        $recurrence_id = '20150127T012345Z';
+        $recurrence_id = RecurrenceId::buildFromString('20150127T012345Z');
 
         $instance = $event->getEventInstance($recurrence_id);
 

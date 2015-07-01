@@ -5,6 +5,7 @@ namespace AgenDAV\Event;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use AgenDAV\Data\Reminder;
+use AgenDAV\Event\RecurrenceId;
 
 /**
  * @author jorge
@@ -25,7 +26,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         'CLASS' => 'PUBLIC',
         'TRANSP' => 'OPAQUE',
         'RRULE' => 'FREQ=MONTHLY',
-        'RECURRENCE-ID' => '20150109T123456',
+        'RECURRENCE-ID' => '20150109T123456Z',
         'SEQUENCE' => '2',
     ];
 
@@ -409,7 +410,8 @@ ICS;
         $new_end = clone $end;
         $new_end->modify('+1 month');
 
-        $instance->updateForRecurrenceId('20150413T200000Z');
+        $recurrence_id = RecurrenceId::buildFromString('20150413T200000Z');
+        $instance->updateForRecurrenceId($recurrence_id);
         $this->assertEquals($new_start, $instance->getStart());
         $this->assertEquals($new_end, $instance->getEnd());
     }
@@ -430,7 +432,8 @@ ICS;
         $new_end = clone $end;
         $new_end->modify('+1 month');
 
-        $instance->updateForRecurrenceId('20150417');
+        $recurrence_id = RecurrenceId::buildFromString('20150417');
+        $instance->updateForRecurrenceId($recurrence_id);
         $this->assertEquals($new_start, $instance->getStart());
         $this->assertEquals($new_end, $instance->getEnd());
     }
@@ -442,7 +445,8 @@ ICS;
 
         $instance->setStart(new \DateTime());
         $instance->setRepeatRule('FREQ=DAILY');
-        $instance->setRecurrenceId('20150318T001122Z');
+        $recurrence_id = RecurrenceId::buildFromString('20150318T001122Z');
+        $instance->setRecurrenceId($recurrence_id);
 
         $recurrence_id = $vevent->{'RECURRENCE-ID'};
         $this->assertNull($recurrence_id['VALUE'], 'setRecurrenceId() does not set VALUE=DATE-TIME');
@@ -455,7 +459,8 @@ ICS;
 
         $instance->setStart(new \DateTime(), true);
         $instance->setRepeatRule('FREQ=DAILY');
-        $instance->setRecurrenceId('20150318');
+        $recurrence_id = RecurrenceId::buildFromString('20150318');
+        $instance->setRecurrenceId($recurrence_id);
 
         $recurrence_id = $vevent->{'RECURRENCE-ID'};
         $this->assertEquals(
@@ -463,6 +468,20 @@ ICS;
             $recurrence_id['VALUE'],
             'setRecurrenceId() does not set VALUE=DATE for all day events'
         );
+    }
+
+    public function testSetRecurrenceIdNull()
+    {
+        $vevent = $this->vcalendar->add('VEVENT');
+        $instance = new VObjectEventInstance($vevent);
+
+        $instance->setStart(new \DateTime(), true);
+        $instance->setRepeatRule('FREQ=DAILY');
+        $instance->setRecurrenceId(RecurrenceId::buildFromString('20150701T001122Z'));
+        $instance->setRecurrenceId(null);
+
+        $recurrence_id = $vevent->{'RECURRENCE-ID'};
+        $this->assertNull($recurrence_id, 'setRecurrenceId(null) has no effect');
     }
 
 
@@ -475,7 +494,8 @@ ICS;
         $this->assertEquals('PUBLIC', $instance->getClass());
         $this->assertEquals('OPAQUE', $instance->getTransp());
         if ($recurrence_id !== false) {
-            $this->assertEquals($recurrence_id, $instance->getRecurrenceId());
+            $recurrence_id_wrapper = RecurrenceId::buildFromString($recurrence_id);
+            $this->assertEquals($recurrence_id_wrapper, $instance->getRecurrenceId());
         } else {
             $this->assertEquals('FREQ=MONTHLY', $instance->getRepeatRule());
         }

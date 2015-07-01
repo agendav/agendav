@@ -28,6 +28,11 @@ class RecurrenceIdTest extends \PHPUnit_Framework_TestCase
         // Fixed UTC timestamp. Europe/Madrid has +0200 because of DST
         $recurrence_id = RecurrenceId::buildFromString('20150617T173600Z');
         $this->assertTrue($this->datetime == $recurrence_id->getDateTime());
+
+        // Same with DATE value
+        $recurrence_id = RecurrenceId::buildFromString('20150617');
+        $datetime_allday = new \DateTime('2015-06-17', new \DateTimeZone('UTC'));
+        $this->assertTrue($datetime_allday == $recurrence_id->getDateTime());
     }
 
     public function testGetString()

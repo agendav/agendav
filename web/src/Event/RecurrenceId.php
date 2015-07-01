@@ -96,4 +96,3 @@ class RecurrenceId
         return $this->datetime == $datetime;
     }
 }
-

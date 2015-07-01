@@ -21,6 +21,8 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Event\RecurrenceId;
+
 /**
  * This interface models an event instance (also known as 'expanded event')
  */
@@ -106,7 +108,7 @@ interface EventInstance
     /**
      * Gets the RECURRENCE-ID property of this instance
      *
-     * @return string
+     * @return AgenDAV\Event\RecurrenceId
      */
     public function getRecurrenceId();
 
@@ -192,9 +194,9 @@ interface EventInstance
     /**
      * Set the RECURRENCE-ID property for this event
      *
-     * @param string $recurrence_id
+     * @param AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
-    public function setRecurrenceId($recurrence_id);
+    public function setRecurrenceId(RecurrenceId $recurrence_id = null);
 
     /**
      * Sets the exception status for this instance. This is useful on

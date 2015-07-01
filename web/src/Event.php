@@ -21,6 +21,8 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Event\RecurrenceId;
+
 /**
  * This interface models an Event
  *
@@ -68,13 +70,12 @@ interface Event
     public function expand(\DateTime $start, \DateTime $end);
 
     /**
-     * Checks if a RECURRENCE-ID string (that could be the result of
-     * expanding a recurrent event) was an exception to the rule or not
+     * Checks if a RECURRENCE-ID is an exception to the repeat rule or not
      *
-     * @param string $recurrence_id RECURRENCE-ID value
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
      * @return boolean
      */
-    public function isException($recurrence_id);
+    public function isException(RecurrenceId $recurrence_id = null);
 
     /**
      * Returns an iCalendar string representation of this event
@@ -102,13 +103,13 @@ interface Event
      * If the passed RECURRENCE-ID does not match any existing exceptions,
      * a new EventInstance will be created with RECURRENCE-ID set
      *
-     * @param string|null $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      * @return \AgenDAV\EventInstance|null
      * @throws \LogicException if this event is not recurrent and a $recurrence_id
      * is specified
      */
 
-    public function getEventInstance($recurrence_id = null);
+    public function getEventInstance(RecurrenceId $recurrence_id = null);
 
     /**
      * Adds an EventInstance for this event. In case the event is not recurrent,

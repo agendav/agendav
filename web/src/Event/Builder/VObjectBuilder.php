@@ -69,11 +69,11 @@ class VObjectBuilder implements Builder
      * Creates an empty EventInstance object
      *
      * @param \AgenDAV\Event $event Event this instance will be attached to
-     * @param string $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createEventInstanceFor(\AgenDAV\Event $event, $recurrence_id = null)
+    public function createEventInstanceFor(\AgenDAV\Event $event, RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
             return $event->createEventInstance();

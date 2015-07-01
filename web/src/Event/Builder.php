@@ -21,6 +21,8 @@ namespace AgenDAV\Event;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Event\RecurrenceId;
+
 /**
  * Interface to generate new Events and EventInstances
  */
@@ -39,11 +41,11 @@ interface Builder
      * Creates an empty EventInstance object
      *
      * @param \AgenDAV\Event $event Event this instance will be attached to
-     * @param string $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createEventInstanceFor(\AgenDAV\Event $event, $recurrence_id = null);
+    public function createEventInstanceFor(\AgenDAV\Event $event, RecurrenceId $recurrence_id = null);
 
     /**
      * Creates an EventInstance object after receiving an array of properties
