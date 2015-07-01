@@ -2,7 +2,7 @@
 
 namespace AgenDAV\XML;
 
-use Sabre\Xml\Service as XMLUtil;
+use Sabre\XML\Util as XMLUtil;
 use AgenDAV\CalDAV\ComponentFilter;
 use AgenDAV\CalDAV\Share\ACL;
 
