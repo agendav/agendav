@@ -96,7 +96,7 @@ class VObjectBuilder implements Builder
      * description
      * class
      * transp
-     * recurrence-id
+     * recurrence_id
      *
      * @param \AgenDAV\Event $event Parent event
      * @param array $attributes
@@ -150,6 +150,12 @@ class VObjectBuilder implements Builder
         }
     }
 
+    /**
+     * Sets start and end on a VObjectEventInstance.
+     *
+     * @param \AgenDAV\Event\VObjectEventInstance $instance
+     * @param Array $attributes Needs the following keys: 'allday', 'start' and 'end'
+     */
     protected function setStartAndEnd(VObjectEventInstance $instance, array $attributes)
     {
         $is_all_day = !empty($attributes['allday']) && $attributes['allday'] === 'true';
@@ -189,11 +195,12 @@ class VObjectBuilder implements Builder
     }
 
     /**
-     * undocumented function
+     * Returns a set of Reminder
      *
-     * @return void
+     * @param Array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
+     * @return AgenDAV\Data\Reminder[]
      */
-    protected function buildReminders($input)
+    protected function buildReminders(Array $input)
     {
         $result = [];
         $total = count($input['unit']);
