@@ -526,6 +526,7 @@ var set_mindate = function set_mindate(mindate, datepickers) {
 // Triggers a dialog for editing/creating events
 var event_edit_dialog = function event_edit_dialog(type, data) {
 
+  // TODO: check for rrule/recurrence-id
 
   var form_url = AgenDAVConf.base_app_url + 'events/save';
   var title;
@@ -547,13 +548,16 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
     }
   } else {
     data = jQuery.extend(true, {}, data);
-    title = t('labels', 'editevent');
-    /*
-    if (data.rrule !== undefined) {
-      data.start = moment(data.orig_start);
-      data.end = moment(data.orig_end);
+
+    // Adapt for editing all day events. Fullcalendar uses exclusive ends,
+    // so the real end date for all day events has to be altered here
+    if (data.allDay === true) {
+      var adapted_end = moment(data.end);
+      adapted_end.subtract(1, 'days');
+      data.end = adapted_end;
     }
-    */
+
+    title = t('labels', 'editevent');
 
     // end can be null if the iCalendar was defined with DTSTART <= DTEND
     data.end = AgenDAVDateAndTime.endDate(data);
@@ -1688,31 +1692,17 @@ var event_delete_dialog = function event_delete_dialog(event_id) {
 
 // Edit/Modify link
 var modify_event_handler = function modify_event_handler(event_id) {
-  // TODO: check for rrule/recurrence-id
-  // Clone data about this event
-  var current_event = get_event_data(event_id);
+  // Close tooltip
+  event_details_popup.hide();
 
+  var current_event = get_event_data(event_id);
   if (current_event === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
       t('messages', 'error_current_event_not_loaded'));
     return;
   }
 
-  var event_data = $.extend(true, {}, current_event);
-
-  // Close tooltip
-  event_details_popup.hide();
-
-
-  // Adapt for editing all day events. Fullcalendar uses exclusive ends,
-  // so the real end date for all day events has to be altered here
-  if (event_data.allDay === true) {
-    var adapted_end = moment(event_data.end);
-    adapted_end.subtract(1, 'days');
-    event_data.end = adapted_end;
-  }
-
-  event_edit_dialog('modify', event_data);
+  event_edit_dialog('modify', current_event);
 
   return false;
 };
