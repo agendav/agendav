@@ -80,6 +80,9 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
 
         if ($event->isRecurrent()) {
             $result['rrule'] = $event->getRepeatRule();
+            $result['has_exceptions'] = $event->hasExceptions();
+            $result['is_exception'] = $event->isException();
+
             $recurrence_id = $event->getRecurrenceId();
 
             if ($recurrence_id === null) {
@@ -93,7 +96,6 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
                 $result['id'] .= '@' . $result['recurrence_id'];
             }
 
-            $result['is_exception'] = $event->isException();
         }
 
         // Reminders
