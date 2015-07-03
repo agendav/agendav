@@ -95,6 +95,27 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testHasExceptionsOnNonRecurrentEvent()
+    {
+        $event = new VObjectEvent($this->vcalendar);
+
+        $this->assertFalse(
+            $event->hasExceptions(),
+            'Non-recurrent events should return false for hasExceptions()'
+        );
+    }
+
+    public function testHasExceptionsRecurrentEventNoExceptions()
+    {
+        $this->vevent->RRULE = self::$rrule;
+        $event = new VObjectEvent($this->vcalendar);
+
+        $this->assertFalse(
+            $event->hasExceptions(),
+            'Recurrent event with no exceptions is wrongly detected as "with exceptions"'
+        );
+    }
+
     public function testIsException()
     {
         $this->vevent->RRULE = self::$rrule;
@@ -105,6 +126,8 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event = new VObjectEvent($this->vcalendar);
         $recurrence_id = RecurrenceId::buildFromString('20150110T092100Z');
         $this->assertTrue($event->isException($recurrence_id));
+
+        $this->assertTrue($event->hasExceptions(), 'Exceptions are not detected by hasExceptions');
     }
 
     public function testIsExceptionWithNullRecurrenceId()

@@ -70,6 +70,13 @@ interface Event
     public function expand(\DateTime $start, \DateTime $end);
 
     /**
+     * Checks if this event has any recurrence exceptions
+     *
+     * @return boolean
+     */
+    public function hasExceptions();
+
+    /**
      * Checks if a RECURRENCE-ID is an exception to the repeat rule or not
      *
      * @param AgenDAV\Event\RecurrenceId $recurrence_id

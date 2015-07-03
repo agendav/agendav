@@ -144,6 +144,20 @@ class VObjectEvent implements Event
     }
 
     /**
+     * Checks if this event has any recurrence exceptions
+     *
+     * @return boolean
+     */
+    public function hasExceptions()
+    {
+        if (!$this->isRecurrent()) {
+            return false;
+        }
+
+        return count($this->exceptions) > 0;
+    }
+
+    /**
      * Checks if a RECURRENCE-ID string (that could be the result of
      * expanding a recurrent event) was an exception to the rule or not
      *
