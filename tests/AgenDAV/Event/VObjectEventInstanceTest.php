@@ -485,6 +485,25 @@ ICS;
     }
 
 
+    public function testHasExceptions()
+    {
+        $vevent = $this->vcalendar->add('VEVENT');
+        $instance = new VObjectEventInstance($vevent);
+
+        $this->assertFalse(
+            $instance->hasExceptions(),
+            'Default hasExceptions() for event instances should be false'
+        );
+
+        $instance->setHasExceptions();
+
+        $this->assertTrue(
+            $instance->hasExceptions(),
+            'setHasExceptions() for event instances does not mark the instance'
+        );
+    }
+
+
     protected function checkSomeProperties(VObjectEventInstance $instance, $recurrence_id = false)
     {
         $this->assertEquals('12345', $instance->getUid());

@@ -312,6 +312,7 @@ class VObjectEvent implements Event
         $instance = new VObjectEventInstance($vevent);
         if ($recurrence_id !== null) {
             $instance->markAsException();
+            $instance->setHasExceptions($this->hasExceptions());
 
             // Update instance start and end based on RECURRENCE-ID
             if (!$this->isException($recurrence_id)) {
@@ -398,6 +399,9 @@ class VObjectEvent implements Event
             if ($recurrence_id !== null && $this->isException($recurrence_id)) {
                 $instance->markAsException();
             }
+
+            // Make the instance know if the parent event has any exceptions
+            $instance->setHasExceptions($this->hasExceptions());
         }
 
         return $instance;

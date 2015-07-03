@@ -46,6 +46,9 @@ class VObjectEventInstance implements EventInstance
     /** @var bool */
     protected $is_exception;
 
+    /** @var bool */
+    protected $parent_has_exceptions;
+
     /**
      * Builds a new VObjectEventInstance
      *
@@ -56,6 +59,7 @@ class VObjectEventInstance implements EventInstance
         $this->vevent = $vevent;
         $this->reminders = $this->findReminders();
         $this->is_exception = false;
+        $this->parent_has_exceptions = false;
     }
 
     /**
@@ -386,6 +390,28 @@ class VObjectEventInstance implements EventInstance
     public function isException()
     {
         return $this->is_exception;
+    }
+
+    /**
+     * Sets the 'hasExceptions' flag on this event instance. This means
+     * that this instance comes from an event that has one or more
+     * recurrence exceptions
+     *
+     * @param bool $new_value defaults to true
+     */
+    public function setHasExceptions($new_value = true)
+    {
+        $this->parent_has_exceptions = $new_value;
+    }
+
+    /**
+     * Checks if parent event has any recurrence exceptions
+     *
+     * @return boolean
+     */
+    public function hasExceptions()
+    {
+        return $this->parent_has_exceptions;
     }
 
     /**

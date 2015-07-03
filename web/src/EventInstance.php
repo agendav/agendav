@@ -214,6 +214,22 @@ interface EventInstance
     public function isException();
 
     /**
+     * Sets the 'hasExceptions' flag on this event instance. This means
+     * that this instance comes from an event that has one or more
+     * recurrence exceptions
+     *
+     * @param bool $new_value defaults to true
+     */
+    public function setHasExceptions($new_value = true);
+
+    /**
+     * Checks if this event has any recurrence exceptions
+     *
+     * @return boolean
+     */
+    public function hasExceptions();
+
+    /**
      * Add (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
      *
      * @return void

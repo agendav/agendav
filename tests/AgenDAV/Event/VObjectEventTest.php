@@ -85,6 +85,11 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($event->getUid(), $instance->getUid());
             $this->assertEquals(self::$rrule, $instance->getRepeatRule());
 
+            $this->assertFalse(
+                $instance->hasExceptions(),
+                'Expand passes wrong hasExceptions status on events with no exceptions'
+            );
+
             // First instances doesn't have a RECURRENCE-ID
             if ($index > 0) {
                 $this->assertNotNull(
@@ -92,6 +97,32 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
                     'RECURRENCE-ID is not set for expanded instances'
                 );
             }
+        }
+    }
+
+    public function testExpandWithExceptions()
+    {
+        $datetime = new \DateTime('2015-07-02 13:29:00', new \DateTimeZone('Europe/Madrid'));
+        $exception = $this->generateRecurrentEventWithTimeZone($datetime);
+        $datetime_exception = clone $datetime;
+        $datetime_exception->modify('+1 day');
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        // Use a period that contains all instances
+        $start = clone $datetime;
+        $start->modify('-1 day');
+        $end = clone $datetime;
+        $end->modify('+10 days');
+
+        $instances = $event->expand($start, $end);
+
+        // Make sure all properties match
+        foreach ($instances as $instance) {
+            $this->assertTrue(
+                $instance->hasExceptions(),
+                'Expand passes wrong hasExceptions status on events with exceptions'
+            );
         }
     }
 
@@ -281,6 +312,11 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event->storeInstance($new_exception);
 
         $this->assertTrue($event->isException($recurrence_id));
+
+        $this->assertTrue(
+            $event->hasExceptions(),
+            'hasExceptions status is not updated'
+        );
 
         // Check that base VEVENT is still there
         $base = $event->getEventInstance();
