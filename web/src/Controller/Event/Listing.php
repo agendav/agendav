@@ -74,13 +74,25 @@ class Listing extends JSONController
         $start = DateHelper::fullcalendarToDateTime($input['start'], $timezone);
         $end = DateHelper::fullcalendarToDateTime($input['end'], $timezone);
 
+        // Optional UID filter
+        if (isset($input['uid'])) {
+            $uid = $input['uid'];
+        }
+
         // These are needed to query the server
         $start_string = $this->getTimeFilterDatestring($start);
         $end_string = $this->getTimeFilterDatestring($end);
 
 
         $execution_fetch_start = microtime(true);
-        $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
+
+        if (!isset($uid)) {
+            $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
+        } else {
+            $object = $this->client->fetchObjectByUid($calendar, $uid);
+            $objects = array($object);
+        }
+
         $execution_fetch_end = microtime(true);
 
         $execution_parse_start = microtime(true);
