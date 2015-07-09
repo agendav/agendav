@@ -704,7 +704,7 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
   $repeat_until.datepicker();
 
   // First time datepicker is run we need to set minDate on end date
-  set_mindate(data.start,
+  set_mindate(data.start_date,
       [ $end_date, $repeat_until ]
       );
 
