@@ -47,6 +47,9 @@ class VObjectEvent implements Event
     /** @var \DateTime[] */
     protected $exceptions;
 
+    /** @var \DateTime[] */
+    protected $removed_instances;
+
     /** @var string */
     protected $uid;
 
@@ -66,6 +69,7 @@ class VObjectEvent implements Event
         if ($this->repeat_rule !== null) {
             $this->is_recurrent = true;
             $this->exceptions = $this->findRecurrenceExceptions($vcalendar);
+            $this->removed_instances = $this->findRemovedInstances($vcalendar);
         }
 
         $this->uid = $this->findUid();
@@ -144,7 +148,7 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Checks if this event has any recurrence exceptions
+     * Checks if this event has any recurrence exceptions or removed instances
      *
      * @return boolean
      */
@@ -154,7 +158,7 @@ class VObjectEvent implements Event
             return false;
         }
 
-        return count($this->exceptions) > 0;
+        return count($this->exceptions) > 0 || count($this->removed_instances) > 0;
     }
 
     /**
@@ -174,6 +178,29 @@ class VObjectEvent implements Event
         foreach ($this->exceptions as $exception_datetime) {
             // Comparing two \DateTime objects with different timezones is allowed
             if ($recurrence_datetime == $exception_datetime) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a RECURRENCE-ID is a removed instance from the recurrence
+     *
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @return boolean
+     */
+    public function isRemovedInstance(RecurrenceId $recurrence_id = null)
+    {
+        if ($recurrence_id === null) {
+            return false;
+        }
+
+        $recurrence_datetime = $recurrence_id->getDateTime(); // UTC
+        foreach ($this->removed_instances as $removed_datetime) {
+            // Comparing two \DateTime objects with different timezones is allowed
+            if ($recurrence_datetime == $removed_datetime) {
                 return true;
             }
         }
@@ -229,6 +256,8 @@ class VObjectEvent implements Event
      * @param \AgenDAV\EventInstance $instance
      * @throws \InvalidArgumentException If event instance UID does not match
      *                                   current event UID
+     * @throws \LogicException If a recurrence exception is passed for a date
+     *                         that is removed (EXDATE)
      */
     public function storeInstance(EventInstance $instance)
     {
@@ -246,6 +275,17 @@ class VObjectEvent implements Event
             // TODO
             if (count($this->exceptions) > 0) {
                 throw new \Exception('Modification of recurrent events is not supported yet');
+            }
+        }
+
+        // New exception for a previously removed instance (EXDATE)?
+        if ($instance->isException()) {
+            $recurrence_id = $instance->getRecurrenceId();
+
+            if ($this->isRemovedInstance($recurrence_id)) {
+                throw new \LogicException(
+                    'Cannot add a new exception for a previously removed instance'
+                );
             }
         }
 
@@ -361,6 +401,24 @@ class VObjectEvent implements Event
         }
 
         return $result;
+    }
+
+    /**
+     * Gets a list of Removed instances for this event
+     *
+     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @return \DateTime[]
+     */
+    protected function findRemovedInstances(VCalendar $vcalendar)
+    {
+        $base = $vcalendar->getBaseComponent();
+        $exdate = $base->EXDATE;
+
+        if ($exdate === null) {
+            return [];
+        }
+
+        return $exdate->getDateTimes();
     }
 
     /**

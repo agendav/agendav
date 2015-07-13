@@ -70,7 +70,7 @@ interface Event
     public function expand(\DateTime $start, \DateTime $end);
 
     /**
-     * Checks if this event has any recurrence exceptions
+     * Checks if this event has any recurrence exceptions or removed instances
      *
      * @return boolean
      */
@@ -83,6 +83,14 @@ interface Event
      * @return boolean
      */
     public function isException(RecurrenceId $recurrence_id = null);
+
+    /**
+     * Checks if a RECURRENCE-ID is a removed instance from the recurrence
+     *
+     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @return boolean
+     */
+    public function isRemovedInstance(RecurrenceId $recurrence_id = null);
 
     /**
      * Returns an iCalendar string representation of this event
@@ -126,6 +134,8 @@ interface Event
      * @param \AgenDAV\EventInstance $instance
      * @throws \InvalidArgumentException If event instance UID does not match
      *                                   current event UID
+     * @throws \LogicException If a recurrence exception is passed for a date
+     *                         that is removed (EXDATE)
      */
     public function storeInstance(EventInstance $instance);
 }

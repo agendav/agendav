@@ -357,6 +357,23 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($event->isException($recurrence_id));
     }
 
+    /**
+     * @expectedException \LogicException
+     */
+    public function testStoreInstanceExceptionOnRemovedDate()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150713T012345Z';
+        $this->vevent->EXDATE = '20150714T012345Z';
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = RecurrenceId::buildFromString('20150714T012345Z');
+        $instance = $event->getEventInstance($recurrence_id);
+        $instance->setSummary('I am an existing exception');
+
+        $event->storeInstance($instance);
+    }
+
     public function testGetEventInstanceEmpty()
     {
         unset($this->vcalendar->VEVENT);
@@ -459,6 +476,45 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $end->modify('+7 days'); // Match the RECURRENCE-ID date
         $this->assertEquals($start, $instance->getStart(), 'Start date is not updated');
         $this->assertEquals($end, $instance->getEnd(), 'End date is not updated');
+    }
+
+    public function testHasExceptionsWithExdates()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150120T012345Z';
+        $this->vevent->EXDATE = '20150713T012345Z';
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        $this->assertTrue(
+            $event->hasExceptions(),
+            'hasExceptions() does not handle EXDATEs'
+        );
+    }
+
+    public function testIsRemovedInstanceUTC()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150120T012345Z';
+        $this->vevent->EXDATE = ['20150713T012345Z', '20150714T012345Z'];
+
+        $event = new VObjectEvent($this->vcalendar);
+        $recurrence_id = RecurrenceId::buildFromString('20150713T012345Z');
+        $this->assertTrue(
+            $event->isRemovedInstance($recurrence_id),
+            'Detection of removed instances is not working'
+        );
+
+        // +0200
+        $recurrence_id = new RecurrenceId(
+            new \DateTime('2015-07-13 03:23:45'), new \DateTimeZone('Europe/Madrid')
+        );
+
+        $this->assertTrue(
+            $event->isRemovedInstance($recurrence_id),
+            'Detection of removed instances is not working when using timezones'
+        );
+
     }
 
     protected function generateRecurrentEvent()

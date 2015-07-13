@@ -405,7 +405,7 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Checks if parent event has any recurrence exceptions
+     * Checks if parent event has any recurrence exceptions or removed instances
      *
      * @return boolean
      */

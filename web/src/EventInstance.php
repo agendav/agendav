@@ -223,7 +223,7 @@ interface EventInstance
     public function setHasExceptions($new_value = true);
 
     /**
-     * Checks if this event has any recurrence exceptions
+     * Checks if parent event has any recurrence exceptions or removed instances
      *
      * @return boolean
      */
