@@ -507,7 +507,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         // +0200
         $recurrence_id = new RecurrenceId(
-            new \DateTime('2015-07-13 03:23:45'), new \DateTimeZone('Europe/Madrid')
+            new \DateTime('2015-07-13 03:23:45', new \DateTimeZone('Europe/Madrid'))
         );
 
         $this->assertTrue(

@@ -197,7 +197,7 @@ class VObjectEvent implements Event
             return false;
         }
 
-        $recurrence_datetime = $recurrence_id->getDateTime(); // UTC
+        $recurrence_datetime = $recurrence_id->getDateTime();
         foreach ($this->removed_instances as $removed_datetime) {
             // Comparing two \DateTime objects with different timezones is allowed
             if ($recurrence_datetime == $removed_datetime) {
