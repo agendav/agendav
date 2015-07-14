@@ -9,3 +9,5 @@ script:
 
 before_script:
   - composer install -d web/
+
+sudo: false
