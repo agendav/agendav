@@ -25,6 +25,7 @@ use AgenDAV\Event;
 use AgenDAV\EventInstance;
 use AgenDAV\Event\VObjectEventInstance;
 use AgenDAV\Event\VObjectHelper;
+use AgenDAV\Exception\NotFound;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use Sabre\VObject\DateTimeParser;
@@ -332,6 +333,7 @@ class VObjectEvent implements Event
      * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      * @return \AgenDAV\EventInstance|null
      * @throws \LogicException if this event is not recurrent and a $recurrence_id
+     * @throws \AgenDAV\Exception\NotFound if the instance was removed
      * is specified
      */
 
@@ -473,6 +475,7 @@ class VObjectEvent implements Event
      * @param AgenDAV\Event\RecurrenceId $recurrence_id
      * @return \Sabre\VObject\Component\VEvent
      * @throws \LogicException if this event is not recurrent
+     * @throws \AgenDAV\Exception\NotFound if the instance was removed
      */
     protected function getRecurrenceExceptionVEvent(RecurrenceId $recurrence_id)
     {
@@ -482,6 +485,10 @@ class VObjectEvent implements Event
 
         if ($this->isException($recurrence_id)) {
             return VObjectHelper::findExceptionVEvent($this->vcalendar, $recurrence_id);
+        }
+
+        if ($this->isRemovedInstance($recurrence_id)) {
+            throw new NotFound('Event instance is marked as removed');
         }
 
         // Create new VEVENT

@@ -121,6 +121,7 @@ interface Event
      * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      * @return \AgenDAV\EventInstance|null
      * @throws \LogicException if this event is not recurrent and a $recurrence_id
+     * @throws \AgenDAV\Exception\NotFound if the instance was removed
      * is specified
      */
 

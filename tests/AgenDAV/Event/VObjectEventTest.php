@@ -368,7 +368,10 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event = new VObjectEvent($this->vcalendar);
 
         $recurrence_id = RecurrenceId::buildFromString('20150714T012345Z');
-        $instance = $event->getEventInstance($recurrence_id);
+        $instance = $event->getEventInstance();
+
+        $instance->markAsException();
+        $instance->setRecurrenceId($recurrence_id);
         $instance->setSummary('I am an existing exception');
 
         $event->storeInstance($instance);
@@ -478,6 +481,23 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($end, $instance->getEnd(), 'End date is not updated');
     }
 
+    /**
+     * @expectedException \AgenDAV\Exception\NotFound
+     */
+    public function testGetEventInstanceForRemovedInstance()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150120T012345Z';
+        $this->vevent->EXDATE = '20150716T012345Z';
+
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = RecurrenceId::buildFromString('20150716T012345Z');
+
+        $event->getEventInstance($recurrence_id);
+
+    }
+
     public function testHasExceptionsWithExdates()
     {
         $this->vevent->RRULE = 'FREQ=DAILY';
@@ -516,6 +536,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         );
 
     }
+
 
     protected function generateRecurrentEvent()
     {
