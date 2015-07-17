@@ -377,6 +377,58 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event->storeInstance($instance);
     }
 
+    public function testRemoveInstance()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150713T012345Z';
+        $this->vevent->EXDATE = '20150714T012345Z';
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = RecurrenceId::buildFromString('20150717T012345Z');
+
+        $event->removeInstance($recurrence_id);
+
+        $this->assertTrue(
+            $event->isRemovedInstance($recurrence_id),
+            'removeInstance does not actually remove an instance, or is not detected by VObjectEvents'
+        );
+    }
+
+    public function testRemoveInstanceForException()
+    {
+        $vevent_exception = $this->generateRecurrentEvent();
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = RecurrenceId::buildFromString($vevent_exception->{'RECURRENCE-ID'});
+
+        $event->removeInstance($recurrence_id);
+
+        $this->assertTrue(
+            $event->isRemovedInstance($recurrence_id),
+            'removeInstance for existing exception does not work'
+        );
+
+        $this->assertFalse(
+            $event->isException($recurrence_id),
+            'A removed exception is still considered an exception!'
+        );
+    }
+
+    /**
+     * @expectedException \AgenDAV\Exception\NotFound
+     */
+    public function testRemoveInstanceForAlreadyRemovedInstance()
+    {
+        $this->vevent->RRULE = 'FREQ=DAILY';
+        $this->vevent->DTSTART = '20150713T012345Z';
+        $this->vevent->EXDATE = '20150714T012345Z';
+        $event = new VObjectEvent($this->vcalendar);
+
+        $recurrence_id = RecurrenceId::buildFromString('20150714T012345Z');
+
+        $event->removeInstance($recurrence_id);
+    }
+
     public function testGetEventInstanceEmpty()
     {
         unset($this->vcalendar->VEVENT);

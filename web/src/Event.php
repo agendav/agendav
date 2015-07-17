@@ -139,5 +139,14 @@ interface Event
      *                         that is removed (EXDATE)
      */
     public function storeInstance(EventInstance $instance);
+
+    /**
+     * Removes an event instance by its RECURRENCE-ID from this event
+     *
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+     * @throws \LogicException if this event is not recurrent
+     * @throws \AgenDAV\Exception\NotFound if the instance was already removed
+     */
+    public function removeInstance(RecurrenceId $recurrence_id);
 }
 

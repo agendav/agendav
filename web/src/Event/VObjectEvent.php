@@ -323,6 +323,48 @@ class VObjectEvent implements Event
     }
 
     /**
+     * Removes an event instance by its RECURRENCE-ID from this event
+     *
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+     * @throws \LogicException if this event is not recurrent
+     * @throws \AgenDAV\Exception\NotFound if the instance was already removed
+     */
+    public function removeInstance(RecurrenceId $recurrence_id)
+    {
+        if (!$this->isRecurrent()) {
+            throw new \LogicException('Tried to remove an instance from a non recurrent event');
+        }
+
+        if ($this->isRemovedInstance($recurrence_id)) {
+            throw new NotFound(
+                'Tried to remove an already removed instance: ' . $recurrence_id->getString()
+            );
+        }
+
+        // If there was an exception defined for the passed RECURRENCE-ID,
+        // remove it
+        if ($this->isException($recurrence_id)) {
+            $vevent = VObjectHelper::findExceptionVEvent($this->vcalendar, $recurrence_id);
+            $this->vcalendar->remove($vevent);
+
+            // Now update the list of recognized recurrence exceptions
+            $this->exceptions = $this->findRecurrenceExceptions($this->vcalendar);
+        }
+
+        // Add a new value to the EXDATE property of the base VEVENT
+        $base_instance = $this->getEventInstance();
+        $vevent = $base_instance->getInternalVEvent();
+        $recurrence_datetime = $recurrence_id->getDateTime();
+        $new_exdates = VObjectHelper::addExdateToVEvent($vevent, $recurrence_datetime);
+
+        // getInternalVEvent creates a copy of the internal VEvent, so we have to
+        // store it back
+        VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
+
+        $this->removed_instances = $new_exdates;
+    }
+
+    /**
      * Gets the base EventInstance for this event if $recurrence_id is null,
      * or the EventInstance for the recurrence exception identified by
      * $recurrence_id.

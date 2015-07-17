@@ -98,5 +98,31 @@ class VObjectHelper
 
         return null;
     }
+
+    /**
+     * Adds a new value to the EXDATE property of a VEVENT
+     *
+     * @param Sabre\VObject\Component\VCalendar $vevent
+     * @param \DateTime $datetime
+     * @return \DateTime[] List of new EXDATE values
+     */
+    public static function addExdateToVEvent(VEvent $vevent, \DateTime $datetime)
+    {
+        $exdates = [];
+
+        if (isset($vevent->EXDATE)) {
+            $exdates = $vevent->EXDATE->getDateTimes();
+        }
+
+        $exdates[] = $datetime;
+
+        if (!isset($vevent->EXDATE)) {
+            $vevent->add('EXDATE', []);
+        }
+
+        $vevent->EXDATE->setDateTimes($exdates);
+
+        return $exdates;
+    }
 }
 

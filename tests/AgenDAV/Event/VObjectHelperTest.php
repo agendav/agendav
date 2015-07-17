@@ -118,6 +118,44 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testAddExdateToVEventEmptyInitialExdate()
+    {
+        $vevent = $this->vcalendar->create('VEVENT');
+        $vevent->SUMMARY = 'Test event';
+        $vevent->DTSTART = new \DateTime();
+        $vevent->RRULE = 'FREQ=DAILY';
+
+        $now = new \DateTime();
+
+        VObjectHelper::addExdateToVEvent($vevent, $now);
+
+        $this->assertEquals(
+            $vevent->EXDATE->getDateTimes(),
+            [ $now ]
+        );
+    }
+
+    public function testAddExdateToVEventExistingExdates()
+    {
+        $vevent = $this->vcalendar->create('VEVENT');
+        $vevent->SUMMARY = 'Test event';
+        $vevent->DTSTART = new \DateTime();
+        $vevent->RRULE = 'FREQ=DAILY';
+
+        $now = new \DateTime();
+        $other = clone $now;
+        $other->modify('+1 day');
+
+        $vevent->add('EXDATE', [ $now ]);
+
+        VObjectHelper::addExdateToVEvent($vevent, $other);
+
+        $this->assertEquals(
+            $vevent->EXDATE->getDateTimes(),
+            [ $now, $other ]
+        );
+    }
+
     /**
      * Internal function, used to add a base VEVENT and two exceptions
      * to the test VCALENDAR
