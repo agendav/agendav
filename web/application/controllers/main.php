@@ -33,15 +33,16 @@ class Main extends CI_Controller {
         $components = array();
         $title = $this->config->item('site_title');
 
+        $logo = $this->config->item('logo');
         $data_header = array(
+                'logo' => custom_logo($logo, $title),
                 'title' => $title,
                 'logged_in' => TRUE,
                 'body_class' => array('calendarpage'),
                 );
 
         $data_calendar = array();
-        $logo = $this->config->item('logo');
-        $data_calendar['logo'] = custom_logo($logo, $title);
+//        $data_calendar['logo'] = custom_logo($logo, $title);
         $data_calendar['title'] = $title;
 
         $components['header'] = 

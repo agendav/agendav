@@ -1,6 +1,11 @@
 <div class="navbar">
  <div class="navbar-inner">
   <div class="container-fluid">
+<?php
+if (isset($logo)) {
+        echo $logo;
+}
+?>
    <span class="brand"><?php echo $title ?></span>
    <p class="navbar-text pull-right" id="loading">
    <?php echo img(array('src' => 'img/loading.gif')); ?>

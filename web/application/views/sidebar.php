@@ -1,8 +1,3 @@
-<?php
-if (isset($logo)) {
-	echo $logo;
-}
-?>
 
  <div id="shortcuts" class="block">
    <div id="shortcut_add_event"><?php echo $this->i18n->_('labels',
@@ -43,14 +38,3 @@ if (isset($logo)) {
    </div>
   </div>
  </div><!-- block -->
-
- <div id="footer">
-<?php
- $img = array(
-		 'src' => 'img/agendav_small.png',
-		 'alt' => 'AgenDAV',
-		 );
- echo img($img);
-?>
-  <p><?php echo $this->config->item('footer')?></p>
- </div> <!-- footer -->

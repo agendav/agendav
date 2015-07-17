@@ -111,11 +111,11 @@ function agendav_small_logo() {
  */
 
 function custom_logo($filename, $title = '') {
-    return '<div id="logo" class="block">'
+    return '<span class="brand">'
         . img(array(
                 'src' => 'img/' . $filename,
                 'alt' => $title,
                 'title' => $title,
                 ))
-        . '</div>';
+        . '</span>';
 }
