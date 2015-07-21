@@ -1,0 +1,13 @@
+<tr>
+<td><span class="username">{username}</span></td>
+<td>
+<input type="hidden" name="share_with[sid][]" value="{sid}"/>
+<input type="hidden" name="share_with[username][]" value="{username}"/>
+</td>
+<td>
+<img src="{base_url}img/delete.png" 
+class="attendee_delete pseudobutton" 
+alt="{@i18n type="labels" name="delete"/}"
+title="{@i18n type="labels" name="delete"/}" />
+</td>
+</tr>

@@ -432,7 +432,6 @@ var load_generated_dialog = function load_generated_dialog(url, data, preDialogF
   if ($(divname).length != 0) {
     return false;
   }
-
   // Do it via POST
   var newid = generate_on_the_fly_form(
     base_app_url + 'event/modify', data);
@@ -441,7 +440,6 @@ var load_generated_dialog = function load_generated_dialog(url, data, preDialogF
     var thisform = $('#' + newid);
     var action = $(thisform).attr('action');
     var formdata = $(thisform).serialize();
-
     var dialog_ajax_req = $.ajax({
       url: base_app_url + url,
       cache: false,
@@ -497,8 +495,6 @@ var proceed_send_ajax_form = function proceed_send_ajax_form(formObj, successFun
   var data = $(formObj).serialize();
 
   // Mask body
-  loading(true);
-
   var sendform_ajax_req = $.ajax({
     url: url,
     cache: false,
@@ -824,7 +820,7 @@ var event_field_form = function event_field_form(type, data) {
         }
       });
 
-      
+      attendee_manager(); 
     },
     title,
     [
@@ -1435,6 +1431,96 @@ var session_expired = function session_expired() {
 };
 
 /**
+ * Handles events on attendee dialog
+ */
+var attendee_manager = function attendee_manager() {
+
+  var manager = $("#event_change_attendee_table");
+  var new_entry_form = $("#event_change_attendee_add");
+
+  manager.on('click',
+    '.event_change_attendee_delete', function(event) {
+      $(this).parent().parent()
+        .fadeOut('fast', function() {
+          $(this).remove();
+          attendee_manager_no_entries_placeholder();
+        });
+    });
+
+  var user_autocomplete_cache = {}, lastXhr;
+
+  new_entry_form.find('#event_change_attendee')
+    .autocomplete({
+      minLength: 3,
+      source: function(request, response) {
+        var term = request.term;
+
+        if (term in user_autocomplete_cache) {
+          response(user_autocomplete_cache[term]);
+          return;
+        }
+
+        lastXhr = $.getJSON(base_app_url + 'caldav2json/principal_search',
+          request, function(data, status, xhr) {
+          user_autocomplete_cache[term] = data;
+          if (xhr === lastXhr) {
+            response(data);
+          }
+        });
+      },
+      focus: function( event, ui ) {
+        $(this).val(ui.item.username);
+        return false;
+      },
+      select: function( event, ui ) {
+        $(this).val(ui.item.username);
+        return false;
+      }
+    })
+    .data('autocomplete')._renderItem = function(ul, item) {
+      return $('<li></li>')
+        .data('item.autocomplete', item)
+        .append('<a><i class="icon-user"></i> ' + item.displayname
+        + '<span style="font-style: italic">')
+        .appendTo(ul);
+    };
+
+  new_entry_form.on('click',
+    '#event_change_attendee_add_button', function(event) {
+    var new_user = $('#event_change_attendee').val();
+    if (new_user != '') {
+      // Check if new_user is already on list
+      var already_added = false;
+      manager.find('span.username')
+        .each(function(index) {
+          if (!already_added && $(this).text() == new_user) {
+            already_added = true;
+            $(this).parent().parent().effect('highlight', {}, 'slow');
+          }
+        });
+
+      if (!already_added) {
+        var new_row_data = {
+          username: new_user
+        };
+
+        var out = '<tr><td><span class="username">'+new_user+'</span></td>'
+               +'<td><input type="hidden" name="attendee[username][]" value="'+new_user+'" /></td>'
+               +'<td><img src="img/delete.png" class="event_change_attendee_delete pseudobutton" alt="delete" title="delete" /></td></tr>';
+
+        manager.find('tbody').append(out);
+
+        // Reset form
+        $('#event_change_attendee_username').val('');
+
+        attendee_manager_no_entries_placeholder();
+
+        }
+      }
+    });
+};
+
+/**
  * Handles events on share calendar dialog
  */
 var share_manager = function share_manager() {
@@ -1487,8 +1573,7 @@ var share_manager = function share_manager() {
       return $('<li></li>')
         .data('item.autocomplete', item)
         .append('<a><i class="icon-user"></i> ' + item.displayname
-        + '<span style="font-style: italic">'
-        + ' &lt;' + item.email + '&gt;</span></a>')
+        + '<span style="font-style: italic">')
         .appendTo(ul);
     };
 
@@ -1547,6 +1632,17 @@ var share_manager_no_entries_placeholder = function share_manager_no_entries_pla
   }
 };
 
+/**
+ * Shows the placeholder for empty share lists
+ */
+var attendee_manager_no_entries_placeholder = function attendee_manager_no_entries_placeholder() {
+  var manager = $('#event_change_attendee_table');
+  if (manager.find('tbody tr').length == 1) {
+    $('#event_change_attendee_no_rows').show();
+  } else {
+    $('#event_change_attendee_no_rows').hide();
+  }
+};
 
 /*
  * Reminders manager
@@ -1936,7 +2032,6 @@ var modify_event_handler = function modify_event_handler() {
       t('messages', 'error_current_event_not_loaded'));
     return;
   }
-
   var data = {
     uid: event_data.uid,
     calendar: event_data.calendar,
@@ -1954,6 +2049,7 @@ var modify_event_handler = function modify_event_handler() {
     icalendar_class: event_data.icalendar_class,
     transp: event_data.transp,
     recurrence_id: event_data.recurrence_id,
+    attendees: event_data.attendees,
     reminders: event_data.reminders,
     visible_reminders: event_data.visible_reminders,
     orig_start: fulldatetimestring($.fullCalendar.parseDate(event_data.orig_start)),

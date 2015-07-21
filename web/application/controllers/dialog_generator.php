@@ -183,6 +183,7 @@ class Dialog_generator extends CI_Controller {
         $recurrence_id = $this->input->post('recurrence_id');
         $orig_start = $this->input->post('orig_start');
         $orig_end = $this->input->post('orig_end');
+        $attendees = $this->input->post('attendees');
 
         // Required fields
         if ($uid === FALSE || $calendar === FALSE || $href === FALSE
@@ -225,6 +226,7 @@ class Dialog_generator extends CI_Controller {
                     'rrule' => $rrule,
                     'calendars' => $calendars,
                     'calendar' => $calendar,
+                    'attendees' => $attendees=='undefined'?array():explode(',',$attendees)
                     );
 
             if ($class !== FALSE) {

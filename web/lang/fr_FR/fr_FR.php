@@ -121,12 +121,15 @@ $labels['opaque'] = 'Occupé';
 $labels['transparent'] = 'Libre';
 
 $labels['generaloptions'] = 'Options générales';
+$labels['attendeesoptions'] = 'Participants';
 $labels['repeatoptions'] = 'Répétitions';
 $labels['workgroupoptions'] = 'Groupe de travail';
 $labels['shareoptions'] = 'Partage';
 
 $labels['newcalendar'] = 'Nouveau calendrier';
 $labels['modifycalendar'] = 'Modifier le calendrier';
+
+$labels['newattendee'] = 'Nouveau participant';
 
 $labels['createevent'] = 'Créer un événement';
 $labels['editevent'] = 'Éditer un événement';
@@ -209,6 +212,7 @@ d\'autres utilisateurs et les laisser le modifier. Mettez leurs noms d\'utilisat
 par des virgules ou des espaces';
 $messages['info_notshared'] = 'Ce calendrier n\'est pas encore partagé';
 $messages['info_noreminders'] = 'Cet évènement n\'a pas de rappels configuré';
+$messages['info_noattendees'] = 'Cet évènement n\'a pas de participants';
 $messages['error_sessexpired'] = 'Votre session a expiré';
 $messages['error_loginagain'] = 'Veuillez vous reconnecter';
 

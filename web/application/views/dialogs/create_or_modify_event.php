@@ -98,6 +98,15 @@ $form_description = array(
 		'value' => (isset($description) && $description !== FALSE) ? $description : '',
 		);
 
+$form_autocomplete_username = array(
+                'id' => 'event_change_attendee',
+                'name' => 'autocomplete_username',
+                'class' => 'input-medium',
+                'value' => '',
+                'size' => '10',
+                'maxlength' => '255',
+                );
+
 $form_recurrence_type = array(
 		'none' => $this->i18n->_('labels', 'repeatno'),
 		'DAILY' => $this->i18n->_('labels', 'repeatdaily'),
@@ -145,6 +154,10 @@ $form_transp = array(
  <li><a href="#tabs-general">
  <i class="tab-icon icon-tag"></i>
  <?php echo $this->i18n->_('labels', 'generaloptions')?></a>
+ </li>
+ <li><a href="#tabs-attendees">
+ <i class="tab-icon icon-tag"></i>
+ <?php echo $this->i18n->_('labels', 'attendeesoptions')?></a>
  </li>
  <li><a href="#tabs-recurrence">
  <i class="tab-icon icon-repeat"></i>
@@ -204,6 +217,57 @@ echo formelement(
 		$this->i18n->_('labels', 'description'),
 		form_textarea($form_description));
 ?>
+ </div>
+ <div id="tabs-attendees">
+<table id="event_change_attendee_table" class="table table-striped">
+ <thead>
+  <th></th>
+  <th></th>
+  <th></th>
+ </thead>
+ <tbody>
+<?php
+if (sizeof($attendees)==0 || is_string($attendees)) {
+?>
+ <tr id="event_change_attendee_no_rows">
+ <td colspan="3">
+<?php
+echo $this->i18n->_('messages','info_noattendees');
+?>
+ </td>
+ </tr>
+<?php
+} else { 
+foreach($attendees as $key => $attendee) {
+?>
+<tr>
+    <td><span class="username"><?php echo $attendee; ?></span></td>
+    <td><input type="hidden" name="attendee[username][]" value="<?php echo $attendee; ?>" /></td>
+    <td><img src="img/delete.png" class="event_change_attendee_delete pseudobutton" alt="delete" title="delete" /></td>
+</tr>
+<?php }} ?>
+ </tbody>
+</table>
+<table id="event_change_attendee_add" class="table-condensed">
+<tbody>
+<tr><td>
+<?php
+echo formelement(
+                $this->i18n->_('labels', 'newattendee'),
+                form_input($form_autocomplete_username));
+?>
+</td>
+<td>
+<?php
+echo img(array('id'=>'event_change_attendee_add_button',
+          'class'=>'pseudobutton',
+          'alt'=> $this->i18n->_('labels','add'),
+          'title'=> $this->i18n->_('labels','add'),
+          'src'=>'img/add.png'));
+
+?>
+</td></tr>
+</tbody></table>
  </div>
  <div id="tabs-recurrence">
 <?php

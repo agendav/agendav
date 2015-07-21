@@ -9,6 +9,7 @@ var fs = require('fs');
 var dust = require('dustjs-linkedin');
 var watcher = require('nodewatch');
 
+console.log('Starting');
 
 watcher.add(src_path);
 

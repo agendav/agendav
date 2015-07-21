@@ -24,6 +24,11 @@ class="rrule_raw_value">{rrule}</span></dd>
  {/rrule_explained}
 {/rrule}
 
+{#attendees}
+<dt>{@i18n type="labels" name="attendee"/}</dt>
+<dd>{>attendee_description /}</dd>
+{/attendees}
+
 {#reminders}
 <dt>{@i18n type="labels" name="reminder"/}</dt>
 <dd>{>reminder_description /}</dd>

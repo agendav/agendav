@@ -58,7 +58,7 @@ class Icshelper {
      * new generated resource (iCalComponent object)
      */
     function new_resource($properties, &$generated, $tz, $reminders =
-            array()) {
+            array(), $attendees=array()) {
         $properties = array_change_key_case($properties, CASE_UPPER);
 
         $contents = '';
@@ -116,6 +116,8 @@ class Icshelper {
         // VALARM components (reminders)
         $vevent = $this->set_valarms($vevent, $reminders);
 
+        // VALARM components (attendees)
+        $vevent = $this->set_attendees($vevent, $attendees);
 
         $generated = $ical;
         return $uid;
@@ -517,6 +519,11 @@ class Icshelper {
         foreach ($valarms as $order => $reminder) {
             $this_event['visible_reminders'][] = $order;
             $this_event['reminders'][] = $reminder;
+        }
+
+        $attendees = $this->parse_attendees($vevent);
+        foreach($attendees as $order => $attendee) {
+           $this_event['attendees'][] = $attendee;
         }
 
         return $this_event;
@@ -962,6 +969,22 @@ class Icshelper {
     }
 
     /**
+     * Parses a VEVENT resource ATTENDEE definition
+     */
+    function parse_attendees($vevent) {
+       $parsed_attendees = array();
+ 
+       while( $attendee = $vevent->getProperty('ATTENDEE')) {
+          $strpos = strpos($attendee,'MAILTO');
+          if ($strpos === FALSE)
+            $parsed_attendees[] = $attendee;
+          else
+            $parsed_attendees[] = substr($attendee,7);
+       }
+       return $parsed_attendees;
+    }
+
+    /**
      * Parses a VEVENT resource VALARM definitions
      * 
      * Returns an associative array ('n1#' => new Reminder, 'n2#' => new
@@ -1033,6 +1056,19 @@ class Icshelper {
         return $resource;
     }
 
+    /** 
+     * Replaces ATTENDEE components for a given VEVENT
+     * resource. 
+     */
+     function set_attendees(&$resource, $attendees, $old_attendees = array()) {
+       while($resource->deleteProperty('ATTENDEE'));
+ 
+       foreach($attendees as $key=>$attendee)
+       {
+         log_message('INTERNALS','Attendee: '.$attendee);
+         $resource->setProperty('ATTENDEE',$attendee); 
+       }
 
+       return $resource;
+     }
 }
-

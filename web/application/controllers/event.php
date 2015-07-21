@@ -353,6 +353,17 @@ class Event extends CI_Controller {
             }
         }
 
+        $attendees = array();
+        
+        if (isset($p['attendee']) && is_array($p['attendee']))
+        {
+          foreach($p['attendee']['username'] as $key => $attendee)
+          {
+            log_message('INTERNALS',"Adding attendee : ".$attendee);
+            $attendees[] = $attendee;
+          }
+        }
+
             
         // Is this a new event or a modification?
 
@@ -467,6 +478,9 @@ class Event extends CI_Controller {
             // Add/change/remove reminders
             $vevent = $this->icshelper->set_valarms($vevent,
                     $reminders, $visible_reminders);
+
+            $vevent = $this->icshelper->set_attendees($vevent,
+                    $attendees);
 
             $vevent = $this->icshelper->set_last_modified($vevent);
             $resource = $this->icshelper->replace_component($resource,

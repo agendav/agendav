@@ -1,3 +1,15 @@
+<style type="text/css">
+  .loginlogo
+  {
+    width : 50%;
+    float : left; 
+  }
+  .loginform
+  {
+    float : left;
+  }
+</style>
+
 <div class="page-header">
 <h1><?php echo $this->config->item('site_title')?></h1>
 </div>

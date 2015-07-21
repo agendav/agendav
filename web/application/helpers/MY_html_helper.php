@@ -119,3 +119,18 @@ function custom_logo($filename, $title = '') {
                 ))
         . '</span>';
 }
+
+/*
+ * Returns app defined logo
+ */
+
+function custom_logo_login($filename, $title = '') {
+    return '<div class="loginlogo">'
+        . img(array(
+                'src' => 'img/' . $filename,
+                'alt' => $title,
+                'title' => $title,
+                ))
+        . '</div>';
+}
+

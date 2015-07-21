@@ -94,7 +94,7 @@ class Login extends CI_Controller {
         }
 
         $logoimg = $this->config->item('login_page_logo');
-        $data['logo'] = custom_logo($logoimg, $title);
+        $data['logo'] = custom_logo_login($logoimg, $title);
         $data['title'] = $title;
 
         $page_components['content'] = $this->load->view('login', $data, TRUE);
