@@ -158,10 +158,13 @@ $(document).ready(function() {
         $(this)
           .find('.remove')
           .off('click')
-          .on('click', function() {
+          .on('click', function(e) {
             var event_id = $(this).data('event-id');
 
-            event_delete_dialog(event_id);
+            event_delete(event_id);
+            // Close tooltip
+            event_details_popup.hide();
+            e.preventDefault();
           })
         .end()
           .find('.modify')
@@ -1624,12 +1627,13 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
   });
 };
 
-// Delete link
-// TODO: check for rrule/recurrence-id (EXDATE, etc)
-var event_delete_dialog = function event_delete_dialog(event_id) {
-  var form_url = AgenDAVConf.base_app_url + 'events/delete';
-  var title = t('labels', 'deleteevent');
-
+/**
+ * Deletes an event
+ * Called when user clicks on 'Delete' from the event details popup
+ *
+ * @param string event_id Event internal id
+ */
+var event_delete = function event_delete(event_id) {
   var data = get_event_data(event_id);
 
   if (data === undefined) {
@@ -1638,56 +1642,91 @@ var event_delete_dialog = function event_delete_dialog(event_id) {
     return;
   }
 
-  $.extend(data, {
-    applyid: 'event_delete_form',
-    frm: {
-      action: form_url,
-      method: 'post'
+  // Non recurrent event. Just remove it
+  if (data.rrule === undefined) {
+    event_delete_proceed(data);
+    return;
+  }
+
+  // This is a recurrent event. Ask user if he/she wants to remove
+  // all instances or just this one
+  event_delete_recurrent_dialog(data);
+};
+
+
+/**
+ * Proceed to delete an event/event instance
+ *
+ * @param Object data Event data
+ * @param string recurrence_id Optional RECURRENCE-ID
+ */
+var event_delete_proceed = function event_delete_proceed(data, recurrence_id) {
+  var remove_all_instances = false;
+  if (typeof recurrence_id === "undefined") {
+    recurrence_id = null;
+    remove_all_instances = true;
+  }
+
+  var remove_params = {
+    calendar: data.calendar,
+    uid: data.uid,
+    href: data.href,
+    etag: data.etag,
+    recurrence_id: recurrence_id
+  };
+  remove_params[csrf_id] = get_csrf_token();
+
+  send_form({
+    form_object: {
+      url: AgenDAVConf.base_app_url + 'events/delete',
+      data: remove_params
+    },
+    success: function(rdata) {
+      removeEvents(data.id, remove_all_instances);
+    },
+    exception: function(rdata) {
+      show_error(t('messages', 'error_event_not_deleted'), rdata);
     }
   });
+};
 
+/**
+ * Shows a dialog to let the user choose between removing all instances of a
+ * recurrent event or just the current instance
+ *
+ * @param Object data Event data
+ */
+var event_delete_recurrent_dialog = function event_delete_recurrent_dialog(data) {
   var buttons = [
   {
-    'text': t('labels', 'yes'),
+    'text': t('labels', 'delete_only_this_repetition'),
     'class': 'addicon btn-icon-event-delete',
     'click': function() {
-      var event_delete_details = $('#event_delete_form').serialize();
-
-      send_form({
-        form_object: $('#event_delete_form'),
-        data: event_delete_details,
-        success: function(rdata) {
-          // TODO ask to remove recurrence exceptions
-          removeEvents(data.id, true);
-        },
-        exception: function(rdata) {
-            show_error(t('messages', 'error_event_not_deleted'), rdata);
-        }
-      });
-
-      // Destroy dialog
+      event_delete_proceed(data, data.recurrence_id);
       destroy_dialog('#event_delete_dialog');
     }
   },
   {
-    'text': t('labels', 'cancel'),
-    'class': 'addicon btn-icon-cancel',
-    'click': function() { destroy_dialog('#event_delete_dialog'); }
+    'text': t('labels', 'delete_all_repetitions'),
+    'class': 'addicon btn-icon-event-delete',
+    'click': function() {
+      event_delete_proceed(data);
+      destroy_dialog('#event_delete_dialog');
+    }
   }
   ];
 
+  data.applyid = 'event_delete_form';
+
   show_dialog({
-    template: 'event_delete_dialog',
+    template: 'event_delete_recurrent_dialog',
     data: data,
-    title: title,
+    title: t('labels', 'deleteevent'),
     buttons: buttons,
     divname: 'event_delete_dialog',
     width: 400
   });
 
-  // Close tooltip
-  event_details_popup.hide();
-  return false;
 };
 
 // Edit/Modify link
@@ -1949,11 +1988,11 @@ var updateEvents = function updateEvents(id, recurrent, etag, allday) {
  * recurrent events
  *
  * @param string id Event id
- * @param bool recurrent true if this event repeats
+ * @param bool wildcard true to remove all instances of a recurrent event
  */
-var removeEvents = function removeEvents(id, recurrent) {
+var removeEvents = function removeEvents(id, wildcard) {
   // TODO recurrence-ids
-  var filter = generateIdFilter(id, recurrent);
+  var filter = generateIdFilter(id, wildcard);
 
   $('#calendar_view').fullCalendar('removeEvents', filter);
 };
@@ -1978,7 +2017,7 @@ var generateIdFilter = function generateIdFilter(id, wildcard) {
         return false;
       }
 
-      return (event.id.substring(0, match_id.length + 1) == match_id + '@');
+      return event.id === id || (event.id.substring(0, match_id.length + 1) == match_id + '@');
     };
   }
 

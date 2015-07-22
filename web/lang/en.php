@@ -111,6 +111,9 @@ $translations = array(
     'labels.cancel' => 'Cancel',
     'labels.yes' => 'Yes',
 
+    'labels.delete_only_this_repetition' => 'Delete only this one',
+    'labels.delete_all_repetitions' => 'Delete all repetitions',
+
     'labels.untitled' => 'Untitled',
 
     'labels.sharewith' => 'Share with',
@@ -171,9 +174,8 @@ $translations = array(
     'messages.error_internalgen' => 'Internal calendar generation error',
 
     'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
-    'messages.info_confirmeventdelete' => 'Are you sure you want to delete the following event?',
+    'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
     'messages.info_permanentremoval' => 'Your information will be permanently lost',
-    'messages.info_repetitivedeleteall' => 'All repetitive instances of this event will be deleted',
     'messages.info_sharedby' => 'You have access to this calendar because %user shared it with you',
     'messages.info_shareexplanation' => 'You can share this calendar with other users and let them modify it. Place their usernames below, separated by commas or spaces',
     'messages.info_notshared' => 'This calendar is not being shared with anyone',

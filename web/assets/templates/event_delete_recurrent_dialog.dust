@@ -1,0 +1,5 @@
+<div id="event_delete_dialog">
+
+<p>{@i18n type="messages" name="info_delete_recurrent_event"/}</p>
+
+</div>
