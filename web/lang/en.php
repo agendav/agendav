@@ -175,6 +175,7 @@ $translations = array(
 
     'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
     'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
+    'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
     'messages.info_permanentremoval' => 'Your information will be permanently lost',
     'messages.info_sharedby' => 'You have access to this calendar because %user shared it with you',
     'messages.info_shareexplanation' => 'You can share this calendar with other users and let them modify it. Place their usernames below, separated by commas or spaces',

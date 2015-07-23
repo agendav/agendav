@@ -1,5 +1,9 @@
 <div id="event_delete_dialog">
 
+{?first_instance}
+<p>{@i18n type="messages" name="info_delete_recurrent_event_first_instance"/}</p>
+{:else}
 <p>{@i18n type="messages" name="info_delete_recurrent_event"/}</p>
+{/first_instance}
 
 </div>

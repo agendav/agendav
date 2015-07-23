@@ -1697,24 +1697,30 @@ var event_delete_proceed = function event_delete_proceed(data, recurrence_id) {
  * @param Object data Event data
  */
 var event_delete_recurrent_dialog = function event_delete_recurrent_dialog(data) {
-  var buttons = [
-  {
+  var button_only_this_repetition = {
     'text': t('labels', 'delete_only_this_repetition'),
     'class': 'addicon btn-icon-event-delete',
     'click': function() {
       event_delete_proceed(data, data.recurrence_id);
       destroy_dialog('#event_delete_dialog');
     }
-  },
-  {
+  };
+
+  var button_all_repetitions = {
     'text': t('labels', 'delete_all_repetitions'),
     'class': 'addicon btn-icon-event-delete',
     'click': function() {
       event_delete_proceed(data);
       destroy_dialog('#event_delete_dialog');
     }
+  };
+
+  // First instance! Disable the 'remove this instance' button
+  if (data.first_instance !== undefined) {
+    button_only_this_repetition.disabled = true;
   }
-  ];
+
+  var buttons = [ button_only_this_repetition, button_all_repetitions ];
 
   data.applyid = 'event_delete_form';
 

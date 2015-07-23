@@ -85,7 +85,9 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
 
             $recurrence_id = $event->getRecurrenceId();
 
+            // First recurrence
             if ($recurrence_id === null) {
+                $result['first_instance'] = true;
                 $result['editable'] = false;
                 $result['id'] .= '@';
             }
