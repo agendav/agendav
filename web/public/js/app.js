@@ -297,7 +297,7 @@ $(document).ready(function() {
 
       // Unselect every single day/slot
       $('#calendar_view').fullCalendar('unselect');
-      event_edit_dialog('new', data);
+      open_event_edit_dialog(data);
     });
 
     // Printing
@@ -521,83 +521,79 @@ var set_mindate = function set_mindate(mindate, datepickers) {
 };
 
 
-
-/***************************
- * Event handling functions
+/**
+ * Opens a dialog for editing/creating an event.
+ * Detects if this is a new event checking if an 'id' is present
+ * TODO: check for rrule/recurrence-id
+ *
+ * @param Object data The event data
  */
+var open_event_edit_dialog = function open_event_edit_dialog(event) {
+  var is_new = false;
+  var title = t('labels', 'editevent');
 
-// Triggers a dialog for editing/creating events
-var event_edit_dialog = function event_edit_dialog(type, data) {
+  if (event.id === undefined) {
+    is_new = true;
+  }
 
-  // TODO: check for rrule/recurrence-id
+  // Clone original object
+  // TODO use a better approach (lodash.clone?)
+  event = jQuery.extend(true, {}, event);
 
-  var form_url = AgenDAVConf.base_app_url + 'events/save';
-  var title;
-
-  if (type == 'new') {
+  // Event creation
+  if (is_new) {
     title = t('labels', 'createevent');
 
-    if (data.view == 'month') {
-      data.start = AgenDAVDateAndTime.approxNearest(data.start);
-      data.end = AgenDAVDateAndTime.approxNearest(data.end).add(1, 'hours');
-    } else {
-      // Any other view
-      if (data.allDay === false || data.allDay === undefined) {
-        data.end = AgenDAVDateAndTime.endDate(data);
-      } else {
-        data.start.minutes(0).seconds(0);
-        data.end = AgenDAVDateAndTime.endDate(data);
-      }
+    if (event.view == 'month') {
+      event.start = AgenDAVDateAndTime.approxNearest(event.start);
+      event.end = AgenDAVDateAndTime.approxNearest(event.end).add(1, 'hours');
     }
-  } else {
-    data = jQuery.extend(true, {}, data);
-
-    // Adapt for editing all day events. Fullcalendar uses exclusive ends,
-    // so the real end date for all day events has to be altered here
-    if (data.allDay === true) {
-      var adapted_end = moment(data.end);
-      adapted_end.subtract(1, 'days');
-      data.end = adapted_end;
-    }
-
-    title = t('labels', 'editevent');
-
-    // end can be null if the iCalendar was defined with DTSTART <= DTEND
-    data.end = AgenDAVDateAndTime.endDate(data);
   }
+
+  // Adapt end when editing all day events. Fullcalendar uses exclusive ends,
+  // so the real end date for all day events has to be altered here
+  if (!is_new && event.allDay === true) {
+    var adapted_end = moment(event.end);
+    adapted_end.subtract(1, 'days');
+    event.end = adapted_end;
+  }
+
+  // end can be null if the iCalendar resource was defined with DTSTART <= DTEND
+  event.end = AgenDAVDateAndTime.endDate(event);
 
   // All day events have start_time = end_time = 00:00. Set them to something
   // more sensible to have an initial value on each
-  if (data.allDay === true) {
-      data.start = AgenDAVDateAndTime.approxNearest(data.start);
-      data.end = AgenDAVDateAndTime.approxNearest(data.end).add(1, 'hours');
+  if (event.allDay === true) {
+      event.start = AgenDAVDateAndTime.approxNearest(event.start);
+      event.end = AgenDAVDateAndTime.approxNearest(event.end).add(1, 'hours');
   }
 
-  // Set default calendar
-  if (data.calendar === undefined) {
-    data.calendar = AgenDAVUserPrefs.default_calendar;
+  // Use default calendar
+  if (event.calendar === undefined) {
+    event.calendar = AgenDAVUserPrefs.default_calendar;
   }
 
   // Recurrence exceptions
-  if (data.is_exception) {
-    data.fixed_calendar = true;
-    data.fixed_repeat_rule = true;
+  if (event.is_exception) {
+    event.fixed_calendar = true;
+    event.fixed_repeat_rule = true;
   }
 
   $.extend(
-    data,
+    event,
     {
       applyid: 'event_edit_form',
       frm: {
-        action: form_url,
+        action: AgenDAVConf.base_app_url + 'events/save',
         method: 'post'
       },
       calendars: calendar_list(),
+
       // Dates and times
-      start_date: AgenDAVDateAndTime.extractDate(data.start),
-      start_time: AgenDAVDateAndTime.extractTime(data.start),
-      end_date: AgenDAVDateAndTime.extractDate(data.end),
-      end_time: AgenDAVDateAndTime.extractTime(data.end),
+      start_date: AgenDAVDateAndTime.extractDate(event.start),
+      start_time: AgenDAVDateAndTime.extractTime(event.start),
+      end_date: AgenDAVDateAndTime.extractDate(event.end),
+      end_time: AgenDAVDateAndTime.extractTime(event.end),
 
       // RRule constants for frequency
       // We can't do the same with weekdays, as RRule.MO - .SU don't have
@@ -610,65 +606,58 @@ var event_edit_dialog = function event_edit_dialog(type, data) {
   );
 
   // Log to console for debugging purposes
-  console.log(data);
+  console.log(event);
 
-  var buttons = [
-    {
-      'text': t('labels', 'save'),
-      'class': 'addicon btn-icon-event-edit',
-      'click': function() {
-        var event_details = $('#event_edit_form').serializeObject();
+  var button_save = {
+    'text': t('labels', 'save'),
+    'class': 'addicon btn-icon-event-edit',
+    'click': function() {
+      var event_fields = $('#event_edit_form').serializeObject();
 
-        event_details.timezone = AgenDAVUserPrefs.timezone;
+      event_fields.timezone = AgenDAVUserPrefs.timezone;
 
-        // Clean some event_details fields
-        delete event_details.start_date;
-        delete event_details.start_time;
-        delete event_details.end_date;
-        delete event_details.end_time;
-        delete event_details.tdate;
-        delete event_details.ttime;
-        delete event_details.qty;
-
-        send_form({
-          form_object: $('#event_edit_form'),
-          data: event_details,
-          success: function(data) {
-            // Reload only affected calendars
-            $.each(data, function(k, cal) {
-              reload_event_source(cal);
-            });
-
-            destroy_dialog('#event_edit_dialog');
-          },
-          exception: function(data) {
-            // Problem with form data
-            show_error(t('messages', 'error_invalidinput'), data);
+      send_form({
+        form_object: $('#event_edit_form'),
+        data: event_fields,
+        success: function(affected_calendars) {
+          // Reload only affected calendars
+          var total = affected_calendars.length;
+          for (var i=0;i<total;i++) {
+            reload_event_source(affected_calendars[i]);
           }
-        });
-      }
-    },
-    {
-      'text': t('labels', 'cancel'),
-      'class': 'addicon btn-icon-cancel',
-      'click': function() { destroy_dialog('#event_edit_dialog'); }
+
+          destroy_dialog('#event_edit_dialog');
+        },
+        exception: function(error) {
+          // Validation error
+          show_error(t('messages', 'error_invalidinput'), error);
+        }
+      });
     }
-  ];
+  };
+
+  var button_cancel = {
+    'text': t('labels', 'cancel'),
+    'class': 'addicon btn-icon-cancel',
+    'click': function() { destroy_dialog('#event_edit_dialog'); }
+  };
+
+  var buttons = [ button_save, button_cancel ];
 
   show_dialog({
     template: 'event_edit_dialog',
-    data: data,
+    data: event,
     title: title,
     buttons: buttons,
     divname: 'event_edit_dialog',
     width: 550,
     pre_func: function() {
       $('#event_edit_dialog').find('input.summary').focus();
-      handle_date_and_time('#event_edit_dialog', data);
+      handle_date_and_time('#event_edit_dialog', event);
       AgenDAVRepeat.handleForm($('#tabs-recurrence'));
 
-      if (data.rrule !== undefined && data.rrule !== '') {
-        AgenDAVRepeat.setRepeatRuleOnForm(data.rrule, $('#tabs-recurrence'));
+      if (event.rrule !== undefined && event.rrule !== '') {
+        AgenDAVRepeat.setRepeatRuleOnForm(event.rrule, $('#tabs-recurrence'));
       }
 
       // Reminders
@@ -1564,7 +1553,7 @@ var slots_drag_callback = function slots_drag_callback(start, end, jsEvent, view
 
   // Unselect every single day/slot
   $('#calendar_view').fullCalendar('unselect');
-  event_edit_dialog('new', data);
+  open_event_edit_dialog(data);
 };
 
 /**
@@ -1747,7 +1736,7 @@ var modify_event_handler = function modify_event_handler(event_id) {
     return;
   }
 
-  event_edit_dialog('modify', current_event);
+  open_event_edit_dialog(current_event);
 
   return false;
 };
