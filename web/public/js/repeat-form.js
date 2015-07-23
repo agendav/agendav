@@ -396,6 +396,10 @@ AgenDAVRepeat.setRepeatRuleOnForm = function setRepeatRuleOnForm(rrule, form) {
       continue;
     }
 
+    if (param === 'onlydate') {
+      continue;
+    }
+
 
     // Oops, unsupported property!
     // TODO
