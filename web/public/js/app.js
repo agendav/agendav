@@ -1745,15 +1745,47 @@ var modify_event_handler = function modify_event_handler(event_id) {
     return;
   }
 
-  // Recurrent and already an exception
-  if (current_event.is_exception) {
-    open_event_edit_dialog(current_event);
-    return;
-  }
-
   // Ask user if he wants to edit base instance or just this instance
-  alert("In progress");
-  event_modify_recurrent(current_event);
+  open_event_modify_recurrent_dialog(current_event);
+};
+
+
+/**
+ * Opens a dialog asking the user what he/she wants to do: edit the
+ * base event for a recurrent event, or just this instance
+ *
+ * @param Object event
+ */
+var open_event_modify_recurrent_dialog = function open_event_modify_recurrent_dialog(event) {
+  var button_only_this_repetition = {
+    'text': t('labels', 'edit_only_this_repetition'),
+    'class': 'addicon btn-icon-event-edit',
+    'click': function() {
+      destroy_dialog('#event_edit_recurrent_dialog');
+      open_event_edit_dialog(event);
+    }
+  };
+
+  var button_all_repetitions = {
+    'text': t('labels', 'edit_all_repetitions'),
+    'class': 'addicon btn-icon-event-edit',
+    'click': function() {
+      destroy_dialog('#event_edit_recurrent_dialog');
+      alert("In progress!");
+    }
+  };
+
+  var buttons = [ button_only_this_repetition, button_all_repetitions ];
+
+  show_dialog({
+    template: 'event_edit_recurrent_dialog',
+    data: event,
+    title: t('labels', 'editevent'),
+    buttons: buttons,
+    divname: 'event_edit_recurrent_dialog',
+    width: 400
+  });
+
 };
 
 // Shows a calendar

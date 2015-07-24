@@ -114,6 +114,9 @@ $translations = array(
     'labels.delete_only_this_repetition' => 'Delete only this one',
     'labels.delete_all_repetitions' => 'Delete all repetitions',
 
+    'labels.edit_only_this_repetition' => 'Edit only this one',
+    'labels.edit_all_repetitions' => 'Edit all repetitions',
+
     'labels.untitled' => 'Untitled',
 
     'labels.sharewith' => 'Share with',
@@ -174,6 +177,7 @@ $translations = array(
     'messages.error_internalgen' => 'Internal calendar generation error',
 
     'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
+    'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
     'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
     'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
     'messages.info_permanentremoval' => 'Your information will be permanently lost',

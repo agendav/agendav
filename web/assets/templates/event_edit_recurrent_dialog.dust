@@ -1,4 +1,4 @@
-<div id="event_edit_dialog">
+<div id="event_edit_recurrent_dialog">
 
 <p>{@i18n type="messages" name="info_edit_recurrent_event"/}</p>
 
