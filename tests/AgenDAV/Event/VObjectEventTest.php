@@ -531,6 +531,13 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $end->modify('+7 days'); // Match the RECURRENCE-ID date
         $this->assertEquals($start, $instance->getStart(), 'Start date is not updated');
         $this->assertEquals($end, $instance->getEnd(), 'End date is not updated');
+
+        // Check that RRULE has been stripped on the new instance
+        $exception_vevent = $instance->getInternalVEvent();
+        $this->assertNull(
+            $exception_vevent->RRULE,
+            'RRULE is present on new exception instances, should be removed'
+        );
     }
 
     /**

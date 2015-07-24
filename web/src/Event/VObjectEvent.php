@@ -535,6 +535,7 @@ class VObjectEvent implements Event
 
         // Create new VEVENT
         $vevent = clone $this->vcalendar->getBaseComponent('VEVENT');
+        unset($vevent->RRULE);
         $vevent->{'RECURRENCE-ID'} = $recurrence_id->getDateTime();
 
         return $vevent;
