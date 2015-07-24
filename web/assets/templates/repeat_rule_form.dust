@@ -1,9 +1,21 @@
 <p id="repeat_warning_rrule_unreproducible" class="text-warning">
 {@i18n type="messages" name="info_rrule_not_reproducible" /}
 </p>
+
+{?fixed_repeat_rule}
+<p id="repeat_warning_rrule_fixed" class="text-warning">
+{@i18n type="messages" name="info_rrule_protected" /}
+</p>
+{>form_element_start for="" label="repeat_explanation" /}
+<p class="form-control-static" id="fixed_repeat_rule_explanation"></p>
+{>form_element_end /}
+{/fixed_repeat_rule}
+
 <input type="hidden" name="fixed_repeat_rule" id="fixed_repeat_rule" value="{fixed_repeat_rule}">
 <input type="hidden" name="rrule" id="rrule" value="{rrule}">
 <input type="hidden" name="rrule_original" id="rrule_original" value="{rrule}">
+
+{^fixed_repeat_rule}
 
 {>form_element_start for="frequency" label="repeat" /}
  <select name="repeat_frequency" class="form-control" id="repeat_frequency">
@@ -97,3 +109,4 @@
 {>form_element_end /}
 
 </div>
+{/fixed_repeat_rule}

@@ -207,6 +207,7 @@ $translations = array(
     'messages.notice_no_calendars' => 'No calendars available',
     'messages.info_repetition_human' => 'This event repeats %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
+    'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
     'messages.error_calendarnotfound' => 'Invalid calendar %calendar',
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',

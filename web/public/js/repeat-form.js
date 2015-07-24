@@ -16,6 +16,9 @@ AgenDAVRepeat.handleForm = function handleForm($form) {
 
   if ($fixed_repeat_rule.val() == 'true') {
     $form.find('select, input').attr('disabled', 'disabled');
+
+    var original_rrule = RRule.fromString($('#rrule_original').val());
+    $('#fixed_repeat_rule_explanation').html(AgenDAVRepeat.explainRRule(original_rrule));
     return;
   }
 
