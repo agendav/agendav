@@ -162,6 +162,7 @@ $(document).ready(function() {
             var event_id = $(this).data('event-id');
 
             event_delete(event_id);
+
             // Close tooltip
             event_details_popup.hide();
             e.preventDefault();
@@ -169,10 +170,14 @@ $(document).ready(function() {
         .end()
           .find('.modify')
           .off('click')
-          .on('click', function() {
+          .on('click', function(e) {
             var event_id = $(this).data('event-id');
 
             modify_event_handler(event_id);
+
+            // Close tooltip
+            event_details_popup.hide();
+            e.preventDefault();
           });
 
         $(window).on('keydown.tooltipevents', function(e) {
@@ -1726,9 +1731,6 @@ var event_delete_recurrent_dialog = function event_delete_recurrent_dialog(data)
 
 // Edit/Modify link
 var modify_event_handler = function modify_event_handler(event_id) {
-  // Close tooltip
-  event_details_popup.hide();
-
   var current_event = get_event_data(event_id);
   if (current_event === undefined) {
     show_error(t('messages', 'error_interfacefailure'),
@@ -1736,9 +1738,22 @@ var modify_event_handler = function modify_event_handler(event_id) {
     return;
   }
 
-  open_event_edit_dialog(current_event);
+  // Is this a recurrent event? The first instance of a recurrent event has
+  // the same treatment
+  if (current_event.rrule === undefined || current_event.first_instance) {
+    open_event_edit_dialog(current_event);
+    return;
+  }
 
-  return false;
+  // Recurrent and already an exception
+  if (current_event.is_exception) {
+    open_event_edit_dialog(current_event);
+    return;
+  }
+
+  // Ask user if he wants to edit base instance or just this instance
+  alert("In progress");
+  event_modify_recurrent(current_event);
 };
 
 // Shows a calendar

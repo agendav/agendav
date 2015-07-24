@@ -7,6 +7,9 @@
 {?is_exception}
 <input type="hidden" name="recurrence_id" value="{recurrence_id}" />
 {/is_exception}
+{?fixed_calendar}
+<input type="hidden" name="calendar" value="{calendar}" />
+{/fixed_calendar}
 {/uid}
 
 {>form_element_start for="summary" label="summary" /}
