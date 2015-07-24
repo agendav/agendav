@@ -107,7 +107,7 @@ class VObjectBuilder implements Builder
     {
         $recurrence_id = null;
         if ($event->isRecurrent() && isset($attributes['recurrence_id'])) {
-            $recurrence_id = $attributes['recurrence_id'];
+            $recurrence_id = RecurrenceId::buildFromString($attributes['recurrence_id']);
         }
         $instance = $this->createEventInstanceFor($event, $recurrence_id);
 
