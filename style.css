@@ -1,6 +1,5 @@
 /* Structure start */
 body {
-  background: url(img/bg.png) #fafafa top left repeat-x;
   font-family: 'Open Sans', Helvetica, sans-serif;
   color: #333;
 }
@@ -17,6 +16,16 @@ a:hover {
 #header {
   padding-top: 1%;
   text-align: center;
+}
+
+#menu {
+  font-size: 120%;
+  padding-top: 10px;
+  text-align: center
+}
+
+#menu a {
+  font-weight: bold;
 }
 
 #footer {
@@ -43,6 +52,7 @@ h1, h2, h3, h4 {
 div.block {
   -moz-border-radius: 0.5em;
   -webkit-border-radius: 0.5em;
+  font-size: 120%;
 }
 
 #intro {
@@ -123,7 +133,7 @@ div.descript {
   font-weight: bold;
 }
 
-h2 {
+h2, h3 {
   text-shadow: 1px 3px 8px #888;
 }
 

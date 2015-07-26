@@ -5,12 +5,13 @@
  <head>
  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
- <link rel="stylesheet" type="text/css" href="reset.css">
- <link rel="stylesheet" type="text/css" href="text.css">
- <link rel="stylesheet" type="text/css" href="960_12_col.css">
- <link href="http://fonts.googleapis.com/css?family=Actor" rel="stylesheet" type="text/css">
- <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
- <link href="style.css" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" type="text/css" href="reset.css"/>
+ <link rel="stylesheet" type="text/css" href="text.css"/>
+ <link rel="stylesheet" type="text/css" href="960_12_col.css"/>
+ <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+ <link href="//fonts.googleapis.com/css?family=Actor" rel="stylesheet" type="text/css"/>
+ <link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"/>
+ <link href="style.css" rel="stylesheet" type="text/css"/>
  <!--[if !IE 7]>
  <style type="text/css">
    #wrap {display:table;height:100%}
@@ -22,12 +23,17 @@
  </title>
  </head>
  <body>
-<a href="http://github.com/adobo/agendav/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+<a href="http://github.com/adobo/agendav/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"/></a>
 
 <div id="wrap">
 
   <div id="header">
    <img src="agendav_big.png" alt="AgenDAV" width="350" height="68" />
+  </div>
+
+  <div id="menu">
+    <a href="http://docs.agendav.org"> <i class="fa fa-book"></i> Documentation</a> &ndash;
+    <a href="#support"> <i class="fa fa-life-ring"></i> Support</a>
   </div>
 
  <div class="container_12" id="main">
@@ -40,17 +46,16 @@
 
   <div class="grid_4 suffix_1">
    <div class="block" id="current_release">
-   <h2>Current release: 1.2.6.2</h2>
+   <h2>Latest release: 1.2.6.2</h2>
    <div class="download">
-    <a href="http://github.com/adobo/agendav/tarball/1.2.6.2">
-	 <img src="img/zip_file_download.png" width="64" height="64"
-	 	alt="Download" /><br />
+    <a href="https://github.com/adobo/agendav/archive/1.2.6.2.tar.gz">
+      <img src="img/zip_file_download.png" width="64" height="64"
+      alt="Download" /><br />
     Download
     </a>
     </div>
    <ul>
-    <li><span>Released on</span> 2012-10-15</li>
-    <li><a href="doc/1.2.6.2/releasenotes.html#and-1-2-6-2-2012-10-15">Read release notes</a></li>
+    <li><a href="http://docs.agendav.org/en/latest/releasenotes/#and-1-2-6-2-2012-10-15">Read release notes</a></li>
    </ul>
    </div>
   </div>
@@ -60,7 +65,7 @@
   <div class="grid_12 block" id="screenshots">
   <h2>Screenshots</h2>
   <div>
-   <a href="img/screenshots/1.2.6/001.png" 
+   <a href="img/screenshots/1.2.6/001.png"
    title="Month view of AgenDAV. On the left you can see the calendar list">
     <img src="img/screenshots/1.2.6/001_thumb.png" width="110"
     height="100" />
@@ -110,34 +115,42 @@
   </div>
   <div class="clear"></div>
 
-  <div class="grid_12 block" id="more_info">
-	<div class="grid_6 alpha">
-	 <a href="doc/1.2.6.2/">
-	 <img src="img/office_folders.png" alt="Documentation"  width="64" height="64" />
-	 <p>Documentation</p>
-	 </a>
-	</div>
-	<div class="grid_6 omega" id="community_link">
-	 <img src="img/users_comments.png" alt="Community"  width="64" height="64" />
-	 <p>Community</p>
-	</div>
+  <div class="grid_12 block" id="documentation">
+    <a name="documentation"></a>
+    <h2>Documentation</h2>
+    <p>AgenDAV documentation can be found at <a href="http://docs.agendav.org">http://docs.agendav.org/</a></p>
+
   </div>
+
+  <div class="grid_12 block" id="support">
+    <a name="support"></a>
+    <h2>Support</h2>
+    <p>Feel free to subscribe to the following public mailing lists:</p>
+    <ul>
+      <li>Questions and public announcements: <a href="http://groups.google.com/group/agendav-general">agendav-general@googlegroups.com</a></li>
+      <li>Development discussion: <a href="http://groups.google.com/group/agendav-dev">agendav-dev@googlegroups.com</a></li>
+    </ul>
+
+    <a name="donations"></a>
+    <h3>Donations</h3>
+    <p>Is AgenDAV doing your life easier? A donation would be much appreciated!</p>
+    <span>
+    <script async="async" src="paypal-button.min.js?merchant=jorge@adobo.org" 
+      data-button="donate" 
+      data-name="AgenDAV"
+      ></script>
+    </span>
+
+  </div>
+  <div class="clear"></div>
 
  </div>
 </div>
 
-<div class="tooltip" id="community_tooltip">
-  <div class="descript">Users and announcements</div>
-  <a target="_blank" href="http://groups.google.com/group/agendav-general">agendav-general@googlegroups.com</a>
-  <div class="descript">Development discussion</div>
-  <a target="_blank"
-  href="http://groups.google.com/group/agendav-dev">agendav-dev@googlegroups.com</a>
-</div>
-
 <div id="footer">
  <p>
- AgenDAV is published under <a
- href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a> license
+ AgenDAV is maintained by <a href="http://jorgelp.com">Jorge López Pérez</a>. Released under
+ <a href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a> license
  </p>
  <p>
  Icons by <a href="http://dryicons.com/">dryicons</a>
@@ -147,7 +160,6 @@
  <script language="JavaScript" src="jquery.lightbox-0.5.pack.js"></script>
  <script language="JavaScript">
   $(document).ready(function() {
-   $("#community_link").tooltip({ tip: '#community_tooltip', position: 'top center' });
    $("#screenshots a").lightBox({
 	imageLoading:'img/lightbox-ico-loading.gif',
 	imageBtnPrev:'img/lightbox-btn-prev.gif',
@@ -158,5 +170,5 @@
   });
  </script>
  </body>
-</html> 
+</html>
 
