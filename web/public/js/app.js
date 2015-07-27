@@ -578,8 +578,9 @@ var open_event_edit_dialog = function open_event_edit_dialog(event) {
     event.calendar = AgenDAVUserPrefs.default_calendar;
   }
 
-  // Recurrence exceptions
-  if (event.is_exception) {
+  // Recurrence instances: allow modifying recurrence rules or calendar only
+  // on the base event
+  if (event.rrule !== undefined && event.recurrence_id !== undefined) {
     event.fixed_calendar = true;
     event.fixed_repeat_rule = true;
   }
