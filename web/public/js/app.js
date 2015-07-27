@@ -1610,7 +1610,19 @@ var event_alter = function event_alter(alterType, event, delta, allDay, revertFu
   send_form({
     form_object: fake_form,
     success: function(data) {
-      updateEvents(event.id, (event.rrule !== 'undefined'), data.etag, event.allDay);
+      var is_recurrent = (event.rrule !== undefined);
+
+      // Update ETag for all instances
+      updateEvents(event.id, is_recurrent, { etag: data.etag });
+
+      // Set orig_allday just for this instance
+      updateEvents(event.id, false, { orig_allday: event.allDay });
+
+      // Update is_exception and has_exceptions for recurrent events
+      if (is_recurrent) {
+        updateEvents(event.id, true, { has_exceptions: true });
+        updateEvents(event.id, false, { is_exception: true });
+      }
     },
     exception: function(data) {
       show_error(t('messages', 'error_modfailed'), data);
@@ -2005,21 +2017,22 @@ var rrule_gettext = function rrule_gettext(key) {
 
 
 /**
- * Updates Fullcalendar events ETag that match the passed id
+ * Updates Fullcalendar events several attributes (ETag, etc) that match the
+ * passed id
  *
  * @param string id Event id
- * @param bool recurrent true if this event repeats
- * @param string etag
- * @param bool allday
+ * @param bool is_recurrent true if this event repeats
+ * @param Object new_properties List of properties to be updated
  */
-var updateEvents = function updateEvents(id, recurrent, etag, allday) {
-  var filter = generateIdFilter(id, recurrent);
+var updateEvents = function updateEvents(id, is_recurrent, new_properties) {
+  var filter = generateIdFilter(id, is_recurrent);
 
   var events = $('#calendar_view').fullCalendar('clientEvents', filter);
 
   for (var i=0;i<events.length;i++) {
-    events[i].etag = etag;
-    events[i].orig_allday = allday;
+    for (var property in new_properties) {
+      events[i][property] = new_properties[property];
+    }
     $('#calendar_view').fullCalendar('updateEvent', events[i]);
   }
 
