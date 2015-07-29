@@ -77,6 +77,7 @@ module.exports = function(grunt) {
           src: [
             'web/public/js/libs/jquery.js',
             'web/public/js/libs/moment.js',
+            'web/public/js/libs/moment-timezone-with-data-2010-2020.min.js',
             'web/public/js/libs/button.js',
             'web/public/js/libs/jquery-ui.js',
             'web/public/js/libs/tab.js',
