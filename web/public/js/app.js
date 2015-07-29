@@ -1269,6 +1269,50 @@ var get_event_data = function get_event_data(id) {
   return data[0];
 };
 
+/**
+ * Gets the base event for a given instance. Looks for it on currently
+ * loaded events, and queries the server for it in case it is not found. This
+ * is frequent on recurrent events, as the first event might have started some
+ * days/months/years back
+ *
+ * @param Object instance Original event instance data
+ * @param callback success Function that will be called if the event is found.
+ * @param callback fail Function that will be called if the event is not found.
+ * @return Object|undefined
+ */
+var load_base_event_for = function load_base_event_for(instance, success, fail) {
+  var parts = instance.id.split('@');
+  var base_id = parts[0] + '@';
+
+  var base_event = $('#calendar_view').fullCalendar('clientEvents', base_id);
+
+  // Found!
+  if (base_event.length !== 0) {
+    success(base_event[0]);
+    return;
+  }
+
+  // Query the server
+  var search = $.getJSON(
+      AgenDAVConf.base_app_url + 'event',
+      {
+        calendar: instance.calendar,
+        timezone: AgenDAVUserPrefs.timezone,
+        uid: instance.uid
+      }
+  );
+
+  // Add the base event to the calendar, event if it is not rendered. We need
+  // Fullcalendar to apply some transformations to the data provided by
+  // the backend
+  search.done(function(event_data) {
+    $('#calendar_view').fullCalendar('renderEvent', event_data);
+    success(get_event_data(base_id));
+  });
+
+  search.fail(fail);
+};
+
 /*
  * Reloads an event source
  */
@@ -1784,7 +1828,16 @@ var open_event_modify_recurrent_dialog = function open_event_modify_recurrent_di
     'class': 'addicon btn-icon-event-edit',
     'click': function() {
       destroy_dialog('#event_edit_recurrent_dialog');
-      alert("In progress!");
+
+      load_base_event_for(
+          event,
+          function(base) {
+            open_event_edit_dialog(base);
+          },
+          function(jqXHR, textStatus) {
+            show_error(t('messages', 'error_interfacefailure'), textStatus);
+          }
+      );
     }
   };
 
