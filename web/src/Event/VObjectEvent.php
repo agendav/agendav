@@ -273,9 +273,10 @@ class VObjectEvent implements Event
             $instance->setRecurrenceId(null);
 
             // Limitation: can't modify base VEVENT if exceptions are set
-            // TODO
-            if (count($this->exceptions) > 0) {
-                throw new \Exception('Modification of recurrent events is not supported yet');
+            // TODO improve this?
+            if ($this->hasExceptions()) {
+                VObjectHelper::removeAllExceptions($this->vcalendar);
+                $this->exceptions = $this->findRecurrenceExceptions($this->vcalendar);
             }
         }
 

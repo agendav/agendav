@@ -178,6 +178,7 @@ $translations = array(
 
     'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
     'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
+    'messages.info_base_event_with_exceptions_modification' => 'This recurrent event has one or more exceptions set. If you use the "Edit all repetitions" button, exceptions will be removed',
     'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
     'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
     'messages.info_permanentremoval' => 'Your information will be permanently lost',

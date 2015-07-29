@@ -156,6 +156,25 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testRemoveAllExceptions()
+    {
+        $this->addBaseEventAndExceptions();
+
+        VObjectHelper::removeAllExceptions($this->vcalendar);
+
+        $this->assertCount(
+            1,
+            $this->vcalendar->VEVENT,
+            'removeAllExceptions() keeps some VEVENTs around'
+        );
+
+        $this->assertNull(
+            $this->vcalendar->VEVENT[0]->{'RECURRENCE-ID'},
+            'removeAllExceptions() removes the VEVENT with no RECURRENCE-ID!'
+        );
+
+    }
+
     /**
      * Internal function, used to add a base VEVENT and two exceptions
      * to the test VCALENDAR

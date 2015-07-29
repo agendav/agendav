@@ -285,7 +285,6 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /** @expectedException \Exception */
     public function testStoreInstanceModifyBaseWithExceptions()
     {
         $vevent_exception = $this->generateRecurrentEvent();
@@ -296,6 +295,11 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $instance->setSummary('I am trying to modify the base instance');
 
         $event->storeInstance($instance);
+
+        $this->assertFalse(
+            $event->hasExceptions(),
+            'storeInstance() does not remove all exceptions when updating the base event'
+        );
     }
 
     public function testStoreInstanceNewException()

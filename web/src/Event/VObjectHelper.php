@@ -100,6 +100,24 @@ class VObjectHelper
     }
 
     /**
+     * Removes all recurrence exceptions from a VCALENDAR
+     *
+     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @return void
+     */
+    public static function removeAllExceptions(VCalendar $vcalendar)
+    {
+        foreach ($vcalendar->select('VEVENT') as $vevent) {
+            $current_recurrence_id = $vevent->{'RECURRENCE-ID'};
+            if ($current_recurrence_id === null) {
+                continue;
+            }
+
+            $vcalendar->remove($vevent);
+        }
+    }
+
+    /**
      * Adds a new value to the EXDATE property of a VEVENT
      *
      * @param Sabre\VObject\Component\VCalendar $vevent
