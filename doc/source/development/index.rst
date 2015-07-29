@@ -57,6 +57,8 @@ The credentials for this environment are:
 * Username: ``demo``
 * Password: ``demo``
 
+Note that :ref:`development_environment` will be enabled by default.
+
 Working with scripts and stylesheets
 ------------------------------------
 

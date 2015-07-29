@@ -14,25 +14,23 @@ sure you include the following information:
 
 Try the following before writing:
 
-Switch to development mode
---------------------------
+.. _development_environment:
 
-You can switch to ``development`` environment easily using the provided
-``index_dev.php`` front controller.
+Development environment
+-----------------------
 
-In order to use it, the environment variable ``ENABLE_AGENDAV_DEVELOPMENT`` has to be
-set. It is not enabled by default to avoid any user accessing ``index_dev.php`` on a production
-system.
+You can switch to ``development`` environment easily by setting the environment
+variable ``AGENDAV_ENVIRONMENT`` to ``dev``.
 
 Environment variables have to be set on your webserver configuration file.
 Apache lets you do it using ``SetEnv``, or even better, using ``SetEnvIf`` to
-restrict the access just to some IPs. Example::
+enable the development environment just for some IPs. Example::
 
    <Location />
-      SetEnvIf Remote_Addr ^1\.2\.3\.4$ ENABLE_AGENDAV_DEVELOPMENT
+      SetEnvIf Remote_Addr ^1\.2\.3\.4$ AGENDAV_ENVIRONMENT=dev
    </Location>
 
-Then point your browser to ``http://your.agendav.host/index_dev.php``. A debugging
+Then point your browser to ``http://your.agendav.host/``. A debugging
 toolbar will appear, logs will be more verbose and a new HTTP debug log will be
 generated.
 
