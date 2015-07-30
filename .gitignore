@@ -5,6 +5,7 @@ doc/html
 *~
 web/vendor
 web/composer.phar
+web/public/build
 .vagrant
 vagrant_ansible_inventory_default
 phpunit.phar

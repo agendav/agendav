@@ -5,45 +5,15 @@ $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 
 // Assets
 $app['stylesheets'] = [
-    'agendav.css',
-    'jquery-ui.css',
-    'jquery-ui.structure.css',
-    'jquery-ui.theme.css',
-    'fullcalendar.css',
-    'jquery.qtip.css',
-    'freeow.css',
-    'jquery.timepicker.css',
-    'colorpicker.css',
+    'agendav-'. \AgenDAV\Version::V .'.css',
 ];
 
 $app['print.stylesheets'] = [
-    'app.print.css',
-    'fullcalendar.print.css',
+    'agendav-print-'. \AgenDAV\Version::V .'.css',
 ];
 
 $app['scripts'] = [
-    'libs/jquery.js',
-    'libs/moment.js',
-    'libs/moment-timezone-with-data-2010-2020.min.js',
-    'libs/button.js',
-    'libs/jquery-ui.js',
-    'libs/tab.js',
-    'libs/jquery.timepicker.js',
-    'libs/jquery.freeow.min.js',
-    'libs/jquery.colorPicker.js',
-    'libs/imagesloaded.pkg.min.js',
-    'libs/jquery.qtip.js',
-    'libs/jquery.colorhelpers.js',
-    'libs/jquery.serializeobject.js',
-    'libs/fullcalendar.js',
-    'libs/rrule.js',
-    'libs/nlp.js',
-    'templates/dust-core.js',
-    'templates/dust-helpers.js',
-    'templates/templates.js',
-    'datetime.js',
-    'repeat-form.js',
-    'app.js',
+    'agendav-'. \AgenDAV\Version::V .'.js',
 ];
 
 // Session parameters
