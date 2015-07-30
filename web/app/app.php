@@ -22,11 +22,18 @@ $app->register(new MonologServiceProvider());
 
 // Add some shared data to twig templates
 $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+    $twig->addGlobal('environment', $app['environment']);
     $twig->addGlobal('title', $app['site.title']);
     $twig->addGlobal('logo', $app['site.logo']);
     $twig->addGlobal('footer', $app['site.footer']);
 
     // Assets
+    $assets_root = '';
+    if ($app['environment'] === 'prod') {
+        $assets_root = '/build';
+    }
+    $twig->addGlobal('assets_root', $assets_root);
+
     $twig->addGlobal('stylesheets', $app['stylesheets']);
     $twig->addGlobal('print_stylesheets', $app['print.stylesheets']);
     $twig->addGlobal('scripts', $app['scripts']);
