@@ -47,6 +47,7 @@ class Preferences
         return $app['twig']->render(
             'preferences.html',
             [
+                'scripts' => [],
                 'available_timezones' => DateHelper::getAllTimeZones(),
                 'available_languages' => $app['languages'],
                 'timezone' => $preferences->get('timezone'),
