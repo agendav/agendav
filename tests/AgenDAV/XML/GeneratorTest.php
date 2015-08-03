@@ -211,6 +211,35 @@ ACLBODY;
 
     }
 
+    public function testPrincipalPropertySearchBody()
+    {
+      $filter = new \AgenDAV\CalDAV\PrincipalPropertySearchFilter('example');
+      $generator = $this->createXMLGenerator();
+      $body = $generator->principalPropertySearchBody($filter);
+      $expected_body = <<<BODY
+<d:principal-property-search xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" test="anyof">
+  <d:property-search>
+    <d:prop>
+      <C:calendar-user-address-set/>
+      <d:match>example</d:match>
+    </d:prop>
+  </d:property-search>
+  <d:property-search>
+    <d:prop>
+      <d:displayname/>
+      <d:match>example</d:match>
+    </d:prop>
+  </d:property-search>
+  <d:prop>
+    <d:displayname/>
+    <d:email/>
+  </d:prop>
+</d:principal-property-search>
+BODY;
+
+      $this->assertXmlStringEqualsXmlString($expected_body, $body);
+    }
+
     /**
      * Create a new XMLGenerator without output formatting
      **/

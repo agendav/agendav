@@ -207,6 +207,25 @@ class Generator
         return $dom->saveXML();
     }
 
+    /**
+     * Generates the REPORT XML body to get a list of principals that match a given filter
+     *
+     * @param \AgenDAV\CalDAV\PrincipalPropertySearchFilter $filter
+     * @return string
+     */
+    public function principalPropertySearchBody(\AgenDAV\CalDAV\PrincipalPropertySearchFilter $filter)
+    {
+        $dom = $this->emptyDocument();
+        $this->addUsedNamespace('DAV:');
+        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
+
+        $conditions_xml = $filter->generateFilterXML($dom);
+        $dom->appendChild($conditions_xml);
+        $this->setXmlnsOnElement($conditions_xml, $this->getUsedNamespaces());
+
+        return $dom->saveXML();
+    }
+
 
     /**
      * Returns a <tag>[...]</tag> group of tags for a given list

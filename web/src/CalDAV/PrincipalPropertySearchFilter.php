@@ -47,26 +47,24 @@ class PrincipalPropertySearchFilter implements ComponentFilter
      */
     public function generateFilterXML(\DOMDocument $document)
     {
-        $principal_property_search = $document->createElement('principal-property-search');
+        $principal_property_search = $document->createElement('d:principal-property-search');
         $principal_property_search->setAttribute('test', 'anyof');
 
-        foreach (['C:calendar-user-address-set', 'displayname'] as $property) {
-            $property_search = $document->createElement('property-search');
-            $prop = $document->createElement('prop');
+        foreach (['C:calendar-user-address-set', 'd:displayname'] as $property) {
+            $property_search = $document->createElement('d:property-search');
+            $prop = $document->createElement('d:prop');
             $current_property = $document->createElement($property);
             $prop->appendChild($current_property);
 
-            $match = $document->createElement('match', $this->input);
+            $match = $document->createElement('d:match', $this->input);
             $prop->appendChild($match);
             $property_search->appendChild($prop);
             $principal_property_search->appendChild($property_search);
         }
 
-        //<prop><displayname/><email/></prop></principal-property-search>
-
-        $return_prop = $document->createElement('prop');
-        $displayname = $document->createElement('displayname');
-        $email = $document->createElement('email');
+        $return_prop = $document->createElement('d:prop');
+        $displayname = $document->createElement('d:displayname');
+        $email = $document->createElement('d:email');
         $return_prop->appendChild($displayname);
         $return_prop->appendChild($email);
         $principal_property_search->appendChild($return_prop);
