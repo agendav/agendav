@@ -145,6 +145,7 @@ $translations = array(
     'labels.reminder' => 'Reminder',
 
     'labels.add_reminder' => 'Add reminder',
+    'labels.add_share' => 'Add share',
 
     'labels.before_start' => 'before start',
     'labels.after' => 'After',

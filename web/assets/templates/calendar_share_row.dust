@@ -1,16 +1,23 @@
-<tr>
-<td><span class="username">{username}</span></td>
-<td>
-<input type="hidden" name="share_with[sid][]" value="{sid}"/>
-<input type="hidden" name="share_with[username][]" value="{username}"/>
-<select name="share_with[rw][]" class="input-medium">
- {>calendar_share_access_options/}
-</select>
-</td>
-<td>
-<img src="{base_url}img/delete.png" 
-class="calendar_share_delete pseudobutton" 
-alt="{@i18n type="labels" name="delete"/}"
-title="{@i18n type="labels" name="delete"/}" />
-</td>
-</tr>
+<div class="form-group row share"{?new} id="calendar_share_add_row"{/new}>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            {^new}
+            <input type="hidden" name="shares[grantee][]" value="{username}" />
+            <span class="username">{username}</span>
+            {/new}
+            {?new}
+            <input name="autocomplete_username" class="form-control" id="calendar_share_add_username" value="" maxlength="255" size="10" />
+            {/new}
+        </div>
+        <div class="col-md-4">
+            <select name="shares[rw][]" class="form-control"{?new} id="calendar_share_add_rw"{/new}>
+                {>calendar_share_access_options/}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <p class="form-control-static">
+                <a href="javascript:void(0)" class="remove"><i class="fa fa-remove fa-fw"></i></a>
+            </p>
+        </div>
+    </div>
+</div>
