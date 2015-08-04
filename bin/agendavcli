@@ -10,10 +10,12 @@ require_once $vendor_directory . '/autoload.php';
 
 $app = require_once __DIR__ . '/../web/app/app.php';
 require __DIR__.'/../web/config/prod.php';
+require_once __DIR__ . '/../web/app/services.php';
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(
     [
     'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($app['db']),
+    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($app['orm']),
     'dialog' => new \Symfony\Component\Console\Helper\DialogHelper(),
     ]
 );
@@ -25,6 +27,7 @@ $cli->addCommands(array(
     // DBAL Commands
     new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(),
     new \Doctrine\DBAL\Tools\Console\Command\ImportCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
