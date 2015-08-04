@@ -9,6 +9,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\HttpFragmentServiceProvider;
 use Symfony\Component\Translation\Loader\PhpFileLoader;
 
 $app = new Application();
@@ -16,6 +17,7 @@ $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
+$app->register(new HttpFragmentServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new DoctrineServiceProvider());
 $app->register(new MonologServiceProvider());
