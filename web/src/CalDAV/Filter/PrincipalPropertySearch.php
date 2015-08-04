@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV\CalDAV;
+namespace AgenDAV\CalDAV\Filter;
 
 /*
  * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
@@ -21,11 +21,13 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\CalDAV\ComponentFilter;
+
 /**
  * Filter for principal property search 
  * (https://tools.ietf.org/html/rfc3744#section-9.4)
  */
-class PrincipalPropertySearchFilter implements ComponentFilter
+class PrincipalPropertySearch implements ComponentFilter
 {
     /** @property string input */
     protected $input;

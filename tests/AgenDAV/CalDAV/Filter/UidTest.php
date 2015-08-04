@@ -1,13 +1,13 @@
 <?php
-namespace AgenDAV\CalDAV;
+namespace AgenDAV\CalDAV\Filter;
 
-class UidFilterTest extends \PHPUnit_Framework_TestCase
+class UidTest extends \PHPUnit_Framework_TestCase
 {
     public function testGeneration()
     {
         $document = new \DOMDocument('1.0', 'UTF-8');
 
-        $uid_filter = new UidFilter('1234567890');
+        $uid_filter = new Uid('1234567890');
 
         $uid_filter_element = $uid_filter->generateFilterXML($document);
         $uid_filter_element->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:C', 'urn:ietf:params:xml:ns:caldav');

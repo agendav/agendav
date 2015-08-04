@@ -213,7 +213,7 @@ ACLBODY;
 
     public function testPrincipalPropertySearchBody()
     {
-      $filter = new \AgenDAV\CalDAV\PrincipalPropertySearchFilter('example');
+      $filter = new \AgenDAV\CalDAV\Filter\PrincipalPropertySearch('example');
       $generator = $this->createXMLGenerator();
       $body = $generator->principalPropertySearchBody($filter);
       $expected_body = <<<BODY

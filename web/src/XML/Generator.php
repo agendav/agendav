@@ -5,6 +5,7 @@ namespace AgenDAV\XML;
 use Sabre\Xml\Service as XMLUtil;
 use AgenDAV\CalDAV\ComponentFilter;
 use AgenDAV\CalDAV\Share\ACL;
+use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -210,10 +211,10 @@ class Generator
     /**
      * Generates the REPORT XML body to get a list of principals that match a given filter
      *
-     * @param \AgenDAV\CalDAV\PrincipalPropertySearchFilter $filter
+     * @param \AgenDAV\CalDAV\Filter\PrincipalPropertySearch $filter
      * @return string
      */
-    public function principalPropertySearchBody(\AgenDAV\CalDAV\PrincipalPropertySearchFilter $filter)
+    public function principalPropertySearchBody(PrincipalPropertySearch $filter)
     {
         $dom = $this->emptyDocument();
         $this->addUsedNamespace('DAV:');

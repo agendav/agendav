@@ -23,6 +23,8 @@ namespace AgenDAV\CalDAV;
 use \AgenDAV\CalDAV\Resource\Calendar;
 use \AgenDAV\CalDAV\Resource\CalendarObject;
 use \AgenDAV\CalDAV\Share\ACL;
+use \AgenDAV\CalDAV\Filter\Uid;
+use \AgenDAV\CalDAV\Filter\TimeRange;
 
 class Client
 {
@@ -245,7 +247,7 @@ class Client
      */
     public function fetchObjectsOnCalendar(Calendar $calendar, $start, $end)
     {
-        $time_range_filter = new TimeRangeFilter($start, $end);
+        $time_range_filter = new TimeRange($start, $end);
         $data = $this->report($calendar->getUrl(), $time_range_filter);
 
         return $this->buildObjectCollection($data, $calendar);
@@ -261,7 +263,7 @@ class Client
      */
     public function fetchObjectByUid(Calendar $calendar, $uid)
     {
-        $uid_filter = new UidFilter($uid);
+        $uid_filter = new Uid($uid);
         $data = $this->report($calendar->getUrl(), $uid_filter);
 
         if (count($data) === 0) {

@@ -1,13 +1,13 @@
 <?php
-namespace AgenDAV\CalDAV;
+namespace AgenDAV\CalDAV\Filter;
 
-class TimeRangeFilterTest extends \PHPUnit_Framework_TestCase
+class TimeRangeTest extends \PHPUnit_Framework_TestCase
 {
     public function testGeneration()
     {
         $document = new \DOMDocument('1.0', 'UTF-8');
 
-        $time_range = new TimeRangeFilter(
+        $time_range = new TimeRange(
             '20141114T000000Z',
             '20141115T000000Z'
         );

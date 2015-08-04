@@ -1,6 +1,6 @@
 <?php
 
-namespace AgenDAV\CalDAV;
+namespace AgenDAV\CalDAV\Filter;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -21,10 +21,12 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\CalDAV\ComponentFilter;
+
 /**
  * <time-range> filter for REPORTs
  */
-class TimeRangeFilter implements ComponentFilter
+class TimeRange implements ComponentFilter
 {
     protected $start;
 

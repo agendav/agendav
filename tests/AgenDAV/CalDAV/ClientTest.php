@@ -17,6 +17,8 @@ use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\CalDAV\Share\Permissions;
 use AgenDAV\CalDAV\Share\ACL;
 use AgenDAV\Event\Parser as EventParser;
+use AgenDAV\CalDAV\Filter\Uid;
+use AgenDAV\CalDAV\Filter\TimeRange;
 
 /**
  * @author jorge
@@ -534,7 +536,7 @@ BODY;
       $this->assertEquals($calendar, $objects[1]->getCalendar());
       $this->assertInstanceOf('\AgenDAV\Event', $objects[1]->getEvent());
 
-      $this->validateFetchObjectsRequest($calendar, new TimeRangeFilter($start, $end));
+      $this->validateFetchObjectsRequest($calendar, new TimeRange($start, $end));
     }
 
     /**
@@ -612,7 +614,7 @@ BODY;
         $this->assertEquals($calendar, $object->getCalendar());
         $this->assertInstanceOf('\AgenDAV\Event', $object->getEvent());
 
-        $this->validateFetchObjectsRequest($calendar, new UidFilter('c160fd13-829d-4d59-96d2-92fc0f9e6787'));
+        $this->validateFetchObjectsRequest($calendar, new Uid('c160fd13-829d-4d59-96d2-92fc0f9e6787'));
     }
 
     public function testPutObjectNew()
