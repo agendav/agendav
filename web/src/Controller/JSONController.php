@@ -116,9 +116,9 @@ abstract class JSONController
                 var_export($exception->getMessage(), true)
             ));
 
-            return $this->generateError(
-                $app['translator']->trans('messages.error_network_issues')
-            );
+            $message = $app['translator']->trans('messages.error_network_issues');
+
+            return $this->generateError($message, 503);
 
         } catch (\AgenDAV\Exception $exception) {
             $app['monolog']->addWarning(sprintf(
