@@ -168,31 +168,34 @@ abstract class JSONController
      * Generates an exception message
      *
      * @param string $message
+     * @param int $code Optional HTTP response code
      * @return Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function generateException($message)
+    protected function generateException($message, $code = 400)
     {
         $result = [
             'result' => 'EXCEPTION',
             'message' => $message
         ];
 
-        return new JsonResponse($result, 400, $this->headers);
+        return new JsonResponse($result, $code, $this->headers);
     }
 
     /**
      * Generates an error message
      *
+     * @param string $message
+     * @param int $code Optional HTTP response code
      * @return Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function generateError($message)
+    protected function generateError($message, $code = 500)
     {
         $result = [
             'result' => 'ERROR',
             'message' => $message
         ];
 
-        return new JsonResponse($result, 500, $this->headers);
+        return new JsonResponse($result, $code, $this->headers);
     }
     /**
      * Generates a success message
