@@ -142,7 +142,7 @@ class Client
      * @param string $method       HTTP verb
      * @param string $url          URL to send the request to
      * @return \Guzzle\Http\Message\Response
-     * @throws \GuzzleHttp\Exception\BadResponseException On 4xx and 5xx HTTP errors
+     * @throws \AgenDAV\Exception\* (see available exceptions)
      **/
     public function request($method, $url, $body = '')
     {
@@ -180,6 +180,10 @@ class Client
                 default:
                     throw new \AgenDAV\Exception($exception);
             }
+        } catch (\GuzzleHttp\Exception\ConnectException $exception) {
+            throw new \AgenDAV\Exception\ConnectionProblem(
+                $exception->getMessage()
+            );
         }
 
         return $this->response;

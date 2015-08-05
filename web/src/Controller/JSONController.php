@@ -110,6 +110,16 @@ abstract class JSONController
                 $app['translator']->trans('messages.error_element_changed')
             );
 
+        } catch (\AgenDAV\Exception\ConnectionProblem $exception) {
+            $app['monolog']->addError(sprintf(
+                "Having issues contacting the CalDAV server: %s",
+                var_export($exception->getMessage(), true)
+            ));
+
+            return $this->generateError(
+                $app['translator']->trans('messages.error_network_issues')
+            );
+
         } catch (\AgenDAV\Exception $exception) {
             $app['monolog']->addWarning(sprintf(
                 "Received unexpected HTTP code %d for input: %s",

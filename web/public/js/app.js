@@ -1010,8 +1010,13 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   });
 
   updcalendar_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-    show_error(t('messages', 'error_loading_calendar_list'),
-      t('messages', 'error_oops') + textStatus);
+    var message = errorThrown;
+
+    if (jqXHR.responseJSON !== undefined) {
+      message = jqXHR.responseJSON.message;
+    }
+
+    show_error(t('messages', 'error_loading_calendar_list'), message);
   });
 
   updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {

@@ -218,6 +218,7 @@ $translations = array(
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
+    'messages.error_network_issues' => 'We are having network issues. Please, try again later',
     'messages.error_calname_missing' => 'Empty calendar name',
     'messages.error_calcolor_missing' => 'Color must be supplied',
     'messages.error_shareunknownusers' => 'Some of the users you specified do not exist',
