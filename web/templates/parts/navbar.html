@@ -17,6 +17,10 @@
          <i title="{% trans %}labels.logout{% endtrans %}" class="fa fa-lg fa-power-off"></i>
        </a>
        </li>
+       <li><a href="javascript:void(0)">
+       {{ app.session.get('displayname') }}
+       </a>
+       </li>
    </ul>
   </div>
 </div>
