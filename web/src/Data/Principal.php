@@ -27,13 +27,16 @@ namespace AgenDAV\Data;
 class Principal
 {
     /** @Id @Column(type="string") */
-    private $path;
+    private $url;
 
     /** @Column(type="string") */
-    private $display_name;
+    private $displayname;
 
     /** @Column(type="string") */
     private $email;
+
+    // Property names
+    const DISPLAYNAME = '{DAV:}displayname';
 
     /**
      * Builds a new Principal
@@ -45,24 +48,34 @@ class Principal
         $this->url = $url;
     }
 
+    /*
+     * Getter for URL
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
     /**
-     * Getter for display_name
+     * Getter for displayname
      *
      * @return string
      */
     public function getDisplayName()
     {
-        return $this->display_name;
+        return $this->displayname;
     }
 
     /**
-     * Setter for display_name
+     * Setter for displayname
      *
-     * @param string $display_name
+     * @param string $displayname
      */
-    public function setDisplayName($display_name)
+    public function setDisplayName($displayname)
     {
-        $this->display_name = $display_name;
+        $this->displayname = $displayname;
     }
 
     /**
