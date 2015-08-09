@@ -343,7 +343,7 @@ class Client
      * @param string $body  Request body
      * @result array key-value array, where keys are paths and properties are values
      */
-    protected function propfind($url, $depth, $body)
+    public function propfind($url, $depth, $body)
     {
         $this->http_client->setHeader('Depth', $depth);
         $this->http_client->setContentTypeXML();
@@ -364,7 +364,7 @@ class Client
      *                                               a filter for the report
      * @result array key-value array, where keys are paths and properties are values
      */
-    protected function report($url, ComponentFilter $filter)
+    public function report($url, ComponentFilter $filter)
     {
         $this->http_client->setHeader('Depth', 1);
         $this->http_client->setContentTypeXML();
