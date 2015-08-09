@@ -55,6 +55,17 @@ $app['preferences.repository'] = $app->share(function($app) {
     return $repository;
 });
 
+// Principals repository (queries the CalDAV server)
+$app['principals.repository'] = $app->share(function($app) {
+    $repository = new AgenDAV\Repositories\DAVPrincipalsRepository(
+        $app['xml.toolkit'],
+        $app['caldav.client']
+    );
+
+    return $repository;
+});
+
+
 // Encryption
 $app['encryptor'] = $app->share(function($app) {
     $encryption_key = substr(sha1($app['encryption.key']), 0, 16); // Use AES128
