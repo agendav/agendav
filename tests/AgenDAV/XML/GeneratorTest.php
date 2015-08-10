@@ -221,14 +221,14 @@ ACLBODY;
   <d:property-search>
     <d:prop>
       <C:calendar-user-address-set/>
-      <d:match>example</d:match>
     </d:prop>
+    <d:match>example</d:match>
   </d:property-search>
   <d:property-search>
     <d:prop>
       <d:displayname/>
-      <d:match>example</d:match>
     </d:prop>
+    <d:match>example</d:match>
   </d:property-search>
   <d:prop>
     <d:displayname/>

@@ -59,8 +59,8 @@ class PrincipalPropertySearch implements ComponentFilter
             $prop->appendChild($current_property);
 
             $match = $document->createElement('d:match', $this->input);
-            $prop->appendChild($match);
             $property_search->appendChild($prop);
+            $property_search->appendChild($match);
             $principal_property_search->appendChild($property_search);
         }
 

@@ -20,14 +20,14 @@ class PrincipalPropertySearchTest extends \PHPUnit_Framework_TestCase
   <d:property-search>
     <d:prop>
       <C:calendar-user-address-set/>
-      <d:match>abcdefg</d:match>
     </d:prop>
+    <d:match>abcdefg</d:match>
   </d:property-search>
   <d:property-search>
     <d:prop>
       <d:displayname/>
-      <d:match>abcdefg</d:match>
     </d:prop>
+    <d:match>abcdefg</d:match>
   </d:property-search>
   <d:prop>
     <d:displayname/>
