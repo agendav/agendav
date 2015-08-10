@@ -1384,33 +1384,22 @@ var shares_manager = function shares_manager() {
   });
 
   $('#new_share').on('click', function(event) {
-    var last_username_field = $('#calendar_share_add_username');
+    var filter = $('#calendar_share_filter');
 
     // No 'add share' form is already being shown. Just render it
-    if (last_username_field.length === 0) {
+    if (filter.length === 0) {
       render_template('calendar_share_row', {new: "1"}, function(out) {
         $('#shares').append(out);
         shares_manager_no_entries_placeholder();
         shares_manager_enable_autocomplete();
-        $('#calendar_share_add_username').focus();
+        $('#calendar_share_filter').focus();
       });
       return;
     }
 
-    // Form is already being shown, but it has an empty username
-    var username = last_username_field.val();
-    if (username === '') {
-      last_username_field.focus();
-      return;
-    }
+    // Form already shown. Just give it focus
+    filter.focus();
 
-    // Turn user input into a new share row
-    var permissions = $('#calendar_share_add_rw').val();
-    render_template('calendar_share_row', {username: username, rw: permissions}, function(out) {
-      $('#calendar_share_add_row').before(out);
-      last_username_field.val('');
-      last_username_field.focus();
-    });
 
   });
 
@@ -1435,7 +1424,7 @@ var shares_manager_enable_autocomplete = function shares_manager_enable_autocomp
   // Autocomplete caching
   var user_autocomplete_cache = {}, lastXhr;
 
-  $('#calendar_share_add_username').autocomplete({
+  $('#calendar_share_filter').autocomplete({
     minLength: 3,
     source: function(request, response) {
       var term = request.term;
@@ -1445,30 +1434,38 @@ var shares_manager_enable_autocomplete = function shares_manager_enable_autocomp
         return;
       }
 
-      lastXhr = $.getJSON(AgenDAVConf.base_app_url + 'caldav2json/principal_search',
+      lastXhr = $.getJSON(AgenDAVConf.base_app_url + 'principals',
         request, function(data, status, xhr) {
           user_autocomplete_cache[term] = data;
           if (xhr === lastXhr) {
             response(data);
           }
-        });
+        }
+      );
     },
-    focus: function( event, ui ) {
-             $(this).val(ui.item.username);
-             return false;
-           },
     select: function( event, ui ) {
-              $(this).val(ui.item.username);
+              // Turn user input into a new share row
+              var permissions = $('#calendar_share_add_rw').val();
+              render_template('calendar_share_row', {url: ui.item.url, displayname: ui.item.displayname, rw: permissions}, function(out) {
+                $('#calendar_share_add_row').before(out);
+                $('#calendar_share_filter').val('').focus();
+              });
               return false;
             }
   });
 
-  $('#calendar_share_add_username').data('ui-autocomplete')._renderItem = function(ul, item) {
+  $('#calendar_share_filter').data('ui-autocomplete')._renderItem = function(ul, item) {
+    var text = '<a><i class="fa fa-user"></i> ' + item.displayname;
+
+    if (item.email !== null) {
+      text += ' <span style="font-style: italic">&lt;' + item.email + '&gt;</span>';
+    }
+
+    text += '</a>';
+
     return $('<li></li>')
       .data('item.autocomplete', item)
-      .append('<a><i class="fa fa-user"></i> ' + item.displayname +
-          '<span style="font-style: italic">' +
-          ' &lt;' + item.email + '&gt;</span></a>')
+      .append(text)
       .appendTo(ul);
   };
 };

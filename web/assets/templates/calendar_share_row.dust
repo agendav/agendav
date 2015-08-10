@@ -2,11 +2,16 @@
     <div class="col-md-12">
         <div class="col-md-6">
             {^new}
-            <input type="hidden" name="shares[grantee][]" value="{username}" />
-            <span class="username">{username}</span>
+            <input type="hidden" name="shares[url][]" value="{url}" />
+            <p class="form-control-static">
+            <span class="username" title="{url}">{displayname}</span>
+            {?email}
+             <em>&lt;email&gt;</em>
+            {/email}
+            </p>
             {/new}
             {?new}
-            <input name="autocomplete_username" class="form-control" id="calendar_share_add_username" value="" maxlength="255" size="10" />
+            <input name="filter" class="form-control" id="calendar_share_filter" value="" maxlength="255" size="10" />
             {/new}
         </div>
         <div class="col-md-4">
