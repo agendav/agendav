@@ -24,7 +24,7 @@ namespace AgenDAV\Repositories;
 use AgenDAV\Data\Principal;
 use AgenDAV\XML\Toolkit;
 use AgenDAV\CalDAV\Client;
-
+use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
 
 /**
  * Principals repository class that just reads principals from a CalDAV server
@@ -72,6 +72,38 @@ class DAVPrincipalsRepository implements PrincipalsRepository
         }
 
         // TODO read and store email
+        return $result;
+    }
+
+    /**
+     * Searchs a principal using a filter string
+     *
+     * @param string $filter
+     * @return AgenDAV\Data\Principal[]
+     */
+    public function search($filter)
+    {
+        $result = [];
+
+        $principal_property_search_filter = new PrincipalPropertySearch($filter);
+
+        $body = $this->xml_toolkit->generateRequestBody(
+            'REPORT-PRINCIPAL-SEARCH',
+            $principal_property_search_filter
+        );
+
+        $response = $this->caldav_client->report('', $body, 0);
+
+        foreach ($response as $url => $properties) {
+            $principal = new Principal($url);
+            // TODO email. Also clean this
+            if (isset($properties[Principal::DISPLAYNAME])) {
+                $principal->setDisplayName($properties[Principal::DISPLAYNAME]);
+            }
+
+            $result[$url] = $principal;
+        }
+
         return $result;
     }
 }

@@ -36,4 +36,12 @@ interface PrincipalsRepository
      * @return AgenDAV\Data\Principal
      */
     public function get($url);
+
+    /**
+     * Searchs a principal using a filter string
+     *
+     * @param string $filter
+     * @return AgenDAV\Data\Principal[]
+     */
+    public function search($filter);
 }
