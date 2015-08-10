@@ -54,6 +54,8 @@ $controllers->post('/events/resize', '\AgenDAV\Controller\Event\Resize::doAction
 $controllers->post('/events/delete', '\AgenDAV\Controller\Event\Delete::doAction')->bind('event.delete');
 $controllers->post('/events/save', '\AgenDAV\Controller\Event\Save::doAction')->bind('event.save');
 
+$controllers->get('/principals', '\AgenDAV\Controller\Principals::search')->bind('principals.search');
+
 // Dynamic JavaScript code
 $controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');
 
