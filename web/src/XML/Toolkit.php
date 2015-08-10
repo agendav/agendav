@@ -75,7 +75,8 @@ class Toolkit
     /**
      * Generates the XML body for a request
      *
-     * @param string $request   One of MKCALENDAR, PROPFIND, PROPPATCH or REPORT
+     * @param string $request   One of MKCALENDAR, PROPFIND, PROPPATCH, REPORT-CALENDAR or
+     *                          REPORT-PRINCIPAL-SEARCH
      * @param mixed $parameters array of properties, \AgenDAV\CalDAV\ComponentFilter
      *                          object if $request is REPORT or \AgenDAV\CalDAV\Share\ACL
      *                          if $request is ACL
@@ -91,8 +92,10 @@ class Toolkit
                 return $this->generator->propfindBody($parameters);
             case 'PROPPATCH':
                 return $this->generator->proppatchBody($parameters);
-            case 'REPORT':
-                return $this->generator->reportBody($parameters);
+            case 'REPORT-CALENDAR':
+                return $this->generator->calendarQueryBody($parameters);
+            case 'REPORT-PRINCIPAL-SEARCH':
+                return $this->generator->principalPropertySearchBody($parameters);
             case 'ACL':
                 return $this->generator->aclBody($parameters);
             default:

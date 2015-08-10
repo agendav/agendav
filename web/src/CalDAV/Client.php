@@ -248,7 +248,8 @@ class Client
     public function fetchObjectsOnCalendar(Calendar $calendar, $start, $end)
     {
         $time_range_filter = new TimeRange($start, $end);
-        $data = $this->report($calendar->getUrl(), $time_range_filter);
+        $xml_body = $this->xml_toolkit->generateRequestBody('REPORT-CALENDAR', $time_range_filter);
+        $data = $this->report($calendar->getUrl(), $xml_body);
 
         return $this->buildObjectCollection($data, $calendar);
     }
@@ -264,7 +265,8 @@ class Client
     public function fetchObjectByUid(Calendar $calendar, $uid)
     {
         $uid_filter = new Uid($uid);
-        $data = $this->report($calendar->getUrl(), $uid_filter);
+        $xml_body = $this->xml_toolkit->generateRequestBody('REPORT-CALENDAR', $uid_filter);
+        $data = $this->report($calendar->getUrl(), $xml_body);
 
         if (count($data) === 0) {
             throw new \AgenDAV\Exception\NotFound('Object '.$uid.' not found at ' . $calendar->getUrl());
@@ -360,15 +362,14 @@ class Client
      * Issues a REPORT and parses the response
      *
      * @param string $url   URL
-     * @param string \AgenDAV\CalDAV\ComponentFilter DOMElement to be added as
-     *                                               a filter for the report
+     * @param string $body   Request body
+     * @param int $depth Depth header for this request. Default value: 1
      * @result array key-value array, where keys are paths and properties are values
      */
-    public function report($url, ComponentFilter $filter)
+    public function report($url, $body, $depth = 1)
     {
-        $this->http_client->setHeader('Depth', 1);
+        $this->http_client->setHeader('Depth', $depth);
         $this->http_client->setContentTypeXML();
-        $body = $this->xml_toolkit->generateRequestBody('REPORT', $filter);
         $response = $this->http_client->request('REPORT', $url, $body);
 
         $contents = (string)$response->getBody();

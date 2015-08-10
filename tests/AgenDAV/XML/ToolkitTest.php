@@ -96,11 +96,11 @@ class ToolkitTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGenerateReportBody()
+    public function testGenerateCalendarQueryReportBody()
     {
         $filter = m::mock('AgenDAV\CalDAV\ComponentFilter');
         $this->generator
-            ->shouldReceive('reportBody')
+            ->shouldReceive('calendarQueryBody')
             ->once()
             ->with($filter)
             ->andReturn('result');
@@ -108,7 +108,7 @@ class ToolkitTest extends \PHPUnit_Framework_TestCase
         $toolkit = $this->createToolkit();
         $this->assertEquals(
             'result',
-            $toolkit->generateRequestBody('REPORT', $filter)
+            $toolkit->generateRequestBody('REPORT-CALENDAR', $filter)
         );
     }
 

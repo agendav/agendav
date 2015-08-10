@@ -800,7 +800,7 @@ BODY;
         $this->assertEquals(1, $request->getHeader('Depth'));
 
         $this->assertEquals(
-            $this->xml_generator->reportBody($filter),
+            $this->xml_generator->calendarQueryBody($filter),
             (string)$request->getBody()
         );
     }

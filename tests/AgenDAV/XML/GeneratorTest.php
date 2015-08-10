@@ -127,7 +127,7 @@ EOXML;
             ->andReturn(new \DOMElement('test'))
             ->getMock();
 
-        $body = $generator->reportBody($fake_filter);
+        $body = $generator->calendarQueryBody($fake_filter);
 
         $expected = <<<EOXML
 <?xml version="1.0" encoding="UTF-8"?>

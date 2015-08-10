@@ -141,7 +141,7 @@ class Generator
      * @param \AgenDAV\CalDAV\ComponentFilter $component_filter Filter for this report
      * @return string
      */
-    public function reportBody(\AgenDAV\CalDAV\ComponentFilter $component_filter)
+    public function calendarQueryBody(\AgenDAV\CalDAV\ComponentFilter $component_filter)
     {
         $dom = $this->emptyDocument();
         $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
