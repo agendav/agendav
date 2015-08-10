@@ -112,6 +112,22 @@ class ToolkitTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGeneratePrincipalPropertySearchReportBody()
+    {
+        $filter = m::mock('AgenDAV\CalDAV\Filter\PrincipalPropertySearch');
+        $this->generator
+            ->shouldReceive('principalPropertySearchBody')
+            ->once()
+            ->with($filter)
+            ->andReturn('result');
+
+        $toolkit = $this->createToolkit();
+        $this->assertEquals(
+            'result',
+            $toolkit->generateRequestBody('REPORT-PRINCIPAL-SEARCH', $filter)
+        );
+    }
+
     protected function createToolkit()
     {
         return new Toolkit(
