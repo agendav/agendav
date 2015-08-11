@@ -3,7 +3,7 @@
 namespace AgenDAV\Data;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,7 +23,7 @@ namespace AgenDAV\Data;
 
 
 /**
- * Holds a shared calendar information
+ * Holds information about a calendar that has been shared
  */
 
 /**
@@ -39,13 +39,13 @@ class Share
     private $sid;
 
     /** @Column(type="string") */
-    private $grantor;
+    private $owner;
 
     /** @Column(type="string") */
-    private $path;
+    private $calendar;
 
     /** @Column(type="string") */
-    private $grantee;
+    private $with;
 
     /** @Column(type="array") */
     private $options = array();
@@ -55,15 +55,9 @@ class Share
 
 
     /*
-     * Setter for sid
-     */
-    public function setSid($sid)
-    {
-        $this->sid = $sid;
-    }
-
-    /*
      * Getter for sid
+     *
+     * @return int
      */
     public function getSid()
     {
@@ -71,58 +65,71 @@ class Share
     }
 
     /*
-     * Getter for grantor
+     * Returns the owner principal URL
+     *
+     * @return string
      */
-    public function getGrantor()
+    public function getOwner()
     {
-        return $this->grantor;
+        return $this->owner;
     }
 
     /*
-     * Setter for grantor
+     * Setter for owner
+     *
+     * @param string $owner Owner principal URL
      */
-    public function setGrantor($grantor)
+    public function setOwner($owner)
     {
-        $this->grantor = $grantor;
+        $this->owner = $owner;
+    }
+
+    /*
+     * Returns the calendar URL
+     *
+     * @return string
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /*
+     * Setter for calendar
+     *
+     * @param string $calendar
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
         return $this;
     }
 
     /*
-     * Getter for path
+     * Returns the grantee principal URL
+     *
+     * @return string
      */
-    public function getPath()
+    public function getWith()
     {
-        return $this->path;
+        return $this->with;
     }
 
     /*
-     * Setter for path
+     * Sets the principal URL this is calendar is shared with
+     *
+     * @param string $with
      */
-    public function setPath($path)
+    public function setWith($with)
     {
-        $this->path = $path;
-        return $this;
-    }
-
-    /*
-     * Getter for grantee
-     */
-    public function getGrantee()
-    {
-        return $this->grantee;
-    }
-
-    /*
-     * Setter for grantee
-     */
-    public function setGrantee($grantee)
-    {
-        $this->grantee = $grantee;
+        $this->with = $with;
         return $this;
     }
 
     /*
      * Returns true if a share allows modifications
+     *
+     * @return bool
      */
     public function isWritable()
     {
@@ -137,7 +144,6 @@ class Share
     public function setWritePermission($rw)
     {
         $this->rw = $rw;
-        return $this;
     }
 
     /**
@@ -153,6 +159,9 @@ class Share
     /**
      * Returns a property/option set on this resource, or null if it
      * is not set
+     *
+     * @param string $name
+     * @return string|null
      */
     public function getProperty($name)
     {
@@ -161,14 +170,12 @@ class Share
 
     /**
      * Sets a property/option on this resource
+     *
+     * @param string $name
+     * @param string $value
      */
     public function setProperty($name, $value)
     {
         $this->options[$name] = $value;
-        return $this;
-    }
-
-    public function to_json() {
-        return json_encode($this->options);
     }
 }

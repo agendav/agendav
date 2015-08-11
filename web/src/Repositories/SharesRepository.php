@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -22,6 +22,7 @@
 namespace AgenDAV\Repositories;
 
 use AgenDAV\Data\Share;
+use AgenDAV\CalDAV\Resource\Calendar;
 
 
 /**
@@ -34,18 +35,18 @@ interface SharesRepository
     /**
      * Returns all calendars shared with a user
      *
-     * @param string $username  User name
-     * @return Array Array of Share's
+     * @param string $principal  User principal
+     * @return \AgenDAV\Data\Share[]
      */
-    public function getSharesFor($username);
+    public function getSharesFor($principal);
 
     /**
      * Returns all grants that have been given to a calendar
      *
-     * @param string $path  Path to the calendar
-     * @return Array Array of Share's
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @return \AgenDAV\Data\Share[]
      */
-    public function getSharesOnCalendar($path);
+    public function getSharesOnCalendar(Calendar $calendar);
 
     /**
      * Stores a grant on the database
@@ -60,4 +61,11 @@ interface SharesRepository
      * @param AgenDAV\Data\Share $share  Share object
      */
     public function remove(Share $share);
+
+    /**
+     * Saves all calendar shares. Any other existing shares will get removed
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendarj
+     */
+    public function saveFromCalendar(Calendar $calendar);
 }

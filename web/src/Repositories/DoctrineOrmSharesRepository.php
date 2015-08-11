@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,6 +23,7 @@ namespace AgenDAV\Repositories;
 
 use Doctrine\ORM\EntityManager;
 use AgenDAV\Data\Share;
+use AgenDAV\CalDAV\Resource\Calendar;
 
 
 /**
@@ -49,13 +50,13 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Returns all calendars shared with a user
      *
-     * @param string $username  User name
-     * @return Array Array of Share's
+     * @param string $principal  User principal
+     * @return \AgenDAV\Data\Share[]
      */
-    public function getSharesFor($username)
+    public function getSharesFor($principal)
     {
         $shares = $this->em->getRepository('AgenDAV\Data\Share')
-            ->findBy(['grantee' => $username]);
+            ->findBy(['with' => $principal]);
 
         return $shares;
     }
@@ -63,13 +64,15 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Returns all grants that have been given to a calendar
      *
-     * @param string $path  Path to the calendar
-     * @return Array Array of Share's
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @return \AgenDAV\Data\Share[]
      */
-    public function getSharesOnCalendar($path)
+    public function getSharesOnCalendar(Calendar $calendar)
     {
+        $url = $calendar->getUrl();
+
         $shares = $this->em->getRepository('AgenDAV\Data\Share')
-            ->findBy(['path' => $path]);
+            ->findBy(['calendar' => $url]);
 
         return $shares;
     }
@@ -95,4 +98,28 @@ class DoctrineOrmSharesRepository implements SharesRepository
         $this->em->remove($share);
         $this->em->flush();
     }
+
+    /**
+     * Saves all calendar shares. Any other existing shares will get removed
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendarj
+     */
+    public function saveFromCalendar(Calendar $calendar)
+    {
+        $url = $calendar->getUrl();
+        $current_shares = $this->getSharesOnCalendar($calendar);
+        foreach ($shares as $share) {
+            $this->em->remove($share);
+        }
+
+        $this->em->flush();
+
+        $new_shares = $calendar->getShares();
+        foreach ($new_shares as $share) {
+            $this->em->persist($share);
+        }
+
+        $this->em->flush();
+    }
+
 }
