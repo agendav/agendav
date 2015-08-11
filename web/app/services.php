@@ -169,9 +169,8 @@ $app['csrf.manager'] = $app->share(function ($app) {
 });
 
 
-/*
 // Sharing support enabled
-if ($enable_calendar_sharing === true) {
+if ($app['calendar.sharing']=== true) {
 
     // Shares repository
     $app['shares_repository'] = $app->share(function($app) {
@@ -180,11 +179,12 @@ if ($enable_calendar_sharing === true) {
     });
 
     // Add the shares repository to the calendar finder service
-    $app['calendar_finder']->setSharesRepository(
+    $app['calendar.finder']->setSharesRepository(
         $app['shares_repository']
     );
 
     // Privileges and permissions configuration
+    /*
     $cfg_permissions = $this->config->item('permissions');
     $app['permissions'] = $app->share(
         function($app) use ($cfg_permissions) {
@@ -200,5 +200,5 @@ if ($enable_calendar_sharing === true) {
             $c['permissions']
         );
     };
+     */
 }
- */

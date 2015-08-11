@@ -74,43 +74,45 @@ class CalendarFinder
     {
         $calendar_home_set = $this->session->get('calendar_home_set');
 
-        $result = $this->client->getCalendars($calendar_home_set);
+        $calendars = $this->client->getCalendars($calendar_home_set);
 
         if ($this->sharing_enabled) {
-            $username = $this->session->get('username');
             // Add share info to own calendars
-            $this->addSharedInfoAsOwner($result);
+            $this->setShares($calendars);
 
-            // And load calendars shared with current user
-            $shared_calendars = $this->getSharedCalendars($username);
+            // Also load calendars shared with current user
+            $principal = $this->session->get('principal_url');
+            $shared_calendars = $this->getSharedCalendars($principal);
 
-            $result = array_merge($result, $shared_calendars);
+            $calendars = array_merge($calendars, $shared_calendars);
         }
 
-        return $result;
+        return $calendars;
     }
 
     /**
-     * Gets shared calendars
+     * Gets all calendars shared with current principal
      *
+     * @param string $principal Principal URL
      * @return \AgenDAV\CalDAV\Resource\Calendar[]
      */
-    protected function getSharedCalendars($username)
+    protected function getSharedCalendars($principal)
     {
         $result = [];
 
-        $shares = $this->shares_repository->getSharesFor($username);
+        $shares = $this->shares_repository->getSharesFor($principal);
         foreach ($shares as $share) {
-            $calendar_url = $share->getPath();
+            $calendar_url = $share->getCalendar();
             try {
                 $calendar = $this->client->getCalendarByUrl($calendar_url);
             } catch (\Exception $e) {
                 // ACL was probably removed or modified. Ignore this calendar
+                // TODO: some logging
                 continue;
             }
 
             $calendar->setShared(true);
-            $calendar->setOwner($share->getGrantor());
+            $calendar->setOwner($share->getOwner());
 
             $custom_properties = $share->getProperties();
             $this->applySharedProperties($calendar, $custom_properties);
@@ -146,15 +148,14 @@ class CalendarFinder
     }
 
     /**
-     * undocumented function
+     * Stores existing calendar shares inside each Calendar object
      *
-     * @return void
+     * @param \AgenDAV\CalDAV\Resource\Calendar[] collection of calendars
      */
-    protected function addSharedInfoAsOwner(Array $calendars)
+    protected function setShares(Array $calendars)
     {
         foreach ($calendars as $calendar) {
-            $calendar_url = $calendar->getUrl();
-            $shares = $this->shares_repository->getSharesOnCalendar($calendar_url);
+            $shares = $this->shares_repository->getSharesOnCalendar($calendar);
             $calendar->setShares($shares);
         }
     }
