@@ -38,6 +38,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'ctag' => $calendar->getProperty(Calendar::CTAG),
             'shared' => $calendar->isSharedWithMe(),
             'writable' => $calendar->isWritable(),
+            'shares' => [],
         ];
 
         $shares = $calendar->getShares();
