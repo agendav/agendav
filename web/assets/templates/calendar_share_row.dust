@@ -2,9 +2,9 @@
     <div class="col-md-12">
         <div class="col-md-6">
             {^new}
-            <input type="hidden" name="shares[url][]" value="{url}" />
+            <input type="hidden" name="shares[with][]" value="{with}" />
             <p class="form-control-static">
-            <span class="username" title="{url}">{displayname}</span>
+            <span class="username" title="{with}">{displayname}</span>
             {?email}
              <em>&lt;email&gt;</em>
             {/email}

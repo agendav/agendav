@@ -1446,7 +1446,7 @@ var shares_manager_enable_autocomplete = function shares_manager_enable_autocomp
     select: function( event, ui ) {
               // Turn user input into a new share row
               var permissions = $('#calendar_share_add_rw').val();
-              render_template('calendar_share_row', {url: ui.item.url, displayname: ui.item.displayname, rw: permissions}, function(out) {
+              render_template('calendar_share_row', {with: ui.item.url, displayname: ui.item.displayname, rw: permissions}, function(out) {
                 $('#calendar_share_add_row').before(out);
                 $('#calendar_share_filter').val('').focus();
               });

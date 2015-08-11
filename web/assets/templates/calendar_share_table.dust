@@ -3,9 +3,9 @@
 </p>
 
 <div id="shares">
-{#grantee}
+{#shares}
 {>calendar_share_row /}
-{/grantee}
+{/shares}
 
 </div>
 
