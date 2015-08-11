@@ -6,7 +6,9 @@ php:
   - 5.6
   - 7
 
-cache: vendor
+cache:
+  directories:
+  - web/vendor
 
 script:
   - phpunit --configuration tests/phpunit.xml
