@@ -62,6 +62,9 @@ $(document).ready(function() {
   // Default colorpicker options
   set_default_colorpicker_options();
 
+  // Handle expired sessions
+  handle_expired_session();
+
   // Enable full calendar
   // TODO: configurable!
   $('#calendar_view').fullCalendar({
@@ -1012,11 +1015,11 @@ var update_calendar_list = function update_calendar_list(maskbody) {
   updcalendar_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
     var message = errorThrown;
 
-    if (jqXHR.responseJSON !== undefined) {
+    // Avoid double warning if the session expired
+    if (jqXHR.status === undefined || jqXHR.status != 401) {
       message = jqXHR.responseJSON.message;
+      show_error(t('messages', 'error_loading_calendar_list'), message);
     }
-
-    show_error(t('messages', 'error_loading_calendar_list'), message);
   });
 
   updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
@@ -1139,13 +1142,8 @@ var generate_event_source = function generate_event_source(calendar) {
         calendar: calendar
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        if (jqXHR.status !== undefined && jqXHR.status == 401) {
-          session_expired();
-        } else {
-          show_error(t('messages', 'error_interfacefailure'),
-          t('messages',
-            'error_loadevents', { '%cal' : calendar }));
-        }
+        show_error(t('messages', 'error_interfacefailure'),
+            t('messages', 'error_loadevents', { '%cal' : calendar }));
       }
   };
 
@@ -2131,6 +2129,18 @@ var generateIdFilter = function generateIdFilter(id, wildcard) {
   }
 
   return result;
+};
+
+/**
+ * Sets a default error handler for AJAX requests, so a 401 will be understood
+ * as an expired session
+ */
+var handle_expired_session = function handle_expired_session() {
+  $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+    if (jqxhr.status !== undefined && jqxhr.status == 401) {
+      session_expired();
+    }
+  });
 };
 
 
