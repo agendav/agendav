@@ -35,6 +35,6 @@ $cli->addCommands(array(
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
 
     // Clear sessions command
-    new \AgenDAV\Console\Command\ClearSessionsCommand(),
+    new \AgenDAV\Console\Command\SessionsClearCommand(),
 ));
 $cli->run();

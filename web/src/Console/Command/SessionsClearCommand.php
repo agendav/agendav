@@ -26,12 +26,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ClearSessionsCommand extends Command
+class SessionsClearCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('clear:sessions')
+            ->setName('sessions:clear')
             ->setDescription('Removes all user sessions');
     }
 
