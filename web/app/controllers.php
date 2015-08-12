@@ -59,6 +59,9 @@ $controllers->get('/principals', '\AgenDAV\Controller\Principals::search')->bind
 // Dynamic JavaScript code
 $controllers->get('/jssettings', '\AgenDAV\Controller\JavaScriptCode::settingsAction')->bind('settings.js');
 
+// Session keepalive
+$controllers->get('/keepalive', function() { return ''; });
+
 /**
  * Require being authenticated on every request. If authenticated, just load
  * current user preferences

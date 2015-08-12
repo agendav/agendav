@@ -62,6 +62,9 @@ $(document).ready(function() {
   // Default colorpicker options
   set_default_colorpicker_options();
 
+  // Keep session active
+  keep_session_active();
+
   // Handle expired sessions
   handle_expired_session();
 
@@ -1151,32 +1154,19 @@ var generate_event_source = function generate_event_source(calendar) {
 };
 
 /**
- * Keeps session alive
- *
- * n = refresh interval in miliseconds
+ * Keeps session alive. Sends a request every 60 seconds
  */
-var session_refresh = function session_refresh(n) {
+var keep_session_active = function keep_session_active() {
   var sessrefresh_ajax_req = $.ajax({
-    url: AgenDAVConf.base_app_url + 'js_generator/keepalive',
+    url: AgenDAVConf.base_app_url + 'keepalive',
     cache: false,
-    method: 'GET',
-    dataType: 'html'
+    method: 'GET'
   });
 
   sessrefresh_ajax_req.done(function(data, textStatus, jqXHR) {
-    if (data !== '') {
-      // When data is not empty, it's usually JavaScript code
-      // TODO think about using dataType: script here
-      $('body').append(data);
-    } else {
       setTimeout(function() {
-        session_refresh(n);
-      }, n);
-    }
-  });
-
-  sessrefresh_ajax_req.fail(function(jqXHR, textStatus, errorThrown) {
-    session_expired();
+        keep_session_active();
+      }, 60000);
   });
 };
 
