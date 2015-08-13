@@ -68,3 +68,14 @@ $app['logout.redirection'] = '';
 
 // Put twig cache outside the shared folder
 $app['twig.options'] = array('cache' => '/var/cache/twig');
+
+// Some session specific settings
+$app['session.storage.options'] = [
+    'name' => 'agendav_sess',
+    'cookie_lifetime' => 0,
+    // Every request has 10% chance of triggering session GC
+    'gc_probability' => 1,
+    'gc_divisor' => 10,
+    'gc_maxlifetime' => 1200,
+    'lifetime' => 1200,
+];

@@ -204,3 +204,23 @@ your installation.
    .. seealso:: See :confval:`read_profile_permissions` and
       :confval:`read_write_profile_permissions`
 
+
+Sessions
+--------
+
+AgenDAV uses `php.ini session settings <http://php.net/session.configuration>`_. You can override
+most of them inside `settings.php` by using the `session.storage.options`. Just copy it from
+`prod.php` and set any parameters you wish.
+
+The following example makes sessions expire after 20 minutes of closing your browser in a low
+traffic instance::
+
+    $app['session.storage.options'] = [
+       'name' => 'agendav_sess',
+       'cookie_lifetime' => 0,
+       // Every request has 10% chance of triggering session GC
+       'gc_probability' => 1,
+       'gc_divisor' => 10,
+       'gc_maxlifetime' => 1200,
+       'lifetime' => 1200,
+    ];

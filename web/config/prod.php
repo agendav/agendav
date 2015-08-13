@@ -19,6 +19,8 @@ $app['scripts'] = [
 // Session parameters
 $app['session.storage.options'] = [
     'name' => 'agendav_sess',
+    // You should not change cookie_lifetime. Change 'gc_divisor', 'gc_maxlifetime' and other
+    // session related settings (http://php.net/session.configuration)
     'cookie_lifetime' => 0,
 ];
 
