@@ -74,13 +74,22 @@ $app['encryptor'] = $app->share(function($app) {
     return new \AgenDAV\Encryption\KeboolaAesEncryptor($source_encryptor);
 });
 
-// Sessions
+// Sessions handler
 $app['session.storage.handler'] = $app->share(function($app) {
-    $db = $app['db'];
     $encryptor = $app['encryptor'];
-    $dbal_handler = new \Symfony\Bridge\Doctrine\HttpFoundation\DbalSessionHandler($db);
+    $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
+        $app['db']->getWrappedConnection(),
+        [
+            'db_table' => 'sessions',
+            'db_id_col'     => 'sess_id',
+            'db_data_col'   => 'sess_data',
+            'db_time_col'   => 'sess_time',
+        ],
+        $app['session.storage.options']
+    );
 
-    return new \AgenDAV\Session\SessionEncrypter($dbal_handler, $encryptor);
+    // We use a proxy that encrypts all session data
+    return new \AgenDAV\Session\SessionEncrypter($pdo_handler, $encryptor);
 });
 
 
