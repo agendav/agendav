@@ -1,7 +1,8 @@
 Development
 ===========
 
-Please, read this section if you want to contribute to AgenDAV.
+Please, read this section if you want to contribute to AgenDAV with code. You can even use this
+information to confirm a bug.
 
 Virtual Machine
 ---------------
@@ -65,14 +66,6 @@ Working with scripts and stylesheets
 AgenDAV uses some widely known tools to help on development, such as
 `Grunt <http://gruntjs.com/>`_, `Less <http://lesscss.org/>`_ and `Bower <http://bower.io/>`_.
 
-How to modify AgenDAV stylesheets
-*********************************
-
-Stylesheets are built using the Less pre-processor. They are written as ``.less`` files and
-can be found inside the ``web/assets/stylesheets`` directory.
-
-You have to compile the stylesheets after modifying a ``.less`` file.
-
 Working with grunt
 ******************
 
@@ -87,3 +80,25 @@ from running the following command inside the virtual machine (i.e. run first ``
 
 If you keep that session open, a Grunt task will look for modified ``.less`` and ``.dust`` files and
 will compile them for you.
+
+How to download or update AgenDAV frontend dependencies
+*******************************************************
+
+`Bower <http://bower.io/>`_ will do it for you::
+
+    $ cd /vagrant
+    $ bower install
+
+You will also have to use ``grunt`` to copy all dependencies to AgenDAV ``public/`` directory. Run
+the following command::
+
+   $ grunt
+
+Changing AgenDAV stylesheets
+****************************
+
+Stylesheets are built using the Less pre-processor. They are written as ``.less`` files and
+can be found inside the ``web/assets/stylesheets`` directory.
+
+If you have the ``grunt watch`` command running, it will automatically compile any modified
+``.less`` files.
