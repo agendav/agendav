@@ -78,7 +78,7 @@ class CalendarFinder
 
         if ($this->sharing_enabled) {
             // Add share info to own calendars
-            $this->setShares($calendars);
+            $this->addShares($calendars);
 
             // Also load calendars shared with current user
             $principal = $this->session->get('principal_url');
@@ -112,6 +112,7 @@ class CalendarFinder
             }
 
             $calendar->setShared(true);
+            $calendar->setWritable($share->isWritable());
             $calendar->setOwner($share->getOwner());
 
             $custom_properties = $share->getProperties();
@@ -152,7 +153,7 @@ class CalendarFinder
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar[] collection of calendars
      */
-    protected function setShares(Array $calendars)
+    protected function addShares(Array $calendars)
     {
         foreach ($calendars as $calendar) {
             $shares = $this->shares_repository->getSharesOnCalendar($calendar);

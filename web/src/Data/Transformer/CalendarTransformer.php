@@ -36,7 +36,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'color' => $calendar->getProperty(Calendar::COLOR),
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
-            'shared' => $calendar->isSharedWithMe(),
+            'is_shared' => $calendar->isSharedWithMe(),
             'writable' => $calendar->isWritable(),
             'shares' => [],
         ];
@@ -44,8 +44,8 @@ class CalendarTransformer extends Fractal\TransformerAbstract
         $shares = $calendar->getShares();
         foreach ($shares as $share) {
             $result['shares'][] = [
-                'sid' => $share->getSid(),
                 'with' => $share->getWith(),
+                'displayname' => $share->getWith(),
                 'rw' => (int)$share->isWritable(),
             ];
         }

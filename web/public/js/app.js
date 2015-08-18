@@ -906,7 +906,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     ];
 
   // On shared calendars, don't show 'Remove calendar'
-  if (data.shared === true) {
+  if (data.is_shared === true) {
     buttons_and_actions.splice(0, 1);
   }
 
@@ -920,7 +920,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     pre_func: function() {
       $('input.pick_color').colorPicker();
 
-      if (AgenDAVConf.enable_calendar_sharing === true && data.shared !== true) {
+      if (AgenDAVConf.enable_calendar_sharing === true && data.is_shared !== true) {
         shares_manager();
       }
     }
@@ -1078,7 +1078,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         collected_event_sources.push($(li).data().eventsource);
       }
 
-      if (calendar.shared === true) {
+      if (calendar.is_shared === true) {
         count_shared++;
         shared_calendars.appendChild(li[0]);
       } else {
@@ -1200,7 +1200,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   eventsource.borderColor = data.bordercolor;
 
   // Shared calendars
-  if (data.shared !== undefined && data.shared === true && data.rw == '0') {
+  if (data.is_shared === true && data.writable == false) {
     eventsource.editable = false;
   }
 
@@ -1543,7 +1543,7 @@ var event_click_callback = function event_click_callback(event,
     { caldata: caldata }
   );
 
-  if (caldata.shared === true && caldata.rw == '0') {
+  if (caldata.is_shared === true && caldata.writable === false) {
     event_data.disable_actions = true;
   }
 
