@@ -1,8 +1,8 @@
 {?calendar}
 <input type="hidden" name="calendar" value="{calendar}" />
 {/calendar}
-<input type="hidden" name="is_shared_calendar"
-value="{?shared}true{:else}false{/shared}" />
+<input type="hidden" name="is_shared"
+value="{?is_shared}true{:else}false{/is_shared}" />
 {>form_element_start for="displayname" label="displayname" /}
 <input required autofocus name="displayname" type="text" size="25" maxlength="255" 
 value="{?displayname}{displayname}{/displayname}" class="displayname form-control" />

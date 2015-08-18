@@ -27,6 +27,25 @@ use AgenDAV\CalDAV\Resource\Calendar;
 
 class CalendarTransformer extends Fractal\TransformerAbstract
 {
+
+    /** @var string */
+    protected $principal_url;
+
+    /**
+     * Creates a new Calendar transformer
+     *
+     * @param string $user_principal Current user principal
+     */
+    public function __construct($principal_url)
+    {
+        $this->principal_url = $principal_url;
+    }
+
+    /**
+     * Transforms a Calendar
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     */
     public function transform(Calendar $calendar)
     {
         $result = [
@@ -37,6 +56,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
             'is_shared' => $calendar->isSharedWithMe(),
+            'is_owned' => $calendar->getOwner() === $this->principal_url,
             'writable' => $calendar->isWritable(),
             'shares' => [],
         ];

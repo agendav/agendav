@@ -42,6 +42,9 @@ class CalendarFinder
     /** @var Symfony\Component\HttpFoundation\Session\Session */
     protected $session;
 
+    /** @var string */
+    protected $current_principal;
+
     /**
      * @param Symfony\Component\HttpFoundation\Session\Session $session
      * @param \AgenDAV\CalDAV\Client $client
@@ -51,6 +54,7 @@ class CalendarFinder
         $this->sharing_enabled = false;
         $this->client = $client;
         $this->session = $session;
+        $this->current_principal = $session->get('principal_url');
     }
 
     /**
@@ -75,14 +79,16 @@ class CalendarFinder
         $calendar_home_set = $this->session->get('calendar_home_set');
 
         $calendars = $this->client->getCalendars($calendar_home_set);
+        foreach ($calendars as $calendar) {
+            $calendar->setOwner($this->current_principal);
+        }
 
         if ($this->sharing_enabled) {
             // Add share info to own calendars
             $this->addShares($calendars);
 
             // Also load calendars shared with current user
-            $principal = $this->session->get('principal_url');
-            $shared_calendars = $this->getSharedCalendars($principal);
+            $shared_calendars = $this->getSharedCalendars($this->current_principal);
 
             $calendars = array_merge($calendars, $shared_calendars);
         }

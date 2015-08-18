@@ -33,9 +33,10 @@ class Listing extends JSONController
     public function execute(array $input, Application $app)
     {
         $calendars = $app['calendar.finder']->getCalendars();
+        $current_user_principal = $app['session']->get('principal_url');
 
         $fractal = $app['fractal'];
-        $collection = new Collection($calendars, new CalendarTransformer, 'calendars');
+        $collection = new Collection($calendars, new CalendarTransformer($current_user_principal), 'calendars');
 
         return new JsonResponse($fractal->createData($collection)->toArray());
     }
