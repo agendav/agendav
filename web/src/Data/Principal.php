@@ -65,6 +65,10 @@ class Principal
      */
     public function getDisplayName()
     {
+        if ($this->displayname === null) {
+            return $this->url;
+        }
+
         return $this->displayname;
     }
 
