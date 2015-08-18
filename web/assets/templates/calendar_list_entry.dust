@@ -6,11 +6,12 @@
   {@eq key="{writable}" value=false}
   <i title="{@i18n type="labels" name="readonly"/}" class="fa fa-lock"></i>
   {/eq}
- {:else}
+ {/is_shared}
+ {?is_owned}
   {@gt key=shares.length value=0}
   <i title="{@i18n type="labels" name="currentlysharing"/}" class="fa fa-share"></i>
   {/gt}
- {/is_shared}
+ {/is_owned}
 
  </span>
  <span class="text"
