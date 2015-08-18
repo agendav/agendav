@@ -32,7 +32,7 @@ $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
     // Assets
     $assets_root = '';
     if ($app['environment'] === 'prod') {
-        $assets_root = '/build';
+        $assets_root = '';
     }
     $twig->addGlobal('assets_root', $assets_root);
 

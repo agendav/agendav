@@ -4,16 +4,17 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     less: {
-      development: {
+      main: {
         options: {
           compress: false
         },
         files: {
-          "./web/public/css/agendav.css": "./web/assets/stylesheets/agendav.less"
+          "web/public/css/agendav.css": "web/assets/stylesheets/agendav.less"
         }
       }
     },
 
+    // rrule.js needs a patch (https://github.com/jkbrzt/rrule/pull/82)
     exec: {
       patch_rrule: {
         cwd: 'bower_components/rrule/lib',
@@ -21,33 +22,52 @@ module.exports = function(grunt) {
       }
     },
 
-    copy: {
-        development: {
-            files: [
-                { expand: true, cwd: 'bower_components/jquery/dist', src: ['jquery.js'], dest: 'web/public/js/libs/' },
-                { expand: true, cwd: 'bower_components/font-awesome/fonts', src: ['**'], dest: 'web/public/font/' },
-                { expand: true, cwd: 'bower_components/bootstrap/js', src: ['button.js', 'tab.js'], dest: 'web/public/js/libs/' },
-                { expand: true, cwd: 'bower_components/bootstrap/fonts', src: ['**'], dest: 'web/public/font/' },
-                { expand: true, cwd: 'bower_components/dustjs-linkedin/dist', src: ['dust-core.js'], dest: 'web/public/js/templates/' },
-                { expand: true, cwd: 'bower_components/dustjs-helpers/dist', src: ['dust-helpers.js'], dest: 'web/public/js/templates/' },
-                { expand: true, cwd: 'bower_components/rrule/lib', src: ['rrule.js', 'nlp.js'], dest: 'web/public/js/libs/' },
-                { expand: true, cwd: 'bower_components/fullcalendar/dist', src: ['fullcalendar.js'], dest: 'web/public/js/libs/' },
-                { expand: true, cwd: 'bower_components/fullcalendar/dist/lang', src: ['*'], dest: 'web/public/js/fullcalendar/lang' },
-                { expand: true, cwd: 'bower_components/moment', src: ['moment.js'], dest: 'web/public/js/libs/' },
-                { expand: true, cwd: 'bower_components/es5-shim', src: ['es5-shim.js'], dest: 'web/public/js/libs/' },
-                { expand: true, cwd: 'bower_components/moment-timezone/builds', src: ['moment-timezone-with-data-2010-2020.min.js'], dest: 'web/public/js/libs/' },
-            ],
+    bowercopy: {
+        libs: {
+          options: {
+            destPrefix: 'web/public/js/libs'
+          },
+          files: {
+            'jquery.js': 'jquery/dist/jquery.js',
+            'button.js': 'bootstrap/js/button.js',
+            'tab.js': 'bootstrap/js/tab.js',
+            'rrule.js': 'rrule/lib/rrule.js',
+            'nlp.js': 'rrule/lib/nlp.js',
+            'fullcalendar.js': 'fullcalendar/dist/fullcalendar.js',
+            'moment.js': 'moment/moment.js',
+            'es5-shim.js': 'es5-shim/es5-shim.js',
+            'moment-timezone-with-data-2010-2020.min.js': 'moment-timezone/builds/moment-timezone-with-data-2010-2020.min.js',
+          }
         },
 
-        dist: {
-            files: [
-               { expand: true, cwd: 'bower_components/font-awesome/fonts', src: ['**'], dest: 'web/public/build/font/' },
-               { expand: true, cwd: 'bower_components/bootstrap/fonts', src: ['**'], dest: 'web/public/build/font/' },
-               { expand: true, cwd: 'bower_components/fullcalendar/dist/lang', src: ['*'], dest: 'web/public/build/js/fullcalendar/lang' },
-               { expand: true, cwd: 'web/public/css/images', src: ['**'], dest: 'web/public/build/css/images/' },
-               { expand: true, cwd: 'web/public/img', src: ['**'], dest: 'web/public/build/img/' },
-            ],
-        }
+        fonts: {
+          options: {
+            destPrefix: 'web/public/font'
+          },
+          files: {
+            'fa': 'font-awesome/fonts/*',
+            'bootstrap': 'bootstrap/fonts/*',
+          }
+        },
+
+        templating: {
+          options: {
+            destPrefix: 'web/public/js/templates'
+          },
+          files: {
+            'dust-core.js': 'dustjs-linkedin/dist/dust-core.js',
+            'dust-helpers.js': 'dustjs-helpers/dist/dust-helpers.js',
+          }
+        },
+
+        fullcalendarlangs: {
+          options: {
+            destPrefix: 'web/public/js/fullcalendar'
+          },
+          files: {
+            'lang': 'fullcalendar/dist/lang/*',
+          }
+        },
     },
 
     concat: {
@@ -63,7 +83,7 @@ module.exports = function(grunt) {
             'web/public/css/jquery.timepicker.css',
             'web/public/css/colorpicker.css',
           ],
-          dest: 'web/public/build/css/agendav-<%= pkg.version %>.css'
+          dest: 'web/public/css/agendav-built-<%= pkg.version %>.css'
         },
 
         printcss: {
@@ -71,7 +91,7 @@ module.exports = function(grunt) {
             'web/public/css/app.print.css',
             'web/public/css/fullcalendar.print.css',
           ],
-          dest: 'web/public/build/css/agendav-print-<%= pkg.version %>.css'
+          dest: 'web/public/css/agendav-built-print-<%= pkg.version %>.css'
         },
 
         js: {
@@ -99,7 +119,7 @@ module.exports = function(grunt) {
             'web/public/js/repeat-form.js',
             'web/public/js/app.js',
           ],
-          dest: 'web/public/build/js/agendav-<%= pkg.version %>.js'
+          dest: 'web/public/js/agendav-built-<%= pkg.version %>.js'
         }
     },
 
@@ -110,7 +130,7 @@ module.exports = function(grunt) {
 
       dist: {
         files: {
-          'web/public/build/js/agendav-<%= pkg.version %>.min.js': ['<%= concat.js.dest %>']
+          'web/public/js/agendav-built-<%= pkg.version %>.min.js': ['<%= concat.js.dest %>']
         }
       }
     },
@@ -118,8 +138,8 @@ module.exports = function(grunt) {
     cssmin: {
       dist: {
         files: [
-          { 'web/public/build/css/agendav-<%= pkg.version %>.min.css' : '<%= concat.css.dest %>' },
-          { 'web/public/build/css/agendav-print-<%= pkg.version %>.min.css' : '<%= concat.printcss.dest %>' }
+          { 'web/public/css/agendav-built-<%= pkg.version %>.min.css' : '<%= concat.css.dest %>' },
+          { 'web/public/css/agendav-built-print-<%= pkg.version %>.min.css' : '<%= concat.printcss.dest %>' }
         ]
       }
     },
@@ -140,14 +160,40 @@ module.exports = function(grunt) {
     watch: {
       less: {
         files: ['./web/assets/stylesheets/*.less'],
-        tasks: ['less:development']
+        tasks: ['less']
       },
       dust: {
         files: ['./web/assets/templates/*.dust'],
         tasks: ['dust']
       }
-    }
+    },
+
+    composer: {
+      dist: {
+        options: {
+          cwd: 'web',
+          flags: ['no-dev'],
+        }
+      }
+    },
+
+    env: {
+      dist: {
+        COMPOSER_VENDOR_DIR: 'vendor/',
+      },
+    },
+
+    copy: {
+      dist: {
+        src: [ '**', '!**/bower_components/**', '!**/dist/**', '!**/node_modules/**', '!**/patches/**', '!vagrant_ansible_inventory_default', '!**/config/settings*' ],
+        dest: 'dist/agendav-<%= pkg.version %>',
+        expand: true
+      },
+    },
+
+
   });
+
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -157,8 +203,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-dust');
   grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-composer');
+  grunt.loadNpmTasks('grunt-bowercopy');
+  grunt.loadNpmTasks('grunt-env');
 
-  grunt.registerTask('default', [ 'copy:development', 'less:development', 'dust' ]);
-  grunt.registerTask('dist', [ 'less', 'dust', 'copy', 'concat', 'uglify', 'cssmin' ]);
+  grunt.registerTask('default', [ 'bowercopy', 'less', 'dust', 'watch' ]);
+  grunt.registerTask('build', [ 'bowercopy', 'less', 'dust', 'env:dist', 'composer:dist:install', 'concat', 'uglify', 'cssmin']);
+  grunt.registerTask('dist', [ 'build', 'copy:dist' ]);
 
 };

@@ -1,6 +1,6 @@
 {
   "name": "AgenDAV",
-  "version": "2.0.0-dev",
+  "version": "2.0.0-beta1",
   "description": "A web CalDAV client",
   "directories": {
     "doc": "doc",
@@ -18,20 +18,23 @@
     "calendar"
   ],
   "author": "Jorge López Pérez",
-  "license": "GPL3",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/adobo/agendav/issues"
   },
   "homepage": "https://github.com/adobo/agendav",
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-bowercopy": "^1.2.3",
+    "grunt-composer": "^0.4.4",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-copy": "~0.7.0",
     "grunt-contrib-cssmin": "^0.11.0",
     "grunt-contrib-less": "^1.0.0",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-dust": "~0.9.2"
+    "grunt-dust": "~0.9.2",
+    "grunt-env": "^0.4.4"
   },
   "dependencies": {
     "grunt-exec": "^0.4.6"
