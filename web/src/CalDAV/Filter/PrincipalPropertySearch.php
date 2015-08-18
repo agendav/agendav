@@ -66,6 +66,7 @@ class PrincipalPropertySearch implements ComponentFilter
 
         $return_prop = $document->createElement('d:prop');
         $displayname = $document->createElement('d:displayname');
+        // TODO make this property configurable
         $email = $document->createElement('d:email');
         $return_prop->appendChild($displayname);
         $return_prop->appendChild($email);
