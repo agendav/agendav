@@ -1,7 +1,7 @@
 Installation
 ============
 
-In this section you will be able to install AgenDAV.
+In this section you will found instructions on how to install AgenDAV.
 
 Prerequisites
 -------------
@@ -92,7 +92,7 @@ Create AgenDAV tables
 AgenDAV tables are created by running the provided ``agendavcli`` script.
 
 Before being able to run it, you will have to configure at least your database
-connection details. Have a look at the :confval:`db` parameter.
+connection details. Have a look at the :confval:`db.options` parameter.
 
 After configuring your database connection, just run the script like this::
 
@@ -127,6 +127,10 @@ Example using a dedicated virtualhost::
 
    * ``magic_quotes_gpc``
    * ``magic_quotes_runtime``
+
+
+You can enable development mode by following the instructions at
+:ref:`development_environment`.
 
 Other web servers
 *****************

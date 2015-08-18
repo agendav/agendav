@@ -3,22 +3,24 @@
 Release notes
 =============
 
-.. _v2.0.0:
+.. _v2.0.0-beta1:
 
 
-2.0.0 (?)
-------------------
+|release|
+---------
 
-* AgenDAV uses now `Composer <http://getcomposer.org>`_. If you are using the
+* AgenDAV needs `Composer <http://getcomposer.org>`_. If you are using the
   tarball from the website you don't have to worry at all. Otherwise, you'll
   have to install it and fetch AgenDAV dependencies. You'll find instructions on
-  Installation section.
-
-* AgenDAV is now based on `Silex <http://silex.sensiolabs.org/>`_ instead of
-  CodeIgniter. This means a new configuration file and some additional
-  configurations. Follow the installation instructions.
-
-* Database changes are required: TODO
+  :ref:`download_dependencies`.
+* AgenDAV now uses a single ``settings.php`` file. Details on this file are provided on
+  :ref:`configuration`.
+* Deep database changes are required. Instructions are provided on :ref:`dbupgrade`
+* **This beta release cannot handle shared calendars**, and your existing shares will
+  be removed from the database. Please, make sure you are not upgrading a production
+  environment which uses calendar sharing.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
 
 .. _v1.2.6.2:
 

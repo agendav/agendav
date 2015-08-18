@@ -9,8 +9,8 @@ Configuring AgenDAV requires creating a ``settings.php`` file in the
 You will find all available settings inside the file ``prod.php``. Please, do not
 modify ``prod.php``, as any changes will be lost if you upgrade AgenDAV.
 
-Save a copy of the ``prod.php`` file as ``settings.php`` and start configuring
-your installation.
+Save a copy of the ``prod.php`` file as ``settings.php``, or just copy the settings you want to
+modify,  and start configuring your instance.
 
 .. confval:: site.title
 
@@ -154,55 +154,6 @@ your installation.
    When logging out from AgenDAV, the URL the user will be redirected to.
 
    Can be left empty to redirect user to login page again.
-
-.. confval:: owner_permissions
-
-   List of DAV permissions used for the calendar owner when sharing a
-   calendar. As DAV ACLs are used, when editing a calendar sharing options a
-   full ACL has to be built with the following structure:
-
-   * Permissions given to the owner (this option)
-   * Permissions given to users with read-only profile (:confval:`read_profile_permissions`)
-   * Permissions given to users with read and write profile (:confval:`read_write_profile_permissions`)
-   * Permissions given to the rest of users (:confval:`default_permissions`)
-
-   Please, refer to your CalDAV server documentation to know which
-   permissions does it support.
-
-   For DAViCal you can follow `Permissions page on DAViCal wiki
-   <http://wiki.davical.org/w/Permissions>`_. Default values of this option
-   will work all right for DAViCal.
-
-.. confval:: read_profile_permissions
-
-   List of DAV permissions used for users given read-only permission on a
-   calendar.
-
-   .. versionadded:: 1.2.5
-
-.. confval:: read_write_profile_permissions
-
-   List of DAV permissions used for users given read and write permission on
-   a calendar.
-
-   .. versionadded:: 1.2.5
-
-.. confval:: default_permissions
-
-   List of DAV permissions used for users which are not owner neither
-   granted users when some user shares a calendar with other ones.
-
-   Please, refer to your CalDAV server documentation to know which
-   permissions does it support.
-
-   Default value lets users just to make free/busy queries in DAViCal.
-
-.. confval:: share_permissions
-
-   .. deprecated:: 1.2.5
-
-   .. seealso:: See :confval:`read_profile_permissions` and
-      :confval:`read_write_profile_permissions`
 
 
 Sessions
