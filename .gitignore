@@ -1,16 +1,26 @@
-logs/
-doc/build
-doc/html
-*.swp
 *~
-web/vendor
-web/composer.phar
-agendav-built*
-.vagrant
-vagrant_ansible_inventory_default
-phpunit.phar
+.Trash-*
+.DS_Store
+.AppleDouble
+.LSOverride
+
+/var/logs/
+/doc/build
+/web/vendor
+
+# Vagrant
+/.vagrant
+/vagrant_ansible_inventory_default
+
+*.phar
 *.sqlite
 
-node_modules/
-bower_components/
-dist/
+agendav-built*
+
+# Configuration file
+/web/config/settings*
+
+# Development
+/node_modules/
+/bower_components/
+/dist/

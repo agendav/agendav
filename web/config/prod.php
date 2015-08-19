@@ -101,7 +101,7 @@ $app['encryption.key'] = 'abcdefg';
 $app['csrf.secret'] = 'lkjihgfedcba';
 
 // Log path
-$app['log.path'] = '/var/log/agendav/';
+$app['log.path'] = __DIR__.'/../var/log/';
 
 // Base URL
 $app['caldav.baseurl'] = 'http://localhost:81/';
