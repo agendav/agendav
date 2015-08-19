@@ -190,7 +190,16 @@ module.exports = function(grunt) {
 
     copy: {
       dist: {
-        src: [ '**', '!**/bower_components/**', '!**/dist/**', '!**/node_modules/**', '!**/patches/**', '!vagrant_ansible_inventory_default', '!**/config/settings*' ],
+        src: [
+          '**',
+          '!**/bower_components/**',
+          '!**/dist/**',
+          '!**/node_modules/**',
+          '!**/patches/**',
+          '!**/docs/**',
+          '!vagrant_ansible_inventory_default',
+          '!**/config/settings*'
+        ],
         dest: 'dist/agendav-<%= pkg.version %>',
         expand: true
       },
@@ -203,6 +212,18 @@ module.exports = function(grunt) {
         options: {
           color: true,
         }
+      },
+    },
+
+    compress: {
+      targz: {
+        options: {
+          mode: 'tgz',
+          archive: 'dist/agendav-<%= pkg.version %>.tar.gz',
+        },
+        files: [ 
+          { expand: true, cwd: 'dist/', src: 'agendav-<%= pkg.version %>/**' }
+        ]
       },
     },
 
@@ -222,6 +243,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bowercopy');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-compress');
+
 
   grunt.registerTask('common-deps', [
       'clean',
@@ -254,7 +277,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('dist', [
       'build',
-      'copy:dist'
+      'copy:dist',
+      'compress:targz'
   ]);
 
 };
