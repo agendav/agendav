@@ -138,6 +138,16 @@ Other web servers
 AgenDAV should run on any other web server software as well. Just read the
 `Silex Webserver configuration guide <http://silex.sensiolabs.org/doc/web_servers.html>`_.
 
+Change directory permissions
+----------------------------
+
+You should change the owner and group for all AgenDAV files to the ones your webserver uses.
+Make sure you allow your webserver user to write on the ``var/`` directory. The following example
+assumes your webserver runs as `www-data` user and `www-data` group::
+
+  # chown -R www-data:www-data web/
+  # chmod -R 750 web/var/
+
 Configure AgenDAV
 -----------------
 
