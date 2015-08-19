@@ -208,7 +208,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-env');
 
   grunt.registerTask('default', [ 'bowercopy', 'less', 'dust', 'watch' ]);
-  grunt.registerTask('build', [ 'bowercopy', 'less', 'dust', 'env:dist', 'composer:dist:install', 'concat', 'uglify', 'cssmin']);
+  grunt.registerTask('build', [ 'bowercopy', 'less', 'dust', 'env:dist', 'composer:dist:install:no-dev:prefer-dist', 'concat', 'uglify', 'cssmin']);
   grunt.registerTask('dist', [ 'build', 'copy:dist' ]);
 
 };

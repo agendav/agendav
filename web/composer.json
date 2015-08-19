@@ -1,28 +1,39 @@
 {
+    "name": "adobo/agendav",
+    "description": "CalDAV web client",
+    "type": "project",
+    "homepage": "http://agendav.org",
+    "license": "GPL-3.0",
+
     "require": {
+        "php": ">=5.4",
         "silex/silex": "~1.0",
-        "monolog/monolog": "~1.11",
-        "doctrine/dbal": "~2.4",
+        "silex/web-profiler": "~1.0",
         "symfony/http-foundation": "~2.5.3",
-        "doctrine/migrations": "~1.0.0",
-        "symfony/console": "~2.5.3",
-        "symfony/yaml": "~2.5.3",
-        "keboola/php-encryption": "~0.2.1",
-        "mockery/mockery": "~0.9.1",
-        "doctrine/orm": "~2.4",
-        "guzzlehttp/guzzle": "~5.0.3",
-        "sabre/xml": "~1.0",
-        "sabre/dav": "~2.0",
-        "league/fractal": "~0.12",
-        "guzzlehttp/log-subscriber": "~1.0",
-        "ramsey/uuid": "~2.8.0",
         "symfony/dependency-injection": "~2.6.0",
         "symfony/translation": "~2.6.0",
         "symfony/var-dumper": "~2.6.0",
         "symfony/twig-bridge": "~2.6.0",
         "symfony/security": "~2.6.0",
-        "silex/web-profiler": "~1.0",
-        "symfony/config": "~2.6.0"
+        "symfony/console": "~2.5.3",
+        "symfony/yaml": "~2.5.3",
+        "symfony/config": "~2.6.0",
+        "doctrine/dbal": "~2.4",
+        "doctrine/migrations": "~1.0.0",
+        "doctrine/orm": "~2.4",
+        "sabre/xml": "~1.0",
+        "sabre/dav": "~2.0",
+        "monolog/monolog": "~1.11",
+        "league/fractal": "~0.12",
+        "guzzlehttp/guzzle": "~5.0.3",
+        "guzzlehttp/log-subscriber": "~1.0",
+        "ramsey/uuid": "~2.8.0",
+        "keboola/php-encryption": "~0.2.1"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "mockery/mockery": "~0.9.1"
     },
     "autoload": {
         "psr-4": {
