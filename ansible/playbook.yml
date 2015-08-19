@@ -143,9 +143,6 @@
       - name: install node dependencies for development
         npm: path=/vagrant
 
-      - name: install bower dependencies
-        command: bower install chdir=/vagrant
-
       - name: run grunt
         command: grunt chdir=/vagrant
 

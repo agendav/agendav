@@ -174,6 +174,11 @@ module.exports = function(grunt) {
           cwd: 'web',
           flags: ['no-dev'],
         }
+      },
+      dev: {
+        options: {
+          cwd: 'web',
+        }
       }
     },
 
@@ -191,6 +196,15 @@ module.exports = function(grunt) {
       },
     },
 
+    clean: [ "bower_components" ],
+
+    "bower-install-simple": {
+      prod: {
+        options: {
+          color: true,
+        }
+      },
+    },
 
   });
 
@@ -204,11 +218,43 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-dust');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-composer');
+  grunt.loadNpmTasks("grunt-bower-install-simple");
   grunt.loadNpmTasks('grunt-bowercopy');
   grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
-  grunt.registerTask('default', [ 'bowercopy', 'less', 'dust', 'watch' ]);
-  grunt.registerTask('build', [ 'bowercopy', 'less', 'dust', 'env:dist', 'composer:dist:install:no-dev:prefer-dist', 'concat', 'uglify', 'cssmin']);
-  grunt.registerTask('dist', [ 'build', 'copy:dist' ]);
+  grunt.registerTask('common-deps', [
+      'clean',
+      'bower-install-simple',
+      'exec:patch_rrule',
+      'bowercopy',
+      'less',
+      'dust'
+  ]);
+
+  // Build development environment by default
+  grunt.registerTask('default', [
+      'common-deps',
+      'composer:dev:install',
+      'concat',
+      'uglify',
+      'cssmin'
+  ]);
+
+  grunt.registerTask('watch', [ 'less', 'dust', 'watch' ]);
+
+  grunt.registerTask('build', [
+      'common-deps',
+      'env:dist',
+      'composer:dist:install:no-dev:prefer-dist',
+      'concat',
+      'uglify',
+      'cssmin'
+  ]);
+
+  grunt.registerTask('dist', [
+      'build',
+      'copy:dist'
+  ]);
 
 };

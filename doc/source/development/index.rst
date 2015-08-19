@@ -84,13 +84,8 @@ will compile them for you.
 How to download or update AgenDAV frontend dependencies
 *******************************************************
 
-`Bower <http://bower.io/>`_ will do it for you::
-
-    $ cd /vagrant
-    $ bower install
-
-You will also have to use ``grunt`` to copy all dependencies to AgenDAV ``public/`` directory. Run
-the following command::
+You will have to use ``grunt`` to download and copy all dependencies to AgenDAV ``public/``
+directory. Run the following command::
 
    $ grunt
 
