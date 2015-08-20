@@ -46,6 +46,11 @@ Composer installation is really simple::
  $ curl -s https://getcomposer.org/installer | php
  $ php composer.phar install --prefer-dist --no-dev
 
+For production environments it is recommended to run the following composer
+command that improves loading  performance::
+
+ $ php composer.phar dump-autoload --optimize
+
 Database and tables
 -------------------
 

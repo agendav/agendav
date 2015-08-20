@@ -278,6 +278,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('dist', [
       'build',
+      'composer:dist:dump-autoload:optimize',
       'copy:dist',
       'compress:targz'
   ]);
