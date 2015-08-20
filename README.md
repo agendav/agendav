@@ -17,8 +17,9 @@ AgenDAV requires:
 * A CalDAV server (such as [Baïkal](http://baikal-server.com/), [DAViCal](http://www.davical.org/), etc)
 * A web server
 * PHP >= 5.4.0
-* PHP mbstring extension
 * PHP ctype extension
+* PHP mbstring extension
+* PHP mcrypt extension
 * PHP cURL extension
 * Most DB backends: MySQL, PostgreSQL, SQLite. Look for supported DB drivers at http://doctrine-dbal.readthedocs.org/en/latest/reference/configuration.html#driver
 
