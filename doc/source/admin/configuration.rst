@@ -6,10 +6,10 @@ Configuration
 Configuring AgenDAV requires creating a ``settings.php`` file in the
 ``web/config/`` directory.
 
-You will find all available settings inside the file ``prod.php``. Please, do not
-modify ``prod.php``, as any changes will be lost if you upgrade AgenDAV.
+You will find all available settings inside the file ``default.settings.php``. Please, do not
+modify ``default.settings.php``, as any changes will be lost if you upgrade AgenDAV.
 
-Save a copy of the ``prod.php`` file as ``settings.php``, or just copy the settings you want to
+Save a copy of the ``default.settings.php`` file as ``settings.php``, or just copy the settings you want to
 modify,  and start configuring your instance.
 
 .. confval:: site.title
