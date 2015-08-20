@@ -1,5 +1,8 @@
-{% extends "layout.html" %}
+{% extends "error_layout.html" %}
 
-{% block content %}
-    An error occurred on the client.
+{% block message %}
+<p>{% trans %}messages.request_error{% endtrans %}</p>
+<div class="alert alert-danger" role="alert">
+    {{ message|e }}
+</div>
 {% endblock %}

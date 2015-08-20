@@ -1,5 +1,7 @@
-{% extends "layout.html" %}
+{% extends "error_layout.html" %}
 
-{% block content %}
-    Internal server error.
+{% block message %}
+<div class="alert alert-danger" role="alert">
+    <p>{% trans %}messages.internal_server_error{% endtrans %}</p>
+</div>
 {% endblock %}

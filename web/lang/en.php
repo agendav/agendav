@@ -233,6 +233,10 @@ $translations = array(
 
     'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
 
+    'messages.request_error' => 'Error found on your request',
+    'messages.page_not_found' => 'Page not found',
+    'messages.internal_server_error' => 'Internal server error',
+
     'rrule.every' => 'every',
     'rrule.until' => 'until',
     'rrule.day' => 'day',
