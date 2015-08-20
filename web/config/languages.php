@@ -16,6 +16,7 @@ return [
     'pt_BR' => 'Português (Brasil)',
     'fi' => 'Suomi',
     'sv_SE' => 'Svenska',
+    'tr' => 'Türkçe',
     'ru_RU' => 'Русский',
 ];
 
