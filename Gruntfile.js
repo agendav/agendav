@@ -172,12 +172,13 @@ module.exports = function(grunt) {
       dist: {
         options: {
           cwd: 'web',
-          flags: ['no-dev'],
+          flags: ['no-dev', 'prefer-dist'],
         }
       },
       dev: {
         options: {
           cwd: 'web',
+          flags: ['prefer-source'],
         }
       }
     },
@@ -269,7 +270,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
       'common-deps',
       'env:dist',
-      'composer:dist:install:no-dev:prefer-dist',
+      'composer:dist:install',
       'concat',
       'uglify',
       'cssmin'
