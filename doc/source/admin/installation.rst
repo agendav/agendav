@@ -42,21 +42,19 @@ Composer installation is really simple::
 
  $ cd web/
  $ curl -s https://getcomposer.org/installer | php
- $ php composer.phar install
+ $ php composer.phar install --prefer-dist --no-dev
 
 Database and tables
 -------------------
 
 AgenDAV requires a database to store some extra information.
 
-First of all you have to create a user and a database for that user.
+First of all you have to set up your database. If you plan using MySQL or PostgreSQL, here you will
+find some basic instructions about how to set up them.
 
-After preparing your DB, you will have to configure your database settings, and after that you will be able to create
-the database tables using a provided script.
+**Setting up a MySQL database**
 
-How to create a user on MySQL
-*****************************
-Create a user in MySQL like this::
+Create a user in MySQL and let it use a new `agendav` database::
 
  $ mysql --default-character-set=utf8 -uroot -p
  Enter password: 
@@ -66,8 +64,7 @@ Create a user in MySQL like this::
  mysql> FLUSH PRIVILEGES;
  mysql> ^D
 
-How to create a user on PostgreSQL
-**********************************
+**Setting up a PostgreSQL database**
 
 Use the special ``postgres`` system user to manage your installation. You
 can add a new user and a new database the following way::
