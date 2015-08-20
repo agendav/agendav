@@ -158,10 +158,19 @@ $app['caldav.client'] = $app->share(function($app) {
 
 // Calendar finder
 $app['calendar.finder'] = $app->share(function($app) {
-    return new \AgenDAV\CalendarFinder(
+
+    $finder = new \AgenDAV\CalendarFinder(
         $app['session'],
         $app['caldav.client']
     );
+
+    // Add the shares repository to the calendar finder service
+    if ($app['calendar.sharing']=== true) {
+        $finder->setSharesRepository($app['shares_repository']);
+    }
+
+
+    return $finder;
 });
 
 // Event builder
@@ -186,11 +195,6 @@ if ($app['calendar.sharing']=== true) {
         $em = $app['orm'];
         return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
     });
-
-    // Add the shares repository to the calendar finder service
-    $app['calendar.finder']->setSharesRepository(
-        $app['shares_repository']
-    );
 
     // Privileges and permissions configuration
     /*
