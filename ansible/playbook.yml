@@ -115,18 +115,8 @@
         when: composer.stat.exists == false
         sudo: yes
 
-      - name: install composer dependencies
-        environment:
-          COMPOSER_VENDOR_DIR: /var/agendav-vendors
-        command: /usr/local/bin/composer install chdir=/vagrant/web
-
-      - name: configure agendav
-        template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes
-
-      - name: apply latest schema updates
-        environment:
-          COMPOSER_VENDOR_DIR: /var/agendav-vendors
-        command: /vagrant/bin/agendavcli migrations:migrate --configuration=/vagrant/bin/migrations.yml --no-interaction
+      - name: Append the COMPOSER_VENDOR_DIR variable to bashrc
+        lineinfile: dest=/home/vagrant/.bashrc line="export COMPOSER_VENDOR_DIR=/var/agendav-vendors"
 
       - name: change log permissions again
         file: path=/var/log/agendav recurse=true state=directory owner=www-data group=vagrant mode=0774
@@ -141,13 +131,20 @@
         sudo: yes
 
       - name: install node dependencies for development
-        npm: path=/vagrant
+        npm: path=/vagrant state=latest
 
-      - name: run grunt
+      - name: run grunt (installs composer dependencies too)
+        environment:
+          COMPOSER_VENDOR_DIR: /var/agendav-vendors
         command: grunt chdir=/vagrant
 
-      - name: Append the COMPOSER_VENDOR_DIR variable to bashrc
-        lineinfile: dest=/home/vagrant/.bashrc line="export COMPOSER_VENDOR_DIR=/var/agendav-vendors"
+      - name: configure agendav
+        template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes
+
+      - name: apply latest schema updates
+        environment:
+          COMPOSER_VENDOR_DIR: /var/agendav-vendors
+        command: /vagrant/bin/agendavcli migrations:migrate --configuration=/vagrant/bin/migrations.yml --no-interaction
 
   handlers:
       - name: restart mysql
