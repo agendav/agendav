@@ -43,6 +43,13 @@ modify,  and start configuring your instance.
             'driver' => 'pdo_mysql',
          ];
 
+   .. warning::
+
+      When using an SQLite database, note that there is a `bug when using URL
+      based configurations <http://www.doctrine-project.org/jira/browse/DBAL-1164>`_. Use
+      the alternative syntax (`path` and `driver`) instead.
+
+
 .. confval:: encryption.key
 
    Key that will be used to encrypt passwords when storing them on the database, so
