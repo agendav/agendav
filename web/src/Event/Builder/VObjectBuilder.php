@@ -49,16 +49,12 @@ class VObjectBuilder implements Builder
     /**
      * Creates an empty Event object
      *
-     * @param string $uid Optional UID for this event
+     * @param string $uid UID for this event
      * @return \AgenDAV\Event
      */
-    public function createEvent($uid = null)
+    public function createEvent($uid)
     {
         $vcalendar = new VCalendar();
-
-        if ($uid === null) {
-            $uid = \AgenDAV\Uuid::generate();
-        }
 
         $event = new VObjectEvent($vcalendar);
         $event->setUid($uid);

@@ -32,10 +32,10 @@ interface Builder
     /**
      * Creates an empty Event object
      *
-     * @param string $uid Optional UID for this event
+     * @param string $uid UID for this event
      * @return \AgenDAV\Event
      */
-    public function createEvent($uid = null);
+    public function createEvent($uid);
 
     /**
      * Creates an empty EventInstance object
