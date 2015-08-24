@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - New PHP stack based on Silex framework, Doctrine and Sabre/VObject
 - Dialogs are now client-side generated. The UI feels faster
 - AgenDAV now requires PHP 5.4.0 or greater
+- New color palette based on Material
 
 ### Added
 - Each day height is now under control. Crowded days will show a _+n events_ link
@@ -16,7 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - New repetition rules editor with support for more complex rules
 - New reminders editor
 - Support for exceptions on repetitive events
-- Users can now set their own language, date and time formats, which day the week starts on and default timezone
+- Users can now set their own language, date and time formats, which day the week starts on and timezone
 
 ### Removed
 - Users cannot hide calendars anymore
