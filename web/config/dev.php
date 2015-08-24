@@ -50,7 +50,6 @@ $app['scripts'] = [
     'libs/jquery.colorPicker.js',
     'libs/imagesloaded.pkg.min.js',
     'libs/jquery.qtip.js',
-    'libs/jquery.colorhelpers.js',
     'libs/jquery.serializeobject.js',
     'libs/fullcalendar.js',
     'libs/rrule.js',
