@@ -1063,8 +1063,6 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         calendar.color = calendar.color.substr(0,7);
       }
       calendar.fg = fg_for_bg(calendar.color);
-      calendar.bordercolor = $.color.parse(calendar.color).scale('rgb',
-        (calendar.fg == '#000000' ? 0.8 : 1.8)).toString();
 
       var li = generate_calendar_entry(calendar);
 
@@ -1197,7 +1195,6 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   var eventsource = generate_event_source(data.calendar);
   eventsource.color = data.color;
   eventsource.textColor = data.fg;
-  eventsource.borderColor = data.bordercolor;
 
   // Shared calendars
   if (data.is_shared === true && data.writable == false) {
