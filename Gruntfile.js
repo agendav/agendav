@@ -264,8 +264,6 @@ module.exports = function(grunt) {
       'cssmin'
   ]);
 
-  grunt.registerTask('watch', [ 'less', 'dust', 'watch' ]);
-
   grunt.registerTask('build', [
       'common-deps',
       'env:dist',
