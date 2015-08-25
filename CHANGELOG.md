@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - New PHP stack based on Silex framework, Doctrine and Sabre/VObject
 - Dialogs are now client-side generated. The UI feels faster
 - AgenDAV now requires PHP 5.4.0 or greater
+- Cleaner user interface
 - New color palette based on Material
 
 ### Added
