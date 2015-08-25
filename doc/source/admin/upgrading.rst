@@ -85,3 +85,20 @@ way::
 .. warning::
    This development version will remove all your current shares from the database. This will
    be fixed on next stable release
+
+Clear sessions and caches
+-------------------------
+
+It is recommended to remove all active sessions. Do it by running the
+following command::
+
+  $ ./bin/agendavcli sessions:clear
+
+If you are running AgenDAV on a production environment, you should clear several
+caches:
+
+- Remove the contents of the _twig_ cache directory. The cache path is configured
+  using the option ``twig.options`` on your ``settings.php`` file. If you did not override the
+  default value, it should be found at `web/var/cache/twig/` subdirectory::
+
+    $ rm -rf web/var/cache/twig/*
