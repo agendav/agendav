@@ -80,7 +80,7 @@ Follow the guide at :ref:`configuration` to create a new ``settings.php`` file i
 Once you have your database configuration prepared, run the provided ``bin/agendavcli`` script this
 way::
 
-  $ ./bin/agendavcli migrations:migrate
+  $ php bin/agendavcli migrations:migrate
 
 .. warning::
    This development version will remove all your current shares from the database. This will
@@ -92,7 +92,7 @@ Clear sessions and caches
 It is recommended to remove all active sessions. Do it by running the
 following command::
 
-  $ ./bin/agendavcli sessions:clear
+  $ php bin/agendavcli sessions:clear
 
 If you are running AgenDAV on a production environment, you should clear several
 caches:
