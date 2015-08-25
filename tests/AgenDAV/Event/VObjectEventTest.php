@@ -381,6 +381,22 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event->storeInstance($instance);
     }
 
+    public function testStoreInstanceChangeRecurrentStatus()
+    {
+        $event = new VObjectEvent($this->vcalendar);
+        $instance = $event->getEventInstance();
+
+        $instance->setStart(new \DateTime());
+        $instance->setRepeatRule('FREQ=DAILY');
+        $event->storeInstance($instance);
+
+        $this->assertTrue(
+            $event->isRecurrent(),
+            'storeInstance() does not update the event recurrent status when it changes'
+            . ' from non recurrent to recurrent'
+        );
+    }
+
     public function testRemoveInstance()
     {
         $this->vevent->RRULE = 'FREQ=DAILY';

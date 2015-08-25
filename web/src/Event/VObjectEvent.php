@@ -62,18 +62,10 @@ class VObjectEvent implements Event
     public function __construct(VCalendar $vcalendar)
     {
         $this->vcalendar = $vcalendar;
-        $this->is_recurrent = false;
-        $this->exceptions = [];
-
-        $this->repeat_rule = $this->extractRRule();
-
-        if ($this->repeat_rule !== null) {
-            $this->is_recurrent = true;
-            $this->exceptions = $this->findRecurrenceExceptions($vcalendar);
-            $this->removed_instances = $this->findRemovedInstances($vcalendar);
-        }
-
         $this->uid = $this->findUid();
+
+        $this->updateRecurrentStatus();
+
     }
 
     /**
@@ -319,8 +311,9 @@ class VObjectEvent implements Event
             VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
         } else {
             VObjectHelper::setExceptionVEvent($this->vcalendar, $vevent);
-            $this->exceptions = $this->findRecurrenceExceptions($this->vcalendar);
         }
+
+        $this->updateRecurrentStatus();
     }
 
     /**
@@ -540,6 +533,25 @@ class VObjectEvent implements Event
         $vevent->{'RECURRENCE-ID'} = $recurrence_id->getDateTime();
 
         return $vevent;
+    }
+
+
+    /**
+     * Checks if current event is recurrent. In case it is, sets required properties
+     *
+     */
+    private function updateRecurrentStatus()
+    {
+        $this->is_recurrent = false;
+        $this->exceptions = [];
+
+        $this->repeat_rule = $this->extractRRule();
+
+        if ($this->repeat_rule !== null) {
+            $this->is_recurrent = true;
+            $this->exceptions = $this->findRecurrenceExceptions($this->vcalendar);
+            $this->removed_instances = $this->findRemovedInstances($this->vcalendar);
+        }
     }
 }
 
