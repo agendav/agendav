@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'AgenDAV'
-copyright = u'2011-2014, Jorge López Pérez'
+copyright = u'2011-2015, Jorge López Pérez'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
