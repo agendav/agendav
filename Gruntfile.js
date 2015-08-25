@@ -192,12 +192,21 @@ module.exports = function(grunt) {
       dist: {
         src: [
           '**',
+          '!**/*.phar',
           '!**/bower_components/**',
+          '!**/doc/build/**',
           '!**/dist/**',
           '!**/node_modules/**',
           '!**/patches/**',
           '!**/docs/**',
+          '!**/web/var/cache/twig/**',
+          '!**/web/var/cache/profiler/**',
+          '**/web/var/cache/twig/.gitignore',
+          '**/web/var/cache/profiler/.gitignore',
           '!vagrant_ansible_inventory_default',
+          '!Vagrantfile',
+          '!**/ansible/**',
+          '!**/artwork/**',
           '!**/config/settings*'
         ],
         dest: 'dist/agendav-<%= pkg.version %>',
