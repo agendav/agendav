@@ -5,9 +5,8 @@ Release notes
 
 .. _v2.0.0-beta1:
 
-
-|release|
----------
+2.0.0-beta1 (2015-08-26)
+------------------------
 
 * AgenDAV needs `Composer <http://getcomposer.org>`_. If you are using the
   tarball from the website you don't have to worry at all. Otherwise, you'll

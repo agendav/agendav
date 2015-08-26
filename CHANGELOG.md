@@ -2,7 +2,9 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased] - Work in progress
+## [2.0.0-beta1] - 2015-08-26
+
+This is a beta release. Calendar sharing is not available.
 
 ### Changed
 - New PHP stack based on Silex framework, Doctrine and Sabre/VObject
