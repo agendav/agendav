@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - Users cannot hide calendars anymore
+- The agenda view has been removed from AgenDAV
 
 ### Fixed
 - Exotic timezones are now handled the right way
