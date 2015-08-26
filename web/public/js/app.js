@@ -698,10 +698,12 @@ var handle_date_and_time = function handle_date_and_time(where, data) {
       {
         onSelect: function(dateText, inst) {
           // End date can't be previous to start date
-          set_mindate($(this).datepicker('getDate'),
-            [ $end_date, $repeat_until ]
-            );
+          set_mindate(
+              $(this).datepicker('getDate'),
+              [ $end_date, $repeat_until ]
+          );
 
+          generate_iso8601_values($(where));
         }
       });
   $end_date.datepicker();
