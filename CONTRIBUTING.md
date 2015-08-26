@@ -44,7 +44,7 @@ It would be great if you could also try to reproduce the bug on latest `HEAD`.
 
 ## Translation
 
-AgenDAV uses [Transifex](https://www.transifex.com/projects/p/agendav/) for translations.
+AgenDAV uses [Transifex](https://www.transifex.com/adobo/agendav/) for translations.
 
 Have a look at [Transifex documentation](http://docs.transifex.com/) for more information about
 adding a new language or upadting an existing translation.
