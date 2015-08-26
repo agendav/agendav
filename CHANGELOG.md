@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+
+### Changed
+
+- HTML code is now allowed on the footer message
+
 ## [2.0.0-beta1] - 2015-08-26
 
 This is a beta release. Calendar sharing is not available.
