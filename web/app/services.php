@@ -68,10 +68,13 @@ $app['principals.repository'] = $app->share(function($app) {
 
 // Encryption
 $app['encryptor'] = $app->share(function($app) {
-    $encryption_key = substr(sha1($app['encryption.key']), 0, 16); // Use AES128
-    $source_encryptor = new \Keboola\Encryption\AesEncryptor($encryption_key);
+    $encryption_key = $app['encryption.key'];
+    $source_encryptor = new phpseclib\Crypt\AES();
 
-    return new \AgenDAV\Encryption\KeboolaAesEncryptor($source_encryptor);
+    return new \AgenDAV\Encryption\PhpSecLibAesEncryptor(
+        $source_encryptor,
+        $encryption_key
+    );
 });
 
 // Sessions handler

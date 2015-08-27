@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - HTML code is now allowed on the footer message
+- Replaced abandoned Keboola/php-encryption with phpseclib/phpseclib
 
 ## [2.0.0-beta1] - 2015-08-26
 

@@ -28,7 +28,7 @@
         "guzzlehttp/guzzle": "~5.0.3",
         "guzzlehttp/log-subscriber": "~1.0",
         "ramsey/uuid": "~2.8.0",
-        "keboola/php-encryption": "~0.2.1"
+        "phpseclib/phpseclib": "~2.0.0"
     },
 
     "require-dev": {

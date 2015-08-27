@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -22,18 +22,23 @@
 namespace AgenDAV\Encryption;
 
 use AgenDAV\Encryption\Encryptor;
-use Keboola\Encryption\AesEncryptor;
+use phpseclib\Crypt\AES;
 
-class KeboolaAesEncryptor implements Encryptor
+class PhpSecLibAesEncryptor implements Encryptor
 {
+    /** @var phpseclib\Crypt\AES */
     private $encryptor;
 
     /**
+     * Builds a new Encryptor based on phpseclib/phpseclib
+     *
      * @param AesEncryptor $encryptor
+     * @param string $key
      */
-    public function __construct(AesEncryptor $encryptor)
+    public function __construct(AES $encryptor, $key)
     {
         $this->encryptor = $encryptor;
+        $this->encryptor->setKey($key);
     }
 
     /**
@@ -51,6 +56,10 @@ class KeboolaAesEncryptor implements Encryptor
      */
     public function decrypt($data)
     {
-        return !empty($data) ? $this->encryptor->decrypt($data) : $data;
+        if (empty($data)) {
+            return $data;
+        }
+
+        return $this->encryptor->decrypt($data);
     }
 }
