@@ -52,12 +52,16 @@ modify,  and start configuring your instance.
 
 .. confval:: encryption.key
 
-   Key that will be used to encrypt passwords when storing them on the database, so
-   use a long one.
+   Key that will be used to encrypt sessions before storing them. They are encrypted because
+   they contain user credentials that are used to authenticate against the CalDAV server.
+
+   Suggestion: use a long and as much as random possible string.
 
 .. confval:: csrf.secret
 
    Name that the CSRF parameter will have.
+
+   Suggestion: use a medium length string with letters and numbers.
 
 .. confval:: log.path
 
