@@ -139,7 +139,7 @@ abstract class JSONController
             ));
 
             return $this->generateError(
-                $app['translator']->trans('messages.error_internal')
+                $app['translator']->trans('messages.internal_server_error')
             );
         }
     }

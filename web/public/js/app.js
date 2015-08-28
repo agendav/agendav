@@ -442,7 +442,7 @@ var send_form = function send_form(params) {
 
   sendform_ajax_req.done(function(data, textStatus, jqXHR) {
     if (data.result !== 'SUCCESS') {
-      show_error(t('messages', 'error_internal'), '');
+      show_error(t('messages', 'internal_server_error'), '');
       errorFunc('');
       return;
     }
