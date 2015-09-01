@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Thursday',
     'labels.friday' => 'Friday',
     'labels.saturday' => 'Saturday',
-    'labels.sunday' => 'Sunday',
 
     'labels.sunday_short' => 'Sun',
     'labels.monday_short' => 'Mon',
