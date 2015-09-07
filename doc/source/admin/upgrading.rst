@@ -12,6 +12,8 @@ Please, do not continue unless you have both backups.
 Read all the :ref:`releasenotes` starting at the version you are currently using, because some
 important changes may have happened. Apply those changes after updating the files from AgenDAV.
 
+Make sure your system meets the requirements before upgrading. Read the :ref:`requirements` section.
+
 Upgrading from 1.x.x
 --------------------
 

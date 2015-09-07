@@ -3,8 +3,10 @@ Installation
 
 In this section you will found instructions on how to install AgenDAV.
 
-Prerequisites
--------------
+.. _requirements:
+
+Requirements
+------------
 
 AgenDAV |release| requires the following software to be installed:
 
