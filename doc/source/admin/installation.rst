@@ -113,7 +113,6 @@ connection details. Have a look at the :confval:`db.options` parameter.
 
 After configuring your database connection, just run the script like this::
 
-  $ cd bin/
   $ php agendavcli migrations:migrate
 
 Confirm the operation, and your database should be ready.

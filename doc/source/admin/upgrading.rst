@@ -79,10 +79,10 @@ version.
 Follow the guide at :ref:`configuration` to create a new ``settings.php`` file inside
 ``web/config`` which contains at least the database connection details.
 
-Once you have your database configuration prepared, run the provided ``bin/agendavcli`` script this
+Once you have your database configuration prepared, run the provided ``agendavcli`` script this
 way::
 
-  $ php bin/agendavcli migrations:migrate
+  $ php agendavcli migrations:migrate
 
 .. warning::
    This development version will remove all your current shares from the database. This will
@@ -94,7 +94,7 @@ Clear sessions and caches
 It is recommended to remove all active sessions. Do it by running the
 following command::
 
-  $ php bin/agendavcli sessions:clear
+  $ php agendavcli sessions:clear
 
 If you are running AgenDAV on a production environment, you should clear several
 caches:

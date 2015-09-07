@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - HTML code is now allowed on the footer message
 - Replaced abandoned Keboola/php-encryption with phpseclib/phpseclib
+- Moved agendavcli out of the bin/ subdirectory to the root directory
 
 ## [2.0.0-beta1] - 2015-08-26
 

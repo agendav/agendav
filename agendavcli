@@ -3,14 +3,14 @@
 
 $vendor_directory = getenv('COMPOSER_VENDOR_DIR');
 if ($vendor_directory === false) {
-  $vendor_directory =__DIR__ . '/../web/vendor';
+  $vendor_directory =__DIR__ . '/web/vendor';
 }
 
 require_once $vendor_directory . '/autoload.php';
 
-$app = require_once __DIR__ . '/../web/app/app.php';
-require __DIR__.'/../web/config/prod.php';
-require_once __DIR__ . '/../web/app/services.php';
+$app = require_once __DIR__ . '/web/app/app.php';
+require __DIR__.'/web/config/prod.php';
+require_once __DIR__ . '/web/app/services.php';
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(
     [
