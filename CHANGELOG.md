@@ -10,6 +10,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Replaced abandoned Keboola/php-encryption with phpseclib/phpseclib
 - Moved agendavcli out of the bin/ subdirectory to the root directory
 
+### Added
+
+- New translations: Slovak and Portuguese (Portugal)
+
 ## [2.0.0-beta1] - 2015-08-26
 
 This is a beta release. Calendar sharing is not available.

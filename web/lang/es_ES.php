@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'Día completo',
     'labels.choose_date' => 'Elegir una fecha',
 
-    'labels.repetitionexceptions' => 'Excepciones a eventos repetitivos',
-
     'labels.repeat' => 'Repetir',
     'labels.repeatno' => 'Sin repeticiones',
     'labels.repeatdaily' => 'Cada día',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Preferencias',
     'labels.return' => 'Volver',
 
-    'labels.hidelist' => 'Ocultar de la lista',
     'labels.defaultcalendar' => 'Calendario por defecto',
 
     'labels.toggleallcalendars' => 'Ver/ocultar todos',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Nombre de usuario o contraseña inválidos',
     'messages.error_denied' => 'El servidor rechazó la petición (acceso no permitido)',
-    'messages.error_notimplemented' => 'La siguiente característica no está aún implementada: %feature',
-    'messages.error_startgreaterend' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio',
-    'messages.error_internalgen' => 'Error interno de generación de calendario',
 
     'messages.info_confirmcaldelete' => '¿Está seguro de querer borrar el siguiente calendario?',
     'messages.info_edit_recurrent_event' => 'Este evento se repite. ¿Quiere editar solo esta repetición o todas?',
@@ -196,16 +190,8 @@ espacios o comas los nombres de los usuarios. ',
     'messages.error_modfailed' => 'La modificación falló',
     'messages.error_loadevents' => 'Error cargando los eventos del calendario %cal',
     'messages.error_sessrefresh' => 'Error refrescando su sesión',
-    'messages.error_internal' => 'Error interno',
-    'messages.error_genform' => 'Error generando el formulario',
     'messages.error_invalidinput' => 'El valor no se aceptó',
     'messages.error_caldelete' => 'Error borrando calendario',
-
-    'messages.overlay_synchronizing' => 'Sincronizando eventos...',
-    'messages.overlay_loading_dialog' => 'Cargando ventana...',
-    'messages.overlay_sending_form' => 'Enviando formulario...',
-    'messages.overlay_loading_calendar_list' => 'Cargando lista de calendarios...',
-    'messages.error_loading_dialog' => 'Error cargando ventana',
 
     'messages.error_oops' => 'Ups. Ocurrió un error inesperado',
     'messages.error_interfacefailure' => 'Error de la interfaz web',
@@ -215,7 +201,6 @@ espacios o comas los nombres de los usuarios. ',
     'messages.error_loading_calendar_list' => 'Error cargando la lista de
 calendarios',
     'messages.notice_no_calendars' => 'No tiene calendarios',
-    'messages.info_repetition_human' => 'Este evento se repite %explanation',
     'messages.info_rrule_not_reproducible' => 'Este evento tiene una regla de repetición que no puede ser expresada mediante esta interfaz. Puede mantenerla tal cual está.',
     'messages.info_rrule_protected' => 'Este evento tiene su regla de repetición protegida',
     'messages.error_calendarnotfound' => 'Calendario inválido %calendar',
@@ -223,8 +208,6 @@ calendarios',
     'messages.error_element_changed' => 'El objeto fue modificado mientras lo estaba editando. Por favor, recargue',
     'messages.error_unexpectedhttpcode' => 'Se recibió un código HTTP inesperado desde el servidor: %code%',
     'messages.error_network_issues' => 'Estamos teniendo problemas de red. Por favor, pruebe más tarde',
-    'messages.error_calname_missing' => 'Nombre del calendario no especificado',
-    'messages.error_calcolor_missing' => 'Debe indicar un color',
     'messages.error_shareunknownusers' => 'Alguno de los usuarios que indicó no
 existen',
     'messages.error_empty_fields' => 'Uno o más campos obligatorios están vacíos',

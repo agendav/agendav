@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'An devezh pad',
     'labels.choose_date' => 'Choose a date',
 
-    'labels.repetitionexceptions' => 'Nemedennoù d\'an darvoudoù adnevezet',
-
     'labels.repeat' => 'Adneveziñ',
     'labels.repeatno' => 'Adnevezadenn ebet',
     'labels.repeatdaily' => 'Devezhiek',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Gwellvezioù',
     'labels.return' => 'Distreiñ',
 
-    'labels.hidelist' => 'Kuzhat el listenn',
     'labels.defaultcalendar' => 'Deiziataer dre ziouer',
 
     'labels.toggleallcalendars' => 'Diskouez/kuzhat an holl',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Anv implijer pe ger-tremen direizh',
     'messages.error_denied' => 'Nac\'het eo bet ho kennask gant ar servijer (diaotreet)',
-    'messages.error_notimplemented' => '%feature : n\'eo ket bet savet c\'hoazh',
-    'messages.error_startgreaterend' => 'An devezh dibenn a rank bezañ goude pe ar memes hini hag an hini penn-kentañ',
-    'messages.error_internalgen' => 'Kudenn krouiñ an deiziataer diabarzh',
 
     'messages.info_confirmcaldelete' => 'Ha sur oc\'h kaout c\'hoant diverkañ an deiziataer-mañ ?',
     'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'C\'hwitet an embann',
     'messages.error_loadevents' => 'Kudenn ur c\'hargañ darvoudoù adalek an deiziataer %cal',
     'messages.error_sessrefresh' => 'Kudenn en ur azgrenaat ho estez',
-    'messages.error_internal' => 'Kudenn diabarzh',
-    'messages.error_genform' => 'Kudenn en ur genel an azgoulenn',
     'messages.error_invalidinput' => 'Talvoud direizh',
     'messages.error_caldelete' => 'Kudenn en ur diverkañ an deiziataer',
-
-    'messages.overlay_synchronizing' => 'O gourbredañ an darvoudoù',
-    'messages.overlay_loading_dialog' => 'O kargañ an diviz...',
-    'messages.overlay_sending_form' => 'O kas an azgoulenn...',
-    'messages.overlay_loading_calendar_list' => 'O kargañ listenn an deiziataerioù...',
-    'messages.error_loading_dialog' => 'Kudenn o kargañ an diviz',
 
     'messages.error_oops' => 'Chaous. Kudenn dic\'hortoz.',
     'messages.error_interfacefailure' => 'Kudenn etrefas',
@@ -211,7 +197,6 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Kudenn en ur diverkañ an darvoud',
     'messages.error_loading_calendar_list' => 'Kudenn en ul lenn listenn an deiziataerioù',
     'messages.notice_no_calendars' => 'Deiziataer ebet hegerz',
-    'messages.info_repetition_human' => 'An darvoud-mañ a zo adnevezet %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
     'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
     'messages.error_calendarnotfound' => 'Deiziataer direizh %calendar',
@@ -219,8 +204,6 @@ $translations = array(
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
     'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Anv an deiziataer goullo',
-    'messages.error_calcolor_missing' => 'Ret eo deoc\'h reiñ al liv',
     'messages.error_shareunknownusers' => 'Implijerien bet meneget ganeoc\'h n\'eus ket diouto.',
     'messages.error_empty_fields' => 'Some required fields are empty',
 

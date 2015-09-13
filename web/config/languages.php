@@ -14,6 +14,8 @@ return [
     'nb' => 'Norsk bokmål',
     'pl' => 'Polski',
     'pt_BR' => 'Português (Brasil)',
+    'pt_PT' => 'Português (Portugal)',
+    'sk' => 'Slovenčina',
     'fi' => 'Suomi',
     'sv_SE' => 'Svenska (Sverige)',
     'tr' => 'Türkçe',

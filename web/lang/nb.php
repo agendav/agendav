@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'All day',
     'labels.choose_date' => 'Choose a date',
 
-    'labels.repetitionexceptions' => 'Exceptions to recurrent events',
-
     'labels.repeat' => 'Repeat',
     'labels.repeatno' => 'No repetitions',
     'labels.repeatdaily' => 'Daily',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Preferences',
     'labels.return' => 'Return',
 
-    'labels.hidelist' => 'Hide from list',
     'labels.defaultcalendar' => 'Default calendar',
 
     'labels.toggleallcalendars' => 'Show/hide all',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Invalid username or password',
     'messages.error_denied' => 'Server refused your request (permission forbidden)',
-    'messages.error_notimplemented' => '%feature: still not implemented',
-    'messages.error_startgreaterend' => 'End date must be greater than or equal to start date',
-    'messages.error_internalgen' => 'Internal calendar generation error',
 
     'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
     'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'Modification failed',
     'messages.error_loadevents' => 'Error loading events from calendar %cal',
     'messages.error_sessrefresh' => 'Error refreshing your session',
-    'messages.error_internal' => 'Internal error',
-    'messages.error_genform' => 'Error generating form',
     'messages.error_invalidinput' => 'Invalid value',
     'messages.error_caldelete' => 'Error deleting calendar',
-
-    'messages.overlay_synchronizing' => 'Synchronizing events...',
-    'messages.overlay_loading_dialog' => 'Loading dialog...',
-    'messages.overlay_sending_form' => 'Sending form...',
-    'messages.overlay_loading_calendar_list' => 'Loading calendar list...',
-    'messages.error_loading_dialog' => 'Error loading dialog',
 
     'messages.error_oops' => 'Oops. Unexpected error',
     'messages.error_interfacefailure' => 'Interface error',
@@ -211,7 +197,6 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Error deleting event',
     'messages.error_loading_calendar_list' => 'Error reading calendar list',
     'messages.notice_no_calendars' => 'No calendars available',
-    'messages.info_repetition_human' => 'This event repeats %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
     'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
     'messages.error_calendarnotfound' => 'Invalid calendar %calendar',
@@ -219,8 +204,6 @@ $translations = array(
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
     'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Empty calendar name',
-    'messages.error_calcolor_missing' => 'Color must be supplied',
     'messages.error_shareunknownusers' => 'Some of the users you specified do not exist',
     'messages.error_empty_fields' => 'Some required fields are empty',
 

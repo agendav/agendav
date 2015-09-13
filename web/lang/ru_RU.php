@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'Весь день',
     'labels.choose_date' => 'Выберите дату',
 
-    'labels.repetitionexceptions' => 'Исключения для повторяющихся событий',
-
     'labels.repeat' => 'Повторять',
     'labels.repeatno' => 'Без повтора',
     'labels.repeatdaily' => 'Ежедневно',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Настройки',
     'labels.return' => 'Назад',
 
-    'labels.hidelist' => 'Скрыть из списка',
     'labels.defaultcalendar' => 'Основной календарь',
 
     'labels.toggleallcalendars' => 'Скрыть/показать все',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Неправильное имя пользователя или пароль',
     'messages.error_denied' => 'Сервер отклонил запрос (нет прав)',
-    'messages.error_notimplemented' => '%feature: не поддерживается',
-    'messages.error_startgreaterend' => 'Дата завершения должна быть старше даты начала',
-    'messages.error_internalgen' => 'Ошибка при создании внутреннего календаря',
 
     'messages.info_confirmcaldelete' => 'Вы уверены, что хотите удалить календарь?',
     'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'Ошибка при сохранении',
     'messages.error_loadevents' => 'Ошибка при загрузке событий %cal календаря',
     'messages.error_sessrefresh' => 'Ошибка при обновлении сессии',
-    'messages.error_internal' => 'Внутренняя ошибка',
-    'messages.error_genform' => 'Ошибка при создании формы',
     'messages.error_invalidinput' => 'Некорректное значение',
     'messages.error_caldelete' => 'Ошибка при удалении календаря',
-
-    'messages.overlay_synchronizing' => 'Синхронизация событий...',
-    'messages.overlay_loading_dialog' => 'Загрузка формы...',
-    'messages.overlay_sending_form' => 'Отправка формы...',
-    'messages.overlay_loading_calendar_list' => 'Загрузка списка календарей...',
-    'messages.error_loading_dialog' => 'Ошибка загрузки формы',
 
     'messages.error_oops' => 'Непредвиденная ситуация',
     'messages.error_interfacefailure' => 'Ошибка интерфейса',
@@ -211,7 +197,6 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Ошибка при удалении события',
     'messages.error_loading_calendar_list' => 'Ошибка при чтении списка календарей',
     'messages.notice_no_calendars' => 'Нет доступных календарей',
-    'messages.info_repetition_human' => 'Событие повторяется %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
     'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
     'messages.error_calendarnotfound' => 'Некорректный календарь %calendar',
@@ -219,8 +204,6 @@ $translations = array(
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Получен неожиданный HTTP код %code% от сервера',
     'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Укажите название календаря',
-    'messages.error_calcolor_missing' => 'Выберите цвет',
     'messages.error_shareunknownusers' => 'Пользователь, которого Вы указали не существует',
     'messages.error_empty_fields' => 'Some required fields are empty',
 

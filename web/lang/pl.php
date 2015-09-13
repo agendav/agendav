@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'Cały dzień',
     'labels.choose_date' => 'Wybierz datę',
 
-    'labels.repetitionexceptions' => 'Wyjątki wydarzeń cyklicznych',
-
     'labels.repeat' => 'Powtórz',
     'labels.repeatno' => 'Zdarzenie jednorazowe',
     'labels.repeatdaily' => 'Codziennie',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Ustawienia',
     'labels.return' => 'Powrót',
 
-    'labels.hidelist' => 'Ukryj na liście',
     'labels.defaultcalendar' => 'Domyślny kalendarz',
 
     'labels.toggleallcalendars' => 'Pokaż/ukryj wszystkie',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Niepoprawna nazwa użytkonika lub hasło',
     'messages.error_denied' => 'Serwer odrzucił żądania (dostęp zabroniony)',
-    'messages.error_notimplemented' => '%funkcja: jeszcze nie zaimplementowana',
-    'messages.error_startgreaterend' => 'Data zakończenia musi być większa lub równa dacie rozpoczęcia',
-    'messages.error_internalgen' => 'Wewnętrzny błąd generowania kalendarza',
 
     'messages.info_confirmcaldelete' => 'Czy na pewno chcesz usunąć następujący kalendarz?',
     'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'Zmiana nie powiodło się',
     'messages.error_loadevents' => 'Błąd podczas ładowania zdarzenia z kalendarza %cal',
     'messages.error_sessrefresh' => 'Błąd odświeżania sesji',
-    'messages.error_internal' => 'Wewnętrzny błąd',
-    'messages.error_genform' => 'Błąd generowania formularza',
     'messages.error_invalidinput' => 'Niepoprawna wartość',
     'messages.error_caldelete' => 'Błąd kasowania kalendarza',
-
-    'messages.overlay_synchronizing' => 'Synchronizacja wydarzeń...',
-    'messages.overlay_loading_dialog' => 'Trwa wczytywanie...',
-    'messages.overlay_sending_form' => 'Wysyłanie formularza...',
-    'messages.overlay_loading_calendar_list' => 'Wczytywanie listy kalendarzy...',
-    'messages.error_loading_dialog' => 'Błąd wczytywania',
 
     'messages.error_oops' => 'Oops. Nieoczekiwany błąd',
     'messages.error_interfacefailure' => 'Błąd interfejsu',
@@ -211,7 +197,6 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Błąd kasowania wydarzen',
     'messages.error_loading_calendar_list' => 'Błąd wczytywania listy kalendarzy',
     'messages.notice_no_calendars' => 'Brak kalendarzy',
-    'messages.info_repetition_human' => 'To wydarzenie powtarzane jest %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
     'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
     'messages.error_calendarnotfound' => 'Niepoprawny kalendazr %calendar',
@@ -219,8 +204,6 @@ $translations = array(
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Otrzymano z serwera nieoczekiwany kod HTTP %code%',
     'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Brak nazwy kalendarza',
-    'messages.error_calcolor_missing' => 'Proszę wybrać kolor',
     'messages.error_shareunknownusers' => 'Niektórzy z wymienionych użytkowników nie istnieją',
     'messages.error_empty_fields' => 'Wymagane pola są puste',
 

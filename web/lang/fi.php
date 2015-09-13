@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'Koko päivä',
     'labels.choose_date' => 'Valitse päivä',
 
-    'labels.repetitionexceptions' => 'Poikkeukset toistuviin tapahtumiin',
-
     'labels.repeat' => 'Toisto',
     'labels.repeatno' => 'Ei toistoa',
     'labels.repeatdaily' => 'Päivittäin',
@@ -111,11 +109,11 @@ $translations = array(
     'labels.cancel' => 'Peru',
     'labels.yes' => 'Kyllä',
 
-    'labels.delete_only_this_repetition' => 'Delete only this one',
-    'labels.delete_all_repetitions' => 'Delete all repetitions',
+    'labels.delete_only_this_repetition' => 'Poista vain tämä',
+    'labels.delete_all_repetitions' => 'Poista kaikki toistumiset',
 
-    'labels.edit_only_this_repetition' => 'Edit only this one',
-    'labels.edit_all_repetitions' => 'Edit all repetitions',
+    'labels.edit_only_this_repetition' => 'Muokkaa vain tätä',
+    'labels.edit_all_repetitions' => 'Muokkaa kaikkia toistumisia',
 
     'labels.untitled' => 'Nimetön',
 
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Asetukset',
     'labels.return' => 'Palaa',
 
-    'labels.hidelist' => 'Piilota listasta',
     'labels.defaultcalendar' => 'Oletuskalenteri',
 
     'labels.toggleallcalendars' => 'Näytä/piilota kaikki',
@@ -145,7 +142,7 @@ $translations = array(
     'labels.reminder' => 'Muistutus',
 
     'labels.add_reminder' => 'Lisää muistutus',
-    'labels.add_share' => 'Add share',
+    'labels.add_share' => 'Lisää jako',
 
     'labels.before_start' => 'ennen alkua',
     'labels.after' => 'After',
@@ -173,18 +170,15 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Virheellinen käyttäjätunnus tai salasana',
     'messages.error_denied' => 'Palvelin kieltäytyi pyynnöstäsi (ei riittävästi oikeuksia)',
-    'messages.error_notimplemented' => '%feature: ei vielä toteutettu',
-    'messages.error_startgreaterend' => 'Lopetuspäivän tulee olla myöhemmin tai samaan aikaan kuin aloituspäivän',
-    'messages.error_internalgen' => 'Sisäinen kalenterin luomisvirhe',
 
     'messages.info_confirmcaldelete' => 'Haluatko varmasti poistaa seuraavan kalenterin?',
-    'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
-    'messages.info_base_event_with_exceptions_modification' => 'This recurrent event has one or more exceptions set. If you use the "Edit all repetitions" button, exceptions will be removed',
-    'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
-    'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
+    'messages.info_edit_recurrent_event' => 'Tämä tapahtuma toistuu. Haluatko muokata vain tätä esiintymää vai kaikkia toistumisia?',
+    'messages.info_base_event_with_exceptions_modification' => 'Tällä toistuvalla tapahtumalla on yksi tai useampi poikkeus. Jos napsautat "Muokkaa kaikkia toistumisia"-painiketta, poikkeukset poistetaan',
+    'messages.info_delete_recurrent_event' => 'Tämä tapahtuma toistuu. Haluatko poistaa vain tämän esiintymän vai kaikki tapahtuman toistumat?',
+    'messages.info_delete_recurrent_event_first_instance' => 'Tämä tapahtuma toistuu, ja tämä on ensimmäinen toistuma. Tämän tapahtuman poistaminen poistaa kaikki toistumat. Haluatko jatkaa?',
     'messages.info_permanentremoval' => 'Tietosi hävitetään pysyvästi',
     'messages.info_sharedby' => 'Sinulla on pääsy tähän kalenteriin, koska %user jakoi sen kanssasi',
-    'messages.info_shareexplanation' => 'You can share this calendar with other users and let them modify it. Place their usernames below, separated by commas or spaces',
+    'messages.info_shareexplanation' => 'Voit jakaa tämän kalenterin muiden kanssa, ja muut voivat muokata kalenteria. Anna haluamiesi käyttäjien käyttäjätunnukset alle, erottele useat tunnukset pilkuin tai välilyönnein.',
     'messages.info_notshared' => 'Tämä kalenteri ei ole jaettu kenenkään kanssa',
     'messages.info_noreminders' => 'Tälle tapahtumalle ei ole määritelty muistutuksia',
     'messages.error_sessexpired' => 'Istuntosi on vanhentunut',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'Muokkaus epäonnistui',
     'messages.error_loadevents' => 'Virhe ladatessa tapahtumia kalenterista %cal',
     'messages.error_sessrefresh' => 'Virhe istuntoasi päivittäessä',
-    'messages.error_internal' => 'Sisäinen virhe',
-    'messages.error_genform' => 'Virhe lomaketta luotaessa',
     'messages.error_invalidinput' => 'Virheellinen arvo',
     'messages.error_caldelete' => 'Virhe kalenteria poistaessa',
-
-    'messages.overlay_synchronizing' => 'Synkronoidaan tapahtumia...',
-    'messages.overlay_loading_dialog' => 'Ladataan ikkunaa...',
-    'messages.overlay_sending_form' => 'Lähetetään lomaketta...',
-    'messages.overlay_loading_calendar_list' => 'Ladataan kalenteriluetteloa...',
-    'messages.error_loading_dialog' => 'Virhe ikkunaa ladatessa',
 
     'messages.error_oops' => 'Hups, odottamaton virhe',
     'messages.error_interfacefailure' => 'Käyttöliittymävirhe',
@@ -211,16 +197,13 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Virhe tapahtumaa poistaessa',
     'messages.error_loading_calendar_list' => 'Virhe luettaessa kalenteriluetteloa',
     'messages.notice_no_calendars' => 'Ei kalentereja käytettävissä',
-    'messages.info_repetition_human' => 'Tämä tapahtuma toistuu %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
-    'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
+    'messages.info_rrule_protected' => 'Tämän tapahtuman toistumissääntö on suojattu',
     'messages.error_calendarnotfound' => 'Virheellinen kalenteri %calendar',
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
-    'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
-    'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Tyhjä kalenterin nimi',
-    'messages.error_calcolor_missing' => 'Väri on valittava',
+    'messages.error_unexpectedhttpcode' => 'Vastaanotettiin odottamaton HTTP-koodi %code% palvelimelta',
+    'messages.error_network_issues' => 'Kärsimme verkko-ongelmista. Yritä myöhemmin uudelleen.',
     'messages.error_shareunknownusers' => 'Jotkin määrittelemäsi käyttäjät eivät ole olemassa',
     'messages.error_empty_fields' => 'Jotkin vaaditut kentät ovat tyhjiä',
 
@@ -233,9 +216,9 @@ $translations = array(
 
     'messages.info_reminders_no_effect_on_agendav' => 'Huomio: muistutukset toimivat vain CalDAV-asiakasohjelmilla, jotka lataavat tämä kalenterin',
 
-    'messages.request_error' => 'Error found on your request',
-    'messages.page_not_found' => 'Page not found',
-    'messages.internal_server_error' => 'Internal server error',
+    'messages.request_error' => 'Pyynnöstä löytyi virhe',
+    'messages.page_not_found' => 'Sivua ei löytynyt',
+    'messages.internal_server_error' => 'Sisäinen palvelinvirhe',
 
     'rrule.every' => 'every',
     'rrule.until' => 'until',

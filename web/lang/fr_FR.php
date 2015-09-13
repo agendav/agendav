@@ -64,9 +64,7 @@ $translations = array(
     'labels.starttime' => 'Heure de début',
     'labels.endtime' => 'Heure de fin',
     'labels.alldayform' => 'Toute la journée',
-    'labels.choose_date' => 'Choose a date',
-
-    'labels.repetitionexceptions' => 'Exceptions aux événements récurrents',
+    'labels.choose_date' => 'Choisissez une date',
 
     'labels.repeat' => 'Répétition',
     'labels.repeatno' => 'Pas de répétition',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Préférences',
     'labels.return' => 'Retour',
 
-    'labels.hidelist' => 'Masquer',
     'labels.defaultcalendar' => 'Calendrier par défaut',
 
     'labels.toggleallcalendars' => 'Tout afficher/masquer',
@@ -145,7 +142,7 @@ $translations = array(
     'labels.reminder' => 'Rappel',
 
     'labels.add_reminder' => 'Add reminder',
-    'labels.add_share' => 'Add share',
+    'labels.add_share' => 'Ajouter un partage',
 
     'labels.before_start' => 'before start',
     'labels.after' => 'After',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Nom d\'utilisateur ou mot de passe invalide',
     'messages.error_denied' => 'Le serveur a refusé votre requête (permission refusée)',
-    'messages.error_notimplemented' => '%feature: n\'est pas encore implémenté(e)',
-    'messages.error_startgreaterend' => 'La date de fin doit être supérieure ou égale à la date de début',
-    'messages.error_internalgen' => 'Erreur interne lors de la création du calendrier',
 
     'messages.info_confirmcaldelete' => 'Êtes-vous sûr(e) de vouloir suppimer le calendrier suivant?',
     'messages.info_edit_recurrent_event' => 'Cet évènement est répété. Voulez-vous éditer uniquement cet évènement ou tous les évènements de la série?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'La modification a échoué',
     'messages.error_loadevents' => 'Erreur lors du chargement des événements du calendrier %cal',
     'messages.error_sessrefresh' => 'Erreur lors du rafraîchissement de votre session',
-    'messages.error_internal' => 'Erreur interne',
-    'messages.error_genform' => 'Erreur lors de la génération du formulaire',
     'messages.error_invalidinput' => 'Valeur invalide',
     'messages.error_caldelete' => 'Erreur lors de l\'effacement du calendrier',
-
-    'messages.overlay_synchronizing' => 'Synchronisation des événements...',
-    'messages.overlay_loading_dialog' => 'Chargement de la boîte de dialogue...',
-    'messages.overlay_sending_form' => 'Envoi du formulaire...',
-    'messages.overlay_loading_calendar_list' => 'Chargement de la liste des calendriers...',
-    'messages.error_loading_dialog' => 'Erreur lors du chargement de la boîte de dialogue...',
 
     'messages.error_oops' => 'Oups. Erreur inattendue',
     'messages.error_interfacefailure' => 'Erreur d\'interface',
@@ -211,16 +197,13 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Erreur lors de l\'effacement de l\'événement',
     'messages.error_loading_calendar_list' => 'Erreur lors de lecture de la liste des calendriers',
     'messages.notice_no_calendars' => 'Aucun calendrier disponible',
-    'messages.info_repetition_human' => 'Cet événement est répété de manière %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
-    'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
+    'messages.info_rrule_protected' => 'Cet évènement a ses récurrences protégées',
     'messages.error_calendarnotfound' => 'Calendrier invalide: %calendar',
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
-    'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
+    'messages.error_unexpectedhttpcode' => 'Code d\'erreur HTTP %code% reçu du serveur',
     'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Nom du calendrier manquant',
-    'messages.error_calcolor_missing' => 'La couleur doit être précisée',
     'messages.error_shareunknownusers' => 'Certains des utilisateurs que vous avez spécifié n\'existent pas',
     'messages.error_empty_fields' => 'Some required fields are empty',
 
@@ -234,8 +217,8 @@ $translations = array(
     'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
 
     'messages.request_error' => 'Error found on your request',
-    'messages.page_not_found' => 'Page not found',
-    'messages.internal_server_error' => 'Internal server error',
+    'messages.page_not_found' => 'Page non trouvée',
+    'messages.internal_server_error' => 'Erreur interne du serveur',
 
     'rrule.every' => 'chaque',
     'rrule.until' => 'jusqu\'à',

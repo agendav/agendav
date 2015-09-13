@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'Tot el dia',
     'labels.choose_date' => 'Choose a date',
 
-    'labels.repetitionexceptions' => 'Excepcions per a events repetitius',
-
     'labels.repeat' => 'Es repeteix',
     'labels.repeatno' => 'No es repeteix',
     'labels.repeatdaily' => 'Diari',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Preferències',
     'labels.return' => 'Tornar',
 
-    'labels.hidelist' => 'Ocultar de la llista',
     'labels.defaultcalendar' => 'Calendari per defecte',
 
     'labels.toggleallcalendars' => 'Mostra/Oculta tot',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Nom d\'usuari o contrasenya incorrecta',
     'messages.error_denied' => 'El servidor ha rebutjat la teva petició (accés denegat)',
-    'messages.error_notimplemented' => '%feature: Encara no implementat',
-    'messages.error_startgreaterend' => 'La data ha de ser posterior o igual a la data d\'inici',
-    'messages.error_internalgen' => 'Error intern de generació de calendari',
 
     'messages.info_confirmcaldelete' => 'Estàs segur que vols esborrar el següent calendari?',
     'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'Ha fallat la modificació',
     'messages.error_loadevents' => 'Error al carregar events del calendari %cal',
     'messages.error_sessrefresh' => 'Error al refrescar la sessió',
-    'messages.error_internal' => 'Error intern',
-    'messages.error_genform' => 'Error generant el formulari',
     'messages.error_invalidinput' => 'Valor invàlid',
     'messages.error_caldelete' => 'Error esborrant calendari',
-
-    'messages.overlay_synchronizing' => 'Sincronitzant events...',
-    'messages.overlay_loading_dialog' => 'Carregant finestra...',
-    'messages.overlay_sending_form' => 'Enviant formulari...',
-    'messages.overlay_loading_calendar_list' => 'Carregant llista de calendaris...',
-    'messages.error_loading_dialog' => 'Error carregant finestra',
 
     'messages.error_oops' => 'Ep! Error inesperat',
     'messages.error_interfacefailure' => 'Error de la interfici',
@@ -211,7 +197,6 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Error esborrant event',
     'messages.error_loading_calendar_list' => 'Error llegint la llista de calendaris',
     'messages.notice_no_calendars' => 'No tens calendaris',
-    'messages.info_repetition_human' => 'Aquest event es repeteix %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
     'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
     'messages.error_calendarnotfound' => 'Calendari invàlid %calendar',
@@ -219,8 +204,6 @@ $translations = array(
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
     'messages.error_network_issues' => 'We are having network issues. Please, try again later',
-    'messages.error_calname_missing' => 'Nom de calendari no especificat',
-    'messages.error_calcolor_missing' => 'Has de posar un color',
     'messages.error_shareunknownusers' => 'Alguns usuaris que has especificat no existeixen',
     'messages.error_empty_fields' => 'Some required fields are empty',
 

@@ -66,8 +66,6 @@ $translations = array(
     'labels.alldayform' => 'Hele dag',
     'labels.choose_date' => 'Kies een datum',
 
-    'labels.repetitionexceptions' => 'Uitzonderingen op herhalende gebeurtenissen',
-
     'labels.repeat' => 'Herhalen',
     'labels.repeatno' => 'Geen herhalingen',
     'labels.repeatdaily' => 'Dagelijks',
@@ -130,7 +128,6 @@ $translations = array(
     'labels.preferences' => 'Voorkeuren',
     'labels.return' => 'Terug',
 
-    'labels.hidelist' => 'Verberg in de lijst',
     'labels.defaultcalendar' => 'Standaard agenda',
 
     'labels.toggleallcalendars' => 'Toon/verberg alles',
@@ -173,9 +170,6 @@ $translations = array(
 // Messages
     'messages.error_auth' => 'Ongeldige gebruikersnaam of wachtwoord',
     'messages.error_denied' => 'Server weigerde uw verzoek (geen rechten)',
-    'messages.error_notimplemented' => '%feature: nog niet geimplementeerd',
-    'messages.error_startgreaterend' => 'Einddatum moet groter of gelijk zijn aan begindatum',
-    'messages.error_internalgen' => 'Fout bij het aanmeken van de interne agenda',
 
     'messages.info_confirmcaldelete' => 'Weet u zeker dat u de volgende agenda wilt verwijderen?',
     'messages.info_edit_recurrent_event' => 'Dit evenement is herhaaldelijk. Wil je enkel deze keer verwijderen of alle herhalingen?',
@@ -193,16 +187,8 @@ $translations = array(
     'messages.error_modfailed' => 'Bijwerken mislukt',
     'messages.error_loadevents' => 'Er is een fout opgetreden bij het laden van agenda %cal',
     'messages.error_sessrefresh' => 'Er is een fout opgetreden bij het vernieuwen van uw sessie',
-    'messages.error_internal' => 'Interne fout',
-    'messages.error_genform' => 'Fout bij het genereren van de pagina',
     'messages.error_invalidinput' => 'Ongeldige waarde',
     'messages.error_caldelete' => 'Fout bij het verwijderen van de agenda',
-
-    'messages.overlay_synchronizing' => 'Gebeurtenissen synchroniseren...',
-    'messages.overlay_loading_dialog' => 'Dialoog laden...',
-    'messages.overlay_sending_form' => 'Pagina versturen...',
-    'messages.overlay_loading_calendar_list' => 'Agendalijst laden...',
-    'messages.error_loading_dialog' => 'Fout bij het laden van de dialoog',
 
     'messages.error_oops' => 'Oeps. Onverwachte fout',
     'messages.error_interfacefailure' => 'Interface fout',
@@ -211,7 +197,6 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Fout bij het verwijderen van de gebeurtenis',
     'messages.error_loading_calendar_list' => 'Fout bij het lezen van de agendalijst',
     'messages.notice_no_calendars' => 'Geen agenda\'s beschikbaar',
-    'messages.info_repetition_human' => 'Deze gebeurtenis herhaalt zich %explanation',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
     'messages.info_rrule_protected' => 'De herhalingsregel van dit evenement is beschermt.',
     'messages.error_calendarnotfound' => 'Ongeldige agenda %calendar',
@@ -219,8 +204,6 @@ $translations = array(
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Onverwachte HTTP code %code% ontvangen van server',
     'messages.error_network_issues' => 'We hebben netwerkproblemen. Probeer later opnieuw, a.u.b.',
-    'messages.error_calname_missing' => 'Agendanaam ontbreekt',
-    'messages.error_calcolor_missing' => 'Kleur moet worden opgegeven',
     'messages.error_shareunknownusers' => 'Sommige door u opgegeven gebruikers komen niet voor.',
     'messages.error_empty_fields' => 'Some required fields are empty',
 
