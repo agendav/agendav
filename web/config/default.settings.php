@@ -51,6 +51,15 @@ $app['caldav.baseurl.public'] = 'https://caldav.server.com';
 // Calendar sharing
 $app['calendar.sharing'] = false;
 
+// Calendar sharing permissions. In case of doubt, do not modify them
+// These defaults are only useful for DAViCal (http://wiki.davical.org/index.php/Permissions)
+$app['calendar.sharing.permissions'] = [
+    'owner' => ['{DAV:}all' ],
+    'read-only' => [ '{DAV:}read', '{urn:ietf:params:xml:ns:caldav}read-free-busy'],
+    'read-write' => [ '{DAV:}read', '{DAV:}write', '{urn:ietf:params:xml:ns:caldav}read-free-busy' ],
+    'default' => [ '{urn:ietf:params:xml:ns:caldav}read-free-busy' ]
+];
+
 // Default timezone
 $app['defaults.timezone'] = 'Europe/Madrid';
 

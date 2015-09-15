@@ -191,7 +191,7 @@ $app['csrf.manager'] = $app->share(function ($app) {
 
 
 // Sharing support enabled
-if ($app['calendar.sharing']=== true) {
+if ($app['calendar.sharing'] === true) {
 
     // Shares repository
     $app['shares_repository'] = $app->share(function($app) {
@@ -199,22 +199,13 @@ if ($app['calendar.sharing']=== true) {
         return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
     });
 
-    // Privileges and permissions configuration
-    /*
-    $cfg_permissions = $this->config->item('permissions');
-    $app['permissions'] = $app->share(
-        function($app) use ($cfg_permissions) {
-            return new \AgenDAV\CalDAV\Share\Permissions(
-                $cfg_permissions
-            );
-        }
-    );
+    // Configured permissions
+    $app['permissions'] = $app->share(function($app) {
+        return new \AgenDAV\CalDAV\Share\Permissions($app['calendar.sharing.permissions']);
+    });
 
-    // ACL objects
-    $app['acl'] = function($c) {
-        return new \AgenDAV\CalDAV\Share\ACL(
-            $c['permissions']
-        );
+    // ACL factory
+    $app['acl'] = function($app) {
+        return new \AgenDAV\CalDAV\Share\ACL($app['permissions']);
     };
-     */
 }

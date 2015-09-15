@@ -119,9 +119,14 @@ modify,  and start configuring your instance.
    Enables calendar sharing between users
 
    Note that calendar sharing requires full WebDAV ACL support on your
-   CalDAV server. Some servers, such as SabreDAV (at least on current
-   release, 1.5.6), don't have full ACL support, so you should set this option
-   to ``false`` if your server can't handle ACLs.
+   CalDAV server. Sharing has been fully tested only with DAViCal, so it is
+   recommended to disable calendar sharing on other CalDAV servers unless
+   you know what you are doing.
+
+.. confval:: calendar.sharing.permissions
+
+   Configures ACL permissions for calendar sharing. The default values will
+   work with DAViCal.
 
 .. confval:: defaults.timezone
 
