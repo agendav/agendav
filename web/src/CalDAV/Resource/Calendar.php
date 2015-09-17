@@ -3,7 +3,7 @@
 namespace AgenDAV\CalDAV\Resource;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -40,7 +40,7 @@ class Calendar
      *
      * @var array
      */
-    protected $data;
+    protected $properties;
 
     /**
      * Writable calendar
@@ -108,7 +108,7 @@ class Calendar
     public function __construct($url, $properties = [])
     {
         $this->url = $url;
-        $this->data = [];
+        $this->properties = [];
         foreach ($properties as $property => $value) {
             $this->setProperty($property, $value);
         }
@@ -134,8 +134,8 @@ class Calendar
      */
     public function getProperty($property)
     {
-        if (array_key_exists($property, $this->data) && !empty($this->data[$property])) {
-            return $this->data[$property];
+        if (array_key_exists($property, $this->properties) && !empty($this->properties[$property])) {
+            return $this->properties[$property];
         }
 
         return null;
@@ -157,11 +157,11 @@ class Calendar
 
         // RGBA colors
         if ($property === self::COLOR) {
-            $this->data[self::COLOR] = $this->ensureRgbaColor($value);
+            $this->properties[self::COLOR] = $this->ensureRgbaColor($value);
             return;
         }
 
-        $this->data[$property] = $value;
+        $this->properties[$property] = $value;
     }
 
     /**
@@ -171,7 +171,7 @@ class Calendar
      */
     public function getAllProperties()
     {
-        return $this->data;
+        return $this->properties;
     }
 
     /**
@@ -183,7 +183,7 @@ class Calendar
     public function getWritableProperties()
     {
         return array_diff_key(
-            $this->data,
+            $this->properties,
             array_flip(self::$readonly_properties)
         );
     }
