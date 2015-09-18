@@ -34,12 +34,13 @@ class Csrf
         $current_token = self::getCurrentToken($app);
 
         if ($request->getMethod() === 'GET') {
+            $app['monolog']->addDebug('CSRF check skipped, this is a GET request');
             return;
         }
 
         $csrf_id = $current_token->getId();
         if (!$request->request->has($csrf_id)) {
-            $app['monolog']->addDebug('CSRF id not found. Aborting');
+            $app['monolog']->addDebug('CSRF id not found on request');
             $app->abort(401, 'CSRF id not present');
             return;
         }
@@ -48,7 +49,7 @@ class Csrf
 
         $token = new CsrfToken($csrf_id, $csrf_provided_value);
 
-        $app['monolog']->addDebug('CSRF provided by user', [
+        $app['monolog']->addDebug('CSRF parameters sent by user', [
             'id' => $csrf_id,
             'value' => $csrf_provided_value,
         ]);
