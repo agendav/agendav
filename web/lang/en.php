@@ -213,7 +213,7 @@ $translations = array(
 
     'messages.more_events' => '+ %count events',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
 
     'messages.request_error' => 'Error found on your request',
     'messages.page_not_found' => 'Page not found',

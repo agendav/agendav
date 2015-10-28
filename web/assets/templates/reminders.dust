@@ -16,4 +16,4 @@
 
 
 <hr>
-<p><small class="alert">{@i18n type="messages" name="info_reminders_no_effect_on_agendav"/}</small></p>
+<p><small class="alert">{@i18n type="messages" name="info_reminders_agendav_support"/}</small></p>
