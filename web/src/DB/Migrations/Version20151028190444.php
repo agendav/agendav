@@ -19,6 +19,8 @@ class Version20151028190444 extends AbstractMigration
         $principals->addColumn('url', 'string', ['length' => 255])->setNotNull(true);
         $principals->addColumn('displayname', 'string', ['length' => 255]);
         $principals->addColumn('email', 'string', ['length' => 255]);
+
+        $principals->setPrimaryKey(['url']);
     }
 
     /**
