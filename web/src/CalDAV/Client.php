@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV;
 
 use \AgenDAV\CalDAV\Resource\Calendar;
 use \AgenDAV\CalDAV\Resource\CalendarObject;
+use \AgenDAV\Data\Principal;
 use \AgenDAV\CalDAV\Share\ACL;
 use \AgenDAV\CalDAV\Filter\Uid;
 use \AgenDAV\CalDAV\Filter\TimeRange;
@@ -101,21 +102,22 @@ class Client
     }
 
     /**
-     * Queries the CalDAV server for the calendar-home-set. It has to be
+     * Queries the CalDAV server for the calendar-home-set. It will be
      * requested on the principal URL
      *
-     * @param string $principal_url Principal URL
+     * @param \AgenDAV\Data\Principal User principal
      * @return string   Calendar home set for given principal
      * @throws \AgenDAV\Exception\NotFound if no calendar-home-set is returned
      */
-    public function getCalendarHomeSet($principal_url)
+    public function getCalendarHomeSet(Principal $principal)
     {
         $body = $this->xml_toolkit->generateRequestBody(
             'PROPFIND',
             [ '{urn:ietf:params:xml:ns:caldav}calendar-home-set' ]
         );
 
-        $response = $this->propfind($principal_url, 0, $body);
+        $url = $principal->getUrl();
+        $response = $this->propfind($url, 0, $body);
 
         if (count($response) === 0) {
             throw new \AgenDAV\Exception\NotFound('No calendar-home-set was returned by the server!');

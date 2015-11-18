@@ -80,11 +80,12 @@ class Authentication
         $app['session']->set('username', $user);
         $app['session']->set('password', $password);
         $principal_url = $caldav_client->getCurrentUserPrincipal();
-        $app['session']->set('principal_url', $principal_url);
-        $app['session']->set('calendar_home_set', $caldav_client->getCalendarHomeSet($principal_url));
 
         $principals_repository = $app['principals.repository'];
         $principal = $principals_repository->get($principal_url);
+
+        $app['session']->set('principal_url', $principal_url);
+        $app['session']->set('calendar_home_set', $caldav_client->getCalendarHomeSet($principal));
         $app['session']->set('displayname', $principal->getDisplayName());
 
         return true;
