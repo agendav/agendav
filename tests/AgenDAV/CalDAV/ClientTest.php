@@ -19,6 +19,7 @@ use AgenDAV\CalDAV\Share\ACL;
 use AgenDAV\Event\Parser as EventParser;
 use AgenDAV\CalDAV\Filter\Uid;
 use AgenDAV\CalDAV\Filter\TimeRange;
+use AgenDAV\Data\Principal;
 
 /**
  * @author jorge
@@ -134,7 +135,7 @@ BODY;
         $response = new Response(207, [], Stream::factory($body));
         $caldav_client = $this->createCalDAVClient($response);
 
-        $caldav_client->getCalendarHomeSet('/principal/url');
+        $caldav_client->getCalendarHomeSet(new Principal('/principal/url'));
     }
 
     public function testGetCalendarHomeSet()
@@ -158,7 +159,7 @@ BODY;
         $response = new Response(207, [], Stream::factory($body));
         $caldav_client = $this->createCalDAVClient($response);
 
-        $calendar_home_set = $caldav_client->getCalendarHomeSet('/principal/url');
+        $calendar_home_set = $caldav_client->getCalendarHomeSet(new Principal('/principal/url'));
         $this->assertEquals(
             '/cal.php/calendars/demo/',
             $calendar_home_set
