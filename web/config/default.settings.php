@@ -48,6 +48,9 @@ $app['caldav.publicurls'] = true;
 // Whether to show public CalDAV urls
 $app['caldav.baseurl.public'] = 'https://caldav.server.com';
 
+// Email attribute name
+$app['principal.email.attribute'] = '{DAV:}email';
+
 // Calendar sharing
 $app['calendar.sharing'] = false;
 

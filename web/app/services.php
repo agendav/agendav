@@ -59,7 +59,8 @@ $app['preferences.repository'] = $app->share(function($app) {
 $app['principals.repository'] = $app->share(function($app) {
     $repository = new AgenDAV\Repositories\DAVPrincipalsRepository(
         $app['xml.toolkit'],
-        $app['caldav.client']
+        $app['caldav.client'],
+        $app['principal.email.attribute']
     );
 
     return $repository;

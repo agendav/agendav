@@ -38,16 +38,21 @@ class DAVPrincipalsRepository implements PrincipalsRepository
     /** @type AgenDAV\CalDAV\Client */
     protected $caldav_client;
 
+    /** @type string */
+    protected $email_attribute;
+
     /**
      * Builds a new repository
      *
      * @param AgenDAV\XML\Toolkit $xml_toolkit
      * @param AgenDAV\CalDAV\Client $caldav_client
+     * @param string $email_attribute
      */
-    public function __construct($xml_toolkit, $caldav_client)
+    public function __construct(Toolkit $xml_toolkit, Client $caldav_client, $email_attribute)
     {
         $this->xml_toolkit = $xml_toolkit;
         $this->caldav_client = $caldav_client;
+        $this->email_attribute = $email_attribute;
     }
 
     /**
@@ -71,7 +76,10 @@ class DAVPrincipalsRepository implements PrincipalsRepository
             $result->setDisplayName($properties[Principal::DISPLAYNAME]);
         }
 
-        // TODO read and store email
+        if (isset($properties[$this->email_attribute])) {
+            $result->setEmail($properties[$this->email_attribute]);
+        }
+
         return $result;
     }
 
@@ -96,9 +104,12 @@ class DAVPrincipalsRepository implements PrincipalsRepository
 
         foreach ($response as $url => $properties) {
             $principal = new Principal($url);
-            // TODO email. Also clean this
             if (isset($properties[Principal::DISPLAYNAME])) {
                 $principal->setDisplayName($properties[Principal::DISPLAYNAME]);
+            }
+
+            if (isset($properties[$this->email_attribute])) {
+                $principal->setEmail($properties[$this->email_attribute]);
             }
 
             $result[$url] = $principal;

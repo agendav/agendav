@@ -6,7 +6,7 @@
             <p class="form-control-static">
             <span class="username" title="{with}">{displayname}</span>
             {?email}
-             <em>&lt;email&gt;</em>
+             <em> &lt;{email}&gt;</em>
             {/email}
             </p>
             {/new}
