@@ -56,7 +56,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
             'is_shared' => $calendar->isSharedWithMe(),
-            'is_owned' => $calendar->getOwner() === $this->principal_url,
+            'is_owned' => ($calendar->getOwner()->getUrl() === $this->principal_url),
             'writable' => $calendar->isWritable(),
             'shares' => [],
         ];

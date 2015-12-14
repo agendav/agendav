@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV\Resource;
  */
 
 use \AgenDAV\Data\Share;
+use \AgenDAV\Data\Principal;
 
 /**
  * Stores information about a calendar collection
@@ -54,7 +55,7 @@ class Calendar
      *
      * Required on shared calendars
      *
-     * @var string
+     * @var AgenDAV\Data\Principal
      */
     protected $owner;
 
@@ -238,7 +239,7 @@ class Calendar
     /*
      * Setter for owner
      */
-    public function setOwner($owner)
+    public function setOwner(Principal $owner)
     {
         $this->owner = $owner;
     }

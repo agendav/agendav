@@ -23,6 +23,7 @@ namespace AgenDAV;
 use AgenDAV\Repositories\SharesRepository;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Data\Principal;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -42,7 +43,7 @@ class CalendarFinder
     /** @var Symfony\Component\HttpFoundation\Session\Session */
     protected $session;
 
-    /** @var string */
+    /** @var AgenDAV\Data\Principal */
     protected $current_principal;
 
     /**
@@ -54,7 +55,7 @@ class CalendarFinder
         $this->sharing_enabled = false;
         $this->client = $client;
         $this->session = $session;
-        $this->current_principal = $session->get('principal_url');
+        $this->current_principal = new Principal($session->get('principal_url'));
     }
 
     /**
@@ -99,10 +100,10 @@ class CalendarFinder
     /**
      * Gets all calendars shared with current principal
      *
-     * @param string $principal Principal URL
+     * @param \AgenDAV\Data\Principal $principal Principal
      * @return \AgenDAV\CalDAV\Resource\Calendar[]
      */
-    protected function getSharedCalendars($principal)
+    protected function getSharedCalendars(Principal $principal)
     {
         $result = [];
 
@@ -119,7 +120,8 @@ class CalendarFinder
 
             $calendar->setShared(true);
             $calendar->setWritable($share->isWritable());
-            $calendar->setOwner($share->getOwner());
+            $owner_principal_url = $share->getOwner();
+            $calendar->setOwner(new Principal($owner_principal_url));
 
             $custom_properties = $share->getProperties();
             $this->applySharedProperties($calendar, $custom_properties);

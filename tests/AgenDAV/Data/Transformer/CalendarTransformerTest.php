@@ -6,6 +6,7 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\JsonApiSerializer;
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Data\Principal;
 
 class CalendarTransformerTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,12 +28,12 @@ class CalendarTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformBasicNotSharedOwned()
     {
-        $owner = '/owner/principal';
+        $owner = new Principal('/owner/principal');
         $this->calendar->setOwner($owner);
 
         $fractal = new Manager();
         $fractal->setSerializer(new JsonApiSerializer());
-        $resource = new Item($this->calendar, new CalendarTransformer($owner), 'calendar');
+        $resource = new Item($this->calendar, new CalendarTransformer($owner->getUrl()), 'calendar');
         $this->assertEquals(
             $fractal->createData($resource)->toArray(),
             [
@@ -57,7 +58,7 @@ class CalendarTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformBasicSharedNotOwner()
     {
-        $owner = '/owner/principal';
+        $owner = new Principal('/owner/principal');
         $this->calendar->setOwner($owner);
         $this->calendar->setShared(true);
 

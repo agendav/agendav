@@ -23,6 +23,7 @@ namespace AgenDAV\Repositories;
 
 use Doctrine\ORM\EntityManager;
 use AgenDAV\Data\Share;
+use AgenDAV\Data\Principal;
 use AgenDAV\CalDAV\Resource\Calendar;
 
 
@@ -50,13 +51,13 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Returns all calendars shared with a user
      *
-     * @param string $principal  User principal
+     * @param \AgenDAV\Data\Principal $principal  User principal
      * @return \AgenDAV\Data\Share[]
      */
-    public function getSharesFor($principal)
+    public function getSharesFor(Principal $principal)
     {
         $shares = $this->em->getRepository('AgenDAV\Data\Share')
-            ->findBy(['with' => $principal]);
+            ->findBy(['with' => $principal->getUrl()]);
 
         return $shares;
     }

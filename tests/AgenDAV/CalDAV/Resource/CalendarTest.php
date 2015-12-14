@@ -2,6 +2,7 @@
 namespace AgenDAV\CalDAV\Resource;
 
 use AgenDAV\Data\Share;
+use AgenDAV\Data\Principal;
 
 class CalendarTest extends \PHPUnit_Framework_TestCase
 {
@@ -83,8 +84,9 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
     {
         $calendar = new Calendar('/url');
 
-        $calendar->setOwner('jorge');
-        $this->assertEquals('jorge', $calendar->getOwner());
+        $principal = new Principal('/jorge');
+        $calendar->setOwner($principal);
+        $this->assertEquals($principal, $calendar->getOwner());
     }
 
     public function testShares()

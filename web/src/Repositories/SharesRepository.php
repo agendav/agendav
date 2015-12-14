@@ -22,6 +22,7 @@
 namespace AgenDAV\Repositories;
 
 use AgenDAV\Data\Share;
+use AgenDAV\Data\Principal;
 use AgenDAV\CalDAV\Resource\Calendar;
 
 
@@ -35,10 +36,10 @@ interface SharesRepository
     /**
      * Returns all calendars shared with a user
      *
-     * @param string $principal  User principal
+     * @param \AgenDAV\Data\Principal $principal  User principal
      * @return \AgenDAV\Data\Share[]
      */
-    public function getSharesFor($principal);
+    public function getSharesFor(Principal $principal);
 
     /**
      * Returns all grants that have been given to a calendar
