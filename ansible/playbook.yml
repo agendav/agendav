@@ -144,7 +144,7 @@
       - name: apply latest schema updates
         environment:
           COMPOSER_VENDOR_DIR: /var/agendav-vendors
-        command: /vagrant/bin/agendavcli migrations:migrate --configuration=/vagrant/bin/migrations.yml --no-interaction
+        command: /vagrant/agendavcli migrations:migrate --configuration=/vagrant/migrations.yml --no-interaction
 
   handlers:
       - name: restart mysql
