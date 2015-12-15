@@ -10,10 +10,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Replaced abandoned Keboola/php-encryption with phpseclib/phpseclib
 - Moved agendavcli out of the bin/ subdirectory to the root directory
 - Upgraded symfony/security and doctrine/* to non-vulnerable versions
+- Upgraded to Bootstrap 3.3.6
 
 ### Added
 
 - New translations: Slovak and Portuguese (Portugal)
+
+### Fixed
+
+- Build issue with new Bootstrap releases (#152)
 
 ## [2.0.0-beta1] - 2015-08-26
 
