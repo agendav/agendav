@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Moved agendavcli out of the bin/ subdirectory to the root directory
 - Upgraded symfony/security and doctrine/* to non-vulnerable versions
 - Upgraded to Bootstrap 3.3.6
+- Upgraded to latest moment-timezone (0.4.1)
 
 ### Added
 
