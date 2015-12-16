@@ -139,7 +139,8 @@
         command: grunt chdir=/vagrant
 
       - name: configure agendav
-        template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes
+        template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes mode=0755
+
 
       - name: apply latest schema updates
         environment:
