@@ -1,41 +1,41 @@
 <?php
 namespace AgenDAV\CalDAV\Filter;
 
+use Sabre\Xml\Writer;
+
 class PrincipalPropertySearchTest extends \PHPUnit_Framework_TestCase
 {
     public function testGeneration()
     {
-        $document = new \DOMDocument('1.0', 'UTF-8');
+        $writer = new Writer();
+        $writer->openMemory();
+        $writer->setIndent(true);
 
         $principal_property_search = new PrincipalPropertySearch('abcdefg');
 
-        $principal_property_search_xml = $principal_property_search->generateFilterXML($document);
-        $principal_property_search_xml->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:C', 'urn:ietf:params:xml:ns:caldav');
-        $principal_property_search_xml->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:d', 'DAV:');
+        $principal_property_search->addFilter($writer);
 
-        $document->appendChild($principal_property_search_xml);
         $expected = <<<EOXML
-<?xml version="1.0" encoding="UTF-8"?>
-<d:principal-property-search xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" test="anyof">
-  <d:property-search>
-    <d:prop>
-      <C:calendar-user-address-set/>
-    </d:prop>
-    <d:match>abcdefg</d:match>
-  </d:property-search>
-  <d:property-search>
-    <d:prop>
-      <d:displayname/>
-    </d:prop>
-    <d:match>abcdefg</d:match>
-  </d:property-search>
-  <d:prop>
-    <d:displayname/>
-    <d:email/>
-  </d:prop>
-</d:principal-property-search>
+<x1:principal-property-search test="anyof" xmlns:x1="DAV:">
+ <x1:property-search xmlns:x1="DAV:">
+  <x1:prop xmlns:x1="DAV:">
+   <x2:calendar-user-address-set xmlns:x2="urn:ietf:params:xml:ns:caldav"/>
+  </x1:prop>
+  <x1:match xmlns:x1="DAV:">abcdefg</x1:match>
+ </x1:property-search>
+ <x1:property-search xmlns:x1="DAV:">
+  <x1:prop xmlns:x1="DAV:">
+   <x1:displayname xmlns:x1="DAV:"/>
+  </x1:prop>
+  <x1:match xmlns:x1="DAV:">abcdefg</x1:match>
+ </x1:property-search>
+ <x1:prop xmlns:x1="DAV:">
+  <x1:displayname xmlns:x1="DAV:"/>
+  <x1:email xmlns:x1="DAV:"/>
+ </x1:prop>
+</x1:principal-property-search>
 EOXML;
 
-        $this->assertXmlStringEqualsXmlString($expected, $document->saveXML());
+        $this->assertXmlStringEqualsXmlString($expected, $writer->outputMemory());
     }
 }
