@@ -3,7 +3,7 @@
 namespace AgenDAV\CalDAV\Filter;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV\Filter;
  */
 
 use AgenDAV\CalDAV\ComponentFilter;
+use Sabre\Xml\Writer;
 
 /**
  * <uid> filter for REPORTs
@@ -40,22 +41,24 @@ class Uid implements ComponentFilter
     }
 
     /**
-     * Returns a DOMElement cotaining this filter
+     * Adds a filter to the passed Sabre\Xml\Writer object
      *
-     * @param \DOMDocument $document Initial DOMDocument, required to
-     *                               generate a valid \DOMElement
-     * @result \DOMElement $element
+     * @param \Sabre\Xml\Writer $writer XML writer
+     * @return void
      */
-    public function generateFilterXML(\DOMDocument $document)
+    public function addFilter(\Sabre\Xml\Writer $writer)
     {
-        $uid_match = $document->createElement('C:prop-filter');
-        $uid_match->setAttribute('name', 'UID');
+        $ns_c = '{urn:ietf:params:xml:ns:caldav}';
 
-        $text_match = $document->createElement('C:text-match', $this->uid);
-        $text_match->setAttribute('collation', 'i;octet');
+        $writer->startElement($ns_c . 'prop-filter');
+        $writer->writeAttribute('name', 'UID');
 
-        $uid_match->appendChild($text_match);
-        return $uid_match;
+        $writer->startElement($ns_c . 'text-match');
+        $writer->writeAttribute('collation', 'i;octet');
+        $writer->write($this->uid);
+        $writer->endElement();
+
+        $writer->endElement();
     }
 }
 

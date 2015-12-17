@@ -4,6 +4,7 @@ namespace AgenDAV\XML;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Share\Permissions;
 use AgenDAV\CalDAV\Share\ACL;
+use Sabre\Xml\Reader;
 use \Mockery as m;
 
 /**
@@ -22,18 +23,48 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             '{http://fake.namespace.org}calendar-color'
         )));
 
-        $expected = <<<EOXML
-<?xml version="1.0" encoding="UTF-8"?>
-<d:propfind xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" xmlns:x0="http://fake.namespace.org">
-<d:prop>
-    <d:resourcetype/>
-    <C:calendar-home-set/>
-    <A:calendar-color/>
-    <x0:calendar-color/>
-</d:prop>
-</d:propfind>
-EOXML;
-        $this->assertXmlStringEqualsXmlString($expected, $body);
+        $expected = array (
+          'name' => '{DAV:}propfind',
+          'value' =>
+          array (
+            0 =>
+            array (
+              'name' => '{DAV:}prop',
+              'value' =>
+              array (
+                0 =>
+                array (
+                  'name' => '{DAV:}resourcetype',
+                  'value' => NULL,
+                  'attributes' => array (),
+                ),
+                1 =>
+                array (
+                  'name' => '{urn:ietf:params:xml:ns:caldav}calendar-home-set',
+                  'value' => NULL,
+                  'attributes' => array (),
+                ),
+                2 =>
+                array (
+                  'name' => '{http://apple.com/ns/ical/}calendar-color',
+                  'value' => NULL,
+                  'attributes' => array (),
+                ),
+                3 =>
+                array (
+                  'name' => '{http://fake.namespace.org}calendar-color',
+                  'value' => NULL,
+                  'attributes' => array (),
+                ),
+              ),
+              'attributes' => array (),
+            ),
+          ),
+          'attributes' => array (),
+        );
+        $reader = new Reader();
+        $reader->xml($body);
+        $this->assertEquals($expected, $reader->parse());
     }
 
     public function testMkCalendarBody()
@@ -47,30 +78,46 @@ EOXML;
 
         $body = $generator->mkCalendarBody($properties);
 
-        $expected = <<<EOXML
-<?xml version="1.0" encoding="UTF-8"?>
-<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:x0="urn:fake">
-    <d:set>
-        <d:prop>
-            <d:displayname>Calendar name</d:displayname>
-            <x0:attr>value</x0:attr>
-        </d:prop>
-    </d:set>
-</C:mkcalendar>
-EOXML;
-
-        $dom_expected = new \DOMDocument;
-        $dom_expected->loadXML($expected);
-
-        $dom_actual = new \DOMDocument;
-        $dom_actual->loadXML($body);
-
-        $this->assertEqualXMLStructure(
-            $dom_expected->firstChild,
-            $dom_actual->firstChild
+        $expected = array (
+          'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
+          'value' =>
+          array (
+            0 =>
+            array (
+              'name' => '{DAV:}set',
+              'value' =>
+              array (
+                0 =>
+                array (
+                  'name' => '{DAV:}prop',
+                  'value' =>
+                  array (
+                    0 =>
+                    array (
+                      'name' => '{DAV:}displayname',
+                      'value' => 'Calendar name',
+                      'attributes' => array (),
+                    ),
+                    1 =>
+                    array (
+                      'name' => '{urn:fake}attr',
+                      'value' => 'value',
+                      'attributes' => array (),
+                    ),
+                  ),
+                  'attributes' => array (),
+                ),
+              ),
+              'attributes' => array (),
+            ),
+          ),
+          'attributes' => array (),
         );
 
-        //$this->assertXmlStringEqualsXmlString($expected, $body);
+        $reader = new Reader();
+        $reader->xml($body);
+
+        $this->assertEquals($expected, $reader->parse());
     }
 
     /**
@@ -82,12 +129,15 @@ EOXML;
 
         $body = $generator->mkCalendarBody([]);
 
-        $expected = <<<EOXML
-<?xml version="1.0" encoding="UTF-8"?>
-<C:mkcalendar xmlns:C="urn:ietf:params:xml:ns:caldav"></C:mkcalendar>
-EOXML;
+        $expected = array (
+          'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
+          'value' => null,
+          'attributes' => array (),
+        );
+        $reader = new Reader();
+        $reader->xml($body);
 
-        $this->assertXmlStringEqualsXmlString($expected, $body);
+        $this->assertEquals($expected, $reader->parse());
     }
 
     public function testproppatchBody()
@@ -102,36 +152,64 @@ EOXML;
 
         $body = $generator->proppatchBody($properties);
 
-        $expected = <<<EOXML
-<?xml version="1.0" encoding="UTF-8"?>
-<d:propertyupdate xmlns:d="DAV:" xmlns:A="http://apple.com/ns/ical/" xmlns:x0="urn:fake">
-<d:set>
-    <d:prop>
-        <d:displayname>Calendar name</d:displayname>
-        <A:calendar-color>#f0f0f0aa</A:calendar-color>
-        <x0:attr>value</x0:attr>
-    </d:prop>
-</d:set>
-</d:propertyupdate>
-EOXML;
+        $expected = array (
+          'name' => '{DAV:}propertyupdate',
+          'value' =>
+          array (
+            0 =>
+            array (
+              'name' => '{DAV:}set',
+              'value' =>
+              array (
+                0 =>
+                array (
+                  'name' => '{DAV:}prop',
+                  'value' =>
+                  array (
+                    0 =>
+                    array (
+                      'name' => '{DAV:}displayname',
+                      'value' => 'Calendar name',
+                      'attributes' => array (),
+                    ),
+                    1 =>
+                    array (
+                      'name' => '{http://apple.com/ns/ical/}calendar-color',
+                      'value' => '#f0f0f0aa',
+                      'attributes' => array (),
+                    ),
+                    2 =>
+                    array (
+                      'name' => '{urn:fake}attr',
+                      'value' => 'value',
+                      'attributes' => array (),
+                    ),
+                  ),
+                  'attributes' => array (),
+                ),
+              ),
+              'attributes' => array (),
+            ),
+          ),
+          'attributes' => array (),
+        );
 
-        $this->assertXmlStringEqualsXmlString($expected, $body);
+        $reader = new Reader();
+        $reader->xml($body);
+
+        $this->assertEquals($expected, $reader->parse());
     }
 
     public function testEventsReportBody()
     {
         $generator = $this->createXMLGenerator();
-        $fake_filter = m::mock('\AgenDAV\CalDAV\ComponentFilter')
-            ->shouldReceive('generateFilterXML')
-            ->once()
-            ->andReturn(new \DOMElement('test'))
-            ->getMock();
+        $test_filter = new \AgenDAV\CalDAV\Filter\Test('{http://fake.com/}test');
 
-        $body = $generator->calendarQueryBody($fake_filter);
+        $body = $generator->calendarQueryBody($test_filter);
 
         $expected = <<<EOXML
 <?xml version="1.0" encoding="UTF-8"?>
-<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:">
+<C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:A="http://apple.com/ns/ical/">
     <d:prop>
         <d:getetag/>
         <C:calendar-data/>
@@ -139,7 +217,7 @@ EOXML;
     <C:filter>
         <C:comp-filter name="VCALENDAR">
             <C:comp-filter name="VEVENT">
-                <test />
+                <x1:test xmlns:x1="http://fake.com/"/>
             </C:comp-filter>
         </C:comp-filter>
     </C:filter>
@@ -168,7 +246,7 @@ EOXML;
 
         $expected_acl = <<<ACLBODY
 <?xml version="1.0" encoding="UTF-8"?>
-<d:acl xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:x0="urn:he:man">
+<d:acl xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/">
   <d:ace>
     <d:principal>
       <d:property>
@@ -177,7 +255,7 @@ EOXML;
     </d:principal>
     <d:grant>
       <d:all/>
-      <x0:master-of-universe/>
+      <x1:master-of-universe xmlns:x1="urn:he:man"/>
     </d:grant>
   </d:ace>
   <d:ace>
@@ -217,7 +295,8 @@ ACLBODY;
       $generator = $this->createXMLGenerator();
       $body = $generator->principalPropertySearchBody($filter);
       $expected_body = <<<BODY
-<d:principal-property-search xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" test="anyof">
+<?xml version="1.0" encoding="UTF-8"?>
+<d:principal-property-search xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" test="anyof">
   <d:property-search>
     <d:prop>
       <C:calendar-user-address-set/>

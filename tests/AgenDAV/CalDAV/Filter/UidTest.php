@@ -1,25 +1,24 @@
 <?php
 namespace AgenDAV\CalDAV\Filter;
 
+use \Sabre\Xml\Writer;
+
 class UidTest extends \PHPUnit_Framework_TestCase
 {
     public function testGeneration()
     {
-        $document = new \DOMDocument('1.0', 'UTF-8');
+        $writer = new Writer();
+        $writer->openMemory();
+        $writer->setIndent(true);
 
         $uid_filter = new Uid('1234567890');
+        $uid_filter->addFilter($writer);
+        $expected = <<<XML
+<x1:prop-filter name="UID" xmlns:x1="urn:ietf:params:xml:ns:caldav">
+ <x1:text-match collation="i;octet" xmlns:x1="urn:ietf:params:xml:ns:caldav">1234567890</x1:text-match>
+</x1:prop-filter>
+XML;
 
-        $uid_filter_element = $uid_filter->generateFilterXML($document);
-        $uid_filter_element->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:C', 'urn:ietf:params:xml:ns:caldav');
-
-        $document->appendChild($uid_filter_element);
-        $expected = <<<EOXML
-<?xml version="1.0" encoding="UTF-8"?>
-<C:prop-filter xmlns:C="urn:ietf:params:xml:ns:caldav" name="UID">
-  <C:text-match collation="i;octet">1234567890</C:text-match>
-</C:prop-filter>
-EOXML;
-
-        $this->assertXmlStringEqualsXmlString($expected, $document->saveXML());
+        $this->assertXmlStringEqualsXmlString($expected, $writer->outputMemory());
     }
 }

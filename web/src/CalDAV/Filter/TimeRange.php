@@ -3,7 +3,7 @@
 namespace AgenDAV\CalDAV\Filter;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -43,19 +43,23 @@ class TimeRange implements ComponentFilter
     }
 
     /**
-     * Returns a DOMElement cotaining this filter
+     * Adds a filter to the passed Sabre\Xml\Writer object
      *
-     * @param \DOMDocument $document Initial DOMDocument, required to
-     *                               generate a valid \DOMElement
-     * @result \DOMElement $element
+     * @param \Sabre\Xml\Writer $writer XML writer
+     * @return void
      */
-    public function generateFilterXML(\DOMDocument $document)
+    public function addFilter(\Sabre\Xml\Writer $writer)
     {
-        $time_range = $document->createElement('C:time-range');
-        $time_range->setAttribute('start', $this->start);
-        $time_range->setAttribute('end', $this->end);
-
-        return $time_range;
+        $writer->write([
+            [
+                'name' => '{urn:ietf:params:xml:ns:caldav}time-range',
+                'value' => null,
+                'attributes' => [
+                    'start' => $this->start,
+                    'end' => $this->end,
+                ],
+            ]
+        ]);
     }
 }
 

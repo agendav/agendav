@@ -22,6 +22,7 @@ namespace AgenDAV\CalDAV\Filter;
  */
 
 use AgenDAV\CalDAV\ComponentFilter;
+use Sabre\Xml\Writer;
 
 /**
  * Filter for principal property search 
@@ -41,38 +42,36 @@ class PrincipalPropertySearch implements ComponentFilter
     }
 
     /**
-     * Returns a DOMElement cotaining this filter
+     * Adds a filter to the passed Sabre\Xml\Writer object
      *
-     * @param \DOMDocument $document Initial DOMDocument, required to
-     *                               generate a valid \DOMElement
-     * @result \DOMElement $element
+     * @param \Sabre\Xml\Writer $writer XML writer
+     * @return void
      */
-    public function generateFilterXML(\DOMDocument $document)
+    public function addFilter(\Sabre\Xml\Writer $writer)
     {
-        $principal_property_search = $document->createElement('d:principal-property-search');
-        $principal_property_search->setAttribute('test', 'anyof');
+        $writer->startElement('{DAV:}principal-property-search');
+        $writer->writeAttribute('test', 'anyof');
 
-        foreach (['C:calendar-user-address-set', 'd:displayname'] as $property) {
-            $property_search = $document->createElement('d:property-search');
-            $prop = $document->createElement('d:prop');
-            $current_property = $document->createElement($property);
-            $prop->appendChild($current_property);
-
-            $match = $document->createElement('d:match', $this->input);
-            $property_search->appendChild($prop);
-            $property_search->appendChild($match);
-            $principal_property_search->appendChild($property_search);
+        foreach (['{urn:ietf:params:xml:ns:caldav}calendar-user-address-set', '{DAV:}displayname'] as $property) {
+            $writer->write([
+                '{DAV:}property-search' => [
+                    '{DAV:}prop' => [
+                        $property => []
+                    ],
+                    '{DAV:}match' => $this->input,
+                ]
+            ]);
         }
 
-        $return_prop = $document->createElement('d:prop');
-        $displayname = $document->createElement('d:displayname');
-        // TODO make this property configurable
-        $email = $document->createElement('d:email');
-        $return_prop->appendChild($displayname);
-        $return_prop->appendChild($email);
-        $principal_property_search->appendChild($return_prop);
+        $writer->write([
+            '{DAV:}prop' => [
+                '{DAV:}displayname' => [],
+                // TODO make this property configurable
+                '{DAV:}email' => [],
+            ]
+        ]);
 
-        return $principal_property_search;
+        $writer->endElement();
     }
 }
 

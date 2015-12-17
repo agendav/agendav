@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded symfony/security and doctrine/* to non-vulnerable versions
 - Upgraded to Bootstrap 3.3.6
 - Upgraded to latest moment-timezone (0.4.1)
+- Improved internal XML generation component
 
 ### Added
 

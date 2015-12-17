@@ -3,6 +3,7 @@
 namespace AgenDAV\XML;
 
 use Sabre\Xml\Service as XMLUtil;
+use Sabre\Xml\Writer;
 use AgenDAV\CalDAV\ComponentFilter;
 use AgenDAV\CalDAV\Share\ACL;
 use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
@@ -32,26 +33,19 @@ use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
  */
 class Generator
 {
+     /**
+      * Default namespace prefixes
+      */
+     public static $default_ns = [
+         'DAV:' => 'd',
+         'urn:ietf:params:xml:ns:caldav' => 'C',
+         'http://apple.com/ns/ical/' => 'A',
+     ];
+
     /**
      * Generate formatted XML documents
      */
     protected $formatted;
-
-    /**
-     * Known namespaces
-     */
-    protected $known_ns = array(
-        'DAV:' => 'd',
-        'urn:ietf:params:xml:ns:caldav' => 'C',
-        'http://apple.com/ns/ical/' => 'A',
-    );
-
-    /** @var array */
-    protected $used_namespaces;
-
-    /** @var int */
-    private $prefix_count;
-
 
     /**
      * Creates a new XML generator
@@ -61,8 +55,6 @@ class Generator
     public function __construct($formatted = true)
     {
         $this->formatted = $formatted;
-        $this->prefix_count = 0;
-        $this->clearUsedNamespaces();
     }
 
     /**
@@ -73,17 +65,12 @@ class Generator
      **/
     public function propfindBody(array $properties)
     {
-        $dom = $this->emptyDocument();
-        $this->addUsedNamespace('DAV:');
-        $propfind = $dom->createElementNS('DAV:', 'd:propfind');
-        $prop = $this->propertyList('d:prop', $properties, $dom, false);
+        $writer = $this->createNewWriter();
+        $writer->startElement('{DAV:}propfind');
+        $this->addPropertiesList($writer, '{DAV:}prop', $properties, false);
+        $writer->endElement();
 
-        $propfind->appendChild($prop);
-        $dom->appendChild($propfind);
-
-        $this->setXmlnsOnElement($propfind, $this->getUsedNamespaces());
-
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
     /**
@@ -94,22 +81,18 @@ class Generator
      */
     public function mkCalendarBody(array $properties)
     {
-        $dom = $this->emptyDocument();
-        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
-        $mkcalendar = $dom->createElementNS('urn:ietf:params:xml:ns:caldav', 'C:mkcalendar');
+        $writer = $this->createNewWriter();
+        $writer->startElement('{urn:ietf:params:xml:ns:caldav}mkcalendar');
+
         if (count($properties) != 0) {
-            $set = $dom->createElement('d:set');
-            $prop = $this->propertyList('d:prop', $properties, $dom);
-
-
-            $set->appendChild($prop);
-            $mkcalendar->appendChild($set);
+            $writer->startElement('{DAV:}set');
+            $this->addPropertiesList($writer, '{DAV:}prop', $properties);
+            $writer->endElement();
         }
-        $dom->appendChild($mkcalendar);
 
-        $this->setXmlnsOnElement($mkcalendar, $this->getUsedNamespaces());
+        $writer->endElement();
 
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
     /**
@@ -120,19 +103,16 @@ class Generator
      */
     public function proppatchBody(array $properties)
     {
-        $dom = $this->emptyDocument();
-        $this->addUsedNamespace('DAV:');
-        $propertyupdate = $dom->createElementNS('DAV:', 'd:propertyupdate');
-        $set = $dom->createElement('d:set');
-        $prop = $this->propertyList('d:prop', $properties, $dom);
+        $writer = $this->createNewWriter();
+        $writer->startElement('{DAV:}propertyupdate');
+        $writer->startElement('{DAV:}set');
 
-        $set->appendChild($prop);
-        $propertyupdate->appendChild($set);
-        $dom->appendChild($propertyupdate);
+        $this->addPropertiesList($writer, '{DAV:}prop', $properties);
 
-        $this->setXmlnsOnElement($propertyupdate, $this->getUsedNamespaces());
+        $writer->endElement();
+        $writer->endElement();
 
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
     /**
@@ -143,39 +123,31 @@ class Generator
      */
     public function calendarQueryBody(\AgenDAV\CalDAV\ComponentFilter $component_filter)
     {
-        $dom = $this->emptyDocument();
-        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
-        $calendarquery = $dom->createElementNS('urn:ietf:params:xml:ns:caldav', 'C:calendar-query');
+        $writer = $this->createNewWriter();
+        $writer->startElement('{urn:ietf:params:xml:ns:caldav}calendar-query');
 
         // Usual properties we need from events
         $properties = [
             '{DAV:}getetag',
             '{urn:ietf:params:xml:ns:caldav}calendar-data',
         ];
-        $prop = $this->propertyList('d:prop', $properties, $dom, false);
+        $this->addPropertiesList($writer, '{DAV:}prop', $properties, false);
 
-        $calendarquery->appendChild($prop);
+        $writer->startElement('{urn:ietf:params:xml:ns:caldav}filter');
+        $writer->startElement('{urn:ietf:params:xml:ns:caldav}comp-filter');
+        $writer->writeAttribute('name', 'VCALENDAR');
+        $writer->startElement('{urn:ietf:params:xml:ns:caldav}comp-filter');
+        $writer->writeAttribute('name', 'VEVENT');
 
-        $filter = $dom->createElement('C:filter');
-        $filter_vcalendar  = $dom->createElement('C:comp-filter');
-        $filter_vcalendar->setAttribute('name', 'VCALENDAR');
-        $filter_vevent = $dom->createElement('C:comp-filter');
-        $filter_vevent->setAttribute('name', 'VEVENT');
+        $component_filter->addFilter($writer);
 
-        // Use the $filter argument to generate this part
-        $filter_conditions = $component_filter->generateFilterXML($dom);
-        $filter_vevent->appendChild($filter_conditions);
+        $writer->endElement();
+        $writer->endElement();
 
-        $filter_vcalendar->appendChild($filter_vevent);
-        $filter->appendChild($filter_vcalendar);
+        $writer->endElement(); // C:filter
+        $writer->endElement(); // C:calendar-query
 
-        $calendarquery->appendChild($filter);
-
-        $dom->appendChild($calendarquery);
-
-        $this->setXmlnsOnElement($calendarquery, $this->getUsedNamespaces());
-
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
     /**
@@ -186,26 +158,19 @@ class Generator
      */
     public function aclBody(ACL $acl)
     {
-        $dom = $this->emptyDocument();
-        $this->addUsedNamespace('DAV:');
-        $acl_elem = $dom->createElementNS('DAV:', 'd:acl');
+        $writer = $this->createNewWriter();
+        $writer->startElement('{DAV:}acl');
 
-        $dom->appendChild($acl_elem);
-
-        $ace_owner = $this->generateAceTag($dom, 'owner', null, $acl->getOwnerPrivileges());
-        $acl_elem->appendChild($ace_owner);
-
-        $ace_default = $this->generateAceTag($dom, 'default', null, $acl->getDefaultPrivileges());
-        $acl_elem->appendChild($ace_default);
+        $this->generateAceTag($writer, 'owner', null, $acl->getOwnerPrivileges());
+        $this->generateAceTag($writer, 'default', null, $acl->getDefaultPrivileges());
 
         $grants = $acl->getGrantsPrivileges();
         foreach ($grants as $principal => $privileges) {
-            $ace_grant = $this->generateAceTag($dom, 'grant', $principal, $privileges);
-            $acl_elem->appendChild($ace_grant);
+            $this->generateAceTag($writer, 'grant', $principal, $privileges);
         }
+        $writer->endElement();
 
-        $this->setXmlnsOnElement($acl_elem, $this->getUsedNamespaces());
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
     /**
@@ -216,193 +181,117 @@ class Generator
      */
     public function principalPropertySearchBody(PrincipalPropertySearch $filter)
     {
-        $dom = $this->emptyDocument();
-        $this->addUsedNamespace('DAV:');
-        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
+        $writer = $this->createNewWriter();
 
-        $conditions_xml = $filter->generateFilterXML($dom);
-        $dom->appendChild($conditions_xml);
-        $this->setXmlnsOnElement($conditions_xml, $this->getUsedNamespaces());
+        $filter->addFilter($writer);
 
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
 
     /**
-     * Returns a <tag>[...]</tag> group of tags for a given list
-     * of properties and values
+     * Adds a list of tags with a <tag_name> root tag to the passed Writer
      *
-     * Doesn't modify the original document
-     *
-     * @param string $tag_name Wrapping tag name, including prefix
-     * @param array $properties Associative array, keys are in Clark notation
-     * @param \DOMDocument $document DOM document to be used to generate
-     *                               new XML documents
+     * @param Sabre\Xml\Writer XML writer onto we want to add this list
+     * @param string $tag_name Wrapping tag name, in Clark notation
+     * @param array $properties Associative array of properties, keys are in Clark notation
      * @param bool $use_values  read values from the array too. Defaults to true
-     * @return \DOMElement
+     * @return void
      */
-    protected function propertyList($tag_name, array $properties, \DOMDocument $document, $use_values = true)
+    protected function addPropertiesList(Writer $writer, $tag_name, array $properties, $use_values = true)
     {
-        $result = $document->createElement($tag_name);
+        $writer->startElement($tag_name);
         if (!$use_values) {
             $properties = array_flip($properties);
         }
+
         foreach ($properties as $property => $value) {
-            list($ns, $name) = XMLUtil::parseClarkNotation($property);
-
-            $this->addUsedNamespace($ns);
-
-            $tag_name = $this->getPrefixForNamespace($ns) . ':' . $name;
             if ($use_values) {
-                $element = $document->createElement($tag_name, $value);
+                $writer->writeElement($property, $value);
             } else {
-                $element = $document->createElement($tag_name);
+                $writer->writeElement($property);
             }
-            $result->appendChild($element);
         }
 
-        return $result;
+        $writer->endElement();
     }
 
     /**
-     * Generates the base \DOMDocument
+     * Generates an empty XML writer
      *
-     * @return \DOMDocument     Base document to start working on
+     * @return \Sabre\XML\Writer     Base document to start working on
      **/
-    protected function emptyDocument()
+    protected function createNewWriter()
     {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-        $dom->formatOutput = $this->formatted;
+        $writer = new Writer();
+        $writer->openMemory();
+        $writer->startDocument('1.0', 'UTF-8');
+        $writer->setIndent($this->formatted);
+        $writer->namespaceMap = self::$default_ns;
 
-        $this->clearUsedNamespaces();
-
-        return $dom;
+        return $writer;
     }
 
-
-    /**
-     * Sets all namespaces on an element, using the $known_ns attribute
-     *
-     * @param \DOMElement $element      Element to be modified
-     * @param array $only_ns            Add only these namespaces. If empty, it will add all known namespaces
-     * @return \DOMElement              Same element that was provided
-     **/
-    protected function setXmlnsOnElement(\DOMElement $element, array $only_ns = array())
-    {
-        $add_ns = $this->known_ns;
-        if (count($only_ns) !== 0) {
-            $add_ns = array_intersect_key($this->known_ns, $only_ns);
-        }
-
-        foreach ($add_ns as $ns => $prefix) {
-            $element->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:' . $prefix, $ns);
-        }
-
-        return $element;
-    }
-
-    /**
-     * Clears the list of used namespaces
-     */
-    protected function clearUsedNamespaces()
-    {
-        $this->used_namespaces = [];
-    }
-
-    /**
-     * Adds a new used namespace
-     *
-     * @param string $namespace New namespace
-     */
-    protected function addUsedNamespace($namespace)
-    {
-        if (!isset($this->known_ns[$namespace])) {
-            $this->known_ns[$namespace] = 'x' . $this->prefix_count;
-            $this->prefix_count++;
-        }
-        $this->used_namespaces[$namespace] = $this->known_ns[$namespace];
-    }
-
-    /**
-     * Returns the list of used namespaces
-     *
-     * @return array Used namespaces
-     */
-    protected function getUsedNamespaces()
-    {
-        return $this->used_namespaces;
-    }
-
-    /**
-     * Returns the prefix for a namespace
-     *
-     * @param string $namespace Namespace
-     * @return string prefix, false if not known
-     */
-    protected function getPrefixForNamespace($namespace)
-    {
-        return isset($this->known_ns[$namespace])
-            ? $this->known_ns[$namespace] : false;
-    }
 
     /**
      * Generates a <d:ace> element, which is used on ACLs
      *
-     * @param \DOMDocument $document
+     * @param \Sabre\Xml\Writer $writer
      * @param string $type one of 'owner', 'default' or 'grant'
+     * @param string $principal Specific principal URL that this ACE affects
      * @param array $privileges
+     * @return void
      */
     protected function generateAceTag(
-        \DOMDocument $document,
+        Writer $writer,
         $type,
         $principal = null,
         array $privileges
     )
     {
-        $ace = $document->createElement('d:ace');
+        $writer->startElement('{DAV:}ace');
 
         // Affected principals
-        $principal = $this->generatePrincipalForAce($document, $type, $principal);
-        $ace->appendChild($principal);
+        $this->generatePrincipalForAce($writer, $type, $principal);
 
         // List of privileges
-        $grant = $this->propertyList('d:grant', $privileges, $document, false);
+        $this->addPropertiesList($writer, 'd:grant', $privileges, false);
 
-        $ace->appendChild($grant);
-
-        return $ace;
+        $writer->endElement();
     }
 
     /**
      * Returns a <principal> tag for an <ace>
      *
-     * @param \DOMDocument $document
+     * @param \Sabre\Xml\Writer $writer
      * @param string $type one of 'owner', 'default' or 'grant'
      * @param string $principal Used when $type is 'grant'
-     * @return \DOMElement
      */
-    protected function generatePrincipalForAce(\DOMDocument $document, $type, $principal = '')
+    protected function generatePrincipalForAce(Writer $writer, $type, $principal = '')
     {
-        $principal_elem = $document->createElement('d:principal');
+        $writer->startElement('{DAV:}principal');
 
         if ($type === 'owner') {
-            $property = $document->createElement('d:property');
-            $owner = $document->createElement('d:owner');
-            $property->appendChild($owner);
-            $principal_elem->appendChild($property);
+            $writer->write([
+                '{DAV:}property' => [
+                    '{DAV:}owner' => [],
+                ]
+            ]);
         }
 
         if ($type === 'default') {
-            $authenticated = $document->createElement('d:authenticated');
-            $principal_elem->appendChild($authenticated);
+            $writer->write([
+                '{DAV:}authenticated' => [],
+            ]);
         }
 
         if ($type === 'grant') {
-            $href = $document->createElement('d:href', $principal);
-            $principal_elem->appendChild($href);
+            $writer->write([
+                '{DAV:}href' => $principal,
+            ]);
         }
 
-        return $principal_elem;
+        $writer->endElement();
     }
 
 }

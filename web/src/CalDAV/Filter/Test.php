@@ -1,9 +1,9 @@
 <?php
 
-namespace AgenDAV\CalDAV;
+namespace AgenDAV\CalDAV\Filter;
 
 /*
- * Copyright 2014-2015 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -21,11 +21,25 @@ namespace AgenDAV\CalDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\CalDAV\ComponentFilter;
+use Sabre\Xml\Writer;
+
 /**
- * ComponentFilter interface
+ * Test filter that just adds a fake tag
  */
-interface ComponentFilter
+class Test implements ComponentFilter
 {
+
+    /** @var string */
+    private $tag;
+
+    /**
+     * @param string $tag In Clark notation
+     */
+    public function __construct($tag)
+    {
+        $this->tag = $tag;
+    }
 
     /**
      * Adds a filter to the passed Sabre\Xml\Writer object
@@ -33,6 +47,8 @@ interface ComponentFilter
      * @param \Sabre\Xml\Writer $writer XML writer
      * @return void
      */
-    public function addFilter(\Sabre\Xml\Writer $writer);
+    public function addFilter(\Sabre\Xml\Writer $writer)
+    {
+        $writer->write([ $this->tag => [] ]);
+    }
 }
-
