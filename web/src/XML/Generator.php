@@ -158,26 +158,19 @@ class Generator
      */
     public function aclBody(ACL $acl)
     {
-        $dom = $this->createNewWriter();
-        $this->addUsedNamespace('DAV:');
-        $acl_elem = $dom->createElementNS('DAV:', 'd:acl');
+        $writer = $this->createNewWriter();
+        $writer->startElement('{DAV:}acl');
 
-        $dom->appendChild($acl_elem);
-
-        $ace_owner = $this->generateAceTag($dom, 'owner', null, $acl->getOwnerPrivileges());
-        $acl_elem->appendChild($ace_owner);
-
-        $ace_default = $this->generateAceTag($dom, 'default', null, $acl->getDefaultPrivileges());
-        $acl_elem->appendChild($ace_default);
+        $this->generateAceTag($writer, 'owner', null, $acl->getOwnerPrivileges());
+        $this->generateAceTag($writer, 'default', null, $acl->getDefaultPrivileges());
 
         $grants = $acl->getGrantsPrivileges();
         foreach ($grants as $principal => $privileges) {
-            $ace_grant = $this->generateAceTag($dom, 'grant', $principal, $privileges);
-            $acl_elem->appendChild($ace_grant);
+            $this->generateAceTag($writer, 'grant', $principal, $privileges);
         }
+        $writer->endElement();
 
-        $this->setXmlnsOnElement($acl_elem, $this->getUsedNamespaces());
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
     /**
@@ -188,15 +181,11 @@ class Generator
      */
     public function principalPropertySearchBody(PrincipalPropertySearch $filter)
     {
-        $dom = $this->createNewWriter();
-        $this->addUsedNamespace('DAV:');
-        $this->addUsedNamespace('urn:ietf:params:xml:ns:caldav');
+        $writer = $this->createNewWriter();
 
-        $conditions_xml = $filter->generateFilterXML($dom);
-        $dom->appendChild($conditions_xml);
-        $this->setXmlnsOnElement($conditions_xml, $this->getUsedNamespaces());
+        $filter->addFilter($writer);
 
-        return $dom->saveXML();
+        return $writer->outputMemory();
     }
 
 
@@ -228,7 +217,7 @@ class Generator
     }
 
     /**
-     * Generates the base \DOMDocument
+     * Generates an empty XML writer
      *
      * @return \Sabre\XML\Writer     Base document to start working on
      **/
@@ -247,61 +236,62 @@ class Generator
     /**
      * Generates a <d:ace> element, which is used on ACLs
      *
-     * @param \DOMDocument $document
+     * @param \Sabre\Xml\Writer $writer
      * @param string $type one of 'owner', 'default' or 'grant'
+     * @param string $principal Specific principal URL that this ACE affects
      * @param array $privileges
+     * @return void
      */
     protected function generateAceTag(
-        \DOMDocument $document,
+        Writer $writer,
         $type,
         $principal = null,
         array $privileges
     )
     {
-        $ace = $document->createElement('d:ace');
+        $writer->startElement('{DAV:}ace');
 
         // Affected principals
-        $principal = $this->generatePrincipalForAce($document, $type, $principal);
-        $ace->appendChild($principal);
+        $this->generatePrincipalForAce($writer, $type, $principal);
 
         // List of privileges
-        $grant = $this->propertyList('d:grant', $privileges, $document, false);
+        $this->addPropertiesList($writer, 'd:grant', $privileges, false);
 
-        $ace->appendChild($grant);
-
-        return $ace;
+        $writer->endElement();
     }
 
     /**
      * Returns a <principal> tag for an <ace>
      *
-     * @param \DOMDocument $document
+     * @param \Sabre\Xml\Writer $writer
      * @param string $type one of 'owner', 'default' or 'grant'
      * @param string $principal Used when $type is 'grant'
-     * @return \DOMElement
      */
-    protected function generatePrincipalForAce(\DOMDocument $document, $type, $principal = '')
+    protected function generatePrincipalForAce(Writer $writer, $type, $principal = '')
     {
-        $principal_elem = $document->createElement('d:principal');
+        $writer->startElement('{DAV:}principal');
 
         if ($type === 'owner') {
-            $property = $document->createElement('d:property');
-            $owner = $document->createElement('d:owner');
-            $property->appendChild($owner);
-            $principal_elem->appendChild($property);
+            $writer->write([
+                '{DAV:}property' => [
+                    '{DAV:}owner' => [],
+                ]
+            ]);
         }
 
         if ($type === 'default') {
-            $authenticated = $document->createElement('d:authenticated');
-            $principal_elem->appendChild($authenticated);
+            $writer->write([
+                '{DAV:}authenticated' => [],
+            ]);
         }
 
         if ($type === 'grant') {
-            $href = $document->createElement('d:href', $principal);
-            $principal_elem->appendChild($href);
+            $writer->write([
+                '{DAV:}href' => $principal,
+            ]);
         }
 
-        return $principal_elem;
+        $writer->endElement();
     }
 
 }

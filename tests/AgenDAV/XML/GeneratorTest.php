@@ -246,7 +246,7 @@ EOXML;
 
         $expected_acl = <<<ACLBODY
 <?xml version="1.0" encoding="UTF-8"?>
-<d:acl xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:x0="urn:he:man">
+<d:acl xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/">
   <d:ace>
     <d:principal>
       <d:property>
@@ -255,7 +255,7 @@ EOXML;
     </d:principal>
     <d:grant>
       <d:all/>
-      <x0:master-of-universe/>
+      <x1:master-of-universe xmlns:x1="urn:he:man"/>
     </d:grant>
   </d:ace>
   <d:ace>
@@ -295,7 +295,8 @@ ACLBODY;
       $generator = $this->createXMLGenerator();
       $body = $generator->principalPropertySearchBody($filter);
       $expected_body = <<<BODY
-<d:principal-property-search xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" test="anyof">
+<?xml version="1.0" encoding="UTF-8"?>
+<d:principal-property-search xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" test="anyof">
   <d:property-search>
     <d:prop>
       <C:calendar-user-address-set/>
