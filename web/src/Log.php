@@ -47,15 +47,34 @@ class Log
             \Monolog\Logger::DEBUG
         );
         $formatter = new \Monolog\Formatter\LineFormatter(
-            "[%datetime%] %context% %extra% %message%\n",
+            "[%datetime%] %extra% %message%\n",
             null,                                           // Default date format
             true,                                           // Allow line breaks
             true                                            // Ignore empty contexts/extra
         );
         $handler->setFormatter($formatter);
         $logger->pushHandler($handler);
+        $logger->pushProcessor(self::hideAuthorizationHeader());
         $logger->pushProcessor(new \Monolog\Processor\WebProcessor);
 
         return $logger;
+    }
+
+    /**
+     * Monolog processor to hide Authorization: headers
+     *
+     * @return function
+     */
+    public static function hideAuthorizationHeader()
+    {
+        return function($record) {
+            $record['message'] = preg_replace(
+                '/^Authorization: .+$/m',
+                'Authorization: ***HIDDEN***',
+                $record['message']
+            );
+
+            return $record;
+        };
     }
 }

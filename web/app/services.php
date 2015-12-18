@@ -111,7 +111,7 @@ $app['guzzle'] = $app->share(function($app) {
     if (isset($app['http.debug']) && $app['http.debug'] === true) {
         $log_subscriber = new GuzzleHttp\Subscriber\Log\LogSubscriber(
             $app['monolog.http'],
-            \GuzzleHttp\Subscriber\Log\Formatter::DEBUG
+            "\n{request}\n~~~~~~~~~~~~\n\n{response}\n~~~~~~~~~~~~\nError?: {error}\n"
         );
         $client->getEmitter()->attach($log_subscriber);
     }
