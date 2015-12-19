@@ -200,20 +200,13 @@ class Generator
      */
     protected function addPropertiesList(Writer $writer, $tag_name, array $properties, $use_values = true)
     {
-        $writer->startElement($tag_name);
-        if (!$use_values) {
-            $properties = array_flip($properties);
+        if ($use_values) {
+            $elements = new \Sabre\Xml\Element\KeyValue($properties);
+        } else {
+            $elements = new \Sabre\Xml\Element\Elements($properties);
         }
 
-        foreach ($properties as $property => $value) {
-            if ($use_values) {
-                $writer->writeElement($property, $value);
-            } else {
-                $writer->writeElement($property);
-            }
-        }
-
-        $writer->endElement();
+        $writer->write([ $tag_name => $elements ]);
     }
 
     /**
