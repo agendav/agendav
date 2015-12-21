@@ -201,7 +201,7 @@ class Generator
     protected function addPropertiesList(Writer $writer, $tag_name, array $properties, $use_values = true)
     {
         if ($use_values) {
-            $elements = new \Sabre\Xml\Element\KeyValue($properties);
+            $elements = $properties;
         } else {
             $elements = new \Sabre\Xml\Element\Elements($properties);
         }
