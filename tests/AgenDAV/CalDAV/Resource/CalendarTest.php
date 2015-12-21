@@ -71,15 +71,6 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($calendar->isWritable());
     }
 
-    public function testShared()
-    {
-        $calendar = new Calendar('/url');
-        $this->assertFalse($calendar->isSharedWithMe(), 'Calendars should not be marked as shared by default');
-
-        $calendar->setShared(true);
-        $this->assertTrue($calendar->isSharedWithMe());
-    }
-
     public function testOwner()
     {
         $calendar = new Calendar('/url');

@@ -67,13 +67,6 @@ class Calendar
     protected $shares;
 
     /**
-     * Whether this calendar is shared or not by another user
-     *
-     * @var boolean
-     */
-    protected $shared;
-
-    /**
      * Property names including namespaces
      */
     const DISPLAYNAME = '{DAV:}displayname';
@@ -114,7 +107,6 @@ class Calendar
             $this->setProperty($property, $value);
         }
 
-        $this->shared = false;
         $this->writable = true;
         $this->shares = [];
     }
@@ -187,26 +179,6 @@ class Calendar
             $this->properties,
             array_flip(self::$readonly_properties)
         );
-    }
-
-    /*
-     * Getter for shared
-     *
-     * @return boolean
-     */
-    public function isSharedWithMe()
-    {
-        return $this->shared;
-    }
-
-    /*
-     * Setter for shared
-     *
-     * @param boolean $shared
-     */
-    public function setShared($shared)
-    {
-        $this->shared = $shared;
     }
 
     /*

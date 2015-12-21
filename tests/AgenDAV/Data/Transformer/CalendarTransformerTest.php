@@ -60,7 +60,6 @@ class CalendarTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $owner = new Principal('/owner/principal');
         $this->calendar->setOwner($owner);
-        $this->calendar->setShared(true);
 
         $fractal = new Manager();
         $fractal->setSerializer(new JsonApiSerializer());

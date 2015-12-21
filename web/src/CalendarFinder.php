@@ -118,7 +118,6 @@ class CalendarFinder
                 continue;
             }
 
-            $calendar->setShared(true);
             $calendar->setWritable($share->isWritable());
             $owner_principal_url = $share->getOwner();
             $calendar->setOwner(new Principal($owner_principal_url));

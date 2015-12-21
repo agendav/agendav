@@ -48,6 +48,8 @@ class CalendarTransformer extends Fractal\TransformerAbstract
      */
     public function transform(Calendar $calendar)
     {
+        $owner_url = $calendar->getOwner()->getUrl();
+
         $result = [
             'url' => $calendar->getUrl(),
             'calendar' => $calendar->getUrl(),
@@ -55,8 +57,8 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'color' => $calendar->getProperty(Calendar::COLOR),
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
-            'is_shared' => $calendar->isSharedWithMe(),
-            'is_owned' => ($calendar->getOwner()->getUrl() === $this->principal_url),
+            'is_owned' => ($owner_url === $this->principal_url),
+            'is_shared' => ($owner_url !== $this->principal_url),
             'writable' => $calendar->isWritable(),
             'shares' => [],
         ];
