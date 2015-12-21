@@ -89,7 +89,7 @@ class CalendarFinder
             $this->addShares($calendars);
 
             // Also load calendars shared with current user
-            $shared_calendars = $this->getSharedCalendars($this->current_principal);
+            $shared_calendars = $this->getCalendarSharedWith($this->current_principal);
 
             $calendars = array_merge($calendars, $shared_calendars);
         }
@@ -103,7 +103,7 @@ class CalendarFinder
      * @param \AgenDAV\Data\Principal $principal Principal
      * @return \AgenDAV\CalDAV\Resource\Calendar[]
      */
-    protected function getSharedCalendars(Principal $principal)
+    protected function getCalendarSharedWith(Principal $principal)
     {
         $result = [];
 
