@@ -19,6 +19,13 @@ AgenDAV |release| requires the following software to be installed:
 * PHP cURL extension
 * A database backend
 
+.. warning::
+   Some PHP releases have issues with digest authentication under Windows. If your CalDAV server
+   uses digest authentication and you are hosting AgenDAV on a Windows server, make sure your PHP
+   version is not affected.
+
+   See `PHP bug #70101 <https://bugs.php.net/bug.php?id=70101>`_ for more details.
+
 Most popular database backends are supported, such as MySQL, PostgreSQL or SQLite.
 
 Look for supported databases on this `Doctrine DBAL driver list <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#driver>`_.
