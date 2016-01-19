@@ -75,22 +75,11 @@ class Calendar
     const ORDER = '{http://apple.com/ns/ical/}calendar-order';
 
     /**
-     * Read only properties that CalDAV servers will refuse to store
+     * Properties that AgenDAV can write
      */
-    public static $readonly_properties = [
-        '{DAV:}:owner',
-        '{DAV:}:principal-collection-set',
-        '{http://calendarserver.org/ns/}getctag',
-        '{urn:ietf:params:xml:ns:caldav}:calendar-user-address-set',
-        '{urn:ietf:params:xml:ns:caldav}:schedule-inbox-URL',
-        '{urn:ietf:params:xml:ns:caldav}:schedule-outbox-URL',
-        '{DAV:}:getetag',
-        '{DAV:}:getcontentlength',
-        '{DAV:}:getcontenttype',
-        '{DAV:}:getlastmodified',
-        '{DAV:}:creationdate',
-        '{DAV:}:lockdiscovery',
-        '{DAV:}:supportedlock',
+    public static $writable_properties = [
+        '{DAV:}displayname',
+        '{http://apple.com/ns/ical/}calendar-color',
     ];
 
     /**
@@ -168,16 +157,15 @@ class Calendar
     }
 
     /**
-     * Returns all writable properties set for this calendar. Properties from
-     * self::$readonly_properties are not returned by this method
+     * Returns all writable properties from this calendar
      *
      * @return array Properties (associative array), in Clark notation
      */
     public function getWritableProperties()
     {
-        return array_diff_key(
+        return array_intersect_key(
             $this->properties,
-            array_flip(self::$readonly_properties)
+            array_flip(self::$writable_properties)
         );
     }
 
