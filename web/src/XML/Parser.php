@@ -105,7 +105,7 @@ class Parser
         try {
             $dom = XMLUtil::loadDOMDocument($body);
         } catch (BadRequest $e) {
-            throw new \InvalidArgumentException('The body passed to parsePropertiesFromMultistatus could not be parsed');
+            throw new \InvalidArgumentException('The body passed to parsePropertiesFromMultistatus could not be parsed: ' . $e->getMessage());
         }
 
         $responses = ResponseList::unserialize(
