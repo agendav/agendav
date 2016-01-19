@@ -13,6 +13,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded to Bootstrap 3.3.6
 - Upgraded to latest moment-timezone (0.4.1)
 - Improved internal XML generation component
+- Error messages from the server are now handled by default, even if an error handler was not
+  provided
 
 ### Added
 

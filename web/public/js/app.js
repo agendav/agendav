@@ -390,7 +390,9 @@ var send_form = function send_form(params) {
   var data = params.data;
   var successFunc = params.success || function() {};
   var exceptionFunc = params.exception || function() {};
-  var errorFunc = params.error || function() {};
+  var errorFunc = params.error || function(message) {
+      show_error(t('messages', 'error_oops'), message);
+  };
 
   if (formObj instanceof jQuery) {
     url = $(formObj).attr('action');
