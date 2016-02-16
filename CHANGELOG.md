@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Build issue with new Bootstrap releases (#152)
 - Authorization headers are now hidden on HTTP debug logs
+- Some properties were being overwritten by mistake (#159)
 
 ## [2.0.0-beta1] - 2015-08-26
 

@@ -43,16 +43,14 @@ class VObjectHelper
      */
     public static function setBaseVEvent(VCalendar $vcalendar, VEvent $base)
     {
-        $position = 0;
-
         foreach ($vcalendar->select('VEVENT') as $i => $vevent) {
             if (!isset($vevent->{'RECURRENCE-ID'})) {
-                $position = $i;
+                $vcalendar->remove($vevent);
                 break;
             }
         }
 
-        $vcalendar->children[$position] = $base;
+        $vcalendar->add($base);
     }
 
     /**

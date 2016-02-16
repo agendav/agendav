@@ -51,14 +51,42 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->addBaseEventAndExceptions();
 
-        $vevent = $this->vcalendar->create('VEVENT');
-        $vevent->SUMMARY = 'New base vevent';
-        $vevent->DTSTART = '20150220T184900Z';
-        $vevent->RRULE = 'FREQ=DAILY';
+        // Keep a copy of original base VEVENT
+        $original_vevent = $this->vcalendar->VEVENT[0];
 
+        $new_vevent = $this->vcalendar->create('VEVENT');
+        $new_vevent->SUMMARY = 'New base vevent';
+        $new_vevent->DTSTART = '20150220T184900Z';
+        $new_vevent->RRULE = 'FREQ=DAILY';
+
+        VObjectHelper::setBaseVEvent($this->vcalendar, $new_vevent);
+
+        // The old VEVENT should not be there anymore
+        foreach ($this->vcalendar->select('VEVENT') as $vevent) {
+            $this->assertNotEquals($original_vevent, $vevent, 'Old base VEVENT was not removed');
+        }
+    }
+
+    /**
+     * Issue #159: setBaseVEvent replaces iCalendar properties (e.g. VERSION)
+     * with the base VEVENT, and it should not
+     */
+    public function testSetBaseVEventIssue159()
+    {
+        $vevent = $this->vcalendar->create('VEVENT');
+        $vevent->SUMMARY = 'Test event';
+        $vevent->DTSTART = new \DateTime();
+
+        $old_count = count($this->vcalendar->children());
         VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
 
-        $this->assertEquals($this->vcalendar->VEVENT, $vevent);
+        // Make sure the number of elements gets increased by one (i.e. no
+        // old properties disappeared)
+        $this->assertEquals(
+            $old_count + 1,
+            count($this->vcalendar->children()),
+            'One or more properties/component vanished'
+        );
     }
 
 
