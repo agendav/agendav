@@ -3,7 +3,7 @@
 #
 #	Copyright notice
 #
-#	(c) 2014 Jérôme Schneider <mail@jeromeschneider.fr>
+#	(c) 2016 Jérôme Schneider <mail@jeromeschneider.fr>
 #	All rights reserved
 #
 #	http://baikal-server.com
@@ -35,9 +35,6 @@
 #	1. All URIs *must* be suffixed by "/" if pointing to a folder
 #
 
-# PATH to SabreDAV
-define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
-
 # If you change this value, you'll have to re-generate passwords for all your users
 define("BAIKAL_AUTH_REALM", 'BaikalDAV');
 
@@ -46,6 +43,9 @@ define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
 define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
+
+# Should begin and end with a "/"
+define("BAIKAL_DAV_BASEURI", PROJECT_BASEURI . "dav.php/");
 
 # Define path to Baïkal Database SQLite file
 define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
@@ -66,7 +66,7 @@ define("PROJECT_DB_MYSQL_USERNAME", '');
 define("PROJECT_DB_MYSQL_PASSWORD", '');
 
 # A random 32 bytes key that will be used to encrypt data
-define("BAIKAL_ENCRYPTION_KEY", '5023c8ea66c380b1b66e44f24825b9ce');
+define("BAIKAL_ENCRYPTION_KEY", '391340b9974d07594dd9d95198adfdb8');
 
 # The currently configured Baïkal version
-define("BAIKAL_CONFIGURED_VERSION", '0.2.7');
+define("BAIKAL_CONFIGURED_VERSION", '0.3.5');

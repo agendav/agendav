@@ -2,14 +2,10 @@
 # Baikal installation
 
   - name: download baikal
-    get_url: url=http://baikal-server.com/get/baikal-regular-0.2.7.tgz dest=/tmp/baikal.tgz
+    get_url: url=https://github.com/fruux/Baikal/archive/0.3.5.tar.gz dest=/tmp/baikal.tgz
 
   - name: untar baikal
     command: /bin/tar xzf /tmp/baikal.tgz -C /var/www
-    sudo: yes
-
-  - name: rename baikal
-    command: /bin/mv /var/www/baikal-regular /var/www/baikal
     sudo: yes
 
   - name: baikal permissions

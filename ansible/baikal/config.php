@@ -3,7 +3,7 @@
 #
 #	Copyright notice
 #
-#	(c) 2014 Jérôme Schneider <mail@jeromeschneider.fr>
+#	(c) 2016 Jérôme Schneider <mail@jeromeschneider.fr>
 #	All rights reserved
 #
 #	http://baikal-server.com
@@ -32,10 +32,10 @@
 #
 
 # Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-define("PROJECT_TIMEZONE", 'Europe/Paris');
+define("PROJECT_TIMEZONE", 'Europe/Madrid');
 
 # CardDAV ON/OFF switch; default TRUE
-define("BAIKAL_CARD_ENABLED", TRUE);
+define("BAIKAL_CARD_ENABLED", FALSE);
 
 # CalDAV ON/OFF switch; default TRUE
 define("BAIKAL_CAL_ENABLED", TRUE);
