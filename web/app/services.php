@@ -81,7 +81,7 @@ $app['encryptor'] = $app->share(function($app) {
 // Sessions handler
 $app['session.storage.handler'] = $app->share(function($app) {
     $encryptor = $app['encryptor'];
-    $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
+    $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\LegacyPdoSessionHandler(
         $app['db']->getWrappedConnection(),
         [
             'db_table' => 'sessions',

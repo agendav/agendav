@@ -210,17 +210,17 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $expected = <<<EOXML
 <?xml version="1.0" encoding="UTF-8"?>
 <C:calendar-query xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:A="http://apple.com/ns/ical/">
-    <d:prop>
-        <d:getetag/>
-        <C:calendar-data/>
-    </d:prop>
-    <C:filter>
-        <C:comp-filter name="VCALENDAR">
-            <C:comp-filter name="VEVENT">
-                <x1:test xmlns:x1="http://fake.com/"/>
-            </C:comp-filter>
-        </C:comp-filter>
-    </C:filter>
+  <d:prop>
+    <d:getetag/>
+    <C:calendar-data/>
+  </d:prop>
+  <C:filter>
+    <C:comp-filter name="VCALENDAR">
+      <C:comp-filter name="VEVENT">
+        <x1:test xmlns:x1="http://fake.com/"/>
+      </C:comp-filter>
+    </C:comp-filter>
+  </C:filter>
 </C:calendar-query>
 EOXML;
 
