@@ -46,6 +46,7 @@
             - python-mysqldb
             - sqlite
             - nodejs
+            - unzip
         notify:
             - restart mysql
 
