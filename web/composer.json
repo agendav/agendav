@@ -36,7 +36,7 @@
         "league/fractal": "~0.12.0",
         "guzzlehttp/guzzle": "~5.0.3",
         "guzzlehttp/log-subscriber": "~1.0",
-        "ramsey/uuid": "~2.8.0",
+        "ramsey/uuid": "~3.2.0",
         "phpseclib/phpseclib": "~2.0.0"
     },
 
