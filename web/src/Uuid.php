@@ -20,13 +20,13 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Rhumsaa\Uuid\Uuid as RhumsaaUuid;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class Uuid
 {
     public static function generate()
     {
-        $uuid = RhumsaaUuid::uuid4();
+        $uuid = RamseyUuid::uuid4();
         return $uuid->toString();
     }
 }
