@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6a04d27c9ee37a41df354f94bf84e572",
-    "content-hash": "7291b4438435b354ace4c8a4beda2320",
+    "hash": "a395050916825e6814a771a3763ab17c",
+    "content-hash": "c9bf5f4cab392f96607e86de1118a8e1",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1405,16 +1405,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "2.1.9",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-dav.git",
-                "reference": "ee2d454758543cc77f2fa94ca849cc1e1f3fcb7c"
+                "reference": "69c5080ae689247d06a3c30fba05aba22bb81cf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/ee2d454758543cc77f2fa94ca849cc1e1f3fcb7c",
-                "reference": "ee2d454758543cc77f2fa94ca849cc1e1f3fcb7c",
+                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/69c5080ae689247d06a3c30fba05aba22bb81cf5",
+                "reference": "69c5080ae689247d06a3c30fba05aba22bb81cf5",
                 "shasum": ""
             },
             "require": {
@@ -1428,14 +1428,16 @@
                 "ext-simplexml": "*",
                 "ext-spl": "*",
                 "php": ">=5.4.1",
-                "sabre/event": "^2.0.0",
-                "sabre/http": "^3.0.0",
-                "sabre/vobject": "^3.3.4"
+                "sabre/event": "~2.0",
+                "sabre/http": "~4.0",
+                "sabre/uri": "~1.0",
+                "sabre/vobject": "^3.3.4",
+                "sabre/xml": "~1.0"
             },
             "require-dev": {
                 "evert/phpdoc-md": "~0.1.0",
                 "phpunit/phpunit": "~4.2",
-                "squizlabs/php_codesniffer": "~1.5.3"
+                "sabre/cs": "~0.0.2"
             },
             "suggest": {
                 "ext-curl": "*",
@@ -1446,6 +1448,11 @@
                 "bin/naturalselection"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.0-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Sabre\\DAV\\": "lib/DAV/",
@@ -1475,7 +1482,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2016-01-25 20:59:35"
+            "time": "2016-03-12 22:36:59"
         },
         {
             "name": "sabre/event",
@@ -1530,32 +1537,36 @@
         },
         {
             "name": "sabre/http",
-            "version": "3.0.5",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-http.git",
-                "reference": "6b06c03376219b3d608e1f878514ec105ed1b577"
+                "reference": "2e93bc8321524c67be4ca5b8415daebd4c8bf85e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/6b06c03376219b3d608e1f878514ec105ed1b577",
-                "reference": "6b06c03376219b3d608e1f878514ec105ed1b577",
+                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/2e93bc8321524c67be4ca5b8415daebd4c8bf85e",
+                "reference": "2e93bc8321524c67be4ca5b8415daebd4c8bf85e",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=5.4",
-                "sabre/event": ">=1.0.0,<3.0.0"
+                "sabre/event": ">=1.0.0,<4.0.0",
+                "sabre/uri": "~1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.3",
-                "squizlabs/php_codesniffer": "~1.5.3"
+                "sabre/cs": "~0.0.1"
             },
             "suggest": {
                 "ext-curl": " to make http requests with the Client class"
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "lib/functions.php"
+                ],
                 "psr-4": {
                     "Sabre\\HTTP\\": "lib/"
                 }
@@ -1577,7 +1588,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2015-05-11 15:25:57"
+            "time": "2016-01-06 23:00:08"
         },
         {
             "name": "sabre/uri",

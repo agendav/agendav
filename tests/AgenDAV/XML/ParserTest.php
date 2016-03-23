@@ -32,26 +32,50 @@ EOBODY;
         $parser = new Parser();
 
         $result = $parser->extractPropertiesFromMultistatus($body);
-        $this->assertEquals(
+        $this->assertArrayHasKey(
+            '/cal.php/',
             $result,
-            [
-                '/cal.php/' => [
-                    '{DAV:}current-user-principal' => '/cal.php/principals/demo/',
-                ],
-            ]
+            'parseMultistatus returned structure with unexpected root node'
+        );
+
+        $this->assertArrayHasKey(
+            '{DAV:}current-user-principal',
+            $result['/cal.php/'],
+            'parseMultistatus did not detect {DAV:}current-user-principal'
+        );
+
+        $this->assertEquals(
+            '/cal.php/principals/demo/',
+            $result['/cal.php/']['{DAV:}current-user-principal']->getHref(),
+            'parseMultistatus could not read the href value from current-user-principal'
         );
 
         // Test with $single_element enabled
         $result = $parser->extractPropertiesFromMultistatus($body, true);
-        $this->assertEquals(
+
+        $this->assertArrayHasKey(
+            '{DAV:}current-user-principal',
             $result,
-            [ '{DAV:}current-user-principal' => '/cal.php/principals/demo/' ],
+            'parseMultistatus for single element mode did not return {DAV:}current-user-principal'
+        );
+
+        $user_principal = $result['{DAV:}current-user-principal'];
+
+        $this->assertInstanceOf(
+            '\\Sabre\\DAV\\Xml\\Property\\Href',
+            $user_principal,
+            'current-user-principal is not resolved to the Href class!'
+        );
+
+        $this->assertEquals(
+            '/cal.php/principals/demo/',
+            $user_principal->getHref(),
             'Single element on extractPropertiesFromMultistatus is not working'
         );
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Sabre\Xml\LibXMLException
      */
 
     public function testInvalidXML()
@@ -90,7 +114,7 @@ EOBODY;
         $result = $parser->extractPropertiesFromMultistatus($body);
 
         $this->assertInstanceOf(
-            '\Sabre\DAV\Property\ResourceType',
+            '\Sabre\DAV\Xml\Property\ResourceType',
             $result['/cal.php/calendars/demo/default/']['{DAV:}resourcetype']
         );
     }

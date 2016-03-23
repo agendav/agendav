@@ -2,9 +2,8 @@
 
 namespace AgenDAV\XML;
 
-use Sabre\DAV\XMLUtil;
-use Sabre\DAV\Property\ResponseList;
 use Sabre\DAV\Exception\BadRequest;
+use Sabre\DAV\Xml\Service as XMLService;
 
 /*
  * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
@@ -32,16 +31,17 @@ use Sabre\DAV\Exception\BadRequest;
 class Parser
 {
 
-    /** @type Array Key-value array containing Property classes from SabreDAV */
-    protected $property_map;
+    /** @var Sabre\DAV\Xml\Service */
+    protected $xml;
 
     /**
      * @param Array $property_map
      */
-    public function __construct(Array $property_map = [])
+    public function __construct()
     {
-        $this->property_map = $property_map;;
-        $this->property_map['{DAV:}resourcetype'] = 'Sabre\\DAV\\Property\\ResourceType';
+        $this->xml = new XMLService();
+        $this->xml->elementMap['{DAV:}current-user-principal'] = 'Sabre\\DAV\\Xml\\Property\\Href';
+        $this->xml->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-home-set'] = 'Sabre\\DAV\\Xml\\Property\\Href';
     }
 
     /**
@@ -102,20 +102,11 @@ class Parser
      */
     protected function parseMultistatus($body)
     {
-        try {
-            $dom = XMLUtil::loadDOMDocument($body);
-        } catch (BadRequest $e) {
-            throw new \InvalidArgumentException('The body passed to parsePropertiesFromMultistatus could not be parsed: ' . $e->getMessage());
-        }
-
-        $responses = ResponseList::unserialize(
-            $dom->documentElement,
-            $this->property_map
-        );
+        $multistatus = $this->xml->expect('{DAV:}multistatus', $body);
 
         $result = [];
 
-        foreach($responses->getResponses() as $response) {
+        foreach ($multistatus->getResponses() as $response) {
             $result[$response->getHref()] = $response->getResponseProperties();
         }
 

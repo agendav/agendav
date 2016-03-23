@@ -91,12 +91,13 @@ class Client
 
         $response = $this->propfind('', 0, $body);
 
-        if (count($response) === 0) {
+        if (count($response) === 0 || !isset($response['{DAV:}current-user-principal'])) {
             throw new \AgenDAV\Exception\NotFound('No current-user-principal was returned by the server!');
         }
 
         reset($response);
-        $result = current($response);
+        $response = current($response);
+        $result = $response->getHref();
 
         return $result;
     }
@@ -119,12 +120,13 @@ class Client
         $url = $principal->getUrl();
         $response = $this->propfind($url, 0, $body);
 
-        if (count($response) === 0) {
+        if (count($response) === 0 || !isset($response['{urn:ietf:params:xml:ns:caldav}calendar-home-set'])) {
             throw new \AgenDAV\Exception\NotFound('No calendar-home-set was returned by the server!');
         }
 
         reset($response);
-        $result = current($response);
+        $response = current($response);
+        $result = $response->getHref();
 
         return $result;
     }
