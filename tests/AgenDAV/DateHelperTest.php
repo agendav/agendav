@@ -66,14 +66,6 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $dt);
     }
 
-    public function testDurationToDateInterval()
-    {
-        $d1 = DateHelper::durationToDateInterval('P1D');
-        $this->assertEquals($d1->invert, 0);
-        $d2 = DateHelper::durationToDateInterval('-P1D');
-        $this->assertEquals($d2->invert, 1);
-    }
-
     public function testAddMinutesTo()
     {
         $datetime_1 = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
