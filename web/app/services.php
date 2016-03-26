@@ -105,15 +105,11 @@ $app['monolog.http'] = $app->share(function($app) {
 // Guzzle HTTP client
 $app['guzzle'] = $app->share(function($app) {
     $client = new \GuzzleHttp\Client([
-        'base_url' => $app['caldav.baseurl'],
+        'base_uri' => $app['caldav.baseurl'],
     ]);
 
     if (isset($app['http.debug']) && $app['http.debug'] === true) {
-        $log_subscriber = new GuzzleHttp\Subscriber\Log\LogSubscriber(
-            $app['monolog.http'],
-            "\n{request}\n~~~~~~~~~~~~\n\n{response}\n~~~~~~~~~~~~\nError?: {error}\n"
-        );
-        $client->getEmitter()->attach($log_subscriber);
+        // TODO adapt for Guzzle 6
     }
 
     return $client;

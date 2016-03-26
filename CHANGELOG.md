@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded to sabre/dav 3.0.8
 - Upgraded to latest UUID generation library
 - Upgraded to monolog 1.18.1
+- Upgraded to Guzzle 6
 - Improved internal XML generation component
 - Error messages from the server are now handled by default, even if an error handler was not
   provided

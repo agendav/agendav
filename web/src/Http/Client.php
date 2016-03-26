@@ -2,7 +2,7 @@
 namespace AgenDAV\Http;
 
 /*
- * Copyright 2011-2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2011-2016 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -23,6 +23,9 @@ namespace AgenDAV\Http;
 use AgenDAV\Version;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * HTTP Client for AgenDAV, based on Guzzle
@@ -128,7 +131,7 @@ class Client
     /**
      * Gets last request sent using this client
      *
-     * @return GuzzleHttp\Message\RequestInterface     Last request sent
+     * @return Psr\Http\Message\RequestInterface     Last request sent
      **/
     public function getLastRequest()
     {
@@ -144,25 +147,22 @@ class Client
      * @return \Guzzle\Http\Message\Response
      * @throws \AgenDAV\Exception\* (see available exceptions)
      **/
-    public function request($method, $url, $body = '')
+    public function request($method, $url, $body = null)
     {
         $this->setHeader('User-Agent', 'AgenDAV/' . Version::V);
-        $this->options['headers'] = $this->request_headers;
-        $this->request = $this->guzzle->createRequest(
+
+        $this->request = new Request(
             $method,
             $url,
-            $this->options
+            $this->request_headers,
+            $body
         );
-
-        if ($body !== '') {
-            $this->request->setBody(Stream::factory($body));
-        }
 
         // Clean current headers
         $this->request_headers = array();
 
         try {
-            $this->response = $this->guzzle->send($this->request);
+            $this->response = $this->guzzle->send($this->request, $this->options);
         } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
             switch ($exception->getCode()) {
                 case 401:
