@@ -3,8 +3,10 @@ namespace AgenDAV\Http;
 
 use AgenDAV\Http\Client;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,19 +46,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testHeadersSent()
     {
-        $guzzle = new GuzzleClient();
-        $response_mock = new Mock(array(
-            'HTTP/1.1 202 OKr\nContent-Length: 0\r\n\r\n'
-        ));
-        $guzzle->getEmitter()->attach($response_mock);
+        $client = $this->createClient([
+            new Response(202)
+        ]);
 
-        $client = new Client($guzzle);
         $client->setHeader('Test-Header', 'Test value');
         $client->request('GET', '/');
 
-        $headers = $client->getLastRequest()->getHeaders();
-        $this->assertArrayHasKey('Test-Header', $headers);
-        $this->assertEquals($headers['Test-Header'], array('Test value'));
+        $last_request = $client->getLastRequest();
+        $this->assertEquals(
+            'Test value',
+            $last_request->getHeaderLine('Test-Header')
+        );
     }
 
     /**
@@ -65,13 +66,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function test401()
     {
-        $guzzle = new GuzzleClient();
-        $response_mock = new Mock(array(
-            'HTTP/1.1 401 Not authenticated\r\nContent-Length: 0\r\n\r\n'
-        ));
-        $guzzle->getEmitter()->attach($response_mock);
+        $client = $this->createClient([
+            new Response(401)
+        ]);
 
-        $client = new Client($guzzle);
         $client->request('GET', '/');
     }
 
@@ -81,13 +79,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function test403()
     {
-        $guzzle = new GuzzleClient();
-        $response_mock = new Mock(array(
-            'HTTP/1.1 403 Permission denied\r\nContent-Length: 0\r\n\r\n'
-        ));
-        $guzzle->getEmitter()->attach($response_mock);
+        $client = $this->createClient([
+            new Response(403)
+        ]);
 
-        $client = new Client($guzzle);
         $client->request('GET', '/');
     }
     /**
@@ -96,13 +91,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function test404()
     {
-        $guzzle = new GuzzleClient();
-        $response_mock = new Mock(array(
-            'HTTP/1.1 404 Not found\r\nContent-Length: 0\r\n\r\n'
-        ));
-        $guzzle->getEmitter()->attach($response_mock);
+        $client = $this->createClient([
+            new Response(404)
+        ]);
 
-        $client = new Client($guzzle);
         $client->request('GET', '/');
     }
     /**
@@ -111,26 +103,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function test412()
     {
-        $guzzle = new GuzzleClient();
-        $response_mock = new Mock(array(
-            'HTTP/1.1 412 Precondition failed\r\nContent-Length: 0\r\n\r\n'
-        ));
-        $guzzle->getEmitter()->attach($response_mock);
+        $client = $this->createClient([
+            new Response(412)
+        ]);
 
-        $client = new Client($guzzle);
         $client->request('GET', '/');
     }
 
     public function testCleanHeadersAfterARequest()
     {
-        $guzzle = new GuzzleClient();
-        $response_mock = new Mock(array(
-            'HTTP/1.1 200 OK\nContent-Length: 0\r\n\r\n',
-            'HTTP/1.1 200 OK\nContent-Length: 0\r\n\r\n',
-        ));
-        $guzzle->getEmitter()->attach($response_mock);
+        $client = $this->createClient([
+            new Response(200),
+            new Response(200),
+        ]);
 
-        $client = new Client($guzzle);
         $client->setHeader('Test-Header', 'Value');
         $client->request('GET', '/');
 
@@ -142,5 +128,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             isset($headers['Test-Header']),
             'Headers are not cleaned after a request'
         );
+    }
+
+    protected function createClient(array $mocked_responses)
+    {
+        $mock = new MockHandler($mocked_responses);
+        $handler_stack = HandlerStack::create($mock);
+
+        $guzzle = new GuzzleClient(['handler' => $handler_stack]);
+
+        return new Client($guzzle);
     }
 }

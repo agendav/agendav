@@ -3,11 +3,13 @@
 namespace AgenDAV\CalDAV;
 
 use Mockery as m;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Subscriber\Mock as GuzzleMock;
-use GuzzleHttp\Subscriber\History as GuzzleHistory;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\RequestInterface;
 use AgenDAV\Http\Client as HttpClient;
 use AgenDAV\XML\Toolkit;
 use AgenDAV\XML\Generator;
@@ -32,11 +34,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /** @var \AgenDAV\XML\Generator */
     protected $xml_generator;
 
+    /** @var array */
+    protected $history;
+
     /** @var \AgenDAV\XML\Parser */
     protected $xml_parser;
-
-    /** @var GuzzleHttp\Subscriber\History */
-    protected $history;
 
     /** @var AgenDAV\Event\Parser */
     protected $event_parser;
@@ -46,8 +48,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $this->xml_generator = new Generator();
         $this->xml_parser = new Parser();
-        $this->history = new GuzzleHistory();
         $this->event_parser = m::mock('\AgenDAV\Event\Parser');
+        $this->history = [];
     }
 
     public function testCantAuthenticate()
@@ -696,10 +698,11 @@ BODY;
      */
     protected function createCalDAVClient(Response $response)
     {
-        $guzzle = new GuzzleClient();
-        $mock = new GuzzleMock([ $response ]);
-        $guzzle->getEmitter()->attach($mock);
-        $guzzle->getEmitter()->attach($this->history);
+        $mock = new MockHandler([ $response ]);
+        $handler_stack = HandlerStack::create($mock);
+        $handler_stack->push(Middleware::history($this->history));
+
+        $guzzle = new GuzzleClient(['handler' => $handler_stack]);
         $this->http_client = new HttpClient($guzzle);
 
         $xml_toolkit = new Toolkit($this->xml_parser, $this->xml_generator);
@@ -712,153 +715,167 @@ BODY;
      */
     protected function validateCheckAuthenticatedRequests()
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('OPTIONS', $request->getMethod());
+        $this->getAndValidateLastRequest('OPTIONS');
     }
 
     /**
      * Validates a PROPFIND request
      */
-    protected function validatePropfindRequest(
-        array $properties,
-        $url = null,
-        $depth = null
-    )
+    protected function validatePropfindRequest(array $properties, $url = null, $depth = null)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('PROPFIND', $request->getMethod());
+        $request = $this->getAndValidateLastRequest('PROPFIND');
 
         if ($url !== null) {
-            $this->assertEquals($url, $request->getUrl());
+            $this->assertEquals($url, $request->getUri());
         }
 
         if ($depth !== null) {
-            $this->assertEquals($depth, $request->getHeader('Depth'));
+          $this->validateDepth($request, $depth);
         }
 
-        $this->assertEquals(
-            'application/xml; charset=utf-8',
-            $request->getHeader('Content-Type')
-        );
-        $this->assertEquals(
-            $this->xml_generator->propfindBody($properties),
-            (string)$request->getBody()
-        );
+        $this->validateContentType($request);
+        $this->validateBody($request, $this->xml_generator->propfindBody($properties));
     }
 
     protected function validateMkCalendarRequest(Calendar $calendar)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('MKCALENDAR', $request->getMethod());
-        $this->assertEquals($calendar->getUrl(), $request->getUrl());
-        $this->assertEquals(
-            'application/xml; charset=utf-8',
-            $request->getHeader('Content-Type')
-        );
-        $this->assertEquals(
-            $this->xml_generator->mkCalendarBody($calendar->getWritableProperties()),
-            (string)$request->getBody()
+        $request = $this->getAndValidateLastRequest('MKCALENDAR');
+
+        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->validateContentType($request);
+        $this->validateBody(
+          $request,
+          $this->xml_generator->mkCalendarBody($calendar->getWritableProperties())
         );
     }
 
     protected function validateProppatchRequest(Calendar $calendar)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('PROPPATCH', $request->getMethod());
-        $this->assertEquals($calendar->getUrl(), $request->getUrl());
-        $this->assertEquals(
-            'application/xml; charset=utf-8',
-            $request->getHeader('Content-Type')
-        );
-        $this->assertEquals(
-            $this->xml_generator->proppatchBody($calendar->getWritableProperties()),
-            (string)$request->getBody()
+        $request = $this->getAndValidateLastRequest('PROPPATCH');
+
+        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->validateContentType($request);
+        $this->validateBody(
+            $request,
+            $this->xml_generator->proppatchBody($calendar->getWritableProperties())
         );
     }
 
     protected function validateDeleteCalendarRequest(Calendar $calendar)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('DELETE', $request->getMethod());
-        $this->assertEquals($calendar->getUrl(), $request->getUrl());
+        $request = $this->getAndValidateLastRequest('DELETE');
+        $this->assertEquals($calendar->getUrl(), $request->getUri());
     }
 
     protected function validateFetchObjectsRequest(Calendar $calendar, ComponentFilter $filter)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('REPORT', $request->getMethod());
-        $this->assertEquals($calendar->getUrl(), $request->getUrl());
-        $this->assertEquals(
-            'application/xml; charset=utf-8',
-            $request->getHeader('Content-Type')
-        );
-        $this->assertEquals(1, $request->getHeader('Depth'));
+        $request = $this->getAndValidateLastRequest('REPORT');
 
-        $this->assertEquals(
-            $this->xml_generator->calendarQueryBody($filter),
-            (string)$request->getBody()
-        );
+        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->validateContentType($request);
+        $this->validateDepth($request, 1);
+
+        $this->validateBody($request, $this->xml_generator->calendarQueryBody($filter));
     }
 
     protected function validatePutObjectRequest(CalendarObject $object)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals($object->getUrl(), $request->getUrl());
-        $this->assertEquals(
-            'text/calendar',
-            $request->getHeader('Content-Type')
-        );
+        $request = $this->getAndValidateLastRequest('PUT');
+
+        $this->assertEquals($object->getUrl(), $request->getUri());
+        $this->validateContentType($request, 'text/calendar');
 
         if ($object->getEtag() === null) {
             $this->assertEquals(
                 '*',
-                $request->getHeader('If-None-Match')
+                $request->getHeaderLine('If-None-Match')
             );
         } else {
             $this->assertEquals(
                 $object->getEtag(),
-                $request->getHeader('If-Match')
+                $request->getHeaderLine('If-Match')
             );
         }
 
-        $this->assertEquals(
-            $object->getRenderedEvent(),
-            (string)$request->getBody()
-        );
+        $this->validateBody($request, $object->getRenderedEvent());
     }
 
     protected function validateDeleteObjectRequest(CalendarObject $object)
     {
-        $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('DELETE', $request->getMethod());
+        $request = $this->getAndValidateLastRequest('DELETE');
+
         if ($object->getEtag() !== null) {
             $this->assertEquals(
                 $object->getEtag(),
-                $request->getHeader('If-Match')
+                $request->getHeaderLine('If-Match')
             );
         }
-        $this->assertEquals($object->getUrl(), $request->getUrl());
+        $this->assertEquals($object->getUrl(), $request->getUri());
     }
 
     protected function validateACLRequest(Calendar $calendar, ACL $acl)
     {
+        $request = $this->getAndValidateLastRequest('ACL');
+
+        $this->assertEquals($calendar->getUrl(), $request->getUri());
+
+        $this->validateBody($request, $this->xml_generator->aclBody($acl));
+    }
+
+    /**
+     * Returns last request
+     *
+     * @string $method HTTP method
+     * @return \Psr\Http\Message\RequestInterface
+     */
+    private function getAndValidateLastRequest($method)
+    {
         $this->assertCount(1, $this->history);
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('ACL', $request->getMethod());
-        $this->assertEquals($calendar->getUrl(), $request->getUrl());
+        $transaction = end($this->history);
+        $request = $transaction['request'];
 
         $this->assertEquals(
-            $this->xml_generator->aclBody($acl),
-            (string)$request->getBody()
+          $method,
+          $request->getMethod(),
+          'Expected request method to be ' . $method . ', found ' . $request->getMethod()
+        );
+
+        return $request;
+    }
+
+    /**
+     * Validates Content-Type header
+     */
+    private function validateContentType(RequestInterface $request, $match = 'application/xml; charset=utf-8')
+    {
+        $this->assertEquals(
+            $match,
+            $request->getHeaderLine('Content-Type'),
+            'Expected Content-Type to be '.$match.', was ' . $request->getHeaderLine('Content-Type')
+        );
+    }
+
+    /**
+     * Validates Depth header
+     */
+    private function validateDepth(RequestInterface $request, $depth)
+    {
+          $this->assertEquals(
+            $depth,
+            (int)$request->getHeaderLine('Depth'),
+            'Expected Depth to be ' . $depth . ', is ' . $request->getHeaderLine('Depth')
+          );
+    }
+
+    /**
+     * Validates request body
+     */
+    private function validateBody(RequestInterface $request, $body)
+    {
+        $this->assertEquals(
+            $body,
+            (string)$request->getBody(),
+            'Body for request does not match'
         );
     }
 

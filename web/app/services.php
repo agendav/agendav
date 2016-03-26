@@ -104,17 +104,26 @@ $app['monolog.http'] = $app->share(function($app) {
 
 // Guzzle HTTP client
 $app['guzzle'] = $app->share(function($app) {
+    // Generate Guzzle default stack handler
+    $stack = GuzzleHttp\HandlerStack::create();
+
+    // Add the log middleware to the stack
+    if (isset($app['http.debug']) && $app['http.debug'] === true) {
+        $stack->push(
+            GuzzleHttp\Middleware::log(
+                $app['monolog.http'],
+                new GuzzleHttp\MessageFormatter(
+                    "\n{request}\n~~~~~~~~~~~~\n\n{response}\n~~~~~~~~~~~~\nError?: {error}\n"
+                )
+            )
+        );
+    }
+
     $client = new \GuzzleHttp\Client([
-        'base_url' => $app['caldav.baseurl'],
+        'base_uri' => $app['caldav.baseurl'],
+        'handler' => $stack,
     ]);
 
-    if (isset($app['http.debug']) && $app['http.debug'] === true) {
-        $log_subscriber = new GuzzleHttp\Subscriber\Log\LogSubscriber(
-            $app['monolog.http'],
-            "\n{request}\n~~~~~~~~~~~~\n\n{response}\n~~~~~~~~~~~~\nError?: {error}\n"
-        );
-        $client->getEmitter()->attach($log_subscriber);
-    }
 
     return $client;
 });

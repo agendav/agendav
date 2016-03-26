@@ -72,7 +72,7 @@ class Client
         }
 
         return ($response->hasHeader('DAV') &&
-            preg_match('/calendar-access/', $response->getHeader('DAV')));
+            preg_match('/calendar-access/', $response->getHeaderLine('DAV')));
     }
 
     /**
