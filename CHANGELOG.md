@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- AgenDAV now requires PHP 5.5.0 or greater
 - HTML code is now allowed on the footer message
 - Replaced abandoned Keboola/php-encryption with phpseclib/phpseclib
 - Moved agendavcli out of the bin/ subdirectory to the root directory
