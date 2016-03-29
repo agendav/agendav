@@ -61,6 +61,15 @@ command that improves loading  performance::
 
  $ php composer.phar dump-autoload --optimize
 
+Configuring PHP
+---------------
+
+Make sure that you have the following PHP settings set:
+
+* ``magic_quotes_runtime``: *disabled*
+* ``date.timezone``: choose a valid time zone from `this list <http://php.net/manual/en/timezones.php>`_.
+
+
 Database and tables
 -------------------
 
@@ -145,12 +154,6 @@ Example using a dedicated virtualhost::
     RewriteRule ^ index.php [QSA,L]
   </Location>
  </VirtualHost>
-
-.. note::
-   Make sure that you have the following PHP settings *disabled*:
-
-   * ``magic_quotes_gpc``
-   * ``magic_quotes_runtime``
 
 
 You can enable development mode by following the instructions at
