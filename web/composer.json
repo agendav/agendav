@@ -13,6 +13,7 @@
         "doctrine/migrations": "~1.0.0",
         "doctrine/orm": "~2.4",
         "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/streams": "~3.0",
         "league/fractal": "~0.12.0",
         "monolog/monolog": "~1.18.0",
         "phpseclib/phpseclib": "~2.0.0",
