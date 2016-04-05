@@ -24,3 +24,4 @@ agendav-built*
 /node_modules/
 /bower_components/
 /dist/
+.idea
