@@ -7,7 +7,7 @@ php:
 
 cache:
   directories:
-  - web/vendor
+  - $HOME/.composer/cache
 
 script:
   - phpunit --configuration tests/phpunit.xml
