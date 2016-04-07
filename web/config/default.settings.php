@@ -27,9 +27,6 @@ $app['db.options'] = [
         'driver' => 'pdo_mysql'
 ];
 
-// Encryption key
-$app['encryption.key'] = 'abcdefg';
-
 // CSRF secret
 $app['csrf.secret'] = 'lkjihgfedcba';
 

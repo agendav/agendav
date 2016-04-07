@@ -21,10 +21,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Improved internal XML generation component
 - Error messages from the server are now handled by default, even if an error handler was not
   provided
+- Switched to the new PdoSessionHandler from Symfony
 
 ### Added
 
 - New translations: Slovak and Portuguese (Portugal)
+
+### Removed
+
+- Sessions are not encrypted anymore by AgenDAV
 
 ### Fixed
 

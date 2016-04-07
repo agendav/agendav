@@ -67,33 +67,14 @@ $app['principals.repository'] = $app->share(function($app) {
 });
 
 
-// Encryption
-$app['encryptor'] = $app->share(function($app) {
-    $encryption_key = $app['encryption.key'];
-    $source_encryptor = new phpseclib\Crypt\AES();
-
-    return new \AgenDAV\Encryption\PhpSecLibAesEncryptor(
-        $source_encryptor,
-        $encryption_key
-    );
-});
-
 // Sessions handler
 $app['session.storage.handler'] = $app->share(function($app) {
-    $encryptor = $app['encryptor'];
-    $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\LegacyPdoSessionHandler(
+    $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
         $app['db']->getWrappedConnection(),
-        [
-            'db_table' => 'sessions',
-            'db_id_col'     => 'sess_id',
-            'db_data_col'   => 'sess_data',
-            'db_time_col'   => 'sess_time',
-        ],
         $app['session.storage.options']
     );
 
-    // We use a proxy that encrypts all session data
-    return new \AgenDAV\Session\SessionEncrypter($pdo_handler, $encryptor);
+    return $pdo_handler;
 });
 
 
