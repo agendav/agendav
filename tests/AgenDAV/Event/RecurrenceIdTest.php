@@ -11,7 +11,7 @@ class RecurrenceIdTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->datetime = new \DateTime(
+        $this->datetime = new \DateTimeImmutable(
             self::DATETIME_STRING,
             new \DateTimeZone('Europe/Madrid')
         );

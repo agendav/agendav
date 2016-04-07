@@ -14,7 +14,7 @@ AgenDAV |release| requires the following software to be installed:
 * A web server
 * PHP >= 5.5.0
 * PHP ctype extension
-* PHP XML extension
+* PHP XML extension with libxml >= 2.7.0
 * PHP mbstring extension
 * PHP mcrypt extension
 * PHP cURL extension

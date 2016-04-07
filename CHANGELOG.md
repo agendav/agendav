@@ -14,7 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded to Bootstrap 3.3.6
 - Upgraded to latest moment-timezone (0.4.1)
 - Upgraded to latest Symfony 2.8.x components
-- Upgraded to sabre/dav 3.0.8
+- Upgraded to sabre/dav 3.1.3
 - Upgraded to latest UUID generation library
 - Upgraded to monolog 1.18.1
 - Upgraded to Guzzle 6

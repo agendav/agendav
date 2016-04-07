@@ -21,7 +21,7 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
     {
         $vevent = $this->vcalendar->create('VEVENT');
         $vevent->SUMMARY = 'Test event';
-        $vevent->DTSTART = new \DateTime();
+        $vevent->DTSTART = new \DateTimeImmutable();
 
         VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
 
@@ -39,7 +39,7 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
 
         $vevent = $this->vcalendar->create('VEVENT');
         $vevent->SUMMARY = 'Test event';
-        $vevent->DTSTART = new \DateTime();
+        $vevent->DTSTART = new \DateTimeImmutable();
 
         VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
 
@@ -75,7 +75,7 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
     {
         $vevent = $this->vcalendar->create('VEVENT');
         $vevent->SUMMARY = 'Test event';
-        $vevent->DTSTART = new \DateTime();
+        $vevent->DTSTART = new \DateTimeImmutable();
 
         $old_count = count($this->vcalendar->children());
         VObjectHelper::setBaseVEvent($this->vcalendar, $vevent);
@@ -150,10 +150,10 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
     {
         $vevent = $this->vcalendar->create('VEVENT');
         $vevent->SUMMARY = 'Test event';
-        $vevent->DTSTART = new \DateTime();
+        $vevent->DTSTART = new \DateTimeImmutable();
         $vevent->RRULE = 'FREQ=DAILY';
 
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
 
         VObjectHelper::addExdateToVEvent($vevent, $now);
 
@@ -167,12 +167,11 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
     {
         $vevent = $this->vcalendar->create('VEVENT');
         $vevent->SUMMARY = 'Test event';
-        $vevent->DTSTART = new \DateTime();
+        $vevent->DTSTART = new \DateTimeImmutable();
         $vevent->RRULE = 'FREQ=DAILY';
 
-        $now = new \DateTime();
-        $other = clone $now;
-        $other->modify('+1 day');
+        $now = new \DateTimeImmutable();
+        $other = $now->modify('+1 day');
 
         $vevent->add('EXDATE', [ $now ]);
 

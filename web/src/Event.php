@@ -63,11 +63,11 @@ interface Event
      * Gets all event instances for a range of dates. If the event is not
      * recurrent, a single instance will be returned
      *
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $end
      * @return AgenDAV\EventInstance[]
      */
-    public function expand(\DateTime $start, \DateTime $end);
+    public function expand(\DateTimeInterface $start, \DateTimeInterface $end);
 
     /**
      * Checks if this event has any recurrence exceptions or removed instances

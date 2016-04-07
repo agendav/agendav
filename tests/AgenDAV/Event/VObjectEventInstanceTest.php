@@ -33,8 +33,8 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->vcalendar = new VCalendar;
-        $this->now = new \DateTime();
-        $this->today_utc = new \DateTime('2015-01-09 00:00:00', new \DateTimeZone('UTC'));
+        $this->now = new \DateTimeImmutable();
+        $this->today_utc = new \DateTimeImmutable('2015-01-09 00:00:00', new \DateTimeZone('UTC'));
     }
 
     public function testIsRecurrent()
@@ -64,7 +64,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStart()
     {
-        $start = new \DateTime(
+        $start = new \DateTimeImmutable(
             '2015-01-31 16:00:00',
             new \DateTimeZone('Europe/Madrid')
         );
@@ -89,7 +89,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
     public function testIsAllDay()
     {
-        $start = new \DateTime(
+        $start = new \DateTimeImmutable(
             '2015-01-31 16:00:00',
             new \DateTimeZone('Europe/Madrid')
         );
@@ -105,12 +105,11 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
     public function testEndNormal()
     {
-        $start = new \DateTime(
+        $start = new \DateTimeImmutable(
             '2015-01-31 16:00:00',
             new \DateTimeZone('Europe/Madrid')
         );
-        $end = clone $start;
-        $end->modify('+5 hours');
+        $end = $start->modify('+5 hours');
 
         $vevent = $this->vcalendar->add('VEVENT', [
             'DTSTART' => $start,
@@ -126,7 +125,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
     public function testEndWithDuration()
     {
-        $start = new \DateTime(
+        $start = new \DateTimeImmutable(
             '2015-01-31 16:00:00',
             new \DateTimeZone('Europe/Madrid')
         );
@@ -137,8 +136,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $instance = new VObjectEventInstance($vevent);
-        $end = clone $start;
-        $end->modify('+5 hours');
+        $end = $start->modify('+5 hours');
         $this->assertEquals(
             $end,
             $instance->getEnd()
@@ -147,7 +145,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
 
     public function testEndNotDefined()
     {
-        $start = new \DateTime(
+        $start = new \DateTimeImmutable(
             '2015-01-31 16:00:00',
             new \DateTimeZone('Europe/Madrid')
         );
@@ -163,7 +161,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         );
 
         // Same with an all day event
-        $start = new \DateTime(
+        $start = new \DateTimeImmutable(
             '2015-01-31',
             new \DateTimeZone('UTC')
         );
@@ -173,8 +171,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $vevent_allday->DTSTART['VALUE'] = 'DATE';
 
         $instance = new VObjectEventInstance($vevent_allday);
-        $end = clone $start;
-        $end->modify('+1 day');
+        $end = $start->modify('+1 day');
         $this->assertEquals(
             $end,
             $instance->getEnd()
@@ -400,15 +397,13 @@ ICS;
         $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
 
         $instance = new VObjectEventInstance($vevent);
-        $start = new \DateTime('2015-03-13 21:00:00', new \DateTimeZone('Europe/Madrid'));
-        $end = new \DateTime('2015-03-13 21:45:00', new \DateTimeZone('Europe/Madrid'));
+        $start = new \DateTimeImmutable('2015-03-13 21:00:00', new \DateTimeZone('Europe/Madrid'));
+        $end = new \DateTimeImmutable('2015-03-13 21:45:00', new \DateTimeZone('Europe/Madrid'));
         $instance->setStart($start);
         $instance->setEnd($end);
 
-        $new_start = clone $start;
-        $new_start->modify('+1 month');
-        $new_end = clone $end;
-        $new_end->modify('+1 month');
+        $new_start = $start->modify('+1 month');
+        $new_end = $end->modify('+1 month');
 
         $recurrence_id = RecurrenceId::buildFromString('20150413T200000Z');
         $instance->updateForRecurrenceId($recurrence_id);
@@ -421,16 +416,14 @@ ICS;
         $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
 
         $instance = new VObjectEventInstance($vevent);
-        $start = new \DateTime('2015-03-17', new \DateTimeZone('UTC'));
-        $end = new \DateTime('2015-03-18', new \DateTimeZone('UTC'));
+        $start = new \DateTimeImmutable('2015-03-17', new \DateTimeZone('UTC'));
+        $end = new \DateTimeImmutable('2015-03-18', new \DateTimeZone('UTC'));
         $instance->setStart($start, true);
         $instance->setEnd($end, true);
 
         // Generate new dates for this recurrence
-        $new_start = clone $start;
-        $new_start->modify('+1 month');
-        $new_end = clone $end;
-        $new_end->modify('+1 month');
+        $new_start = $start->modify('+1 month');
+        $new_end = $end->modify('+1 month');
 
         $recurrence_id = RecurrenceId::buildFromString('20150417');
         $instance->updateForRecurrenceId($recurrence_id);
@@ -443,7 +436,7 @@ ICS;
         $vevent = $this->vcalendar->add('VEVENT');
         $instance = new VObjectEventInstance($vevent);
 
-        $instance->setStart(new \DateTime());
+        $instance->setStart(new \DateTimeImmutable());
         $instance->setRepeatRule('FREQ=DAILY');
         $recurrence_id = RecurrenceId::buildFromString('20150318T001122Z');
         $instance->setRecurrenceId($recurrence_id);
@@ -457,7 +450,7 @@ ICS;
         $vevent = $this->vcalendar->add('VEVENT');
         $instance = new VObjectEventInstance($vevent);
 
-        $instance->setStart(new \DateTime(), true);
+        $instance->setStart(new \DateTimeImmutable(), true);
         $instance->setRepeatRule('FREQ=DAILY');
         $recurrence_id = RecurrenceId::buildFromString('20150318');
         $instance->setRecurrenceId($recurrence_id);
@@ -475,7 +468,7 @@ ICS;
         $vevent = $this->vcalendar->add('VEVENT');
         $instance = new VObjectEventInstance($vevent);
 
-        $instance->setStart(new \DateTime(), true);
+        $instance->setStart(new \DateTimeImmutable(), true);
         $instance->setRepeatRule('FREQ=DAILY');
         $instance->setRecurrenceId(RecurrenceId::buildFromString('20150701T001122Z'));
         $instance->setRecurrenceId(null);
@@ -540,5 +533,6 @@ ICS;
             'ACTION' => 'DISPLAY',
         ]);
         $valarm->TRIGGER = '20150120T123000';
+        $valarm->TRIGGER['VALUE'] = 'DATE-TIME';
     }
 }

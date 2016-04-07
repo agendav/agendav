@@ -29,18 +29,17 @@ use Sabre\VObject\DateTimeParser;
  */
 class RecurrenceId
 {
-    /** @var \DateTime */
+    /** @var \DateTimeImmutable */
     protected $datetime;
 
     /**
      * Builds a new RECURRENCE-ID. Stores the \DateTime object using UTC
      *
-     * @param \DateTime $datetime
+     * @param \DateTimeImmutable $datetime
      */
-    public function __construct(\DateTime $datetime)
+    public function __construct(\DateTimeImmutable $datetime)
     {
-        $this->datetime = clone $datetime;
-        $this->datetime->setTimeZone(new \DateTimeZone('UTC'));
+        $this->datetime = $datetime->setTimeZone(new \DateTimeZone('UTC'));
     }
 
     /**
@@ -57,9 +56,9 @@ class RecurrenceId
     }
 
     /*
-     * Getter for datetime
+     * Returns this RECURRENCE-ID datetime
      *
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
     public function getDateTime()
     {
@@ -88,10 +87,10 @@ class RecurrenceId
      * Time zones are ignored, as the equals (==) operator for
      * \DateTime objects behaves like that.
      *
-     * @param \DateTime $datetime
+     * @param \DateTimeInterface $datetime
      * @return bool true if they match, false otherwise
      */
-    public function matchesDateTime(\DateTime $datetime)
+    public function matchesDateTime(\DateTimeInterface $datetime)
     {
         return $this->datetime == $datetime;
     }

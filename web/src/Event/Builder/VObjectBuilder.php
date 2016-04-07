@@ -162,7 +162,7 @@ class VObjectBuilder implements Builder
             $start = DateHelper::frontEndToDateTime($attributes['start'], $utc);
             $end = DateHelper::frontEndToDateTime($attributes['end'], $utc);
 
-            $end->modify('+1 day');
+            $end = $end->modify('+1 day');
         } else {
             $start = DateHelper::frontEndToDateTime($attributes['start'], $this->timezone);
             $end = DateHelper::frontEndToDateTime($attributes['end'], $this->timezone);

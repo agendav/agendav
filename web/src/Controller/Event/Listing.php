@@ -111,13 +111,12 @@ class Listing extends JSONController
     /**
      * Generates a string suitable for a timefilter for querying the calendar
      *
-     * @param \DateTime $datetime
+     * @param \DateTimeImmutable $datetime
      * @return string
      */
-    protected function getTimeFilterDatestring(\DateTime $datetime)
+    protected function getTimeFilterDatestring(\DateTimeImmutable $datetime)
     {
-        $datetime_utc = clone $datetime;
-        $datetime_utc->setTimeZone($this->utc);
+        $datetime_utc = $datetime->setTimeZone($this->utc);
 
         return $datetime_utc->format('Ymd\THis\Z');
     }
@@ -125,8 +124,8 @@ class Listing extends JSONController
     protected function buildFullCalendarEvents(
         Calendar $calendar,
         array $objects,
-        \DateTime $start,
-        \DateTime $end
+        \DateTimeImmutable $start,
+        \DateTimeImmutable $end
     )
     {
         $result = [];

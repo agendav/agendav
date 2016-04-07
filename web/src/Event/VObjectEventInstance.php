@@ -125,7 +125,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Get the start of this event
      *
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
     public function getStart()
     {
@@ -135,7 +135,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Get the effective end of this event
      *
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
     public function getEnd()
     {
@@ -146,14 +146,14 @@ class VObjectEventInstance implements EventInstance
         $end = $this->getStart();
 
         if (isset($this->vevent->DURATION)) {
-            $end->add(DateTimeParser::parseDuration($this->vevent->DURATION));
+            $end = $end->add(DateTimeParser::parseDuration($this->vevent->DURATION));
             return $end;
         }
 
         // DTEND is non-inclusive for VALUE=DATE
         // (RFC 5545 - 3.6.1)
         if ($this->isAllDay()) {
-            $end->modify('+1 day');
+            $end = $end->modify('+1 day');
             return $end;
         }
 
@@ -309,10 +309,10 @@ class VObjectEventInstance implements EventInstance
     /**
      * Set the start moment for this instance
      *
-     * @param \DateTime $start
+     * @param \DateTimeImmutable $start
      * @param bool $all_day
      */
-    public function setStart(\DateTime $start, $all_day = false)
+    public function setStart(\DateTimeImmutable $start, $all_day = false)
     {
         $this->vevent->DTSTART = $start;
         if ($all_day === true) {
@@ -323,10 +323,10 @@ class VObjectEventInstance implements EventInstance
     /**
      * Set the end moment for this instance
      *
-     * @param \DateTime $end
+     * @param \DateTimeImmutable $end
      * @param bool $all_day
      */
-    public function setEnd(\DateTime $end, $all_day = false)
+    public function setEnd(\DateTimeImmutable $end, $all_day = false)
     {
         // We prefer DTEND to DURATION
         if (isset($this->vevent->DURATION)) {
@@ -421,7 +421,7 @@ class VObjectEventInstance implements EventInstance
      */
     public function touch()
     {
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         if (!isset($this->vevent->CREATED) || !isset($this->vevent->DTSTAMP)) {
             $this->vevent->CREATED = $now;
             $this->vevent->DTSTAMP = $now;
@@ -491,8 +491,8 @@ class VObjectEventInstance implements EventInstance
 
         $diff = $new_start->diff($recurrence_moment);
 
-        $new_start->add($diff);
-        $new_end->add($diff);
+        $new_start = $new_start->add($diff);
+        $new_end = $new_end->add($diff);
 
         $this->setStart($new_start);
         $this->setEnd($new_end);
