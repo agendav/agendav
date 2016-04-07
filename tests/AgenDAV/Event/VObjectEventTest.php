@@ -8,6 +8,8 @@ use Mockery as m;
 
 class VObjectEventTest extends \PHPUnit_Framework_TestCase
 {
+    use \Sabre\VObject\PHPUnitAssertions;
+
     protected $vcalendar;
 
     protected $vevent;
@@ -60,16 +62,14 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
     public function testExpand()
     {
-        $now = new \DateTime;
+        $now = new \DateTimeImmutable;
         $this->vevent->DTSTART = $now;
         $this->vevent->RRULE = self::$rrule;
         $event = new VObjectEvent($this->vcalendar);
 
         // Use a period that contains all instances
-        $start = clone $now;
-        $start->modify('-1 day');
-        $end = clone $now;
-        $end->modify('+10 days');
+        $start = $now->modify('-1 day');
+        $end = $now->modify('+10 days');
 
         $instances = $event->expand($start, $end);
 
@@ -102,18 +102,15 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
     public function testExpandWithExceptions()
     {
-        $datetime = new \DateTime('2015-07-02 13:29:00', new \DateTimeZone('Europe/Madrid'));
+        $datetime = new \DateTimeImmutable('2015-07-02 13:29:00', new \DateTimeZone('Europe/Madrid'));
         $exception = $this->generateRecurrentEventWithTimeZone($datetime);
-        $datetime_exception = clone $datetime;
-        $datetime_exception->modify('+1 day');
+        $datetime_exception = $datetime->modify('+1 day');
 
         $event = new VObjectEvent($this->vcalendar);
 
         // Use a period that contains all instances
-        $start = clone $datetime;
-        $start->modify('-1 day');
-        $end = clone $datetime;
-        $end->modify('+10 days');
+        $start = $datetime->modify('-1 day');
+        $end = $datetime->modify('+10 days');
 
         $instances = $event->expand($start, $end);
 
@@ -253,7 +250,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event->setUid('9876');
 
         $instance = $event->createEventInstance();
-        $instance->setStart(new \DateTime());
+        $instance->setStart(new \DateTimeImmutable());
         $recurrence_id = RecurrenceId::buildFromString('20150110T100500Z');
         $instance->setRecurrenceId($recurrence_id);
 
@@ -270,8 +267,8 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event = new VObjectEvent($this->vcalendar);
 
         $instance = $event->createEventInstance();
-        $now = new \DateTime();
-        $instance->setStart(new \DateTime(), true);
+        $now = new \DateTimeImmutable();
+        $instance->setStart($now, true);
         $instance->setSummary('New test summary');
         $instance->setRecurrenceId(RecurrenceId::buildFromString('20150110T100500Z'));
 
@@ -311,7 +308,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $new_exception = $event->getEventInstance($recurrence_id);
         $new_exception->setSummary('I am a new exception');
-        $new_exception->setStart(new \DateTime);
+        $new_exception->setStart(new \DateTimeImmutable);
 
         $event->storeInstance($new_exception);
 
@@ -386,7 +383,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event = new VObjectEvent($this->vcalendar);
         $instance = $event->getEventInstance();
 
-        $instance->setStart(new \DateTime());
+        $instance->setStart(new \DateTimeImmutable());
         $instance->setRepeatRule('FREQ=DAILY');
         $event->storeInstance($instance);
 
@@ -463,7 +460,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $instance = $event->getEventInstance();
         $vevent = $instance->getInternalVEvent();
-        $this->assertEquals($this->vevent, $vevent);
+        $this->assertVObjectEqualsVObject($this->vevent, $vevent);
     }
 
     public function testGetEventInstanceBaseOnRecurrentEvent()
@@ -474,7 +471,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $instance = $event->getEventInstance();
         $vevent = $instance->getInternalVEvent();
-        $this->assertEquals($this->vevent->serialize(), $vevent->serialize());
+        $this->assertVObjectEqualsVObject($this->vevent, $vevent);
     }
 
 
@@ -496,7 +493,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         $instance = $event->getEventInstance($recurrence_id);
         $vevent = $instance->getInternalVEvent();
-        $this->assertEquals($exception->serialize(), $vevent->serialize());
+        $this->assertVObjectEqualsVObject($exception, $vevent);
 
         // Check that DTSTART is not modified, as the exception
         // already existed
@@ -509,10 +506,9 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEventInstanceForExistingExceptionWithTimeZoneOnRecurrentEvent()
     {
-        $datetime = new \DateTime('2015-07-01 13:29:00', new \DateTimeZone('Europe/Madrid'));
+        $datetime = new \DateTimeImmutable('2015-07-01 13:29:00', new \DateTimeZone('Europe/Madrid'));
         $exception = $this->generateRecurrentEventWithTimeZone($datetime);
-        $datetime_exception = clone $datetime;
-        $datetime_exception->modify('+1 day');
+        $datetime_exception = $datetime->modify('+1 day');
 
         $event = new VObjectEvent($this->vcalendar);
 
@@ -520,13 +516,13 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $recurrence_id = new RecurrenceId($datetime_exception);
         $instance = $event->getEventInstance($recurrence_id);
         $vevent = $instance->getInternalVEvent();
-        $this->assertEquals($exception->serialize(), $vevent->serialize());
+        $this->assertVObjectEqualsVObject($exception, $vevent);
 
         // Using a DATE-TIME string
         $recurrence_id = RecurrenceId::buildFromString('20150702T112900Z');
         $instance = $event->getEventInstance($recurrence_id);
         $vevent = $instance->getInternalVEvent();
-        $this->assertEquals($exception->serialize(), $vevent->serialize());
+        $this->assertVObjectEqualsVObject($exception, $vevent);
     }
 
     public function testGetEventInstanceForNonExistingExceptionOnRecurrentEvent()
@@ -546,9 +542,9 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         // recurrence instance
         $base_instance = $event->getEventInstance();
         $start = $base_instance->getStart();
-        $start->modify('+7 days'); // Match the RECURRENCE-ID date
+        $start = $start->modify('+7 days'); // Match the RECURRENCE-ID date
         $end = $base_instance->getEnd();
-        $end->modify('+7 days'); // Match the RECURRENCE-ID date
+        $end = $end->modify('+7 days'); // Match the RECURRENCE-ID date
         $this->assertEquals($start, $instance->getStart(), 'Start date is not updated');
         $this->assertEquals($end, $instance->getEnd(), 'End date is not updated');
 
@@ -606,7 +602,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
         // +0200
         $recurrence_id = new RecurrenceId(
-            new \DateTime('2015-07-13 03:23:45', new \DateTimeZone('Europe/Madrid'))
+            new \DateTimeImmutable('2015-07-13 03:23:45', new \DateTimeZone('Europe/Madrid'))
         );
 
         $this->assertTrue(
@@ -634,16 +630,13 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         return $vevent_exception;
     }
 
-    protected function generateRecurrentEventWithTimeZone(\DateTime $original_start)
+    protected function generateRecurrentEventWithTimeZone(\DateTimeImmutable $original_start)
     {
         $this->vevent->RRULE = 'FREQ=DAILY';
         $this->vevent->DTSTART = $original_start;
 
-        $tomorrow = clone $original_start;
-        $tomorrow->modify('+1 day');
-
-        $new_tomorrow_dtstart = clone $tomorrow;
-        $new_tomorrow_dtstart->modify('+10 minutes');
+        $tomorrow = $original_start->modify('+1 day');
+        $new_tomorrow_dtstart = $tomorrow->modify('+10 minutes');
 
         // Event instance with RECURRENCE-ID, should not be returned as base
         // instance

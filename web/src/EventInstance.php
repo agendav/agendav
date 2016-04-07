@@ -73,14 +73,14 @@ interface EventInstance
     /**
      * Get the start of this event
      *
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
     public function getStart();
 
     /**
      * Get the effective end of this event
      *
-     * @return \DateTime
+     * @return \DateTimeImmutable
      */
     public function getEnd();
 
@@ -171,18 +171,18 @@ interface EventInstance
     /**
      * Set the start moment for this instance
      *
-     * @param \DateTime $start
+     * @param \DateTimeImmutable $start
      * @param bool $all_day
      */
-    public function setStart(\DateTime $start, $all_day = false);
+    public function setStart(\DateTimeImmutable $start, $all_day = false);
 
     /**
      * Set the end moment for this instance
      *
-     * @param \DateTime $end
+     * @param \DateTimeImmutable $end
      * @param bool $all_day
      */
-    public function setEnd(\DateTime $end, $all_day = false);
+    public function setEnd(\DateTimeImmutable $end, $all_day = false);
 
     /**
      * Set the repeat rule for this event

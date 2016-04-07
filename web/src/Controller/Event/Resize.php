@@ -43,7 +43,7 @@ class Resize extends Alter
     {
         $end = $instance->getEnd();
 
-        DateHelper::addMinutesTo($end, $minutes);
+        $end = DateHelper::addMinutesTo($end, $minutes);
         $instance->setEnd($end, $instance->isAllDay());
     }
 

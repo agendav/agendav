@@ -45,10 +45,10 @@ class VObjectEvent implements Event
     /** @var string */
     protected $repeat_rule;
 
-    /** @var \DateTime[] */
+    /** @var \DateTimeImmutable[] */
     protected $exceptions;
 
-    /** @var \DateTime[] */
+    /** @var \DateTimeImmutable[] */
     protected $removed_instances;
 
     /** @var string */
@@ -118,14 +118,13 @@ class VObjectEvent implements Event
      * Gets all event instances for a range of dates. If the event is not
      * recurrent, a single instance will be returned
      *
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $end
      * @return AgenDAV\EventInstance[]
      */
-    public function expand(\DateTime $start, \DateTime $end)
+    public function expand(\DateTimeInterface $start, \DateTimeInterface $end)
     {
-        $expanded_vcalendar = clone $this->vcalendar;
-        $expanded_vcalendar->expand($start, $end);
+        $expanded_vcalendar = $this->vcalendar->expand($start, $end);
 
         $base_instance = $this->getEventInstance();
 
@@ -425,6 +424,8 @@ class VObjectEvent implements Event
 
     /**
      * Gets a list of RECURRENCE-IDs defined for this event
+     *
+     * @return \DateTimeImmutable[]
      */
     protected function findRecurrenceExceptions(VCalendar $vcalendar)
     {
@@ -445,7 +446,7 @@ class VObjectEvent implements Event
      * Gets a list of Removed instances for this event
      *
      * @param Sabre\VObject\Component\VCalendar $vcalendar
-     * @return \DateTime[]
+     * @return \DateTimeImmutable[]
      */
     protected function findRemovedInstances(VCalendar $vcalendar)
     {

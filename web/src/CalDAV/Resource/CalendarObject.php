@@ -164,11 +164,11 @@ class CalendarObject
      * Gets all event instances for a range of dates. If the event is not
      * recurrent, a single instance will be returned
      *
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $end
      * @return AgenDAV\EventInstance[]
      */
-    public function getEventInstances(\DateTime $start, \DateTime $end)
+    public function getEventInstances(\DateTimeInterface $start, \DateTimeInterface $end)
     {
         $events = $this->getEvent()->expand(
             $start,

@@ -119,10 +119,10 @@ class VObjectHelper
      * Adds a new value to the EXDATE property of a VEVENT
      *
      * @param Sabre\VObject\Component\VCalendar $vevent
-     * @param \DateTime $datetime
-     * @return \DateTime[] List of new EXDATE values
+     * @param \DateTimeImmutable $datetime
+     * @return \DateTimeImmutable[] List of new EXDATE values
      */
-    public static function addExdateToVEvent(VEvent $vevent, \DateTime $datetime)
+    public static function addExdateToVEvent(VEvent $vevent, \DateTimeImmutable $datetime)
     {
         $exdates = [];
 

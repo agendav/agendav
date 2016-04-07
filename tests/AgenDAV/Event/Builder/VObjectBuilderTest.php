@@ -50,7 +50,7 @@ class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
     {
         $event = $this->builder->createEvent('ABCDEFG');
         $instance = $event->createEventInstance();
-        $instance->setStart(new \DateTime('2015-08-25 18:10:00', $this->timezone));
+        $instance->setStart(new \DateTimeImmutable('2015-08-25 18:10:00', $this->timezone));
         $instance->setSummary('Test event');
         $instance->setRepeatRule('FREQ=DAILY');
         $event->storeInstance($instance);
@@ -69,8 +69,8 @@ class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
     {
         $event = $this->builder->createEvent('ABCDEFG');
 
-        $start = new \DateTime('2015-08-25 16:34:00', $this->utc);
-        $end = new \DateTime('2015-08-25 17:34:00', $this->utc);
+        $start = new \DateTimeImmutable('2015-08-25 16:34:00', $this->utc);
+        $end = new \DateTimeImmutable('2015-08-25 17:34:00', $this->utc);
 
         $input = [
             'start' => $start->format(self::INPUT_DATETIME_FORMAT),
@@ -108,8 +108,8 @@ class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
         $event = $this->builder->createEvent('ABCDEFG');
 
         // 2015-08-25 all day event
-        $start = new \DateTime('2015-08-25 00:00:00', $this->utc);
-        $end = new \DateTime('2015-08-25 00:00:00', $this->utc);
+        $start = new \DateTimeImmutable('2015-08-25 00:00:00', $this->utc);
+        $end = new \DateTimeImmutable('2015-08-25 00:00:00', $this->utc);
 
         $input = [
             'start' => $start->format(self::INPUT_DATETIME_FORMAT),
@@ -126,8 +126,7 @@ class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
         $this->assertEquals($start, $instance->getStart());
 
         // All day events have DTEND = real end + 1 day
-        $all_day_end = clone $end;
-        $all_day_end->modify('+1 day');
+        $all_day_end = $end->modify('+1 day');
         $this->assertEquals($all_day_end, $instance->getEnd());
     }
 
@@ -135,13 +134,13 @@ class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
     {
         $event = $this->builder->createEvent('ABCDEFG');
         $instance = $event->createEventInstance();
-        $instance->setStart(new \DateTime('2015-08-25 19:10:00', $this->timezone));
+        $instance->setStart(new \DateTimeImmutable('2015-08-25 19:10:00', $this->timezone));
         $instance->setSummary('Test event');
         $instance->setRepeatRule('FREQ=DAILY');
         $event->storeInstance($instance);
 
-        $start = new \DateTime('2015-08-26 18:00:00', $this->utc);
-        $end = new \DateTime('2015-08-26 18:45:00', $this->utc);
+        $start = new \DateTimeImmutable('2015-08-26 18:00:00', $this->utc);
+        $end = new \DateTimeImmutable('2015-08-26 18:45:00', $this->utc);
         $input = [
             'start' => $start->format(self::INPUT_DATETIME_FORMAT),
             'end' => $end->format(self::INPUT_DATETIME_FORMAT),
@@ -169,8 +168,8 @@ class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
     {
         $event = $this->builder->createEvent('ABCDEFG');
 
-        $start = new \DateTime('2015-08-25 19:24:00', $this->utc);
-        $end = new \DateTime('2015-08-25 20:24:00', $this->utc);
+        $start = new \DateTimeImmutable('2015-08-25 19:24:00', $this->utc);
+        $end = new \DateTimeImmutable('2015-08-25 20:24:00', $this->utc);
 
         $input = [
             'start' => $start->format(self::INPUT_DATETIME_FORMAT),

@@ -58,28 +58,26 @@ class Drop extends Alter
         $end = $instance->getEnd();
 
         if ($movement === self::ALLDAY_TO_ALLDAY || $movement === self::TIMED_TO_TIMED) {
-            DateHelper::addMinutesTo($start, $minutes);
-            DateHelper::addMinutesTo($end, $minutes);
+            $start = DateHelper::addMinutesTo($start, $minutes);
+            $end = DateHelper::addMinutesTo($end, $minutes);
         }
 
         if ($movement === self::ALLDAY_TO_TIMED) {
             // Original event is in UTC. Switch it to user timezone
             $start = DateHelper::switchTimeZone($start, $timezone);
-            DateHelper::addMinutesTo($start, $minutes);
+            $start = DateHelper::addMinutesTo($start, $minutes);
 
             // defaultTimedEventDuration (Fullcalendar) is set to 1h
-            $end = clone $start;
-            DateHelper::addMinutesTo($end, 60);
+            $end = DateHelper::addMinutesTo($start, 60);
         }
 
         if ($movement === self::TIMED_TO_ALLDAY) {
             // Ignore original time, switch to UTC at 00:00:00
             $start = DateHelper::getStartOfDayUTC($start);
-            DateHelper::addMinutesTo($start, $minutes);
+            $start = DateHelper::addMinutesTo($start, $minutes);
 
             // defaultAllDayEventDuration (Fullcalendar) is set to 1 day
-            $end = clone $start;
-            DateHelper::addMinutesTo($end, 60*24);
+            $end = DateHelper::addMinutesTo($start, 60*24);
         }
 
         // Update start and end on instance, depending on movement

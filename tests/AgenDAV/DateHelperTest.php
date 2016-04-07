@@ -4,10 +4,7 @@ namespace AgenDAV;
 class DateHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * UTC timezone 
-     * 
-     * @var mixed
-     * @access private
+     * UTC timezone, cached
      */
     private $utc;
 
@@ -61,31 +58,28 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
         $str = '2012-10-07';
         $dt = DateHelper::fullcalendarToDateTime($str, $this->utc);
 
-        $expected = new \DateTime('2012-10-07 00:00:00', $this->utc);
+        $expected = new \DateTimeImmutable('2012-10-07 00:00:00', $this->utc);
 
         $this->assertEquals($expected, $dt);
     }
 
     public function testAddMinutesTo()
     {
-        $datetime_1 = new \DateTime('now', new \DateTimeZone('Europe/Madrid'));
-        $datetime_2 = clone $datetime_1;
+        $start = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Madrid'));
 
-        $expected_1 = clone $datetime_1;
-        $expected_1->modify('+10 minutes');
-        $expected_2 = clone $datetime_2;
-        $expected_2->modify('-10 minutes');
+        $expected_1 = $start->modify('+10 minutes');
+        $expected_2 = $start->modify('-10 minutes');
 
-        DateHelper::addMinutesTo($datetime_1, '10');
-        DateHelper::addMinutesTo($datetime_2, '-10');
+        $result_1 = DateHelper::addMinutesTo($start, '10');
+        $result_2 = DateHelper::addMinutesTo($start, '-10');
 
-        $this->assertEquals($expected_1, $datetime_1);
-        $this->assertEquals($expected_2, $datetime_2);
+        $this->assertEquals($expected_1, $result_1, 'Adding minutes does not work');
+        $this->assertEquals($expected_2, $result_2, 'Subtracting minutes does not work');
     }
 
     public function testSwitchTimeZone()
     {
-        $datetime = new \DateTime('2015-01-13 00:00:00', new \DateTimeZone('UTC'));
+        $datetime = new \DateTimeImmutable('2015-01-13 00:00:00', new \DateTimeZone('UTC'));
 
         $converted = DateHelper::switchTimeZone(
             $datetime,
@@ -98,7 +92,7 @@ class DateHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStartOfDayUTC()
     {
-        $datetime = new \DateTime('2015-01-27 12:03:19', new \DateTimeZone('Europe/London'));
+        $datetime = new \DateTimeImmutable('2015-01-27 12:03:19', new \DateTimeZone('Europe/London'));
 
         $start_of_day = DateHelper::getStartOfDayUTC($datetime);
 

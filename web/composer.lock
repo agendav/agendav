@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "becc8de0e5e19367391497f42707dfb2",
-    "content-hash": "fc19a5b1500633ddfc6eacb9a84c63b8",
+    "hash": "3d092d237c375619580dfc78c59568de",
+    "content-hash": "0568a632b68e043eb54ddad24a5dec3a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1496,16 +1496,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "3.0.8",
+            "version": "3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-dav.git",
-                "reference": "69c5080ae689247d06a3c30fba05aba22bb81cf5"
+                "reference": "8a266c7b5e140da79529414b9cde2a2d058b536b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/69c5080ae689247d06a3c30fba05aba22bb81cf5",
-                "reference": "69c5080ae689247d06a3c30fba05aba22bb81cf5",
+                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/8a266c7b5e140da79529414b9cde2a2d058b536b",
+                "reference": "8a266c7b5e140da79529414b9cde2a2d058b536b",
                 "shasum": ""
             },
             "require": {
@@ -1513,22 +1513,22 @@
                 "ext-date": "*",
                 "ext-dom": "*",
                 "ext-iconv": "*",
-                "ext-libxml": "*",
                 "ext-mbstring": "*",
                 "ext-pcre": "*",
                 "ext-simplexml": "*",
                 "ext-spl": "*",
-                "php": ">=5.4.1",
-                "sabre/event": "~2.0",
-                "sabre/http": "~4.0",
+                "lib-libxml": ">=2.7.0",
+                "php": ">=5.5.0",
+                "sabre/event": ">=2.0.0, <4.0.0",
+                "sabre/http": "^4.2.1",
                 "sabre/uri": "~1.0",
-                "sabre/vobject": "^3.3.4",
+                "sabre/vobject": "~4.0",
                 "sabre/xml": "~1.0"
             },
             "require-dev": {
                 "evert/phpdoc-md": "~0.1.0",
-                "phpunit/phpunit": "~4.2",
-                "sabre/cs": "~0.0.2"
+                "phpunit/phpunit": "> 4.8, <=6.0.0",
+                "sabre/cs": "~0.0.5"
             },
             "suggest": {
                 "ext-curl": "*",
@@ -1541,7 +1541,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.0-dev"
+                    "dev-master": "3.1.0-dev"
                 }
             },
             "autoload": {
@@ -1573,7 +1573,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2016-03-12 22:36:59"
+            "time": "2016-04-07 01:02:57"
         },
         {
             "name": "sabre/event",
@@ -1734,25 +1734,29 @@
         },
         {
             "name": "sabre/vobject",
-            "version": "3.5.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-vobject.git",
-                "reference": "061dd47ce40074bf63da8e3d6dbe7f18b5a4f3a4"
+                "reference": "8899c0e856b3178b17f4e9a4e85010209f32a2fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-vobject/zipball/061dd47ce40074bf63da8e3d6dbe7f18b5a4f3a4",
-                "reference": "061dd47ce40074bf63da8e3d6dbe7f18b5a4f3a4",
+                "url": "https://api.github.com/repos/fruux/sabre-vobject/zipball/8899c0e856b3178b17f4e9a4e85010209f32a2fa",
+                "reference": "8899c0e856b3178b17f4e9a4e85010209f32a2fa",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": ">=5.3.1"
+                "php": ">=5.5",
+                "sabre/xml": "~1.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "*",
-                "squizlabs/php_codesniffer": "*"
+                "sabre/cs": "~0.0.3"
+            },
+            "suggest": {
+                "hoa/bench": "If you would like to run the benchmark scripts"
             },
             "bin": [
                 "bin/vobject",
@@ -1761,7 +1765,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -1785,18 +1789,43 @@
                     "email": "dominik@fruux.com",
                     "homepage": "http://tobschall.de/",
                     "role": "Developer"
+                },
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net",
+                    "homepage": "http://mnt.io/",
+                    "role": "Developer"
                 }
             ],
             "description": "The VObject library for PHP allows you to easily parse and manipulate iCalendar and vCard objects",
             "homepage": "http://sabre.io/vobject/",
             "keywords": [
-                "VObject",
+                "availability",
+                "freebusy",
                 "iCalendar",
+                "ics",
                 "jCal",
                 "jCard",
-                "vCard"
+                "recurrence",
+                "rfc2425",
+                "rfc2426",
+                "rfc2739",
+                "rfc4770",
+                "rfc5545",
+                "rfc5546",
+                "rfc6321",
+                "rfc6350",
+                "rfc6351",
+                "rfc6474",
+                "rfc6638",
+                "rfc6715",
+                "rfc6868",
+                "vCard",
+                "vcf",
+                "xCal",
+                "xCard"
             ],
-            "time": "2016-01-11 18:13:23"
+            "time": "2016-04-07 00:48:27"
         },
         {
             "name": "sabre/xml",
