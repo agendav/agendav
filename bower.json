@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.1",
-    "fullcalendar": "~2.3.1",
+    "fullcalendar": "~2.6.0",
     "jquery-ui": "~1.11.2",
     "font-awesome": "~4.2.0",
     "jquery": "~1.11.1",
@@ -30,6 +30,6 @@
     "dustjs-helpers": "linkedin/dustjs-helpers#~1.5.0",
     "rrule": "~2.1.0",
     "es5-shim": "~4.0.5",
-    "moment-timezone": "~0.4.0"
+    "moment-timezone": "~0.5.0"
   }
 }

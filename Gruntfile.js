@@ -68,6 +68,15 @@ module.exports = function(grunt) {
             'lang': 'fullcalendar/dist/lang/*',
           }
         },
+
+        fullcalendarcss: {
+          options: {
+            destPrefix: 'web/public/css'
+          },
+          files: {
+            'fullcalendar.css': 'fullcalendar/dist/fullcalendar.css',
+          }
+        },
     },
 
     concat: {

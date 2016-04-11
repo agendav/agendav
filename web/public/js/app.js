@@ -89,7 +89,7 @@ $(document).ready(function() {
     },
 
     theme: true, // use jQuery UI themeing
-    axisFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
+    slotLabelFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     slotMinutes: 30,
     firstHour: 8,
 
