@@ -29,6 +29,7 @@ module.exports = function(grunt) {
           },
           files: {
             'jquery.js': 'jquery/dist/jquery.js',
+            'jquery-ui.js': 'jquery-ui/jquery-ui.js',
             'button.js': 'bootstrap/js/button.js',
             'tab.js': 'bootstrap/js/tab.js',
             'rrule.js': 'rrule/lib/rrule.js',

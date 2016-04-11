@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded to monolog 1.18.1
 - Upgraded to Guzzle 6
 - Upgraded to jQuery 1.12.3
+- Upgraded to jQuery UI 1.11.4
 - Upgraded to Fullcalendar 2.6.1, moment 2.12.0 and moment-timezone 0.5.3
 - Improved internal XML generation component
 - Error messages from the server are now handled by default, even if an error handler was not
