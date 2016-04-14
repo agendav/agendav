@@ -55,17 +55,34 @@ class Save extends JSONController
 
     public function execute(array $input, Application $app)
     {
-        // TODO shared calendars
         $url = $input['calendar'];
-
         $calendar = new Calendar($url, [
             Calendar::DISPLAYNAME => $input['displayname'],
             Calendar::COLOR => $input['calendar_color'],
         ]);
 
+        if ($app['calendar.sharing'] === true) {
+            if (isset($input['is_owned']) && $input['is_owned'] === 'true') {
+                // TODO Update and save Shares
+            } else {
+                // TODO update share properties
+                return null;
+            }
+        }
+
+        return $this->updateCalDAV($calendar);
+    }
+
+    /**
+     * Creates or updates a calendar on the CalDAV server
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function updateCalDAV($calendar)
+    {
         $this->client->updateCalendar($calendar);
 
         return $this->generateSuccess();
     }
-
 }
