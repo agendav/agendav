@@ -553,6 +553,15 @@ var open_event_edit_dialog = function open_event_edit_dialog(event) {
   // TODO use a better approach (lodash.clone?)
   event = jQuery.extend(true, {}, event);
 
+  // Deal with events not from Fullcalendar (i.e. directly from backend)
+  if (event.start != undefined && !(event.start instanceof moment)) {
+    event.start = moment(event.start);
+  }
+
+  if (event.end != undefined && !(event.end instanceof moment)) {
+    event.end = moment(event.end);
+  }
+
   // Event creation
   if (is_new) {
     title = t('labels', 'createevent');
@@ -1278,17 +1287,9 @@ var load_base_event_for = function load_base_event_for(instance, success, fail) 
   var parts = instance.id.split('@');
   var base_id = parts[0] + '@';
 
-  var base_event = $('#calendar_view').fullCalendar('clientEvents', base_id);
-
-  // Found!
-  if (base_event.length !== 0) {
-    success(base_event[0]);
-    return;
-  }
-
   // Query the server
   var search = $.getJSON(
-      AgenDAVConf.base_app_url + 'event',
+      AgenDAVConf.base_app_url + 'eventbase',
       {
         calendar: instance.calendar,
         timezone: AgenDAVUserPrefs.timezone,
@@ -1300,8 +1301,7 @@ var load_base_event_for = function load_base_event_for(instance, success, fail) 
   // Fullcalendar to apply some transformations to the data provided by
   // the backend
   search.done(function(event_data) {
-    $('#calendar_view').fullCalendar('renderEvent', event_data);
-    success(get_event_data(base_id));
+    success(event_data);
   });
 
   search.fail(fail);
@@ -1761,11 +1761,6 @@ var event_delete_recurrent_dialog = function event_delete_recurrent_dialog(data)
     }
   };
 
-  // First instance! Disable the 'remove this instance' button
-  if (data.first_instance !== undefined) {
-    button_only_this_repetition.disabled = true;
-  }
-
   var buttons = [ button_only_this_repetition, button_all_repetitions ];
 
   data.applyid = 'event_delete_form';
@@ -1790,9 +1785,8 @@ var modify_event_handler = function modify_event_handler(event_id) {
     return;
   }
 
-  // Is this a recurrent event? The first instance of a recurrent event has
-  // the same treatment
-  if (current_event.rrule === undefined || current_event.first_instance) {
+  // Is this a recurrent event?
+  if (current_event.rrule === undefined) {
     open_event_edit_dialog(current_event);
     return;
   }

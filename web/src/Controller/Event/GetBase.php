@@ -3,7 +3,7 @@
 namespace AgenDAV\Controller\Event;
 
 /*
- * Copyright 2015 Jorge López Pérez <jorge@adobo.org>
+ * Copyright 2015-2016 Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
@@ -32,7 +32,7 @@ use League\Fractal\Resource\Item;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class Get extends Listing
+class GetBase extends Listing
 {
     public function __construct()
     {
