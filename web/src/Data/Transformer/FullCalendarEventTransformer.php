@@ -84,9 +84,11 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
             $result['is_exception'] = $event->isException();
 
             $recurrence_id = $event->getRecurrenceId();
-            $result['recurrence_id'] = $recurrence_id->getString($event->isAllDay());
-            // Append RECURRENCE-ID to generated id
-            $result['id'] .= '@' . $result['recurrence_id'];
+            if ($recurrence_id !== null) {
+                $result['recurrence_id'] = $recurrence_id->getString($event->isAllDay());
+                // Append RECURRENCE-ID to generated id
+                $result['id'] .= '@' . $result['recurrence_id'];
+            }
         }
 
         // Reminders
