@@ -61,6 +61,7 @@ This is a beta release. Calendar sharing is not available.
 - New reminders editor
 - Support for exceptions on repetitive events
 - Users can now set their own language, date and time formats, which day the week starts on and timezone
+- New translation: Japanese
 
 ### Removed
 - Users cannot hide calendars anymore

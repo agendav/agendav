@@ -11,6 +11,7 @@ return [
     'hr_HR' => 'Hrvatski (Hrvatska)',
     'it_IT' => 'Italiano (Italia)',
     'nl_NL' => 'Nederlands (Nederland)',
+    'ja_JP' => '日本語',
     'nb' => 'Norsk bokmål',
     'pl' => 'Polski',
     'pt_BR' => 'Português (Brasil)',

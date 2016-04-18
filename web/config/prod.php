@@ -41,6 +41,7 @@ $app['fullcalendar.languages'] = [
     'fr_FR' => 'fr',
     'hr_HR' => 'hr',
     'it_IT' => 'it',
+    'ja_JP' => 'ja',
     'nl_NL' => 'nl',
     //'nb' => 'en', // Missing
     'pl' => 'pl',
