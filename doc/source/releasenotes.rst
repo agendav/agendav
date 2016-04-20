@@ -3,6 +3,18 @@
 Release notes
 =============
 
+.. _v2.0.0-beta2:
+
+2.0.0-beta2 (2016-04-20)
+------------------------
+
+* Note that AgenDAV now requires PHP 5.5.0 or greater.
+* **This beta release cannot handle shared calendars yet**, and your existing shares will
+  be removed from the database. Please, make sure you are not upgrading a production
+  environment which uses calendar sharing.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
 .. _v2.0.0-beta1:
 
 2.0.0-beta1 (2015-08-26)
