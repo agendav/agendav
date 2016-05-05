@@ -59,6 +59,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'ctag' => $calendar->getProperty(Calendar::CTAG),
             'is_owned' => ($owner_url === $this->principal_url),
             'is_shared' => ($owner_url !== $this->principal_url),
+            'owner' => $owner_url,
             'writable' => $calendar->isWritable(),
             'shares' => [],
         ];
@@ -66,6 +67,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
         $shares = $calendar->getShares();
         foreach ($shares as $share) {
             $result['shares'][] = [
+                'sid' => $share->getSid(),
                 'with' => $share->getWith(),
                 'displayname' => $share->getWith(),
                 'rw' => (int)$share->isWritable(),

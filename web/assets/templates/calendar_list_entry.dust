@@ -3,9 +3,9 @@
 
  <span class="icons">
  {?is_shared}
-  {@eq key="{writable}" value=false}
+  {^writable}
   <i title="{@i18n type="labels" name="readonly"/}" class="fa fa-lock"></i>
-  {/eq}
+  {/writable}
  {/is_shared}
  {?is_owned}
   {@gt key=shares.length value=0}
@@ -15,8 +15,8 @@
 
  </span>
  <span class="text"
- {?grantor}
- title="{@i18n type="messages" name="info_sharedby" user="{grantor}"/}"
- {/grantor}>{displayname}</span>
+ {^is_owned}
+ title="{@i18n type="messages" name="info_sharedby" user="{owner}"/}"
+ {/is_owned}>{displayname}</span>
  <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton fa fa-cogs"></i>
 </li>
