@@ -91,7 +91,7 @@ abstract class Alter extends JSONController
         $response = $this->client->uploadCalendarObject($resource);
 
         return $this->generateSuccess([
-            'etag' => $response->getHeader('ETag'),
+            'etag' => $response->getHeaderLine('ETag'),
         ]);
     }
 
