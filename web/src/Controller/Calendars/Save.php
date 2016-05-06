@@ -25,6 +25,7 @@ use AgenDAV\Uuid;
 use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
+use AgenDAV\Data\Principal;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
 
@@ -62,11 +63,24 @@ class Save extends JSONController
         ]);
 
         if ($app['calendar.sharing'] === true) {
+            $shares_repository = $app['shares_repository'];
+            $user_principal_url = $app['session']->get('principal_url');
+            $current_user_principal = new Principal($user_principal_url);
+
             if (isset($input['is_owned']) && $input['is_owned'] === 'true') {
-                // TODO Update and save Shares
+                // TODO Save shares
             } else {
-                // TODO update share properties
-                return null;
+                $share = $shares_repository->getSourceShare(
+                    $calendar,
+                    $current_user_principal
+                );
+
+                $share->setProperty(Calendar::DISPLAYNAME, $input['displayname']);
+                $share->setProperty(Calendar::COLOR, $input['calendar_color']);
+
+                $shares_repository->save($share);
+
+                return $this->generateSuccess();
             }
         }
 
