@@ -69,4 +69,13 @@ interface SharesRepository
      * @param AgenDAV\CalDAV\Resource\Calendar $calendarj
      */
     public function saveFromCalendar(Calendar $calendar);
+
+    /**
+     * Retrieves the Share object for a calendar which is shared with
+     * a given principal
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\Data\Principal $principal  User principal
+     */
+    public function getSourceShare(Calendar $calendar, Principal $principal);
 }

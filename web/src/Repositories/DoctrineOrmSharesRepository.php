@@ -123,4 +123,23 @@ class DoctrineOrmSharesRepository implements SharesRepository
         $this->em->flush();
     }
 
+    /**
+     * Retrieves the Share object for a calendar which is shared with
+     * a given principal
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\Data\Principal $principal  User principal
+     * @return \AgenDAV\Data\Share
+     */
+    public function getSourceShare(Calendar $calendar, Principal $principal)
+    {
+        $calendar_url = $calendar->getUrl();
+        $principal_url = $principal->getUrl();
+
+        $share = $this->em->getRepository('AgenDAV\Data\Share')
+            ->findOneBy(['calendar' => $calendar_url, 'with' => $principal_url]);
+
+        return $share;
+    }
+
 }
