@@ -6,36 +6,36 @@
      {@i18n type="labels" name="generaloptions" /}</a>
     </li>
  {?enable_calendar_sharing}
-  {^shared}
+  {^is_shared}
     <li role="presentation"><a role="tab" href="#tabs-share" data-toggle="tab">
      <i class="tab-icon fa fa-group"></i>
      {@i18n type="labels" name="shareoptions" /}</a>
     </li>
-  {/shared}
+  {/is_shared}
  {/enable_calendar_sharing}
  </ul>
 
 <div class="tab-content">
 <div role="tabpanel" id="tabs-general" class="tab-pane active">
 
-{?grantor}
+{^is_owned}
 <div class="share_info ui-corner-all">
-{@i18n type="messages" name="info_sharedby" user="{grantor}"/} 
+{@i18n type="messages" name="info_sharedby" user="{owner}"/} 
 {@eq key="{rw}" value="0"}
 ({@i18n type="labels" name="readonly" /})
 {/eq}
 </div>
-{/grantor}
+{/is_owned}
 
 {>calendar_basic_form_part/}
 </div>
 
 {?enable_calendar_sharing}
- {^shared}
+ {^is_shared}
   <div role="tabpanel" id="tabs-share" class="tab-pane">
    {>calendar_share_table/}
   </div>
- {/shared}
+ {/is_shared}
 {/enable_calendar_sharing}
 
 </div><!-- tab-content -->
