@@ -21,6 +21,8 @@ namespace AgenDAV\Data;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\CalDAV\Resource\Calendar;
+
 
 /**
  * Holds information about a calendar that has been shared
@@ -177,5 +179,17 @@ class Share
     public function setProperty($name, $value)
     {
         $this->options[$name] = $value;
+    }
+
+    /**
+     * Applies custom properties to passed calendar object
+     *
+     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     */
+    public function applyCustomPropertiesTo(Calendar $calendar)
+    {
+        foreach ($this->getProperties() as $property => $value) {
+            $calendar->setProperty($property, $value);
+        }
     }
 }

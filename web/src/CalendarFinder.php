@@ -112,6 +112,7 @@ class CalendarFinder
             $calendar_url = $share->getCalendar();
             try {
                 $calendar = $this->client->getCalendarByUrl($calendar_url);
+                $share->applyCustomPropertiesTo($calendar);
             } catch (\Exception $e) {
                 // ACL was probably removed or modified. Ignore this calendar
                 // TODO: some logging
