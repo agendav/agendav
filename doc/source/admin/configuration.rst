@@ -71,10 +71,10 @@ modify,  and start configuring your instance.
    Examples::
 
     // SabreDAV
-    $app['caldav_base_url'] = 'http://caldav.server/cal.php';
+    $app['caldav.baseurl'] = 'http://caldav.server/cal.php';
 
     // DAViCal
-    $app['caldav_base_url'] = 'http://caldav.server/caldav.php';
+    $app['caldav.baseurl'] = 'http://caldav.server/caldav.php';
 
 .. confval:: caldav.authmethod
 
