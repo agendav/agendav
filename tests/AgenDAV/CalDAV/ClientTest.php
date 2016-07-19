@@ -726,7 +726,7 @@ BODY;
         $request = $this->getAndValidateLastRequest('PROPFIND');
 
         if ($url !== null) {
-            $this->assertEquals($url, $request->getUri());
+            $this->assertEquals($url, $request->getUri()->getPath());
         }
 
         if ($depth !== null) {
@@ -741,7 +741,7 @@ BODY;
     {
         $request = $this->getAndValidateLastRequest('MKCALENDAR');
 
-        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->assertEquals($calendar->getUrl(), $request->getUri()->getPath());
         $this->validateContentType($request);
         $this->validateBody(
           $request,
@@ -753,7 +753,7 @@ BODY;
     {
         $request = $this->getAndValidateLastRequest('PROPPATCH');
 
-        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->assertEquals($calendar->getUrl(), $request->getUri()->getPath());
         $this->validateContentType($request);
         $this->validateBody(
             $request,
@@ -764,14 +764,14 @@ BODY;
     protected function validateDeleteCalendarRequest(Calendar $calendar)
     {
         $request = $this->getAndValidateLastRequest('DELETE');
-        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->assertEquals($calendar->getUrl(), $request->getUri()->getPath());
     }
 
     protected function validateFetchObjectsRequest(Calendar $calendar, ComponentFilter $filter)
     {
         $request = $this->getAndValidateLastRequest('REPORT');
 
-        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->assertEquals($calendar->getUrl(), $request->getUri()->getPath());
         $this->validateContentType($request);
         $this->validateDepth($request, 1);
 
@@ -782,7 +782,7 @@ BODY;
     {
         $request = $this->getAndValidateLastRequest('PUT');
 
-        $this->assertEquals($object->getUrl(), $request->getUri());
+        $this->assertEquals($object->getUrl(), $request->getUri()->getPath());
         $this->validateContentType($request, 'text/calendar');
 
         if ($object->getEtag() === null) {
@@ -810,14 +810,14 @@ BODY;
                 $request->getHeaderLine('If-Match')
             );
         }
-        $this->assertEquals($object->getUrl(), $request->getUri());
+        $this->assertEquals($object->getUrl(), $request->getUri()->getPath());
     }
 
     protected function validateACLRequest(Calendar $calendar, ACL $acl)
     {
         $request = $this->getAndValidateLastRequest('ACL');
 
-        $this->assertEquals($calendar->getUrl(), $request->getUri());
+        $this->assertEquals($calendar->getUrl(), $request->getUri()->getPath());
 
         $this->validateBody($request, $this->xml_generator->aclBody($acl));
     }
