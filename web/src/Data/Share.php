@@ -44,7 +44,7 @@ class Share
     /** @Column(type="string") */
     private $calendar;
 
-    /** @Column(type="string") */
+    /** @Column(name="`with`", type="string") */
     private $with;
 
     /** @Column(type="array") */
