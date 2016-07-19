@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- Upgraded to Symfony 2.8.5 components
+- Upgraded to Symfony 2.8.8 components
 - Upgraded to Guzzle 6.2.1 to address HTTP_PROXY vulnerability
 
 ### Fixed
