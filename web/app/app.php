@@ -20,7 +20,9 @@ $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new DoctrineServiceProvider());
-$app->register(new MonologServiceProvider());
+$app->register(new MonologServiceProvider(), [
+    'monolog.name' => 'agendav',
+]);
 
 // Add some shared data to twig templates
 $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
