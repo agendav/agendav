@@ -17,9 +17,9 @@
         sudo: yes
         apt: name='python-pycurl' update_cache=yes
 
-      - name: add ondrej/php5 repository
+      - name: add ondrej/php repository
         sudo: yes
-        apt_repository: repo='ppa:ondrej/php5'
+        apt_repository: repo='ppa:ondrej/php'
 
       - name: add chris-lea/node.js repository
         sudo: yes
@@ -35,12 +35,14 @@
         with_items:
             - curl
             - git
-            - php5
-            - php5-cli
-            - php5-curl
-            - php5-mysql
-            - php5-mcrypt
-            - php5-sqlite
+            - php5.6
+            - php5.6-cli
+            - php5.6-curl
+            - php5.6-mysql
+            - php5.6-mcrypt
+            - php5.6-sqlite3
+            - php5.6-dom
+            - php5.6-mbstring
             - mysql-client
             - mysql-server
             - python-mysqldb
@@ -61,7 +63,7 @@
         when: baikal.stat.exists == false
 
       - name: configure php
-        template: src=php/php.ini.j2 dest=/etc/php5/apache2/php.ini owner=root mode=644 backup=yes
+        template: src=php/php.ini.j2 dest=/etc/php/5.6/apache2/php.ini owner=root mode=644 backup=yes
         sudo: yes
         notify: restart apache
 
