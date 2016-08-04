@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- Upgraded to Symfony 2.8.8 components
+- Upgraded to Symfony 2.8.9 components
 - Upgraded to Guzzle 6.2.1 to address HTTP_PROXY vulnerability
 - Upgraded to latest moment.js (2.14.0) and moment-timezone (0.5.4)
 
