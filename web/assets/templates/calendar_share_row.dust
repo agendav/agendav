@@ -15,7 +15,12 @@
             {/new}
         </div>
         <div class="col-md-4">
-            <select name="shares[rw][]" class="form-control"{?new} id="calendar_share_add_rw"{/new}>
+            {^new}
+            <select name="shares[rw][]" class="form-control">
+            {/new}
+            {?new}
+            <select name="new_rw" class="form-control" id="calendar_share_add_rw">
+            {/new}
                 {>calendar_share_access_options/}
             </select>
         </div>

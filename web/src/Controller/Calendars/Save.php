@@ -23,9 +23,11 @@ namespace AgenDAV\Controller\Calendars;
 
 use AgenDAV\Uuid;
 use AgenDAV\Controller\JSONController;
+use AgenDAV\Controller\Calendars\InputHandlers\Shares;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use AgenDAV\Data\Principal;
+use AgenDAV\Data\Helper\SharesDiff;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
 
@@ -68,7 +70,31 @@ class Save extends JSONController
             $current_user_principal = new Principal($user_principal_url);
 
             if (isset($input['is_owned']) && $input['is_owned'] === 'true') {
-                // TODO Save shares
+                $post_shares = [ 'with' => [], 'rw' => [] ];
+                if (isset($input['shares'])) {
+                    $post_shares['with'] = $input['shares']['with'];
+                    $post_shares['rw'] = $input['shares']['rw'];
+                }
+                $current_shares = $shares_repository->getSharesOnCalendar($calendar);
+                $new_shares = Shares::buildFromInput(
+                    $post_shares['with'],
+                    $post_shares['rw'],
+                    $user_principal_url,
+                    $url
+                );
+
+                $shares_diff = new SharesDiff($current_shares);
+                $shares_diff->decide($new_shares);
+
+                foreach($shares_diff->getKeptShares() as $kept_share) {
+                    $shares_repository->save($kept_share);
+                }
+
+                foreach($shares_diff->getMarkedForRemoval() as $removed_share) {
+                    $shares_repository->remove($removed_share);
+                }
+
+                // TODO apply ACLs
             } else {
                 $share = $shares_repository->getSourceShare(
                     $calendar,
