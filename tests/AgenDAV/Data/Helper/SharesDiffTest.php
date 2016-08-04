@@ -82,30 +82,59 @@ class SharesDiffTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlterOneShare()
     {
-        $existing = $this->generateShares(5);
+        $existing = $this->generateShares(3);
         foreach ($existing as $share) {
             $input[] = clone $share;
         }
 
-        $to_be_changed = $input[4];
-        $input[4]->setWritePermission(!$input[4]->isWritable());
+        $input[0]->setWritePermission(!$input[0]->isWritable());
         shuffle($input);
 
         $diff = new SharesDiff($existing);
         $diff->decide($input);
 
-        $this->assertCount(5, $diff->getKeptShares(), '[a,b,c,d,e] + [a,b,c,d,e\'] != [a,b,c,d,e\']');
-        $this->assertCount(0, $diff->getMarkedForRemoval(), '[a,b,c,d,e] diff [a,b,c,d,e\'] != []');
+        $this->assertCount(3, $diff->getKeptShares(), '[a,b,c] + [a,b,c\'] != [a,b,c\']');
+        $this->assertCount(0, $diff->getMarkedForRemoval(), '[a,b,c] diff [a,b,c\'] != []');
 
         $this->assertTrue(
             $this->assertAllObjectsAreEqual($diff->getKeptShares(), $input),
-            '[a,b,c,d,e] - [e] + [e\'] result objects do not match [a,b,c,d,e\']'
+            '[a,b,c] - [c] + [c\'] result does not match [a,b,c\']'
+        );
+    }
+
+    /**
+     * Test what happens when we have N existing shares and we:
+     *  1) Add a new share
+     *  2) Alter an existing share
+     *  3) Remove an existing share
+     */
+    public function testAddRemoveAndAlter()
+    {
+        $existing = $this->generateShares(4);
+        foreach ($existing as $share) {
+            $input[] = clone $share;
+        }
+
+        unset($input[0]); // Remove the first one
+        $input[1]->setWritePermission(!$input[1]->isWritable()); // Alter the second one
+        $new_inputs = $this->generateShares(1, 4);
+        $input[] = $new_inputs[0];
+        shuffle($input);
+
+        $diff = new SharesDiff($existing);
+        $diff->decide($input);
+
+        $this->assertCount(4, $diff->getKeptShares(), '[a,b,c,d] - [a] + [e] + [b*] != [b*,c,d,e]');
+        $this->assertCount(1, $diff->getMarkedForRemoval(), 'One element should have been marked for removal');
+
+        $this->assertTrue(
+            $this->assertAllObjectsAreEqual($diff->getKeptShares(), $input),
+            'a,b,c,d] - [a] + [e] + [b*] != [b*,c,d,e]'
         );
 
-        $this->assertEquals(
-            $to_be_changed,
-            $existing[4],
-            '4th element should have changed'
+        $this->assertTrue(
+            $this->assertAllObjectsAreEqual($diff->getMarkedForRemoval(), [ $existing[0] ]),
+            'Element marked for removal was not returned'
         );
     }
 
@@ -114,14 +143,16 @@ class SharesDiffTest extends \PHPUnit_Framework_TestCase
      * Generates N shares
      *
      * @param int $n Number of shares
+     * @param int $start Nunber to start
      * @return \AgenDAV\Data\Share[]
      */
-    protected function generateShares($n)
+    protected function generateShares($n, $start = 0)
     {
         $with = '/with';
         $result = [];
 
-        for($i=0;$i<$n;$i++) {
+        $total = $start + $n;
+        for($i=$start;$i<$total;$i++) {
             $share = new Share;
             $share->setWith($with . '-' . $i);
             $share->setCalendar('/calendar');
