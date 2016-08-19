@@ -254,8 +254,12 @@ EOXML;
       </d:property>
     </d:principal>
     <d:grant>
-      <d:all/>
-      <x1:master-of-universe xmlns:x1="urn:he:man"/>
+      <d:privilege>
+        <d:all/>
+      </d:privilege>
+      <d:privilege>
+        <x1:master-of-universe xmlns:x1="urn:he:man"/>
+      </d:privilege>
     </d:grant>
   </d:ace>
   <d:ace>
@@ -263,7 +267,9 @@ EOXML;
       <d:authenticated/>
     </d:principal>
     <d:grant>
-      <C:read-free-busy/>
+      <d:privilege>
+        <C:read-free-busy/>
+      </d:privilege>
     </d:grant>
   </d:ace>
   <d:ace>
@@ -271,7 +277,9 @@ EOXML;
       <d:href>/jorge</d:href>
     </d:principal>
     <d:grant>
-      <d:write/>
+      <d:privilege>
+        <d:write/>
+      </d:privilege>
     </d:grant>
   </d:ace>
   <d:ace>
@@ -279,7 +287,9 @@ EOXML;
       <d:href>/rigodon</d:href>
     </d:principal>
     <d:grant>
-      <d:read/>
+      <d:privilege>
+        <d:read/>
+      </d:privilege>
     </d:grant>
   </d:ace>
 </d:acl>

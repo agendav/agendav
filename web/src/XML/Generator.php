@@ -248,9 +248,12 @@ class Generator
         $this->generatePrincipalForAce($writer, $type, $principal);
 
         // List of privileges
-        $this->addPropertiesList($writer, 'd:grant', $privileges, false);
-
-        $writer->endElement();
+        $writer->startElement('{DAV:}grant');
+        foreach ($privileges as $privilege) {
+            $writer->write([ '{DAV:}privilege' => [ $privilege => [] ] ]);
+        }
+        $writer->endElement(); // d:grant
+        $writer->endElement(); // d:ace
     }
 
     /**
