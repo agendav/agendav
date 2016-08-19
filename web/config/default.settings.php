@@ -54,7 +54,20 @@ $app['calendar.sharing'] = false;
 // Calendar sharing permissions. In case of doubt, do not modify them
 // These defaults are only useful for DAViCal (http://wiki.davical.org/index.php/Permissions)
 $app['calendar.sharing.permissions'] = [
-    'owner' => ['{DAV:}all' ],
+    'owner' => [
+        '{DAV:}all',
+        '{DAV:}read',
+        '{DAV:}unlock',
+        '{DAV:}read-acl',
+        '{DAV:}read-current-user-privilege-set',
+        '{DAV:}write-acl',
+        '{urn:ietf:params:xml:ns:caldav}read-free-busy',
+        '{DAV:}write',
+        '{DAV:}write-properties',
+        '{DAV:}write-content',
+        '{DAV:}bind',
+        '{DAV:}unbind'
+     ],
     'read-only' => [ '{DAV:}read', '{urn:ietf:params:xml:ns:caldav}read-free-busy'],
     'read-write' => [ '{DAV:}read', '{DAV:}write', '{urn:ietf:params:xml:ns:caldav}read-free-busy' ],
     'default' => [ '{urn:ietf:params:xml:ns:caldav}read-free-busy' ]

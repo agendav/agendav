@@ -85,16 +85,23 @@ class Save extends JSONController
 
                 $shares_diff = new SharesDiff($current_shares);
                 $shares_diff->decide($new_shares);
+                $acl = $app['acl'];
 
                 foreach($shares_diff->getKeptShares() as $kept_share) {
                     $shares_repository->save($kept_share);
+                    $acl->addGrant(
+                        $kept_share->getWith(),
+                        $kept_share->isWritable() ? 'read-write' : 'read-only'
+                    );
                 }
 
                 foreach($shares_diff->getMarkedForRemoval() as $removed_share) {
                     $shares_repository->remove($removed_share);
                 }
 
-                // TODO apply ACLs
+                $this->updateCalDAV($calendar);
+                $this->client->applyACL($calendar, $acl);
+
             } else {
                 $share = $shares_repository->getSourceShare(
                     $calendar,
