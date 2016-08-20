@@ -30,6 +30,7 @@ use AgenDAV\Data\Serializer\PlainSerializer;;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Listing extends JSONController
 {
@@ -46,10 +47,10 @@ class Listing extends JSONController
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'calendar',
@@ -59,7 +60,7 @@ class Listing extends JSONController
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -67,17 +68,12 @@ class Listing extends JSONController
         return true;
     }
 
-    public function execute(array $input, Application $app)
+    protected function execute(ParameterBag $input, Application $app)
     {
-        $calendar = new Calendar($input['calendar']);
-        $timezone = new \DateTimeZone($input['timezone']);
-        $start = DateHelper::fullcalendarToDateTime($input['start'], $timezone);
-        $end = DateHelper::fullcalendarToDateTime($input['end'], $timezone);
-
-        // Optional UID filter
-        if (isset($input['uid'])) {
-            $uid = $input['uid'];
-        }
+        $calendar = new Calendar($input->get('calendar'));
+        $timezone = new \DateTimeZone($input->get('timezone'));
+        $start = DateHelper::fullcalendarToDateTime($input->get('start'), $timezone);
+        $end = DateHelper::fullcalendarToDateTime($input->get('end'), $timezone);
 
         // These are needed to query the server
         $start_string = $this->getTimeFilterDatestring($start);
@@ -86,10 +82,10 @@ class Listing extends JSONController
 
         $execution_fetch_start = microtime(true);
 
-        if (!isset($uid)) {
+        if (!$input->has('uid')) {
             $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
         } else {
-            $object = $this->client->fetchObjectByUid($calendar, $uid);
+            $object = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
             $objects = array($object);
         }
 

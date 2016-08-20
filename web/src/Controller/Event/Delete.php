@@ -26,16 +26,17 @@ use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\Event\RecurrenceId;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Delete extends JSONController
 {
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'calendar',
@@ -45,7 +46,7 @@ class Delete extends JSONController
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -53,17 +54,17 @@ class Delete extends JSONController
         return true;
     }
 
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
         // Load calendar object
-        $calendar = $this->client->getCalendarByUrl($input['calendar']);
-        $uid = $input['uid'];
+        $calendar = $this->client->getCalendarByUrl($input->get('calendar'));
+        $uid = $input->get('uid');
         $object = $this->client->fetchObjectByUid($calendar, $uid);
-        $object->setEtag($input['etag']);
+        $object->setEtag($input->get('etag'));
 
         // Single instance removal. We need the full object
-        if (!empty($input['recurrence_id'])) {
-            return $this->removeInstance($object, $input['recurrence_id']);
+        if (!empty($input->get('recurrence_id'))) {
+            return $this->removeInstance($object, $input->get('recurrence_id'));
         }
 
         return $this->removeObject($object);

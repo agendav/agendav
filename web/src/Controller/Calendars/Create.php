@@ -28,16 +28,17 @@ use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Create extends JSONController
 {
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'displayname',
@@ -45,7 +46,7 @@ class Create extends JSONController
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -53,14 +54,14 @@ class Create extends JSONController
         return true;
     }
 
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
         $calendar_home_set = $app['session']->get('calendar_home_set');
         $url = $calendar_home_set . Uuid::generate();
 
         $calendar = new Calendar($url, [
-            Calendar::DISPLAYNAME => $input['displayname'],
-            Calendar::COLOR => $input['calendar_color'],
+            Calendar::DISPLAYNAME => $input->get('displayname'),
+            Calendar::COLOR => $input->get('calendar_color'),
         ]);
 
         $this->client->createCalendar($calendar);

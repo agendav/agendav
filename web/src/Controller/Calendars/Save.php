@@ -31,16 +31,17 @@ use AgenDAV\Data\Share;
 use AgenDAV\Data\Helper\SharesDiff;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Save extends JSONController
 {
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'calendar',
@@ -49,7 +50,7 @@ class Save extends JSONController
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -57,12 +58,12 @@ class Save extends JSONController
         return true;
     }
 
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
-        $url = $input['calendar'];
+        $url = $input->get('calendar');
         $calendar = new Calendar($url, [
-            Calendar::DISPLAYNAME => $input['displayname'],
-            Calendar::COLOR => $input['calendar_color'],
+            Calendar::DISPLAYNAME => $input->get('displayname'),
+            Calendar::COLOR => $input->get('calendar_color'),
         ]);
 
         if ($app['calendar.sharing'] === false) {
@@ -74,7 +75,7 @@ class Save extends JSONController
         $user_principal_url = $app['session']->get('principal_url');
         $current_user_principal = new Principal($user_principal_url);
 
-        if (!isset($input['is_owned']) || $input['is_owned'] !== 'true') {
+        if ($input->getBoolean('is_owned') === false) {
             $share = $shares_repository->getSourceShare(
                 $calendar,
                 $current_user_principal
@@ -88,9 +89,10 @@ class Save extends JSONController
 
         // Update shares for calendar owned by current user
         $post_shares = [ 'with' => [], 'rw' => [] ];
-        if (isset($input['shares'])) {
-            $post_shares['with'] = $input['shares']['with'];
-            $post_shares['rw'] = $input['shares']['rw'];
+        if ($input->has('shares')) {
+            $shares = $input->get('shares');
+            $post_shares['with'] = $shares['with'];
+            $post_shares['rw'] = $shares['rw'];
         }
         $current_shares = $shares_repository->getSharesOnCalendar($calendar);
         $new_shares = Shares::buildFromInput(
@@ -137,12 +139,12 @@ class Save extends JSONController
      * Saves calendar name and color into the Share object
      *
      * @param AgenDAV\Data\Share $share
-     * @param Array $input
+     * @param ParameterBag $input
      * @return void
      */
-    protected function applySharedCalendarProperties(Share $share, $input)
+    protected function applySharedCalendarProperties(Share $share, ParameterBag $input)
     {
-        $share->setProperty(Calendar::DISPLAYNAME, $input['displayname']);
-        $share->setProperty(Calendar::COLOR, $input['calendar_color']);
+        $share->setProperty(Calendar::DISPLAYNAME, $input->get('displayname'));
+        $share->setProperty(Calendar::COLOR, $input->get('calendar_color'));
     }
 }

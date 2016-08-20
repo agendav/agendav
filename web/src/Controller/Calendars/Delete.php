@@ -26,23 +26,24 @@ use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Delete extends JSONController
 {
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'calendar',
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -50,9 +51,9 @@ class Delete extends JSONController
         return true;
     }
 
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
-        $calendar = new Calendar($input['calendar']);
+        $calendar = new Calendar($input->get('calendar'));
 
         // Proceed to remove calendar from CalDAV server
         $this->client->deleteCalendar($calendar);

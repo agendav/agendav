@@ -31,6 +31,7 @@ use AgenDAV\Data\Serializer\PlainSerializer;;
 use League\Fractal\Resource\Item;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class GetBase extends Listing
 {
@@ -42,10 +43,10 @@ class GetBase extends Listing
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'calendar',
@@ -54,7 +55,7 @@ class GetBase extends Listing
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -62,11 +63,11 @@ class GetBase extends Listing
         return true;
     }
 
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
-        $calendar = new Calendar($input['calendar']);
-        $timezone = new \DateTimeZone($input['timezone']);
-        $uid = $input['uid'];
+        $calendar = new Calendar($input->get('calendar'));
+        $timezone = new \DateTimeZone($input->get('timezone'));
+        $uid = $input->get('uid');
 
         $execution_fetch_start = microtime(true);
         $object = $this->client->fetchObjectByUid($calendar, $uid);

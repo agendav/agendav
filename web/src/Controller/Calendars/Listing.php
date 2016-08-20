@@ -27,10 +27,11 @@ use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Listing extends JSONController
 {
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
         $calendars = $app['calendar.finder']->getCalendars();
         $current_user_principal = $app['session']->get('principal_url');

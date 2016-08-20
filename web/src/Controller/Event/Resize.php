@@ -23,6 +23,7 @@ namespace AgenDAV\Controller\Event;
 
 use AgenDAV\DateHelper;
 use AgenDAV\EventInstance;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Resize extends Alter
 {
@@ -38,7 +39,7 @@ class Resize extends Alter
         EventInstance $instance,
         \DateTimeZone $timezone,
         $minutes,
-        array $input = []
+        ParameterBag $input
     )
     {
         $end = $instance->getEnd();

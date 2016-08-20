@@ -30,6 +30,7 @@ use AgenDAV\EventInstance;
 use AgenDAV\Event\RecurrenceId;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 abstract class Alter extends JSONController
 {
@@ -37,10 +38,10 @@ abstract class Alter extends JSONController
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         $fields = [
             'calendar',
@@ -49,7 +50,7 @@ abstract class Alter extends JSONController
         ];
 
         foreach ($fields as $name) {
-            if (empty($input[$name])) {
+            if (empty($input->get($name))) {
                 return false;
             }
         }
@@ -60,16 +61,16 @@ abstract class Alter extends JSONController
     /**
      * Executes this operation
      */
-    public function execute(array $input, Application $app)
+    public function execute(ParameterBag $input, Application $app)
     {
-        $timezone = new \DateTimeZone($input['timezone']);
-        $calendar = $this->client->getCalendarByUrl($input['calendar']);
-        $resource = $this->client->fetchObjectByUid($calendar, $input['uid']);
+        $timezone = new \DateTimeZone($input->get('timezone'));
+        $calendar = $this->client->getCalendarByUrl($input->get('calendar'));
+        $resource = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
 
         $recurrence_id = null;
 
-        if (!empty($input['recurrence_id'])) {
-            $recurrence_id = RecurrenceId::buildFromString($input['recurrence_id']);
+        if (!empty($input->get('recurrence_id'))) {
+            $recurrence_id = RecurrenceId::buildFromString($input->get('recurrence_id'));
         }
 
         $event = $resource->getEvent();
@@ -79,7 +80,7 @@ abstract class Alter extends JSONController
             throw new \UnexpectedValueException('Empty VCALENDAR?');
         }
 
-        $minutes = (int) $input['delta'];
+        $minutes = $input->getInt('delta');
 
         // Run specific operation on this event instance
         $this->modifyInstance($instance, $timezone, $minutes, $input);
@@ -101,12 +102,12 @@ abstract class Alter extends JSONController
      * @param \AgenDAV\EventInstance $instance
      * @param \DateTimeZone $timezone
      * @param int $minutes
-     * @param Array $input
+     * @param ParameterBag $input
      */
     abstract protected function modifyInstance(
         EventInstance $instance,
         \DateTimeZone $timezone,
         $minutes,
-        array $input = []
+        ParameterBag $input
     );
 }

@@ -24,6 +24,7 @@ namespace AgenDAV\Controller\Event;
 use AgenDAV\DateHelper;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\EventInstance;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Drop extends Alter
 {
@@ -43,16 +44,19 @@ class Drop extends Alter
      * @param \AgenDAV\EventInstance $instance
      * @param \DateTimeZone $timezone
      * @param int $minutes
-     * @param Array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      */
     protected function modifyInstance(
         EventInstance $instance,
         \DateTimeZone $timezone,
         $minutes,
-        array $input = []
+        ParameterBag $input
     )
     {
-        $movement = $this->describeMovement($input['was_allday'], $input['allday']);
+        $movement = $this->describeMovement(
+            $input->get('was_allday'),
+            $input->get('allday')
+        );
 
         $start = $instance->getStart();
         $end = $instance->getEnd();

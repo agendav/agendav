@@ -25,6 +25,7 @@ use AgenDAV\CalDAV\Client;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * This class is used to find all accessible calendars for an user
@@ -66,11 +67,11 @@ abstract class JSONController
 
         // Read input
         if ($this->method === 'POST') {
-            $input = $request->request->all();
+            $input = $request->request;
         }
 
         if ($this->method === 'GET') {
-            $input = $request->query->all();
+            $input = $request->query;
         }
 
         if (!$this->validateInput($input)) {
@@ -85,11 +86,11 @@ abstract class JSONController
     /**
      * Proceeds to execute this action, taking care of possible exceptions
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @param Silex\Application $app
      * @return Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function controlledExecution(array $input, Application $app)
+    protected function controlledExecution(ParameterBag $input, Application $app)
     {
         try {
             $result = $this->execute($input, $app);
@@ -147,10 +148,10 @@ abstract class JSONController
     /**
      * Validates user input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
-    protected function validateInput(array $input)
+    protected function validateInput(ParameterBag $input)
     {
         return true;
     }
@@ -158,11 +159,11 @@ abstract class JSONController
     /**
      * Performs an operation using the information from input
      *
-     * @param array $input
+     * @param Symfony\Component\HttpFoundation\ParameterBag $input
      * @param Silex\Application $app
      * @return array
      */
-    abstract protected function execute(array $input, Application $app);
+    abstract protected function execute(ParameterBag $input, Application $app);
 
     /**
      * Generates an exception message
