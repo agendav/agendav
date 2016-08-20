@@ -27,6 +27,7 @@ use AgenDAV\Controller\Calendars\InputHandlers\Shares;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use AgenDAV\Data\Principal;
+use AgenDAV\Data\Share;
 use AgenDAV\Data\Helper\SharesDiff;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
@@ -64,59 +65,58 @@ class Save extends JSONController
             Calendar::COLOR => $input['calendar_color'],
         ]);
 
-        if ($app['calendar.sharing'] === true) {
-            $shares_repository = $app['shares_repository'];
-            $user_principal_url = $app['session']->get('principal_url');
-            $current_user_principal = new Principal($user_principal_url);
-
-            if (isset($input['is_owned']) && $input['is_owned'] === 'true') {
-                $post_shares = [ 'with' => [], 'rw' => [] ];
-                if (isset($input['shares'])) {
-                    $post_shares['with'] = $input['shares']['with'];
-                    $post_shares['rw'] = $input['shares']['rw'];
-                }
-                $current_shares = $shares_repository->getSharesOnCalendar($calendar);
-                $new_shares = Shares::buildFromInput(
-                    $post_shares['with'],
-                    $post_shares['rw'],
-                    $user_principal_url,
-                    $url
-                );
-
-                $shares_diff = new SharesDiff($current_shares);
-                $shares_diff->decide($new_shares);
-                $acl = $app['acl'];
-
-                foreach($shares_diff->getKeptShares() as $kept_share) {
-                    $shares_repository->save($kept_share);
-                    $acl->addGrant(
-                        $kept_share->getWith(),
-                        $kept_share->isWritable() ? 'read-write' : 'read-only'
-                    );
-                }
-
-                foreach($shares_diff->getMarkedForRemoval() as $removed_share) {
-                    $shares_repository->remove($removed_share);
-                }
-
-                $this->updateCalDAV($calendar);
-                $this->client->applyACL($calendar, $acl);
-
-            } else {
-                $share = $shares_repository->getSourceShare(
-                    $calendar,
-                    $current_user_principal
-                );
-
-                $share->setProperty(Calendar::DISPLAYNAME, $input['displayname']);
-                $share->setProperty(Calendar::COLOR, $input['calendar_color']);
-
-                $shares_repository->save($share);
-
-                return $this->generateSuccess();
-            }
+        if ($app['calendar.sharing'] === false) {
+            // Just send the changes to the server and return
+            return $this->updateCalDAV($calendar);
         }
 
+        $shares_repository = $app['shares_repository'];
+        $user_principal_url = $app['session']->get('principal_url');
+        $current_user_principal = new Principal($user_principal_url);
+
+        if (!isset($input['is_owned']) || $input['is_owned'] !== 'true') {
+            $share = $shares_repository->getSourceShare(
+                $calendar,
+                $current_user_principal
+            );
+
+            $this->applySharedCalendarProperties($share, $input);
+            $shares_repository->save($share);
+
+            return $this->generateSuccess();
+        }
+
+        // Update shares for calendar owned by current user
+        $post_shares = [ 'with' => [], 'rw' => [] ];
+        if (isset($input['shares'])) {
+            $post_shares['with'] = $input['shares']['with'];
+            $post_shares['rw'] = $input['shares']['rw'];
+        }
+        $current_shares = $shares_repository->getSharesOnCalendar($calendar);
+        $new_shares = Shares::buildFromInput(
+            $post_shares['with'],
+            $post_shares['rw'],
+            $user_principal_url,
+            $url
+        );
+
+        $shares_diff = new SharesDiff($current_shares);
+        $shares_diff->decide($new_shares);
+        $acl = $app['acl'];
+
+        foreach($shares_diff->getKeptShares() as $kept_share) {
+            $shares_repository->save($kept_share);
+            $acl->addGrant(
+                $kept_share->getWith(),
+                $kept_share->isWritable() ? 'read-write' : 'read-only'
+            );
+        }
+
+        foreach($shares_diff->getMarkedForRemoval() as $removed_share) {
+            $shares_repository->remove($removed_share);
+        }
+
+        $this->client->applyACL($calendar, $acl);
         return $this->updateCalDAV($calendar);
     }
 
@@ -131,5 +131,18 @@ class Save extends JSONController
         $this->client->updateCalendar($calendar);
 
         return $this->generateSuccess();
+    }
+
+    /**
+     * Saves calendar name and color into the Share object
+     *
+     * @param AgenDAV\Data\Share $share
+     * @param Array $input
+     * @return void
+     */
+    protected function applySharedCalendarProperties(Share $share, $input)
+    {
+        $share->setProperty(Calendar::DISPLAYNAME, $input['displayname']);
+        $share->setProperty(Calendar::COLOR, $input['calendar_color']);
     }
 }
