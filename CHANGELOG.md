@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded to Guzzle 6.2.1 to address HTTP_PROXY vulnerability
 - Upgraded to latest moment.js (2.14.0) and moment-timezone (0.5.5)
 - Upgraded to Bootstrap 3.3.7
+- Calendar sharing using ACLs works again
 
 ### Fixed
 
