@@ -22,6 +22,7 @@ namespace AgenDAV\Data;
  */
 
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Data\Principal;
 
 
 /**
@@ -48,6 +49,8 @@ class Share
 
     /** @Column(name="`with`", type="string") */
     private $with;
+
+    private $with_principal;
 
     /** @Column(type="array") */
     private $options = array();
@@ -127,6 +130,28 @@ class Share
         $this->with = $with;
         return $this;
     }
+
+    /*
+     * Returns Share associated principal, if set
+     *
+     * @return AgenDAV\Data\Principal
+     */
+    public function getPrincipal()
+    {
+        return $this->with_principal;
+    }
+    
+    /*
+     * Sets this share associated Principal
+     *
+     * @param AgenDAV\Data\Principal $principal
+     */
+    public function setPrincipal(Principal $principal)
+    {
+        $this->with_principal = $principal;
+        return $this;
+    }
+    
 
     /*
      * Returns true if a share allows modifications
