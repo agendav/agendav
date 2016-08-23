@@ -1437,8 +1437,7 @@ var shares_manager_enable_autocomplete = function shares_manager_enable_autocomp
               var permissions = $('#calendar_share_add_rw').val();
               render_template('calendar_share_row', {
                   with: ui.item.url,
-                  displayname: ui.item.displayname,
-                  email: ui.item.email,
+                  displayname: ui.item.url, // TODO pass displayname and email
                   rw: permissions
                 },
                 function(out) {
