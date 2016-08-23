@@ -160,7 +160,7 @@ $app['calendar.finder'] = $app->share(function($app) {
 
     // Add the shares repository to the calendar finder service
     if ($app['calendar.sharing']=== true) {
-        $finder->setSharesRepository($app['sharing.resolver']);
+        $finder->setSharesRepository($app['shares.repository']);
     }
 
 
