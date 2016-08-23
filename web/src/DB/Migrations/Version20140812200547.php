@@ -13,9 +13,9 @@ class Version20140812200547 extends AgenDAVMigration
     public function up(Schema $schema)
     {
         $this->skipIf(!$this->upgradingFrom1x(), 'This migration only applies to AgenDAV 1.x upgrades');
-        $this->write('Migrating the shared table');
-        $sql = 'INSERT INTO shares (sid, grantor, path, grantee, rw) SELECT'
-            .' sid, user_from, calendar, user_which, write_access FROM shared';
+        $this->write('Migrating the old shared table');
+        $sql = 'INSERT INTO shares (`sid`, `owner`, `calendar`, `with`, `options`, `rw`) SELECT'
+            .' `sid`, `user_from`, `calendar`, `user_which`, `options`, `write_access` FROM shared';
 
         $this->addSql($sql);
     }

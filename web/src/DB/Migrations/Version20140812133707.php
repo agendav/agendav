@@ -31,15 +31,15 @@ class Version20140812133707 extends AgenDAVMigration
         $shares_table = $schema->createTable('shares');
         $sid = $shares_table->addColumn('sid', 'integer', ['unsigned' => true]);
         $sid->setAutoIncrement(true);
-        $shares_table->addColumn('grantor', 'string', ['length' => 255]);
-        $shares_table->addColumn('path', 'string', ['length' => 255]);
-        $shares_table->addColumn('grantee', 'string', ['length' => 255]);
+        $shares_table->addColumn('owner', 'string', ['length' => 255]);
+        $shares_table->addColumn('calendar', 'string', ['length' => 255]);
+        $shares_table->addColumn('with', 'string', ['length' => 255]);
         $shares_table->addColumn('options', 'text');
         $shares_table->addColumn('rw', 'boolean');
 
         $shares_table->setPrimaryKey(['sid']);
-        $shares_table->addIndex(['grantor', 'path']);
-        $shares_table->addIndex(['grantee']);
+        $shares_table->addIndex(['owner', 'calendar']);
+        $shares_table->addIndex(['with']);
     }
 
     public function createSessionsTable(Schema $schema)

@@ -20,10 +20,6 @@ Upgrading from 1.x.x
 If you are upgrading AgenDAV from 1.x.x, make sure you have the latest 1.x release
 installed.
 
-.. warning::
-   Current AgenDAV development version will remove all your current shares from the database. This
-   will be fixed on next stable release
-
 After that, just follow the steps below.
 
 .. _filesupgrade:
@@ -84,9 +80,7 @@ way::
 
   $ php agendavcli migrations:migrate
 
-.. warning::
-   This development version will remove all your current shares from the database. This will
-   be fixed on next stable release
+
 
 Clear sessions and caches
 -------------------------
@@ -104,3 +98,28 @@ caches:
   default value, it should be found at `web/var/cache/twig/` subdirectory::
 
     $ rm -rf web/var/cache/twig/*
+
+Finishing the upgrade from AgenDAV 1.2.x
+---------------------------------------
+
+The schema upgrading process from AgenDAV 1.2.x can't completely upgrade your ``shares`` table. The
+old table schema makes hard to apply a clean migration, so an additional step is required to adapt
+the shares data to the new expected format.
+
+MySQL
+*****
+
+Run the following SQL query::
+
+    UPDATE `shares` SET owner = CONCAT('/caldav.php/', owner, '/'),
+    calendar = CONCAT(owner, calendar, '/'),
+    `with` = CONCAT('/caldav.php/', `with`, '/');
+
+PostgreSQL
+**********
+
+Run the following SQL query::
+
+    UPDATE `shares` SET owner = '/caldav.php/' || owner || '/',
+    calendar = '/caldav.php/' || owner || '/' || calendar || '/',
+    `with` = '/caldav.php/' || with || '/';
