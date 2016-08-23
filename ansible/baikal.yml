@@ -2,7 +2,7 @@
 # Baikal installation
 
   - name: download baikal
-    get_url: url=https://github.com/fruux/Baikal/releases/download/0.3.5/baikal-0.3.5.zip dest=/tmp/baikal.zip
+    get_url: url=https://github.com/fruux/Baikal/releases/download/0.4.6/baikal-0.4.6.zip dest=/tmp/baikal.zip
 
   - name: unzip baikal
     command: /usr/bin/unzip /tmp/baikal.zip -d /var/www
