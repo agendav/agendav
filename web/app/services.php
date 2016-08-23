@@ -160,7 +160,7 @@ $app['calendar.finder'] = $app->share(function($app) {
 
     // Add the shares repository to the calendar finder service
     if ($app['calendar.sharing']=== true) {
-        $finder->setSharesRepository($app['sharing_resolver']);
+        $finder->setSharesRepository($app['sharing.resolver']);
     }
 
 
@@ -185,13 +185,13 @@ $app['csrf.manager'] = $app->share(function ($app) {
 if ($app['calendar.sharing'] === true) {
 
     // Shares repository
-    $app['shares_repository'] = $app->share(function($app) {
+    $app['shares.repository'] = $app->share(function($app) {
         $em = $app['orm'];
         return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
     });
 
-    $app['sharing_resolver'] = $app->share(function($app) {
-        $shares_repository = $app['shares_repository'];
+    $app['sharing.resolver'] = $app->share(function($app) {
+        $shares_repository = $app['shares.repository'];
         $principals_repository = $app['principals.repository'];
         return new AgenDAV\Sharing\SharingResolver(
             $shares_repository,
