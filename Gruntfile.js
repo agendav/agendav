@@ -66,7 +66,7 @@ module.exports = function(grunt) {
             destPrefix: 'web/public/js/fullcalendar'
           },
           files: {
-            'lang': 'fullcalendar/dist/lang/*',
+            'lang': 'fullcalendar/dist/locale/*',
           }
         },
 
