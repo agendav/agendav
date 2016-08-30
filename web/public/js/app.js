@@ -77,6 +77,9 @@ $(document).ready(function() {
     firstDay: AgenDAVUserPrefs.weekstart,
     timeFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     weekMode: 'liquid',
+    weekNumbers: true,
+    weekNumberCalculation: 'ISO',
+    weekNumbersWithinDays: true,
     height: calendar_height(),
     windowResize: function(view) {
       var new_height = calendar_height();
