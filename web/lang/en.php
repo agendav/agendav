@@ -107,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Modify',
     'labels.cancel' => 'Cancel',
     'labels.yes' => 'Yes',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Delete only this one',
     'labels.delete_all_repetitions' => 'Delete all repetitions',
@@ -164,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Date format',
     'labels.time_format' => 'Time format',
     'labels.weekstart' => 'Week starts on',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages

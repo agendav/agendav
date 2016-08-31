@@ -94,6 +94,9 @@ $app['defaults.date_format'] = 'ymd';
 // Default first day of week. Options: 0 (Sunday), 1 (Monday)
 $app['defaults.weekstart'] = 0;
 
+// Default for showing the week numbers. Options: true/false
+$app['defaults.show_week_nb'] = true;
+
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
 

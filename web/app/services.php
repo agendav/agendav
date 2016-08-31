@@ -50,6 +50,7 @@ $app['preferences.repository'] = $app->share(function($app) {
         'date_format' => $app['defaults.date_format'],
         'weekstart' => $app['defaults.weekstart'],
         'timezone' => $app['defaults.timezone'],
+        'show_week_nb' => $app['defaults.show_week_nb'],
     ]);
 
     return $repository;
