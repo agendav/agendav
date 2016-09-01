@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Etags were not being updated after dropping/resizing an event
+- Work around ansible bug #12161 when downloading baikal in the development machine
 
 ## [2.0.0-beta2] - 2016-04-20
 
