@@ -61,12 +61,12 @@ module.exports = function(grunt) {
           }
         },
 
-        fullcalendarlangs: {
+        fullcalendarlocales: {
           options: {
             destPrefix: 'web/public/js/fullcalendar'
           },
           files: {
-            'lang': 'fullcalendar/dist/locale/*',
+            'locale': 'fullcalendar/dist/locale/*',
           }
         },
 
