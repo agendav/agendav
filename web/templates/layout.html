@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>{{ title }}</title>
-        <link rel="shortcut icon" type="image/x-icon" href="{{ app.request.basepath }}favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="{{ app.request.basepath }}/favicon.ico" />
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         {% if stylesheets is defined %}
             {% for stylesheet in stylesheets %}
@@ -16,7 +16,7 @@
             {% endfor %}
         {% endif %}
 <!--[if lt IE 9]>
-<script src="{{ app.request.basepath }}js/libs/es5-shim.js"></script>
+<script src="{{ app.request.basepath }}/js/libs/es5-shim.js"></script>
 <![endif]-->
     </head>
     <body>
