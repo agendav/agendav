@@ -53,7 +53,7 @@
             - restart mysql
 
       - name: create database
-        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8
+        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password=""
 
       - name: check for baikal
         stat: path=/var/www/baikal
