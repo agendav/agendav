@@ -95,7 +95,7 @@ $app['defaults.date_format'] = 'ymd';
 $app['defaults.weekstart'] = 0;
 
 // Default for showing the week numbers. Options: true/false
-$app['defaults.show_week_nb'] = true;
+$app['defaults.show_week_nb'] = false;
 
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
