@@ -159,7 +159,7 @@ modify,  and start configuring your instance.
 
 .. confval:: defaults.show_week_nb
 
-   Whether or not to show week numbers in views
+   Whether or not to show week numbers in views by default
 
    Specify it as a boolean ("true" or "false").
 
