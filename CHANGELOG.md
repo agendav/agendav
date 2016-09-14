@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Etags were not being updated after dropping/resizing an event
 - Work around ansible bug #12161 when downloading baikal in the development machine
+- favico could not be loaded when served from a subdir
 
 ## [2.0.0-beta2] - 2016-04-20
 
