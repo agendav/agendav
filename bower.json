@@ -22,10 +22,10 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.1",
-    "fullcalendar": "~2.6.0",
+    "fullcalendar": "~3.0.0",
     "jquery-ui": "~1.11.2",
     "font-awesome": "~4.2.0",
-    "jquery": "~1.12.0",
+    "jquery": "~2.2.4",
     "dustjs-linkedin": "~2.5.1",
     "dustjs-helpers": "linkedin/dustjs-helpers#~1.5.0",
     "rrule": "~2.1.0",

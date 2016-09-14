@@ -13,11 +13,22 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Calendar sharing using ACLs works again
 - Switched to ParameterBag from plain arrays on controllers (internal change)
 - Upgraded to Baïkal 0.4.6 inside the development machine
+- Upgraded to FullCalendar 3.0.0
+
+### Added
+
+- Added support for showing week numbers in views, with a 
+  per-user preference, defaulting to false
+
+### Removed
+
+- IE8 support dropped
 
 ### Fixed
 
 - Etags were not being updated after dropping/resizing an event
 - Work around ansible bug #12161 when downloading baikal in the development machine
+- favico could not be loaded when served from a subdir
 
 ## [2.0.0-beta2] - 2016-04-20
 
