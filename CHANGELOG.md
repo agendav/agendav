@@ -20,6 +20,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added support for showing week numbers in views, with a 
   per-user preference, defaulting to false
 
+### Removed
+
+- IE8 support dropped
+
 ### Fixed
 
 - Etags were not being updated after dropping/resizing an event
