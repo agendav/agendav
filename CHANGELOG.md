@@ -6,14 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- Upgraded to Symfony 2.8.9 components
-- Upgraded to Guzzle 6.2.1 to address HTTP_PROXY vulnerability
 - Upgraded to latest moment.js (2.15.0) and moment-timezone (0.5.5)
 - Upgraded to Bootstrap 3.3.7
 - Calendar sharing using ACLs works again
 - Switched to ParameterBag from plain arrays on controllers (internal change)
 - Upgraded to Baïkal 0.4.6 inside the development machine
 - Upgraded to FullCalendar 3.0.0
+- Upgraded to Symfony 2.8.12 components
+- Upgraded to Guzzle 6.2.2 (HTTP_PROXY vulnerability fixed)
+- Upgraded to sabre/vobject 4.1.1
 
 ### Added
 
