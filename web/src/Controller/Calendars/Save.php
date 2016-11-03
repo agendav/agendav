@@ -71,7 +71,7 @@ class Save extends JSONController
             return $this->updateCalDAV($calendar);
         }
 
-        $shares_repository = $app['shares_repository'];
+        $shares_repository = $app['shares.repository'];
         $user_principal_url = $app['session']->get('principal_url');
         $current_user_principal = new Principal($user_principal_url);
 
