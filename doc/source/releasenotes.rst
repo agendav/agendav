@@ -3,6 +3,17 @@
 Release notes
 =============
 
+.. _v2.0.0-rc1:
+
+2.0.0-rc1 (2016-11-05)
+------------------------
+
+* This release candidate handles shared calendars again. If you want to upgrade from AgenDAV 1.2.6.2 and
+  you use calendar sharing, note that running an SQL statement is required to complete the upgrade.
+  More details can be found in the :doc:`admin/upgrading` section.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
 .. _v2.0.0-beta2:
 
 2.0.0-beta2 (2016-04-20)
