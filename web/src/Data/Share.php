@@ -180,6 +180,9 @@ class Share
      */
     public function getProperties()
     {
+        if (!is_array($this->options)) {
+            return array();
+        }
         return $this->options;
     }
 
