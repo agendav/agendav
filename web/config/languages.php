@@ -12,7 +12,7 @@ return [
     'it_IT' => 'Italiano (Italia)',
     'nl_NL' => 'Nederlands (Nederland)',
     'ja_JP' => '日本語',
-    'nb' => 'Norsk bokmål',
+    'nb_NO' => 'Norsk bokmål',
     'pl' => 'Polski',
     'pt_BR' => 'Português (Brasil)',
     'pt_PT' => 'Português (Portugal)',

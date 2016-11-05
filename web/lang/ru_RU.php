@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Четверг',
     'labels.friday' => 'Пятница',
     'labels.saturday' => 'Суббота',
-    'labels.sunday' => 'Воскресенье',
 
     'labels.sunday_short' => 'Вс',
     'labels.monday_short' => 'Пн',
@@ -109,11 +108,11 @@ $translations = array(
     'labels.cancel' => 'Отмена',
     'labels.yes' => 'Да',
 
-    'labels.delete_only_this_repetition' => 'Delete only this one',
-    'labels.delete_all_repetitions' => 'Delete all repetitions',
+    'labels.delete_only_this_repetition' => 'Удалить только это событие',
+    'labels.delete_all_repetitions' => 'Удалить все события',
 
-    'labels.edit_only_this_repetition' => 'Edit only this one',
-    'labels.edit_all_repetitions' => 'Edit all repetitions',
+    'labels.edit_only_this_repetition' => 'Изменить только это событие',
+    'labels.edit_all_repetitions' => 'Изменить все события серии',
 
     'labels.untitled' => 'Без названия',
 
@@ -172,10 +171,10 @@ $translations = array(
     'messages.error_denied' => 'Сервер отклонил запрос (нет прав)',
 
     'messages.info_confirmcaldelete' => 'Вы уверены, что хотите удалить календарь?',
-    'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
+    'messages.info_edit_recurrent_event' => 'Это повторяющееся событие. Изменить только это событие или все события серии.',
     'messages.info_base_event_with_exceptions_modification' => 'This recurrent event has one or more exceptions set. If you use the "Edit all repetitions" button, exceptions will be removed',
-    'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
-    'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
+    'messages.info_delete_recurrent_event' => 'Это повторяющееся событие. Удалить только это событие или все события серии?',
+    'messages.info_delete_recurrent_event_first_instance' => 'Это первое событие в серии повторяющихся событий. Удаление этого события повлечёт за собой удаление всех событий серии. Вы уверены?',
     'messages.info_permanentremoval' => 'Информация будет безвозвратно удалена',
     'messages.info_sharedby' => '%user предоставил Вам доступ к этому календарю',
     'messages.info_shareexplanation' => 'Вы можете сделать этот календарь общим для других пользователей и разрешить им вносить изменения. Укажите их имена пользователей ниже, разделив запятыми или пробелами',
@@ -203,7 +202,7 @@ $translations = array(
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Получен неожиданный HTTP код %code% от сервера',
-    'messages.error_network_issues' => 'We are having network issues. Please, try again later',
+    'messages.error_network_issues' => 'Сетевая ошибка. Попробуйте позже',
     'messages.error_shareunknownusers' => 'Пользователь, которого Вы указали не существует',
     'messages.error_empty_fields' => 'Some required fields are empty',
 
@@ -214,14 +213,14 @@ $translations = array(
 
     'messages.more_events' => '+ %count событий',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Примечание: уведомления будут отображаться только в клиентах с поддержкой CalDAV . AgenDAV не может отобразить их',
 
-    'messages.request_error' => 'Error found on your request',
-    'messages.page_not_found' => 'Page not found',
-    'messages.internal_server_error' => 'Internal server error',
+    'messages.request_error' => 'Обнаружена ошибка в Вашем запросе',
+    'messages.page_not_found' => 'Страница не найдена',
+    'messages.internal_server_error' => 'Внутренняя ошибка',
 
     'rrule.every' => 'каждый',
-    'rrule.until' => 'until',
+    'rrule.until' => 'пока',
     'rrule.day' => 'день',
     'rrule.days' => 'дни',
     'rrule.week' => 'неделя',
@@ -230,23 +229,23 @@ $translations = array(
     'rrule.months' => 'месяца(-ев)',
     'rrule.year' => 'год',
     'rrule.years' => 'года(лет)',
-    'rrule.for' => 'for',
+    'rrule.for' => 'для',
     'rrule.on' => 'on',
-    'rrule.time' => 'time',
+    'rrule.time' => 'время',
     'rrule.times' => 'times',
-    'rrule.weekday' => 'weekday',
-    'rrule.weekdays' => 'weekdays',
-    'rrule.in' => 'in',
+    'rrule.weekday' => 'будний день',
+    'rrule.weekdays' => 'будни',
+    'rrule.in' => 'в',
     'rrule.on the' => 'on the',
-    'rrule.and' => 'and',
-    'rrule.or' => 'or',
+    'rrule.and' => 'и',
+    'rrule.or' => 'или',
     'rrule.the' => 'the',
-    'rrule.last' => 'last',
+    'rrule.last' => 'последний',
 
-    'rrule.st' => 'st',
-    'rrule.nd' => 'nd',
-    'rrule.rd' => 'rd',
-    'rrule.th' => 'th',
+    'rrule.st' => 'ый',
+    'rrule.nd' => 'ой',
+    'rrule.rd' => 'ий',
+    'rrule.th' => 'ый',
 );
 
 return $translations;

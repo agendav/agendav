@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.0-rc2] - 2016-11-05
+
+### Changed
+
+- Updated translations
+
 ## [2.0.0-rc1] - 2016-11-05
 
 ### Changed

@@ -3,6 +3,14 @@
 Release notes
 =============
 
+.. _v2.0.0-rc2:
+
+2.0.0-rc2 (2016-11-05)
+------------------------
+
+* This release includes updated translations. They were missing on rc1
+
+
 .. _v2.0.0-rc1:
 
 2.0.0-rc1 (2016-11-05)
