@@ -99,12 +99,16 @@ caches:
 
     $ rm -rf web/var/cache/twig/*
 
-Finishing the upgrade from AgenDAV 1.2.x
----------------------------------------
+Finishing the upgrade from AgenDAV 1.2.x (shares)
+-------------------------------------------------
 
-The schema upgrading process from AgenDAV 1.2.x can't completely upgrade your ``shares`` table. The
-old table schema makes hard to apply a clean migration, so an additional step is required to adapt
-the shares data to the new expected format.
+If you were using calendar sharing, there is an additional step required to complete the upgrade.
+The schema upgrading process from AgenDAV 1.2.x can't handle the upgrade for the ``shares`` table.
+The old table schema makes hard to apply a clean migration, so you have to run a query to adapt the
+shares data to the new expected format.
+
+The following queries will change the ``shares`` table for a DAViCal server, but can be adapted for
+other CalDAV servers.
 
 MySQL
 *****
