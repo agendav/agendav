@@ -45,7 +45,7 @@ class VObjectParser implements Parser
     public function parse($icalendar)
     {
         try {
-            $vcalendar = Reader::read($icalendar, Reader::OPTION_FORGIVING);
+            $vcalendar = Reader::read($icalendar, Reader::OPTION_FORGIVING | Reader::OPTION_IGNORE_INVALID_LINES);
         } catch (ParseException $exception) {
             throw new \UnexpectedValueException($exception->getMessage());
         }

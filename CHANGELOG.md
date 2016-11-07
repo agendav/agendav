@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+
+### Changed
+
+- Made iCalendar data parsing more permissive
+
 ## [2.0.0-rc2] - 2016-11-05
 
 ### Changed
