@@ -2,11 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [2.0.0] - 2016-11-19
 
 ### Changed
 
 - Made iCalendar data parsing more permissive
+- Log exception messages when an unexpected HTTP code is received
 
 ## [2.0.0-rc2] - 2016-11-05
 

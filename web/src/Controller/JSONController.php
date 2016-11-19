@@ -123,8 +123,9 @@ abstract class JSONController
 
         } catch (\AgenDAV\Exception $exception) {
             $app['monolog']->addWarning(sprintf(
-                "Received unexpected HTTP code %d for input: %s",
+                "Received unexpected HTTP code %d (%s) for input: %s",
                 $exception->getCode(),
+                $exception->getMessage(),
                 var_export($input, true)
             ));
 

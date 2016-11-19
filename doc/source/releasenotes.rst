@@ -3,6 +3,27 @@
 Release notes
 =============
 
+.. _v2.0.0:
+
+2.0.0 (2016-11-19)
+------------------------
+
+Relevant release notes from all 2.0.0 release candidates and betas:
+
+* Note that AgenDAV now requires PHP 5.5.9 or greater.
+* AgenDAV needs `Composer <http://getcomposer.org>`_. If you are using the
+  tarball from the website you don't have to worry at all. Otherwise, you'll
+  have to install it and fetch AgenDAV dependencies. You'll find instructions on
+  :ref:`download_dependencies`.
+* AgenDAV now uses a single ``settings.php`` file. Details on this file are provided on
+  :ref:`configuration`.
+* Deep database changes are required. Instructions are provided on :ref:`dbupgrade`
+* If you want to upgrade from AgenDAV 1.2.6.2 and you use calendar sharing, note that running an SQL
+  statement is required to complete the upgrade.  More details can be found in the
+  :doc:`admin/upgrading` section.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
 .. _v2.0.0-rc2:
 
 2.0.0-rc2 (2016-11-05)

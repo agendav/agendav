@@ -16,7 +16,7 @@ AgenDAV requires:
 
 * A CalDAV server (such as [Baïkal](http://baikal-server.com/), [DAViCal](http://www.davical.org/), etc)
 * A web server
-* PHP >= 5.5.0
+* PHP >= 5.5.9
 * PHP ctype extension
 * PHP mbstring extension
 * PHP mcrypt extension
