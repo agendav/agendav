@@ -3,6 +3,7 @@
 return [
     'br'    => 'Brezhoneg',
     'ca'    => 'Català',
+    'cs'    => 'Čeština',
     'de_DE' => 'Deutsch (Deutschland)',
     'en'    => 'English',
     'es_ES' => 'Español (España)',
@@ -10,6 +11,7 @@ return [
     'fi'    => 'Suomi',
     'fr_FR' => 'Français (France)',
     'hr_HR' => 'Hrvatski (Hrvatska)',
+    'hu_HU' => 'Magyar (Magyarország)',
     'it_IT' => 'Italiano (Italia)',
     'ja_JP' => '日本語',
     'nb_NO' => 'Norsk bokmål',
