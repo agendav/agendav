@@ -33,7 +33,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->vcalendar = new VCalendar;
-        $this->now = new \DateTimeImmutable();
+        $this->now = new \DateTimeImmutable('2015-01-09 01:23:45');
         $this->today_utc = new \DateTimeImmutable('2015-01-09 00:00:00', new \DateTimeZone('UTC'));
     }
 
@@ -206,7 +206,7 @@ class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($instance->isAllDay());
 
         $instance->setStart($this->today_utc, true);
-        $this->assertEquals($this->today_utc, $instance->getStart());
+        $this->assertEquals($this->today_utc, $instance->getStart(), 'UTC');
         $this->assertTrue($instance->isAllDay());
     }
 

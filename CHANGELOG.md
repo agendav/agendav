@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Added some missing Fullcalendar translations. Now the calendar UI matches
   user configured language
+- Added tests for PHP 7.1
 
 ## [2.0.0] - 2016-11-19
 

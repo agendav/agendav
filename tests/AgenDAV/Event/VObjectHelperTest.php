@@ -153,7 +153,7 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         $vevent->DTSTART = new \DateTimeImmutable();
         $vevent->RRULE = 'FREQ=DAILY';
 
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('2016-12-06 20:32:15');
 
         VObjectHelper::addExdateToVEvent($vevent, $now);
 
@@ -170,7 +170,7 @@ class VObjectHelperTest extends \PHPUnit_Framework_TestCase
         $vevent->DTSTART = new \DateTimeImmutable();
         $vevent->RRULE = 'FREQ=DAILY';
 
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('2016-12-06 20:32:15');
         $other = $now->modify('+1 day');
 
         $vevent->add('EXDATE', [ $now ]);

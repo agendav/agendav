@@ -62,7 +62,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
 
     public function testExpand()
     {
-        $now = new \DateTimeImmutable;
+        $now = new \DateTimeImmutable('2016-12-06 20:32:00');
         $this->vevent->DTSTART = $now;
         $this->vevent->RRULE = self::$rrule;
         $event = new VObjectEvent($this->vcalendar);
@@ -267,7 +267,7 @@ class VObjectEventTest extends \PHPUnit_Framework_TestCase
         $event = new VObjectEvent($this->vcalendar);
 
         $instance = $event->createEventInstance();
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('2016-12-06 20:32:00');
         $instance->setStart($now, true);
         $instance->setSummary('New test summary');
         $instance->setRecurrenceId(RecurrenceId::buildFromString('20150110T100500Z'));
