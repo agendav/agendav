@@ -21,7 +21,7 @@ class Version20140812200547 extends AgenDAVMigration
             $sql = 'INSERT INTO shares (`sid`, `owner`, `calendar`, `with`, `options`, `rw`) SELECT'
                 .' `sid`, `user_from`, `calendar`, `user_which`, `options`, `write_access` FROM shared';
         } else {
-            $sql = 'INSERT INTO shares (sid, owner, calendar, with, options, rw) SELECT'
+            $sql = 'INSERT INTO shares (sid, owner, calendar, "with", options, rw) SELECT'
                 .' sid, user_from, calendar, user_which, options, write_access FROM shared';
         }
 
