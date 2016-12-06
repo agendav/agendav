@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+
+### Changed
+
+- Added some missing Fullcalendar translations. Now the calendar UI matches
+  user configured language
+
 ## [2.0.0] - 2016-11-19
 
 ### Changed
