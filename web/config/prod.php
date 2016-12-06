@@ -32,27 +32,27 @@ $app['languages'] = require __DIR__ . '/languages.php';
 
 // Fullcalendar language packs
 $app['fullcalendar.languages'] = [
-    //'br' => 'en', // Missing
-    'ca' => 'ca',
+    //'br'  => 'en', // Missing
+    'ca'    => 'ca',
     'de_DE' => 'de',
-    //'et' => 'en', // Missing
-    //'en' => 'en',
+    //'en'  => 'en',
     'es_ES' => 'es',
+    //'et'  => 'en', // Missing
+    'fi'    => 'fi',
     'fr_FR' => 'fr',
     'hr_HR' => 'hr',
     'it_IT' => 'it',
     'ja_JP' => 'ja',
-    'nl_NL' => 'nl',
     'nb_NO' => 'nb',
-    'pl' => 'pl',
+    'nl_NL' => 'nl',
+    'pl'    => 'pl',
     'pt_BR' => 'pt-br',
-    'fi' => 'fi',
-    'sv_SE' => 'sv',
+    'pt_PT' => 'pt',
     'ru_RU' => 'ru',
+    'sk'    => 'sk',
+    'sv_SE' => 'sv',
+    'tr'    => 'tr',
 ];
-
-
-
 
 // Load configuration settings
 if (!file_exists(__DIR__ . '/settings.php')) {
