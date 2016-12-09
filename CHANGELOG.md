@@ -10,6 +10,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   user configured language
 - Added tests for PHP 7.1
 
+## Fixed
+
+- Database upgrade failed on PostgreSQL (#188)
+
 ## [2.0.0] - 2016-11-19
 
 ### Changed
