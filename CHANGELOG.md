@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   user configured language
 - Added tests for PHP 7.1
 - Upgraded to dustjs 2.7.5 and dustjs-helpers 1.7.3
+- Moved all assets inside the assets/ root directory
 
 ## Fixed
 

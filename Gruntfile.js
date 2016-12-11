@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           compress: false
         },
         files: {
-          "web/public/css/agendav.css": "web/assets/stylesheets/agendav.less"
+          "web/public/css/agendav.css": "assets/stylesheets/agendav.less"
         }
       }
     },
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
     exec: {
       patch_rrule: {
         cwd: 'bower_components/rrule/lib',
-        command: 'patch -p2 < ../../../patches/rrule-date.patch'
+        command: 'patch -p2 < ../../../assets/patches/rrule-date.patch'
       }
     },
 
@@ -156,23 +156,23 @@ module.exports = function(grunt) {
     dust: {
         defaults: {
             files: {
-                "web/public/js/templates/templates.js": "web/assets/templates/*.dust"
+                "web/public/js/templates/templates.js": "assets/templates/*.dust"
             },
             options: {
                 wrapper: false,
                 runtime: false,
-                basePath: "web/assets/templates/"
+                basePath: "assets/templates/"
             }
         }
     },
 
     watch: {
       less: {
-        files: ['./web/assets/stylesheets/*.less'],
+        files: ['./assets/stylesheets/*.less'],
         tasks: ['less']
       },
       dust: {
-        files: ['./web/assets/templates/*.dust'],
+        files: ['./assets/templates/*.dust'],
         tasks: ['dust']
       }
     },
@@ -207,7 +207,6 @@ module.exports = function(grunt) {
           '!**/doc/build/**',
           '!**/dist/**',
           '!**/node_modules/**',
-          '!**/patches/**',
           '!**/docs/**',
           '!**/web/var/cache/twig/**',
           '!**/web/var/cache/profiler/**',
