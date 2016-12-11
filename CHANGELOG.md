@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added some missing Fullcalendar translations. Now the calendar UI matches
   user configured language
 - Added tests for PHP 7.1
+- Upgraded to dustjs 2.7.5 and dustjs-helpers 1.7.3
 
 ## Fixed
 

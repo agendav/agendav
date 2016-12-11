@@ -1,96 +1,168 @@
-/*! dustjs-helpers - v1.5.0
-* https://github.com/linkedin/dustjs-helpers
-* Copyright (c) 2014 Aleksander Williams; Released under the MIT License */
-(function(dust){
+/*! dustjs-helpers - v1.7.3
+* http://dustjs.com/
+* Copyright (c) 2015 Aleksander Williams; Released under the MIT License */
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd && define.amd.dust === true) {
+    define(['dust.core'], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory(require('dustjs-linkedin'));
+  } else {
+    factory(root.dust);
+  }
+}(this, function(dust) {
 
-// Use dust's built-in logging when available
-var _log = dust.log ? function(msg, level) {
+function log(helper, msg, level) {
   level = level || "INFO";
-  dust.log(msg, level);
-} : function() {};
+  helper = helper ? '{@' + helper + '}: ' : '';
+  dust.log(helper + msg, level);
+}
 
 var _deprecatedCache = {};
 function _deprecated(target) {
   if(_deprecatedCache[target]) { return; }
-  _log("Deprecation warning: " + target + " is deprecated and will be removed in a future version of dustjs-helpers", "WARN");
-  _log("For help and a deprecation timeline, see https://github.com/linkedin/dustjs-helpers/wiki/Deprecated-Features#" + target.replace(/\W+/g, ""), "WARN");
+  log(target, "Deprecation warning: " + target + " is deprecated and will be removed in a future version of dustjs-helpers", "WARN");
+  log(null, "For help and a deprecation timeline, see https://github.com/linkedin/dustjs-helpers/wiki/Deprecated-Features#" + target.replace(/\W+/g, ""), "WARN");
   _deprecatedCache[target] = true;
 }
 
 function isSelect(context) {
-  var value = context.current();
-  return typeof value === "object" && value.isSelect === true;
+  return context.stack.tail &&
+         context.stack.tail.head &&
+         typeof context.stack.tail.head.__select__ !== "undefined";
 }
 
-// Utility method : toString() equivalent for functions
+function getSelectState(context) {
+  return isSelect(context) && context.get('__select__');
+}
+
+/**
+ * Adds a special __select__ key behind the head of the context stack. Used to maintain the state
+ * of {@select} blocks
+ * @param context {Context} add state to this Context
+ * @param opts {Object} add these properties to the state (`key` and `type`)
+ */
+function addSelectState(context, opts) {
+  var head = context.stack.head,
+      newContext = context.rebase(),
+      key;
+
+  if(context.stack && context.stack.tail) {
+    newContext.stack = context.stack.tail;
+  }
+
+  var state = {
+    isPending: false,
+    isResolved: false,
+    isDeferredComplete: false,
+    deferreds: []
+  };
+
+  for(key in opts) {
+    state[key] = opts[key];
+  }
+
+  return newContext
+  .push({ "__select__": state })
+  .push(head, context.stack.index, context.stack.of);
+}
+
+/**
+ * After a {@select} or {@math} block is complete, they invoke this function
+ */
+function resolveSelectDeferreds(state) {
+  var x, len;
+  state.isDeferredPending = true;
+  if(state.deferreds.length) {
+    state.isDeferredComplete = true;
+    for(x=0, len=state.deferreds.length; x<len; x++) {
+      state.deferreds[x]();
+    }
+  }
+  state.isDeferredPending = false;
+}
+
+/**
+ * Used by {@contextDump}
+ */
 function jsonFilter(key, value) {
   if (typeof value === "function") {
-    //to make sure all environments format functions the same way
     return value.toString()
-      //remove all leading and trailing whitespace
       .replace(/(^\s+|\s+$)/mg, '')
-      //remove new line characters
       .replace(/\n/mg, '')
-      //replace , and 0 or more spaces with ", "
       .replace(/,\s*/mg, ', ')
-      //insert space between ){
-      .replace(/\)\{/mg, ') {')
-    ;
+      .replace(/\)\{/mg, ') {');
   }
   return value;
 }
 
-// Utility method: to invoke the given filter operation such as eq/gt etc
-function filter(chunk, context, bodies, params, filterOp) {
-  params = params || {};
-  var body = bodies.block,
-      actualKey,
-      expectedValue,
-      filterOpType = params.filterOpType || '';
+/**
+ * Generate a truth test helper
+ */
+function truthTest(name, test) {
+  return function(chunk, context, bodies, params) {
+    return filter(chunk, context, bodies, params, name, test);
+  };
+}
 
-  // when @eq, @lt etc are used as standalone helpers, key is required and hence check for defined
-  if (params.hasOwnProperty("key")) {
-    actualKey = dust.helpers.tap(params.key, chunk, context);
-  } else if (isSelect(context)) {
-    actualKey = context.current().selectKey;
-    //  supports only one of the blocks in the select to be selected
-    if (context.current().isResolved) {
-      filterOp = function() { return false; };
-    }
-  } else {
-    _log("No key specified for filter in:" + filterOpType + " helper ");
+/**
+ * This function is invoked by truth test helpers
+ */
+function filter(chunk, context, bodies, params, helperName, test) {
+  var body = bodies.block,
+      skip = bodies['else'],
+      selectState = getSelectState(context) || {},
+      willResolve, key, value, type;
+
+  // Once one truth test in a select passes, short-circuit the rest of the tests
+  if (selectState.isResolved && !selectState.isDeferredPending) {
     return chunk;
   }
-  expectedValue = dust.helpers.tap(params.value, chunk, context);
-  // coerce both the actualKey and expectedValue to the same type for equality and non-equality compares
-  if (filterOp(coerce(expectedValue, params.type, context), coerce(actualKey, params.type, context))) {
-    if (isSelect(context)) {
-      context.current().isResolved = true;
+
+  // First check for a key on the helper itself, then look for a key on the {@select}
+  if (params.hasOwnProperty('key')) {
+    key = params.key;
+  } else if (selectState.hasOwnProperty('key')) {
+    key = selectState.key;
+  } else {
+    log(helperName, "No key specified", "WARN");
+    return chunk;
+  }
+
+  type = params.type || selectState.type;
+
+  key = coerce(context.resolve(key), type);
+  value = coerce(context.resolve(params.value), type);
+
+  if (test(key, value)) {
+    // Once a truth test passes, put the select into "pending" state. Now we can render the body of
+    // the truth test (which may contain truth tests) without altering the state of the select.
+    if (!selectState.isPending) {
+      willResolve = true;
+      selectState.isPending = true;
     }
-    // we want helpers without bodies to fail gracefully so check it first
-    if(body) {
-     return chunk.render(body, context);
-    } else {
-      _log("No body specified for " + filterOpType + " helper ");
-      return chunk;
+    if (body) {
+      chunk = chunk.render(body, context);
     }
-  } else if (bodies['else']) {
-    return chunk.render(bodies['else'], context);
+    if (willResolve) {
+      selectState.isResolved = true;
+    }
+  } else if (skip) {
+    chunk = chunk.render(skip, context);
   }
   return chunk;
 }
 
-function coerce(value, type, context) {
-  if (typeof value !== "undefined") {
-    switch (type || typeof value) {
-      case 'number': return +value;
-      case 'string': return String(value);
-      case 'boolean':
-        value = (value === 'false' ? false : value);
-        return Boolean(value);
-      case 'date': return new Date(value);
-      case 'context': return context.get(value);
-    }
+function coerce(value, type) {
+  if (type) {
+    type = type.toLowerCase();
+  }
+  switch (type) {
+    case 'number': return +value;
+    case 'string': return String(value);
+    case 'boolean':
+      value = (value === 'false' ? false : value);
+      return Boolean(value);
+    case 'date': return new Date(value);
   }
 
   return value;
@@ -99,50 +171,11 @@ function coerce(value, type, context) {
 var helpers = {
 
   // Utility helping to resolve dust references in the given chunk
-  // uses the Chunk.render method to resolve value
-  /*
-   Reference resolution rules:
-   if value exists in JSON:
-    "" or '' will evaluate to false, boolean false, null, or undefined will evaluate to false,
-    numeric 0 evaluates to true, so does, string "0", string "null", string "undefined" and string "false".
-    Also note that empty array -> [] is evaluated to false and empty object -> {} and non-empty object are evaluated to true
-    The type of the return value is string ( since we concatenate to support interpolated references
-
-   if value does not exist in JSON and the input is a single reference: {x}
-     dust render emits empty string, and we then return false
-
-   if values does not exist in JSON and the input is interpolated references : {x} < {y}
-     dust render emits <  and we return the partial output
-
-  */
+  // uses native Dust Context#resolve (available since Dust 2.6.2)
   "tap": function(input, chunk, context) {
-    // return given input if there is no dust reference to resolve
-    // dust compiles a string/reference such as {foo} to a function
-    if (typeof input !== "function") {
-      return input;
-    }
-
-    var dustBodyOutput = '',
-      returnValue;
-
-    //use chunk render to evaluate output. For simple functions result will be returned from render call,
-    //for dust body functions result will be output via callback function
-    returnValue = chunk.tap(function(data) {
-      dustBodyOutput += data;
-      return '';
-    }).render(input, context);
-
-    chunk.untap();
-
-    //assume it's a simple function call if return result is not a chunk
-    if (returnValue.constructor !== chunk.constructor) {
-      //use returnValue as a result of tap
-      return returnValue;
-    } else if (dustBodyOutput === '') {
-      return false;
-    } else {
-      return dustBodyOutput;
-    }
+    // deprecated for removal in 1.8
+    _deprecated("tap");
+    return context.resolve(input);
   },
 
   "sep": function(chunk, context, bodies) {
@@ -157,378 +190,271 @@ var helpers = {
     }
   },
 
-  "idx": function(chunk, context, bodies) {
-    var body = bodies.block;
-    // Will be removed in 1.6
-    _deprecated("{@idx}");
-    if(body) {
-      return body(chunk, context.push(context.stack.index));
+  "first": function(chunk, context, bodies) {
+    if (context.stack.index === 0) {
+      return bodies.block(chunk, context);
     }
-    else {
-      return chunk;
+    return chunk;
+  },
+
+  "last": function(chunk, context, bodies) {
+    if (context.stack.index === context.stack.of - 1) {
+      return bodies.block(chunk, context);
     }
+    return chunk;
   },
 
   /**
-   * contextDump helper
-   * @param key specifies how much to dump.
-   * "current" dumps current context. "full" dumps the full context stack.
-   * @param to specifies where to write dump output.
-   * Values can be "console" or "output". Default is output.
+   * {@contextDump}
+   * @param key {String} set to "full" to the full context stack, otherwise the current context is dumped
+   * @param to {String} set to "console" to log to console, otherwise outputs to the chunk
    */
   "contextDump": function(chunk, context, bodies, params) {
-    var p = params || {},
-      to = p.to || 'output',
-      key = p.key || 'current',
-      dump;
-    to = dust.helpers.tap(to, chunk, context);
-    key = dust.helpers.tap(key, chunk, context);
-    if (key === 'full') {
-      dump = JSON.stringify(context.stack, jsonFilter, 2);
+    var to = context.resolve(params.to),
+        key = context.resolve(params.key),
+        target, output;
+    switch(key) {
+      case 'full':
+        target = context.stack;
+        break;
+      default:
+        target = context.stack.head;
     }
-    else {
-      dump = JSON.stringify(context.stack.head, jsonFilter, 2);
+    output = JSON.stringify(target, jsonFilter, 2);
+    switch(to) {
+      case 'console':
+        log('contextDump', output);
+        break;
+      default:
+        output = output.replace(/</g, '\\u003c');
+        chunk = chunk.write(output);
     }
-    if (to === 'console') {
-      _log(dump);
+    return chunk;
+  },
+
+  /**
+   * {@math}
+   * @param key first value
+   * @param method {String} operation to perform
+   * @param operand second value (not required for operations like `abs`)
+   * @param round if truthy, round() the result
+   */
+  "math": function (chunk, context, bodies, params) {
+    var key = params.key,
+        method = params.method,
+        operand = params.operand,
+        round = params.round,
+        output, state, x, len;
+
+    if(!params.hasOwnProperty('key') || !params.method) {
+      log("math", "`key` or `method` was not provided", "ERROR");
       return chunk;
     }
-    else {
-      // encode opening brackets when outputting to html
-      dump = dump.replace(/</g, '\\u003c');
 
-      return chunk.write(dump);
+    key = parseFloat(context.resolve(key));
+    operand = parseFloat(context.resolve(operand));
+
+    switch(method) {
+      case "mod":
+        if(operand === 0) {
+          log("math", "Division by 0", "ERROR");
+        }
+        output = key % operand;
+        break;
+      case "add":
+        output = key + operand;
+        break;
+      case "subtract":
+        output = key - operand;
+        break;
+      case "multiply":
+        output = key * operand;
+        break;
+      case "divide":
+        if(operand === 0) {
+          log("math", "Division by 0", "ERROR");
+        }
+        output = key / operand;
+        break;
+      case "ceil":
+      case "floor":
+      case "round":
+      case "abs":
+        output = Math[method](key);
+        break;
+      case "toint":
+        output = parseInt(key, 10);
+        break;
+      default:
+        log("math", "Method `" + method + "` is not supported", "ERROR");
     }
-  },
-  /**
-   if helper for complex evaluation complex logic expressions.
-   Note : #1 if helper fails gracefully when there is no body block nor else block
-          #2 Undefined values and false values in the JSON need to be handled specially with .length check
-             for e.g @if cond=" '{a}'.length && '{b}'.length" is advised when there are chances of the a and b been
-             undefined or false in the context
-          #3 Use only when the default ? and ^ dust operators and the select fall short in addressing the given logic,
-             since eval executes in the global scope
-          #4 All dust references are default escaped as they are resolved, hence eval will block malicious scripts in the context
-             Be mindful of evaluating a expression that is passed through the unescape filter -> |s
-   @param cond, either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. cond="2>3"
-                a dust reference is also enclosed in double quotes, e.g. cond="'{val}'' > 3"
-    cond argument should evaluate to a valid javascript expression
-   **/
 
-  "if": function( chunk, context, bodies, params ) {
-    var body = bodies.block,
-        skip = bodies['else'],
-        cond;
-
-    if(params && params.cond) {
-      // Will be removed in 1.6
-      _deprecated("{@if}");
-
-      cond = dust.helpers.tap(params.cond, chunk, context);
-      // eval expressions with given dust references
-      if(eval(cond)){
-       if(body) {
-        return chunk.render( bodies.block, context );
-       }
-       else {
-         _log("Missing body block in the if helper!");
-         return chunk;
-       }
+    if (typeof output !== 'undefined') {
+      if (round) {
+        output = Math.round(output);
       }
-      if(skip){
-       return chunk.render( bodies['else'], context );
+      if (bodies && bodies.block) {
+        context = addSelectState(context, { key: output });
+        chunk = chunk.render(bodies.block, context);
+        resolveSelectDeferreds(getSelectState(context));
+      } else {
+        chunk = chunk.write(output);
       }
     }
-    // no condition
-    else {
-      _log("No condition given in the if helper!");
-    }
+
     return chunk;
   },
 
   /**
-   * math helper
-   * @param key is the value to perform math against
-   * @param method is the math method,  is a valid string supported by math helper like mod, add, subtract
-   * @param operand is the second value needed for operations like mod, add, subtract, etc.
-   * @param round is a flag to assure that an integer is returned
+   * {@select}
+   * Groups a set of truth tests and outputs the first one that passes.
+   * Also contains {@any} and {@none} blocks.
+   * @param key a value or reference to use as the left-hand side of comparisons
+   * @param type coerce all truth test keys without an explicit type to this type
    */
-  "math": function ( chunk, context, bodies, params ) {
-    //key and method are required for further processing
-    if( params && typeof params.key !== "undefined" && params.method ){
-      var key  = params.key,
-          method = params.method,
-          // operand can be null for "abs", ceil and floor
-          operand = params.operand,
-          round = params.round,
-          mathOut = null,
-          operError = function(){
-              _log("operand is required for this math method");
-              return null;
-          };
-      key  = dust.helpers.tap(key, chunk, context);
-      operand = dust.helpers.tap(operand, chunk, context);
-      //  TODO: handle  and tests for negatives and floats in all math operations
-      switch(method) {
-        case "mod":
-          if(operand === 0 || operand === -0) {
-            _log("operand for divide operation is 0/-0: expect Nan!");
-          }
-          mathOut = parseFloat(key) %  parseFloat(operand);
-          break;
-        case "add":
-          mathOut = parseFloat(key) + parseFloat(operand);
-          break;
-        case "subtract":
-          mathOut = parseFloat(key) - parseFloat(operand);
-          break;
-        case "multiply":
-          mathOut = parseFloat(key) * parseFloat(operand);
-          break;
-        case "divide":
-         if(operand === 0 || operand === -0) {
-           _log("operand for divide operation is 0/-0: expect Nan/Infinity!");
-         }
-          mathOut = parseFloat(key) / parseFloat(operand);
-          break;
-        case "ceil":
-          mathOut = Math.ceil(parseFloat(key));
-          break;
-        case "floor":
-          mathOut = Math.floor(parseFloat(key));
-          break;
-        case "round":
-          mathOut = Math.round(parseFloat(key));
-          break;
-        case "abs":
-          mathOut = Math.abs(parseFloat(key));
-          break;
-        default:
-          _log("method passed is not supported");
-     }
-
-      if (mathOut !== null){
-        if (round) {
-          mathOut = Math.round(mathOut);
-        }
-        if (bodies && bodies.block) {
-          // with bodies act like the select helper with mathOut as the key
-          // like the select helper bodies['else'] is meaningless and is ignored
-          return chunk.render(bodies.block, context.push({ isSelect: true, isResolved: false, selectKey: mathOut }));
-        } else {
-          // self closing math helper will return the calculated output
-          return chunk.write(mathOut);
-        }
-       } else {
-        return chunk;
-      }
-    }
-    // no key parameter and no method
-    else {
-      _log("Key is a required parameter for math helper along with method/operand!");
-    }
-    return chunk;
-  },
-   /**
-   select helper works with one of the eq/ne/gt/gte/lt/lte/default providing the functionality
-   of branching conditions
-   @param key,  ( required ) either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   **/
   "select": function(chunk, context, bodies, params) {
-    var body = bodies.block;
-    // key is required for processing, hence check for defined
-    if( params && typeof params.key !== "undefined"){
-      // returns given input as output, if the input is not a dust reference, else does a context lookup
-      var key = dust.helpers.tap(params.key, chunk, context);
-      // bodies['else'] is meaningless and is ignored
-      if( body ) {
-       return chunk.render(bodies.block, context.push({ isSelect: true, isResolved: false, selectKey: key }));
+    var body = bodies.block,
+        state = {};
+
+    if (params.hasOwnProperty('key')) {
+      state.key = context.resolve(params.key);
+    }
+    if (params.hasOwnProperty('type')) {
+      state.type = params.type;
+    }
+
+    if (body) {
+      context = addSelectState(context, state);
+      chunk = chunk.render(body, context);
+      resolveSelectDeferreds(getSelectState(context));
+    } else {
+      log("select", "Missing body block", "WARN");
+    }
+    return chunk;
+  },
+
+  /**
+   * Truth test helpers
+   * @param key a value or reference to use as the left-hand side of comparisons
+   * @param value a value or reference to use as the right-hand side of comparisons
+   * @param type if specified, `key` and `value` will be forcibly cast to this type
+   */
+  "eq": truthTest('eq', function(left, right) {
+    return left === right;
+  }),
+  "ne": truthTest('ne', function(left, right) {
+    return left !== right;
+  }),
+  "lt": truthTest('lt', function(left, right) {
+    return left < right;
+  }),
+  "lte": truthTest('lte', function(left, right) {
+    return left <= right;
+  }),
+  "gt": truthTest('gt', function(left, right) {
+    return left > right;
+  }),
+  "gte": truthTest('gte', function(left, right) {
+    return left >= right;
+  }),
+
+  /**
+   * {@any}
+   * Outputs as long as at least one truth test inside a {@select} has passed.
+   * Must be contained inside a {@select} block.
+   * The passing truth test can be before or after the {@any} block.
+   */
+  "any": function(chunk, context, bodies, params) {
+    var selectState = getSelectState(context);
+
+    if(!selectState) {
+      log("any", "Must be used inside a {@select} block", "ERROR");
+    } else {
+      if(selectState.isDeferredComplete) {
+        log("any", "Must not be nested inside {@any} or {@none} block", "ERROR");
+      } else {
+        chunk = chunk.map(function(chunk) {
+          selectState.deferreds.push(function() {
+            if(selectState.isResolved) {
+              chunk = chunk.render(bodies.block, context);
+            }
+            chunk.end();
+          });
+        });
       }
-      else {
-       _log("Missing body block in the select helper ");
-       return chunk;
+    }
+    return chunk;
+  },
+
+  /**
+   * {@none}
+   * Outputs if no truth tests inside a {@select} pass.
+   * Must be contained inside a {@select} block.
+   * The position of the helper does not matter.
+   */
+  "none": function(chunk, context, bodies, params) {
+    var selectState = getSelectState(context);
+
+    if(!selectState) {
+      log("none", "Must be used inside a {@select} block", "ERROR");
+    } else {
+      if(selectState.isDeferredComplete) {
+        log("none", "Must not be nested inside {@any} or {@none} block", "ERROR");
+      } else {
+        chunk = chunk.map(function(chunk) {
+          selectState.deferreds.push(function() {
+            if(!selectState.isResolved) {
+              chunk = chunk.render(bodies.block, context);
+            }
+            chunk.end();
+          });
+        });
       }
     }
-    // no key
-    else {
-      _log("No key given in the select helper!");
-    }
     return chunk;
   },
 
   /**
-   eq helper compares the given key is same as the expected value
-   It can be used standalone or in conjunction with select for multiple branching
-   @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
-                either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   Note : use type="number" when comparing numeric
-   **/
-  "eq": function(chunk, context, bodies, params) {
-    if(params) {
-      params.filterOpType = "eq";
-      return filter(chunk, context, bodies, params, function(expected, actual) { return actual === expected; });
-    }
-    return chunk;
-  },
-
-  /**
-   ne helper compares the given key is not the same as the expected value
-   It can be used standalone or in conjunction with select for multiple branching
-   @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
-                either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   Note : use type="number" when comparing numeric
-   **/
-  "ne": function(chunk, context, bodies, params) {
-    if(params) {
-      params.filterOpType = "ne";
-      return filter(chunk, context, bodies, params, function(expected, actual) { return actual !== expected; });
-    }
-    return chunk;
-  },
-
-  /**
-   lt helper compares the given key is less than the expected value
-   It can be used standalone or in conjunction with select for multiple branching
-   @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
-                either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param value, The expected value to compare to, when helper is used standalone  or in conjunction with select
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   Note : use type="number" when comparing numeric
-   **/
-  "lt": function(chunk, context, bodies, params) {
-    if(params) {
-      params.filterOpType = "lt";
-      return filter(chunk, context, bodies, params, function(expected, actual) { return actual < expected; });
-    }
-    return chunk;
-  },
-
-  /**
-   lte helper compares the given key is less or equal to the expected value
-   It can be used standalone or in conjunction with select for multiple branching
-   @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
-                either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   Note : use type="number" when comparing numeric
-  **/
-  "lte": function(chunk, context, bodies, params) {
-    if(params) {
-      params.filterOpType = "lte";
-      return filter(chunk, context, bodies, params, function(expected, actual) { return actual <= expected; });
-    }
-    return chunk;
-  },
-
-
-  /**
-   gt helper compares the given key is greater than the expected value
-   It can be used standalone or in conjunction with select for multiple branching
-   @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
-                either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param value, The expected value to compare to, when helper is used standalone  or in conjunction with select
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   Note : use type="number" when comparing numeric
-   **/
-  "gt": function(chunk, context, bodies, params) {
-    // if no params do no go further
-    if(params) {
-      params.filterOpType = "gt";
-      return filter(chunk, context, bodies, params, function(expected, actual) { return actual > expected; });
-    }
-    return chunk;
-  },
-
- /**
-   gte helper, compares the given key is greater than or equal to the expected value
-   It can be used standalone or in conjunction with select for multiple branching
-   @param key,  The actual key to be compared ( optional when helper used in conjunction with select)
-                either a string literal value or a dust reference
-                a string literal value, is enclosed in double quotes, e.g. key="foo"
-                a dust reference may or may not be enclosed in double quotes, e.g. key="{val}" and key=val are both valid
-   @param value, The expected value to compare to, when helper is used standalone or in conjunction with select
-   @param type (optional), supported types are  number, boolean, string, date, context, defaults to string
-   Note : use type="number" when comparing numeric
-  **/
-  "gte": function(chunk, context, bodies, params) {
-     if(params) {
-      params.filterOpType = "gte";
-      return filter(chunk, context, bodies, params, function(expected, actual) { return actual >= expected; });
-     }
-    return chunk;
-  },
-
-  // to be used in conjunction with the select helper
-  // TODO: fix the helper to do nothing when used standalone
-  "default": function(chunk, context, bodies, params) {
-    // does not require any params
-     if(params) {
-        params.filterOpType = "default";
-      }
-     return filter(chunk, context, bodies, params, function(expected, actual) { return true; });
-  },
-
-  /**
-  * size helper prints the size of the given key
-  * Note : size helper is self closing and does not support bodies
-  * @param key, the element whose size is returned
+  * {@size}
+  * Write the size of the target to the chunk
+  * Falsy values and true have size 0
+  * Numbers are returned as-is
+  * Arrays and Strings have size equal to their length
+  * Objects have size equal to the number of keys they contain
+  * Dust bodies are evaluated and the length of the string is returned
+  * Functions are evaluated and the length of their return value is evaluated
+  * @param key find the size of this value or reference
   */
-  "size": function( chunk, context, bodies, params ) {
-    var key, value=0, nr, k;
-    params = params || {};
-    key = params.key;
-    if (!key || key === true) { //undefined, null, "", 0
+  "size": function(chunk, context, bodies, params) {
+    var key = params.key,
+        value, k;
+
+    key = context.resolve(params.key);
+    if (!key || key === true) {
       value = 0;
-    }
-    else if(dust.isArray(key)) { //array
+    } else if(dust.isArray(key)) {
       value = key.length;
-    }
-    else if (!isNaN(parseFloat(key)) && isFinite(key)) { //numeric values
+    } else if (!isNaN(parseFloat(key)) && isFinite(key)) {
       value = key;
-    }
-    else if (typeof key  === "object") { //object test
-      //objects, null and array all have typeof ojbect...
-      //null and array are already tested so typeof is sufficient http://jsperf.com/isobject-tests
-      nr = 0;
+    } else if (typeof key === "object") {
+      value = 0;
       for(k in key){
-        if(Object.hasOwnProperty.call(key,k)){
-          nr++;
+        if(key.hasOwnProperty(k)){
+          value++;
         }
       }
-      value = nr;
     } else {
-      value = (key + '').length; //any other value (strings etc.)
+      value = (key + '').length;
     }
     return chunk.write(value);
   }
 
-
 };
 
-  for (var key in helpers) {
-    dust.helpers[key] = helpers[key];
-  }
+for(var key in helpers) {
+  dust.helpers[key] = helpers[key];
+}
 
-  if(typeof exports !== 'undefined') {
-    module.exports = dust;
-  }
+return dust;
 
-})(typeof exports !== 'undefined' ? require('dustjs-linkedin') : dust);
+}));
