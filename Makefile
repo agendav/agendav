@@ -1,8 +1,9 @@
 BIN=./node_modules/.bin
 WEB_DIR=web
-ASSETS=${WEB_DIR}/public
+ASSETS=assets
+OUTPUT_DIR=${WEB_DIR}/public
 TEMPLATES_DIR=${WEB_DIR}/assets/templates
-TEMPLATES_OUTPUT=${ASSETS}/js/templates/templates.js
+TEMPLATES_OUTPUT=${OUTPUT_DIR}/js/templates/templates.js
 
 clean:
 	rm -rf node_modules
@@ -19,5 +20,10 @@ templates:
 		-o ${TEMPLATES_OUTPUT} \
 		${TEMPLATES_DIR}/*.dust
 
-.PHONY: all clean composer composer-dev templates
+less:
+	${BIN}/lessc \
+		${ASSETS}/stylesheets/agendav.less \
+		${OUTPUT_DIR}/css/agendav.css
+
+.PHONY: all clean composer composer-dev templates less
 
