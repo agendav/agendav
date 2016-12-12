@@ -26,6 +26,7 @@
   "devDependencies": {
     "less": "~2.7.1",
     "uglify-js": "~2.7.5",
+    "clean-css": "~3.4.22",
     "dustjs-linkedin": "~2.7.0",
     "dustjs-helpers": "~1.7.0"
   },

@@ -35,12 +35,12 @@ css:
 		${WEB_DIR}/public/css/jquery.qtip.css \
 		${WEB_DIR}/public/css/freeow.css \
 		${WEB_DIR}/public/css/jquery.timepicker.css \
-		${WEB_DIR}/public/css/colorpicker.css > \
-		${OUTPUT_DIR}/css/agendav-built-2.0.1.css
+		${WEB_DIR}/public/css/colorpicker.css | \
+		${BIN}/cleancss -o ${OUTPUT_DIR}/css/agendav-built-2.0.1.css
 
 	cat ${WEB_DIR}/public/css/app.print.css \
-		${WEB_DIR}/public/css/fullcalendar.print.css > \
-		${OUTPUT_DIR}/css/agendav-built-print-2.0.1.css
+		${WEB_DIR}/public/css/fullcalendar.print.css | \
+		${BIN}/cleancss -o ${OUTPUT_DIR}/css/agendav-built-print-2.0.1.css
 
 js:
 	# TODO version
@@ -76,6 +76,11 @@ js:
 		${WEB_DIR}/public/js/repeat-form.js \
 		${WEB_DIR}/public/js/app.js >> \
 		${OUTPUT_DIR}/js/agendav-built-2.0.1.js
+
+	${BIN}/uglifyjs \
+		web/public/js/agendav-built-2.0.1.js \
+		-o web/public/js/agendav-built-2.0.1.min.js \
+		-c -m
 
 
 .PHONY: all clean composer composer-dev templates less css
