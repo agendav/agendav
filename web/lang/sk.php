@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Štvrtok',
     'labels.friday' => 'Piatok',
     'labels.saturday' => 'Sobota',
-    'labels.sunday' => 'Nedeľa',
 
     'labels.sunday_short' => 'Ne',
     'labels.monday_short' => 'Po',
@@ -73,7 +72,7 @@ $translations = array(
     'labels.repeatmonthly' => 'Mesačne',
     'labels.repeatyearly' => 'Ročne',
 
-    'labels.privacy' => 'Privacy',
+    'labels.privacy' => 'Viditeľnosť',
     'labels.public' => 'Verejne',
     'labels.private' => 'Súkromne',
     'labels.confidential' => 'Dôverne',
@@ -97,17 +96,18 @@ $translations = array(
 
     'labels.calendars' => 'Kalendáre',
     'labels.shared_calendars' => 'Zdieľané kalendáre',
-    'labels.refresh' => 'Refresh',
+    'labels.refresh' => 'Aktualizovať',
     'labels.delete' => 'Zmazať',
-    'labels.add' => 'Add',
-    'labels.close' => 'Close',
-    'labels.save' => 'Save',
+    'labels.add' => 'Pridať',
+    'labels.close' => 'Zatvoriť',
+    'labels.save' => 'Uložiť',
     'labels.create' => 'Create',
-    'labels.login' => 'Log in',
-    'labels.logout' => 'Log out',
-    'labels.modify' => 'Modify',
-    'labels.cancel' => 'Cancel',
+    'labels.login' => 'Prihlásiť Sa',
+    'labels.logout' => 'Odhlásiť Sa',
+    'labels.modify' => 'Meniť',
+    'labels.cancel' => 'Zrušiť',
     'labels.yes' => 'Áno',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Delete only this one',
     'labels.delete_all_repetitions' => 'Delete all repetitions',
@@ -115,18 +115,18 @@ $translations = array(
     'labels.edit_only_this_repetition' => 'Edit only this one',
     'labels.edit_all_repetitions' => 'Edit all repetitions',
 
-    'labels.untitled' => 'Untitled',
+    'labels.untitled' => 'Nenazvaný',
 
     'labels.sharewith' => 'Share with',
     'labels.currentlysharing' => 'Currently sharing this calendar',
-    'labels.publicurl' => 'Calendar URL for CalDAV clients',
+    'labels.publicurl' => 'Kalendár URL pre CalDAV klienti',
 
-    'labels.access' => 'Access',
-    'labels.readonly' => 'Read only',
-    'labels.readandwrite' => 'Read and write',
+    'labels.access' => 'Dostupnosť',
+    'labels.readonly' => 'Iba Na Čítanie',
+    'labels.readandwrite' => 'Na Čítanie I Písanie',
 
-    'labels.preferences' => 'Preferences',
-    'labels.return' => 'Return',
+    'labels.preferences' => 'Nastavenia',
+    'labels.return' => 'Vrátiť Sa',
 
     'labels.defaultcalendar' => 'Default calendar',
 
@@ -138,10 +138,10 @@ $translations = array(
     'labels.weeks' => 'týždne',
     'labels.months' => 'Mesiace',
 
-    'labels.remindersoptions' => 'Reminders',
-    'labels.reminder' => 'Reminder',
+    'labels.remindersoptions' => 'Upozornenia',
+    'labels.reminder' => 'Upozornenie',
 
-    'labels.add_reminder' => 'Add reminder',
+    'labels.add_reminder' => 'Pridať upozornenie',
     'labels.add_share' => 'Add share',
 
     'labels.before_start' => 'before start',
@@ -154,7 +154,7 @@ $translations = array(
     'labels.never' => 'Never',
     'labels.occurrences' => 'occurrences',
 
-    'labels.timezone' => 'Timezone',
+    'labels.timezone' => 'Časové Pásmo',
     'labels.every' => 'Každý',
     'labels.repeat_by_day' => 'Repeat on',
     'labels.repeat_by_month_day' => 'Day of month',
@@ -162,9 +162,10 @@ $translations = array(
     'labels.keep_rrule' => 'Keep original repeat rule',
 
     'labels.language' => 'Jazyk',
-    'labels.date_format' => 'Date format',
-    'labels.time_format' => 'Time format',
-    'labels.weekstart' => 'Week starts on',
+    'labels.date_format' => 'Formát Dátumu',
+    'labels.time_format' => 'Formát Času',
+    'labels.weekstart' => 'Začiatok Týždňa',
+    'labels.show_week_nb' => 'Zobraziť čísla týždňov',
 
 
 // Messages
@@ -212,36 +213,36 @@ $translations = array(
 
     'messages.info_prefssaved' => 'Preferences saved',
 
-    'messages.more_events' => '+ %count events',
+    'messages.more_events' => '+ %count termíny',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
 
     'messages.request_error' => 'Error found on your request',
     'messages.page_not_found' => 'Page not found',
     'messages.internal_server_error' => 'Internal server error',
 
-    'rrule.every' => 'every',
-    'rrule.until' => 'until',
-    'rrule.day' => 'day',
-    'rrule.days' => 'days',
-    'rrule.week' => 'week',
-    'rrule.weeks' => 'weeks',
-    'rrule.month' => 'month',
-    'rrule.months' => 'months',
-    'rrule.year' => 'year',
-    'rrule.years' => 'years',
-    'rrule.for' => 'for',
+    'rrule.every' => 'každý',
+    'rrule.until' => 'až po',
+    'rrule.day' => 'deň',
+    'rrule.days' => 'dni',
+    'rrule.week' => 'týždeň',
+    'rrule.weeks' => 'týždne',
+    'rrule.month' => 'mesiac',
+    'rrule.months' => 'mesiace',
+    'rrule.year' => 'rok',
+    'rrule.years' => 'roky',
+    'rrule.for' => 'za',
     'rrule.on' => 'on',
-    'rrule.time' => 'time',
-    'rrule.times' => 'times',
+    'rrule.time' => 'raz',
+    'rrule.times' => 'razy',
     'rrule.weekday' => 'weekday',
     'rrule.weekdays' => 'weekdays',
     'rrule.in' => 'in',
     'rrule.on the' => 'on the',
-    'rrule.and' => 'and',
-    'rrule.or' => 'or',
+    'rrule.and' => 'i',
+    'rrule.or' => 'alebo',
     'rrule.the' => 'the',
-    'rrule.last' => 'last',
+    'rrule.last' => 'posledný',
 
     'rrule.st' => 'st',
     'rrule.nd' => 'nd',

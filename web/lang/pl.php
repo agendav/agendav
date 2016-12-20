@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Czwartek',
     'labels.friday' => 'Piątek',
     'labels.saturday' => 'Sobota',
-    'labels.sunday' => 'Niedziela',
 
     'labels.sunday_short' => 'Nie',
     'labels.monday_short' => 'Pon',
@@ -108,12 +107,13 @@ $translations = array(
     'labels.modify' => 'Modyfuikuj',
     'labels.cancel' => 'anuluj',
     'labels.yes' => 'Tak',
+    'labels.no' => 'No',
 
-    'labels.delete_only_this_repetition' => 'Delete only this one',
-    'labels.delete_all_repetitions' => 'Delete all repetitions',
+    'labels.delete_only_this_repetition' => 'Skasuj tylko ten jeden',
+    'labels.delete_all_repetitions' => 'Skasuj wszystkie powtórzenia',
 
-    'labels.edit_only_this_repetition' => 'Edit only this one',
-    'labels.edit_all_repetitions' => 'Edit all repetitions',
+    'labels.edit_only_this_repetition' => 'Edytuj tylko ten',
+    'labels.edit_all_repetitions' => 'Edytuj powtórzenia',
 
     'labels.untitled' => 'Bez tytułu',
 
@@ -142,7 +142,7 @@ $translations = array(
     'labels.reminder' => 'Przypominie',
 
     'labels.add_reminder' => 'Dodaj przypominienie',
-    'labels.add_share' => 'Add share',
+    'labels.add_share' => 'Dodaj udostępnienie',
 
     'labels.before_start' => 'przed startem',
     'labels.after' => 'After',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Format daty',
     'labels.time_format' => 'Format czasu',
     'labels.weekstart' => 'Tydzień zaczyna się od',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
@@ -172,10 +173,10 @@ $translations = array(
     'messages.error_denied' => 'Serwer odrzucił żądania (dostęp zabroniony)',
 
     'messages.info_confirmcaldelete' => 'Czy na pewno chcesz usunąć następujący kalendarz?',
-    'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
-    'messages.info_base_event_with_exceptions_modification' => 'This recurrent event has one or more exceptions set. If you use the "Edit all repetitions" button, exceptions will be removed',
-    'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
-    'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
+    'messages.info_edit_recurrent_event' => 'To wydarzenie się powtarza. Czy chcesz zmienić tylko to czy wszystkie powtórzenia?',
+    'messages.info_base_event_with_exceptions_modification' => 'To wydarzenie powtarzające ma jeden lub więcej wyjątków określonych. Jeśli używasz "Edytuj wszystkie powtórzenia" przycisk wyjątki zostaną usunięte',
+    'messages.info_delete_recurrent_event' => 'To wydarzenie się powtarza. Czy chcesz usunąć tylko to powtórzenie lub całe wydarzenie?',
+    'messages.info_delete_recurrent_event_first_instance' => 'To wydarzenie powtarza się, i to jest pierwsze powtórzenie. Usunięcie tego wydarzenia spowoduje, że wszystkie powtórzenia zostaną usunięte. Jesteś pewny?',
     'messages.info_permanentremoval' => 'Twoje dane zostaną usunięte',
     'messages.info_sharedby' => 'Masz dostęp do tego kalendarza, ponieważ użytkownik% udostępnia go Tobie',
     'messages.info_shareexplanation' => 'Możesz dzielić ten kalendarz z innymi użytkownikami i mogą oni go modyfikować. Umieść nazwy użytkowników oddzielone przecinkiem lub spacją',
@@ -198,12 +199,12 @@ $translations = array(
     'messages.error_loading_calendar_list' => 'Błąd wczytywania listy kalendarzy',
     'messages.notice_no_calendars' => 'Brak kalendarzy',
     'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
-    'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
+    'messages.info_rrule_protected' => 'To wydarzenie jest chroniona jej reguły powtarzania',
     'messages.error_calendarnotfound' => 'Niepoprawny kalendazr %calendar',
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
     'messages.error_unexpectedhttpcode' => 'Otrzymano z serwera nieoczekiwany kod HTTP %code%',
-    'messages.error_network_issues' => 'We are having network issues. Please, try again later',
+    'messages.error_network_issues' => 'Mamy problemy z siecią. Spróbuj ponownie później',
     'messages.error_shareunknownusers' => 'Niektórzy z wymienionych użytkowników nie istnieją',
     'messages.error_empty_fields' => 'Wymagane pola są puste',
 
@@ -214,11 +215,11 @@ $translations = array(
 
     'messages.more_events' => '+ %count wydarzeń',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Notatka: przypomniania będą miały miejsce kiedy klient załaduje ten kalendarz',
+    'messages.info_reminders_agendav_support' => 'Uwaga: powiadomienia będą wyświetlane tylko kompatybilnych klientów CalDAV. AgenDAV nie może ich wyświetlić',
 
-    'messages.request_error' => 'Error found on your request',
-    'messages.page_not_found' => 'Page not found',
-    'messages.internal_server_error' => 'Internal server error',
+    'messages.request_error' => 'Znaleziono błąd w twoim żądaniu ',
+    'messages.page_not_found' => 'Strona nie znalezina',
+    'messages.internal_server_error' => 'Wewnętrzny błąd serwera',
 
     'rrule.every' => 'każdy',
     'rrule.until' => 'do',
@@ -243,10 +244,10 @@ $translations = array(
     'rrule.the' => 'ten',
     'rrule.last' => 'ostatni',
 
-    'rrule.st' => 'st',
-    'rrule.nd' => 'nd',
-    'rrule.rd' => 'rd',
-    'rrule.th' => 'th',
+    'rrule.st' => 'szy',
+    'rrule.nd' => 'gi',
+    'rrule.rd' => 'ci',
+    'rrule.th' => 'ty',
 );
 
 return $translations;

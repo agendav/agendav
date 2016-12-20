@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Neljapäev',
     'labels.friday' => 'Reede',
     'labels.saturday' => 'Laupäev',
-    'labels.sunday' => 'Pühapäev',
 
     'labels.sunday_short' => 'P',
     'labels.monday_short' => 'E',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Muuda',
     'labels.cancel' => 'Loobu',
     'labels.yes' => 'Jah',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Kustuta ainult see',
     'labels.delete_all_repetitions' => 'Kustuta kõik kordamised',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Kuupäeva vorming',
     'labels.time_format' => 'Kellaaja vorming',
     'labels.weekstart' => 'Nädal algab',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
@@ -175,10 +176,10 @@ $translations = array(
     'messages.info_edit_recurrent_event' => 'See sündmus kordub. Kas sa soovid muuta ainult seda sündmust või kõiki selle kordumisi?',
     'messages.info_base_event_with_exceptions_modification' => 'Sellel korduval sõndmusel on üks või rohkem erandit. Kui sa kasutad nuppu "Muuda kõiki kordumisi", siis need erandid eemaldatakse',
     'messages.info_delete_recurrent_event' => 'See sündmus kordub ja see on selle sündmuse esimene toimumine. Kas sa soovid kustutada ainult seda sõndmust või kõiki selle sõndmuse kordumisi?',
-    'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
+    'messages.info_delete_recurrent_event_first_instance' => 'See sündmus kordub ja see on selle sündmuse esimene kordumine. Selle sündmuse kustutamine kustutab ka kõik selle kordumised. Oled sa kindel?',
     'messages.info_permanentremoval' => 'Sinu info läheb jäädavalt kaduma',
     'messages.info_sharedby' => 'Sul on ligipääs sellele kalendrile, kuna %user jagas seda sinuga',
-    'messages.info_shareexplanation' => 'You can share this calendar with other users and let them modify it. Place their usernames below, separated by commas or spaces',
+    'messages.info_shareexplanation' => 'Sa saad seda kalendrit teiste kasutajatega jagada ja lasta neil seda muuta. Sisesta nende kasutajanimed alla ja eralda need omavahel komade või tühikutega',
     'messages.info_notshared' => 'Seda kalendrit ei jagata kellegagi',
     'messages.info_noreminders' => 'Sellel sündmusel pole meelespäid seadistatud',
     'messages.error_sessexpired' => 'Sinu sessioon on aegunud',
@@ -202,7 +203,7 @@ $translations = array(
     'messages.error_calendarnotfound' => 'Vigane kalender %calendar',
     'messages.error_element_not_found' => 'Element not found',
     'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
-    'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
+    'messages.error_unexpectedhttpcode' => 'Server tagastas ootamatu HTTP koodi %code%',
     'messages.error_network_issues' => 'Sul on probleeme võrguga. Palun proovi hiljem uuesti',
     'messages.error_shareunknownusers' => 'Mõningaid sinu poolt määratud kasutajaid pole olemas',
     'messages.error_empty_fields' => 'Some required fields are empty',
@@ -214,7 +215,7 @@ $translations = array(
 
     'messages.more_events' => '+ %count sündmust',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Märkus: teavitusi näidatakse ainult ühilduvatele CalDAV klientidele. AgenDAV ei saa neid näidata',
 
     'messages.request_error' => 'Sinu päringust leiti viga',
     'messages.page_not_found' => 'Lehte ei leitud',
@@ -231,7 +232,7 @@ $translations = array(
     'rrule.year' => 'aasta',
     'rrule.years' => 'aastad',
     'rrule.for' => 'for',
-    'rrule.on' => 'on',
+    'rrule.on' => 'kell',
     'rrule.time' => 'kord',
     'rrule.times' => 'korda',
     'rrule.weekday' => 'nädalapäev',

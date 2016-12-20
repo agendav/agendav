@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Torstai',
     'labels.friday' => 'Perjantai',
     'labels.saturday' => 'Lauantai',
-    'labels.sunday' => 'Sunnuntai',
 
     'labels.sunday_short' => 'Su',
     'labels.monday_short' => 'Ma',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Muokkaa',
     'labels.cancel' => 'Peru',
     'labels.yes' => 'Kyllä',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Poista vain tämä',
     'labels.delete_all_repetitions' => 'Poista kaikki toistumiset',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Päivän esitysmuoto',
     'labels.time_format' => 'Ajan esitysmuoto',
     'labels.weekstart' => 'Viikon alkupäivä',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
@@ -214,7 +215,7 @@ $translations = array(
 
     'messages.more_events' => '+ %count tapahtumaa',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Huomio: muistutukset toimivat vain CalDAV-asiakasohjelmilla, jotka lataavat tämä kalenterin',
+    'messages.info_reminders_agendav_support' => 'Huomio: ilmoitukset näytetään vain CalDAV-yhteensopivilla sovelluksilla. AgenDAV ei pysty näyttämään ilmoituksia',
 
     'messages.request_error' => 'Pyynnöstä löytyi virhe',
     'messages.page_not_found' => 'Sivua ei löytynyt',

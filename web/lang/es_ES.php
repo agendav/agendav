@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'jueves',
     'labels.friday' => 'viernes',
     'labels.saturday' => 'sábado',
-    'labels.sunday' => 'domingo',
 
     'labels.sunday_short' => 'dom',
     'labels.monday_short' => 'lun',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Modificar',
     'labels.cancel' => 'Cancelar',
     'labels.yes' => 'Sí',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Borrar solo ésta',
     'labels.delete_all_repetitions' => 'Borrar todas las repeticiones',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Formato de fecha',
     'labels.time_format' => 'Formato de hora',
     'labels.weekstart' => 'La semana empieza el',
+    'labels.show_week_nb' => 'Mostrar número de semana',
 
 
 // Messages
@@ -219,7 +220,7 @@ existen',
 
     'messages.more_events' => '+%count eventos',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Nota: los recordatorios solamente tendrán efecto en clientes CalDAV que carguen este calendario',
+    'messages.info_reminders_agendav_support' => 'Nota: las notificaciones serán mostradas únicamente en clientes CalDAV compatibles. AgenDAV no puede mostrarlas',
 
     'messages.request_error' => 'Hay un error en su petición',
     'messages.page_not_found' => 'Página no encontrada',

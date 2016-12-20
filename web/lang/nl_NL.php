@@ -26,7 +26,7 @@ $translations = array(
     'labels.april' => 'april',
     'labels.may' => 'mei',
     'labels.june' => 'juni',
-    'labels.july' => 'july',
+    'labels.july' => 'juli',
     'labels.august' => 'augustus',
     'labels.september' => 'september',
     'labels.october' => 'oktober',
@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'donderdag',
     'labels.friday' => 'vrijdag',
     'labels.saturday' => 'zaterdag',
-    'labels.sunday' => 'zondag',
 
     'labels.sunday_short' => 'zo',
     'labels.monday_short' => 'ma',
@@ -75,7 +74,7 @@ $translations = array(
 
     'labels.privacy' => 'Privacy',
     'labels.public' => 'Openbaar',
-    'labels.private' => 'Prive',
+    'labels.private' => 'Privé',
     'labels.confidential' => 'Vertrouwelijk',
 
     'labels.transp' => 'Toon tijd als',
@@ -84,7 +83,7 @@ $translations = array(
 
     'labels.generaloptions' => 'Algemene opties',
     'labels.repeatoptions' => 'Herhalen',
-    'labels.workgroupoptions' => 'Privacy',
+    'labels.workgroupoptions' => 'Werkgroep',
     'labels.shareoptions' => 'Delen',
 
     'labels.newcalendar' => 'Nieuwe agenda',
@@ -108,18 +107,19 @@ $translations = array(
     'labels.modify' => 'Aanpassen',
     'labels.cancel' => 'Annuleren',
     'labels.yes' => 'Ja',
+    'labels.no' => 'No',
 
-    'labels.delete_only_this_repetition' => 'Enkel deze keer verwijderen',
-    'labels.delete_all_repetitions' => 'Alle herhalingen verwidjeren',
+    'labels.delete_only_this_repetition' => 'Alleen dit exemplaar verwijderen',
+    'labels.delete_all_repetitions' => 'Alle herhalingen verwijderen',
 
-    'labels.edit_only_this_repetition' => 'Enkel deze keer aanpassen',
+    'labels.edit_only_this_repetition' => 'Alleen dit exemplaar aanpassen',
     'labels.edit_all_repetitions' => 'Alle herhalingen aanpassen',
 
     'labels.untitled' => 'Naamloos',
 
     'labels.sharewith' => 'Delen met',
-    'labels.currentlysharing' => 'De agenda wordt opgeslagen',
-    'labels.publicurl' => 'URL voor agenda applicaties',
+    'labels.currentlysharing' => 'De agenda wordt gedeeld',
+    'labels.publicurl' => 'URL voor agenda-applicaties',
 
     'labels.access' => 'Toegang',
     'labels.readonly' => 'Alleen lezen',
@@ -136,35 +136,36 @@ $translations = array(
     'labels.hours' => 'uren',
     'labels.days' => 'dagen',
     'labels.weeks' => 'weken',
-    'labels.months' => 'months',
+    'labels.months' => 'maanden',
 
     'labels.remindersoptions' => 'Herinneringen',
     'labels.reminder' => 'Herinnering',
 
-    'labels.add_reminder' => 'Add reminder',
+    'labels.add_reminder' => 'Herinnering toevoegen',
     'labels.add_share' => 'Deler toevoegen',
 
-    'labels.before_start' => 'before start',
-    'labels.after' => 'After',
+    'labels.before_start' => 'Voor aanvang',
+    'labels.after' => 'Na afloop',
 
     'labels.start' => 'start',
     'labels.end' => 'einde',
 
-    'labels.ends' => 'Ends:',
-    'labels.never' => 'Never',
+    'labels.ends' => 'Eindigt op:',
+    'labels.never' => 'Nooit',
     'labels.occurrences' => 'occurrences',
 
-    'labels.timezone' => 'Timezone',
-    'labels.every' => 'Every',
-    'labels.repeat_by_day' => 'Repeat on',
-    'labels.repeat_by_month_day' => 'Day of month',
-    'labels.repeat_explanation' => 'This event repeats',
-    'labels.keep_rrule' => 'Keep original repeat rule',
+    'labels.timezone' => 'Tijdzone',
+    'labels.every' => 'Elke',
+    'labels.repeat_by_day' => 'Herhaal op',
+    'labels.repeat_by_month_day' => 'Dag van de maand',
+    'labels.repeat_explanation' => 'Dit is een terugkerende gebeurtenis',
+    'labels.keep_rrule' => 'Bewaar origineel terugkeerpatroon',
 
     'labels.language' => 'Taal',
-    'labels.date_format' => 'Datumformaat',
-    'labels.time_format' => 'Tijdformaat',
-    'labels.weekstart' => 'Week begint o',
+    'labels.date_format' => 'Datumnotatie',
+    'labels.time_format' => 'Tijdnotatie',
+    'labels.weekstart' => 'Week begint op',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
@@ -172,15 +173,15 @@ $translations = array(
     'messages.error_denied' => 'Server weigerde uw verzoek (geen rechten)',
 
     'messages.info_confirmcaldelete' => 'Weet u zeker dat u de volgende agenda wilt verwijderen?',
-    'messages.info_edit_recurrent_event' => 'Dit evenement is herhaaldelijk. Wil je enkel deze keer verwijderen of alle herhalingen?',
-    'messages.info_base_event_with_exceptions_modification' => 'Dit herhaaldelijk evenement heeft één of meer uitzonderingen. Als je "Alle herhalingen aanpassen" kiest, worden alle uitzonderingen verwijderd',
-    'messages.info_delete_recurrent_event' => 'Dit evenement is herhaaldelijk. Wil je enkel deze keer verwijderen of het hele evenement?',
-    'messages.info_delete_recurrent_event_first_instance' => 'This evenement herhaalt en dit is de eerste keer. Als je dit evenement verwijders, zullen alle herhalingen ook verwijderd worden. Ben je zeker?',
+    'messages.info_edit_recurrent_event' => 'Dit evenement is terugkerend. Wilt u enkel deze afspraak verwijderen of alle exemplaren?',
+    'messages.info_base_event_with_exceptions_modification' => 'Deze terugkerende gebeurtenis heeft één of meer uitzonderingen. Als je "Alle exemplaren aanpassen" kiest, worden alle uitzonderingen verwijderd',
+    'messages.info_delete_recurrent_event' => 'Dit is een terugkerende gebeurtenis. Wil je enkel dit exemplaar verwijderen of het hele evenement?',
+    'messages.info_delete_recurrent_event_first_instance' => 'Dit is een terugkerende gebeurtenis en dit is het eerste exemplaar. Als u dit exemplaar verwijdert, zullen alle herhalingen ook verwijderd worden. Weet u dit zeker?',
     'messages.info_permanentremoval' => 'Uw informatie wordt definitief verwijderd',
     'messages.info_sharedby' => 'U heeft toegang tot deze agenda omdat gebruiker %user deze met u heeft gedeeld',
-    'messages.info_shareexplanation' => 'Je kan deze kalender delen met andere gebruikers en hen het laten aanpassen. Plaats hun gebruikersnamen hieronder, gescheiden door komma\'s of spaties.',
+    'messages.info_shareexplanation' => 'U kunt deze agenda delen met andere gebruikers en door hen laten aanpassen. Geef hiervoor hun gebruikersnamen hieronder op, gescheiden door komma\'s of spaties.',
     'messages.info_notshared' => 'Deze agenda wordt niet gedeeld',
-    'messages.info_noreminders' => 'Deze gebeurtenis heeft geen herinneringen ingesteld',
+    'messages.info_noreminders' => 'Voor deze gebeurtenis zijn geen herinneringen ingesteld',
     'messages.error_sessexpired' => 'Uw sessie is verlopen',
     'messages.error_loginagain' => 'Log a.u.b. opnieuw in',
 
@@ -197,30 +198,30 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Fout bij het verwijderen van de gebeurtenis',
     'messages.error_loading_calendar_list' => 'Fout bij het lezen van de agendalijst',
     'messages.notice_no_calendars' => 'Geen agenda\'s beschikbaar',
-    'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
-    'messages.info_rrule_protected' => 'De herhalingsregel van dit evenement is beschermt.',
+    'messages.info_rrule_not_reproducible' => 'Deze gebeurtenis heeft een terugkeerpatroon dat niet in deze interface getoond kan worden. U kunt dit zoals het nu is bewaren.',
+    'messages.info_rrule_protected' => 'Het terugkeerpatroon van dit evenement is beschermd.',
     'messages.error_calendarnotfound' => 'Ongeldige agenda %calendar',
-    'messages.error_element_not_found' => 'Element not found',
-    'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
+    'messages.error_element_not_found' => 'Onderdeel niet gevonden',
+    'messages.error_element_changed' => 'Dit onderdeel werd aangepast terwijl u bezig was. Klik a.u.b. op verversen',
     'messages.error_unexpectedhttpcode' => 'Onverwachte HTTP code %code% ontvangen van server',
     'messages.error_network_issues' => 'We hebben netwerkproblemen. Probeer later opnieuw, a.u.b.',
     'messages.error_shareunknownusers' => 'Sommige door u opgegeven gebruikers komen niet voor.',
-    'messages.error_empty_fields' => 'Some required fields are empty',
+    'messages.error_empty_fields' => 'Een of meerdere verplichte velden waren leeg',
 
-    'messages.help_defaultcalendar' => 'Nieuwe gebeurtenissen worden standaard in deze agenda geplaatst. Geef hier je meest gebruikte agenda aan.',
-    'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
+    'messages.help_defaultcalendar' => 'Nieuwe gebeurtenissen worden standaard in deze agenda geplaatst. Geef hier uw meest gebruikte agenda aan.',
+    'messages.help_timezone' => 'Kies a.u.b. uw tijdzone. Dit bepaalt hoe bestaande gebeurtenissen worden getoond en nieuwe gebeurtenissen worden met deze tijdzone gemaakt',
 
     'messages.info_prefssaved' => 'Voorkeuren opgeslagen',
 
-    'messages.more_events' => '+ %count events',
+    'messages.more_events' => '+ %count gebeurtenissen',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Herinneringen worden alleen getoond als de gebruikte agenda-applicatie daarin voorziet. AgenDAV kan herinneringen niet tonen.',
 
-    'messages.request_error' => 'Fout gevonden in je verzoek',
+    'messages.request_error' => 'Uw verzoek bevatte een fout',
     'messages.page_not_found' => 'Pagina niet gevonden',
     'messages.internal_server_error' => 'Interne serverfout',
 
-    'rrule.every' => 'elke',
+    'rrule.every' => 'iedere',
     'rrule.until' => 'tot',
     'rrule.day' => 'dag',
     'rrule.days' => 'dagen',

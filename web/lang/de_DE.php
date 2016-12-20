@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Donnerstag',
     'labels.friday' => 'Freitag',
     'labels.saturday' => 'Samstag',
-    'labels.sunday' => 'Sonntag',
 
     'labels.sunday_short' => 'So',
     'labels.monday_short' => 'Mo',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Ändern',
     'labels.cancel' => 'Abbrechen',
     'labels.yes' => 'Ja',
+    'labels.no' => 'Nein',
 
     'labels.delete_only_this_repetition' => 'Nur diesen Termin löschen',
     'labels.delete_all_repetitions' => 'Alle Wiederholungen löschen',
@@ -142,7 +142,7 @@ $translations = array(
     'labels.reminder' => 'Erinnerung',
 
     'labels.add_reminder' => 'Erinnerung hinzufügen',
-    'labels.add_share' => 'Add share',
+    'labels.add_share' => 'Freigabe hinzufügen',
 
     'labels.before_start' => 'Vor Beginn',
     'labels.after' => 'Nach',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Datumsformat',
     'labels.time_format' => 'Zeitformat',
     'labels.weekstart' => 'Die Woche startet am',
+    'labels.show_week_nb' => 'Kalenderwoche anzeigen',
 
 
 // Messages
@@ -173,7 +174,7 @@ $translations = array(
 
     'messages.info_confirmcaldelete' => 'Sind Sie sich sicher, dass Sie den folgenden Kalender löschen möchten?',
     'messages.info_edit_recurrent_event' => 'Dieser Termin gehört zu einer Terminserie. Wollen Sie nur diesen Termin oder alle Termine der Serie editieren?',
-    'messages.info_base_event_with_exceptions_modification' => 'This recurrent event has one or more exceptions set. If you use the "Edit all repetitions" button, exceptions will be removed',
+    'messages.info_base_event_with_exceptions_modification' => 'Diese Terminserie hat eine oder mehrere Ausnahmen in ihrer Wiederholung gesetzt. Wenn Sie "Alle Wiederholungen ändern" benutzen, werden die Ausnahmen gelöscht.',
     'messages.info_delete_recurrent_event' => 'Dieser Termin gehört zu einer Terminserie. Wollen Sie nur diesen Termin oder alle Termine der Serie löschen?',
     'messages.info_delete_recurrent_event_first_instance' => 'Dieser Termin gehört zu einer Terminserie und ist der erste Termin dieser Serie. Löschen dieses Termins führt zur Löschung aller Termine dieser Serie. Sind Sie sicher?',
     'messages.info_permanentremoval' => 'Ihre Informationen werden unwiderruflich gelöscht',
@@ -214,7 +215,7 @@ $translations = array(
 
     'messages.more_events' => '+ %count Termine',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Hinweis: Erinnerungen haben nur Auswirkungen auf CalDAV-Clients, die diesen Kalender angebunden haben.',
+    'messages.info_reminders_agendav_support' => 'Hinweis: Erinnerungen werden nur von CalDAV-Clients angezeigt, die diese Unterstützen. AgenDAV kann diese nicht anzeigen.',
 
     'messages.request_error' => 'Fehler in Ihrer Anfrage gefunden.',
     'messages.page_not_found' => 'Seite konnte nicht gefunden werden.',

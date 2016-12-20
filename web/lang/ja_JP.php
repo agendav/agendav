@@ -107,6 +107,7 @@ $translations = array(
     'labels.modify' => '編集',
     'labels.cancel' => 'キャンセル',
     'labels.yes' => 'はい',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'この日付だけ削除',
     'labels.delete_all_repetitions' => 'この予定の繰返しを全て削除',
@@ -164,6 +165,7 @@ $translations = array(
     'labels.date_format' => '日付の書式',
     'labels.time_format' => '時刻の書式',
     'labels.weekstart' => '週の始まり',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages

@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Jeudi',
     'labels.friday' => 'Vendredi',
     'labels.saturday' => 'Samedi',
-    'labels.sunday' => 'Dimanche',
 
     'labels.sunday_short' => 'Dim',
     'labels.monday_short' => 'Lun',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Modifier',
     'labels.cancel' => 'Annuler',
     'labels.yes' => 'Oui',
+    'labels.no' => 'Non',
 
     'labels.delete_only_this_repetition' => 'Supprimer uniquement cet évènement',
     'labels.delete_all_repetitions' => 'Supprimer toutes les répetitions',
@@ -141,30 +141,31 @@ $translations = array(
     'labels.remindersoptions' => 'Rappels',
     'labels.reminder' => 'Rappel',
 
-    'labels.add_reminder' => 'Add reminder',
+    'labels.add_reminder' => 'Ajouter un rappel',
     'labels.add_share' => 'Ajouter un partage',
 
-    'labels.before_start' => 'before start',
-    'labels.after' => 'After',
+    'labels.before_start' => 'avant le début',
+    'labels.after' => 'Après',
 
     'labels.start' => 'début',
     'labels.end' => 'fin',
 
     'labels.ends' => 'Fin:',
-    'labels.never' => 'Never',
+    'labels.never' => 'Jamais',
     'labels.occurrences' => 'occurences',
 
-    'labels.timezone' => 'Timezone',
-    'labels.every' => 'Every',
+    'labels.timezone' => 'Fuseau horaire',
+    'labels.every' => 'Chaque',
     'labels.repeat_by_day' => 'Repeat on',
-    'labels.repeat_by_month_day' => 'Day of month',
+    'labels.repeat_by_month_day' => 'Jour du mois',
     'labels.repeat_explanation' => 'This event repeats',
-    'labels.keep_rrule' => 'Keep original repeat rule',
+    'labels.keep_rrule' => 'Conserver la règle de répétition originale',
 
     'labels.language' => 'Langue',
     'labels.date_format' => 'Format de date',
     'labels.time_format' => 'Format de l\'heure',
     'labels.weekstart' => 'La semaine démarre le',
+    'labels.show_week_nb' => 'Afficher les numéros de semaine',
 
 
 // Messages
@@ -197,26 +198,26 @@ $translations = array(
     'messages.error_event_not_deleted' => 'Erreur lors de l\'effacement de l\'événement',
     'messages.error_loading_calendar_list' => 'Erreur lors de lecture de la liste des calendriers',
     'messages.notice_no_calendars' => 'Aucun calendrier disponible',
-    'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
+    'messages.info_rrule_not_reproducible' => 'La règle de récurrence associée à cet évènement ne peut être reproduite en utilisant cette interface. Vous pouvez cependant la conserver telle quelle.',
     'messages.info_rrule_protected' => 'Cet évènement a ses récurrences protégées',
     'messages.error_calendarnotfound' => 'Calendrier invalide: %calendar',
-    'messages.error_element_not_found' => 'Element not found',
-    'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
+    'messages.error_element_not_found' => 'Elément non trouvé',
+    'messages.error_element_changed' => 'L\'élément a été modifié pendant que vous l\'éditiez. Veuillez rafraichir.',
     'messages.error_unexpectedhttpcode' => 'Code d\'erreur HTTP %code% reçu du serveur',
-    'messages.error_network_issues' => 'We are having network issues. Please, try again later',
+    'messages.error_network_issues' => 'Erreur de communication avec le serveur. Veuillez réessayer ultérieurement.',
     'messages.error_shareunknownusers' => 'Certains des utilisateurs que vous avez spécifié n\'existent pas',
-    'messages.error_empty_fields' => 'Some required fields are empty',
+    'messages.error_empty_fields' => 'Certains champs requis sont vides',
 
     'messages.help_defaultcalendar' => 'Par défaut, les nouveaux événements seront placés dans ce calendrier. Choisissez votre calendrier le plus utilisé.',
-    'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
+    'messages.help_timezone' => 'Choisissez votre fuseau horaire. Cela modifiera l\'affichage des évènements existants et les nouveaux évènements seront créés avec ce fuseau horaire.',
 
     'messages.info_prefssaved' => 'Préférences sauvegardées',
 
     'messages.more_events' => '+ %count évènements',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Note: les notifications sont fonctionnelles uniquement pour les clients CalDAV compatibles. AgenDAV n\'affiche pas ces notifications.',
 
-    'messages.request_error' => 'Error found on your request',
+    'messages.request_error' => 'Erreur trouvée dans votre requête',
     'messages.page_not_found' => 'Page non trouvée',
     'messages.internal_server_error' => 'Erreur interne du serveur',
 

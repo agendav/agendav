@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Četvrtak',
     'labels.friday' => 'Petak',
     'labels.saturday' => 'Subota',
-    'labels.sunday' => 'Nedjelja',
 
     'labels.sunday_short' => 'Ned',
     'labels.monday_short' => 'Pon',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Izmjeni',
     'labels.cancel' => 'Odustani',
     'labels.yes' => 'Da',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Obriši samo ovaj',
     'labels.delete_all_repetitions' => 'Obriši sva ponavljanja',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Format datuma',
     'labels.time_format' => 'Format vremena',
     'labels.weekstart' => 'Tjedan počinje',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
@@ -214,7 +215,7 @@ $translations = array(
 
     'messages.more_events' => '+ %count događaja',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
 
     'messages.request_error' => 'Greška u zahtjevu',
     'messages.page_not_found' => 'Stranica nije pronađena',

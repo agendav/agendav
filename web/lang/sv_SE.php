@@ -40,7 +40,6 @@ $translations = array(
     'labels.thursday' => 'Torsdag',
     'labels.friday' => 'Fredag',
     'labels.saturday' => 'Lördag',
-    'labels.sunday' => 'Söndag',
 
     'labels.sunday_short' => 'Sön',
     'labels.monday_short' => 'Mån',
@@ -108,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Ändra',
     'labels.cancel' => 'Avbryt',
     'labels.yes' => 'Ja',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Ta bort endast denna',
     'labels.delete_all_repetitions' => 'Ta bort alla upprepningar',
@@ -165,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Datumformat',
     'labels.time_format' => 'Tidsformat',
     'labels.weekstart' => 'Veckan börjar på',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
@@ -214,7 +215,7 @@ $translations = array(
 
     'messages.more_events' => '+ %count händelser',
 
-    'messages.info_reminders_no_effect_on_agendav' => 'Note: reminders will only have effect on CalDAV clients that load this calendar',
+    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
 
     'messages.request_error' => 'Fann ett fel i din begäran',
     'messages.page_not_found' => 'Sidan kunde inte hittas',

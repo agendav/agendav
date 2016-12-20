@@ -107,6 +107,7 @@ $translations = array(
     'labels.modify' => 'Endre',
     'labels.cancel' => 'Avbryt',
     'labels.yes' => 'Ja',
+    'labels.no' => 'No',
 
     'labels.delete_only_this_repetition' => 'Slett kun denne',
     'labels.delete_all_repetitions' => 'Slett alle gjentagelser',
@@ -164,6 +165,7 @@ $translations = array(
     'labels.date_format' => 'Datoformat',
     'labels.time_format' => 'Tidsformat',
     'labels.weekstart' => 'Uken starter på',
+    'labels.show_week_nb' => 'Show week numbers',
 
 
 // Messages
