@@ -7,7 +7,14 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Guay\""
+    "clean": "rm -rf node_modules",
+    "composer": "cd web && composer install --no-dev --prefer-dist",
+    "composer-dev": "cd web && composer install --dev --prefer-source",
+    "build:templates": "dustc --pwd assets/templates -o assets/templates/templates.js assets/templates/*.dust",
+    "prebuild:css": "lessc assets/less/agendav.less assets/css/agendav.css",
+    "build:css": "cat assets/css/*.css | cleancss -o web/public/css/agendav.css && cat assets/print-css/*.css | cleancss -o web/public/css/agendav.print.css",
+    "build:js": "uglifyjs web/public/js/agendav.js -c -m -o web/public/js/agendav.min.js",
+    "prebuild:js": "uglifyjs assets/js/core/*.js assets/js/other/*.js assets/js/app/*.js assets/templates/templates.js -b -o web/public/js/agendav.js"
   },
   "repository": {
     "type": "git",

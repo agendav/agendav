@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded to dustjs 2.7.5 and dustjs-helpers 1.7.3
 - Moved all assets inside the assets/ root directory
 - Updated all translations
+- Switched to npm scripts to build AgenDAV
+- All assets are now stored inside assets/
 
 ## Fixed
 
