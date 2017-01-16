@@ -5,15 +5,15 @@ $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 
 // Assets
 $app['stylesheets'] = [
-    'agendav.css',
+    'dist/css/agendav.css',
 ];
 
 $app['print.stylesheets'] = [
-    'agendav.print.css',
+    'dist/css/agendav.print.css',
 ];
 
 $app['scripts'] = [
-    'agendav.min.js',
+    'dist/js/agendav.min.js',
 ];
 
 // Session parameters

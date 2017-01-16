@@ -249,8 +249,8 @@ th {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../font/bootstrap/glyphicons-halflings-regular.eot');
-  src: url('../font/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../font/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('../font/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../font/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../font/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../../font/bootstrap/glyphicons-halflings-regular.eot');
+  src: url('../../font/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../../font/bootstrap/glyphicons-halflings-regular.woff2') format('woff2'), url('../../font/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../../font/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../../font/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -6224,8 +6224,8 @@ button.close {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../font/fa/fontawesome-webfont.eot?v=4.2.0');
-  src: url('../font/fa/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../font/fa/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('../font/fa/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('../font/fa/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
+  src: url('../../font/fa/fontawesome-webfont.eot?v=4.2.0');
+  src: url('../../font/fa/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../../font/fa/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('../../font/fa/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('../../font/fa/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }

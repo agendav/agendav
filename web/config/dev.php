@@ -21,5 +21,5 @@ $app->register(new WebProfilerServiceProvider(), [
 $app['monolog.level'] = 'DEBUG';
 
 $app['scripts'] = [
-    'agendav.js',
+    'dist/js/agendav.js',
 ];
