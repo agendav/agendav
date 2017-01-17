@@ -32,7 +32,7 @@ $controllers->get('/', function () use ($app) {
     $locale = $app['locale'];
 
     if (isset($app['fullcalendar.languages'][$locale]) && !empty($app['fullcalendar.languages'][$locale])) {
-        $scripts[] = 'fullcalendar/locale/' . $app['fullcalendar.languages'][$locale] . '.js';
+        $scripts[] = 'fullcalendar-locale/' . $app['fullcalendar.languages'][$locale] . '.js';
     }
 
     return $app['twig']->render('calendar.html', [ 'scripts' => $scripts ]);
