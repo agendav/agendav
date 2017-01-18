@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "scripts": {
+    "bower": "bower install",
     "clean": "rm -rf node_modules && rm -rf web/public/dist/js/* && rm -rf web/public/dist/css/*",
     "composer": "cd web && composer install --no-dev --prefer-dist",
     "composer-dev": "cd web && composer install --dev --prefer-source",
@@ -14,7 +15,9 @@
     "prebuild:css": "lessc assets/less/agendav.less web/public/dist/css/app.css",
     "build:css": "cat web/public/dist/css/app.css assets/css/*.css | cleancss -o web/public/dist/css/agendav.css && cat assets/print-css/*.css | cleancss -o web/public/dist/css/agendav.print.css",
     "prebuild:js": "uglifyjs assets/js/core/*.js assets/js/other/*.js assets/js/app/*.js assets/templates/templates.js -b -o web/public/dist/js/agendav.js",
-    "build:js": "uglifyjs web/public/dist/js/agendav.js -c -m -o web/public/dist/js/agendav.min.js"
+    "build:js": "uglifyjs web/public/dist/js/agendav.js -c -m -o web/public/dist/js/agendav.min.js",
+    "dist-clean": "rm -rf node_modules && rm -rf bower_components && rm -rf .git && rm -rf ansible",
+    "dist": "bower install && npm run composer && npm run build:css && npm run build:js && npm run dist-clean"
   },
   "repository": {
     "type": "git",
@@ -31,10 +34,11 @@
   },
   "homepage": "https://github.com/adobo/agendav",
   "devDependencies": {
-    "less": "~2.7.1",
-    "uglify-js": "~2.7.5",
+    "bower": "^1.8.0",
     "clean-css": "~3.4.22",
+    "dustjs-helpers": "~1.7.0",
     "dustjs-linkedin": "~2.7.0",
-    "dustjs-helpers": "~1.7.0"
+    "less": "~2.7.1",
+    "uglify-js": "~2.7.5"
   }
 }
