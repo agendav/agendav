@@ -13,7 +13,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Moved all assets inside the assets/ root directory
 - Updated all translations
 - Switched to npm scripts to build AgenDAV
-- All assets are now stored inside assets/
 
 ## Fixed
 
