@@ -41,25 +41,18 @@ Uncompress it using ``tar``::
  $ tar agendav-...tar.gz
  $ cd agendav-.../
 
-Download dependencies (only for Git)
-------------------------------------
+Download dependencies and generate assets (only for git)
+--------------------------------------------------------
 
 If you downloaded AgenDAV from GitHub using ``git``, you will need to download
-`Composer <http://getcomposer.org>`_ and use it to fetch AgenDAV dependencies.
+`Composer <http://getcomposer.org>`_ and `npm <https://www.npmjs.com/>`_ to download
+some dependencies and generate required assets.
 
-Composer is a PHP package manager, and some libraries used by AgenDAV are
-downloaded using it.
+Run the following commands::
 
-Composer installation is really simple::
+  $ npm install
+  $ npm run build
 
- $ cd web/
- $ curl -s https://getcomposer.org/installer | php
- $ php composer.phar install --prefer-dist --no-dev
-
-For production environments it is recommended to run the following composer
-command that improves loading  performance::
-
- $ php composer.phar dump-autoload --optimize
 
 Configuring PHP
 ---------------

@@ -60,40 +60,39 @@ The credentials for this environment are:
 
 Note that :ref:`development_environment` will be enabled by default.
 
-Working with scripts and stylesheets
-------------------------------------
+Building assets
+---------------
 
-AgenDAV uses some widely known tools to help on development, such as
-`Grunt <http://gruntjs.com/>`_, `Less <http://lesscss.org/>`_ and `Bower <http://bower.io/>`_.
+If you are going to work on stylesheets, scripts or templates, you will need `npm
+<https://www.npmjs.com/>`_. Run the following command to download all required dependencies::
 
-Working with grunt
-******************
+   $ npm install
+   $ npm run bower
 
-Perhaps you already have them installed on your local machine, but to make
-things simpler you already have them installed on the virtual machine.
-
-If you are going to work on AgenDAV stylesheets or templates, you could benefit
-from running the following command inside the virtual machine (i.e. run first ``vagrant ssh``)::
-
-    $ cd /vagrant
-    $ grunt watch
-
-If you keep that session open, a Grunt task will look for modified ``.less`` and ``.dust`` files and
-will compile them for you.
-
-How to download or update AgenDAV frontend dependencies
-*******************************************************
-
-You will have to use ``grunt`` to download and copy all dependencies to AgenDAV ``public/``
-directory. Run the following command::
-
-   $ grunt
-
-Changing AgenDAV stylesheets
-****************************
+Stylesheets
+***********
 
 Stylesheets are built using the Less pre-processor. They are written as ``.less`` files and
-can be found inside the ``web/assets/stylesheets`` directory.
+can be found inside the ``assets/less`` directory.
 
-If you have the ``grunt watch`` command running, it will automatically compile any modified
-``.less`` files.
+Run the following command to rebuild them::
+
+   $ npm run build:css
+
+Templates
+*********
+
+Stylesheets are built using the dustjs templating engine.  They can be found inside the
+``assets/less`` directory.
+
+Run the following command to rebuild them::
+
+   $ npm run build:templates
+
+JavaScript
+**********
+
+Run the following command to rebuild them::
+
+   $ npm run build:js
+
