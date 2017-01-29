@@ -76,6 +76,15 @@ modify,  and start configuring your instance.
     // DAViCal
     $app['caldav.baseurl'] = 'http://caldav.server/caldav.php';
 
+
+   .. note::
+      If you are configuring AgenDAV to connect to a CalDAV server using HTTPS,
+      certificate validation will be performed. Both CA and hostname will be verified. If you are
+      having trouble with your certificate, make sure you have your CA recognized by your system.
+      See `OpenSSL changes in PHP 5.6.x <http://php.net/manual/en/migration56.openssl.php>`_ for
+      more details.
+
+
 .. confval:: caldav.authmethod
 
    You have to specify which HTTP authentication method does your CalDAV server
