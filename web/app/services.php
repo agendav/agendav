@@ -104,6 +104,8 @@ $app['guzzle'] = $app->share(function($app) {
     $client = new \GuzzleHttp\Client([
         'base_uri' => $app['caldav.baseurl'],
         'handler' => $stack,
+        'connect_timeout' => $app['caldav.connect.timeout'],
+        'timeout' => $app['caldav.response.timeout'],
     ]);
 
 

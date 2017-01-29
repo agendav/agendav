@@ -16,6 +16,10 @@
 
 - Database upgrade failed on PostgreSQL (#188)
 
+### Added
+
+- Added new caldav.connect.timeout and caldav.response.timeout settings
+
 ## [2.0.0] - 2016-11-19
 
 ### Changed

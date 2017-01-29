@@ -106,6 +106,26 @@ modify,  and start configuring your instance.
 
     $app['caldav.baseurl.public'] = 'https://public.caldav.tld';
 
+.. confval:: caldav.connect.timeout
+
+   Timeout in seconds for CalDAV connections. A value of 0 means to wait indefinitely, which is the
+   default behaviour.
+
+   Eample::
+
+    // Timeout after 5 seconds if connection to the CalDAV server is not ready
+    $app['caldav.connect.timeout'] = 5;
+
+.. confval:: caldav.response.timeout
+
+   Timeout in seconds while waiting for responses after a CalDAV request is sent. A value of 0 means
+   to wait indefinitely, which is the default behaviour.
+
+   Eample::
+
+    // Timeout after 10 seconds if server hasn't answered
+    $app['caldav.response.timeout'] = 10;
+
 .. confval:: calendar.sharing
 
    Enables calendar sharing between users

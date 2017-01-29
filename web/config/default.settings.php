@@ -45,6 +45,12 @@ $app['caldav.publicurls'] = true;
 // Whether to show public CalDAV urls
 $app['caldav.baseurl.public'] = 'https://caldav.server.com';
 
+// Connection timeout for CalDAV requests (default: wait forever)
+$app['caldav.connect.timeout'] = 0;
+//
+// Response timeout for CalDAV requests (default: wait forever)
+$app['caldav.response.timeout'] = 0;
+
 // Email attribute name
 $app['principal.email.attribute'] = '{DAV:}email';
 
