@@ -31,18 +31,26 @@ class Authentication
 {
     public function loginAction(Request $request, Application $app)
     {
+        $success = false;
         $template_vars = [];
 
         if ($request->isMethod('POST')) {
-            $result = $this->processLogin($request, $app);
+            $user = $request->request->get('user');
+            $password = $request->request->get('password');
 
-            if ($result === true) {
-                return new RedirectResponse(
-                    $app['url_generator']->generate('calendar')
-                );
+            if (empty($user) || empty($password)) {
+                $template_vars['error'] = $app['translator']->trans('messages.error_empty_fields');
+            } else {
+                $success = $this->processLogin($user, $password, $app);
+
+                if ($success === true) {
+                    return new RedirectResponse(
+                        $app['url_generator']->generate('calendar')
+                    );
+                }
+
+                $template_vars['error'] =  $app['translator']->trans('messages.error_auth');
             }
-
-            $template_vars['error'] = $result;
         }
 
         return $app['twig']->render('login.html', $template_vars);
@@ -60,21 +68,23 @@ class Authentication
         return new RedirectResponse($url);
     }
 
-    protected function processLogin(Request $request, Application $app)
+    /**
+     * Uses passed credentials to authenticate a user. In case they are valid, session is
+     * populated with user data (principal, etc)
+     *
+     * @param string $user
+     * @param string $password
+     * @param Application $app
+     * @return bool false if authentication failed, true otherwise
+     */
+    protected function processLogin($user, $password, Application $app)
     {
-        $user = $request->request->get('user');
-        $password = $request->request->get('password');
-
-        if (empty($user) || empty($password)) {
-            return $app['translator']->trans('messages.error_empty_fields');
-        }
-
         $app['http.client']->setAuthentication($user, $password, $app['caldav.authmethod']);
 
         $caldav_client = $app['caldav.client'];
 
         if (!$caldav_client->canAuthenticate()) {
-            return $app['translator']->trans('messages.error_auth');
+            return false;
         }
 
         $app['session']->set('username', $user);

@@ -15,7 +15,7 @@
 {% if error is defined %}
 <div class="ui-widget loginerrors">
  <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-  <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+  <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
   {{ error|e }}
   </p>
   </div>
@@ -27,12 +27,13 @@
     <input type="hidden" name="{{ csrf_token.getId() }}" value="{{ csrf_token.getValue() }}">
     <div class="form-group">
       <label class="col-sm-3 control-label" for="user">{% trans %}labels.username{% endtrans %}</label>
-      <div class="col-sm-9"><input name="user" class="form-control" type="text" autofocus="autofocus"></div>
+      <div class="col-sm-9"><input name="user" class="form-control" type="text"
+        autofocus="autofocus" required></div>
     </div>
 
     <div class="form-group">
       <label class="col-sm-3 control-label" for="password">{% trans %}labels.password{% endtrans %}</label>
-      <div class="col-sm-9"><input name="password" class="form-control" type="password"></div>
+      <div class="col-sm-9"><input name="password" class="form-control" type="password" required></div>
     </div>
 
     <input name="login" value="{% trans %}labels.login{% endtrans %}" type="submit" class="btn btn-success">
