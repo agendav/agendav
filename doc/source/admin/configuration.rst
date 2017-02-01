@@ -192,6 +192,12 @@ modify,  and start configuring your instance.
 
    Specify it as a boolean ("true" or "false").
 
+.. confval:: defaults.show_now_indicator
+
+   Whether or not to show a marker indicating current time
+
+   Specify it as a boolean ("true" or "false").
+
 .. confval:: logout.redirection
 
    When logging out from AgenDAV, the URL the user will be redirected to.

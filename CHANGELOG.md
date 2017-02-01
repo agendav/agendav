@@ -19,6 +19,7 @@
 ### Added
 
 - Added new caldav.connect.timeout and caldav.response.timeout settings
+- Added a new preference to show a marker indicating the current time
 
 ## [2.0.0] - 2016-11-19
 

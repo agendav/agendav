@@ -58,6 +58,7 @@ class Preferences
                 'date_format' => $preferences->get('date_format'),
                 'weekstart' => $preferences->get('weekstart'),
                 'show_week_nb' => $preferences->get('show_week_nb'),
+                'show_now_indicator' => $preferences->get('show_now_indicator'),
             ]
         );
     }
@@ -82,6 +83,7 @@ class Preferences
             'weekstart' => $input->get('weekstart'),
             'default_calendar' => $input->get('default_calendar'),
             'show_week_nb' => $input->get('show_week_nb') == 'true',
+            'show_now_indicator' => $input->get('show_now_indicator') == 'true',
         ]);
         $app['preferences.repository']->save($username, $preferences);
 

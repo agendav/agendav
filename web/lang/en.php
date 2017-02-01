@@ -166,6 +166,7 @@ $translations = array(
     'labels.time_format' => 'Time format',
     'labels.weekstart' => 'Week starts on',
     'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
 
 
 // Messages

@@ -95,6 +95,7 @@ $(document).ready(function() {
     slotLabelFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     slotMinutes: 30,
     firstHour: 8,
+    nowIndicator: AgenDAVUserPrefs.show_now_indicator,
 
     // Default event durations. Used when dropping events
     defaultTimedEventDuration: '01:00:00',

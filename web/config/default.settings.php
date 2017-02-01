@@ -103,6 +103,9 @@ $app['defaults.weekstart'] = 0;
 // Default for showing the week numbers. Options: true/false
 $app['defaults.show_week_nb'] = false;
 
+// Default for showing the "now" indicator, a line on current time. Options: true/false
+$app['defaults.show_now_indicator'] = true;
+
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
 
