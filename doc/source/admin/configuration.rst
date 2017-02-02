@@ -55,6 +55,14 @@ modify,  and start configuring your instance.
 
    Suggestion: use a medium length string with letters and numbers.
 
+.. confval:: log.level
+
+   Level of logging. Can be one from DEBUG, INFO, WARNING, ERROR.
+
+   Default setting::
+
+    $app['log.level'] = 'INFO';
+
 .. confval:: log.path
 
    Full path where logs will be created. Add a trailing slash. Example::

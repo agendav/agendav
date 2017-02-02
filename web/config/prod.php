@@ -24,9 +24,6 @@ $app['session.storage.options'] = [
     'cookie_lifetime' => 0,
 ];
 
-// Configure logging (1/2)
-$app['monolog.level'] = 'WARNING';
-
 // Languages
 $app['languages'] = require __DIR__ . '/languages.php';
 
@@ -63,6 +60,7 @@ require __DIR__ . '/default.settings.php';
 require __DIR__ . '/settings.php';
 
 // Configure logging (2/2). Needs log.path
+$app['monolog.level'] = $app['log.level'];
 $app['monolog.logfile'] = $app['log.path'] . '/' . date('Y-m-d') . '.log';
 
 $app['locale'] = $app['defaults.language'];
