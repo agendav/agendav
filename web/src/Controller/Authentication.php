@@ -44,11 +44,17 @@ class Authentication
                 $success = $this->processLogin($user, $password, $app);
 
                 if ($success === true) {
+                    $app['monolog']->addInfo(
+                        sprintf('User %s logged in from %s', $user, $request->getClientIp())
+                    );
                     return new RedirectResponse(
                         $app['url_generator']->generate('calendar')
                     );
                 }
 
+                $app['monolog']->addInfo(
+                    sprintf('Failed login for %s from %s', $user, $request->getClientIp())
+                );
                 $template_vars['error'] =  $app['translator']->trans('messages.error_auth');
             }
         }
