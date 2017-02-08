@@ -8,7 +8,7 @@
   user configured language
 - Added tests for PHP 7.1
 - Upgraded to dustjs 2.7.5 and dustjs-helpers 1.7.3
-- Upgraded Symfony components to 2.8.16
+- Upgraded Symfony components to 2.8.17
 - Moved all assets inside the assets/ root directory
 - Updated all translations
 - Switched to npm scripts to build AgenDAV
