@@ -66,5 +66,8 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
     return $translator;
 }));
 
+// Default environment: production
+$app['environment'] = 'prod';
+
 
 return $app;

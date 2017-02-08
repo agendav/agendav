@@ -34,6 +34,9 @@ $cli->addCommands(array(
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
 
+    // ORM
+    new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(),
+
     // Clear sessions command
     new \AgenDAV\Console\Command\SessionsClearCommand(),
 ));

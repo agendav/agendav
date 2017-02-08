@@ -21,8 +21,11 @@
 
 // ORM Entity manager
 $app['orm'] = $app->share(function($app) {
+    $development_mode = ($app['environment'] === 'dev');
+
     $setup = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
-        [ __DIR__ . '/../src/Data' ]
+        [ __DIR__ . '/../src/Data' ],
+        $development_mode
     );
 
     return Doctrine\ORM\EntityManager::create($app['db.options'], $setup);

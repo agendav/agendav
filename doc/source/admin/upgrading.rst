@@ -99,6 +99,11 @@ caches:
 
     $ rm -rf web/var/cache/twig/*
 
+- Remove the Doctrine ORM metadata cache. Even if you didn't configure it, the ORM tries to
+  find any available caches (APC, memcached, etc). Clear it with::
+
+   $ php agendavcli orm:clear-cache:metadata
+
 Finishing the upgrade from AgenDAV 1.2.x (shares)
 -------------------------------------------------
 

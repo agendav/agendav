@@ -18,12 +18,14 @@
 - Database upgrade failed on PostgreSQL (#188)
 - Custom display names and/or colors on shares coming from AgenDAV 1.x could not be modified due
   to old names having precedence over namespaced properties
+- Do not cache ORM metadata on development mode
 
 ### Added
 
 - Added new caldav.connect.timeout and caldav.response.timeout settings
 - Added a new preference to show a marker indicating the current time
 - Added a new `log.level` setting
+- Added a command to clear ORM metadata cache
 
 ### Removed
 
