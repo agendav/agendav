@@ -134,11 +134,10 @@ abstract class JSONController
             );
 
         } catch (\Exception $exception) {
-            $app['monolog']->addError(sprintf(
-                "Received unexpected exception %s for input: %s",
-                var_export($exception->getMessage(), true),
-                var_export($input, true)
-            ));
+            $app['monolog']->addCritical(
+                sprintf('Received unexpected exception %s: %s', get_class($exception), $exception->getMessage()),
+                [ 'input' => $input->all() ]
+            );
 
             return $this->generateError(
                 $app['translator']->trans('messages.internal_server_error')
