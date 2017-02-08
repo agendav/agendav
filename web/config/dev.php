@@ -1,7 +1,5 @@
 <?php
 
-use Silex\Provider\WebProfilerServiceProvider;
-
 // Load defaults
 require __DIR__ . '/prod.php';
 
@@ -12,10 +10,6 @@ $app['http.debug'] = true;
 $twig_options = $app['twig.options'];
 unset($twig_options['cache']);
 $app['twig.options'] = $twig_options;
-
-$app->register(new WebProfilerServiceProvider(), [
-    'profiler.cache_dir' => '/tmp',
-]);
 
 // Enable debug logging
 $app['monolog.level'] = 'DEBUG';

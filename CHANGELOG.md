@@ -25,6 +25,10 @@
 - Added a new preference to show a marker indicating the current time
 - Added a new `log.level` setting
 
+### Removed
+
+- Removed web profiler for development environment
+
 ## [2.0.0] - 2016-11-19
 
 ### Changed
