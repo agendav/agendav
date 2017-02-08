@@ -18,6 +18,7 @@
 {% endblock %}
 
 {% block bottom %}
+  {% set load_fullcalendar_locale = true %}
   {% include 'parts/agendavjs.html' %}
   {% include 'parts/bottom.html' %}
 {% endblock %}

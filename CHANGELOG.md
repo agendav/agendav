@@ -12,6 +12,7 @@
 - Moved all assets inside the assets/ root directory
 - Updated all translations
 - Switched to npm scripts to build AgenDAV
+- Switched to Symfony Asset component to generate URLs for assets
 
 ## Fixed
 

@@ -2,5 +2,11 @@
 <div id="popup" class="freeow freeow-top-right"></div>
 
 {% for script in scripts %}
-<script language="JavaScript" type="text/javascript" src="{{ app.request.basepath}}{{ assets_root }}/{{ script }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset(script, 'js') }}"></script>
 {% endfor %}
+
+{% if load_fullcalendar_locale and attribute(app, 'fullcalendar.languages')[app.locale] is defined %}
+  {% set fullcalendar_locale = attribute(app, 'fullcalendar.languages')[app.locale] %}
+  {% set locale_path = '/fullcalendar-locale/' ~ fullcalendar_locale ~ '.js' %}
+  <script language="JavaScript" type="text/javascript" src="{{ asset(locale_path) }}"></script>
+{% endif %}

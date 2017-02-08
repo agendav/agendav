@@ -34,7 +34,8 @@
         "symfony/twig-bridge": "~2.8.0",
         "symfony/validator": "~2.8.0",
         "symfony/var-dumper": "~2.8.0",
-        "symfony/yaml": "~2.8.0"
+        "symfony/yaml": "~2.8.0",
+        "symfony/asset": "~2.8.0"
     },
 
     "require-dev": {

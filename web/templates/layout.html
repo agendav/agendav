@@ -6,13 +6,13 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         {% if stylesheets is defined %}
             {% for stylesheet in stylesheets %}
-            <link href="{{ app.request.basepath }}{{ assets_root }}/{{ stylesheet }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset(stylesheet, 'css') }}" rel="stylesheet" type="text/css" />
             {% endfor %}
         {% endif %}
 
         {% if print_stylesheets is defined %}
             {% for stylesheet in print_stylesheets %}
-            <link href="{{ app.request.basepath }}{{ assets_root }}/{{ stylesheet }}" rel="stylesheet" media="print" type="text/css" />
+            <link href="{{ asset(stylesheet, 'css') }}" rel="stylesheet" media="print" type="text/css" />
             {% endfor %}
         {% endif %}
 <!--[if lt IE 9]>

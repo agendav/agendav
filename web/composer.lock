@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "975378f270d0871a4c0f1e7cff489b1d",
+    "content-hash": "18dc2e491ab75518afab2bd236d70953",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1879,6 +1879,61 @@
                 "microframework"
             ],
             "time": "2016-01-06T14:59:35+00:00"
+        },
+        {
+            "name": "symfony/asset",
+            "version": "v2.8.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/asset.git",
+                "reference": "9137db572fd8de77c7e1dc6c12f70287d249f5eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/asset/zipball/9137db572fd8de77c7e1dc6c12f70287d249f5eb",
+                "reference": "9137db572fd8de77c7e1dc6c12f70287d249f5eb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/http-foundation": "~2.4"
+            },
+            "suggest": {
+                "symfony/http-foundation": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Asset\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Asset Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-01-02T20:30:24+00:00"
         },
         {
             "name": "symfony/config",

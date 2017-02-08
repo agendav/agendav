@@ -32,12 +32,7 @@ $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('footer', $app['site.footer']);
 
     // Assets
-    $assets_root = '';
-    if ($app['environment'] === 'prod') {
-        $assets_root = '';
-    }
-    $twig->addGlobal('assets_root', $assets_root);
-
+    $twig->addExtension(new Symfony\Bridge\Twig\Extension\AssetExtension($app['assets.packages']));
     $twig->addGlobal('stylesheets', $app['stylesheets']);
     $twig->addGlobal('print_stylesheets', $app['print.stylesheets']);
     $twig->addGlobal('scripts', $app['scripts']);
