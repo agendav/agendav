@@ -30,7 +30,7 @@ use AgenDAV\Data\Principal;
  */
 
 /**
- * @Entity
+ * @Entity @HasLifecycleCallbacks
  * @Table(name="shares")
  */
 class Share
@@ -218,6 +218,26 @@ class Share
     {
         foreach ($this->getProperties() as $property => $value) {
             $calendar->setProperty($property, $value);
+        }
+    }
+
+    /** @PostLoad */
+    public function replaceOldProperties() {
+        $replacements = [
+            'displayname' => Calendar::DISPLAYNAME,
+            'color' => Calendar::COLOR,
+        ];
+
+        foreach ($replacements as $old_name => $new_name) {
+            $old_value = $this->getProperty($old_name);
+            $new_value = $this->getProperty($new_name);
+
+            if ($old_value !== null && $new_value === null) {
+                $this->setProperty($new_name, $old_value);
+            }
+
+            // Just remove it
+            unset($this->options[$old_name]);
         }
     }
 }

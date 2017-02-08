@@ -16,6 +16,8 @@
 ## Fixed
 
 - Database upgrade failed on PostgreSQL (#188)
+- Custom display names and/or colors on shares coming from AgenDAV 1.x could not be modified due
+  to old names having precedence over namespaced properties
 
 ### Added
 
