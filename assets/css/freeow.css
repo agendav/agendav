@@ -43,12 +43,12 @@
     width: 24px;
     height: 24px;
     top: 8px;
-    left: 8px;
+    right: 8px;
     background: none;
     z-index: 2;
 }
 .freeow div:hover .close {
-    background: transparent url(../img/close.png) no-repeat 0 0;
+    background: transparent url(../../img/close.png) no-repeat 0 0;
 }
 
 .freeow .popup_success,
@@ -104,11 +104,11 @@
 }
 
 .freeow .popup_error .icon {
-    background: transparent url(../img/popup_error.png) no-repeat 0 0;
+    background: transparent url(../../img/popup_error.png) no-repeat 0 0;
 }
 
 .freeow .popup_success .icon {
-    background: transparent url(../img/popup_ok.png) no-repeat 0 0;
+    background: transparent url(../../img/popup_ok.png) no-repeat 0 0;
 }
 
 /* Freeow ends */

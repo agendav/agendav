@@ -5,7 +5,7 @@ div.color_picker {
   width: 32px;
   padding: 0 !important;
   border-width: 0;
-  background: url(../img/arrow_colorpicker.gif) no-repeat top right;
+  background: url(../../img/arrow_colorpicker.gif) no-repeat top right;
   cursor: pointer;
   line-height: 16px;
 }
