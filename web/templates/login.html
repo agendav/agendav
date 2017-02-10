@@ -8,7 +8,7 @@
 
 {% if logo %}
 <div id="logo" class="block">
-  <img src="{{ app.request.basepath }}/img/{{ logo }}" alt="Logo">
+  <img src="{{ asset(logo, 'img') }}" alt="Logo">
 </div>
 {% endif %}
 

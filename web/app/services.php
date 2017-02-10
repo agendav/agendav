@@ -198,6 +198,7 @@ $app['assets.packages'] = $app->share(function ($app) {
     $packages = [
         'css' => new Symfony\Component\Asset\PathPackage('/dist/css', $strategy, $stack),
         'js' => new Symfony\Component\Asset\PathPackage('/dist/js', $strategy, $stack),
+        'img' => new Symfony\Component\Asset\PathPackage('/img', $strategy, $stack),
     ];
 
     return new Symfony\Component\Asset\Packages($default_package, $packages);
