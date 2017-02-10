@@ -105,7 +105,6 @@ AgenDAVRepeat.regenerate = function regenerate() {
 AgenDAVRepeat.generateRRule = function generateRRule(data) {
   var frequency = -1;
   var options = {};
-  var result;
   var ends;
   var by_day = [];
 

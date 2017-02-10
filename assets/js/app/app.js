@@ -1214,7 +1214,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
   eventsource.textColor = data.fg;
 
   // Shared calendars
-  if (data.is_shared === true && data.writable == false) {
+  if (data.is_shared === true && data.writable === false) {
     eventsource.editable = false;
   }
 
@@ -1288,9 +1288,6 @@ var get_event_data = function get_event_data(id) {
  * @return Object|undefined
  */
 var load_base_event_for = function load_base_event_for(instance, success, fail) {
-  var parts = instance.id.split('@');
-  var base_id = parts[0] + '@';
-
   // Query the server
   var search = $.getJSON(
       AgenDAVConf.base_app_url + 'eventbase',
@@ -1475,7 +1472,6 @@ var shares_manager_enable_autocomplete = function shares_manager_enable_autocomp
 
 var reminders_manager = function reminders_manager() {
 
-  var tab_reminders = $('#tabs-reminders');
   var manager = $('#reminders');
 
   reminders_manager_no_entries_placeholder();
