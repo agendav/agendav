@@ -141,6 +141,5 @@ $app['calendar.colors'] = [
     'FFE0B2', // Pale orange
     'D7CCC8', // Pale brown
     'F5F5F5', // Pale gray
-
-
 ];
+

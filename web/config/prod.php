@@ -56,11 +56,6 @@ if (!file_exists(__DIR__ . '/settings.php')) {
     echo 'settings.php file not found';
     exit(255);
 }
+
 require __DIR__ . '/default.settings.php';
 require __DIR__ . '/settings.php';
-
-// Configure logging (2/2). Needs log.path
-$app['monolog.level'] = $app['log.level'];
-$app['monolog.logfile'] = $app['log.path'] . '/' . date('Y-m-d') . '.log';
-
-$app['locale'] = $app['defaults.language'];

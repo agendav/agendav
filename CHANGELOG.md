@@ -13,6 +13,7 @@
 - Updated all translations
 - Switched to npm scripts to build AgenDAV
 - Switched to Symfony Asset component to generate URLs for assets
+- Configuration is now loaded in last place, allowing further customization through settings.php
 
 ## Fixed
 

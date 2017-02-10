@@ -9,15 +9,10 @@ use Silex\Application;
 
 use AgenDAV\DateHelper;
 
-// Trust configured proxies
-Request::setTrustedProxies($app['proxies']);
-
 // Authentication
 $app->get('/login', '\AgenDAV\Controller\Authentication::loginAction')->bind('login');
 $app->post('/login', '\AgenDAV\Controller\Authentication::loginAction');
 $app->get('/logout', '\AgenDAV\Controller\Authentication::logoutAction')->bind('logout');
-
-
 
 // CSRF protection
 $app->before(function(Request $request, Application $app) {

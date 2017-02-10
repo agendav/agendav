@@ -19,6 +19,10 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$app['monolog.logfile'] = function($app) { return $app['log.path'] . '/' . date('Y-m-d') . '.log'; };
+$app['monolog.level'] = function($app) { return $app['log.level']; };
+$app['locale'] = function($app) { return $app['defaults.language']; };
+
 // ORM Entity manager
 $app['orm'] = $app->share(function($app) {
     $development_mode = ($app['environment'] === 'dev');
@@ -213,31 +217,27 @@ $app['assets.strategy'] = $app->share(function($app) {
 });
 
 
-// Sharing support enabled
-if ($app['calendar.sharing'] === true) {
+// Shares repository
+$app['shares.repository'] = $app->share(function($app) {
+    $em = $app['orm'];
+    return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
+});
 
-    // Shares repository
-    $app['shares.repository'] = $app->share(function($app) {
-        $em = $app['orm'];
-        return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
-    });
+$app['sharing.resolver'] = $app->share(function($app) {
+    $shares_repository = $app['shares.repository'];
+    $principals_repository = $app['principals.repository'];
+    return new AgenDAV\Sharing\SharingResolver(
+        $shares_repository,
+        $principals_repository
+    );
+});
 
-    $app['sharing.resolver'] = $app->share(function($app) {
-        $shares_repository = $app['shares.repository'];
-        $principals_repository = $app['principals.repository'];
-        return new AgenDAV\Sharing\SharingResolver(
-            $shares_repository,
-            $principals_repository
-        );
-    });
+// Configured permissions
+$app['permissions'] = $app->share(function($app) {
+    return new \AgenDAV\CalDAV\Share\Permissions($app['calendar.sharing.permissions']);
+});
 
-    // Configured permissions
-    $app['permissions'] = $app->share(function($app) {
-        return new \AgenDAV\CalDAV\Share\Permissions($app['calendar.sharing.permissions']);
-    });
-
-    // ACL factory
-    $app['acl'] = function($app) {
-        return new \AgenDAV\CalDAV\Share\ACL($app['permissions']);
-    };
-}
+// ACL factory
+$app['acl'] = function($app) {
+    return new \AgenDAV\CalDAV\Share\ACL($app['permissions']);
+};
