@@ -71,7 +71,13 @@ AgenDAV requires a database to store some extra information.
 First of all you have to set up your database. If you plan using MySQL or PostgreSQL, here you will
 find some basic instructions about how to set up them.
 
-**Setting up a MySQL database**
+**Setting up a MySQL/MariaDB database**
+
+.. warning::
+   If you have binary logging enabled in MySQL/MariaDB, make sure it is configured to use
+   `binlog_format = MIXED`. Or just disable binary logging in case you don't actually need it.
+
+   AgenDAV will complain and exit in case you have a different binary logging configuration.
 
 Create a user in MySQL and let it use a new `agendav` database::
 
