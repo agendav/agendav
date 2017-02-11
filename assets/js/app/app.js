@@ -76,7 +76,7 @@ $(document).ready(function() {
     timezone: AgenDAVUserPrefs.timezone,
     firstDay: AgenDAVUserPrefs.weekstart,
     timeFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
-    weekMode: 'liquid',
+    fixedWeekCount: false,
     weekNumbers: AgenDAVUserPrefs.show_week_nb,
     weekNumberCalculation: 'ISO',
     weekNumbersWithinDays: true,
