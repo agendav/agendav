@@ -28,6 +28,7 @@
 - Added a new preference to show a marker indicating the current time
 - Added a new `log.level` setting
 - Added a command to clear ORM metadata cache
+- Added a 'list' (also called agenda) view. Configurable through preferences
 
 ### Removed
 

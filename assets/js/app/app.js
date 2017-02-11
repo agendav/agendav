@@ -85,8 +85,15 @@ $(document).ready(function() {
       var new_height = calendar_height();
       $(this).fullCalendar('option', 'height', new_height);
     },
+    views: {
+      listNextMonth: {
+        type: 'list',
+        duration: { days: parseInt(AgenDAVUserPrefs.list_days) },
+        listDayAltFormat: 'dddd'
+      }
+    },
     header: {
-      right:   'month,agendaWeek,agendaDay',
+      right:   'month,agendaWeek,agendaDay listNextMonth',
       center: 'title',
       left:  'today prev,next'
     },

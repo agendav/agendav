@@ -59,6 +59,7 @@ $app['preferences.repository'] = $app->share(function($app) {
         'timezone' => $app['defaults.timezone'],
         'show_week_nb' => $app['defaults.show_week_nb'],
         'show_now_indicator' => $app['defaults.show_now_indicator'],
+        'list_days' => $app['defaults.list_days'],
     ]);
 
     return $repository;

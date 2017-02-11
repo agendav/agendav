@@ -59,6 +59,7 @@ class Preferences
                 'weekstart' => $preferences->get('weekstart'),
                 'show_week_nb' => $preferences->get('show_week_nb'),
                 'show_now_indicator' => $preferences->get('show_now_indicator'),
+                'list_days' => $preferences->get('list_days'),
             ]
         );
     }
@@ -84,6 +85,7 @@ class Preferences
             'default_calendar' => $input->get('default_calendar'),
             'show_week_nb' => $input->get('show_week_nb') == 'true',
             'show_now_indicator' => $input->get('show_now_indicator') == 'true',
+            'list_days' => $input->get('list_days'),
         ]);
         $app['preferences.repository']->save($username, $preferences);
 

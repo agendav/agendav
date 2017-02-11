@@ -206,6 +206,12 @@ modify,  and start configuring your instance.
 
    Specify it as a boolean ("true" or "false").
 
+.. confval:: defaults.list_days
+
+   Default number of days covered by the "list" (agenda) view. Allowed values: 7, 14 or 31
+
+   Specify it as an integer.
+
 .. confval:: logout.redirection
 
    When logging out from AgenDAV, the URL the user will be redirected to.

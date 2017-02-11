@@ -108,6 +108,9 @@ $app['defaults.show_week_nb'] = false;
 
 // Default for showing the "now" indicator, a line on current time. Options: true/false
 $app['defaults.show_now_indicator'] = true;
+//
+// Default number of days covered by the "list" (agenda) view. Allowed values: 7, 14 or 31
+$app['defaults.list_days'] = 7;
 
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
