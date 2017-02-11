@@ -6,6 +6,25 @@ use AgenDAV\CalDAV\Resource\Calendar;
 class ShareTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function testNullOptions()
+    {
+        $share = new Share;
+
+        // Tricky
+        $set_options_null = \Closure::bind(function (Share $share) {
+                $share->options = null;
+        }, null, '\AgenDAV\Data\Share');
+
+        $set_options_null($share);
+
+        $this->assertEquals([], $share->getProperties(), 'Share#getProperties() does not return an empty array with null options');
+        $this->assertEquals(null, $share->getProperty('xx'), 'Share#getProperty() fails when options is null');
+
+        // Make sure it does not produce an error
+        $share->setProperty('abc', 'def');
+        $this->assertEquals('def', $share->getProperty('abc'), 'Share#getProperty() fails when options was null');
+    }
+
     public function testApplyCustomPropertiesTo()
     {
         $calendar = new Calendar('/calendar/url',

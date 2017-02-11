@@ -53,7 +53,7 @@ class Share
     private $with_principal;
 
     /** @Column(type="array") */
-    private $options = array();
+    private $options = [];
 
     /** @Column(type="boolean") */
     private $rw;
@@ -180,9 +180,10 @@ class Share
      */
     public function getProperties()
     {
-        if (!is_array($this->options)) {
-            return array();
+        if ($this->options === null) {
+            return [];
         }
+
         return $this->options;
     }
 
@@ -195,6 +196,10 @@ class Share
      */
     public function getProperty($name)
     {
+        if ($this->options === null) {
+            return null;
+        }
+
         return array_key_exists($name, $this->options) ?  $this->options[$name] : null;
     }
 
@@ -206,6 +211,10 @@ class Share
      */
     public function setProperty($name, $value)
     {
+        if ($this->options === null) {
+            $this->options = [];
+        }
+
         $this->options[$name] = $value;
     }
 
