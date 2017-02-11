@@ -135,7 +135,12 @@ abstract class JSONController
 
         } catch (\Exception $exception) {
             $app['monolog']->addCritical(
-                sprintf('Received unexpected exception %s: %s', get_class($exception), $exception->getMessage()),
+                sprintf('Received unexpected exception %s (%s:%d): %s',
+                    get_class($exception),
+                    $exception->getFile(),
+                    $exception->getLine(),
+                    $exception->getMessage()
+                ),
                 [ 'input' => $input ]
             );
 
