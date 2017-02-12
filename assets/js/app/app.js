@@ -86,14 +86,14 @@ $(document).ready(function() {
       $(this).fullCalendar('option', 'height', new_height);
     },
     views: {
-      listNextMonth: {
+      customizable_list: {
         type: 'list',
         duration: { days: parseInt(AgenDAVUserPrefs.list_days) },
         listDayAltFormat: 'dddd'
       }
     },
     header: {
-      right:   'month,agendaWeek,agendaDay listNextMonth',
+      right:   'month,agendaWeek,agendaDay customizable_list',
       center: 'title',
       left:  'today prev,next'
     },
