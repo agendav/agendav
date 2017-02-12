@@ -104,6 +104,7 @@ $(document).ready(function() {
       center: 'title',
       left:  'today prev,next'
     },
+    navLinks: true,
 
     defaultView: fullcalendar_views[AgenDAVUserPrefs.default_view],
     theme: true, // use jQuery UI themeing
