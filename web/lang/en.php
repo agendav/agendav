@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Return',
 
     'labels.defaultcalendar' => 'Default calendar',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Show/hide all',
 
@@ -168,6 +169,11 @@ $translations = array(
     'labels.show_week_nb' => 'Show week numbers',
     'labels.show_now_indicator' => 'Show a marker indicating the current time',
     'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -211,6 +217,7 @@ $translations = array(
     'messages.error_empty_fields' => 'Some required fields are empty',
 
     'messages.help_defaultcalendar' => 'New events will be placed in this calendar by default. Set here your most used calendar',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
     'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 

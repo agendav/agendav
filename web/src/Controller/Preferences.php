@@ -60,6 +60,7 @@ class Preferences
                 'show_week_nb' => $preferences->get('show_week_nb'),
                 'show_now_indicator' => $preferences->get('show_now_indicator'),
                 'list_days' => $preferences->get('list_days'),
+                'default_view' => $preferences->get('default_view'),
             ]
         );
     }
@@ -86,6 +87,7 @@ class Preferences
             'show_week_nb' => $input->get('show_week_nb') == 'true',
             'show_now_indicator' => $input->get('show_now_indicator') == 'true',
             'list_days' => $input->get('list_days'),
+            'default_view' => $input->get('default_view'),
         ]);
         $app['preferences.repository']->save($username, $preferences);
 

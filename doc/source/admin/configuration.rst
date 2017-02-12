@@ -212,6 +212,12 @@ modify,  and start configuring your instance.
 
    Specify it as an integer.
 
+.. confval:: defaults.default_view
+
+   Default calendar view when accessing AgenDAV. Allowed values: month, week, day and list
+
+   Specify it as a string.
+
 .. confval:: logout.redirection
 
    When logging out from AgenDAV, the URL the user will be redirected to.

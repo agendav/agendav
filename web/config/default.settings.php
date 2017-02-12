@@ -112,6 +112,9 @@ $app['defaults.show_now_indicator'] = true;
 // Default number of days covered by the "list" (agenda) view. Allowed values: 7, 14 or 31
 $app['defaults.list_days'] = 7;
 
+// Default view (month, week, day or list)
+$app['defaults.default_view'] = 'month';
+
 // Logout redirection. Optional
 $app['logout.redirection'] = '';
 

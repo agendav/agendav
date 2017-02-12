@@ -68,8 +68,15 @@ $(document).ready(function() {
   // Handle expired sessions
   handle_expired_session();
 
+  // Preference name to Fullcalendar view name translation
+  var fullcalendar_views = {
+    'month': 'month',
+    'week': 'agendaWeek',
+    'day': 'agendaDay',
+    'list': 'customizable_list'
+  };
+
   // Enable full calendar
-  // TODO: configurable!
   $('#calendar_view').fullCalendar({
     selectable: true,
     editable: true,
@@ -98,6 +105,7 @@ $(document).ready(function() {
       left:  'today prev,next'
     },
 
+    defaultView: fullcalendar_views[AgenDAVUserPrefs.default_view],
     theme: true, // use jQuery UI themeing
     slotLabelFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     slotMinutes: 30,

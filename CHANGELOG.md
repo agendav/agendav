@@ -30,6 +30,7 @@
 - Added a new `log.level` setting
 - Added a command to clear ORM metadata cache
 - Added a 'list' (also called agenda) view. Configurable through preferences
+- Users can now choose their default calendar view (#72)
 
 ### Removed
 
