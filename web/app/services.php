@@ -199,7 +199,7 @@ $app['assets.packages'] = $app->share(function ($app) {
     // Required to work under a non-root path
     $stack = new Symfony\Component\Asset\Context\RequestStackContext($app['request_stack']);
 
-    $default_package = new Symfony\Component\Asset\Package($strategy);
+    $default_package = new Symfony\Component\Asset\PathPackage('/', $strategy, $stack);
 
     $packages = [
         'css' => new Symfony\Component\Asset\PathPackage('/dist/css', $strategy, $stack),
