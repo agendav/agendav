@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Tilbake',
 
     'labels.defaultcalendar' => 'Standard kalender',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Vis/skjul alt',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Tidsformat',
     'labels.weekstart' => 'Uken starter på',
     'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Noen nødvendige felt er ikke utfylt',
 
     'messages.help_defaultcalendar' => 'Nye hendelser blir som standard plassert i denne kalenderen. Velg din foretrukne kalender.',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Velg din tidssone. Dette vil påvirke hvordan du ser hendelser og og nye hendelser vil bruke denne tidssonen.',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Foretrukne instillinger er lagret',
 

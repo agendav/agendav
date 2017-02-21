@@ -107,7 +107,7 @@ $translations = array(
     'labels.modify' => 'Muokkaa',
     'labels.cancel' => 'Peru',
     'labels.yes' => 'Kyllä',
-    'labels.no' => 'No',
+    'labels.no' => 'Ei',
 
     'labels.delete_only_this_repetition' => 'Poista vain tämä',
     'labels.delete_all_repetitions' => 'Poista kaikki toistumiset',
@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Palaa',
 
     'labels.defaultcalendar' => 'Oletuskalenteri',
+    'labels.default_view' => 'Oletusnäkymä',
 
     'labels.toggleallcalendars' => 'Näytä/piilota kaikki',
 
@@ -165,7 +166,14 @@ $translations = array(
     'labels.date_format' => 'Päivän esitysmuoto',
     'labels.time_format' => 'Ajan esitysmuoto',
     'labels.weekstart' => 'Viikon alkupäivä',
-    'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_week_nb' => 'Näytä viikkonumerot',
+    'labels.show_now_indicator' => 'Näytä nykyistä aikaa osoittava merkki',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Kuukausi',
+    'labels.view_week' => 'Viikko',
+    'labels.view_day' => 'Päivä',
+    'labels.view_list' => 'Luettelo',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Jotkin vaaditut kentät ovat tyhjiä',
 
     'messages.help_defaultcalendar' => 'Uudet tapahtumat asetetaan oletuksena tähän kalenteriin. Aseta tässä useimmin käyttämäsi kalenteri',
+    'messages.help_default_view' => 'Oletusnäkymä kalenteria käyttäessäsi',
     'messages.help_timezone' => 'Valitse nykyinen aikavyöhykkeesi. Tämä vaikuttaa siihen, miten näet olemassa olevat tapahtuvat. Uudet tapahtumat luodaan tälle aikavyöhykkeelle.',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Asetukset tallennettu',
 
@@ -239,8 +249,8 @@ $translations = array(
     'rrule.weekdays' => 'weekdays',
     'rrule.in' => 'in',
     'rrule.on the' => 'on the',
-    'rrule.and' => 'and',
-    'rrule.or' => 'or',
+    'rrule.and' => 'ja',
+    'rrule.or' => 'tai',
     'rrule.the' => 'the',
     'rrule.last' => 'last',
 

@@ -107,7 +107,7 @@ $translations = array(
     'labels.modify' => 'Ändra',
     'labels.cancel' => 'Avbryt',
     'labels.yes' => 'Ja',
-    'labels.no' => 'No',
+    'labels.no' => 'Nej',
 
     'labels.delete_only_this_repetition' => 'Ta bort endast denna',
     'labels.delete_all_repetitions' => 'Ta bort alla upprepningar',
@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Återgå',
 
     'labels.defaultcalendar' => 'Förvald kalender',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Visa/dölj alla',
 
@@ -165,7 +166,14 @@ $translations = array(
     'labels.date_format' => 'Datumformat',
     'labels.time_format' => 'Tidsformat',
     'labels.weekstart' => 'Veckan börjar på',
-    'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_week_nb' => 'Visa veckonummer',
+    'labels.show_now_indicator' => 'Markera nuvarande tidpunkt',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,13 +217,15 @@ $translations = array(
     'messages.error_empty_fields' => 'Some required fields are empty',
 
     'messages.help_defaultcalendar' => 'Nya händelser kommer att läggas in den här kalendern, om inget annat anges. Välj den kalender du använder mest',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Inställningar sparade',
 
     'messages.more_events' => '+ %count händelser',
 
-    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
+    'messages.info_reminders_agendav_support' => 'Observera: påminnelser kommer endast att visas av CalDAV-klienter med stöd för det. AgenDAV kan inte visa dem',
 
     'messages.request_error' => 'Fann ett fel i din begäran',
     'messages.page_not_found' => 'Sidan kunde inte hittas',

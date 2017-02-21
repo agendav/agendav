@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Terug',
 
     'labels.defaultcalendar' => 'Standaard agenda',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Toon/verberg alles',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Tijdnotatie',
     'labels.weekstart' => 'Week begint op',
     'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Een of meerdere verplichte velden waren leeg',
 
     'messages.help_defaultcalendar' => 'Nieuwe gebeurtenissen worden standaard in deze agenda geplaatst. Geef hier uw meest gebruikte agenda aan.',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Kies a.u.b. uw tijdzone. Dit bepaalt hoe bestaande gebeurtenissen worden getoond en nieuwe gebeurtenissen worden met deze tijdzone gemaakt',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Voorkeuren opgeslagen',
 

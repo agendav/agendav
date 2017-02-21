@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Zurück',
 
     'labels.defaultcalendar' => 'Standardkalender',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Alle anzeigen/verstecken',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Zeitformat',
     'labels.weekstart' => 'Die Woche startet am',
     'labels.show_week_nb' => 'Kalenderwoche anzeigen',
+    'labels.show_now_indicator' => 'Markierung der aktuellen Zeit anzeigen',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Einige Pflichtfelder sind leer.',
 
     'messages.help_defaultcalendar' => 'Neue Einträge werden standardmässig in diesem Kalender angelegt. Geben Sie hier den Kalender an, den Sie am Meisten verwenden.',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Wählen Sie Ihre aktuelle Zeitzone. Dies beinflusst, wie Sie bereits vorhandene Termin angezeigt bekommen. Neue Termine werden mit dieser Zeitzoneninformation angelegt.',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Einstellungen gespeichert',
 

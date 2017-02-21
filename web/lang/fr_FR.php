@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Retour',
 
     'labels.defaultcalendar' => 'Calendrier par défaut',
+    'labels.default_view' => 'Vue par défaut',
 
     'labels.toggleallcalendars' => 'Tout afficher/masquer',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Format de l\'heure',
     'labels.weekstart' => 'La semaine démarre le',
     'labels.show_week_nb' => 'Afficher les numéros de semaine',
+    'labels.show_now_indicator' => 'Afficher un marqueur de l\'heure courante',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Mois',
+    'labels.view_week' => 'Semaine',
+    'labels.view_day' => 'Jour',
+    'labels.view_list' => 'Liste',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Certains champs requis sont vides',
 
     'messages.help_defaultcalendar' => 'Par défaut, les nouveaux événements seront placés dans ce calendrier. Choisissez votre calendrier le plus utilisé.',
+    'messages.help_default_view' => 'Vue par défaut ouverte lors de l\'accès à votre calendrier',
     'messages.help_timezone' => 'Choisissez votre fuseau horaire. Cela modifiera l\'affichage des évènements existants et les nouveaux évènements seront créés avec ce fuseau horaire.',
+    'messages.help_list_days' => 'Choisir combien de jours consécutifs seront affichés dans la vue "liste"',
 
     'messages.info_prefssaved' => 'Préférences sauvegardées',
 
@@ -244,10 +254,10 @@ $translations = array(
     'rrule.the' => 'le',
     'rrule.last' => 'dernier',
 
-    'rrule.st' => 'st',
-    'rrule.nd' => 'nd',
-    'rrule.rd' => 'rd',
-    'rrule.th' => 'th',
+    'rrule.st' => 'er',
+    'rrule.nd' => 'ème',
+    'rrule.rd' => 'ème',
+    'rrule.th' => 'ème',
 );
 
 return $translations;

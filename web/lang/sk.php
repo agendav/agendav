@@ -101,13 +101,13 @@ $translations = array(
     'labels.add' => 'Pridať',
     'labels.close' => 'Zatvoriť',
     'labels.save' => 'Uložiť',
-    'labels.create' => 'Create',
+    'labels.create' => 'Založiť',
     'labels.login' => 'Prihlásiť Sa',
     'labels.logout' => 'Odhlásiť Sa',
     'labels.modify' => 'Meniť',
     'labels.cancel' => 'Zrušiť',
     'labels.yes' => 'Áno',
-    'labels.no' => 'No',
+    'labels.no' => 'Nie',
 
     'labels.delete_only_this_repetition' => 'Delete only this one',
     'labels.delete_all_repetitions' => 'Delete all repetitions',
@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Vrátiť Sa',
 
     'labels.defaultcalendar' => 'Default calendar',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Show/hide all',
 
@@ -147,8 +148,8 @@ $translations = array(
     'labels.before_start' => 'before start',
     'labels.after' => 'After',
 
-    'labels.start' => 'start',
-    'labels.end' => 'end',
+    'labels.start' => 'Začatie',
+    'labels.end' => 'Konec',
 
     'labels.ends' => 'Ends:',
     'labels.never' => 'Never',
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Formát Času',
     'labels.weekstart' => 'Začiatok Týždňa',
     'labels.show_week_nb' => 'Zobraziť čísla týždňov',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Some required fields are empty',
 
     'messages.help_defaultcalendar' => 'New events will be placed in this calendar by default. Set here your most used calendar',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Preferences saved',
 

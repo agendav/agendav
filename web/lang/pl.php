@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Powrót',
 
     'labels.defaultcalendar' => 'Domyślny kalendarz',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => 'Pokaż/ukryj wszystkie',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Format czasu',
     'labels.weekstart' => 'Tydzień zaczyna się od',
     'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Wymagane pola są puste',
 
     'messages.help_defaultcalendar' => 'Nowe zdarzenia będą umieszczone w tym kalendarzu domyślnym. Ustaw tu najczęściej używane kalendarza',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => 'Wybierz swoją aktualną strefę czasową. Będzie to miało wpływ, jak widzisz na istniejące wydarzenia, a nowe wydarzenia będą tworzone przy użyciu tej strefy czasowej',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => 'Ustawienia zapisane',
 

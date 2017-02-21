@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Volver',
 
     'labels.defaultcalendar' => 'Calendario por defecto',
+    'labels.default_view' => 'Vista por defecto',
 
     'labels.toggleallcalendars' => 'Ver/ocultar todos',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => 'Formato de hora',
     'labels.weekstart' => 'La semana empieza el',
     'labels.show_week_nb' => 'Mostrar número de semana',
+    'labels.show_now_indicator' => 'Mostrar una línea indicando la hora actual',
+    'labels.list_days' => 'Días de la vista agenda',
+
+    'labels.view_month' => 'Mes',
+    'labels.view_week' => 'Semana',
+    'labels.view_day' => 'Día',
+    'labels.view_list' => 'Agenda',
 
 
 // Messages
@@ -214,7 +222,9 @@ existen',
     'messages.error_empty_fields' => 'Uno o más campos obligatorios están vacíos',
 
     'messages.help_defaultcalendar' => 'Los eventos nuevos serán colocados en este calendario por defecto. Elija el calendario que más use',
+    'messages.help_default_view' => 'Vista por defecto al acceder a su calendario',
     'messages.help_timezone' => 'Elija su zona horaria. Esto afectará a cómo ve los eventos existentes, y los nuevos eventos serán creados usando la zona horaria que configure',
+    'messages.help_list_days' => 'Elija cuantos días consecutivos quiere que se muestren en la vista "agenda"',
 
     'messages.info_prefssaved' => 'Preferencias guardadas',
 

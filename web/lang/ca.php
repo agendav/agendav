@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => 'Tornar',
 
     'labels.defaultcalendar' => 'Calendari per defecte',
+    'labels.default_view' => 'Vista per defecte',
 
     'labels.toggleallcalendars' => 'Mostra/Oculta tot',
 
@@ -165,7 +166,14 @@ $translations = array(
     'labels.date_format' => 'Format de data',
     'labels.time_format' => 'Format d\'hora',
     'labels.weekstart' => 'La setmana comença en',
-    'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_week_nb' => 'Mostra els números de setmana',
+    'labels.show_now_indicator' => 'Mostra una marca amb l\'hora actual',
+    'labels.list_days' => 'Vista de llista de dies',
+
+    'labels.view_month' => 'Mes',
+    'labels.view_week' => 'Setmana',
+    'labels.view_day' => 'Dia',
+    'labels.view_list' => 'Llista',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => 'Alguns camps necessaris estan buits',
 
     'messages.help_defaultcalendar' => 'Els nous esdeveniments seran col·locats per defecte en aquest calendari. Posa aquí el teu calendari preferit ',
+    'messages.help_default_view' => 'Vista per defecte quan s\'accedeix al calendari',
     'messages.help_timezone' => 'Tria la teva zona horària. Això afectarà en la forma en que veus els esdeveniments existents i els nous seran creats usant aquesta zona horària',
+    'messages.help_list_days' => 'Tria quants dies consecutius vols veure a la vista de llista',
 
     'messages.info_prefssaved' => 'Preferències desades',
 

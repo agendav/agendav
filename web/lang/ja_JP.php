@@ -129,6 +129,7 @@ $translations = array(
     'labels.return' => '戻る',
 
     'labels.defaultcalendar' => 'メインカレンダー',
+    'labels.default_view' => 'Default view',
 
     'labels.toggleallcalendars' => '全て 表示/非表示',
 
@@ -166,6 +167,13 @@ $translations = array(
     'labels.time_format' => '時刻の書式',
     'labels.weekstart' => '週の始まり',
     'labels.show_week_nb' => 'Show week numbers',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
 
 
 // Messages
@@ -209,7 +217,9 @@ $translations = array(
     'messages.error_empty_fields' => '値を入力してください',
 
     'messages.help_defaultcalendar' => '新しい予定を追加するデフォルトのカレンダーを選択してください',
+    'messages.help_default_view' => 'Default view when you access your calendar',
     'messages.help_timezone' => '予定の表示や作成時に使用されるタイムゾーンを選択してください',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 
     'messages.info_prefssaved' => '設定を保存しました',
 
