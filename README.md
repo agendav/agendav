@@ -1,7 +1,7 @@
 AgenDAV - CalDAV web client
 ===========================
 
-[![Build Status](https://travis-ci.org/adobo/agendav.svg?branch=develop)](https://travis-ci.org/adobo/agendav)
+[![Build Status](https://travis-ci.org/agendav/agendav.svg?branch=develop)](https://travis-ci.org/agendav/agendav)
 [![Develop docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](http://agendav.readthedocs.org/en/develop/)
 [![Stable docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](http://agendav.readthedocs.org/en/latest/)
 
