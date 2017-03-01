@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright (C) Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *

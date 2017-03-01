@@ -6,7 +6,7 @@ use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Xml\Service as XMLService;
 
 /*
- * Copyright 2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright (C) Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *

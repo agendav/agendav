@@ -4,7 +4,7 @@ namespace AgenDAV\CalDAV\Share;
 use AgenDAV\CalDAV\Share\Permissions;
 
 /*
- * Copyright 2013-2014 Jorge López Pérez <jorge@adobo.org>
+ * Copyright (C) Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *

@@ -2,7 +2,7 @@
 namespace AgenDAV\Sharing;
 
 /*
- * Copyright 2016 Jorge López Pérez <jorge@adobo.org>
+ * Copyright (C) Jorge López Pérez <jorge@adobo.org>
  *
  *  This file is part of AgenDAV.
  *
