@@ -7,6 +7,8 @@
 - Upgrade Symfony components to 2.8.18
 - Upgrade Guzzle to 6.2.3
 - Upgrade monolog to 1.22.0
+- Upgrade ramsey/uuid to 3.5.2
+- Upgrade psr/log to 1.0.2
 - Remove several Symfony components that were not necessary
 
 ### Added
