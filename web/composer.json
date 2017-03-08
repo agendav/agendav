@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "guzzlehttp/streams": "~3.0",
         "league/fractal": "~0.12.0",
-        "monolog/monolog": "~1.18.0",
+        "monolog/monolog": "~1.22.0",
         "ramsey/uuid": "~3.3.0",
         "sabre/dav": "~3.1.0",
         "silex/silex": "~1.0",
