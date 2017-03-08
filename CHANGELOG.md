@@ -5,6 +5,7 @@
 ### Changed
 
 - Upgrade Symfony components to 2.8.18
+- Upgrade Guzzle to 6.2.3
 - Remove several Symfony components that were not necessary
 
 ### Added
