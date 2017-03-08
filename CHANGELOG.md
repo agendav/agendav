@@ -4,7 +4,8 @@
 
 ### Changed
 
-- Upgraded Symfony components to 2.8.18
+- Upgrade Symfony components to 2.8.18
+- Remove several Symfony components that were not necessary
 
 ### Added
 
