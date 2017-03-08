@@ -2,6 +2,10 @@
 
 ## [Unreleased] - unreleased
 
+### Changed
+
+- Upgraded Symfony components to 2.8.18
+
 ### Added
 
 - Document required PHP extensions (#201)
