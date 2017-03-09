@@ -1080,7 +1080,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       shared_calendars = document.createDocumentFragment(),
       collected_event_sources = [];
 
-    var calendars = data.calendars;
+    var calendars = data.data;
 
     $.each(calendars, function(key, calendar) {
       // This is a hidden calendar

@@ -38,7 +38,7 @@ $app['orm'] = $app->share(function($app) {
 // Fractal manager
 $app['fractal'] = $app->share(function($app) {
     $fractal = new League\Fractal\Manager();
-    $fractal->setSerializer(new League\Fractal\Serializer\JsonApiSerializer());
+    $fractal->setSerializer(new League\Fractal\Serializer\DataArraySerializer());
 
     return $fractal;
 });
