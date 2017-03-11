@@ -35,14 +35,14 @@
         with_items:
             - curl
             - git
-            - php5.6
-            - php5.6-cli
-            - php5.6-curl
-            - php5.6-mysql
-            - php5.6-mcrypt
-            - php5.6-sqlite3
-            - php5.6-dom
-            - php5.6-mbstring
+            - php7.1
+            - php7.1-cli
+            - php7.1-curl
+            - php7.1-mysql
+            - php7.1-mcrypt
+            - php7.1-sqlite3
+            - php7.1-dom
+            - php7.1-mbstring
             - mysql-client
             - mysql-server
             - python-mysqldb
@@ -63,7 +63,7 @@
         when: baikal.stat.exists == false
 
       - name: configure php
-        template: src=php/php.ini.j2 dest=/etc/php/5.6/apache2/php.ini owner=root mode=644 backup=yes
+        template: src=php/php.ini.j2 dest=/etc/php/7.1/apache2/php.ini owner=root mode=644 backup=yes
         sudo: yes
         notify: restart apache
 
@@ -129,17 +129,13 @@
         npm: name=bower global=yes
         sudo: yes
 
-      - name: install grunt-cli
-        npm: name=grunt-cli global=yes
-        sudo: yes
-
       - name: install node dependencies for development
         npm: path=/vagrant state=latest
 
-      - name: run grunt (installs composer dependencies too)
+      - name: run npm
         environment:
           COMPOSER_VENDOR_DIR: /var/agendav-vendors
-        command: grunt chdir=/vagrant
+        command: npm run build chdir=/vagrant
 
       - name: configure agendav
         template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes mode=0755
