@@ -24,7 +24,7 @@ $app['monolog.level'] = function($app) { return $app['log.level']; };
 $app['locale'] = function($app) { return $app['defaults.language']; };
 
 // ORM Entity manager
-$app['orm'] = $app->share(function($app) {
+$app['orm'] = function($app) {
     $development_mode = ($app['environment'] === 'dev');
 
     $setup = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
@@ -33,18 +33,18 @@ $app['orm'] = $app->share(function($app) {
     );
 
     return Doctrine\ORM\EntityManager::create($app['db.options'], $setup);
-});
+};
 
 // Fractal manager
-$app['fractal'] = $app->share(function($app) {
+$app['fractal'] = function($app) {
     $fractal = new League\Fractal\Manager();
     $fractal->setSerializer(new League\Fractal\Serializer\DataArraySerializer());
 
     return $fractal;
-});
+};
 
 // Preferences repository
-$app['preferences.repository'] = $app->share(function($app) {
+$app['preferences.repository'] = function($app) {
     $em = $app['orm'];
     $repository = new AgenDAV\Repositories\DoctrineOrmPreferencesRepository($em);
 
@@ -64,10 +64,10 @@ $app['preferences.repository'] = $app->share(function($app) {
     ]);
 
     return $repository;
-});
+};
 
 // Principals repository (queries the CalDAV server)
-$app['principals.repository'] = $app->share(function($app) {
+$app['principals.repository'] = function($app) {
     $repository = new AgenDAV\Repositories\DAVPrincipalsRepository(
         $app['xml.toolkit'],
         $app['caldav.client'],
@@ -75,27 +75,27 @@ $app['principals.repository'] = $app->share(function($app) {
     );
 
     return $repository;
-});
+};
 
 
 // Sessions handler
-$app['session.storage.handler'] = $app->share(function($app) {
+$app['session.storage.handler'] = function($app) {
     $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
         $app['db']->getWrappedConnection(),
         $app['session.storage.options']
     );
 
     return $pdo_handler;
-});
+};
 
 
 // HTTP connection logger
-$app['monolog.http'] = $app->share(function($app) {
+$app['monolog.http'] = function($app) {
     return \AgenDAV\Log::generateHttpLogger($app['log.path']);
-});
+};
 
 // Guzzle HTTP client
-$app['guzzle'] = $app->share(function($app) {
+$app['guzzle'] = function($app) {
     // Generate Guzzle default stack handler
     $stack = GuzzleHttp\HandlerStack::create();
 
@@ -120,51 +120,51 @@ $app['guzzle'] = $app->share(function($app) {
 
 
     return $client;
-});
+};
 
 // AgenDAV HTTP client, based on Guzzle
-$app['http.client'] = $app->share(function($app) {
+$app['http.client'] = function($app) {
     return \AgenDAV\Http\ClientFactory::create(
         $app['guzzle'],
         $app['session'],
         $app['caldav.authmethod']
     );
-});
+};
 
 // XML generator
-$app['xml.generator'] = $app->share(function($app) {
+$app['xml.generator'] = function($app) {
     return new \AgenDAV\XML\Generator();
-});
+};
 
 // XML parser
-$app['xml.parser'] = $app->share(function($app) {
+$app['xml.parser'] = function($app) {
     return new \AgenDAV\XML\Parser();
-});
+};
 
 // XML toolkit
-$app['xml.toolkit'] = $app->share(function($app) {
+$app['xml.toolkit'] = function($app) {
     return new \AgenDAV\XML\Toolkit(
         $app['xml.parser'],
         $app['xml.generator']
     );
-});
+};
 
 // Event parser
-$app['event.parser'] = $app->share(function($app) {
+$app['event.parser'] = function($app) {
     return new \AgenDAV\Event\Parser\VObjectParser;
-});
+};
 
 // CalDAV client
-$app['caldav.client'] = $app->share(function($app) {
+$app['caldav.client'] = function($app) {
     return new \AgenDAV\CalDAV\Client(
         $app['http.client'],
         $app['xml.toolkit'],
         $app['event.parser']
     );
-});
+};
 
 // Calendar finder
-$app['calendar.finder'] = $app->share(function($app) {
+$app['calendar.finder'] = function($app) {
 
     $finder = new \AgenDAV\CalendarFinder(
         $app['session'],
@@ -178,23 +178,23 @@ $app['calendar.finder'] = $app->share(function($app) {
 
 
     return $finder;
-});
+};
 
 // Event builder
-$app['event.builder'] = $app->share(function($app) {
+$app['event.builder'] = function($app) {
     $timezone = new \DateTimeZone($app['user.timezone']);
     return new \AgenDAV\Event\Builder\VObjectBuilder($timezone);
-});
+};
 
 
 // CSRF manager that stores tokens inside sessions
-$app['csrf.manager'] = $app->share(function ($app) {
+$app['csrf.manager'] = function ($app) {
     $storage = new Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage($app['session']);
     return new Symfony\Component\Security\Csrf\CsrfTokenManager(null, $storage);
-});
+};
 
 // Asset manager
-$app['assets.packages'] = $app->share(function ($app) {
+$app['assets.packages'] = function ($app) {
     $strategy = $app['assets.strategy'];
     // Required to work under a non-root path
     $stack = new Symfony\Component\Asset\Context\RequestStackContext($app['request_stack']);
@@ -208,38 +208,38 @@ $app['assets.packages'] = $app->share(function ($app) {
     ];
 
     return new Symfony\Component\Asset\Packages($default_package, $packages);
-});
+};
 
-$app['assets.strategy'] = $app->share(function($app) {
+$app['assets.strategy'] = function($app) {
     if ($app['environment'] === 'dev') {
         return new Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy();
     }
 
     return new Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy('v' . AgenDAV\Version::V);
-});
+};
 
 
 // Shares repository
-$app['shares.repository'] = $app->share(function($app) {
+$app['shares.repository'] = function($app) {
     $em = $app['orm'];
     return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
-});
+};
 
-$app['sharing.resolver'] = $app->share(function($app) {
+$app['sharing.resolver'] = function($app) {
     $shares_repository = $app['shares.repository'];
     $principals_repository = $app['principals.repository'];
     return new AgenDAV\Sharing\SharingResolver(
         $shares_repository,
         $principals_repository
     );
-});
+};
 
 // Configured permissions
-$app['permissions'] = $app->share(function($app) {
+$app['permissions'] = function($app) {
     return new \AgenDAV\CalDAV\Share\Permissions($app['calendar.sharing.permissions']);
-});
+};
 
 // ACL factory
-$app['acl'] = function($app) {
+$app['acl'] = $app->factory(function($app) {
     return new \AgenDAV\CalDAV\Share\ACL($app['permissions']);
-};
+});

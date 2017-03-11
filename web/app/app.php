@@ -2,7 +2,7 @@
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -12,7 +12,7 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Symfony\Component\Translation\Loader\PhpFileLoader;
 
 $app = new Application();
-$app->register(new UrlGeneratorServiceProvider());
+$app->register(new RoutingServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
@@ -23,7 +23,7 @@ $app->register(new MonologServiceProvider(), [
 ]);
 
 // Add some shared data to twig templates
-$app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+$app['twig'] = $app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('environment', $app['environment']);
     $twig->addGlobal('title', $app['site.title']);
     $twig->addGlobal('logo', $app['site.logo']);
@@ -39,7 +39,7 @@ $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('csrf_token', \AgenDAV\Csrf::getCurrentToken($app));
 
     return $twig;
-}));
+});
 
 
 // Translation
@@ -47,7 +47,7 @@ $app->register(new TranslationServiceProvider(), [
     'locale_fallbacks' => [ 'en' ]
 ]);
 
-$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+$app['translator'] = $app->extend('translator', function($translator, $app) {
     $translator->addLoader('php', new PhpFileLoader());
 
     $languages = array_keys($app['languages']);
@@ -57,7 +57,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
     }
 
     return $translator;
-}));
+});
 
 // Default environment: production
 $app['environment'] = 'prod';
