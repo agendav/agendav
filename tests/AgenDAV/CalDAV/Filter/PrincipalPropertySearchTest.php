@@ -2,8 +2,9 @@
 namespace AgenDAV\CalDAV\Filter;
 
 use Sabre\Xml\Writer;
+use PHPUnit\Framework\TestCase;
 
-class PrincipalPropertySearchTest extends \PHPUnit_Framework_TestCase
+class PrincipalPropertySearchTest extends TestCase
 {
     public function testGeneration()
     {

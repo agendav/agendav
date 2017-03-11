@@ -6,11 +6,12 @@ use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use AgenDAV\Data\Reminder;
 use AgenDAV\Event\RecurrenceId;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author jorge
  */
-class VObjectEventInstanceTest extends \PHPUnit_Framework_TestCase
+class VObjectEventInstanceTest extends TestCase
 {
     protected $vcalendar;
 

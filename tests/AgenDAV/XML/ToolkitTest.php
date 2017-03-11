@@ -2,9 +2,10 @@
 namespace AgenDAV\XML;
 
 use AgenDAV\CalDAV\Resource\Calendar;
+use PHPUnit\Framework\TestCase;
 use \Mockery as m;
 
-class ToolkitTest extends \PHPUnit_Framework_TestCase
+class ToolkitTest extends TestCase
 {
     protected $parser;
 

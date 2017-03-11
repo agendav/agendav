@@ -1,7 +1,9 @@
 <?php
 namespace AgenDAV\CalDAV\Share;
 
-class PermissionsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PermissionsTest extends TestCase
 {
     /**
      * @expectedException \RuntimeException

@@ -2,7 +2,9 @@
 
 namespace AgenDAV\CalDAV\Resource;
 
-class CalendarObjectTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CalendarObjectTest extends TestCase
 {
     public function testGenerateOnCalendar()
     {

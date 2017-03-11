@@ -6,9 +6,10 @@ use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use AgenDAV\Event\VObjectHelper;
 use AgenDAV\Event\RecurrenceId;
+use PHPUnit\Framework\TestCase;
 use Mockery as m;
 
-class VObjectHelperTest extends \PHPUnit_Framework_TestCase
+class VObjectHelperTest extends TestCase
 {
     protected $vcalendar;
 

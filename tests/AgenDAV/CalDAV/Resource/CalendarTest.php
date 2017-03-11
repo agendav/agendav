@@ -3,8 +3,9 @@ namespace AgenDAV\CalDAV\Resource;
 
 use AgenDAV\Data\Share;
 use AgenDAV\Data\Principal;
+use PHPUnit\Framework\TestCase;
 
-class CalendarTest extends \PHPUnit_Framework_TestCase
+class CalendarTest extends TestCase
 {
     public function testSet()
     {

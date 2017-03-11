@@ -5,12 +5,13 @@ use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Share\Permissions;
 use AgenDAV\CalDAV\Share\ACL;
 use Sabre\Xml\Reader;
+use PHPUnit\Framework\TestCase;
 use \Mockery as m;
 
 /**
  * @author jorge
  */
-class GeneratorTest extends \PHPUnit_Framework_TestCase
+class GeneratorTest extends TestCase
 {
     public function testPropfindBody()
     {

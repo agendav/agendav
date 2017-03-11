@@ -2,8 +2,9 @@
 namespace AgenDAV\Data\Helper;
 
 use AgenDAV\Data\Share;
+use PHPUnit\Framework\TestCase;
 
-class SharesDiffTest extends \PHPUnit_Framework_TestCase
+class SharesDiffTest extends TestCase
 {
     public function testEmpty()
     {

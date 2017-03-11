@@ -22,11 +22,12 @@ use AgenDAV\Event\Parser as EventParser;
 use AgenDAV\CalDAV\Filter\Uid;
 use AgenDAV\CalDAV\Filter\TimeRange;
 use AgenDAV\Data\Principal;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author jorge
  */
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     /** @var \AgenDAV\Http\Client */
     protected $http_client;

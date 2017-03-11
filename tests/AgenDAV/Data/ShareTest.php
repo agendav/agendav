@@ -2,8 +2,9 @@
 namespace AgenDAV\Data;
 
 use AgenDAV\CalDAV\Resource\Calendar;
+use PHPUnit\Framework\TestCase;
 
-class ShareTest extends \PHPUnit_Framework_TestCase
+class ShareTest extends TestCase
 {
 
     public function testNullOptions()

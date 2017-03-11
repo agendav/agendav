@@ -4,9 +4,10 @@ namespace AgenDAV\Event;
 
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
+use PHPUnit\Framework\TestCase;
 use Mockery as m;
 
-class VObjectEventTest extends \PHPUnit_Framework_TestCase
+class VObjectEventTest extends TestCase
 {
     use \Sabre\VObject\PHPUnitAssertions;
 

@@ -2,8 +2,9 @@
 namespace AgenDAV\CalDAV\Filter;
 
 use \Sabre\Xml\Writer;
+use PHPUnit\Framework\TestCase;
 
-class UidTest extends \PHPUnit_Framework_TestCase
+class UidTest extends TestCase
 {
     public function testGeneration()
     {

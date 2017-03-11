@@ -2,8 +2,9 @@
 namespace AgenDAV\CalDAV\Filter;
 
 use Sabre\Xml\Writer;
+use PHPUnit\Framework\TestCase;
 
-class TimeRangeTest extends \PHPUnit_Framework_TestCase
+class TimeRangeTest extends TestCase
 {
     public function testGeneration()
     {

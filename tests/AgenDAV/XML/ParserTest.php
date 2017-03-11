@@ -1,7 +1,9 @@
 <?php
 namespace AgenDAV\XML;
 
-class ParserTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ParserTest extends TestCase
 {
     public function testExtractPropertiesFromMultistatus()
     {

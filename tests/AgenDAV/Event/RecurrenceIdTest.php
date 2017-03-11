@@ -1,7 +1,9 @@
 <?php
 namespace AgenDAV\Event;
 
-class RecurrenceIdTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RecurrenceIdTest extends TestCase
 {
 
     /** @var \DateTime */

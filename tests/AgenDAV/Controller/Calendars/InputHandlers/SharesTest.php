@@ -1,7 +1,9 @@
 <?php
 namespace AgenDAV\Controller\Calendars\InputHandlers;
 
-class SharesTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SharesTest extends TestCase
 {
     /**
      * @expectedException \LengthException

@@ -2,8 +2,9 @@
 namespace AgenDAV\CalDAV\Share;
 
 use AgenDAV\CalDAV\Share\Permissions;
+use PHPUnit\Framework\TestCase;
 
-class ACLTest extends \PHPUnit_Framework_TestCase
+class ACLTest extends TestCase
 {
 
     public static $privileges;

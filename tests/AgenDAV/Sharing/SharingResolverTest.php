@@ -3,9 +3,10 @@ namespace AgenDAV\Sharing;
 
 use AgenDAV\Data\Share;
 use AgenDAV\Data\Principal;
+use PHPUnit\Framework\TestCase;
 use \Mockery as m;
 
-class SharingResolverTest extends \PHPUnit_Framework_TestCase
+class SharingResolverTest extends TestCase
 {
     public function testResolveShares()
     {

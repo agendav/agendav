@@ -1,7 +1,9 @@
 <?php
 namespace AgenDAV\Data;
 
-class PreferencesTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PreferencesTest extends TestCase
 {
     public function testUsername()
     {

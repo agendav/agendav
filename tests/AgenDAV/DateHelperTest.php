@@ -1,7 +1,9 @@
 <?php
 namespace AgenDAV;
 
-class DateHelperTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DateHelperTest extends TestCase
 {
     /**
      * UTC timezone, cached

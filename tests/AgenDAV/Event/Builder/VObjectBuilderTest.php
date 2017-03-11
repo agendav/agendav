@@ -5,9 +5,10 @@ namespace AgenDAV\Event\Builder;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VEvent;
 use AgenDAV\Event\RecurrenceId;
+use PHPUnit\Framework\TestCase;
 use Mockery as m;
 
-class VObjectBuilderTest  extends \PHPUnit_Framework_TestCase
+class VObjectBuilderTest  extends TestCase
 {
     const INPUT_DATETIME_FORMAT = 'Y-m-d\TH:i:s.u\Z';
 
