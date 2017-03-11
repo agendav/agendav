@@ -63,7 +63,8 @@ $controllers->before(function(Request $request, Silex\Application $app) {
         $app['user.timezone'] = $preferences->get('timezone');
 
         // Set application language
-        $app['locale'] = $preferences->get('language');
+        $request->setLocale($preferences->get('language'));
+        $app['translator']->setLocale($preferences->get('language'));
         return;
     }
 
