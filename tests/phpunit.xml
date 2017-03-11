@@ -8,9 +8,6 @@
   <testsuite name="AgenDAV">
     <directory>AgenDAV/</directory>
   </testsuite>
-  <listeners>
-    <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
-  </listeners>
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
       <directory>../web/src/</directory>

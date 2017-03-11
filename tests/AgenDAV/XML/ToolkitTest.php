@@ -3,7 +3,6 @@ namespace AgenDAV\XML;
 
 use AgenDAV\CalDAV\Resource\Calendar;
 use PHPUnit\Framework\TestCase;
-use \Mockery as m;
 
 class ToolkitTest extends TestCase
 {
@@ -22,17 +21,17 @@ class ToolkitTest extends TestCase
 
     public function setUp()
     {
-        $this->parser = m::mock('\AgenDAV\XML\Parser');
-        $this->generator = m::mock('\AgenDAV\XML\Generator');
+        $this->parser = $this->createMock(Parser::class);
+        $this->generator = $this->createMock(Generator::class);
     }
 
     public function testFacadeParseMultiStatus()
     {
         $this->parser
-            ->shouldReceive('extractPropertiesFromMultistatus')
-            ->once()
+            ->expects($this->once())
+            ->method('extractPropertiesFromMultistatus')
             ->with('body', false)
-            ->andReturn(['result']);
+            ->willReturn(['result']);
 
         $toolkit = $this->createToolkit();
 
@@ -55,10 +54,10 @@ class ToolkitTest extends TestCase
     public function testGenerateMkCalendarBody()
     {
         $this->generator
-            ->shouldReceive('mkCalendarBody')
-            ->once()
+            ->expects($this->once())
+            ->method('mkCalendarBody')
             ->with(self::$property_list)
-            ->andReturn('result');
+            ->willReturn('result');
 
         $toolkit = $this->createToolkit();
         $this->assertEquals(
@@ -70,10 +69,10 @@ class ToolkitTest extends TestCase
     public function testGenerateProfindBody()
     {
         $this->generator
-            ->shouldReceive('propfindBody')
-            ->once()
+            ->expects($this->once())
+            ->method('propfindBody')
             ->with(self::$property_list)
-            ->andReturn('result');
+            ->willReturn('result');
 
         $toolkit = $this->createToolkit();
         $this->assertEquals(
@@ -85,10 +84,10 @@ class ToolkitTest extends TestCase
     public function testGenerateProppatchBody()
     {
         $this->generator
-            ->shouldReceive('proppatchBody')
-            ->once()
+            ->expects($this->once())
+            ->method('proppatchBody')
             ->with(self::$property_list)
-            ->andReturn('result');
+            ->willReturn('result');
 
         $toolkit = $this->createToolkit();
         $this->assertEquals(
@@ -99,12 +98,12 @@ class ToolkitTest extends TestCase
 
     public function testGenerateCalendarQueryReportBody()
     {
-        $filter = m::mock('AgenDAV\CalDAV\ComponentFilter');
+        $filter = $this->createMock(\AgenDAV\CalDAV\ComponentFilter::class);
         $this->generator
-            ->shouldReceive('calendarQueryBody')
-            ->once()
+            ->expects($this->once())
+            ->method('calendarQueryBody')
             ->with($filter)
-            ->andReturn('result');
+            ->willReturn('result');
 
         $toolkit = $this->createToolkit();
         $this->assertEquals(
@@ -115,12 +114,11 @@ class ToolkitTest extends TestCase
 
     public function testGeneratePrincipalPropertySearchReportBody()
     {
-        $filter = m::mock('AgenDAV\CalDAV\Filter\PrincipalPropertySearch');
+        $filter = $this->createMock(\AgenDAV\CalDAV\Filter\PrincipalPropertySearch::class);
         $this->generator
-            ->shouldReceive('principalPropertySearchBody')
-            ->once()
+            ->method('principalPropertySearchBody')
             ->with($filter)
-            ->andReturn('result');
+            ->willReturn('result');
 
         $toolkit = $this->createToolkit();
         $this->assertEquals(

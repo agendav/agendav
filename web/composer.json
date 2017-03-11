@@ -35,7 +35,6 @@
     },
 
     "require-dev": {
-        "mockery/mockery": "~0.9.1",
         "phpunit/phpunit": "~5.7.0"
     },
     "autoload": {

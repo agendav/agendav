@@ -10,7 +10,7 @@ cache:
   - $HOME/.composer/cache
 
 script:
-  - phpunit --configuration tests/phpunit.xml
+  - ./vendor/bin/phpunit --configuration tests/phpunit.xml
 
 before_script:
   - composer install -d web/

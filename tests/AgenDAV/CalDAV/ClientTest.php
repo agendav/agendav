@@ -2,7 +2,6 @@
 
 namespace AgenDAV\CalDAV;
 
-use Mockery as m;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Client as GuzzleClient;
@@ -49,7 +48,7 @@ class ClientTest extends TestCase
     {
         $this->xml_generator = new Generator();
         $this->xml_parser = new Parser();
-        $this->event_parser = m::mock('\AgenDAV\Event\Parser');
+        $this->event_parser = $this->createMock(\AgenDAV\Event\Parser::class);
         $this->history = [];
     }
 
@@ -508,11 +507,12 @@ BODY;
           Stream::factory($body)
       );
 
-      $this->event_parser->shouldReceive('parse')
-        ->times(2)
-        ->andReturn(
-          m::mock('\AgenDAV\Event'),
-          m::mock('\AgenDAV\Event')
+      $this->event_parser
+        ->expects($this->exactly(2))
+        ->method('parse')
+        ->willReturn(
+          $this->createMock(\AgenDAV\Event::class),
+          $this->createMock(\AgenDAV\Event::class)
         );
 
       $client = $this->createCalDAVClient($response);
@@ -604,11 +604,13 @@ BODY;
             Stream::factory($body)
         );
 
-        $this->event_parser->shouldReceive('parse')
-          ->once()
-          ->andReturn(
-            m::mock('\AgenDAV\Event')
+        $this->event_parser
+          ->expects($this->once())
+          ->method('parse')
+          ->willReturn(
+            $this->createMock(\AgenDAV\Event::class)
           );
+
         $client = $this->createCalDAVClient($response);
         $calendar = new Calendar('/cal.php/calendars/demo/fake');
 
@@ -628,10 +630,12 @@ BODY;
 
         // Twice: the first one for the upload, and the second one for
         // the validity check
-        $event = m::mock('\AgenDAV\Event')
-          ->shouldReceive('render')->times(2)
-          ->andReturn('iCalendar resource')
-          ->getMock();
+        $event = $this->createMock(\AgenDAV\Event::class);
+        $event
+          ->expects($this->exactly(2))
+          ->method('render')
+          ->willReturn('iCalendar resource');
+
 
         $object = new CalendarObject('/url', $event);
 
@@ -646,10 +650,11 @@ BODY;
 
         // Twice: the first one for the upload, and the second one for
         // the validity check
-        $event = m::mock('\AgenDAV\Event')
-          ->shouldReceive('render')->times(2)
-          ->andReturn('iCalendar resource')
-          ->getMock();
+        $event = $this->createMock(\AgenDAV\Event::class);
+        $event
+          ->expects($this->exactly(2))
+          ->method('render')
+          ->willReturn('iCalendar resource');
 
         $object = new CalendarObject('/url', $event);
         $object->setEtag('test_etag');
@@ -675,23 +680,23 @@ BODY;
         $response = new Response(200);
         $client = $this->createCalDAVClient($response);
 
-        $acl = m::mock('\AgenDAV\CalDAV\Share\ACL')
-          ->shouldReceive('getOwnerPrivileges')
-          ->andReturn([ '{DAV:}all' ]);
+        $acl = $this->createMock(\AgenDAV\CalDAV\Share\ACL::class);
+        $acl->method('getOwnerPrivileges')
+          ->willReturn([ '{DAV:}all' ]);
 
-        $acl->shouldReceive('getDefaultPrivileges')
-          ->andReturn(['{DAV:}minimal']);
+        $acl->method('getDefaultPrivileges')
+          ->willReturn(['{DAV:}minimal']);
 
-        $acl->shouldReceive('getGrantsPrivileges')
-          ->andReturn([
+        $acl->method('getGrantsPrivileges')
+          ->willReturn([
             '/u1' => ['{DAV:}write'],
             '/u2' => ['{DAV:}read'],
           ]);
 
         $calendar = new Calendar('/url');
 
-        $client->applyACL($calendar, $acl->getMock());
-        $this->validateACLRequest($calendar, $acl->getMock());
+        $client->applyACL($calendar, $acl);
+        $this->validateACLRequest($calendar, $acl);
     }
 
     /**
