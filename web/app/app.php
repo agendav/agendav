@@ -8,18 +8,26 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
-use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\AssetServiceProvider;
 use Symfony\Component\Translation\Loader\PhpFileLoader;
 
 $app = new Application();
 $app->register(new RoutingServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
-$app->register(new HttpFragmentServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new DoctrineServiceProvider());
 $app->register(new MonologServiceProvider(), [
     'monolog.name' => 'agendav',
+]);
+
+$app->register(new AssetServiceProvider(), [
+    'assets.version' => 'v' . \AgenDAV\Version::V,
+    'assets.named_packages' => [
+        'css' => [ 'base_path' => '/dist/css', 'version' => \AgenDAV\Version::V ],
+        'js' => [ 'base_path' => '/dist/js', 'version' => \AgenDAV\Version::V ],
+        'img' => [ 'base_path' => '/img', 'version' => \AgenDAV\Version::V ],
+    ],
 ]);
 
 // Add some shared data to twig templates
@@ -30,7 +38,6 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('footer', $app['site.footer']);
 
     // Assets
-    $twig->addExtension(new Symfony\Bridge\Twig\Extension\AssetExtension($app['assets.packages']));
     $twig->addGlobal('stylesheets', $app['stylesheets']);
     $twig->addGlobal('print_stylesheets', $app['print.stylesheets']);
     $twig->addGlobal('scripts', $app['scripts']);

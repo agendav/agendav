@@ -193,32 +193,6 @@ $app['csrf.manager'] = function ($app) {
     return new Symfony\Component\Security\Csrf\CsrfTokenManager(null, $storage);
 };
 
-// Asset manager
-$app['assets.packages'] = function ($app) {
-    $strategy = $app['assets.strategy'];
-    // Required to work under a non-root path
-    $stack = new Symfony\Component\Asset\Context\RequestStackContext($app['request_stack']);
-
-    $default_package = new Symfony\Component\Asset\PathPackage('/', $strategy, $stack);
-
-    $packages = [
-        'css' => new Symfony\Component\Asset\PathPackage('/dist/css', $strategy, $stack),
-        'js' => new Symfony\Component\Asset\PathPackage('/dist/js', $strategy, $stack),
-        'img' => new Symfony\Component\Asset\PathPackage('/img', $strategy, $stack),
-    ];
-
-    return new Symfony\Component\Asset\Packages($default_package, $packages);
-};
-
-$app['assets.strategy'] = function($app) {
-    if ($app['environment'] === 'dev') {
-        return new Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy();
-    }
-
-    return new Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy('v' . AgenDAV\Version::V);
-};
-
-
 // Shares repository
 $app['shares.repository'] = function($app) {
     $em = $app['orm'];
