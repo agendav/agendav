@@ -51,9 +51,7 @@ modify,  and start configuring your instance.
 
 .. confval:: csrf.secret
 
-   Name that the CSRF parameter will have.
-
-   Suggestion: use a medium length string with letters and numbers.
+   Internal CSRF token id.
 
 .. confval:: log.level
 

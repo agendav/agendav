@@ -24,7 +24,7 @@
 
 <div class="loginform ui-corner-all">
   <form method="post" action="{{ path('login') }}" class="form-horizontal">
-    <input type="hidden" name="{{ csrf_token.getId() }}" value="{{ csrf_token.getValue() }}">
+    <input type="hidden" name="_token" value="{{ csrf_token.getValue() }}">
     <div class="form-group">
       <label class="col-sm-3 control-label" for="user">{% trans %}labels.username{% endtrans %}</label>
       <div class="col-sm-9"><input name="user" class="form-control" type="text"

@@ -7,7 +7,7 @@
 
     <div class="preferences-container">
     <form method="post" id="prefs_form">
-    <input type="hidden" name="{{ csrf_token.getId() }}" value="{{ csrf_token.getValue() }}">
+    <input type="hidden" name="_token" value="{{ csrf_token.getValue() }}">
 
     <div class="form-group">
         <label for="language">{% trans %}labels.language{% endtrans %}</label>
