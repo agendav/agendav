@@ -136,10 +136,21 @@ modify,  and start configuring your instance.
    Timeout in seconds while waiting for responses after a CalDAV request is sent. A value of 0 means
    to wait indefinitely, which is the default behaviour.
 
-   Eample::
+   Example::
 
     // Timeout after 10 seconds if server hasn't answered
     $app['caldav.response.timeout'] = 10;
+
+.. confval:: caldav.certificate.verify
+
+   Whether to verify the SSL certificate using available CA bundles. Defaults to yes, which is
+   recommended, but can be disabled if the CalDAV server is using a self-signed certificate or a
+   certificate issued by a non-trusted CA.
+
+   Example::
+
+    // Do not verify SSL certificate, it is self signed
+    $app['caldav.certificate.verify'] = false;
 
 .. confval:: calendar.sharing
 

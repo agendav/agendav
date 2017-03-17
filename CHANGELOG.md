@@ -19,6 +19,7 @@
 ### Added
 
 - Document required PHP extensions (#201)
+- Added caldav.certificate.verify setting to enable or disable SSL certificate verification
 
 ## [2.1.0] - 2017-03-01
 

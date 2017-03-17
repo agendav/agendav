@@ -54,6 +54,9 @@ $app['caldav.connect.timeout'] = 0;
 // Response timeout for CalDAV requests (default: wait forever)
 $app['caldav.response.timeout'] = 0;
 
+// Whether to verify the SSL certificate (default: true)
+$app['caldav.certificate.verify'] = true;
+
 // Email attribute name
 $app['principal.email.attribute'] = '{DAV:}email';
 

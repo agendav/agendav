@@ -116,6 +116,7 @@ $app['guzzle'] = function($app) {
         'handler' => $stack,
         'connect_timeout' => $app['caldav.connect.timeout'],
         'timeout' => $app['caldav.response.timeout'],
+        'verify' => $app['caldav.certificate.verify'],
     ]);
 
 
