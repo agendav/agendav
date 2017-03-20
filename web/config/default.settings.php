@@ -12,6 +12,9 @@ $app['site.title'] = 'Our calendar';
 // Site logo (should be placed in public/img). Optional
 $app['site.logo'] = 'agendav_100transp.png';
 
+// Site favicon (should be placed in public/img). Optional
+$app['site.favicon'] = 'favicon.ico';
+
 // Site footer. Optional
 $app['site.footer'] = 'AgenDAV ' . \AgenDAV\Version::V;
 
