@@ -21,6 +21,11 @@ modify,  and start configuring your instance.
    Image filename which will be used as a logo. Has to be a valid filename
    placed inside ``web/public/img/`` directory.
 
+.. confval:: site.favicon
+
+   Icon filename which will be used as favicon. Has to be placed inside
+   ``web/public/img/``.
+
 .. confval:: site.footer
 
    Text to be placed in the footer.

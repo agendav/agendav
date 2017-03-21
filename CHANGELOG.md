@@ -19,7 +19,8 @@
 ### Added
 
 - Document required PHP extensions (#201)
-- Added caldav.certificate.verify setting to enable or disable SSL certificate verification
+- Add caldav.certificate.verify setting to enable or disable SSL certificate verification
+- Add site.favicon setting (#204)
 
 ## [2.1.0] - 2017-03-01
 
