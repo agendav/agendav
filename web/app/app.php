@@ -35,6 +35,7 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('environment', $app['environment']);
     $twig->addGlobal('title', $app['site.title']);
     $twig->addGlobal('logo', $app['site.logo']);
+    $twig->addGlobal('favicon', $app['site.favicon']);
     $twig->addGlobal('footer', $app['site.footer']);
 
     // Assets
