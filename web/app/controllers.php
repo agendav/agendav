@@ -34,6 +34,7 @@ $controllers->get('/calendars', '\AgenDAV\Controller\Calendars\Listing::doAction
 $controllers->post('/calendars', '\AgenDAV\Controller\Calendars\Create::doAction')->bind('calendar.create');
 $controllers->post('/calendars/delete', '\AgenDAV\Controller\Calendars\Delete::doAction')->bind('calendar.delete');
 $controllers->post('/calendars/save', '\AgenDAV\Controller\Calendars\Save::doAction')->bind('calendar.save');
+$controllers->get('/calendars/export', '\AgenDAV\Controller\Calendars\Export::doAction')->bind('calendar.export');
 $controllers->get('/events', '\AgenDAV\Controller\Event\Listing::doAction')->bind('events.list');
 $controllers->get('/eventbase', '\AgenDAV\Controller\Event\GetBase::doAction')->bind('event.getBase');
 $controllers->post('/events/drop', '\AgenDAV\Controller\Event\Drop::doAction')->bind('event.drop');

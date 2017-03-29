@@ -22,3 +22,9 @@ class="calendar_color pick_color form-control" maxlength="7" size="7" />
   </a>
  </div>
 {/public_url}
+<div class="public_url_container">
+ <i class="fa fa-lg fa-link"></i>
+ <a href="calendars/export?calendar={calendar}">
+ {@i18n type="labels" name="exportics"/}</p>
+ </a>
+</div>
