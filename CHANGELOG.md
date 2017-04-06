@@ -6,7 +6,7 @@
 
 - BC: minimum PHP version supported is now 5.6
 - Upgrade Silex to 2.0.4
-- Upgrade Symfony components to 2.8.18
+- Upgrade Symfony components to 2.8.19
 - Upgrade Guzzle to 6.2.3
 - Upgrade monolog to 1.22.0
 - Upgrade ramsey/uuid to 3.5.2
