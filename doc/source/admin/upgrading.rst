@@ -20,7 +20,7 @@ Upgrading from 1.x.x
 If you are upgrading AgenDAV from 1.x.x, make sure you have the latest 1.x release
 installed.
 
-After that, just follow the steps below.
+The just follow the steps below. You will also have to update your web server configuration (see :ref:`webserver`).
 
 .. _filesupgrade:
 

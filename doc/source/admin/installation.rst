@@ -140,8 +140,13 @@ After configuring your database connection, just run the script like this::
 
 Confirm the operation, and your database should be ready.
 
-Configuring  Apache to serve AgenDAV
-------------------------------------
+.. _webserver:
+
+Configuring your web server
+---------------------------
+
+Apache
+******
 
 Apache has to be configured to point to ``web/public`` directory.
 
