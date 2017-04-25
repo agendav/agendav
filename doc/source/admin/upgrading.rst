@@ -129,6 +129,6 @@ PostgreSQL
 
 Run the following SQL query::
 
-    UPDATE `shares` SET owner = '/caldav.php/' || owner || '/',
+    UPDATE shares SET owner = '/caldav.php/' || owner || '/',
     calendar = '/caldav.php/' || owner || '/' || calendar || '/',
-    `with` = '/caldav.php/' || with || '/';
+    "with" = '/caldav.php/' || "with" || '/';
