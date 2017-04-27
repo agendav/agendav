@@ -38,8 +38,8 @@ Most popular database backends are supported, such as MySQL, PostgreSQL or SQLit
 
 Look for supported databases on this `Doctrine DBAL driver list <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#driver>`_.
 
-Downloading AgenDAV and uncompressing
--------------------------------------
+Download AgenDAV
+----------------
 
 AgenDAV |release| can be obtained at `AgenDAV webpage <http://agendav.org>`_.
 
@@ -48,30 +48,18 @@ Uncompress it using ``tar``::
  $ tar agendav-...tar.gz
  $ cd agendav-.../
 
-Download dependencies and generate assets (only for git)
---------------------------------------------------------
-
-If you downloaded AgenDAV from GitHub using ``git``, you will need to download
-`Composer <http://getcomposer.org>`_ and `npm <https://www.npmjs.com/>`_ to download
-some dependencies and generate required assets.
-
-Run the following commands::
-
-  $ npm install
-  $ npm run build
-
-
-Configuring PHP
----------------
+PHP configuration
+-----------------
 
 Make sure that you have the following PHP settings set:
 
 * ``magic_quotes_runtime``: *disabled*
 * ``date.timezone``: choose a valid time zone from `this list <http://php.net/manual/en/timezones.php>`_.
 
+This is usually done on your ``php.ini`` file.
 
-Database and tables
--------------------
+Database requirements
+---------------------
 
 AgenDAV requires a database to store some extra information.
 
@@ -126,31 +114,18 @@ You will need a dedicated directory for the database::
   # touch database/agendav.sqlite
   # chown -R www-data:www-data database/
 
-Create AgenDAV tables
-*********************
-
-AgenDAV tables are created by running the provided ``agendavcli`` script.
-
-Before being able to run it, you will have to configure at least your database
-connection details. Have a look at the :confval:`db.options` parameter.
-
-After configuring your database connection, just run the script like this::
-
-  $ php agendavcli migrations:migrate
-
-Confirm the operation, and your database should be ready.
 
 .. _webserver:
 
-Configuring your web server
----------------------------
+Web server configuration
+------------------------
 
-Apache
-******
+It is recommended to read the `Silex Webserver configuration guide
+<http://silex.sensiolabs.org/doc/web_servers.html>`_ to learn how to configure your preferred web
+server software to serve AgenDAV. Just make sure to point your web server to the ``web/public``
+subdirectory.
 
-Apache has to be configured to point to ``web/public`` directory.
-
-Example using a dedicated virtualhost::
+Being Apache one of the most used web servers, a sample configuration is shown below for reference::
 
  <VirtualHost 1.2.3.4:443>
   ServerAdmin admin@email.host
@@ -170,24 +145,29 @@ Example using a dedicated virtualhost::
 You can enable development mode by following the instructions at
 :ref:`development_environment`.
 
-Other web servers
-*****************
-
-AgenDAV should run on any other web server software as well. Just read the
-`Silex Webserver configuration guide <http://silex.sensiolabs.org/doc/web_servers.html>`_.
-
-Change directory permissions
-----------------------------
+Fix directory permissions
+-------------------------
 
 You should change the owner and group for all AgenDAV files to the ones your webserver uses.
 Make sure you allow your webserver user to write on the ``var/`` directory. The following example
-assumes your webserver runs as `www-data` user and `www-data` group::
+assumes your web server runs as `www-data` user and `www-data` group::
 
   # chown -R www-data:www-data web/
   # chmod -R 750 web/var/
 
-Configure AgenDAV
------------------
+Configuration
+-------------
 
-Now you can proceed to fully configure AgenDAV following the :doc:`configuration`
-section.
+Now you should configure AgenDAV following the :doc:`configuration` section.
+
+Create AgenDAV tables
+---------------------
+
+AgenDAV tables are created by running the provided ``agendavcli`` script.
+
+After configuring your AgenDAV instance, including your database settings, just run the script like
+this::
+
+  $ php agendavcli migrations:migrate
+
+Confirm the operation, and your database should be ready.
