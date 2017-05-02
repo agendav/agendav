@@ -97,8 +97,11 @@ class Delete extends JSONController
         $event->removeInstance($recurrence_id);
         $object->setEvent($event);
 
-        $this->client->uploadCalendarObject($object);
-        return $this->generateSuccess();
+        $response = $this->client->uploadCalendarObject($object);
+
+        return $this->generateSuccess([
+            'etag' => $response->getHeaderLine('ETag'),
+        ]);
     }
 
 }

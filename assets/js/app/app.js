@@ -1743,7 +1743,11 @@ var event_delete_proceed = function event_delete_proceed(data, recurrence_id) {
       data: remove_params
     },
     success: function(rdata) {
-      removeEvents(data.id, remove_all_instances);
+      // ETag is returned by the backend when removing a single instance of a recurring
+      // event
+      var etag = rdata.etag;
+
+      removeEvents(data.id, remove_all_instances, etag);
     },
     exception: function(rdata) {
       show_error(t('messages', 'error_event_not_deleted'), rdata);
@@ -2090,8 +2094,8 @@ var updateEvents = function updateEvents(id, is_recurrent, new_properties) {
     for (var property in new_properties) {
       events[i][property] = new_properties[property];
     }
-    $('#calendar_view').fullCalendar('updateEvent', events[i]);
   }
+  $('#calendar_view').fullCalendar('updateEvents', events);
 
   return events.length;
 };
@@ -2102,12 +2106,18 @@ var updateEvents = function updateEvents(id, is_recurrent, new_properties) {
  *
  * @param string id Event id
  * @param bool wildcard true to remove all instances of a recurrent event
+ * @param string etag ETag of recurrent event, in case this was a single instance removal
  */
-var removeEvents = function removeEvents(id, wildcard) {
+var removeEvents = function removeEvents(id, wildcard, etag) {
   // TODO recurrence-ids
   var filter = generateIdFilter(id, wildcard);
 
   $('#calendar_view').fullCalendar('removeEvents', filter);
+
+  // Update ETag when removing a single instance
+  if (wildcard === false && typeof etag !== "undefined") {
+      updateEvents(id, true, { etag: etag });
+  }
 };
 
 /**

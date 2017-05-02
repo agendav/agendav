@@ -16,6 +16,10 @@
 - Remove several Symfony components that were not necessary
 - CSRF tokens have now a consistent name (`_token`).
 
+### Fixed
+
+- ETags are now updated for all instances on recurrent events when a single instance is removed
+
 ### Added
 
 - Document required PHP extensions (#201)
