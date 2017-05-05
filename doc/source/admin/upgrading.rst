@@ -115,20 +115,25 @@ shares data to the new expected format.
 The following queries will change the ``shares`` table for a DAViCal server, but can be adapted for
 other CalDAV servers.
 
+
 MySQL
 *****
 
-Run the following SQL query::
+Run the following SQL queries::
 
     UPDATE `shares` SET owner = CONCAT('/caldav.php/', owner, '/'),
     calendar = CONCAT(owner, calendar, '/'),
     `with` = CONCAT('/caldav.php/', `with`, '/');
 
+    UPDATE `shares` SET options = 'a:0:{}' WHERE options = '';
+
 PostgreSQL
 **********
 
-Run the following SQL query::
+Run the following SQL queries::
 
     UPDATE shares SET owner = '/caldav.php/' || owner || '/',
     calendar = '/caldav.php/' || owner || '/' || calendar || '/',
     "with" = '/caldav.php/' || "with" || '/';
+
+    UPDATE `shares` SET options = 'a:0:{}' WHERE options = '';
