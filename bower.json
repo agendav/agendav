@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.1",
-    "fullcalendar": "~3.0.0",
+    "fullcalendar": "~3.4.0",
     "jquery-ui": "~1.11.2",
     "font-awesome": "~4.2.0",
     "jquery": "~2.2.4",

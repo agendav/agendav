@@ -14,6 +14,7 @@
 - Upgrade doctrine packages: dbal to 2.5.12, orm to 2.5.6, migrations to 1.5.0
 - Upgrade league/fractal to 0.16.0
 - Upgrade sabre/http to 4.2.2
+- Upgrade to Fullcalendar 3.4.0
 - Remove several Symfony components that were not necessary
 - CSRF tokens have now a consistent name (`_token`).
 
