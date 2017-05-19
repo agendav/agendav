@@ -78,7 +78,7 @@ $controllers->before(function(Request $request, Silex\Application $app) {
 $app->mount('/', $controllers);
 
 
-$app->error(function (\Exception $e, $code) use ($app) {
+$app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
         return;
     }
