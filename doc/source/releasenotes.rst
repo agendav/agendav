@@ -3,6 +3,14 @@
 Release notes
 =============
 
+.. _v2.2.0:
+2.2.0 (?)
+------------------------
+
+* PHP 5.6 or greater is required.
+* Silex 2.0 is now being used, so any modifications prepared for AgenDAV 2.1.x (which was based
+  on Silex 1.x) will probably be broken.
+
 .. _v2.0.0:
 
 2.0.0 (2016-11-19)
