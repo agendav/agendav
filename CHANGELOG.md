@@ -1,5 +1,11 @@
 # Change Log
 
+## [Unreleased] - Unreleased
+
+### Changed
+
+- Use npm to download dependencies instead of using bower
+
 ## [2.2.0] - 2017-05-23
 
 ### Changed
