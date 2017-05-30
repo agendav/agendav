@@ -5,6 +5,7 @@
 ### Changed
 
 - Use npm to download dependencies instead of using bower
+- Upgrade Symfony components to 2.8.21
 
 ## [2.2.0] - 2017-05-23
 
