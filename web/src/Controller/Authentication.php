@@ -83,7 +83,7 @@ class Authentication
      * @param Application $app
      * @return bool false if authentication failed, true otherwise
      */
-    protected function processLogin($user, $password, Application $app)
+    public function processLogin($user, $password, Application $app)
     {
         $app['http.client']->setAuthentication($user, $password, $app['caldav.authmethod']);
 

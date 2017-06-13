@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Silex\Application;
 
+use AgenDAV\Controller\Authentication;
 use AgenDAV\DateHelper;
 
 // Authentication
@@ -66,6 +67,13 @@ $controllers->before(function(Request $request, Silex\Application $app) {
         $request->setLocale($preferences->get('language'));
         $app['translator']->setLocale($preferences->get('language'));
         return;
+    }
+
+    if ($request->headers->get('authorization') != null) {
+        $authController = new Authentication();
+        if ($authController->processLogin($request->headers->get('php-auth-user'), $request->headers->get('php-auth-pw'), $app)) {
+            return;
+        }
     }
 
     if ($request->isXmlHttpRequest()) {
