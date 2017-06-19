@@ -155,3 +155,5 @@ $app['calendar.colors'] = [
     'F5F5F5', // Pale gray
 ];
 
+// Additionnal authentication methods
+//$app['auth.methods'] = ['AgenDAV\Authentication\HttpBasic'];
