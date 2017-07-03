@@ -22,6 +22,7 @@ $app['session.storage.options'] = [
     // You should not change cookie_lifetime. Change 'gc_divisor', 'gc_maxlifetime' and other
     // session related settings (http://php.net/session.configuration)
     'cookie_lifetime' => 0,
+    'cookie_httponly' => true,
 ];
 
 // Languages
