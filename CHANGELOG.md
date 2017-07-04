@@ -5,7 +5,7 @@
 ### Changed
 
 - Use npm to download dependencies instead of using bower
-- Upgrade Symfony components to 2.8.22
+- Upgrade Symfony components to 2.8.23
 - Session cookies are now marked with HttpOnly flag by default (#215)
 
 ## [2.2.0] - 2017-05-23
