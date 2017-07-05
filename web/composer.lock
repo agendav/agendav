@@ -1914,7 +1914,7 @@
         },
         {
             "name": "symfony/asset",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/asset.git",
@@ -1969,7 +1969,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -2030,7 +2030,7 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
@@ -2087,7 +2087,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -2147,7 +2147,7 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
@@ -2624,7 +2624,7 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
@@ -2684,7 +2684,7 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
@@ -2759,7 +2759,7 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
@@ -2900,7 +2900,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
@@ -3045,7 +3045,7 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
@@ -3113,7 +3113,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
