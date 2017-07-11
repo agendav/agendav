@@ -68,6 +68,14 @@ $controllers->before(function(Request $request, Silex\Application $app) {
         return;
     }
 
+    if (isset($app['auth.methods'])) {
+        foreach ($app['auth.methods'] as $method) {
+            if (call_user_func([$method, 'login'], $request, $app)) {
+                return;
+            }
+        }
+    }
+
     if ($request->isXmlHttpRequest()) {
         return new JsonResponse([], 401);
     } else {
