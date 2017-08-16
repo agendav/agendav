@@ -23,6 +23,7 @@ namespace AgenDAV\Controller\Calendars;
 
 use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Data\Principal;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -40,7 +41,24 @@ class Delete extends JSONController
         ResponseInterface $response
     ): ResponseInterface {
         $calendar = new Calendar($input->get('calendar'));
-        $this->client->deleteCalendar($calendar);
+
+        $subscriptions_repository = $this->container->get('subscriptions.repository');
+        $user_principal_url = $this->container->get('session')->get('principal_url');
+        $current_user_principal = new Principal($user_principal_url);
+
+        if ($input->getBoolean('is_subscribed') === true) {
+            // If the calendar is a subscription, we remove it from the database
+            $subscription = $subscriptions_repository->getSubscriptionByUrl(
+                $calendar,
+                $current_user_principal
+            );
+
+            $subscriptions_repository->remove($subscription);
+        } else {
+            // Proceed to remove calendar from CalDAV server
+            $this->client->deleteCalendar($calendar);
+        }
+
         return $this->generateSuccess($response, $calendar->getUrl());
     }
 }

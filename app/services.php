@@ -289,6 +289,11 @@ return [
         return new \AgenDAV\Repositories\DoctrineOrmSharesRepository($c->get('orm'));
     },
 
+    // Subscriptions repository
+    'subscriptions.repository' => function (ContainerInterface $c) {
+        return new \AgenDAV\Repositories\DoctrineOrmSubscriptionsRepository($c->get('orm'));
+    },
+
     // Sharing resolver
     'sharing.resolver' => function (ContainerInterface $c) {
         return new \AgenDAV\Sharing\SharingResolver(
@@ -369,6 +374,7 @@ return [
         if ($c->get('calendar.sharing') === true) {
             $finder->setSharesRepository($c->get('shares.repository'));
         }
+        $finder->setSubscriptionsRepository($c->get('subscriptions.repository'));
         return $finder;
     },
 

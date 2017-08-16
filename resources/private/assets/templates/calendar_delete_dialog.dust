@@ -1,6 +1,8 @@
 <div id="calendar_delete_dialog">
 {>form_open/}
 <input type="hidden" name="calendar" value="{calendar}" />
+<input type="hidden" name="is_subscribed"
+value="{?is_subscribed}true{:else}false{/is_subscribed}" />
 
 <p>
 {@i18n type="messages" name="info_confirmcaldelete" /}

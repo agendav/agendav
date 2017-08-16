@@ -51,6 +51,13 @@ class Calendar
     protected $writable;
 
     /**
+     * Subscribed calendar
+     *
+     * @var boolean
+     */
+    protected $subscribed;
+
+    /**
      * Owner of this calendar.
      *
      * Required on shared calendars
@@ -97,6 +104,7 @@ class Calendar
         }
 
         $this->writable = true;
+        $this->subscribed = false;
         $this->shares = [];
     }
 
@@ -187,6 +195,27 @@ class Calendar
     public function setWritable($writable)
     {
         $this->writable = $writable;
+    }
+
+
+    /*
+     * Getter for subscribed
+     *
+     * @return boolean
+     */
+    public function isSubscribed()
+    {
+        return $this->subscribed;
+    }
+
+    /*
+     * Setter for subscribed
+     *
+     * @param boolean $subscribed
+     */
+    public function setSubscribed($subscribed)
+    {
+        $this->subscribed = $subscribed;
     }
 
     /*

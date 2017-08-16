@@ -17,6 +17,7 @@
    <ul class="fa-ul">
    </ul>
    <div class="buttons">
+   <i title="{% trans from "labels" %}subscribe{% endtrans %}" id="calendar_subscribe" class="pseudobutton fa fa-cloud-download"></i>
    <i title="{% trans from "labels" %}create{% endtrans %}" id="calendar_add" class="pseudobutton fa fa-plus"></i>
    </div>
   </div><!-- panel-body -->
@@ -31,6 +32,21 @@
    </ul>
    <div class="buttons">
     <span id="toggle_all_shared_calendars" class="pseudobutton hide_all"
+      title="{% trans %}labels.toggleallcalendars{% endtrans %}>"
+    ><i class="fa fa-eye-slash fa-lg"></i></span>
+   </div>
+  </div><!-- panel-body -->
+ </div><!-- panel -->
+
+ <div class="block calendar_list panel panel-default subscribed_calendars " id="subscribed_calendar_list">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans %}labels.subscribed_calendars{% endtrans %}</h3>
+  </div>
+  <div class="panel-body">
+   <ul class="fa-ul">
+   </ul>
+   <div class="buttons">
+    <span id="toggle_all_subscribed_calendars" class="pseudobutton hide_all"
       title="{% trans %}labels.toggleallcalendars{% endtrans %}>"
     ><i class="fa fa-eye-slash fa-lg"></i></span>
    </div>
