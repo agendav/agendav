@@ -56,6 +56,7 @@ $translations = array(
 
     'labels.displayname' => 'Nom affiché',
     'labels.color' => 'Couleur',
+    'labels.url' => 'URL',
 
     'labels.summary' => 'Résumé',
     'labels.startdate' => 'Date de début',
@@ -96,12 +97,14 @@ $translations = array(
 
     'labels.calendars' => 'Calendriers',
     'labels.shared_calendars' => 'Calendriers partagés',
+    'labels.subscribed_calendars' => 'Abonnements',
     'labels.refresh' => 'Rafraîchir',
     'labels.delete' => 'Supprimer',
     'labels.add' => 'Ajouter',
     'labels.close' => 'Fermer',
     'labels.save' => 'Enregistrer',
     'labels.create' => 'Créer',
+    'labels.subscribe' => 'S\'abonner',
     'labels.login' => 'Se connecter',
     'labels.logout' => 'Se déconnecter',
     'labels.modify' => 'Modifier',

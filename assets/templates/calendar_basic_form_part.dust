@@ -5,18 +5,20 @@
 value="{?is_shared}true{:else}false{/is_shared}" />
 <input type="hidden" name="is_owned"
 value="{?is_owned}true{:else}false{/is_owned}" />
+<input type="hidden" name="is_subscribed"
+value="{?is_subscribed}true{:else}false{/is_subscribed}" />
 {>form_element_start for="displayname" label="displayname" /}
-<input required autofocus name="displayname" type="text" size="25" maxlength="255" 
+<input required autofocus name="displayname" type="text" size="25" maxlength="255"
 value="{?displayname}{displayname}{/displayname}" class="displayname form-control" />
 {>form_element_end/}
 {>form_element_start for="color" label="color" /}
 <input name="calendar_color"
-value="{?color}{color}{:else}{default_calendar_color}{/color}" 
+value="{?color}{color}{:else}{default_calendar_color}{/color}"
 class="calendar_color pick_color form-control" maxlength="7" size="7" />
 {>form_element_end/}
 {?public_url}
  <div class="public_url_container">
-  <i class="fa fa-lg fa-link"></i> 
+  <i class="fa fa-lg fa-link"></i>
   <a href="{public_url}">
   {@i18n type="labels" name="publicurl"/}</p>
   </a>

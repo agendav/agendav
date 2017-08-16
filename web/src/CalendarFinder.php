@@ -20,6 +20,7 @@ namespace AgenDAV;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\Repositories\SubscriptionsRepository;
 use AgenDAV\Repositories\SharesRepository;
 use AgenDAV\CalDAV\Client;
 use AgenDAV\CalDAV\Resource\Calendar;
@@ -71,6 +72,16 @@ class CalendarFinder
     }
 
     /**
+     * Sets the subscriptions repository for this finder.
+     *
+     * @param \AgenDAV\Repositories\SubscriptionsRepository $subscriptions_repository
+     */
+    public function setSubscriptionsRepository(SubscriptionsRepository $subscriptions_repository)
+    {
+        $this->subscriptions_repository = $subscriptions_repository;
+    }
+
+    /**
      * Returns all calendars for the current user
      *
      * @return \AgenDAV\CalDAV\Resource\Calendar[] Array of calendars
@@ -93,8 +104,39 @@ class CalendarFinder
 
             $calendars = array_merge($calendars, $shared_calendars);
         }
+        $subscribed_calendars = $this->getSubscribedCalendars($this->current_principal);
+        $calendars = array_merge($calendars, $subscribed_calendars);
 
         return $calendars;
+    }
+
+    /**
+     * Gets all calendars subscribed by current principal
+     *
+     * @param \AgenDAV\Data\Principal $principal Principal
+     * @return \AgenDAV\CalDAV\Resource\Calendar[]
+     */
+    protected function getSubscribedCalendars(Principal $principal)
+    {
+        $result = [];
+
+        $subscriptions = $this->subscriptions_repository->getSubscriptionsFor($principal);
+
+        foreach ($subscriptions as $subscription) {
+            $calendar_url = $subscription->getCalendar();
+            $calendar = new Calendar($calendar_url);
+
+            $calendar->setWritable(false);
+            $calendar->setSubscribed(true);
+            $owner_principal_url = $subscription->getOwner();
+            $calendar->setOwner(new Principal($owner_principal_url));
+
+            $subscription->applyCustomPropertiesTo($calendar);
+
+            $result[] = $calendar;
+        }
+
+        return $result;
     }
 
     /**

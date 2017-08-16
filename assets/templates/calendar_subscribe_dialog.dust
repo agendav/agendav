@@ -1,0 +1,8 @@
+<div id="calendar_subscribe_dialog">
+{>form_open applyclass="form-horizontal" applyid="calendar_subscribe_form" /}
+{>calendar_basic_form_part/}
+{>form_element_start for="url" label="url" /}
+<input required autofocus name="url" type="url" size="25" maxlength="255" class="form-control" />
+{>form_element_end/}
+{>form_close/}
+</div>

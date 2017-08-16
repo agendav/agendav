@@ -259,6 +259,19 @@ class Client
     }
 
     /**
+     * Fetches all objects from a subscribed calendar
+     *
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @return array Array of CalendarObject
+     */
+    public function fetchObjectsOnSubscribedCalendar(Calendar $calendar)
+    {
+        $data = $this->get($calendar->getUrl());
+
+        return $this->buildObjectCollection($data, $calendar);
+    }
+
+    /**
      * Fetches the calendar object that has the specified UID
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
@@ -378,6 +391,29 @@ class Client
 
         $contents = (string)$response->getBody();
         $result = $this->xml_toolkit->parseMultiStatus($contents);
+
+        return $result;
+    }
+
+    /**
+     * Issues a GET and parses the response
+     *
+     * @param string $url   URL
+     * @param string $body  Request body
+     * @param int    $depth Depth header for this request. Default value: 1
+     * @result array key-value array, where keys are paths and properties are values
+     */
+    public function get($url)
+    {
+        $response = $this->http_client->request('GET', $url);
+
+        $contents = (string)$response->getBody();
+
+        $result = [
+            $url=>[
+                "{urn:ietf:params:xml:ns:caldav}calendar-data"=>$contents
+            ]
+        ];
 
         return $result;
     }

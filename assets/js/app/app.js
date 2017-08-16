@@ -305,9 +305,38 @@ $(document).ready(function() {
     }
   });
 
+  $('#sidebar').on('click', '#toggle_all_subscribed_calendars', function(e) {
+    var subscribed_cals = $('#subscribed_calendar_list').find('ul').children();
+    if ($(this).hasClass('hide_all')) {
+      $.map(subscribed_cals, function(e, i) {
+        hide_calendar($(e));
+      });
+      $(this)
+        .removeClass('hide_all')
+        .addClass('show_all')
+        .find('i')
+          .removeClass('fa-eye-slash')
+          .addClass('fa-eye');
+    } else {
+      $.map(subscribed_cals, function(e, i) {
+        show_calendar($(e));
+      });
+      $(this)
+        .removeClass('show_all')
+        .addClass('hide_all')
+        .find('i')
+          .removeClass('fa-eye')
+          .addClass('fa-eye-slash');
+    }
+  });
+
   // Create calendar
   $('#calendar_add')
     .on('click', calendar_create_dialog);
+
+  // Subscribe to calendar
+  $('#calendar_subscribe')
+    .on('click', calendar_subscribe_dialog);
 
   /*************************************************************
    * End of calendar list events
@@ -880,6 +909,61 @@ var calendar_create_dialog = function calendar_create_dialog() {
   });
 };
 
+// Triggers a dialog for subscribing to calendars
+var calendar_subscribe_dialog = function calendar_subscribe_dialog() {
+
+  var form_url = AgenDAVConf.base_app_url + 'calendars';
+  var title = t('labels', 'newcalendar');
+
+  var data = {
+    applyid: 'calendar_subscribe_form',
+    is_subscribed: true,
+    frm: {
+      action: form_url,
+      method: 'post'
+    }
+  };
+
+  var buttons = [
+  {
+    'text': t('labels', 'subscribe'),
+    'class': 'addicon btn-icon-calendar-add',
+    'click': function() {
+      var calendar_data = $('#calendar_subscribe_form').serialize();
+
+      send_form({
+        form_object: $('#calendar_subscribe_form'),
+        data: calendar_data,
+        success: function(data) {
+          update_calendar_list(false);
+          destroy_dialog('#calendar_subscribe_dialog');
+        },
+        exception: function(data) {
+          show_error(t('messages', 'error_invalidinput'), data);
+        }
+      });
+    }
+  },
+  {
+    'text': t('labels', 'cancel'),
+    'class': 'addicon btn-icon-cancel',
+    'click': function() { destroy_dialog('#calendar_subscribe_dialog'); }
+  }
+  ];
+
+  show_dialog({
+    template: 'calendar_subscribe_dialog',
+    data: data,
+    title: title,
+    buttons: buttons,
+    divname: 'calendar_subscribe_dialog',
+    width: 400,
+    pre_func: function() {
+      $('input.pick_color').colorPicker();
+    }
+  });
+};
+
 // Triggers a dialog for editing calendars
 var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
 
@@ -896,7 +980,12 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
   });
 
   if (AgenDAVConf.show_public_caldav_url === true) {
-    data.public_url = AgenDAVConf.caldav_public_base_url + data.url;
+    if (data.is_subscribed) {
+      // If the calendar is a subcription, the URL is already absolute
+      data.public_url = data.url;
+    } else {
+      data.public_url = AgenDAVConf.caldav_public_base_url + data.url;
+    }
   }
 
   // Buttons for modification dialog
@@ -1076,8 +1165,10 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
     var count = 0,
       count_shared = 0,
+      count_subscribed = 0,
       own_calendars = document.createDocumentFragment(),
       shared_calendars = document.createDocumentFragment(),
+      subscribed_calendars = document.createDocumentFragment(),
       collected_event_sources = [];
 
     var calendars = data.data;
@@ -1112,6 +1203,9 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       if (calendar.is_shared === true) {
         count_shared++;
         shared_calendars.appendChild(li[0]);
+      } else if (calendar.is_subscribed === true) {
+        count_subscribed++;
+        subscribed_calendars.appendChild(li[0]);
       } else {
         own_calendars.appendChild(li[0]);
       }
@@ -1151,6 +1245,13 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         .appendChild(shared_calendars);
       $('#shared_calendar_list').show();
     }
+    if (count_subscribed === 0) {
+      $('#subscribed_calendar_list').hide();
+    } else {
+      $('#subscribed_calendar_list ul')[0]
+        .appendChild(subscribed_calendars);
+      $('#subscribed_calendar_list').show();
+    }
 
     // Add event sources
     while (count--) {
@@ -1166,14 +1267,15 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 /**
  * Function used to query the server for events
  */
-var generate_event_source = function generate_event_source(calendar) {
+var generate_event_source = function generate_event_source(calendar, is_subscribed) {
   var ajax_options = {
       // If #calendar is not used, Fullcalendar will be confused when
       // calling removeEventSource, and will remove all calendars
       url: AgenDAVConf.base_app_url + 'events#' + calendar,
       cache: false,
       data: {
-        calendar: calendar
+        calendar: calendar,
+        is_subscribed: is_subscribed
       },
       error: function (jqXHR, textStatus, errorThrown) {
         show_error(t('messages', 'error_interfacefailure'),
@@ -1225,7 +1327,7 @@ var add_button_icons = function add_button_icons(buttons) {
  * Generates a new calendar entry
  */
 var generate_calendar_entry = function generate_calendar_entry(data) {
-  var eventsource = generate_event_source(data.calendar);
+  var eventsource = generate_event_source(data.calendar, data.is_subscribed);
   eventsource.color = data.color;
   eventsource.textColor = data.fg;
 
@@ -1565,7 +1667,7 @@ var event_click_callback = function event_click_callback(event,
     { caldata: caldata }
   );
 
-  if (caldata.is_shared === true && caldata.writable === false) {
+  if ((caldata.is_shared === true || caldata.is_subscribed === true) && caldata.writable === false) {
     event_data.disable_actions = true;
   }
 

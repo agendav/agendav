@@ -176,6 +176,7 @@ $app['calendar.finder'] = function($app) {
     if ($app['calendar.sharing']=== true) {
         $finder->setSharesRepository($app['shares.repository']);
     }
+    $finder->setSubscriptionsRepository($app['subscriptions.repository']);
 
 
     return $finder;
@@ -207,6 +208,12 @@ $app['sharing.resolver'] = function($app) {
         $shares_repository,
         $principals_repository
     );
+};
+
+// Subscriptions repository
+$app['subscriptions.repository'] = function($app) {
+    $em = $app['orm'];
+    return new AgenDAV\Repositories\DoctrineOrmSubscriptionsRepository($em);
 };
 
 // Configured permissions

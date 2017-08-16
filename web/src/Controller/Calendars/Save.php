@@ -26,9 +26,11 @@ use AgenDAV\Controller\JSONController;
 use AgenDAV\Controller\Calendars\InputHandlers\Shares;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
+use AgenDAV\Data\Subscription;
 use AgenDAV\Data\Principal;
 use AgenDAV\Data\Share;
 use AgenDAV\Data\Helper\SharesDiff;
+use AgenDAV\Repositories\SubscriptionsRepository;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -72,8 +74,22 @@ class Save extends JSONController
         }
 
         $shares_repository = $app['shares.repository'];
+        $subscriptions_repository = $app['subscriptions.repository'];
         $user_principal_url = $app['session']->get('principal_url');
         $current_user_principal = new Principal($user_principal_url);
+
+        if ($input->getBoolean('is_subscribed') === true) {
+            // Subscribed calendar properties are saved locally
+            $calendar->setSubscribed(true);
+            $subscription = $subscriptions_repository->getSubscriptionByUrl(
+                $calendar,
+                $current_user_principal
+            );
+
+            $this->applySubscribedCalendarProperties($subscription, $input);
+            $subscriptions_repository->save($subscription);
+            return $this->generateSuccess();
+        }
 
         if ($input->getBoolean('is_owned') === false) {
             $share = $shares_repository->getSourceShare(
@@ -146,5 +162,18 @@ class Save extends JSONController
     {
         $share->setProperty(Calendar::DISPLAYNAME, $input->get('displayname'));
         $share->setProperty(Calendar::COLOR, $input->get('calendar_color'));
+    }
+
+    /**
+     * Saves calendar name and color into the Subscription object
+     *
+     * @param AgenDAV\Data\Subscription $subscription
+     * @param ParameterBag $input
+     * @return void
+     */
+    protected function applySubscribedCalendarProperties(Subscription $subscription, ParameterBag $input)
+    {
+        $subscription->setProperty(Calendar::DISPLAYNAME, $input->get('displayname'));
+        $subscription->setProperty(Calendar::COLOR, $input->get('calendar_color'));
     }
 }
