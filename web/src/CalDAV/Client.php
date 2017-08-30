@@ -342,6 +342,38 @@ class Client
     }
 
     /**
+     * get proxy-for principal home uris
+     */
+    public function getProxyFor($url)
+    {
+        $propRead = '{http://calendarserver.org/ns/}calendar-proxy-read-for';
+        $propWrite = '{http://calendarserver.org/ns/}calendar-proxy-write-for';
+        $props = [ $propRead, $propWrite ];
+
+        $xml_body = $this->xml_toolkit->generateRequestBody('EXPAND-PROPERTY', $props);
+        $data = $this->report($url, $xml_body);
+
+        if (isset($data[$url]))
+            $data = $data[$url];
+        else
+            $data = [];
+
+        $proxyFor = [];
+        foreach ($props as $prop) {
+            if (!isset($data[$prop]))
+                continue;
+            foreach ($data[$prop] as $resp) {
+                if ( $resp["name"] != "{DAV:}response" )
+                    continue;
+                $href = $resp["value"]->getHref();
+                $proxyFor[] = $href;
+            }
+        }
+
+        return $proxyFor;
+    }
+
+    /**
      * Issues a PROPFIND and parses the response
      *
      * @param string $url   URL
