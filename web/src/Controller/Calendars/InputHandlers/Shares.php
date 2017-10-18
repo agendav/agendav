@@ -32,10 +32,10 @@ class Shares
      * @param string[] $rw      Array of read/write permissions (0 or 1)
      * @param string $owner      Calendar owner principal URL
      * @param string $calendar      Calendar URL
-     * @return AgenDAV\Data\Share[] in the same order as input
+     * @return \AgenDAV\Data\Share[] in the same order as input
      * @throws \LengthException If $with and $rw do not have the same number of elements
      */
-    public static function buildFromInput(Array $with, Array $rw, $owner, $calendar)
+    public static function buildFromInput(array $with, array $rw, $owner, $calendar)
     {
         $result = [];
 

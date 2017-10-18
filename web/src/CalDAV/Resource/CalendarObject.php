@@ -40,7 +40,7 @@ class CalendarObject
     /**
      * Contained event
      *
-     * @var string
+     * @var \AgenDAV\Event
      */
     protected $event;
 
@@ -54,7 +54,7 @@ class CalendarObject
     /**
      * Calendar this object is stored at
      *
-     * @var AgenDAV\CalDAV\Resource\Calendar
+     * @var \AgenDAV\CalDAV\Resource\Calendar
      */
     protected $calendar;
 
@@ -68,7 +68,7 @@ class CalendarObject
 
     /**
      * @param string $url
-     * @param AgenDAV\Event $event
+     * @param \AgenDAV\Event $event
      */
     public function __construct($url, Event $event = null)
     {
@@ -166,7 +166,7 @@ class CalendarObject
      *
      * @param \DateTimeInterface $start
      * @param \DateTimeInterface $end
-     * @return AgenDAV\EventInstance[]
+     * @return \AgenDAV\EventInstance[]
      */
     public function getEventInstances(\DateTimeInterface $start, \DateTimeInterface $end)
     {
@@ -195,9 +195,9 @@ class CalendarObject
     /**
      * Creates a new CalendarObject with a given UID
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param string $uid
-     * @return AgenDAV\CalDAV\Resource\CalendarObject
+     * @return \AgenDAV\CalDAV\Resource\CalendarObject
      */
     public static function generateOnCalendar(Calendar $calendar, $uid)
     {

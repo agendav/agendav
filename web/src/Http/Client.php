@@ -32,7 +32,6 @@ use Psr\Http\Message\RequestInterface;
  */
 class Client
 {
-
     /**
      * Internal Guzzle client
      */
@@ -49,6 +48,11 @@ class Client
     private $request;
 
     /**
+     * Response object
+     */
+    private $response;
+
+    /**
      * Common request options
      */
     private $options;
@@ -57,8 +61,8 @@ class Client
      * Creates a new Client
      *
      * TODO add comments to documentation about SSL certificate validation
-     * @param GuzzleHttp\client $guzzle Actual Guzzle HTTP client
-     * @param Array $custom_options     Options to be used on every request. Overrides default values
+     * @param \GuzzleHttp\Client $guzzle Actual Guzzle HTTP client
+     * @param array $custom_options     Options to be used on every request. Overrides default values
      */
     public function __construct(GuzzleClient $guzzle, array $custom_options = array())
     {
@@ -131,7 +135,7 @@ class Client
     /**
      * Gets last request sent using this client
      *
-     * @return Psr\Http\Message\RequestInterface     Last request sent
+     * @return \Psr\Http\Message\RequestInterface     Last request sent
      **/
     public function getLastRequest()
     {
@@ -144,7 +148,8 @@ class Client
      *
      * @param string $method       HTTP verb
      * @param string $url          URL to send the request to
-     * @return \Guzzle\Http\Message\Response
+     * @param string|null|resource $body
+     * @return \GuzzleHttp\Psr7\Response
      * @throws \AgenDAV\Exception\* (see available exceptions)
      **/
     public function request($method, $url, $body = null)

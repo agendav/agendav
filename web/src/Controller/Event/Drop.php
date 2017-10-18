@@ -44,7 +44,7 @@ class Drop extends Alter
      * @param \AgenDAV\EventInstance $instance
      * @param \DateTimeZone $timezone
      * @param int $minutes
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      */
     protected function modifyInstance(
         EventInstance $instance,
@@ -96,7 +96,8 @@ class Drop extends Alter
      *
      * @param string $was_allday    Possible values: 'true' or 'false'
      * @param string $now_allday    Possible values: 'true' or 'false'
-     * @return int                  One of the constants from this class
+     *
+     * @return int|null             One of the constants from this class or null
      */
     protected function describeMovement($was_allday, $now_allday)
     {

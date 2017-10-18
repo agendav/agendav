@@ -192,7 +192,7 @@ class Generator
     /**
      * Adds a list of tags with a <tag_name> root tag to the passed Writer
      *
-     * @param Sabre\Xml\Writer XML writer onto we want to add this list
+     * @param \Sabre\Xml\Writer $writer XML writer onto we want to add this list
      * @param string $tag_name Wrapping tag name, in Clark notation
      * @param array $properties Associative array of properties, keys are in Clark notation
      * @param bool $use_values  read values from the array too. Defaults to true
@@ -212,7 +212,7 @@ class Generator
     /**
      * Generates an empty XML writer
      *
-     * @return \Sabre\XML\Writer     Base document to start working on
+     * @return \Sabre\Xml\Writer     Base document to start working on
      **/
     protected function createNewWriter()
     {

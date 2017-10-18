@@ -35,6 +35,7 @@ class Preferences
     {
         $preferences = $app['user.preferences'];
 
+        /** @var Calendar[] $calendars */
         $calendars = $app['calendar.finder']->getCalendars();
 
         $calendars_as_options = [];
@@ -72,7 +73,7 @@ class Preferences
         if (!$input->has('language') || !$input->has('timezone') || !$input->has('default_calendar')
         || !$input->has('date_format') || !$input->has('time_format') || !$input->has('weekstart')
         || !$input->has('show_week_nb')) {
-            $app->abort('400', $app['translator']->trans('messages.error_empty_fields'));
+            $app->abort(400, $app['translator']->trans('messages.error_empty_fields'));
         }
 
         $username = $app['session']->get('username');

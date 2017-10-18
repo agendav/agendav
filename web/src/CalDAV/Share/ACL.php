@@ -28,21 +28,21 @@ class ACL
     /**
      * Privileges storage
      *
-     * @var AgenDAV\CalDAV\Share\Permissions
+     * @var \AgenDAV\CalDAV\Share\Permissions
      */
     private $permissions;
 
     /**
      * Current grants
      *
-     * @var Array
+     * @var array $grants
      */
     private $grants;
 
     /**
      * Creates a new ACL
      *
-     * @param AgenDAV\CalDAV\Share\Permissions $permissions
+     * @param \AgenDAV\CalDAV\Share\Permissions $permissions
      */
     public function __construct(Permissions $permissions)
     {
@@ -107,7 +107,7 @@ class ACL
     /**
      * Gets a list of privileges given to granted principals
      *
-     * @return Array Associative array, where keys = owner/default/{principal-URL}
+     * @return array Associative array, where keys = owner/default/{principal-URL}
      *               and values are arrays of privileges in Clark notation
      */
     public function getGrantsPrivileges()

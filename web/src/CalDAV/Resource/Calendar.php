@@ -55,7 +55,7 @@ class Calendar
      *
      * Required on shared calendars
      *
-     * @var AgenDAV\Data\Principal
+     * @var \AgenDAV\Data\Principal
      */
     protected $owner;
 
@@ -237,7 +237,8 @@ class Calendar
     /**
      * Removes a Share from this calendar
      *
-     * @param \AgenDAV\Data\Share $share
+     * @param \AgenDAV\Data\Share $share_to_remove
+     *
      * @return boolean true if the share was found and removed, false otherwise
      */
     public function removeShare(Share $share_to_remove)
@@ -257,7 +258,8 @@ class Calendar
      * Modifies the provided color to make sure it has an alpha channel
      *
      * @param string $color
-     * @result string
+     *
+     * @return string
      */
     protected function ensureRgbaColor($color)
     {

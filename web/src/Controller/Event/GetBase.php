@@ -106,10 +106,11 @@ class GetBase extends Listing
     /**
      * Serialize a list of FullCalendar events using Fractal
      *
-     * @param \AgenDAV\Event\FullCalendarEven $event FullCalendar event
+     * @param \AgenDAV\Event\FullCalendarEvent $event FullCalendar event
      * @param \DateTimeZone $timezone Time zone the user has
      * @param \Silex\Application $app
-     * @return array
+     *
+     * @return JsonResponse
      */
     protected function serializeEvent(FullCalendarEvent $event, \DateTimeZone $timezone, Application $app)
     {

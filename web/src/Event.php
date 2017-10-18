@@ -65,7 +65,7 @@ interface Event
      *
      * @param \DateTimeInterface $start
      * @param \DateTimeInterface $end
-     * @return AgenDAV\EventInstance[]
+     * @return \AgenDAV\EventInstance[]
      */
     public function expand(\DateTimeInterface $start, \DateTimeInterface $end);
 
@@ -79,7 +79,8 @@ interface Event
     /**
      * Checks if a RECURRENCE-ID is an exception to the repeat rule or not
      *
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+     *
      * @return boolean
      */
     public function isException(RecurrenceId $recurrence_id = null);
@@ -87,7 +88,8 @@ interface Event
     /**
      * Checks if a RECURRENCE-ID is a removed instance from the recurrence
      *
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+     *
      * @return boolean
      */
     public function isRemovedInstance(RecurrenceId $recurrence_id = null);

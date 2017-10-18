@@ -34,7 +34,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
     /**
      * Creates a new Calendar transformer
      *
-     * @param string $user_principal Current user principal
+     * @param string $principal_url Current user principal
      */
     public function __construct($principal_url)
     {
@@ -44,7 +44,9 @@ class CalendarTransformer extends Fractal\TransformerAbstract
     /**
      * Transforms a Calendar
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     *
+     * @return array
      */
     public function transform(Calendar $calendar)
     {

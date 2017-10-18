@@ -37,8 +37,9 @@ class VObjectHelper
      * - The VEVENT which has the RRULE set and no RECURRENCE-IDs assigned on a
      *   recurring event
      *
-     * @param Sabre\VObject\Component\VCalendar $vcalendar
-     * @param Sabre\VObject\Component\VEvent $base
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
+     * @param \Sabre\VObject\Component\VEvent $base
+     *
      * @return void
      */
     public static function setBaseVEvent(VCalendar $vcalendar, VEvent $base)
@@ -57,8 +58,9 @@ class VObjectHelper
      * Sets an exception VEVENT on a VCALENDAR. Replaces the existing exception
      * if found, adds it otherwise.
      *
-     * @param Sabre\VObject\Component\VCalendar $vcalendar
-     * @param Sabre\VObject\Component\VEvent $vevent
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
+     * @param \Sabre\VObject\Component\VEvent $vevent
+     *
      * @return void
      */
     public static function setExceptionVEvent(VCalendar $vcalendar, VEvent $vevent)
@@ -77,8 +79,9 @@ class VObjectHelper
     /**
      * Finds an existing recurrence exception by RECURRENCE-ID
      *
-     * @param Sabre\VObject\Component\VCalendar $vcalendar
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+     *
      * @return \Sabre\VObject\Component\VEvent|null
      */
     public static function findExceptionVEvent(VCalendar $vcalendar, RecurrenceId $recurrence_id)
@@ -100,7 +103,8 @@ class VObjectHelper
     /**
      * Removes all recurrence exceptions from a VCALENDAR
      *
-     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
+     *
      * @return void
      */
     public static function removeAllExceptions(VCalendar $vcalendar)
@@ -118,8 +122,9 @@ class VObjectHelper
     /**
      * Adds a new value to the EXDATE property of a VEVENT
      *
-     * @param Sabre\VObject\Component\VCalendar $vevent
+     * @param VEvent $vevent
      * @param \DateTimeImmutable $datetime
+     *
      * @return \DateTimeImmutable[] List of new EXDATE values
      */
     public static function addExdateToVEvent(VEvent $vevent, \DateTimeImmutable $datetime)

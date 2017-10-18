@@ -41,7 +41,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
 
 
     /**
-     * @param Doctrine\ORM\EntityManager Entity manager
+     * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
     {
@@ -56,7 +56,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
      */
     public function getSharesFor(Principal $principal)
     {
-        $shares = $this->em->getRepository('AgenDAV\Data\Share')
+        $shares = $this->em->getRepository(Share::class)
             ->findBy(['with' => $principal->getUrl()]);
 
         return $shares;
@@ -72,7 +72,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
     {
         $url = $calendar->getUrl();
 
-        $shares = $this->em->getRepository('AgenDAV\Data\Share')
+        $shares = $this->em->getRepository(Share::class)
             ->findBy(['calendar' => $url]);
 
         return $shares;
@@ -81,7 +81,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Stores a grant on the database
      *
-     * @param AgenDAV\Data\Share $share  Share object
+     * @param \AgenDAV\Data\Share $share  Share object
      */
     public function save(Share $share)
     {
@@ -92,7 +92,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Removes a grant for a calendar
      *
-     * @param AgenDAV\Data\Share $share  Share object
+     * @param \AgenDAV\Data\Share $share  Share object
      */
     public function remove(Share $share)
     {
@@ -103,13 +103,12 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Saves all calendar shares. Any other existing shares will get removed
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendarj
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function saveFromCalendar(Calendar $calendar)
     {
-        $url = $calendar->getUrl();
         $current_shares = $this->getSharesOnCalendar($calendar);
-        foreach ($shares as $share) {
+        foreach ($current_shares as $share) {
             $this->em->remove($share);
         }
 
@@ -127,8 +126,9 @@ class DoctrineOrmSharesRepository implements SharesRepository
      * Retrieves the Share object for a calendar which is shared with
      * a given principal
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param \AgenDAV\Data\Principal $principal  User principal
+     *
      * @return \AgenDAV\Data\Share
      */
     public function getSourceShare(Calendar $calendar, Principal $principal)
@@ -136,7 +136,8 @@ class DoctrineOrmSharesRepository implements SharesRepository
         $calendar_url = $calendar->getUrl();
         $principal_url = $principal->getUrl();
 
-        $share = $this->em->getRepository('AgenDAV\Data\Share')
+        /** @var Share $share */
+        $share = $this->em->getRepository(Share::class)
             ->findOneBy(['calendar' => $calendar_url, 'with' => $principal_url]);
 
         return $share;

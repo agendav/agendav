@@ -29,7 +29,7 @@ class Permissions
     /**
      * Lists of permissions per role
      *
-     * @var Array
+     * @var array $list
      */
     private $list;
 
@@ -41,7 +41,7 @@ class Permissions
      *                           values are arrays of permissions in Clark
      *                           notation
      */
-    public function __construct(Array $permissions = [])
+    public function __construct(array $permissions = [])
     {
         $this->list = $permissions;
     }
@@ -50,10 +50,10 @@ class Permissions
      * Sets permissions for a given role
      *
      * @param string $role Role name (owner, read-write, read-only, default)
-     * @param Array  $permissions List of permissions in Clark notation
+     * @param array  $permissions List of permissions in Clark notation
      * @throws \RuntimeException If the role was already configured
      */
-    public function setPrivilegesFor($role, Array $permissions)
+    public function setPrivilegesFor($role, array $permissions)
     {
         if (isset($this->list[$role])) {
             throw new \RuntimeException('Privilege set for ' . $role . ' already defined');

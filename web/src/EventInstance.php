@@ -108,21 +108,21 @@ interface EventInstance
     /**
      * Gets the RECURRENCE-ID property of this instance
      *
-     * @return AgenDAV\Event\RecurrenceId
+     * @return \AgenDAV\Event\RecurrenceId
      */
     public function getRecurrenceId();
 
     /**
      * Returns all recognized reminders for this instance
      *
-     * @return AgenDAV\Data\Reminder[]
+     * @return \AgenDAV\Data\Reminder[]
      */
     public function getReminders();
 
     /**
      * Adds a new reminder
      *
-     * @param AgenDAV\Data\Reminder
+     * @param \AgenDAV\Data\Reminder $reminder
      */
     public function addReminder(\AgenDAV\Data\Reminder $reminder);
 
@@ -194,7 +194,7 @@ interface EventInstance
     /**
      * Set the RECURRENCE-ID property for this event
      *
-     * @param AgenDAV\Event\RecurrenceId|null $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
     public function setRecurrenceId(RecurrenceId $recurrence_id = null);
 

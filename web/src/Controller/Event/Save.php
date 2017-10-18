@@ -39,7 +39,7 @@ class Save extends JSONController
     /**
      * Validates user input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function validateInput(ParameterBag $input)
@@ -89,7 +89,7 @@ class Save extends JSONController
      * Decides whether this request tries to create a new event or update
      * an existing one
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function isModification(ParameterBag $input)

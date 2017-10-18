@@ -38,7 +38,7 @@ abstract class Alter extends JSONController
     /**
      * Validates user input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function validateInput(ParameterBag $input)
@@ -60,6 +60,11 @@ abstract class Alter extends JSONController
 
     /**
      * Executes this operation
+     *
+     * @param ParameterBag $input
+     * @param Application $app
+     *
+     * @return JsonResponse
      */
     public function execute(ParameterBag $input, Application $app)
     {

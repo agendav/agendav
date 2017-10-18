@@ -33,7 +33,7 @@ class Delete extends JSONController
     /**
      * Validates user input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function validateInput(ParameterBag $input)
@@ -73,8 +73,9 @@ class Delete extends JSONController
     /**
      * Completely removes an object from the server
      *
-     * @param \AgenDAV\CalDAV\Resource\CalendarObject
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param \AgenDAV\CalDAV\Resource\CalendarObject $object
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function removeObject(CalendarObject $object)
     {
@@ -85,9 +86,10 @@ class Delete extends JSONController
     /**
      * Remove an event instance
      *
-     * @param \AgenDAV\CalDAV\Resource\CalendarObject
+     * @param \AgenDAV\CalDAV\Resource\CalendarObject $object
      * @param string $recurrence_id_string
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function removeInstance(CalendarObject $object, $recurrence_id_string)
     {

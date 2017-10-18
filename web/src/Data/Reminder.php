@@ -57,7 +57,7 @@ class Reminder
      *                     - count: number of <units>
      *                     - unit: one of minutes, hours or days
      *                     - position (optional)
-     * @return AgenDAV\Data\Reminder
+     * @return \AgenDAV\Data\Reminder
      */
     public static function createFromInput(array $input)
     {
@@ -76,7 +76,7 @@ class Reminder
      *
      * @param \Sabre\VObject\Component\VAlarm $valarm
      * @param integer $position Position of this VALARM inside the VEVENT
-     * @return AgenDAV\Data\Reminder|null
+     * @return \AgenDAV\Data\Reminder|null
      */
     public static function createFromVObject(VAlarm $valarm, $position)
     {
@@ -209,6 +209,7 @@ class Reminder
     /**
      * Counts the minutes of a \DateInterval
      *
+     * @param \DateInterval $dateinterval
      * @return int
      */
     public static function countMinutes(\DateInterval $dateinterval)

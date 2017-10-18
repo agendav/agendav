@@ -151,7 +151,7 @@ class VObjectBuilder implements Builder
      * Sets start and end on a VObjectEventInstance.
      *
      * @param \AgenDAV\Event\VObjectEventInstance $instance
-     * @param Array $attributes Needs the following keys: 'allday', 'start' and 'end'
+     * @param array $attributes Needs the following keys: 'allday', 'start' and 'end'
      */
     protected function setStartAndEnd(VObjectEventInstance $instance, array $attributes)
     {
@@ -175,6 +175,7 @@ class VObjectBuilder implements Builder
     /**
      * Sets current instance reminders
      *
+     * @param VObjectEventInstance $instance
      * @param array|null $reminders_input
      */
     protected function setReminders(VObjectEventInstance $instance, $reminders_input)
@@ -194,8 +195,8 @@ class VObjectBuilder implements Builder
     /**
      * Returns a set of Reminder
      *
-     * @param Array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
-     * @return AgenDAV\Data\Reminder[]
+     * @param array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
+     * @return \AgenDAV\Data\Reminder[]
      */
     protected function buildReminders(Array $input)
     {
