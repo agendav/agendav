@@ -32,7 +32,7 @@ interface Parser
      * Parses an iCalendar text resource
      *
      * @param string $icalendar
-     * @return AgenDAV\Event
+     * @return \AgenDAV\Event
      * @throws \UnexpectedValueException If $icalendar is not a valid iCalendar
      *                                   resource
      */

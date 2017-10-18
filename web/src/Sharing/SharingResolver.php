@@ -31,10 +31,10 @@ use AgenDAV\CalDAV\Resource\Calendar;
  */
 class SharingResolver implements SharesRepository
 {
-    /** @var AgenDAV\Repositories\SharesRepository */
+    /** @var \AgenDAV\Repositories\SharesRepository */
     protected $shares_repository;
 
-    /** @var AgenDAV\Repositories\PrincipalsRepository */
+    /** @var \AgenDAV\Repositories\PrincipalsRepository */
     protected $principals_repository;
 
     /**
@@ -55,7 +55,7 @@ class SharingResolver implements SharesRepository
     /**
      * Resolves principals for a list of shares
      *
-     * @param AgenDAV\Data\Share[] $shares
+     * @param \AgenDAV\Data\Share[] $shares
      * @return void
      */
     public function resolveShares(array $shares)

@@ -195,7 +195,7 @@ class VObjectBuilder implements Builder
      * Returns a set of Reminder
      *
      * @param Array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
-     * @return AgenDAV\Data\Reminder[]
+     * @return \AgenDAV\Data\Reminder[]
      */
     protected function buildReminders(Array $input)
     {

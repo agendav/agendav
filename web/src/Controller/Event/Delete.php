@@ -74,7 +74,7 @@ class Delete extends JSONController
      * Completely removes an object from the server
      *
      * @param \AgenDAV\CalDAV\Resource\CalendarObject
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function removeObject(CalendarObject $object)
     {
@@ -87,7 +87,7 @@ class Delete extends JSONController
      *
      * @param \AgenDAV\CalDAV\Resource\CalendarObject
      * @param string $recurrence_id_string
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function removeInstance(CalendarObject $object, $recurrence_id_string)
     {

@@ -30,19 +30,19 @@ use AgenDAV\Data\Share;
 
 class SharesDiff
 {
-    /** @var AgenDAV\Data\Share[] */
+    /** @var \AgenDAV\Data\Share[] */
     protected $keep;
 
-    /** @var AgenDAV\Data\Share[] */
+    /** @var \AgenDAV\Data\Share[] */
     protected $remove;
 
-    /** @var AgenDAV\Data\Share[] */
+    /** @var \AgenDAV\Data\Share[] */
     protected $current_shares;
 
     /**
      * Creates empty lists on $keep and $remove
      *
-     * @param AgenDAV\Data\Share[] $current_shares Current list of shares
+     * @param \AgenDAV\Data\Share[] $current_shares Current list of shares
      */
     public function __construct(Array $current_shares)
     {
@@ -56,7 +56,7 @@ class SharesDiff
      * kept, and those that are not present on input anymore, so they should
      * be removed.
      *
-     * @param AgenDAV\Data\Share[] $input
+     * @param \AgenDAV\Data\Share[] $input
      * @return void
      */
     public function decide(Array $input)
@@ -98,7 +98,7 @@ class SharesDiff
     /**
      * Get existing shares that need to be kept and also new ones
      *
-     * @return AgenDAV\Data\Share[]
+     * @return \AgenDAV\Data\Share[]
      */
     public function getKeptShares()
     {
@@ -108,7 +108,7 @@ class SharesDiff
     /**
      * Get shares that have to be deleted
      *
-     * @return AgenDAV\Data\Share[]
+     * @return \AgenDAV\Data\Share[]
      */
     public function getMarkedForRemoval()
     {

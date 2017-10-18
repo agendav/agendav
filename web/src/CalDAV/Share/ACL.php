@@ -28,7 +28,7 @@ class ACL
     /**
      * Privileges storage
      *
-     * @var AgenDAV\CalDAV\Share\Permissions
+     * @var \AgenDAV\CalDAV\Share\Permissions
      */
     private $permissions;
 

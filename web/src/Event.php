@@ -65,7 +65,7 @@ interface Event
      *
      * @param \DateTimeInterface $start
      * @param \DateTimeInterface $end
-     * @return AgenDAV\EventInstance[]
+     * @return \AgenDAV\EventInstance[]
      */
     public function expand(\DateTimeInterface $start, \DateTimeInterface $end);
 

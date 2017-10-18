@@ -125,8 +125,8 @@ class Save extends JSONController
     /**
      * Creates or updates a calendar on the CalDAV server
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function updateCalDAV($calendar)
     {

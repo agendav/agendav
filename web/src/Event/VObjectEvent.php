@@ -36,7 +36,7 @@ use Sabre\VObject\DateTimeParser;
  */
 class VObjectEvent implements Event
 {
-    /** @var Sabre\VObject\Component\VCalendar */
+    /** @var \Sabre\VObject\Component\VCalendar */
     protected $vcalendar;
 
     /** @var bool */
@@ -57,7 +57,7 @@ class VObjectEvent implements Event
     /**
      * Builds a new VObjectEvent
      *
-     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
      */
     public function __construct(VCalendar $vcalendar)
     {
@@ -120,7 +120,7 @@ class VObjectEvent implements Event
      *
      * @param \DateTimeInterface $start
      * @param \DateTimeInterface $end
-     * @return AgenDAV\EventInstance[]
+     * @return \AgenDAV\EventInstance[]
      */
     public function expand(\DateTimeInterface $start, \DateTimeInterface $end)
     {
@@ -157,7 +157,7 @@ class VObjectEvent implements Event
      * Checks if a RECURRENCE-ID string (that could be the result of
      * expanding a recurrent event) was an exception to the rule or not
      *
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return boolean
      */
     public function isException(RecurrenceId $recurrence_id = null)
@@ -180,7 +180,7 @@ class VObjectEvent implements Event
     /**
      * Checks if a RECURRENCE-ID is a removed instance from the recurrence
      *
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return boolean
      */
     public function isRemovedInstance(RecurrenceId $recurrence_id = null)
@@ -374,6 +374,8 @@ class VObjectEvent implements Event
 
     public function getEventInstance(RecurrenceId $recurrence_id = null)
     {
+        $vevent = null;
+
         if ($recurrence_id === null) {
             $vevent = $this->vcalendar->getBaseComponent('VEVENT');
         }
@@ -445,7 +447,7 @@ class VObjectEvent implements Event
     /**
      * Gets a list of Removed instances for this event
      *
-     * @param Sabre\VObject\Component\VCalendar $vcalendar
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
      * @return \DateTimeImmutable[]
      */
     protected function findRemovedInstances(VCalendar $vcalendar)
@@ -509,7 +511,7 @@ class VObjectEvent implements Event
      *
      * If the event is not recurrent, a \LogicException will be thrown
      *
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return \Sabre\VObject\Component\VEvent
      * @throws \LogicException if this event is not recurrent
      * @throws \AgenDAV\Exception\NotFound if the instance was removed

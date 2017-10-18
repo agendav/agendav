@@ -103,13 +103,12 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Saves all calendar shares. Any other existing shares will get removed
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendarj
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function saveFromCalendar(Calendar $calendar)
     {
-        $url = $calendar->getUrl();
         $current_shares = $this->getSharesOnCalendar($calendar);
-        foreach ($shares as $share) {
+        foreach ($current_shares as $share) {
             $this->em->remove($share);
         }
 

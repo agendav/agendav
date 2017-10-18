@@ -108,14 +108,14 @@ interface EventInstance
     /**
      * Gets the RECURRENCE-ID property of this instance
      *
-     * @return AgenDAV\Event\RecurrenceId
+     * @return \AgenDAV\Event\RecurrenceId
      */
     public function getRecurrenceId();
 
     /**
      * Returns all recognized reminders for this instance
      *
-     * @return AgenDAV\Data\Reminder[]
+     * @return \AgenDAV\Data\Reminder[]
      */
     public function getReminders();
 

@@ -55,7 +55,7 @@ class Calendar
      *
      * Required on shared calendars
      *
-     * @var AgenDAV\Data\Principal
+     * @var \AgenDAV\Data\Principal
      */
     protected $owner;
 

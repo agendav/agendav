@@ -37,10 +37,10 @@ use Sabre\VObject\Property\ICalendar\DateTime;
 class VObjectEventInstance implements EventInstance
 {
 
-    /** @var Sabre\VObject\Component\VEvent */
+    /** @var \Sabre\VObject\Component\VEvent */
     protected $vevent;
 
-    /** @var AgenDAV\Data\Reminder[] */
+    /** @var \AgenDAV\Data\Reminder[] */
     protected $reminders;
 
     /** @var bool */
@@ -197,7 +197,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Gets the RECURRENCE-ID property of this instance
      *
-     * @return AgenDAV\Event\RecurrenceId
+     * @return \AgenDAV\Event\RecurrenceId
      */
     public function getRecurrenceId()
     {
@@ -214,7 +214,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Returns all recognized reminders for this instance
      *
-     * @return AgenDAV\Data\Reminder[]
+     * @return \AgenDAV\Data\Reminder[]
      */
     public function getReminders()
     {
@@ -465,7 +465,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Return a copy the internal VEvent object
      *
-     * @return Sabre\VObject\Component\VEvent
+     * @returnSabre\VObject\Component\VEvent
      */
     public function getInternalVEvent()
     {
@@ -479,7 +479,8 @@ class VObjectEventInstance implements EventInstance
      *
      * It is useful to generate a new recurrence exception
      *
-     * @param AgenDAV\Event\RecurrenceId $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+     *
      * @return void
      */
     public function updateForRecurrenceId(RecurrenceId $recurrence_id)
@@ -542,7 +543,7 @@ class VObjectEventInstance implements EventInstance
      * Loops on current recognized reminders and returns all their original
      * positions on the internal VEVENT, if any
      *
-     * @return void
+     * @return void|array
      */
     protected function getReminderPositions()
     {

@@ -33,7 +33,7 @@ interface PreferencesRepository
      * Gets all preferences for the given user
      *
      * @param string $username  User name
-     * @return AgenDAV\Data\Preferences
+     * @return \AgenDAV\Data\Preferences
      */
     public function userPreferences($username);
 

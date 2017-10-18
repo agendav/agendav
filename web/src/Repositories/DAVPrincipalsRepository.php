@@ -59,7 +59,7 @@ class DAVPrincipalsRepository implements PrincipalsRepository
      * Returns a Principal object for a given URL
      *
      * @param string $url
-     * @return AgenDAV\Data\Principal
+     * @return \AgenDAV\Data\Principal
      */
     public function get($url)
     {
@@ -87,7 +87,7 @@ class DAVPrincipalsRepository implements PrincipalsRepository
      * Searchs a principal using a filter string
      *
      * @param string $filter
-     * @return AgenDAV\Data\Principal[]
+     * @return \AgenDAV\Data\Principal[]
      */
     public function search($filter)
     {
