@@ -59,7 +59,9 @@ abstract class JSONController
     /**
      * Executes the action assigned to this controller
      *
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @throws \InvalidArgumentException
      */
     public function doAction(Request $request, Application $app)
     {
@@ -68,10 +70,10 @@ abstract class JSONController
         // Read input
         if ($this->method === 'POST') {
             $input = $request->request;
-        }
-
-        if ($this->method === 'GET') {
+        } elseif ($this->method === 'GET') {
             $input = $request->query;
+        } else {
+            throw new \InvalidArgumentException('Unknown method: ' . $this->method);
         }
 
         if (!$this->validateInput($input)) {
@@ -86,9 +88,10 @@ abstract class JSONController
     /**
      * Proceeds to execute this action, taking care of possible exceptions
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
-     * @param Silex\Application $app
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Silex\Application $app
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function controlledExecution(ParameterBag $input, Application $app)
     {
@@ -153,7 +156,7 @@ abstract class JSONController
     /**
      * Validates user input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function validateInput(ParameterBag $input)
@@ -164,8 +167,8 @@ abstract class JSONController
     /**
      * Performs an operation using the information from input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
-     * @param Silex\Application $app
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Silex\Application $app
      * @return array
      */
     abstract protected function execute(ParameterBag $input, Application $app);
@@ -175,7 +178,7 @@ abstract class JSONController
      *
      * @param string $message
      * @param int $code Optional HTTP response code
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function generateException($message, $code = 400)
     {
@@ -192,7 +195,7 @@ abstract class JSONController
      *
      * @param string $message
      * @param int $code Optional HTTP response code
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function generateError($message, $code = 500)
     {
@@ -203,10 +206,11 @@ abstract class JSONController
 
         return new JsonResponse($result, $code, $this->headers);
     }
+
     /**
      * Generates a success message
      *
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     protected function generateSuccess($message = '')
     {

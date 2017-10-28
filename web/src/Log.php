@@ -63,7 +63,7 @@ class Log
     /**
      * Monolog processor to hide Authorization: headers
      *
-     * @return function
+     * @return \Closure
      */
     public static function hideAuthorizationHeader()
     {

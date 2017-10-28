@@ -65,7 +65,7 @@ class Csrf
      * Returns current CSRF token
      *
      * @param Silex\Application $app
-     * @return Symfony\Component\Security\Csrf\CsrfToken
+     * @return \Symfony\Component\Security\Csrf\CsrfToken
      */
     public static function getCurrentToken(Application $app)
     {

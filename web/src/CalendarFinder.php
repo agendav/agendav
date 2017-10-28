@@ -40,10 +40,10 @@ class CalendarFinder
     /** @var \AgenDAV\Repositories\SharesRepository */
     protected $shares_repository;
 
-    /** @var Symfony\Component\HttpFoundation\Session\Session */
+    /** @var \Symfony\Component\HttpFoundation\Session\Session */
     protected $session;
 
-    /** @var AgenDAV\Data\Principal */
+    /** @var \AgenDAV\Data\Principal */
     protected $current_principal;
 
     /**

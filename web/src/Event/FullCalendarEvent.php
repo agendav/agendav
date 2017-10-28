@@ -40,14 +40,14 @@ class FullCalendarEvent
     /** @var string */
     protected $calendar_url;
 
-    /** @var AgenDAV\EventInstance */
+    /** @var \AgenDAV\EventInstance */
     protected $event;
 
     /**
      * @param string $url
      * @param string $etag
      * @param string $calendar_url Calendar URL
-     * @param AgenDAV\EventInstance $event Event instance
+     * @param \AgenDAV\EventInstance $event Event instance
      */
     public function __construct($url, $etag, $calendar_url, EventInstance $event)
     {
@@ -95,10 +95,10 @@ class FullCalendarEvent
      * Generates an array of FullCalendarEvent that refer to a list of event
      * instances that come from a given CalendarObject and Calendar
      *
-     * @param AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param AgenDAV\EventInstance[] $instances
-     * @return AgenDAV\Event\FullCalendarEvent[]
+     * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\EventInstance[] $instances
+     * @return \AgenDAV\Event\FullCalendarEvent[]
      */
     public static function generateFrom(
         CalendarObject $calendar_object,

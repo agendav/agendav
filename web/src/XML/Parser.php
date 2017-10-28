@@ -31,7 +31,7 @@ use Sabre\DAV\Xml\Service as XMLService;
 class Parser
 {
 
-    /** @var Sabre\DAV\Xml\Service */
+    /** @var \Sabre\DAV\Xml\Service */
     protected $xml;
 
     /**

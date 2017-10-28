@@ -288,7 +288,7 @@ class Client
      * Puts an calendar object on the CalDAV server, inside its parent collection
      *
      * @param AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
-     * @return Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     public function uploadCalendarObject(CalendarObject $calendar_object)
     {
@@ -312,7 +312,7 @@ class Client
      * Deletes a calendar object from the CalDAV server
      *
      * @param AgenDAV\CalDAV\Resource\CalendarObject
-     * @return Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     public function deleteCalendarObject(CalendarObject $calendar_object)
     {
@@ -331,7 +331,7 @@ class Client
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param \AgenDAV\CalDAV\Share\ACL $acl
-     * @return Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     public function applyACL(Calendar $calendar, ACL $acl)
     {

@@ -29,7 +29,7 @@ use \GuzzleHttp\Exception\BadResponseException;
  */
 class Exception extends \RunTimeException
 {
-    /** @var \Guzzle\Http\Message\Response */
+    /** @var \GuzzleHttp\Psr7\Response */
     protected $response;
 
     /**
@@ -51,7 +51,7 @@ class Exception extends \RunTimeException
     /*
      * Getter for response
      *
-     * @return\Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     public function getResponse()
     {
