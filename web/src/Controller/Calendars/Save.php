@@ -38,7 +38,7 @@ class Save extends JSONController
     /**
      * Validates user input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function validateInput(ParameterBag $input)
@@ -138,7 +138,7 @@ class Save extends JSONController
     /**
      * Saves calendar name and color into the Share object
      *
-     * @param AgenDAV\Data\Share $share
+     * @param \AgenDAV\Data\Share $share
      * @param ParameterBag $input
      * @return void
      */

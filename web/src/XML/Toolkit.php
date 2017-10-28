@@ -34,8 +34,8 @@ class Toolkit
     protected $generator;
 
     /**
-     * @param AgenDAV\XML\Parser $parser
-     * @param AgenDAV\XML\Generator $generator
+     * @param \AgenDAV\XML\Parser $parser
+     * @param \AgenDAV\XML\Generator $generator
      */
     public function __construct(Parser $parser, Generator $generator)
     {

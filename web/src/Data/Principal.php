@@ -20,13 +20,21 @@ namespace AgenDAV\Data;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
+
 /**
  * @Entity
  * @Table(name="principals")
  */
 class Principal
 {
-    /** @Id @Column(type="string") */
+    /**
+     * @Id
+     * @Column(type="string")
+     */
     private $url;
 
     /** @Column(type="string") */

@@ -169,7 +169,8 @@ abstract class JSONController
      *
      * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @param \Silex\Application $app
-     * @return array
+     *
+     * @return JsonResponse
      */
     abstract protected function execute(ParameterBag $input, Application $app);
 

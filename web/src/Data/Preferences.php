@@ -21,7 +21,10 @@ namespace AgenDAV\Data;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
 /**
  * Holds user preferences
  */
@@ -32,7 +35,10 @@ namespace AgenDAV\Data;
  */
 class Preferences
 {
-    /** @Id @Column(type="string") */
+    /**
+     * @Id
+     * @Column(type="string")
+     */
     private $username;
 
     /** @Column(type="json_array") */
@@ -61,6 +67,7 @@ class Preferences
      *
      * @param string $name Preference name
      * @param mixed $default_value Default value if preference is not set
+     *
      * @return mixed Preference value, or default_value if it is not set
      */
     public function get($name, $default_value = null)
@@ -95,6 +102,7 @@ class Preferences
      * has a value, it will not get overwritten
      *
      * @param array $defaults
+     *
      * @return void
      */
     public function addDefaults(array $defaults)

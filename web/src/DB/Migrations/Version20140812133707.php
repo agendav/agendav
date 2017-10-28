@@ -30,7 +30,7 @@ class Version20140812133707 extends AgenDAVMigration
     {
         $shares_table = $schema->createTable('shares');
         $sid = $shares_table->addColumn('sid', 'integer', ['unsigned' => true]);
-        $sid->setAutoIncrement(true);
+        $sid->setAutoincrement(true);
         $shares_table->addColumn('owner', 'string', ['length' => 255]);
         $shares_table->addColumn('calendar', 'string', ['length' => 255]);
         $shares_table->addColumn('with', 'string', ['length' => 255]);
@@ -46,8 +46,8 @@ class Version20140812133707 extends AgenDAVMigration
     {
         $sessions = $schema->createTable('sessions');
         $sessions->addColumn('sess_id', 'string');
-        $sessions->addColumn('sess_data', 'text')->setNotNull(true);
-        $sessions->addColumn('sess_time', 'integer')->setNotNull(true)->setUnsigned(true);
+        $sessions->addColumn('sess_data', 'text')->setNotnull(true);
+        $sessions->addColumn('sess_time', 'integer')->setNotnull(true)->setUnsigned(true);
         $sessions->setPrimaryKey(array('sess_id'));
     }
     

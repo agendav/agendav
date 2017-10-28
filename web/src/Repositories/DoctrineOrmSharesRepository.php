@@ -41,7 +41,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
 
 
     /**
-     * @param Doctrine\ORM\EntityManager Entity manager
+     * @param \Doctrine\ORM\EntityManager Entity manager
      */
     public function __construct(EntityManager $em)
     {
@@ -81,7 +81,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Stores a grant on the database
      *
-     * @param AgenDAV\Data\Share $share  Share object
+     * @param \AgenDAV\Data\Share $share  Share object
      */
     public function save(Share $share)
     {
@@ -92,7 +92,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
     /**
      * Removes a grant for a calendar
      *
-     * @param AgenDAV\Data\Share $share  Share object
+     * @param \AgenDAV\Data\Share $share  Share object
      */
     public function remove(Share $share)
     {
@@ -126,8 +126,9 @@ class DoctrineOrmSharesRepository implements SharesRepository
      * Retrieves the Share object for a calendar which is shared with
      * a given principal
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param \AgenDAV\Data\Principal $principal  User principal
+     *
      * @return \AgenDAV\Data\Share
      */
     public function getSourceShare(Calendar $calendar, Principal $principal)

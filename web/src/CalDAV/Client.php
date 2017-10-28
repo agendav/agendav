@@ -29,14 +29,14 @@ use \AgenDAV\CalDAV\Filter\TimeRange;
 
 class Client
 {
-    /** @type AgenDAV\Http\Client   HTTP client used */
+    /** @type \AgenDAV\Http\Client   HTTP client used */
 
     protected $http_client;
 
-    /** @type AgenDAV\XML\Toolkit XML toolkit  */
+    /** @type \AgenDAV\XML\Toolkit XML toolkit  */
     protected $xml_toolkit;
 
-    /** @type AgenDAV\Event\Parser Event parser */
+    /** @type \AgenDAV\Event\Parser Event parser */
     protected $event_parser;
 
 
@@ -197,7 +197,7 @@ class Client
     /**
      * Creates a calendar collection
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
      * @return void
      */
     public function createCalendar(Calendar $calendar)
@@ -287,7 +287,7 @@ class Client
     /**
      * Puts an calendar object on the CalDAV server, inside its parent collection
      *
-     * @param AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
+     * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
      * @return \GuzzleHttp\Psr7\Response
      */
     public function uploadCalendarObject(CalendarObject $calendar_object)
@@ -388,7 +388,7 @@ class Client
      * Converts a pre-parsed REPORT response to an array of CalendarObject
      *
      * @param array Data returned by report()
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these objects come from
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these objects come from
      * @return array of CalendarObject
      */
     protected function buildObjectCollection(array $raw_data, Calendar $calendar)

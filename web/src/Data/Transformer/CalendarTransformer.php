@@ -44,7 +44,9 @@ class CalendarTransformer extends Fractal\TransformerAbstract
     /**
      * Transforms a Calendar
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+     *
+     * @return array
      */
     public function transform(Calendar $calendar)
     {
