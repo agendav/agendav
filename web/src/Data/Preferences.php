@@ -54,8 +54,18 @@ class Preferences
         $this->options[$name] = $value;
     }
 
+
+    /**
+     * @param $name
+     *
+     * @return bool
+     */
+    public function __isset($name) {
+        return array_key_exists($name, $this->options);
+    }
+
     public function __get($name) {
-        if (array_key_exists($name, $this->options)) {
+        if ($this->__isset($name)) {
             return $this->options[$name];
         } else {
             return null;
