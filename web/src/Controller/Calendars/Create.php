@@ -24,6 +24,8 @@ namespace AgenDAV\Controller\Calendars;
 use AgenDAV\Uuid;
 use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Data\Subscription;
+use AgenDAV\Data\Principal;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
 use Silex\Application;
@@ -59,12 +61,27 @@ class Create extends JSONController
         $calendar_home_set = $app['session']->get('calendar_home_set');
         $url = $calendar_home_set . Uuid::generate();
 
-        $calendar = new Calendar($url, [
-            Calendar::DISPLAYNAME => $input->get('displayname'),
-            Calendar::COLOR => $input->get('calendar_color'),
-        ]);
+        $subscriptions_repository = $app['subscriptions.repository'];
+        $user_principal_url = $app['session']->get('principal_url');
+        $current_user_principal = new Principal($user_principal_url);
 
-        $this->client->createCalendar($calendar);
+        if ($input->getBoolean('is_subscribed') === true) {
+            // If the calendar is a subscription, we save it in the database
+            $subscription = new Subscription();
+            $subscription->setOwner($current_user_principal->getURL());
+            $subscription->setCalendar($input->get('url'));
+            $subscription->setProperty(Calendar::DISPLAYNAME, $input->get('displayname'));
+            $subscription->setProperty(Calendar::COLOR, $input->get('calendar_color'));
+
+            $subscriptions_repository->save($subscription);
+        } else {
+            $calendar = new Calendar($url, [
+                Calendar::DISPLAYNAME => $input->get('displayname'),
+                Calendar::COLOR => $input->get('calendar_color'),
+            ]);
+
+            $this->client->createCalendar($calendar);
+        }
 
         return $this->generateSuccess();
     }

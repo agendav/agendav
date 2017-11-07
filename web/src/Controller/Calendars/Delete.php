@@ -24,6 +24,7 @@ namespace AgenDAV\Controller\Calendars;
 use AgenDAV\Controller\JSONController;
 use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
+use AgenDAV\Data\Principal;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -55,8 +56,22 @@ class Delete extends JSONController
     {
         $calendar = new Calendar($input->get('calendar'));
 
-        // Proceed to remove calendar from CalDAV server
-        $this->client->deleteCalendar($calendar);
+        $subscriptions_repository = $app['subscriptions.repository'];
+        $user_principal_url = $app['session']->get('principal_url');
+        $current_user_principal = new Principal($user_principal_url);
+
+        if ($input->getBoolean('is_subscribed') === true) {
+            // If the calendar is a subscription, we remove it from the database
+            $subscription = $subscriptions_repository->getSubscriptionByUrl(
+                $calendar,
+                $current_user_principal
+            );
+
+            $subscriptions_repository->remove($subscription);
+        } else {
+            // Proceed to remove calendar from CalDAV server
+            $this->client->deleteCalendar($calendar);
+        }
 
         return $this->generateSuccess($calendar->getUrl());
     }

@@ -71,6 +71,9 @@ class Listing extends JSONController
     protected function execute(ParameterBag $input, Application $app)
     {
         $calendar = new Calendar($input->get('calendar'));
+        if ($input->getBoolean('is_subscribed') === true) {
+            $calendar->setSubscribed(true);
+        }
         $timezone = new \DateTimeZone($input->get('timezone'));
         $start = DateHelper::fullcalendarToDateTime($input->get('start'), $timezone);
         $end = DateHelper::fullcalendarToDateTime($input->get('end'), $timezone);
@@ -82,7 +85,9 @@ class Listing extends JSONController
 
         $execution_fetch_start = microtime(true);
 
-        if (!$input->has('uid')) {
+        if ($calendar->isSubscribed()) {
+            $objects = $this->client->fetchObjectsOnSubscribedCalendar($calendar);
+        } else if (!$input->has('uid')) {
             $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
         } else {
             $object = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
