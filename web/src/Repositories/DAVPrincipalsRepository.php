@@ -32,10 +32,10 @@ use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
 class DAVPrincipalsRepository implements PrincipalsRepository
 {
 
-    /** @type AgenDAV\XML\Toolkit */
+    /** @type \AgenDAV\XML\Toolkit */
     protected $xml_toolkit;
 
-    /** @type AgenDAV\CalDAV\Client */
+    /** @type \AgenDAV\CalDAV\Client */
     protected $caldav_client;
 
     /** @type string */
@@ -44,8 +44,8 @@ class DAVPrincipalsRepository implements PrincipalsRepository
     /**
      * Builds a new repository
      *
-     * @param AgenDAV\XML\Toolkit $xml_toolkit
-     * @param AgenDAV\CalDAV\Client $caldav_client
+     * @param \AgenDAV\XML\Toolkit $xml_toolkit
+     * @param \AgenDAV\CalDAV\Client $caldav_client
      * @param string $email_attribute
      */
     public function __construct(Toolkit $xml_toolkit, Client $caldav_client, $email_attribute)

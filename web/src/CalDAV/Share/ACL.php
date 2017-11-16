@@ -42,7 +42,7 @@ class ACL
     /**
      * Creates a new ACL
      *
-     * @param AgenDAV\CalDAV\Share\Permissions $permissions
+     * @param \AgenDAV\CalDAV\Share\Permissions $permissions
      */
     public function __construct(Permissions $permissions)
     {

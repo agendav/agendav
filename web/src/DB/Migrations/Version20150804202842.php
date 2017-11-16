@@ -18,7 +18,7 @@ class Version20150804202842 extends AbstractMigration
         $this->write('Creating table principals');
 
         $principals = $schema->createTable('principals');
-        $principals->addColumn('path', 'string', ['length' => 255])->setNotNull(true);
+        $principals->addColumn('path', 'string', ['length' => 255])->setNotnull(true);
         $principals->addColumn('display_name', 'string', ['length' => 255]);
         $principals->addColumn('email', 'string', ['length' => 255]);
 

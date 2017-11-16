@@ -47,7 +47,7 @@ class CalendarFinder
     protected $current_principal;
 
     /**
-     * @param Symfony\Component\HttpFoundation\Session\Session $session
+     * @param \Symfony\Component\HttpFoundation\Session\Session $session
      * @param \AgenDAV\CalDAV\Client $client
      */
     public function __construct(Session $session, Client $client)
