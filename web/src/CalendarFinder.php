@@ -159,7 +159,7 @@ class CalendarFinder
     /**
      * Stores existing calendar shares inside each Calendar object
      *
-     * @param \AgenDAV\CalDAV\Resource\Calendar[] collection of calendars
+     * @param \AgenDAV\CalDAV\Resource\Calendar[] $calendars
      */
     protected function addShares(Array $calendars)
     {

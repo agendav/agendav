@@ -34,9 +34,6 @@ class Parser
     /** @var \Sabre\DAV\Xml\Service */
     protected $xml;
 
-    /**
-     * @param Array $property_map
-     */
     public function __construct()
     {
         $this->xml = new XMLService();
@@ -96,8 +93,8 @@ class Parser
      *   ]
      * ]
      *
-     *
      * @param string $body xml body
+     *
      * @return array
      */
     protected function parseMultistatus($body)

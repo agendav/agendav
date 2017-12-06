@@ -40,7 +40,7 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
 
 
     /**
-     * @param Doctrine\ORM\EntityManager Entity manager
+     * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
     {
@@ -51,11 +51,13 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     /**
      * Gets all preferences for the given user
      *
-     * @param string $username  User name
-     * @return \AgenDAV\Data\Preferences
+     * @param string $username User name
+     *
+     * @return Preferences
      */
     public function userPreferences($username)
     {
+        /** @var Preferences|null $preferences */
         $preferences = $this->em->find('AgenDAV\Data\Preferences', $username);
 
         if ($preferences !== null) {

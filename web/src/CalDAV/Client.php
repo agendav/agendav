@@ -106,8 +106,10 @@ class Client
      * Queries the CalDAV server for the calendar-home-set. It will be
      * requested on the principal URL
      *
-     * @param \AgenDAV\Data\Principal User principal
-     * @return string   Calendar home set for given principal
+     * @param \AgenDAV\Data\Principal $principal User principal
+     *
+     * @return string Calendar home set for given principal
+     *
      * @throws \AgenDAV\Exception\NotFound if no calendar-home-set is returned
      */
     public function getCalendarHomeSet(Principal $principal)
@@ -179,7 +181,9 @@ class Client
      * Gets a calendar details
      *
      * @param string $url   URL
-     * @param \AgenDAV\CalDAV\Resource\Calendar    Found calendar
+     *
+     * @return Calendar
+     *
      * @throws \AgenDAV\Exception\NotFound In case the server replies with a 2xx code but
      *                                     no valid calendars are found
      */
@@ -311,7 +315,8 @@ class Client
     /**
      * Deletes a calendar object from the CalDAV server
      *
-     * @param AgenDAV\CalDAV\Resource\CalendarObject
+     * @param CalendarObject $calendar_object
+     *
      * @return \GuzzleHttp\Psr7\Response
      */
     public function deleteCalendarObject(CalendarObject $calendar_object)
@@ -387,9 +392,10 @@ class Client
     /**
      * Converts a pre-parsed REPORT response to an array of CalendarObject
      *
-     * @param array Data returned by report()
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these objects come from
-     * @return array of CalendarObject
+     * @param array $raw_data Data returned by report()
+     * @param Calendar $calendar Calendar these objects come from
+     *
+     * @return CalendarObject[]
      */
     protected function buildObjectCollection(array $raw_data, Calendar $calendar)
     {

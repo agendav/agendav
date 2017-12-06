@@ -122,7 +122,7 @@ interface EventInstance
     /**
      * Adds a new reminder
      *
-     * @param AgenDAV\Data\Reminder
+     * @param \AgenDAV\Data\Reminder $reminder
      */
     public function addReminder(\AgenDAV\Data\Reminder $reminder);
 

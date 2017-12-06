@@ -38,8 +38,6 @@ class SharingResolver implements SharesRepository
     protected $principals_repository;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
-     * @param \AgenDAV\CalDAV\Client $client
      * @param \AgenDAV\Repositories\SharesRepository $shares_repository
      * @param \AgenDAV\Repositories\PrincipalsRepository $principals_repository
      */
@@ -118,7 +116,7 @@ class SharingResolver implements SharesRepository
     /**
      * Saves all calendar shares. Any other existing shares will get removed
      *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendarj
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function saveFromCalendar(Calendar $calendar)
     {

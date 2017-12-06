@@ -41,7 +41,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
 
 
     /**
-     * @param \Doctrine\ORM\EntityManager Entity manager
+     * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
     {

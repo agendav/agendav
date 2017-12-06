@@ -27,15 +27,15 @@ namespace AgenDAV\XML;
 class Toolkit
 {
 
-    /** @param AgenDAV\XML\Parser */
+    /** @param Parser $parser */
     protected $parser;
 
-    /** @param AgenDAV\XML\Generator */
+    /** @param Generator $generator */
     protected $generator;
 
     /**
-     * @param \AgenDAV\XML\Parser $parser
-     * @param \AgenDAV\XML\Generator $generator
+     * @param Parser $parser
+     * @param Generator $generator
      */
     public function __construct(Parser $parser, Generator $generator)
     {

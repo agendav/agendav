@@ -34,7 +34,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
     /**
      * Creates a new Calendar transformer
      *
-     * @param string $user_principal Current user principal
+     * @param string $principal_url Current user principal
      */
     public function __construct($principal_url)
     {

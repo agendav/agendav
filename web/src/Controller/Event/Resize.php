@@ -33,7 +33,7 @@ class Resize extends Alter
      * @param \AgenDAV\EventInstance $instance
      * @param \DateTimeZone $timezone
      * @param int $minutes
-     * @param Array $input
+     * @param ParameterBag $input
      */
     protected function modifyInstance(
         EventInstance $instance,
