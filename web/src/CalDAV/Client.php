@@ -43,6 +43,7 @@ class Client
     /**
      * @param \AgenDAV\Http\Client $http_client
      * @param \AgenDAV\XML\Toolkit $xml_toolkit
+     * @param \AgenDAV\Event\Parser $event_parser
      */
     public function __construct(
         \AgenDAV\Http\Client $http_client,
@@ -72,7 +73,7 @@ class Client
         }
 
         return ($response->hasHeader('DAV') &&
-            preg_match('/calendar-access/', $response->getHeaderLine('DAV')));
+            false !== strpos($response->getHeaderLine('DAV'), "calendar-access"));
     }
 
     /**
@@ -352,7 +353,8 @@ class Client
      * @param string $url   URL
      * @param int $depth   Depth header
      * @param string $body  Request body
-     * @result array key-value array, where keys are paths and properties are values
+     *
+     * @return array key-value array, where keys are paths and properties are values
      */
     public function propfind($url, $depth, $body)
     {
@@ -362,7 +364,7 @@ class Client
 
         $contents = (string)$response->getBody();
         $single_element_expected = ($depth === 0);
-        $result = $this->xml_toolkit->parseMultiStatus($contents, $single_element_expected);
+        $result = $this->xml_toolkit->parseMultistatus($contents, $single_element_expected);
 
         return $result;
     }
@@ -373,7 +375,8 @@ class Client
      * @param string $url   URL
      * @param string $body   Request body
      * @param int $depth Depth header for this request. Default value: 1
-     * @result array key-value array, where keys are paths and properties are values
+     *
+     * @return array key-value array, where keys are paths and properties are values
      */
     public function report($url, $body, $depth = 1)
     {
@@ -382,7 +385,7 @@ class Client
         $response = $this->http_client->request('REPORT', $url, $body);
 
         $contents = (string)$response->getBody();
-        $result = $this->xml_toolkit->parseMultiStatus($contents);
+        $result = $this->xml_toolkit->parseMultistatus($contents);
 
         return $result;
     }

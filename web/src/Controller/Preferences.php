@@ -35,6 +35,7 @@ class Preferences
     {
         $preferences = $app['user.preferences'];
 
+        /** @var Calendar[] $calendars */
         $calendars = $app['calendar.finder']->getCalendars();
 
         $calendars_as_options = [];

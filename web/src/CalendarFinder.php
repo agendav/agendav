@@ -136,7 +136,7 @@ class CalendarFinder
      * Applies custom properties to a calendar
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param Array $properties
+     * @param array $properties
      * @return void
      */
     protected function applySharedProperties(Calendar $calendar, array $properties)

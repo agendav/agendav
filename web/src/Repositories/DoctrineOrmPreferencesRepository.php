@@ -58,7 +58,7 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     public function userPreferences($username)
     {
         /** @var Preferences|null $preferences */
-        $preferences = $this->em->find('AgenDAV\Data\Preferences', $username);
+        $preferences = $this->em->find(Preferences::class, $username);
 
         if ($preferences !== null) {
             $preferences->addDefaults($this->defaults);

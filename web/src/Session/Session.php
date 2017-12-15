@@ -52,7 +52,7 @@ interface Session
     /**
      * Sets multiple session variables
      *
-     * @param Array $data Associative array: name => value
+     * @param array $data Associative array: name => value
      * @access public
      * @return void
      */

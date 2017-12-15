@@ -62,7 +62,7 @@ class Client
      *
      * TODO add comments to documentation about SSL certificate validation
      * @param \GuzzleHttp\Client $guzzle Actual Guzzle HTTP client
-     * @param Array $custom_options     Options to be used on every request. Overrides default values
+     * @param array $custom_options     Options to be used on every request. Overrides default values
      */
     public function __construct(GuzzleClient $guzzle, array $custom_options = array())
     {
@@ -148,6 +148,7 @@ class Client
      *
      * @param string $method       HTTP verb
      * @param string $url          URL to send the request to
+     * @param string|null|resource $body
      * @return \GuzzleHttp\Psr7\Response
      * @throws \AgenDAV\Exception\* (see available exceptions)
      **/

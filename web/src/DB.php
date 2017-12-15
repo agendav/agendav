@@ -33,7 +33,7 @@ class DB
 
 
     /**
-     * @param Array $options    Doctrine connection options
+     * @param array $options    Doctrine connection options
      */
     public function __construct($options)
     {

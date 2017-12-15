@@ -60,6 +60,11 @@ abstract class Alter extends JSONController
 
     /**
      * Executes this operation
+     *
+     * @param ParameterBag $input
+     * @param Application $app
+     *
+     * @return JsonResponse
      */
     public function execute(ParameterBag $input, Application $app)
     {
