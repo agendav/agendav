@@ -35,7 +35,7 @@ class ACL
     /**
      * Current grants
      *
-     * @var Array
+     * @var array $grants
      */
     private $grants;
 
@@ -107,7 +107,7 @@ class ACL
     /**
      * Gets a list of privileges given to granted principals
      *
-     * @return Array Associative array, where keys = owner/default/{principal-URL}
+     * @return array Associative array, where keys = owner/default/{principal-URL}
      *               and values are arrays of privileges in Clark notation
      */
     public function getGrantsPrivileges()

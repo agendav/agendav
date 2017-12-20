@@ -66,7 +66,7 @@ interface SharesRepository
     /**
      * Saves all calendar shares. Any other existing shares will get removed
      *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendarj
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function saveFromCalendar(Calendar $calendar);
 

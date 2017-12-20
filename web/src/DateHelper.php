@@ -137,7 +137,7 @@ class DateHelper
     /**
      * Returns an array of timezone names
      *
-     * @return Array (key = value)
+     * @return array (key = value)
      */
     public static function getAllTimeZones()
     {

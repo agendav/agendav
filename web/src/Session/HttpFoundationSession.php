@@ -49,7 +49,6 @@ class HttpFoundationSession implements Session
     /**
      * Gets a session variable value
      *
-     * @param string $name Session variable
      * @access public
      * @return mixed If variable was not found, returns null
      */
@@ -75,7 +74,7 @@ class HttpFoundationSession implements Session
      * @param string $name Session variable
      * @param mixed $value Value
      * @access public
-     * @return void
+     * @return mixed
      */
     public function set($name, $value)
     {
@@ -85,7 +84,7 @@ class HttpFoundationSession implements Session
     /**
      * Sets multiple session variables
      *
-     * @param Array $data Associative array: name => value
+     * @param array $data Associative array: name => value
      * @access public
      * @return void
      */
@@ -111,7 +110,7 @@ class HttpFoundationSession implements Session
      *
      * @param string $name
      * @access public
-     * @return void
+     * @return mixed
      */
     public function remove($name)
     {

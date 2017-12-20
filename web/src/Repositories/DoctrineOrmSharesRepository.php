@@ -41,7 +41,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
 
 
     /**
-     * @param \Doctrine\ORM\EntityManager Entity manager
+     * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
     {
@@ -56,7 +56,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
      */
     public function getSharesFor(Principal $principal)
     {
-        $shares = $this->em->getRepository('AgenDAV\Data\Share')
+        $shares = $this->em->getRepository(Share::class)
             ->findBy(['with' => $principal->getUrl()]);
 
         return $shares;
@@ -72,7 +72,7 @@ class DoctrineOrmSharesRepository implements SharesRepository
     {
         $url = $calendar->getUrl();
 
-        $shares = $this->em->getRepository('AgenDAV\Data\Share')
+        $shares = $this->em->getRepository(Share::class)
             ->findBy(['calendar' => $url]);
 
         return $shares;
@@ -136,7 +136,8 @@ class DoctrineOrmSharesRepository implements SharesRepository
         $calendar_url = $calendar->getUrl();
         $principal_url = $principal->getUrl();
 
-        $share = $this->em->getRepository('AgenDAV\Data\Share')
+        /** @var Share $share */
+        $share = $this->em->getRepository(Share::class)
             ->findOneBy(['calendar' => $calendar_url, 'with' => $principal_url]);
 
         return $share;

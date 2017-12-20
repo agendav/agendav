@@ -3,6 +3,7 @@
 namespace AgenDAV\XML;
 
 use Sabre\DAV\Exception\BadRequest;
+use Sabre\DAV\Xml\Property\Href;
 use Sabre\DAV\Xml\Service as XMLService;
 
 /*
@@ -34,14 +35,11 @@ class Parser
     /** @var \Sabre\DAV\Xml\Service */
     protected $xml;
 
-    /**
-     * @param Array $property_map
-     */
     public function __construct()
     {
         $this->xml = new XMLService();
-        $this->xml->elementMap['{DAV:}current-user-principal'] = 'Sabre\\DAV\\Xml\\Property\\Href';
-        $this->xml->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-home-set'] = 'Sabre\\DAV\\Xml\\Property\\Href';
+        $this->xml->elementMap['{DAV:}current-user-principal'] = Href::class;
+        $this->xml->elementMap['{urn:ietf:params:xml:ns:caldav}calendar-home-set'] = Href::class;
     }
 
     /**
@@ -96,8 +94,8 @@ class Parser
      *   ]
      * ]
      *
-     *
      * @param string $body xml body
+     *
      * @return array
      */
     protected function parseMultistatus($body)

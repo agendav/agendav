@@ -55,8 +55,8 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
         $end = $event->getEnd();
 
         if (!$event->isAllDay()) {
-            $start = $start->setTimeZone($this->timezone);
-            $end = $end->setTimeZone($this->timezone);
+            $start = $start->setTimezone($this->timezone);
+            $end = $end->setTimezone($this->timezone);
         }
 
         $result = [

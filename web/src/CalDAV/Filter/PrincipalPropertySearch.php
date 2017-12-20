@@ -30,7 +30,7 @@ use Sabre\Xml\Writer;
  */
 class PrincipalPropertySearch implements ComponentFilter
 {
-    /** @property string input */
+    /** @property string $input */
     protected $input;
 
     /**

@@ -56,7 +56,7 @@ class Preferences
 
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return bool
      */

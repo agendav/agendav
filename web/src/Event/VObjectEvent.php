@@ -427,6 +427,8 @@ class VObjectEvent implements Event
     /**
      * Gets a list of RECURRENCE-IDs defined for this event
      *
+     * @param VCalendar $vcalendar
+     *
      * @return \DateTimeImmutable[]
      */
     protected function findRecurrenceExceptions(VCalendar $vcalendar)
