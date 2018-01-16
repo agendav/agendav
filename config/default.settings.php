@@ -74,6 +74,10 @@ return [
     // Log path
     'log.path' => __DIR__ . '/../var/log/',
 
+    // Log file. Empty = auto-generate dated file inside log.path.
+    // Set to 'php://stdout' to send logs to standard output in containers.
+    'log.file' => '',
+
     // Logging level
     'log.level' => 'INFO',
 

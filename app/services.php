@@ -87,11 +87,14 @@ return [
     'monolog' => function (ContainerInterface $c) {
         $logger = new \Monolog\Logger('agendav');
         $log_level = constant('\\Monolog\\Logger::' . strtoupper($c->get('log.level')));
-        $log_dir = rtrim($c->get('log.path'), '/');
-        if (!is_dir($log_dir) && !mkdir($log_dir, 0750, true) && !is_dir($log_dir)) {
-            throw new \RuntimeException('Cannot create log directory: ' . $log_dir);
+        $log_file = $c->get('log.file');
+        if ($log_file === '') {
+            $log_dir = rtrim($c->get('log.path'), '/');
+            if (!is_dir($log_dir) && !mkdir($log_dir, 0750, true) && !is_dir($log_dir)) {
+                throw new \RuntimeException('Cannot create log directory: ' . $log_dir);
+            }
+            $log_file = $log_dir . '/' . date('Y-m-d') . '.log';
         }
-        $log_file = $log_dir . '/' . date('Y-m-d') . '.log';
         $handler = new \Monolog\Handler\StreamHandler($log_file, $log_level);
         $logger->pushHandler($handler);
         return $logger;
@@ -99,7 +102,11 @@ return [
 
     // HTTP traffic logger (used by Guzzle middleware in dev)
     'monolog.http' => function (ContainerInterface $c) {
-        return \AgenDAV\Log::generateHttpLogger($c->get('log.path'));
+        $log_file = $c->get('log.file');
+        if ($log_file === '') {
+            $log_file = rtrim($c->get('log.path'), '/') . '/http-' . date('Y-m-d') . '.log';
+        }
+        return \AgenDAV\Log::generateHttpLogger($log_file);
     },
 
     // Translator

@@ -75,12 +75,25 @@ modify,  and start configuring your instance.
 
 .. confval:: log.path
 
-   Full path where logs will be created. Add a trailing slash. Example::
+   Directory where log files are created. Add a trailing slash. Example::
 
     $app['log.path'] = '/var/log/agendav/';
 
    Make sure the user that runs your web server has write permission on that
    directory.
+
+.. confval:: log.file
+
+   Full path to the log file. When left empty (the default), AgenDAV generates
+   a dated file inside ``log.path`` (e.g. ``2024-01-15.log``).
+
+   Set to ``php://stdout`` to write logs to standard output instead of a file,
+   which is the recommended approach for container and Docker deployments::
+
+    $app['log.file'] = 'php://stdout';
+
+   When set to a file path, make sure the web server user has write permission
+   on that file.
 
 .. confval:: caldav.baseurl
 
