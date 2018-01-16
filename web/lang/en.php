@@ -258,6 +258,8 @@ $translations = array(
     'rrule.nd' => 'nd',
     'rrule.rd' => 'rd',
     'rrule.th' => 'th',
+
+    'meta.description' => 'AgenDAV is an open source multilanguage CalDAV web client which features a rich AJAX interface with shared calendars support.'
 );
 
 return $translations;
