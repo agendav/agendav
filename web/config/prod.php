@@ -60,3 +60,6 @@ if (!file_exists(__DIR__ . '/settings.php')) {
 
 require __DIR__ . '/default.settings.php';
 require __DIR__ . '/settings.php';
+if (!array_key_exists('log.file', $app)) {
+    $app['log.file'] = $app['log.path'] . date('Y-m-d') . '.log';
+}

@@ -36,14 +36,14 @@ class Log
     /**
      * Generates a new HTTP logger
      *
-     * @param string $log_path
+     * @param string $log_file
      * @return \Monolog\Logger
      */
-    public static function generateHttpLogger($log_path)
+    public static function generateHttpLogger($log_file)
     {
         $logger = new \Monolog\Logger('http');
         $handler = new \Monolog\Handler\StreamHandler(
-            $log_path . 'http-'. date('Y-m-d') .'.log',
+            $log_file,
             \Monolog\Logger::DEBUG
         );
         $formatter = new \Monolog\Formatter\LineFormatter(

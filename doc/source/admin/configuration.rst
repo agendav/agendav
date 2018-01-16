@@ -68,12 +68,23 @@ modify,  and start configuring your instance.
 
 .. confval:: log.path
 
-   Full path where logs will be created. Add a trailing slash. Example::
+   DEPRECATED: Directory path where logs will be created. Add a trailing slash.
+   Only used for BC. Use log.file instead.
+   Example::
 
     $app['log.path'] = '/var/log/agendav/';
 
    Make sure the user that runs your web server has write permission on that
    directory.
+
+.. confval:: log.file
+
+   Full path where logs will be written. Example::
+
+    $app['log.file'] = '/var/log/agendav/' . date('Y-m-d') . '.log';
+
+   Make sure the user that runs your web server has write permission on that
+   file.
 
 .. confval:: caldav.baseurl
 

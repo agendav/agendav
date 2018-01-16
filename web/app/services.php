@@ -19,7 +19,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$app['monolog.logfile'] = function($app) { return $app['log.path'] . '/' . date('Y-m-d') . '.log'; };
+$app['monolog.logfile'] = function($app) { return $app['log.file']; };
 $app['monolog.level'] = function($app) { return $app['log.level']; };
 $app['locale'] = function($app) { return $app['defaults.language']; };
 
@@ -91,7 +91,7 @@ $app['session.storage.handler'] = function($app) {
 
 // HTTP connection logger
 $app['monolog.http'] = function($app) {
-    return \AgenDAV\Log::generateHttpLogger($app['log.path']);
+    return \AgenDAV\Log::generateHttpLogger($app['log.file']);
 };
 
 // Guzzle HTTP client
