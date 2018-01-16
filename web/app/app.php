@@ -37,6 +37,7 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     $twig->addGlobal('logo', $app['site.logo']);
     $twig->addGlobal('favicon', $app['site.favicon']);
     $twig->addGlobal('footer', $app['site.footer']);
+    $twig->addGlobal('lang', $app['translator']->getLocale());
 
     // Assets
     $twig->addGlobal('stylesheets', $app['stylesheets']);
