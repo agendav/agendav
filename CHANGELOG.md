@@ -8,6 +8,8 @@
 - Upgrade Symfony components to 2.8.27
 - Session cookies are now marked with HttpOnly flag by default (#215)
 - Fix URL used for Fullcalender frontend translations
+- Upgrade to jQuery 3.3.1
+- Upgrade to Fullcalendar 3.8.0
 
 ## [2.2.0] - 2017-05-23
 

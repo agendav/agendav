@@ -36,9 +36,10 @@
   "homepage": "https://github.com/adobo/agendav",
   "devDependencies": {
     "bootstrap": "~3.3.1",
-    "fullcalendar": "~3.4.0",
+    "fullcalendar": "~3.8.0",
     "font-awesome": "~4.2.0",
-    "jquery": "~2.2.4",
+    "jquery": "~3.3.1",
+    "jquery-migrate": "~3.0.0",
     "dustjs-linkedin": "~2.7.1",
     "dustjs-helpers": "~1.7.0",
     "rrule": "~2.1.0",
