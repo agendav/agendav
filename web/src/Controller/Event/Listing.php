@@ -47,7 +47,7 @@ class Listing extends JSONController
     /**
      * Validates user input
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $input
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @return bool
      */
     protected function validateInput(ParameterBag $input)
@@ -112,7 +112,7 @@ class Listing extends JSONController
      */
     protected function getTimeFilterDatestring(\DateTimeImmutable $datetime)
     {
-        $datetime_utc = $datetime->setTimeZone($this->utc);
+        $datetime_utc = $datetime->setTimezone($this->utc);
 
         return $datetime_utc->format('Ymd\THis\Z');
     }
@@ -146,7 +146,8 @@ class Listing extends JSONController
      * @param array $events FullCalendar events
      * @param \DateTimeZone $timezone Time zone the user has
      * @param \Silex\Application $app
-     * @return array
+     *
+     * @return JsonResponse
      */
     protected function serializeFullCalendarEvents(array $events, \DateTimeZone $timezone, Application $app)
     {

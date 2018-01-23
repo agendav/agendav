@@ -31,6 +31,11 @@ class JavaScriptCode
     /**
      * Generates JavaScript code to provide the frontend the site configuration
      * and some user preferences
+     *
+     * @param Request $request
+     * @param Application $app
+     *
+     * @return Response
      */
     public function settingsAction(Request $request, Application $app)
     {
@@ -54,6 +59,12 @@ class JavaScriptCode
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @param Application $app
+     *
+     * @return array
+     */
     protected function getSiteConfig(Request $request, Application $app)
     {
         $settings = [
@@ -73,6 +84,12 @@ class JavaScriptCode
         return $settings;
     }
 
+    /**
+     * @param Request $request
+     * @param Application $app
+     *
+     * @return mixed
+     */
     protected function getPreferences(Request $request, Application $app)
     {
         $preferences = $app['user.preferences'];

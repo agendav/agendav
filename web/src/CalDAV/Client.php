@@ -29,20 +29,21 @@ use \AgenDAV\CalDAV\Filter\TimeRange;
 
 class Client
 {
-    /** @type AgenDAV\Http\Client   HTTP client used */
+    /** @type \AgenDAV\Http\Client   HTTP client used */
 
     protected $http_client;
 
-    /** @type AgenDAV\XML\Toolkit XML toolkit  */
+    /** @type \AgenDAV\XML\Toolkit XML toolkit  */
     protected $xml_toolkit;
 
-    /** @type AgenDAV\Event\Parser Event parser */
+    /** @type \AgenDAV\Event\Parser Event parser */
     protected $event_parser;
 
 
     /**
      * @param \AgenDAV\Http\Client $http_client
      * @param \AgenDAV\XML\Toolkit $xml_toolkit
+     * @param \AgenDAV\Event\Parser $event_parser
      */
     public function __construct(
         \AgenDAV\Http\Client $http_client,
@@ -72,7 +73,7 @@ class Client
         }
 
         return ($response->hasHeader('DAV') &&
-            preg_match('/calendar-access/', $response->getHeaderLine('DAV')));
+            false !== strpos($response->getHeaderLine('DAV'), "calendar-access"));
     }
 
     /**
@@ -106,8 +107,10 @@ class Client
      * Queries the CalDAV server for the calendar-home-set. It will be
      * requested on the principal URL
      *
-     * @param \AgenDAV\Data\Principal User principal
-     * @return string   Calendar home set for given principal
+     * @param \AgenDAV\Data\Principal $principal User principal
+     *
+     * @return string Calendar home set for given principal
+     *
      * @throws \AgenDAV\Exception\NotFound if no calendar-home-set is returned
      */
     public function getCalendarHomeSet(Principal $principal)
@@ -179,7 +182,9 @@ class Client
      * Gets a calendar details
      *
      * @param string $url   URL
-     * @param \AgenDAV\CalDAV\Resource\Calendar    Found calendar
+     *
+     * @return Calendar
+     *
      * @throws \AgenDAV\Exception\NotFound In case the server replies with a 2xx code but
      *                                     no valid calendars are found
      */
@@ -197,7 +202,7 @@ class Client
     /**
      * Creates a calendar collection
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
      * @return void
      */
     public function createCalendar(Calendar $calendar)
@@ -287,7 +292,7 @@ class Client
     /**
      * Puts an calendar object on the CalDAV server, inside its parent collection
      *
-     * @param AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
+     * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
      * @return \GuzzleHttp\Psr7\Response
      */
     public function uploadCalendarObject(CalendarObject $calendar_object)
@@ -311,7 +316,8 @@ class Client
     /**
      * Deletes a calendar object from the CalDAV server
      *
-     * @param AgenDAV\CalDAV\Resource\CalendarObject
+     * @param CalendarObject $calendar_object
+     *
      * @return \GuzzleHttp\Psr7\Response
      */
     public function deleteCalendarObject(CalendarObject $calendar_object)
@@ -347,7 +353,8 @@ class Client
      * @param string $url   URL
      * @param int $depth   Depth header
      * @param string $body  Request body
-     * @result array key-value array, where keys are paths and properties are values
+     *
+     * @return array key-value array, where keys are paths and properties are values
      */
     public function propfind($url, $depth, $body)
     {
@@ -357,7 +364,7 @@ class Client
 
         $contents = (string)$response->getBody();
         $single_element_expected = ($depth === 0);
-        $result = $this->xml_toolkit->parseMultiStatus($contents, $single_element_expected);
+        $result = $this->xml_toolkit->parseMultistatus($contents, $single_element_expected);
 
         return $result;
     }
@@ -368,7 +375,8 @@ class Client
      * @param string $url   URL
      * @param string $body   Request body
      * @param int $depth Depth header for this request. Default value: 1
-     * @result array key-value array, where keys are paths and properties are values
+     *
+     * @return array key-value array, where keys are paths and properties are values
      */
     public function report($url, $body, $depth = 1)
     {
@@ -377,7 +385,7 @@ class Client
         $response = $this->http_client->request('REPORT', $url, $body);
 
         $contents = (string)$response->getBody();
-        $result = $this->xml_toolkit->parseMultiStatus($contents);
+        $result = $this->xml_toolkit->parseMultistatus($contents);
 
         return $result;
     }
@@ -387,9 +395,10 @@ class Client
     /**
      * Converts a pre-parsed REPORT response to an array of CalendarObject
      *
-     * @param array Data returned by report()
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar Calendar these objects come from
-     * @return array of CalendarObject
+     * @param array $raw_data Data returned by report()
+     * @param Calendar $calendar Calendar these objects come from
+     *
+     * @return CalendarObject[]
      */
     protected function buildObjectCollection(array $raw_data, Calendar $calendar)
     {

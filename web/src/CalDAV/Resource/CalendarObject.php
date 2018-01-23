@@ -40,7 +40,7 @@ class CalendarObject
     /**
      * Contained event
      *
-     * @var string
+     * @var \AgenDAV\Event
      */
     protected $event;
 

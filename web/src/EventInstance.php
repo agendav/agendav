@@ -122,7 +122,7 @@ interface EventInstance
     /**
      * Adds a new reminder
      *
-     * @param AgenDAV\Data\Reminder
+     * @param \AgenDAV\Data\Reminder $reminder
      */
     public function addReminder(\AgenDAV\Data\Reminder $reminder);
 
@@ -194,7 +194,7 @@ interface EventInstance
     /**
      * Set the RECURRENCE-ID property for this event
      *
-     * @param AgenDAV\Event\RecurrenceId|null $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
     public function setRecurrenceId(RecurrenceId $recurrence_id = null);
 

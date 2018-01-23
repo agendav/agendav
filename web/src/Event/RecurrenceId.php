@@ -39,7 +39,7 @@ class RecurrenceId
      */
     public function __construct(\DateTimeImmutable $datetime)
     {
-        $this->datetime = $datetime->setTimeZone(new \DateTimeZone('UTC'));
+        $this->datetime = $datetime->setTimezone(new \DateTimeZone('UTC'));
     }
 
     /**

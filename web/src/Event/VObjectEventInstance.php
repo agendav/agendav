@@ -52,7 +52,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Builds a new VObjectEventInstance
      *
-     * @param Sabre\VObject\Component\VEvent $vevent
+     * @param \Sabre\VObject\Component\VEvent $vevent
      */
     public function __construct(VEvent $vevent)
     {
@@ -197,7 +197,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Gets the RECURRENCE-ID property of this instance
      *
-     * @return \AgenDAV\Event\RecurrenceId
+     * @return \AgenDAV\Event\RecurrenceId|null
      */
     public function getRecurrenceId()
     {
@@ -225,7 +225,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Adds a new reminder
      *
-     * @param AgenDAV\Data\Reminder
+     * @param \AgenDAV\Data\Reminder $reminder
      */
     public function addReminder(\AgenDAV\Data\Reminder $reminder)
     {
@@ -352,7 +352,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Set the RECURRENCE-ID property for this event
      *
-     * @param AgenDAV\Event\RecurrenceId|null $recurrence_id
+     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
     public function setRecurrenceId(RecurrenceId $recurrence_id = null)
     {
@@ -465,7 +465,7 @@ class VObjectEventInstance implements EventInstance
     /**
      * Return a copy the internal VEvent object
      *
-     * @returnSabre\VObject\Component\VEvent
+     * @return \Sabre\VObject\Component\VEvent
      */
     public function getInternalVEvent()
     {

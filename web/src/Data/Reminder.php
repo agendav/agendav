@@ -209,6 +209,7 @@ class Reminder
     /**
      * Counts the minutes of a \DateInterval
      *
+     * @param \DateInterval $dateinterval
      * @return int
      */
     public static function countMinutes(\DateInterval $dateinterval)

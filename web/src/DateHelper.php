@@ -66,7 +66,7 @@ class DateHelper
 
         $result = self::createDateTime($format, $str, new \DateTimeZone('UTC'));
         if ($tz !== null) {
-            $result = $result->setTimeZone($tz);
+            $result = $result->setTimezone($tz);
         }
 
         return $result;
@@ -137,7 +137,7 @@ class DateHelper
     /**
      * Returns an array of timezone names
      *
-     * @return Array (key = value)
+     * @return array (key = value)
      */
     public static function getAllTimeZones()
     {

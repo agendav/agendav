@@ -38,10 +38,8 @@ class SharingResolver implements SharesRepository
     protected $principals_repository;
 
     /**
-     * @param Symfony\Component\HttpFoundation\Session\Session $session
-     * @param \AgenDAV\CalDAV\Client $client
-     * @param AgenDAV\Repositories\SharesRepository $shares_repository
-     * @param AgenDAV\Repositories\PrincipalsRepository $principals_repository
+     * @param \AgenDAV\Repositories\SharesRepository $shares_repository
+     * @param \AgenDAV\Repositories\PrincipalsRepository $principals_repository
      */
     public function __construct(
         SharesRepository $shares_repository,
@@ -98,7 +96,7 @@ class SharingResolver implements SharesRepository
     /**
      * Stores a grant on the database
      *
-     * @param AgenDAV\Data\Share $share  Share object
+     * @param \AgenDAV\Data\Share $share  Share object
      */
     public function save(Share $share)
     {
@@ -108,7 +106,7 @@ class SharingResolver implements SharesRepository
     /**
      * Removes a grant for a calendar
      *
-     * @param AgenDAV\Data\Share $share  Share object
+     * @param \AgenDAV\Data\Share $share  Share object
      */
     public function remove(Share $share)
     {
@@ -118,7 +116,7 @@ class SharingResolver implements SharesRepository
     /**
      * Saves all calendar shares. Any other existing shares will get removed
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendarj
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function saveFromCalendar(Calendar $calendar)
     {
@@ -129,7 +127,7 @@ class SharingResolver implements SharesRepository
      * Retrieves the Share object for a calendar which is shared with
      * a given principal
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      * @param \AgenDAV\Data\Principal $principal  User principal
      */
     public function getSourceShare(Calendar $calendar, Principal $principal)

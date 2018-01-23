@@ -16,7 +16,7 @@ class Version20151028190444 extends AbstractMigration
     public function up(Schema $schema)
     {
         $principals = $schema->createTable('principals');
-        $principals->addColumn('url', 'string', ['length' => 255])->setNotNull(true);
+        $principals->addColumn('url', 'string', ['length' => 255])->setNotnull(true);
         $principals->addColumn('displayname', 'string', ['length' => 255]);
         $principals->addColumn('email', 'string', ['length' => 255]);
 

@@ -29,7 +29,7 @@ use Sabre\Xml\Writer;
  */
 class Uid implements ComponentFilter
 {
-    /** @property string Uid */
+    /** @property string $uid */
     protected $uid;
 
     /**

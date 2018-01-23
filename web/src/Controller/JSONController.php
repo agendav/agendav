@@ -59,6 +59,9 @@ abstract class JSONController
     /**
      * Executes the action assigned to this controller
      *
+     * @param Request $request
+     * @param Application $app
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *
      * @throws \InvalidArgumentException
@@ -169,7 +172,8 @@ abstract class JSONController
      *
      * @param \Symfony\Component\HttpFoundation\ParameterBag $input
      * @param \Silex\Application $app
-     * @return array
+     *
+     * @return JsonResponse
      */
     abstract protected function execute(ParameterBag $input, Application $app);
 
@@ -209,6 +213,8 @@ abstract class JSONController
 
     /**
      * Generates a success message
+     *
+     * @param array|string $message
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */

@@ -23,20 +23,27 @@ namespace AgenDAV\Data;
 
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Principal;
-
-
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\PostLoad;
 /**
  * Holds information about a calendar that has been shared
  */
 
 /**
- * @Entity @HasLifecycleCallbacks
+ * @Entity
+ * @HasLifecycleCallbacks
  * @Table(name="shares")
  */
 class Share
 {
     /**
-     * @Id @Column(type="integer")
+     * @Id
+     * @Column(type="integer")
      * @GeneratedValue
      */
     private $sid;
@@ -176,7 +183,7 @@ class Share
     /**
      * Returns all properties/options set on the shared resource
      *
-     * @return Array
+     * @return array
      */
     public function getProperties()
     {
@@ -192,6 +199,7 @@ class Share
      * is not set
      *
      * @param string $name
+     *
      * @return string|null
      */
     public function getProperty($name)
@@ -207,6 +215,7 @@ class Share
      * Sets a property/option on this resource
      *
      * @param string $name
+     *
      * @param string $value
      */
     public function setProperty($name, $value)
@@ -221,7 +230,7 @@ class Share
     /**
      * Applies custom properties to passed calendar object
      *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
      */
     public function applyCustomPropertiesTo(Calendar $calendar)
     {
