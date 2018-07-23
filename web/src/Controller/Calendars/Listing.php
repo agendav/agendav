@@ -39,6 +39,14 @@ class Listing extends JSONController
         $fractal = $app['fractal'];
         $collection = new Collection($calendars, new CalendarTransformer($current_user_principal), 'calendars');
 
+        $tmp = $fractal->createData($collection)->toArray();
+        $principals_repository = $app['principals.repository'];
+        foreach($tmp['data'] as &$cal) {
+            $owner = $principals_repository->get((string) $cal['owner']);
+            $cal['owner'] = $owner->getDisplayName();
+        }
+        return new JsonResponse($tmp);
+
         return new JsonResponse($fractal->createData($collection)->toArray());
     }
 

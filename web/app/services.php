@@ -68,13 +68,13 @@ $app['preferences.repository'] = function($app) {
 
 // Principals repository (queries the CalDAV server)
 $app['principals.repository'] = function($app) {
-    $repository = new AgenDAV\Repositories\DAVPrincipalsRepository(
+    $em = $app['orm'];
+    return new AgenDAV\Repositories\DoctrineOrmPrincipalsRepository($em,
+    new AgenDAV\Repositories\DAVPrincipalsRepository(
         $app['xml.toolkit'],
         $app['caldav.client'],
         $app['principal.email.attribute']
-    );
-
-    return $repository;
+    ));
 };
 
 

@@ -40,7 +40,8 @@ $app['log.path'] = __DIR__.'/../var/log/';
 $app['log.level'] = 'INFO';
 
 // Base URL
-$app['caldav.baseurl'] = 'http://localhost:81/';
+//without "caldav.php" calendars sharing are not done well
+$app['caldav.baseurl'] = 'http://localhost:81/caldav.php';
 
 // Authentication method required by CalDAV server (basic or digest)
 $app['caldav.authmethod'] = 'basic';
@@ -58,13 +59,13 @@ $app['caldav.connect.timeout'] = 0;
 $app['caldav.response.timeout'] = 0;
 
 // Whether to verify the SSL certificate (default: true)
-$app['caldav.certificate.verify'] = true;
+$app['caldav.certificate.verify'] = false;
 
 // Email attribute name
 $app['principal.email.attribute'] = '{DAV:}email';
 
 // Calendar sharing
-$app['calendar.sharing'] = false;
+$app['calendar.sharing'] = true;
 
 // Calendar sharing permissions. In case of doubt, do not modify them
 // These defaults are only useful for DAViCal (http://wiki.davical.org/index.php/Permissions)

@@ -31,16 +31,13 @@ use Doctrine\ORM\Mapping\Table;
  */
 class Principal
 {
-    /**
-     * @Id
-     * @Column(type="string")
-     */
+    /** @Id @Column(type="string") */
     private $url;
 
-    /** @Column(type="string") */
+    /** @Column(type="string", nullable=true) */
     private $displayname;
 
-    /** @Column(type="string") */
+    /** @Column(type="string", nullable=true) */
     private $email;
 
     // Property names
@@ -52,6 +49,16 @@ class Principal
      * @param string $url
      */
     public function __construct($url)
+    {
+        $this->setUrl($url);
+    }
+    
+    /*
+     * Setter for URL
+     *
+     * @param string
+     */
+    public function setUrl($url)
     {
         $this->url = $url;
     }
@@ -110,3 +117,4 @@ class Principal
         $this->email = $email;
     }
 }
+

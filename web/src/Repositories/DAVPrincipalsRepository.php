@@ -65,7 +65,7 @@ class DAVPrincipalsRepository implements PrincipalsRepository
     {
         $body = $this->xml_toolkit->generateRequestBody(
             'PROPFIND',
-            [ '{DAV:}displayname' ]
+            [ '{DAV:}displayname', '{DAV:}email' ]
         );
 
         $properties = $this->caldav_client->propfind($url, 0, $body);
