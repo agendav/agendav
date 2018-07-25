@@ -44,6 +44,12 @@ class Listing extends JSONController
         foreach($tmp['data'] as &$cal) {
             $owner = $principals_repository->get((string) $cal['owner']);
             $cal['owner'] = $owner->getDisplayName();
+	    if(isset($cal['shares'])) {
+                foreach ($cal['shares'] as &$share) {
+                    $displayname = $principals_repository->get((string) $share['displayname']);
+                    $share['displayname'] = $displayname->getDisplayName();
+                }
+            }
         }
         return new JsonResponse($tmp);
 
