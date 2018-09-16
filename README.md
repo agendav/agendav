@@ -9,12 +9,15 @@ AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones. It's released under
 the GPLv3 license.
 
+
+![screenshot](http://agendav.org/img/screenshots/2.0.0-beta1/001_month_view.png "screenshot")
+
 Requisites
 ----------
 
 AgenDAV requires:
 
-* A CalDAV server (such as [Baïkal](http://baikal-server.com/), [DAViCal](http://www.davical.org/), etc)
+* A CalDAV server (such as [Baïkal](http://baikal-server.com/), [DAViCal](http://www.davical.org/), [Radicale](https://radicale.org/tutorial/), etc)
 * A web server
 * PHP >= 5.5.9
 * PHP ctype extension
