@@ -134,6 +134,51 @@ class Client
         return $result;
     }
 
+    /**
+     * Queries the CalDAV server for proxied calendars and calendars
+     * from groups.
+     *
+     * @param \AgenDAV\Data\Principal $principal User principal
+     *
+     * @return array        Associative array, [url => Calendar]
+     */
+    public function getProxiedCalendars(Principal $principal)
+    {
+        $body = $this->xml_toolkit->generateRequestBody(
+            'PROPFIND',
+            [
+            '{DAV:}group-membership',
+            '{http://calendarserver.org/ns/}calendar-proxy-write-for',
+            '{http://calendarserver.org/ns/}calendar-proxy-read-for',
+            ]
+        );
+
+        $url = $principal->getUrl();
+        $response = $this->propfind($url, 0, $body);
+
+        if (count($response) === 0) {
+            return [];
+        }
+
+        $group_calendars = [];
+        foreach ($response as $href => $properties) {
+            if ($properties === NULL || count($properties) === 0) {
+                continue;
+            }
+
+            foreach ($properties as $resource) {
+                $calendars = $this->getCalendars($resource['value']);
+
+                foreach ($calendars as $calendar) {
+                    $calendar->setOwner(new Principal($resource['value']));
+                }
+
+                $group_calendars = array_merge($group_calendars, $calendars);
+            }
+        }
+
+        return $group_calendars;
+    }
 
     /**
      * Gets the list of calendars accessible by current user on a given URL
