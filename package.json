@@ -45,7 +45,7 @@
     "rrule": "~2.1.0",
     "es5-shim": "~4.0.5",
     "moment-timezone": "~0.5.0",
-    "clean-css": "~3.4.22",
+    "clean-css": "~4.2.1",
     "dustjs-helpers": "~1.7.0",
     "dustjs-linkedin": "~2.7.0",
     "less": "~2.7.1",
