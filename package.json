@@ -38,7 +38,7 @@
     "bootstrap": "~3.3.1",
     "fullcalendar": "~3.8.0",
     "font-awesome": "~4.2.0",
-    "jquery": "~3.3.1",
+    "jquery": "~3.5.0",
     "jquery-migrate": "~3.0.0",
     "dustjs-linkedin": "~2.7.1",
     "dustjs-helpers": "~1.7.0",
