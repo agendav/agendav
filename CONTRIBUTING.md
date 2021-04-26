@@ -55,3 +55,31 @@ Documentation is automatically generated and placed on http://docs.agendav.org/ 
 documentation requires some [Sphinx](http://sphinx-doc.org/) knowledge.
 
 Have a look at the `doc/` directory.
+
+## New Releases
+
+- Create test build runing `npm install` & `npm run-script build`
+- Run code quality tools
+- Compare the »development« branch to »main«
+  - Add a list of noteworthy features and bugfixes to CHANGELOG.md
+  - Describe breaking changes in CHANGELOG.md
+  - Describe changes in `doc/source/releasenotes.rst` as well
+- Change the version, using semantic versioning, in these files
+  ([example commit](https://github.com/agendav/agendav/commit/aa2c0f920207c17372b80ae45f1f4e77133d305e)):
+  - `bower.json`
+  - `doc/source/conf.py`
+  - `package.json`
+  - `web/src/Version.php`
+- Merge »development« branch to »main«
+- Tag the »main« branch with the new version
+- Push branch and tag
+- Update the documentation & website
+- Add release download file to release page ([example file](https://github.com/agendav/agendav/releases/tag/2.2.0))
+  - Clone the git repository using
+    `git clone -b <version> https://github.com/agendav/agendav.git agendav-<version>`
+  - Run `npm install && npm run-script dist`
+    - Creates build files in `web/public/dist/css/`, `web/public/dist/js/`
+      and `web/vendor/`
+    - Removes `.git`, `ansible`, `bower_components`, `node_modules`
+  - Zip directory `tar -czf ../agendav-<version>.tar.gz ../agendav-<version>`
+- Sip a tea
