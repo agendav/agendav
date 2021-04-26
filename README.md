@@ -1,5 +1,4 @@
-AgenDAV - CalDAV web client
-===========================
+# AgenDAV - CalDAV web client
 
 [![Build Status](https://travis-ci.org/agendav/agendav.svg?branch=develop)](https://travis-ci.org/agendav/agendav)
 [![Develop docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](http://agendav.readthedocs.org/en/develop/)
@@ -9,11 +8,9 @@ AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones. It's released under
 the GPLv3 license.
 
+![Screenshot](./docs/screenshot.png)
 
-![screenshot](http://agendav.org/img/screenshots/2.0.0-beta1/001_month_view.png "screenshot")
-
-Requisites
-----------
+## Requirements
 
 AgenDAV requires:
 
@@ -25,4 +22,3 @@ AgenDAV requires:
 * PHP mcrypt extension
 * PHP cURL extension
 * Most DB backends: MySQL, PostgreSQL, SQLite. Look for supported DB drivers at http://doctrine-dbal.readthedocs.org/en/latest/reference/configuration.html#driver
-
