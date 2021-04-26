@@ -1,6 +1,6 @@
 {
   "name": "AgenDAV",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A web CalDAV client",
   "directories": {
     "doc": "doc",
@@ -17,7 +17,6 @@
     "prebuild:js": "uglifyjs assets/js/core/*.js assets/js/other/*.js assets/js/app/*.js assets/templates/templates.js -b -o web/public/dist/js/agendav.js",
     "build:js": "uglifyjs web/public/dist/js/agendav.js -c -m -o web/public/dist/js/agendav.min.js",
     "build": "npm run bower && npm run composer && npm run build:templates && npm run build:css && npm run build:js",
-
     "dist-clean": "rm -rf node_modules && rm -rf bower_components && rm -rf .git && rm -rf ansible",
     "dist": "npm run bower && npm run composer && npm run build:css && npm run build:js && npm run dist-clean"
   },

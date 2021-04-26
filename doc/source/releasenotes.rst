@@ -3,9 +3,15 @@
 Release notes
 =============
 
+.. _v2.2.1:
+2.2.1 (2021-04-26)
+-------------------
+
+* Update display dates timezone table (#272)
+
 .. _v2.2.0:
-2.2.0 (?)
-------------------------
+2.2.0 (2017-05-23)
+-------------------
 
 * PHP 5.6 or greater is required.
 * Silex 2.0 is now being used, so any modifications prepared for AgenDAV 2.1.x (which was based
@@ -174,9 +180,9 @@ colors, so it's recommended to remove the following settings from
 ``config.php``:
 
 * :confval:`default_calendar_color`: now the first color from :confval:`calendar_colors` is used
-* :confval:`additional_calendar_colors`: this option has been replaced by :confval:`calendar_colors` 
+* :confval:`additional_calendar_colors`: this option has been replaced by :confval:`calendar_colors`
 
-Copy :confval:`calendar_colors` definition from ``config.php.template`` to your ``config.php`` 
+Copy :confval:`calendar_colors` definition from ``config.php.template`` to your ``config.php``
 
 This release requires no database upgrades.
 
@@ -238,8 +244,8 @@ It requires no database upgrades.
   run the following two queries::
 
         CREATE INDEX last_activity_idx ON sessions(last_activity);
-        ALTER TABLE sessions MODIFY user_agent VARCHAR(120); 
-   
+        ALTER TABLE sessions MODIFY user_agent VARCHAR(120);
+
 * Remove LDAP dependency. AgenDAV now authenticates against CalDAV
   server.
 

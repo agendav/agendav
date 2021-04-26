@@ -22,9 +22,9 @@ namespace AgenDAV;
  */
 
 /**
- * Keeps the AgenDAV version 
+ * Keeps the AgenDAV version
  */
 class Version
 {
-    const V = '2.2.0';
+    const V = '2.2.1';
 }

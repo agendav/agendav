@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.2.1] - 2021-04-26
+
+### Fixed
+
+- Update display dates timezone table (#272)
+
 ## [2.2.0] - 2017-05-23
 
 ### Changed
