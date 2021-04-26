@@ -1,0 +1,33 @@
+<div class="form-group row share"{?new} id="calendar_share_add_row"{/new}>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            {^new}
+            <input type="hidden" name="shares[with][]" value="{with}" />
+            <p class="form-control-static">
+            <span class="username" title="{with}">{displayname}</span>
+            {?email}
+             <em> &lt;{email}&gt;</em>
+            {/email}
+            </p>
+            {/new}
+            {?new}
+            <input name="filter" class="form-control" id="calendar_share_filter" value="" maxlength="255" size="10" />
+            {/new}
+        </div>
+        <div class="col-md-4">
+            {^new}
+            <select name="shares[rw][]" class="form-control">
+            {/new}
+            {?new}
+            <select name="new_rw" class="form-control" id="calendar_share_add_rw">
+            {/new}
+                {>calendar_share_access_options/}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <p class="form-control-static">
+                <a href="javascript:void(0)" class="remove"><i class="fa fa-remove fa-fw"></i></a>
+            </p>
+        </div>
+    </div>
+</div>

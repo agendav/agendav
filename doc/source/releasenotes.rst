@@ -3,8 +3,85 @@
 Release notes
 =============
 
-.. _v1.2.6.2:
+.. _v2.2.0:
+2.2.0 (?)
+------------------------
 
+* PHP 5.6 or greater is required.
+* Silex 2.0 is now being used, so any modifications prepared for AgenDAV 2.1.x (which was based
+  on Silex 1.x) will probably be broken.
+
+.. _v2.0.0:
+
+2.0.0 (2016-11-19)
+------------------------
+
+Relevant release notes from all 2.0.0 release candidates and betas:
+
+* Note that AgenDAV now requires PHP 5.5.9 or greater.
+* AgenDAV needs `Composer <http://getcomposer.org>`_. If you are using the
+  tarball from the website you don't have to worry at all. Otherwise, you'll
+  have to install it and fetch AgenDAV dependencies. You'll find instructions on
+  :ref:`download_dependencies`.
+* AgenDAV now uses a single ``settings.php`` file. Details on this file are provided on
+  :ref:`configuration`.
+* Deep database changes are required. Instructions are provided on :ref:`dbupgrade`
+* If you want to upgrade from AgenDAV 1.2.6.2 and you use calendar sharing, note that running an SQL
+  statement is required to complete the upgrade.  More details can be found in the
+  :doc:`admin/upgrading` section.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
+.. _v2.0.0-rc2:
+
+2.0.0-rc2 (2016-11-05)
+------------------------
+
+* This release includes updated translations. They were missing on rc1
+
+
+.. _v2.0.0-rc1:
+
+2.0.0-rc1 (2016-11-05)
+------------------------
+
+* This release candidate handles shared calendars again. If you want to upgrade from AgenDAV 1.2.6.2 and
+  you use calendar sharing, note that running an SQL statement is required to complete the upgrade.
+  More details can be found in the :doc:`admin/upgrading` section.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
+.. _v2.0.0-beta2:
+
+2.0.0-beta2 (2016-04-20)
+------------------------
+
+* Note that AgenDAV now requires PHP 5.5.0 or greater.
+* **This beta release cannot handle shared calendars yet**, and your existing shares will
+  be removed from the database. Please, make sure you are not upgrading a production
+  environment which uses calendar sharing.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
+.. _v2.0.0-beta1:
+
+2.0.0-beta1 (2015-08-26)
+------------------------
+
+* AgenDAV needs `Composer <http://getcomposer.org>`_. If you are using the
+  tarball from the website you don't have to worry at all. Otherwise, you'll
+  have to install it and fetch AgenDAV dependencies. You'll find instructions on
+  :ref:`download_dependencies`.
+* AgenDAV now uses a single ``settings.php`` file. Details on this file are provided on
+  :ref:`configuration`.
+* Deep database changes are required. Instructions are provided on :ref:`dbupgrade`
+* **This beta release cannot handle shared calendars**, and your existing shares will
+  be removed from the database. Please, make sure you are not upgrading a production
+  environment which uses calendar sharing.
+* Read the `CHANGELOG
+  <https://github.com/adobo/agendav/blob/develop/CHANGELOG.md>`_ for a detailed list of changes.
+
+.. _v1.2.6.2:
 
 1.2.6.1 and 1.2.6.2 (2012-10-15)
 --------------------------------

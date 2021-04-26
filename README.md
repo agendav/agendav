@@ -1,6 +1,10 @@
 AgenDAV - CalDAV web client
 ===========================
 
+[![Build Status](https://travis-ci.org/agendav/agendav.svg?branch=develop)](https://travis-ci.org/agendav/agendav)
+[![Develop docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](http://agendav.readthedocs.org/en/develop/)
+[![Stable docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](http://agendav.readthedocs.org/en/latest/)
+
 AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones. It's released under
 the GPLv3 license.
@@ -8,29 +12,14 @@ the GPLv3 license.
 Requisites
 ----------
 
-* A CalDAV server (developed mainly with [DAViCal](http://www.davical.org/))
+AgenDAV requires:
+
+* A CalDAV server (such as [Baïkal](http://baikal-server.com/), [DAViCal](http://www.davical.org/), etc)
 * A web server
-* PHP >= 5.3.0
+* PHP >= 5.5.9
+* PHP ctype extension
 * PHP mbstring extension
+* PHP mcrypt extension
 * PHP cURL extension
-* MySQL > 5.1 or PostgreSQL >= 8.1
+* Most DB backends: MySQL, PostgreSQL, SQLite. Look for supported DB drivers at http://doctrine-dbal.readthedocs.org/en/latest/reference/configuration.html#driver
 
-Thanks
-------
-
-AgenDAV is possible thanks to the following projects:
-
-* [CodeIgniter](http://codeigniter.com)
-* [DAViCal](http://www.davical.org/)
-* [AWL, Andrew's Web Libraries](http://andrew.mcmillan.net.nz/projects/awl)
-* [iCalCreator](http://www.kigkonsult.se/iCalcreator/)
-* [FullCalendar](http://arshaw.com/fullcalendar/)
-* [jQuery](http://jquery.com)
-* [jQuery UI](http://jqueryui.com)
-* [Freeow!](http://pjdietz.com/jquery-plugins/freeow/)
-* [Really Simple Color Picker](http://laktek.com/2008/10/27/really-simple-color-picker-in-jquery/)
-* [qTip2](http://craigsworks.com/projects/qtip2/)
-* [timePicker](https://github.com/perifer/timePicker)
-* [LoadMask](http://code.google.com/p/jquery-loadmask/)
-* [FatCow.com free icons](http://www.fatcow.com/free-icons)
-* And other projects I may forget (please, ask for credit!)

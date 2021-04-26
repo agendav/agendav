@@ -1,0 +1,40 @@
+<p class="start_and_finish">{readable_dates}</p>
+<dl class="dl-horizontal">
+<dt>{@i18n type="labels" name="calendar"/}</dt>
+<dd>
+ <i class="calendar_color fa fa-lg fa-square" style="color: {caldata.color}"></i>
+{caldata.displayname}
+</dd>
+
+{?location}
+<dt>{@i18n type="labels" name="location"/}</dt>
+<dd>{location}</dd>
+{/location}
+
+{?description}
+<dt>{@i18n type="labels" name="description"/}</dt>
+<dd>{description}</dd>
+{/description}
+
+{?rrule}
+<dt>{@i18n type="labels" name="repeat"/}</dt>
+<dd>{rrule_explained}</dd>
+{/rrule}
+
+{#reminders}
+<dt>{@i18n type="labels" name="reminder"/}</dt>
+<dd>{>reminder_description /}</dd>
+{/reminders}
+</dl>
+
+{^disable_actions}
+<div class="actions">
+ <span class="right">
+    <a href="javascript:void(0)" data-event-id="{id}" class="modify">{@i18n type="labels" name="modify"/}</a>
+ </span>
+ <span class="left">
+    <a href="javascript:void(0)" data-event-id="{id}" class="remove">{@i18n type="labels" name="delete"/}</a>
+ </span>
+</div>
+{/disable_actions}
+

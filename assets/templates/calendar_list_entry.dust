@@ -1,0 +1,22 @@
+<li data-calendar-url="{url}" class="available_calendar{?default_calendar} default_calendar{/default_calendar}">
+ <i class="calendar_color fa fa-lg fa-square fa-li" style="color: {?color}{color}{:else}{default_calendar_color}{/color}"></i>
+
+ <span class="icons">
+ {?is_shared}
+  {^writable}
+  <i title="{@i18n type="labels" name="readonly"/}" class="fa fa-lock"></i>
+  {/writable}
+ {/is_shared}
+ {?is_owned}
+  {@gt key=shares.length value=0}
+  <i title="{@i18n type="labels" name="currentlysharing"/}" class="fa fa-share"></i>
+  {/gt}
+ {/is_owned}
+
+ </span>
+ <span class="text"
+ {^is_owned}
+ title="{@i18n type="messages" name="info_sharedby" user="{owner}"/}"
+ {/is_owned}>{displayname}</span>
+ <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton fa fa-cogs"></i>
+</li>

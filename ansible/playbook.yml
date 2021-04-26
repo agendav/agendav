@@ -1,0 +1,156 @@
+---
+- hosts: all
+
+  vars_files:
+      - vars.yml
+
+  tasks:
+      - name: set system timezone
+        template: src=system/timezone.j2 dest=/etc/timezone
+        sudo: yes
+
+      - name: reload timezone
+        sudo: yes
+        action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
+
+      - name: install python-pycurl
+        sudo: yes
+        apt: name='python-pycurl' update_cache=yes
+
+      - name: add ondrej/php repository
+        sudo: yes
+        apt_repository: repo='ppa:ondrej/php'
+
+      - name: add chris-lea/node.js repository
+        sudo: yes
+        apt_repository: repo='ppa:chris-lea/node.js'
+
+      - name: update apt cache
+        apt: update_cache=yes
+        sudo: yes
+
+      - name: install packages
+        apt: pkg={{ item }} state=latest
+        sudo: yes
+        with_items:
+            - curl
+            - git
+            - php7.1
+            - php7.1-cli
+            - php7.1-curl
+            - php7.1-mysql
+            - php7.1-mcrypt
+            - php7.1-sqlite3
+            - php7.1-dom
+            - php7.1-mbstring
+            - mysql-client
+            - mysql-server
+            - python-mysqldb
+            - sqlite
+            - nodejs
+            - unzip
+        notify:
+            - restart mysql
+
+      - name: create database
+        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password=""
+
+      - name: check for baikal
+        stat: path=/var/www/baikal
+        register: baikal
+
+      - include: baikal.yml
+        when: baikal.stat.exists == false
+
+      - name: configure php
+        template: src=php/php.ini.j2 dest=/etc/php/7.1/apache2/php.ini owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: enable mod_rewrite
+        shell: /usr/sbin/a2enmod rewrite
+        sudo: yes
+        notify: restart apache
+
+      - name: configure apache 1/3
+        copy: src=apache/ports.conf dest=/etc/apache2/ports.conf owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: configure apache 2/3
+        copy: src=apache/agendav dest=/etc/apache2/sites-available/000-default.conf owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: configure apache 3/3
+        copy: src=apache/baikal dest=/etc/apache2/sites-available/baikal.conf owner=root mode=644 backup=yes
+        sudo: yes
+        notify: restart apache
+
+      - name: enable baikal on apache
+        shell: /usr/sbin/a2ensite baikal
+        sudo: yes
+        notify: restart apache
+
+      - name: create agendav log directory
+        file: path=/var/log/agendav state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
+
+      - name: create twig cache directory
+        file: path=/var/cache/twig state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
+
+      - name: create vendors/ directory outside of shared folder
+        file: path=/var/agendav-vendors state=directory owner=vagrant group=www-data mode=0775
+        sudo: yes
+
+      - name: check if composer is installed
+        stat: path=/usr/local/bin/composer
+        register: composer
+
+      - name: install composer
+        shell: /usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php -- --install-dir=/usr/local/bin
+        when: composer.stat.exists == false
+        sudo: yes
+
+      - name: rename composer.phar
+        action: command /bin/mv /usr/local/bin/composer.phar /usr/local/bin/composer
+        when: composer.stat.exists == false
+        sudo: yes
+
+      - name: Append the COMPOSER_VENDOR_DIR variable to bashrc
+        lineinfile: dest=/home/vagrant/.bashrc line="export COMPOSER_VENDOR_DIR=/var/agendav-vendors"
+
+      - name: change log permissions again
+        file: path=/var/log/agendav recurse=true state=directory owner=www-data group=vagrant mode=0774
+        sudo: yes
+
+      - name: install bower
+        npm: name=bower global=yes
+        sudo: yes
+
+      - name: install node dependencies for development
+        npm: path=/vagrant state=latest
+
+      - name: run npm
+        environment:
+          COMPOSER_VENDOR_DIR: /var/agendav-vendors
+        command: npm run build chdir=/vagrant
+
+      - name: configure agendav
+        template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes mode=0755
+
+
+      - name: apply latest schema updates
+        environment:
+          COMPOSER_VENDOR_DIR: /var/agendav-vendors
+        command: /vagrant/agendavcli migrations:migrate --configuration=/vagrant/migrations.yml --no-interaction
+
+  handlers:
+      - name: restart mysql
+        sudo: yes
+        action: service name=mysql state=restarted enabled=yes
+
+      - name: restart apache
+        sudo: yes
+        action: service name=apache2 state=restarted enabled=yes

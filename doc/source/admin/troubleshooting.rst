@@ -14,63 +14,27 @@ sure you include the following information:
 
 Try the following before writing:
 
-Check configuration and installation environment
-------------------------------------------------
+.. _development_environment:
 
-AgenDAV ships, since version 1.2.4, a simple script that checks installation
-environment and configuration files to make sure you meet all basic
-requisites.
+Development environment
+-----------------------
 
-To run it, edit file :file:`web/public/configtest.php` to set the constant
-``ENABLE_SETUP_TESTS`` to ``TRUE``.
+You can switch to ``development`` environment easily by setting the environment
+variable ``AGENDAV_ENVIRONMENT`` to ``dev``.
 
-Once you save the file with that change, point your browser to
-``http://host/path/agendav/configtest.php`` and look for red cells. You'll
-find some suggestions to fix the problems.
+Environment variables have to be set on your webserver configuration file.
+Apache lets you do it using ``SetEnv``, or even better, using ``SetEnvIf`` to
+enable the development environment just for some IPs. Example::
 
-Remember to set ``ENABLE_SETUP_TESTS`` back to ``FALSE`` inside
-``configtest.php``.
+   <Location />
+      SetEnvIf Remote_Addr ^1\.2\.3\.4$ AGENDAV_ENVIRONMENT=dev
+   </Location>
 
-More verbose logs
------------------
+Then point your browser to ``http://your.agendav.host/``. A debugging
+toolbar will appear, logs will be more verbose and a new HTTP debug log will be
+generated.
 
-Edit ``web/config/config.php`` and add the value ``INTERNALS`` inside
-``show_in_log`` variable. For example::
-
-  $config['show_in_log']= array('ERROR','INFO','AUTHERR', 'AUTHOK','INTERNALS');
-
-Check AgenDAV logs (make sure you have Check AgenDAV logs (make sure you
-have a valid path configured in :confval:`log_path` and the user which runs
-the webserver has writing access to it) and your webserver logs.
-
-You can add the value ``DEBUG`` to make CodeIgniter (the PHP framework) log
-some more lines.
-
-Show errors
------------
-
-You can switch to ``development`` environment to force PHP to print errors
-on generated pages. By default AgenDAV is configured to hide errors to
-users.
-
-To achieve that just edit the file ``web/public/index.php`` and replace the
-following line::
-
-	define('ENVIRONMENT', 'production');
-
-with::
-
-	define('ENVIRONMENT', 'development');
-
-
-Capture traffic
----------------
-
-Sometimes CalDAV servers send unexpected data to AgenDAV or AgenDAV tries to
-do an unsupported operation on your CalDAV server. When this happens it's a
-good idea to run a traffic capture tool (like ``tcpdump`` or ``Wireshark``)
-to see what's happening under the hood. This is only possible if you use
-plain HTTP on your AgenDAV<->CalDAV server communication.
+Note that your application will be more slow and logs will grow really fast.
 
 Debug your browser status
 -------------------------

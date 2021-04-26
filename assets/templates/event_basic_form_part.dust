@@ -1,0 +1,71 @@
+{?uid}
+<input type="hidden" name="modification" value="true" />
+<input type="hidden" name="uid" value="{uid}" />
+<input type="hidden" name="href" value="{href}" />
+<input type="hidden" name="etag" value="{etag}" />
+<input type="hidden" name="original_calendar" value="{calendar}" />
+{?recurrence_id}
+<input type="hidden" name="recurrence_id" value="{recurrence_id}" />
+{/recurrence_id}
+{?fixed_calendar}
+<input type="hidden" name="calendar" value="{calendar}" />
+{/fixed_calendar}
+{/uid}
+
+{>form_element_start for="summary" label="summary" /}
+<input required name="summary" type="text" size="25" maxlength="255" value="{title}" class="summary form-control" />
+{>form_element_end/}
+
+{>form_element_start for="location" label="location" /}
+<input name="location" type="text" size="25" maxlength="255" value="{location}" class="location form-control" />
+{>form_element_end/}
+
+{>form_element_start for="calendar" label="calendar" /}
+<select name="calendar" class="form-control"{?fixed_calendar} disabled="disabled"{/fixed_calendar}>
+{#calendars current_calendar=calendar}
+ <option value="{url}"{@eq key="{calendar}" value="{current_calendar}"} selected="selected"{/eq}>{displayname}</option>
+{/calendars}
+</select>
+{>form_element_end/}
+
+<div class="generate-iso8601" data-only-date-if-checked="input.allday">
+<input class="generated" type="hidden" name="start" id="start" />
+{>form_element_start for="start_date" label="startdate" /}
+<div class="row">
+ <div class="col-sm-4">
+  <input required name="start_date" type="text" size="15" maxlength="10" value="{start_date}"
+   class="start_date date form-control" />
+ </div>
+ <div class="col-sm-3">
+    <input required name="start_time" type="text" size="15" maxlength="10" value="{start_time}" 
+    class="start_time time form-control" />
+ </div>
+</div>
+{>form_element_end/}
+</div>
+
+<div class="generate-iso8601" data-only-date-if-checked="input.allday">
+ <input class="generated" type="hidden" name="end" id="end">
+{>form_element_start for="end_date" label="enddate" /}
+<div class="row">
+ <div class="col-sm-4">
+  <input required name="end_date" type="text" size="15" maxlength="10" value="{end_date}" class="end_date date form-control" />
+ </div>
+ <div class="col-sm-3">
+  <input required name="end_time" type="text" size="15" maxlength="10" value="{end_time}" class="time end_time time form-control" />
+ </div>
+</div>
+{>form_element_end/}
+</div>
+
+{>form_element_start for="allday" label="alldayform" /}
+<div class="checkbox">
+<label>
+<input type="checkbox" name="allday" class="allday" value="true" {?allDay}checked="checked"{/allDay} />
+</label>
+</div>
+{>form_element_end/}
+
+{>form_element_start for="description" label="description" /}
+<textarea name="description" class="form-control" rows="4">{description}</textarea>
+{>form_element_end/}

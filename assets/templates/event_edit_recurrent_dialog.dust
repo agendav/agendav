@@ -1,0 +1,9 @@
+<div id="event_edit_recurrent_dialog">
+
+<p>{@i18n type="messages" name="info_edit_recurrent_event"/}</p>
+
+{?has_exceptions}
+<p>{@i18n type="messages" name="info_base_event_with_exceptions_modification"/}</p>
+{/has_exceptions}
+
+</div>

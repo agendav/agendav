@@ -1,4 +1,29 @@
-logs/
-doc/build
-*.swp
-web/application/controllers/x.php
+*~
+.Trash-*
+.DS_Store
+.AppleDouble
+.LSOverride
+
+/var/logs/
+/doc/build
+/web/vendor
+
+# Vagrant
+/.vagrant
+/vagrant_ansible_inventory_default
+
+*.phar
+*.sqlite
+
+agendav-built*
+web/public/dist/css/*.css
+web/public/dist/js/*.js
+
+# Configuration file
+/web/config/settings*
+
+# Development
+/node_modules/
+/bower_components/
+/dist/
+.idea

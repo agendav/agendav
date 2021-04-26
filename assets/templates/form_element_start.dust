@@ -1,0 +1,4 @@
+<div class="form-group {class}">
+<label {?for}for="{for}"{/for}
+class="col-sm-3 control-label">{@i18n type="labels" name=label/}</label>
+<div class="col-sm-9">

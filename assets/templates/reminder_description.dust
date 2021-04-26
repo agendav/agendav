@@ -1,0 +1,11 @@
+{count} 
+
+{@select key="{unit}"}
+ {@eq value="minutes"}{@i18n type="labels" name="minutes"/}{/eq}
+ {@eq value="hours"}{@i18n type="labels" name="hours"/}{/eq}
+ {@eq value="days"}{@i18n type="labels" name="days"/}{/eq}
+ {@eq value="weeks"}{@i18n type="labels" name="weeks"/}{/eq}
+ {@eq value="months"}{@i18n type="labels" name="months"/}{/eq}
+{/select} 
+
+{@i18n type="labels" name="before_start"/}

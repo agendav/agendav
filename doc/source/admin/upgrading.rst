@@ -3,37 +3,41 @@
 Upgrading
 =========
 
-AgenDAV upgrades can be split into two simple steps.
-
-Before starting this process, make sure you have a backup of your current
-AgenDAV directory, specially the ``web/config/`` directory, and dump your
+Before starting this process, **make sure you have a backup** of your current
+AgenDAV directory, specially the ``web/config/`` directory, and a dump of your
 database schema and contents.
 
 Please, do not continue unless you have both backups.
 
-Read all the :ref:`releasenotes` from the version you were using
-to current release, because some configuration files may have changed. Apply
-those changes after updating the files from AgenDAV.
+Read all the :ref:`releasenotes` starting at the version you are currently using, because some
+important changes may have happened. Apply those changes after updating the files from AgenDAV.
+
+Make sure your system meets the requirements before upgrading. Read the :ref:`requirements` section.
+
+Upgrading from 1.x.x
+--------------------
+
+If you are upgrading AgenDAV from 1.x.x, make sure you have the latest 1.x release
+installed.
+
+The just follow the steps below. You will also have to update your web server configuration (see :ref:`webserver`).
 
 .. _filesupgrade:
 
-Files upgrade
--------------
+Upgrade AgenDAV code
+--------------------
 
-a) Updating from tar.gz file
-****************************
-
-You can replace the whole AgenDAV directory with the new files, but it's
-recommended to keep your old folder with a different name (e.g.
-``agendav_old/``). You'll need it to copy back your configuration files.
+a) Updating from a tar.gz file
+******************************
 
 After downloading the new tar.gz file and uncompressing it, copy your
 configuration files from the old directory::
 
-  $ cd agendav_old/web/config/ 
-  $ cp -a advanced.php caldav.php config.php database.php \
+  $ cp -a /path/to/old_agendav/web/config/settings.php \
     /path/to/new/agendav/web/config/
 
+This will only work if you are upgrading from AgenDAV 2.x, as older releases
+used different configuration files.
 
 b) Updating from git
 ********************
@@ -43,32 +47,93 @@ checkout latest stable release from the ``master`` branch, or an specific
 version using its tag.
 
 Just pull latest changes and checkout the release you want. For example,
-checking out AgenDAV 1.2.5 can be achieved with::
+checking out AgenDAV 2.0.0 can be achieved with::
 
   $ git pull
   [...]
-  $ git checkout 1.2.5
+  $ git checkout 2.0.0
+
+Next step is downloading latest AgenDAV dependencies using Composer. If you
+already have Composer installed, just run::
+
+ $ cd web/
+ $ composer install
+
+If you are upgrading from AgenDAV 1.2.x, you will need to install Composer.
+Follow the instructions you'll find in the installation section.
 
 .. _dbupgrade:
 
 Database upgrade
 ----------------
 
-.. note::
-
-   AgenDAV <= 1.2.5.1 have a bug that makes database upgrades to fail,
-   complaining about a missing ``migration_lang.php`` file. If you have
-   AgenDAV configured to use a language other than English, set
-   :confval:`default_language` to ``en`` before running ``agendav dbupdate``
-
-The database upgrade process included in AgenDAV since 1.2.5 lets you
+The database upgrade process included in AgenDAV lets you
 apply the latest schema changes without having to deal with ``.sql`` files
 and with no need to check which files you should apply to your current
 version.
 
-Just use the provided ``bin/agendavcli`` script this way::
+Follow the guide at :ref:`configuration` to create a new ``settings.php`` file inside
+``web/config`` which contains at least the database connection details.
 
-  $ ./bin/agendavcli dbupdate
+Once you have your database configuration prepared, run the provided ``agendavcli`` script this
+way::
+
+  $ php agendavcli migrations:migrate
 
 
 
+Clear sessions and caches
+-------------------------
+
+It is recommended to remove all active sessions. Do it by running the
+following command::
+
+  $ php agendavcli sessions:clear
+
+If you are running AgenDAV on a production environment, you should clear several
+caches:
+
+- Remove the contents of the _twig_ cache directory. The cache path is configured
+  using the option ``twig.options`` on your ``settings.php`` file. If you did not override the
+  default value, it should be found at `web/var/cache/twig/` subdirectory::
+
+    $ rm -rf web/var/cache/twig/*
+
+- Remove the Doctrine ORM metadata cache. Even if you didn't configure it, the ORM tries to
+  find any available caches (APC, memcached, etc). Clear it with::
+
+   $ php agendavcli orm:clear-cache:metadata
+
+Finishing the upgrade from AgenDAV 1.2.x (shares)
+-------------------------------------------------
+
+If you were using calendar sharing, there is an additional step required to complete the upgrade.
+The schema upgrading process from AgenDAV 1.2.x can't handle the upgrade for the ``shares`` table.
+The old table schema makes hard to apply a clean migration, so you have to run a query to adapt the
+shares data to the new expected format.
+
+The following queries will change the ``shares`` table for a DAViCal server, but can be adapted for
+other CalDAV servers.
+
+
+MySQL
+*****
+
+Run the following SQL queries::
+
+    UPDATE `shares` SET owner = CONCAT('/caldav.php/', owner, '/'),
+    calendar = CONCAT(owner, calendar, '/'),
+    `with` = CONCAT('/caldav.php/', `with`, '/');
+
+    UPDATE `shares` SET options = 'a:0:{}' WHERE options = '';
+
+PostgreSQL
+**********
+
+Run the following SQL queries::
+
+    UPDATE shares SET owner = '/caldav.php/' || owner || '/',
+    calendar = '/caldav.php/' || owner || '/' || calendar || '/',
+    "with" = '/caldav.php/' || "with" || '/';
+
+    UPDATE `shares` SET options = 'a:0:{}' WHERE options = '';

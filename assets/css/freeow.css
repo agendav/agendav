@@ -1,0 +1,114 @@
+/* Freeow starts */
+
+/* Outermost Container */
+.freeow {
+    position: fixed;
+    width: 300px;
+    z-index: 9999;  
+}
+.freeow-top-right {
+    top: 40px;
+    right: 10px; 
+}
+/* Message */
+.freeow > div {
+    position: relative;
+    margin-bottom: 5px;
+	cursor: pointer;
+}
+.freeow .content {
+    margin: 5px 5px 5px 69px;
+}
+.freeow h2,
+.freeow p {
+    margin: 0;
+    padding: 0;
+
+}
+.freeow .icon {
+    position: absolute;
+    display: block;
+    width: 48px;
+    height: 48px;
+    top: 5px;
+    left: 10px;
+    z-index: 1;
+}
+
+
+
+.freeow .close {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    top: 8px;
+    right: 8px;
+    background: none;
+    z-index: 2;
+}
+.freeow div:hover .close {
+    background: transparent url(../../img/close.png) no-repeat 0 0;
+}
+
+.freeow .popup_success,
+.freeow .popup_error {
+	color: white;
+}
+.freeow .popup_error .background,
+.freeow .popup_success .background {
+    -moz-border-radius: 12px;
+	border-radius: 12px;
+    opacity: .80;
+    -moz-box-shadow: 2px 2px 3px #888;
+    -webkit-box-shadow: 2px 2px 3px #888;
+    box-shadow: 2px 2px 3px #888;
+}
+
+
+.freeow .popup_error .background {
+    border: 3px solid #E27782;
+    background: #9A1120;
+}
+
+.freeow .popup_success .background {
+    border: 3px solid #33AC00;
+    background: #2F7013;
+}
+
+.freeow .popup_error:hover .background {
+    border-color: #77121D;
+}
+
+.freeow .popup_success:hover .background {
+    border-color: #1A390D;
+}
+.freeow .popup_success .content,
+.freeow .popup_error .content {
+    margin: 5px 5px 5px 69px;
+}
+.freeow .popup_success h2,
+.freeow .popup_error h2 {
+    font-family: "Lucida Grande", Helvetica, arial, sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+}
+.freeow .popup_success p,
+.freeow .popup_error p {
+    padding-top: 8px;
+    font-family: Helvetica, arial, sans-serif;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.freeow .popup_error .icon {
+    background: transparent url(../../img/popup_error.png) no-repeat 0 0;
+}
+
+.freeow .popup_success .icon {
+    background: transparent url(../../img/popup_ok.png) no-repeat 0 0;
+}
+
+/* Freeow ends */

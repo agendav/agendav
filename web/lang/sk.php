@@ -1,0 +1,263 @@
+<?php
+/*
+ *  This file is part of AgenDAV.
+ *
+ *  AgenDAV is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  any later version.
+ *
+ *  AgenDAV is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+$translations = array(
+    'labels.username' => 'Používateľské meno',
+    'labels.password' => 'Heslo',
+
+    'labels.january' => 'Január',
+    'labels.february' => 'Február',
+    'labels.march' => 'Marec',
+    'labels.april' => 'Apríl',
+    'labels.may' => 'Máj',
+    'labels.june' => 'Jún',
+    'labels.july' => 'Júl',
+    'labels.august' => 'August',
+    'labels.september' => 'September',
+    'labels.october' => 'Október',
+    'labels.november' => 'November',
+    'labels.december' => 'December',
+
+    'labels.sunday' => 'Nedeľa',
+    'labels.monday' => 'Pondelok',
+    'labels.tuesday' => 'Utorok',
+    'labels.wednesday' => 'Streda',
+    'labels.thursday' => 'Štvrtok',
+    'labels.friday' => 'Piatok',
+    'labels.saturday' => 'Sobota',
+
+    'labels.sunday_short' => 'Ne',
+    'labels.monday_short' => 'Po',
+    'labels.tuesday_short' => 'Ut',
+    'labels.wednesday_short' => 'St',
+    'labels.thursday_short' => 'Št',
+    'labels.friday_short' => 'Pi',
+    'labels.saturday_short' => 'So',
+
+
+    'labels.calendar' => 'Kalendár',
+    'labels.location' => 'Miesto',
+    'labels.description' => 'Popis',
+
+    'labels.displayname' => 'Display name',
+    'labels.color' => 'Farba',
+
+    'labels.summary' => 'Summary',
+    'labels.startdate' => 'Start date',
+    'labels.enddate' => 'End date',
+    'labels.starttime' => 'Start time',
+    'labels.endtime' => 'End time',
+    'labels.alldayform' => 'Celý deň',
+    'labels.choose_date' => 'Vybrajte si dátum',
+
+    'labels.repeat' => 'Opakovať',
+    'labels.repeatno' => 'Neopakovať',
+    'labels.repeatdaily' => 'Denne',
+    'labels.repeatweekly' => 'Týždenne',
+    'labels.repeatmonthly' => 'Mesačne',
+    'labels.repeatyearly' => 'Ročne',
+
+    'labels.privacy' => 'Viditeľnosť',
+    'labels.public' => 'Verejne',
+    'labels.private' => 'Súkromne',
+    'labels.confidential' => 'Dôverne',
+
+    'labels.transp' => 'Ukázať tento čas ako',
+    'labels.opaque' => 'Obsadený',
+    'labels.transparent' => 'Voľný',
+
+    'labels.generaloptions' => 'General options',
+    'labels.repeatoptions' => 'Opakovať',
+    'labels.workgroupoptions' => 'Skupina',
+    'labels.shareoptions' => 'Zdieľať',
+
+    'labels.newcalendar' => 'Nový kalendár',
+    'labels.modifycalendar' => 'Editovať kalendár',
+    'labels.deletecalendar' => 'Zmazať kalendár',
+
+    'labels.createevent' => 'Nová udalosť',
+    'labels.editevent' => 'Editovať udalosť',
+    'labels.deleteevent' => 'Zmazať udalosť',
+
+    'labels.calendars' => 'Kalendáre',
+    'labels.shared_calendars' => 'Zdieľané kalendáre',
+    'labels.refresh' => 'Aktualizovať',
+    'labels.delete' => 'Zmazať',
+    'labels.add' => 'Pridať',
+    'labels.close' => 'Zatvoriť',
+    'labels.save' => 'Uložiť',
+    'labels.create' => 'Založiť',
+    'labels.login' => 'Prihlásiť Sa',
+    'labels.logout' => 'Odhlásiť Sa',
+    'labels.modify' => 'Meniť',
+    'labels.cancel' => 'Zrušiť',
+    'labels.yes' => 'Áno',
+    'labels.no' => 'Nie',
+
+    'labels.delete_only_this_repetition' => 'Delete only this one',
+    'labels.delete_all_repetitions' => 'Delete all repetitions',
+
+    'labels.edit_only_this_repetition' => 'Edit only this one',
+    'labels.edit_all_repetitions' => 'Edit all repetitions',
+
+    'labels.untitled' => 'Nenazvaný',
+
+    'labels.sharewith' => 'Share with',
+    'labels.currentlysharing' => 'Currently sharing this calendar',
+    'labels.publicurl' => 'Kalendár URL pre CalDAV klienti',
+
+    'labels.access' => 'Dostupnosť',
+    'labels.readonly' => 'Iba Na Čítanie',
+    'labels.readandwrite' => 'Na Čítanie I Písanie',
+
+    'labels.preferences' => 'Nastavenia',
+    'labels.return' => 'Vrátiť Sa',
+
+    'labels.defaultcalendar' => 'Default calendar',
+    'labels.default_view' => 'Default view',
+
+    'labels.toggleallcalendars' => 'Show/hide all',
+
+    'labels.minutes' => 'Minúty',
+    'labels.hours' => 'Hodiny',
+    'labels.days' => 'Dni',
+    'labels.weeks' => 'týždne',
+    'labels.months' => 'Mesiace',
+
+    'labels.remindersoptions' => 'Upozornenia',
+    'labels.reminder' => 'Upozornenie',
+
+    'labels.add_reminder' => 'Pridať upozornenie',
+    'labels.add_share' => 'Add share',
+
+    'labels.before_start' => 'before start',
+    'labels.after' => 'After',
+
+    'labels.start' => 'Začatie',
+    'labels.end' => 'Konec',
+
+    'labels.ends' => 'Ends:',
+    'labels.never' => 'Never',
+    'labels.occurrences' => 'occurrences',
+
+    'labels.timezone' => 'Časové Pásmo',
+    'labels.every' => 'Každý',
+    'labels.repeat_by_day' => 'Repeat on',
+    'labels.repeat_by_month_day' => 'Day of month',
+    'labels.repeat_explanation' => 'This event repeats',
+    'labels.keep_rrule' => 'Keep original repeat rule',
+
+    'labels.language' => 'Jazyk',
+    'labels.date_format' => 'Formát Dátumu',
+    'labels.time_format' => 'Formát Času',
+    'labels.weekstart' => 'Začiatok Týždňa',
+    'labels.show_week_nb' => 'Zobraziť čísla týždňov',
+    'labels.show_now_indicator' => 'Show a marker indicating the current time',
+    'labels.list_days' => 'List view days',
+
+    'labels.view_month' => 'Month',
+    'labels.view_week' => 'Week',
+    'labels.view_day' => 'Day',
+    'labels.view_list' => 'List',
+
+
+// Messages
+    'messages.error_auth' => 'Invalid username or password',
+    'messages.error_denied' => 'Server refused your request (permission forbidden)',
+
+    'messages.info_confirmcaldelete' => 'Are you sure you want to delete the following calendar?',
+    'messages.info_edit_recurrent_event' => 'This event repeats. Do you want to edit just this repetition or all repetitions?',
+    'messages.info_base_event_with_exceptions_modification' => 'This recurrent event has one or more exceptions set. If you use the "Edit all repetitions" button, exceptions will be removed',
+    'messages.info_delete_recurrent_event' => 'This event repeats. Do you want to remove just this repetition or the whole event?',
+    'messages.info_delete_recurrent_event_first_instance' => 'This event repeats, and this is the first repetition. Deleting this event will cause all repetitions to be deleted. Are you sure?',
+    'messages.info_permanentremoval' => 'Your information will be permanently lost',
+    'messages.info_sharedby' => 'You have access to this calendar because %user shared it with you',
+    'messages.info_shareexplanation' => 'You can share this calendar with other users and let them modify it. Place their usernames below, separated by commas or spaces',
+    'messages.info_notshared' => 'This calendar is not being shared with anyone',
+    'messages.info_noreminders' => 'This event has no configured reminders',
+    'messages.error_sessexpired' => 'Your session has expired',
+    'messages.error_loginagain' => 'Please, log in again',
+
+    'messages.error_modfailed' => 'Modification failed',
+    'messages.error_loadevents' => 'Error loading events from calendar %cal',
+    'messages.error_sessrefresh' => 'Error refreshing your session',
+    'messages.error_invalidinput' => 'Invalid value',
+    'messages.error_caldelete' => 'Error deleting calendar',
+
+    'messages.error_oops' => 'Oops. Unexpected error',
+    'messages.error_interfacefailure' => 'Interface error',
+    'messages.error_current_event_not_loaded' => 'Current event is not available',
+
+    'messages.error_event_not_deleted' => 'Error deleting event',
+    'messages.error_loading_calendar_list' => 'Error reading calendar list',
+    'messages.notice_no_calendars' => 'No calendars available',
+    'messages.info_rrule_not_reproducible' => 'This event has recurrence rules associated that cannot be reproduced using this interface. You can keep it as is.',
+    'messages.info_rrule_protected' => 'This event has its recurrence rule protected',
+    'messages.error_calendarnotfound' => 'Invalid calendar %calendar',
+    'messages.error_element_not_found' => 'Element not found',
+    'messages.error_element_changed' => 'Element was modified while you were editing it. Please, refresh.',
+    'messages.error_unexpectedhttpcode' => 'Received unexpected HTTP code %code% from server',
+    'messages.error_network_issues' => 'We are having network issues. Please, try again later',
+    'messages.error_shareunknownusers' => 'Some of the users you specified do not exist',
+    'messages.error_empty_fields' => 'Some required fields are empty',
+
+    'messages.help_defaultcalendar' => 'New events will be placed in this calendar by default. Set here your most used calendar',
+    'messages.help_default_view' => 'Default view when you access your calendar',
+    'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
+    'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
+
+    'messages.info_prefssaved' => 'Preferences saved',
+
+    'messages.more_events' => '+ %count termíny',
+
+    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
+
+    'messages.request_error' => 'Error found on your request',
+    'messages.page_not_found' => 'Page not found',
+    'messages.internal_server_error' => 'Internal server error',
+
+    'rrule.every' => 'každý',
+    'rrule.until' => 'až po',
+    'rrule.day' => 'deň',
+    'rrule.days' => 'dni',
+    'rrule.week' => 'týždeň',
+    'rrule.weeks' => 'týždne',
+    'rrule.month' => 'mesiac',
+    'rrule.months' => 'mesiace',
+    'rrule.year' => 'rok',
+    'rrule.years' => 'roky',
+    'rrule.for' => 'za',
+    'rrule.on' => 'on',
+    'rrule.time' => 'raz',
+    'rrule.times' => 'razy',
+    'rrule.weekday' => 'weekday',
+    'rrule.weekdays' => 'weekdays',
+    'rrule.in' => 'in',
+    'rrule.on the' => 'on the',
+    'rrule.and' => 'i',
+    'rrule.or' => 'alebo',
+    'rrule.the' => 'the',
+    'rrule.last' => 'posledný',
+
+    'rrule.st' => 'st',
+    'rrule.nd' => 'nd',
+    'rrule.rd' => 'rd',
+    'rrule.th' => 'th',
+);
+
+return $translations;

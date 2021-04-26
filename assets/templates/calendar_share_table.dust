@@ -1,0 +1,17 @@
+<p id="no_shares" class="text-center">
+   {@i18n type="messages" name="info_notshared"/}
+</p>
+
+<div id="shares">
+{#shares}
+{>calendar_share_row /}
+{/shares}
+
+</div>
+
+<div class="text-right">
+    <a href="javascript:void(0)" id="new_share">
+    <i class="fa fa-plus"></i> {@i18n type="labels" name="add_share"/}
+    </a>
+</div>
+

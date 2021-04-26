@@ -1,0 +1,4 @@
+name: AgenDAV DB schema
+migrations_namespace: AgenDAV\DB\Migrations
+table_name: schema_versions
+migrations_directory: web/src/DB/Migrations

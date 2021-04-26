@@ -1,2 +1,0 @@
- <option value="0"{@eq key="{write_access}" value="0"} selected="true"{/eq}>{@i18n type="labels" name="readonly"/}</option>
- <option value="1"{@eq key="{write_access}" value="1"} selected="true"{/eq}>{@i18n type="labels" name="readandwrite"/}</option>

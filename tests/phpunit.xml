@@ -1,0 +1,16 @@
+<phpunit
+  colors="true"
+  bootstrap="bootstrap.php"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  >
+  <testsuite name="AgenDAV">
+    <directory>AgenDAV/</directory>
+  </testsuite>
+  <filter>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory>../web/src/</directory>
+    </whitelist>
+  </filter>
+</phpunit>

@@ -1,0 +1,146 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% include 'parts/navbar.html' %}
+  <div class="container">
+    <h1>{% trans %}labels.preferences{% endtrans %}</h1>
+
+    <div class="preferences-container">
+    <form method="post" id="prefs_form">
+    <input type="hidden" name="_token" value="{{ csrf_token.getValue() }}">
+
+    <div class="form-group">
+        <label for="language">{% trans %}labels.language{% endtrans %}</label>
+        <select class="form-control" name="language">
+            {% for language_id, language_name in available_languages %}
+            <option value="{{ language_id }}"{% if language == language_id %} selected="selected"{% endif %}>
+                {{ language_name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="date_format">{% trans %}labels.date_format{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="date_format" {% if date_format == "ymd" %} checked="checked" {% endif %} value="ymd"> {{ "now" | date('Y-m-d') }}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="date_format" {% if date_format == "dmy" %} checked="checked" {% endif %} value="dmy"> {{ "now" | date('d/m/Y') }}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="date_format" {% if date_format == "mdy" %} checked="checked" {% endif %} value="mdy"> {{ "now" | date('m/d/Y') }}
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="time_format">{% trans %}labels.time_format{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="time_format" {% if time_format == "24" %} checked="checked" {% endif %} value="24"> {{ "now" | date('H:i') }}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="time_format" {% if time_format == "12" %} checked="checked" {% endif %} value="12"> {{ "now" | date('h:i a') }}
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="weekstart">{% trans %}labels.weekstart{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="weekstart" {% if weekstart == "0" %} checked="checked" {% endif %} value="0"> {% trans %}labels.sunday{% endtrans %}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="weekstart" {% if weekstart == "1" %} checked="checked" {% endif %} value="1"> {% trans %}labels.monday{% endtrans %}
+        </label>
+    </div>
+
+    <div class="form-group">
+    <label for="timezone">{% trans %}labels.timezone{% endtrans %}</label>
+        <select class="form-control" name="timezone">
+            {% for timezone_name in available_timezones %}
+            <option value="{{ timezone_name }}"{% if timezone == timezone_name %} selected="selected"{% endif %}>
+                {{ timezone_name }}
+            </option>
+            {% endfor %}
+        </select>
+        <span class="help-block">{% trans %}messages.help_timezone{% endtrans %}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="default_calendar">{% trans %}labels.defaultcalendar{% endtrans %}</label>
+        <select class="form-control" name="default_calendar">
+            {% for calendar_id, name in calendars %}
+            <option value="{{ calendar_id }}"{% if default_calendar == calendar_id %} selected="selected"{% endif %}>
+                {{ name }}
+            </option>
+            {% endfor %}
+        </select>
+        <span class="help-block">{% trans %}messages.help_defaultcalendar{% endtrans %}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="default_view">{% trans %}labels.default_view{% endtrans %}</label>
+        <select class="form-control" name="default_view">
+            {% for view in ['month', 'week', 'day', 'list'] %}
+            <option value="{{ view }}"{% if default_view == view %} selected="selected"{% endif %}>
+                {{ ('labels.view_' ~ view) |trans }}
+            </option>
+            {% endfor %}
+        </select>
+        <span class="help-block">{% trans %}messages.help_default_view{% endtrans %}</span>
+    </div>
+
+
+    <div class="form-group">
+        <label for="show_week_nb">{% trans %}labels.show_week_nb{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="show_week_nb" {% if show_week_nb == true %} checked="checked" {% endif %} value="true"> {% trans %}labels.yes{% endtrans %}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="show_week_nb" {% if show_week_nb == false %} checked="checked" {% endif %} value="false"> {% trans %}labels.no{% endtrans %}
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="show_now_indicator">{% trans %}labels.show_now_indicator{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="show_now_indicator" {% if show_now_indicator == true %} checked="checked" {% endif %} value="true"> {% trans %}labels.yes{% endtrans %}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="show_now_indicator" {% if show_now_indicator == false %} checked="checked" {% endif %} value="false"> {% trans %}labels.no{% endtrans %}
+        </label>
+    </div>
+
+
+    <div class="form-group">
+        <label for="list_days">{% trans %}labels.list_days{% endtrans %}</label>
+        <select class="form-control" name="list_days">
+            {% for days in [7, 14, 31] %}
+            <option value="{{ days }}"{% if list_days == days %} selected="selected"{% endif %}>
+              {{ days }} {% trans %} labels.days {% endtrans %}
+            </option>
+            {% endfor %}
+        </select>
+        <span class="help-block">{% trans %}messages.help_list_days{% endtrans %}</span>
+    </div>
+
+    <div id="prefs_buttons">
+      <input type="submit" class="btn btn-success" value="{% trans %}labels.save{% endtrans %}">
+
+        <a href="{{ app.url_generator.generate('calendar') }}" id="return_button" class="btn btn-default"><i class="fa fa-calendar"></i> {% trans %}labels.return{% endtrans %}</a>
+    </div>
+
+    </form>
+
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block bottom %}
+  {% include 'parts/bottom.html' %}
+{% endblock %}

@@ -1,0 +1,410 @@
+@bower: "../../bower_components";
+@bootstrap: "@{bower}/bootstrap/less";
+@fontawesome: "@{bower}/font-awesome/less";
+
+// Import Bootstrap
+@import "@{bootstrap}/variables.less";
+@import "bootstrap_variables.less";
+@import "@{bootstrap}/mixins.less";
+
+// Reset and dependencies
+@import "@{bootstrap}/normalize.less";
+@import "@{bootstrap}/print.less";
+@import "@{bootstrap}/glyphicons.less";
+
+// Core CSS
+@import "@{bootstrap}/scaffolding.less";
+@import "@{bootstrap}/type.less";
+@import "@{bootstrap}/grid.less";
+@import "@{bootstrap}/tables.less";
+@import "@{bootstrap}/forms.less";
+@import "@{bootstrap}/buttons.less";
+
+// Components
+@import "@{bootstrap}/component-animations.less";
+@import "@{bootstrap}/dropdowns.less";
+@import "@{bootstrap}/button-groups.less";
+@import "@{bootstrap}/input-groups.less";
+@import "@{bootstrap}/navs.less";
+@import "@{bootstrap}/navbar.less";
+@import "@{bootstrap}/pager.less";
+@import "@{bootstrap}/labels.less";
+@import "@{bootstrap}/badges.less";
+@import "@{bootstrap}/alerts.less";
+@import "@{bootstrap}/progress-bars.less";
+@import "@{bootstrap}/list-group.less";
+@import "@{bootstrap}/panels.less";
+@import "@{bootstrap}/close.less";
+
+// Utility classes
+@import "@{bootstrap}/utilities.less";
+@import "@{bootstrap}/responsive-utilities.less";
+
+// Bootstrap theme
+@import "bootstrap.theme.less";
+
+
+// Import Font Awesome
+@import "fontawesome_variables.less";
+
+@import "@{fontawesome}/mixins.less";
+@import "@{fontawesome}/path.less";
+@import "@{fontawesome}/core.less";
+@import "@{fontawesome}/larger.less";
+@import "@{fontawesome}/fixed-width.less";
+@import "@{fontawesome}/list.less";
+@import "@{fontawesome}/bordered-pulled.less";
+@import "@{fontawesome}/spinning.less";
+@import "@{fontawesome}/icons.less";
+
+.fontoverride(@size: 1.1em) {
+  font-family: 'Trebuchet MS',Arial,sans-serif !important;
+  font-size: @size;
+}
+
+
+body {
+  background-color: @agendavbgColor;
+}
+
+td.fc-event-container, div.fc-event-container,
+.ui-button, .ui-dialog .ui-dialog-buttonpane button,
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor: default !important;
+}
+
+.loginform {
+  background-color: #fff;
+  padding: 20px;
+  margin: 5% auto;
+  text-align: center;
+  width: 430px;
+}
+
+.loginerrors {
+  width: 400px;
+  margin: 5% auto 0 auto;
+}
+
+span.username {
+  padding-left: 20px;
+  background: url(../../img/user.png) transparent left center no-repeat;
+}
+
+#wrapper {
+    .make-row();
+}
+
+#sidebar {
+  .make-md-column(2);
+  max-width: 200px;
+}
+
+#content {
+  .make-md-column(10);
+}
+
+#footer {
+  text-align: center;
+}
+
+#footer p {
+  color: #777777;
+}
+
+label.suboption {
+  padding-left: 0.8em;
+}
+
+div#logo {
+  text-align: center;
+}
+
+#sidebar div.block {
+  margin-bottom: 15px;
+}
+
+
+div.panel-body .buttons {
+  text-align: right;
+}
+
+
+.calendar_list {
+  ul, li {
+    cursor: default;
+  }
+
+  li {
+    width: inherit;
+    display: block;
+    text-overflow: ellipsis;
+    margin-top: 6px;
+    margin-bottom: 6px;
+
+    i.cfg {
+      display: none;
+      position: absolute;
+      right: 5px;
+    }
+
+    span.text {
+      font-size: 0.9em;
+      letter-spacing: -0.1em;
+    }
+
+    span.icons {
+      margin-right: 1px;
+      color: #a0a0a0;
+    }
+
+    &:hover {
+      background-color: #f0f0f0;
+      padding-right: 20px;
+
+      > i.cfg {
+        display: inline;
+      }
+    }
+
+    &.default_calendar {
+      font-weight: bold;
+    }
+
+    &.hidden_calendar, &.hidden_calendar i {
+      color: #eaeaea !important;
+    }
+  }
+}
+
+/* overlay starts */
+
+.view_event_details {
+  width: 400px !important;
+  max-width: 400px !important;
+
+  p.start_and_finish {
+    font-style: italic;
+  }
+
+  .ui-tooltip-content div {
+    line-height: 1.5em;
+  }
+
+  .description_value {
+    margin-left: 2em;
+    font-family: monospace;
+    max-height: 150px;
+    width: 90%;
+    overflow: auto;
+  }
+
+  span.rrule_raw_value {
+    font-family: monospace;
+  }
+
+  .ui-tooltip-content {
+    line-height: 150%;
+  }
+
+  .ui-tooltip-title {
+    font-size: 120%;
+  }
+}
+
+/* overlay ends */
+
+#event_delete_dialog {
+  .title {
+    font-size: 120%;
+    font-style: italic;
+  }
+
+  .calendar {
+    font-style: italic;
+  }
+}
+
+/* delete event dialog ends */
+
+.time-picker {
+  z-index: 9999 !important;
+}
+
+#ui-datepicker-div {
+  z-index: 9999 !important;
+}
+
+div.public_url_container {
+  text-align: right;
+  width: 90%;
+  font-size: 70%;
+  margin-top: 1em;
+}
+
+span.shared {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  padding-left: 5px;
+  background-image: url(../../img/share.png);
+  background-position: 95% 50%;
+  background-repeat: no-repeat;
+}
+
+div.share_info {
+  background: url(../../img/share_big.png) #fafafa center left no-repeat;
+  padding: 10px 10px 10px 40px;
+  border: 1px solid #e0e0e0;
+  width: 350px;
+  margin: 0.5em auto 0.5em auto;
+}
+
+div.shared_calendars {
+  display: none;
+}
+
+/* 
+ * Dialog buttons
+ * --------------
+ */
+.btn-icon-cancel {
+  background-image: url(../../img/button-icons/cancel.png) !important;
+}
+
+.btn-icon-ok {
+  background-image: url(../../img/button-icons/ok.png) !important;
+}
+
+.btn-icon-event-delete, .btn-icon-calendar-delete {
+  background-image: url(../../img/button-icons/calendar_delete.png) !important;
+}
+
+.btn-icon-calendar-add {
+  background-image: url(../../img/button-icons/calendar_add.png) !important;
+}
+
+.btn-icon-event-edit, .btn-icon-calendar-edit {
+  background-image: url(../../img/button-icons/calendar_edit.png) !important;
+}
+
+div.selecthelper {
+  filter: ~"alpha(opacity=50)";
+  opacity: 0.5;
+  zoom: 1;
+}
+
+.fc-button {
+  cursor: default !important;
+}
+
+.fc-event {
+  font-size: @font-size-base !important;
+  line-height: @line-height-base !important;
+}
+
+span.fc-event-icons {
+  margin-left: 3px;
+  font-size: 90%;
+
+  i {
+    margin-right: 2px;
+  }
+}
+
+td.fc-day-number.fc-today {
+  font-weight: bold;
+  color: #3A6440;
+  font-size: 110%;
+}
+
+#loading {
+  width: 20px;
+  height: 20px;
+  display: none;
+}
+
+i.calendar_color {
+  margin-right: 6px;
+}
+
+.pseudobutton {
+  color: #8C8C8C;
+  display: inline-block;
+  padding: 2px;
+  &:hover {
+    color: #000;
+    cursor: pointer;
+    background-color: @agendavbgHoverPseudobutton !important;
+  }
+}
+
+#calendar_share_no_rows td,
+#reminders_no_rows td {
+  text-align: center !important;
+}
+
+
+#reminders_table,
+#calendar_share_table {
+  margin-bottom: 30px;
+}
+
+#prefs_buttons {
+  margin-bottom: 10px;
+  .pull-right;
+}
+
+
+.agendav-menu .ui-tooltip-content {
+  padding: 0 3px;
+}
+
+
+i.tab-icon {
+  margin-right: 4px;
+}
+
+span.table_title {
+  font-weight: bold;
+}
+
+#calendar_view.printing {
+    width: 8.3in !important;
+}
+
+div.preferences-container {
+  .make-md-column(7);
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
+}
+
+a.remove, button.remove {
+  color: @brand-danger;
+}
+
+div.actions {
+  border-top: 1px solid @gray-lighter;
+  padding-top: 10px;
+  margin-top: 10px;
+
+  span.right {
+    float: right;
+  }
+}
+
+div.container_repeat_options {
+    display: none;
+}
+
+#repeat_explanation {
+    font-style: italic;
+}
+
+#repeat_warning_rrule_unreproducible {
+    display: none;
+}
+
+// vim: ft=css sw=2 tabstop=2 expandtab

@@ -1,0 +1,8 @@
+{% extends "error_layout.html" %}
+
+{% block message %}
+<p>{% trans %}messages.request_error{% endtrans %}</p>
+<div class="alert alert-danger" role="alert">
+    {{ message|e }}
+</div>
+{% endblock %}

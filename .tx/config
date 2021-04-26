@@ -1,15 +1,8 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
-[agendav.labels-and-messages]
-file_filter = web/lang/<lang>/<lang>.php
-source_file = web/lang/en/en.php
+[agendav.strings]
+file_filter = web/lang/<lang>.php
+source_file = web/lang/en.php
 source_lang = en
-type = PHP_ALT_ARRAY
-
-[agendav.migrations]
-file_filter = web/lang/<lang>/migration_lang.php
-source_file = web/lang/en/migration_lang.php
-source_lang = en
-type = PHP_ALT_ARRAY
-
+type = PHP_ARRAY

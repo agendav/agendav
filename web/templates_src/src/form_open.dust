@@ -1,4 +1,0 @@
-<form action="{frm.action}" method="{frm.method}"
-{?applyclass}class="{applyclass}"{/applyclass}
-{?applyid} id="{applyid}"{/applyid} accept-charset="utf-8">
- <input type="hidden" name="{csrf_token_name}" value="{frm.csrf}" />

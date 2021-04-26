@@ -1,48 +1,80 @@
 Installation
 ============
 
-In this section you will be able to install AgenDAV.
+In this section you will found instructions on how to install AgenDAV.
 
-Prerequisites
--------------
+.. _requirements:
+
+Requirements
+------------
 
 AgenDAV |release| requires the following software to be installed:
 
-* A CalDAV server (developed mainly with `DAViCal <http://www.davical.org/>`_
+* A CalDAV server
 * A web server
-* PHP >= 5.3.0
-* PHP mbstring extension
-* PHP cURL extension
-* MySQL > 5.1 or PostgreSQL >= 8.1
+* PHP >= 5.5.0
+* PHP extensions:
 
-Downloading AgenDAV and uncompressing
--------------------------------------
+  * ctype
+  * curl
+  * curl
+  * mbstring
+  * mcrypt
+  * tokenizer
+  * xml
+  * xmlreader
+  * xmlwriter
 
-AgenDAV |release| can be obtained at `AgenDAV official webpage
-<http://agendav.org>`_, but you can use GitHub to download latest version.
-Have a look at `<http://github.com/adobo/agendav>`_.
+* A database backend
+
+.. warning::
+   Some PHP releases have issues with digest authentication under Windows. If your CalDAV server
+   uses digest authentication and you are hosting AgenDAV on a Windows server, make sure your PHP
+   version is not affected.
+
+   See `PHP bug #70101 <https://bugs.php.net/bug.php?id=70101>`_ for more details.
+
+Most popular database backends are supported, such as MySQL, PostgreSQL or SQLite.
+
+Look for supported databases on this `Doctrine DBAL driver list <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#driver>`_.
+
+Download AgenDAV
+----------------
+
+AgenDAV |release| can be obtained at `AgenDAV webpage <http://agendav.org>`_.
 
 Uncompress it using ``tar``::
 
- $ tar xzf adobo-agendav-...tar.gz
- $ cd adobo-agendav-.../
+ $ tar agendav-...tar.gz
+ $ cd agendav-.../
 
-Database and tables
--------------------
+PHP configuration
+-----------------
 
-AgenDAV requires a database to store some information. Supported RDBMs are
-MySQL and PostgreSQL.
+Make sure that you have the following PHP settings set:
 
-First of all you have to create a user and a database for that user.
+* ``magic_quotes_runtime``: *disabled*
+* ``date.timezone``: choose a valid time zone from `this list <http://php.net/manual/en/timezones.php>`_.
 
-Second, you'll have to create initial AgenDAV tables using provided SQL
-files inside ``sql/`` directory.
+This is usually done on your ``php.ini`` file.
 
-Last step is applying database upgrades to initial database tables.
+Database requirements
+---------------------
 
-Steps 1&2: MySQL
-****************
-Create an user in MySQL like this::
+AgenDAV requires a database to store some extra information.
+
+First of all you have to set up your database. If you plan using MySQL or PostgreSQL, here you will
+find some basic instructions about how to set up them.
+
+**Setting up a MySQL/MariaDB database**
+
+.. warning::
+   If you have binary logging enabled in MySQL/MariaDB, make sure it is configured to use
+   `binlog_format = MIXED`. Or just disable binary logging in case you don't actually need it.
+
+   AgenDAV will complain and exit in case you have a different binary logging configuration.
+
+Create a user in MySQL and let it use a new `agendav` database::
 
  $ mysql --default-character-set=utf8 -uroot -p
  Enter password: 
@@ -52,18 +84,7 @@ Create an user in MySQL like this::
  mysql> FLUSH PRIVILEGES;
  mysql> ^D
 
-And then run the initial schema creation file::
-
- $ mysql --default-character-set=utf8 -uagendav \
-   -p agendav < sql/mysql.schema.sql
- Enter password:
- $
-
-Note the UTF8 parts on the previous commands. If you don't specify them you
-will have some issues with special characters.
-
-Steps 1&2: PostgreSQL
-*********************
+**Setting up a PostgreSQL database**
 
 Use the special ``postgres`` system user to manage your installation. You
 can add a new user and a new database the following way::
@@ -80,28 +101,31 @@ Then you have to edit the file ``pg_hba.conf``, which is usually located at
 ``/var/lib/pgsql/``. Add the following line before other definitions::
 
  # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
- local   agendav     agendav     trust
+ local   agendav     agendav                           md5
 
-After that just restart PostgreSQL and load the initial schema::
+**Setting up a SQLite database**
 
- $ psql -U agendav agendav < sql/pgsql.schema.sql
+SQLite is not recommended for production environments, but will be more than enough for testing and
+single user environments.
+
+You will need a dedicated directory for the database::
+
+  # mkdir database
+  # touch database/agendav.sqlite
+  # chown -R www-data:www-data database/
 
 
-Step 3: Apply latest database schema
-************************************
+.. _webserver:
 
-Initial database structure created with `*.sql` files provides only a base
-structure for AgenDAV. It has to be modified to apply latest release
-changes. To do this, follow instructions on :ref:`dbupgrade`.
+Web server configuration
+------------------------
 
+It is recommended to read the `Silex Webserver configuration guide
+<http://silex.sensiolabs.org/doc/web_servers.html>`_ to learn how to configure your preferred web
+server software to serve AgenDAV. Just make sure to point your web server to the ``web/public``
+subdirectory.
 
-Configuring Apache web server
------------------------------
-
-Apache has to be configured to point to ``web/public`` directory, using its
-own VirtualHost or just an Alias.
-
-Example using a dedicated virtualhost::
+Being Apache one of the most used web servers, a sample configuration is shown below for reference::
 
  <VirtualHost 1.2.3.4:443>
   ServerAdmin admin@email.host
@@ -109,26 +133,41 @@ Example using a dedicated virtualhost::
   ServerName agendav.host
   ErrorLog logs/agendav_error_log
   CustomLog logs/agendav_access_log common
+
+  <Location />
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+  </Location>
  </VirtualHost>
 
-Example using the Alias directive::
 
- Alias /agendav /path/to/agendav/web/public
+You can enable development mode by following the instructions at
+:ref:`development_environment`.
 
-.. note::
-   Make sure that you have the following PHP settings *disabled*:
+Fix directory permissions
+-------------------------
 
-   * ``magic_quotes_gpc``
-   * ``magic_quotes_runtime``
+You should change the owner and group for all AgenDAV files to the ones your webserver uses.
+Make sure you allow your webserver user to write on the ``var/`` directory. The following example
+assumes your web server runs as `www-data` user and `www-data` group::
 
-Other web servers
-*****************
+  # chown -R www-data:www-data web/
+  # chmod -R 750 web/var/
 
-AgenDAV should work on all other web server software if they support PHP
-scripts, but this is untested.
+Configuration
+-------------
 
-Configure AgenDAV
------------------
+Now you should configure AgenDAV following the :doc:`configuration` section.
 
-Now you can proceed to configure AgenDAV following the :doc:`configuration`
-section.
+Create AgenDAV tables
+---------------------
+
+AgenDAV tables are created by running the provided ``agendavcli`` script.
+
+After configuring your AgenDAV instance, including your database settings, just run the script like
+this::
+
+  $ php agendavcli migrations:migrate
+
+Confirm the operation, and your database should be ready.

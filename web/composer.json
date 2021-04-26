@@ -1,0 +1,45 @@
+{
+    "name": "adobo/agendav",
+    "description": "CalDAV web client",
+    "type": "project",
+    "homepage": "http://agendav.org",
+    "license": "GPL-3.0",
+
+    "require": {
+        "php": ">=5.6",
+        "doctrine/cache": "~1.6.0",
+        "doctrine/common": "~2.7.0",
+        "doctrine/dbal": "~2.5.2",
+        "doctrine/migrations": "~1.5.0",
+        "doctrine/orm": "~2.4",
+        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/streams": "~3.0",
+        "league/fractal": "~0.15",
+        "monolog/monolog": "~1.22.0",
+        "ramsey/uuid": "~3.0",
+        "sabre/dav": "~3.1.0",
+        "silex/silex": "~2.0",
+        "symfony/console": "~2.8.0",
+        "symfony/debug": "~2.8.0",
+        "symfony/event-dispatcher": "~2.8.0",
+        "symfony/http-foundation": "~2.8.0",
+        "symfony/http-kernel": "~2.8.0",
+        "symfony/property-access": "~2.8.0",
+        "symfony/routing": "~2.8.0",
+        "symfony/security": "~2.8.0",
+        "symfony/translation": "~2.8.0",
+        "symfony/twig-bridge": "~2.8.0",
+        "symfony/var-dumper": "~2.8.0",
+        "symfony/yaml": "~2.8.0",
+        "symfony/asset": "~2.8.0"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "~5.7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AgenDAV\\": "src/"
+        }
+    }
+}
