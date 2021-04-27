@@ -1,13 +1,12 @@
-# Change Log
+# Changelog
 
-## [Unreleased] - Unreleased
+## [2.3.0] - 2021-04-27
 
-### Changed
-
-- Use npm to download dependencies instead of using bower
-- Upgrade Symfony components to 2.8.27
-- Session cookies are now marked with HttpOnly flag by default (#215)
-- Fix URL used for Fullcalender frontend translations
+- FEATURE Flag session cookies with HttpOnly by default (#215)
+- FEATURE Make README more verbose and welcome contributions
+- FEATURE Enable estonian calendar translation (#220)
+- TASK Upgrade Symfony components to 2.8.28
+- BUGFIX Make vagrant test box startable again (#278)
 
 ## [2.2.1] - 2021-04-26
 

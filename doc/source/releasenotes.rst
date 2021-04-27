@@ -3,6 +3,16 @@
 Release notes
 =============
 
+.. _v2.3.0:
+2.3.0 (2021-04-27)
+-------------------
+
+* FEATURE Flag session cookies with HttpOnly by default (#215)
+* FEATURE Make README more verbose and welcome contributions
+* FEATURE Enable estonian calendar translation (#220)
+* TASK Upgrade Symfony components to 2.8.28
+* BUGFIX Make vagrant test box startable again (#278)
+
 .. _v2.2.1:
 2.2.1 (2021-04-26)
 -------------------
@@ -44,7 +54,6 @@ Relevant release notes from all 2.0.0 release candidates and betas:
 ------------------------
 
 * This release includes updated translations. They were missing on rc1
-
 
 .. _v2.0.0-rc1:
 
