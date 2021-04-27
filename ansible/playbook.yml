@@ -10,16 +10,16 @@
         become: yes
 
       - name: reload timezone
-        become: yes
         action: command /usr/sbin/dpkg-reconfigure -f noninteractive tzdata
+        become: yes
 
       - name: install python-pycurl
-        become: yes
         apt: name='python-pycurl' update_cache=yes
+        become: yes
 
       - name: add ondrej/php repository
-        become: yes
         apt_repository: repo='ppa:ondrej/php'
+        become: yes
 
       - include: nodejs.yml
 
@@ -43,6 +43,8 @@
             - php7.1-mbstring
             - mysql-client
             - mysql-server
+            - python-dev
+            - libmysqlclient-dev
             - python-mysqldb
             - sqlite
             - nodejs
@@ -50,8 +52,18 @@
         notify:
             - restart mysql
 
+      - name: Set MySQL root password
+        mysql_user:
+          login_host: 'localhost'
+          login_user: 'root'
+          login_password: ''
+          name: 'root'
+          password: '{{ mysql_password }}'
+          state: present
+        become: yes
+
       - name: create database
-        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password=""
+        mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password="{{ mysql_password }}"
 
       - name: check for baikal
         stat: path=/var/www/baikal
@@ -137,7 +149,6 @@
 
       - name: configure agendav
         template: src=agendav/settings.php.j2 dest=/vagrant/web/config/settings.php backup=yes mode=0755
-
 
       - name: apply latest schema updates
         environment:

@@ -13,7 +13,7 @@ $app['site.footer'] = 'AgenDAV ' . \AgenDAV\Version::V;
 $app['db.options'] = [
         'dbname' => 'agendav',
         'user' => 'root',
-        'password' => '',
+        'password' => '{{ mysql_password }}',
         'host' => 'localhost',
         'driver' => 'pdo_mysql'
 ];

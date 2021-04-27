@@ -3,3 +3,4 @@
 
 # System wide timezone, used in php.in too
 timezone: 'Europe/Madrid'
+mysql_password: 'localtest'
