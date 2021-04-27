@@ -28,7 +28,7 @@
         become: yes
 
       - name: install packages
-        apt: pkg={{ item }} state=latest
+        apt: pkg={{ item }} state=present
         become: yes
         with_items:
             - curl
@@ -48,6 +48,7 @@
             - python-mysqldb
             - sqlite
             - nodejs
+            - npm
             - unzip
         notify:
             - restart mysql
@@ -140,9 +141,9 @@
         become: yes
 
       - name: install node dependencies for development
-        npm: path=/vagrant state=latest
+        npm: path=/vagrant state=present
 
-      - name: run npm
+      - name: run npm build
         environment:
           COMPOSER_VENDOR_DIR: /var/agendav-vendors
         command: npm run build chdir=/vagrant
