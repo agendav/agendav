@@ -5,6 +5,7 @@
 [![Stable docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](http://agendav.readthedocs.org/en/latest/)
 [![Made With](https://img.shields.io/badge/made_with-php-blue)](https://gitlab.com/pixelbrackets/acme-app#requirements)
 [![License](https://img.shields.io/badge/license-gpl--3.0-blue.svg)](https://spdx.org/licenses/GPL-3.0.html)
+[![Contribution](https://img.shields.io/badge/contributions_welcome-%F0%9F%94%B0-brightgreen.svg?labelColor=brightgreen&style=flat-square)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
 
 AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones.
@@ -40,3 +41,7 @@ GNU GENERAL PUBLIC LICENSE Version 3
 ## Changelog
 
 See [CHANGELOG.md](./CHANGELOG.md)
+
+## Contribution
+
+[Contributions](./CONTRIBUTING.md) are welcome!
