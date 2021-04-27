@@ -62,6 +62,7 @@
           password: '{{ mysql_password }}'
           state: present
         become: yes
+        ignore_errors: yes
 
       - name: create database
         mysql_db: name=agendav state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password="{{ mysql_password }}"
