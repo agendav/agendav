@@ -58,7 +58,7 @@ Have a look at the `doc/` directory.
 
 ## New Releases
 
-- Create test build runing `npm install` & `npm run-script build`
+- Create test build runing `npm install && npm run-script build`
 - Run code quality tools
 - Compare the »development« branch to »main«
   - Add a list of noteworthy features and bugfixes to CHANGELOG.md
