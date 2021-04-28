@@ -1,1 +1,1 @@
-cat ../../../bower_components/jquery-ui/ui/{core,widget,autocomplete,datepicker,dialog,button,position,menu}.js > jquery-ui.js
+cat ../../../node_modules/jquery-ui/ui/{core,position,widget,widgets/autocomplete,widgets/button,widgets/datepicker,widgets/dialog,widgets/menu}.js > jquery-ui.js

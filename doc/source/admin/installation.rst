@@ -41,7 +41,7 @@ Look for supported databases on this `Doctrine DBAL driver list <http://docs.doc
 Download AgenDAV
 ----------------
 
-AgenDAV |release| can be obtained at `AgenDAV webpage <http://agendav.org>`_.
+AgenDAV |release| can be obtained at `AgenDAV GitHub Project <https://github.com/agendav/agendav/releases>`_.
 
 Uncompress it using ``tar``::
 
@@ -77,7 +77,7 @@ find some basic instructions about how to set up them.
 Create a user in MySQL and let it use a new `agendav` database::
 
  $ mysql --default-character-set=utf8 -uroot -p
- Enter password: 
+ Enter password:
  [...]
  mysql> GRANT ALL PRIVILEGES ON agendav.* TO agendav@localhost IDENTIFIED BY 'yourpassword'
  mysql> CREATE DATABASE agendav CHARACTER SET utf8 COLLATE utf8_general_ci;

@@ -3,9 +3,36 @@
 Release notes
 =============
 
+.. _v2.4.0:
+2.4.0 (2021-04-28)
+-------------------
+
+* FEATURE Allow login with HTTP Authorization header
+* FEATURE Add a lang attribute on the html tag
+* FEATURE Stop using bower, use npm instead
+* FEATURE️Update Symfony components
+* FEATURE Upgrade to jQuery 3.3.1 and Fullcalendar 3.8.0
+* FEATURE Docs: Explain maintenance mode
+
+.. _v2.3.0:
+2.3.0 (2021-04-27)
+-------------------
+
+* FEATURE Flag session cookies with HttpOnly by default (#215)
+* FEATURE Make README more verbose and welcome contributions
+* FEATURE Enable estonian calendar translation (#220)
+* TASK Upgrade Symfony components to 2.8.28
+* BUGFIX Make vagrant test box startable again (#278)
+
+.. _v2.2.1:
+2.2.1 (2021-04-26)
+-------------------
+
+* Update display dates timezone table (#272)
+
 .. _v2.2.0:
-2.2.0
------
+2.2.0 (2017-05-23)
+-------------------
 
 * PHP 5.6 or greater is required.
 * Silex 2.0 is now being used, so any modifications prepared for AgenDAV 2.1.x (which was based
@@ -38,7 +65,6 @@ Relevant release notes from all 2.0.0 release candidates and betas:
 ------------------------
 
 * This release includes updated translations. They were missing on rc1
-
 
 .. _v2.0.0-rc1:
 
@@ -174,9 +200,9 @@ colors, so it's recommended to remove the following settings from
 ``config.php``:
 
 * :confval:`default_calendar_color`: now the first color from :confval:`calendar_colors` is used
-* :confval:`additional_calendar_colors`: this option has been replaced by :confval:`calendar_colors` 
+* :confval:`additional_calendar_colors`: this option has been replaced by :confval:`calendar_colors`
 
-Copy :confval:`calendar_colors` definition from ``config.php.template`` to your ``config.php`` 
+Copy :confval:`calendar_colors` definition from ``config.php.template`` to your ``config.php``
 
 This release requires no database upgrades.
 
@@ -238,8 +264,8 @@ It requires no database upgrades.
   run the following two queries::
 
         CREATE INDEX last_activity_idx ON sessions(last_activity);
-        ALTER TABLE sessions MODIFY user_agent VARCHAR(120); 
-   
+        ALTER TABLE sessions MODIFY user_agent VARCHAR(120);
+
 * Remove LDAP dependency. AgenDAV now authenticates against CalDAV
   server.
 

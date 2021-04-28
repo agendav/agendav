@@ -1,15 +1,27 @@
-# Change Log
+# Changelog
 
-## [Unreleased] - Unreleased
+## [2.4.0] - 2021-04-28
 
-### Changed
+- FEATURE Allow login with HTTP Authorization header
+- FEATURE Add a lang attribute on the html tag
+- FEATURE Stop using bower, use npm instead
+- FEATURE️Update Symfony components
+- FEATURE Upgrade to jQuery 3.3.1 and Fullcalendar 3.8.0
+- FEATURE Docs: Explain maintenance mode
 
-- Use npm to download dependencies instead of using bower
-- Upgrade Symfony components to 2.8.27
-- Session cookies are now marked with HttpOnly flag by default (#215)
-- Fix URL used for Fullcalender frontend translations
-- Upgrade to jQuery 3.3.1
-- Upgrade to Fullcalendar 3.8.0
+## [2.3.0] - 2021-04-27
+
+- FEATURE Flag session cookies with HttpOnly by default (#215)
+- FEATURE Make README more verbose and welcome contributions
+- FEATURE Enable estonian calendar translation (#220)
+- TASK Upgrade Symfony components to 2.8.28
+- BUGFIX Make vagrant test box startable again (#278)
+
+## [2.2.1] - 2021-04-26
+
+### Fixed
+
+- Update display dates timezone table (#272)
 
 ## [2.2.0] - 2017-05-23
 
