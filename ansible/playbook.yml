@@ -137,10 +137,6 @@
         file: path=/var/log/agendav recurse=true state=directory owner=www-data group=vagrant mode=0774
         become: yes
 
-      - name: install bower
-        npm: name=bower global=yes
-        become: yes
-
       - name: install node dependencies for development
         npm: path=/vagrant state=present
 

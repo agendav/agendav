@@ -66,7 +66,6 @@ Have a look at the `doc/` directory.
   - Describe changes in `doc/source/releasenotes.rst` as well
 - Change the version, using semantic versioning, in these files
   ([example commit](https://github.com/agendav/agendav/commit/aa2c0f920207c17372b80ae45f1f4e77133d305e)):
-  - `bower.json`
   - `doc/source/conf.py`
   - `package.json`
   - `web/src/Version.php`
@@ -80,6 +79,6 @@ Have a look at the `doc/` directory.
   - Run `npm install && npm run-script dist`
     - Creates build files in `web/public/dist/css/`, `web/public/dist/js/`
       and `web/vendor/`
-    - Removes `.git`, `ansible`, `bower_components`, `node_modules`
+    - Removes `.git`, `ansible`, `node_modules`
   - Zip directory `tar -czf ../agendav-<version>.tar.gz ../agendav-<version>`
 - Sip a tea

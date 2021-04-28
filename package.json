@@ -35,18 +35,16 @@
   "homepage": "https://github.com/adobo/agendav",
   "devDependencies": {
     "bootstrap": "~3.3.1",
-    "fullcalendar": "~3.4.0",
-    "font-awesome": "~4.2.0",
-    "jquery": "~2.2.4",
-    "dustjs-linkedin": "~2.7.1",
-    "dustjs-helpers": "~1.7.0",
-    "rrule": "~2.1.0",
-    "es5-shim": "~4.0.5",
-    "moment-timezone": "~0.5.0",
     "clean-css": "~3.4.22",
     "dustjs-helpers": "~1.7.0",
-    "dustjs-linkedin": "~2.7.0",
+    "dustjs-linkedin": "~2.7.1",
+    "es5-shim": "~4.0.5",
+    "font-awesome": "~4.2.0",
+    "fullcalendar": "~3.4.0",
+    "jquery": "~2.2.4",
     "less": "~2.7.1",
+    "moment-timezone": "~0.5.0",
+    "rrule": "~2.1.0",
     "uglify-js": "~2.7.5"
   }
 }
