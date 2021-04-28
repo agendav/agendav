@@ -1,11 +1,12 @@
 # AgenDAV - CalDAV web client
 
+[![Maintenance mode](https://img.shields.io/badge/maintenance_mode-%F0%9F%9A%A7-grey.svg?labelColor=orange)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
 [![Build Status](https://travis-ci.org/agendav/agendav.svg?branch=develop)](https://travis-ci.org/agendav/agendav)
 [![Develop docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](http://agendav.readthedocs.org/en/develop/)
 [![Stable docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](http://agendav.readthedocs.org/en/latest/)
 [![Made With](https://img.shields.io/badge/made_with-php-blue)](https://gitlab.com/pixelbrackets/acme-app#requirements)
 [![License](https://img.shields.io/badge/license-gpl--3.0-blue.svg)](https://spdx.org/licenses/GPL-3.0.html)
-[![Contribution](https://img.shields.io/badge/contributions_welcome-%F0%9F%94%B0-brightgreen.svg?labelColor=brightgreen&style=flat-square)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
+[![Contribution](https://img.shields.io/badge/contributions_welcome-%F0%9F%94%B0-brightgreen.svg?labelColor=brightgreen)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
 
 AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones.
@@ -41,6 +42,20 @@ GNU GENERAL PUBLIC LICENSE Version 3
 ## Changelog
 
 See [CHANGELOG.md](./CHANGELOG.md)
+
+## Maintenance Mode
+
+AgenDAV is in maintenance mode currently. This means that the maintainers
+choose to prioritize stability and compatibility over new features for now.
+
+- There is no active development & new major features are not planned
+- New features may be added by PRs however
+  - New features may be proposed in issues tickets, send as Pull Requests,
+    and the maintainers will review and presumably merge them
+- *PRs for bugfixes are welcome* and will be reviewed & merged
+- PRs to keep the software compatible with new PHP versions or the like
+  are welcome and will be reviewed & merged
+- Critical security concerns will be addressed
 
 ## Contribution
 
