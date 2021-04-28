@@ -2,14 +2,41 @@
 
 Great to have you here. Here are a few ways you can help make this project better!
 
-## Mailing list
+**Please note that this project was put into [maintenance mode](./README.md#maintenance-mode)**
 
-You are encouraged to use the following mailing list to ask anything before contributing code:
+## Issues
 
-http://groups.google.com/group/agendav-dev
+### Bugs
 
-Perhaps something is already implemented or some code is going to be completely wiped, so a patch for it is not worth
-the effort. Feel free to subscribe, it is a really low traffic list. Don't be afraid to ask!
+When reporting a bug make sure you specify the following data:
+
+* Your AgenDAV version
+* What CalDAV server you are using
+* A brief description of the issue
+* Step by step guide of what you did, screenshots are welcome
+* *What you were expecting to happen and what actualy happened*
+* Any logs that could help to identify the cause
+
+**You are encouraged to send fixes for bug reports as Pull Request**
+
+### Features
+
+Please explain how this feature could help the project and what is required to
+implement it.
+
+## Translation
+
+AgenDAV uses [Transifex](https://www.transifex.com/adobo/agendav/) for translations.
+
+Have a look at [Transifex documentation](http://docs.transifex.com/) for more information about
+adding a new language or upadting an existing translation.
+
+## Documentation
+
+Documentation is automatically generated and placed on http://docs.agendav.org/.
+Updating the documentation requires some [Sphinx](http://sphinx-doc.org/) knowledge.
+
+Have a look at the `doc/` directory.
 
 ## Contributing code
 
@@ -21,42 +48,32 @@ There are some facts that will help you when contributing code to AgenDAV:
 
 ### Pull requests
 
-* Please, ask on `agendav-dev` list (see above) before sending a new PR
-* Pull requests should only affect the `develop` branch. PRs that affect the `master` branch will be discarded. 
-  If you think your PR could also be useful for latest stable (`master` branch) just comment it on the PR
-  description
-* AgenDAV code follows [PSR-1](http://www.php-fig.org/psr/psr-1/) and [PSR-2](http://www.php-fig.org/psr/psr-2/)
-* Make your pull requests as small as possible. One pull request, one feature
-* Make sure to add tests for your feature, and update the documentation if needed
+* Please open an issue on GitHub first and describe your desired change before
+  starting to work on a PR
+* The target branch for Pull Requests is the `development` branch
+* Make your pull requests as small as possible, one topic per branch
+* Make sure to add tests for your feature, and update the documentation if
+  needed
+* Please explain your changes in a short, readable commit message
 
-## Issues
+## Coding Guidelines
 
-When reporting a bug make sure you specify the following data:
+This project has adopted the
+[PSR-2 Coding Style Guide](https://www.php-fig.org/psr/psr-2/) for PHP Code.
 
-* Your AgenDAV version
-* What CalDAV server you are using
-* A brief description of the issue
-* Step by step guide of what you did. Screenshots are welcome
-* What you were expecting to happen and what actualy happened
-* Any logs that could help
+## Release cycle
 
-It would be great if you could also try to reproduce the bug on latest `HEAD`.
+This project has adopted [SemVer 2 Versioning](https://semver.org/).
 
-## Translation
+New commits are composed in branch `development` until a new version is
+released.
 
-AgenDAV uses [Transifex](https://www.transifex.com/adobo/agendav/) for translations.
+The `main` branch always refers to the latest version available.
 
-Have a look at [Transifex documentation](http://docs.transifex.com/) for more information about
-adding a new language or upadting an existing translation.
+All notable changes made between each release are documented in the
+[Changelog](./CHANGELOG.md).
 
-## Documentation
-
-Documentation is automatically generated and placed on http://docs.agendav.org/ . Updating the
-documentation requires some [Sphinx](http://sphinx-doc.org/) knowledge.
-
-Have a look at the `doc/` directory.
-
-## New Releases
+### New Releases
 
 - Create test build runing `npm install && npm run-script build`
 - Run code quality tools
