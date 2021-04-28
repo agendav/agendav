@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.0] - 2021-04-28
+
+- FEATURE Allow login with HTTP Authorization header
+- FEATURE Add a lang attribute on the html tag
+- FEATURE Stop using bower, use npm instead
+- FEATURE️Update Symfony components
+- FEATURE Upgrade to jQuery 3.3.1 and Fullcalendar 3.8.0
+- FEATURE Docs: Explain maintenance mode
+
 ## [2.3.0] - 2021-04-27
 
 - FEATURE Flag session cookies with HttpOnly by default (#215)
