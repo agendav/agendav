@@ -2,7 +2,7 @@
     "name": "adobo/agendav",
     "description": "CalDAV web client",
     "type": "project",
-    "homepage": "http://agendav.org",
+    "homepage": "https://github.com/agendav/agendav/",
     "license": "GPL-3.0",
 
     "require": {

@@ -2,8 +2,7 @@
 
 [![Maintenance mode](https://img.shields.io/badge/maintenance_mode-%F0%9F%9A%A7-grey.svg?labelColor=orange)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
 [![Build Status](https://travis-ci.org/agendav/agendav.svg?branch=develop)](https://travis-ci.org/agendav/agendav)
-[![Develop docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](http://agendav.readthedocs.org/en/develop/)
-[![Stable docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](http://agendav.readthedocs.org/en/latest/)
+[![Docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](https://agendav.readthedocs.io/en/develop/)
 [![Made With](https://img.shields.io/badge/made_with-php-blue)](https://gitlab.com/pixelbrackets/acme-app#requirements)
 [![License](https://img.shields.io/badge/license-gpl--3.0-blue.svg)](https://spdx.org/licenses/GPL-3.0.html)
 [![Contribution](https://img.shields.io/badge/contributions_welcome-%F0%9F%94%B0-brightgreen.svg?labelColor=brightgreen)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
@@ -26,6 +25,10 @@ AgenDAV requires:
 - PHP cURL extension
 - A database supported by [Doctrine DBAL](https://www.doctrine-project.org/projects/doctrine-dbal/en/2.12/reference/configuration.html#configuration) like MySQL, PostgreSQL, SQLite
 - Optional: nodejs & npm to build assets (releases include a build)
+
+## Documentation
+
+https://agendav.readthedocs.io/
 
 ## Installation
 

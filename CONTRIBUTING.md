@@ -33,7 +33,7 @@ adding a new language or upadting an existing translation.
 
 ## Documentation
 
-Documentation is automatically generated and placed on http://docs.agendav.org/.
+Documentation is automatically generated and placed on https://agendav.readthedocs.io/.
 Updating the documentation requires some [Sphinx](http://sphinx-doc.org/) knowledge.
 
 Have a look at the `doc/` directory.
@@ -42,7 +42,7 @@ Have a look at the `doc/` directory.
 
 There are some facts that will help you when contributing code to AgenDAV:
 
-* AgenDAV ships with a [Vagrant environment](http://docs.agendav.org/en/develop/development/#virtual-machine)
+* AgenDAV ships with a [Vagrant environment](https://agendav.readthedocs.io/en/2.2.0/development/#virtual-machine)
   that is absolutely recommended when developing
 * AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
 
