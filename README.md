@@ -34,6 +34,10 @@ https://agendav.readthedocs.io/
 
 See [installation guide](https://agendav.readthedocs.io/en/develop/admin/installation/)
 
+### Docker Image
+
+Agendav offers no official Docker image. However, you may use unofficial docker images provided by community instead, for example https://ghcr.io/nagimov/agendav-docker.
+
 ## Source
 
 https://github.com/agendav/agendav
