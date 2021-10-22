@@ -342,6 +342,7 @@ class Client
     public function applyACL(Calendar $calendar, ACL $acl)
     {
         $url = $calendar->getUrl();
+        $this->http_client->setContentTypeXML();
         $body = $this->xml_toolkit->generateRequestBody('ACL', $acl);
 
         return $this->http_client->request('ACL', $url, $body);
