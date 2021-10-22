@@ -12,7 +12,7 @@
         "doctrine/dbal": "~2.5.2",
         "doctrine/migrations": "~1.5.0",
         "doctrine/orm": "~2.4",
-        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/guzzle": "~6.3",
         "guzzlehttp/streams": "~3.0",
         "league/fractal": "~0.15",
         "monolog/monolog": "~1.22.0",
