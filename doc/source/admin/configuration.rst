@@ -79,6 +79,8 @@ modify,  and start configuring your instance.
 
    Base CalDAV URL used to build all CalDAV URLs.
 
+   If you want to include the username add '%u' to your baseurl. It will be replaced with the username you enter on login.
+
    Examples::
 
     // SabreDAV
@@ -86,6 +88,9 @@ modify,  and start configuring your instance.
 
     // DAViCal
     $app['caldav.baseurl'] = 'http://caldav.server/caldav.php';
+
+    // Radicale
+    $app['caldav.baseurl'] = 'http://caldav.server/%u';
 
 
    .. note::
