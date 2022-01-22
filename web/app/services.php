@@ -111,14 +111,17 @@ $app['guzzle'] = function($app) {
         );
     }
 
+    $baseurl = $app['caldav.baseurl'];
+    // Pass username of logged-in user to baseurl to select calendar dynamically
+    $baseurl = str_replace('%u', $app['session']->get('username'), $baseurl);
+
     $client = new \GuzzleHttp\Client([
-        'base_uri' => $app['caldav.baseurl'],
+        'base_uri' => $baseurl,
         'handler' => $stack,
         'connect_timeout' => $app['caldav.connect.timeout'],
         'timeout' => $app['caldav.response.timeout'],
         'verify' => $app['caldav.certificate.verify'],
     ]);
-
 
     return $client;
 };
