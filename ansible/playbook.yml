@@ -45,7 +45,7 @@
             - mysql-server
             - python-dev
             - libmysqlclient-dev
-            - python-mysqldb
+            - python3-mysqldb
             - sqlite
             - nodejs
             - npm

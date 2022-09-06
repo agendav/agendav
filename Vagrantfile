@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "ubuntu/focal64" # Ubuntu 20.04
 
   config.vm.hostname = "agendav.dev"
   config.vm.network "forwarded_port", guest: 80, host: 8080
