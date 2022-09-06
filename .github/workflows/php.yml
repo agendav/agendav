@@ -12,16 +12,30 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "5.6"
+          - "7.0"
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict --working-dir=web/
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --working-dir=web/
-
-    - name: Run test suite
-      run: ./web/vendor/bin/phpunit tests
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+  
+      #- name: Validate composer.json and composer.lock
+      #  run: composer validate --strict --working-dir=web/
+  
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --working-dir=web/
+  
+      - name: Run test suite
+        run: ./web/vendor/bin/phpunit tests
