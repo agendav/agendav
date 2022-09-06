@@ -3,6 +3,18 @@
 Release notes
 =============
 
+.. _v2.5.0:
+2.5.0 (2022-09-06)
+-------------------
+
+* FEATURE Pass username to CalDAV baseurl (#254)
+* FEATURE Add minimal GitHub CI workflow to easen compatibility tests
+* FEATURE Pin base PHP version in .php-version
+* FEATURE Docs: Add docker image hint
+* FEATURE Composer: Update all dependency packages
+* BUGFIX Send expected Content-Type application/xml in WebDAV ACL (#252)
+* BUGFIX Restore vagrant test box
+
 .. _v2.4.0:
 2.4.0 (2021-04-28)
 -------------------
