@@ -44,6 +44,7 @@ There are some facts that will help you when contributing code to AgenDAV:
 
 * AgenDAV ships with a [Vagrant environment](https://agendav.readthedocs.io/en/2.2.0/development/#virtual-machine)
   that is absolutely recommended when developing
+* AgenDAV includes unit tests as well, run via `./web/vendor/bin/phpunit tests`
 * AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
 
 ### Pull requests
@@ -75,17 +76,23 @@ All notable changes made between each release are documented in the
 
 ### New Releases
 
+Manual release steps done by project maintainers.
+
+- Use the projects base PHP version, stored in the
+  [.php-version](https://packagist.org/packages/webit-de/php-version-pickup)
+  file (or run `php-version-pickup use`)
 - Create test build runing `npm install && npm run-script build`
 - Run code quality tools
 - Compare the »development« branch to »main«
   - Add a list of noteworthy features and bugfixes to CHANGELOG.md
   - Describe breaking changes in CHANGELOG.md
   - Describe changes in `doc/source/releasenotes.rst` as well
-- Change the version, using semantic versioning, in these files
-  ([example commit](https://github.com/agendav/agendav/commit/aa2c0f920207c17372b80ae45f1f4e77133d305e)):
+- Change the version, using semantic versioning, in these files:
   - `doc/source/conf.py`
   - `package.json`
   - `web/src/Version.php`
+- Create a release commit
+  ([example commit](https://github.com/agendav/agendav/commit/7d2f1bba00deb090943f14bf9c47c4a6ac4d1387))
 - Merge »development« branch to »main«
 - Tag the »main« branch with the new version
 - Push branch and tag
