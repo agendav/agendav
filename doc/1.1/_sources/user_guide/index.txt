@@ -1,9 +1,0 @@
-User guide
-==========
-
-.. toctree::
-
-   events
-
-
-Bla bla bla
