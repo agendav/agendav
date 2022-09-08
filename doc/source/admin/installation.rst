@@ -53,8 +53,7 @@ PHP configuration
 
 Make sure that you have the following PHP settings set:
 
-* ``magic_quotes_runtime``: *disabled*
-* ``date.timezone``: choose a valid time zone from `this list <http://php.net/manual/en/timezones.php>`_.
+* ``date.timezone``: choose a valid time zone from `this list <http://php.net/manual/en/timezones.php>`_, for example ``Europe/Berlin``.
 
 This is usually done on your ``php.ini`` file.
 
