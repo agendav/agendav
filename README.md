@@ -16,14 +16,18 @@ users to manage their own calendars and shared ones.
 
 AgenDAV requires:
 
-- A CalDAV server like [Baïkal](http://baikal-server.com/), [DAViCal](http://www.davical.org/), [Radicale](https://radicale.org/tutorial/), etc
+- A CalDAV server like [Baïkal](http://baikal-server.com/),
+  [DAViCal](http://www.davical.org/),
+  [Radicale](https://radicale.org/tutorial/), etc
 - A web server
-- PHP >= 5.5.9
+- PHP >= 7.2.0
 - PHP ctype extension
 - PHP mbstring extension
 - PHP mcrypt extension
 - PHP cURL extension
-- A database supported by [Doctrine DBAL](https://www.doctrine-project.org/projects/doctrine-dbal/en/2.12/reference/configuration.html#configuration) like MySQL, PostgreSQL, SQLite
+- A database supported by
+  [Doctrine DBAL](https://www.doctrine-project.org/projects/doctrine-dbal/en/2.12/reference/configuration.html#configuration)
+  like MySQL, PostgreSQL, SQLite
 - Optional: nodejs & npm to build assets (releases include a build)
 
 ## Documentation

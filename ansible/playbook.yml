@@ -17,6 +17,7 @@
         apt: name='python-pycurl' update_cache=yes
         become: yes
 
+      # Install multiple PHP versions in same box
       - name: add ondrej/php repository
         apt_repository: repo='ppa:ondrej/php'
         become: yes
@@ -33,14 +34,14 @@
         with_items:
             - curl
             - git
-            - php7.1
-            - php7.1-cli
-            - php7.1-curl
-            - php7.1-mysql
-            - php7.1-mcrypt
-            - php7.1-sqlite3
-            - php7.1-dom
-            - php7.1-mbstring
+            - php7.2
+            - php7.2-cli
+            - php7.2-curl
+            - php7.2-mysql
+            - php7.2-mcrypt
+            - php7.2-sqlite3
+            - php7.2-dom
+            - php7.2-mbstring
             - mysql-client
             - mysql-server
             - python-dev
@@ -75,7 +76,7 @@
         when: baikal.stat.exists == false
 
       - name: configure php
-        template: src=php/php.ini.j2 dest=/etc/php/7.1/apache2/php.ini owner=root mode=644 backup=yes
+        template: src=php/php.ini.j2 dest=/etc/php/7.2/apache2/php.ini owner=root mode=644 backup=yes
         become: yes
         notify: restart apache
 
