@@ -1,7 +1,7 @@
 {
     "name": "adobo/agendav",
-    "description": "CalDAV web client",
     "type": "project",
+    "description": "CalDAV web client",
     "homepage": "https://github.com/agendav/agendav/",
     "license": "GPL-3.0",
 
@@ -19,6 +19,7 @@
         "ramsey/uuid": "~3.0",
         "sabre/dav": "~3.1.0",
         "silex/silex": "~2.0",
+        "symfony/asset": "~2.8.0",
         "symfony/console": "~2.8.0",
         "symfony/debug": "~2.8.0",
         "symfony/event-dispatcher": "~2.8.0",
@@ -30,8 +31,7 @@
         "symfony/translation": "~2.8.0",
         "symfony/twig-bridge": "~2.8.0",
         "symfony/var-dumper": "~2.8.0",
-        "symfony/yaml": "~2.8.0",
-        "symfony/asset": "~2.8.0"
+        "symfony/yaml": "~2.8.0"
     },
 
     "require-dev": {
