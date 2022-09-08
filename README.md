@@ -48,7 +48,8 @@ https://github.com/agendav/agendav
 
 ## License
 
-GNU GENERAL PUBLIC LICENSE Version 3
+GNU General Public License v3.0 or later
+https://spdx.org/licenses/GPL-3.0-or-later.html
 
 ## Changelog
 
