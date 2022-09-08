@@ -1,11 +1,11 @@
 # AgenDAV - CalDAV web client
 
-[![Maintenance mode](https://img.shields.io/badge/maintenance_mode-%F0%9F%9A%A7-grey.svg?labelColor=orange)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
-[![Build Status](https://travis-ci.org/agendav/agendav.svg?branch=develop)](https://travis-ci.org/agendav/agendav)
-[![Docs](https://readthedocs.org/projects/agendav/badge/?version=develop)](https://agendav.readthedocs.io/en/develop/)
-[![Made With](https://img.shields.io/badge/made_with-php-blue)](https://gitlab.com/pixelbrackets/acme-app#requirements)
-[![License](https://img.shields.io/badge/license-gpl--3.0-blue.svg)](https://spdx.org/licenses/GPL-3.0.html)
-[![Contribution](https://img.shields.io/badge/contributions_welcome-%F0%9F%94%B0-brightgreen.svg?labelColor=brightgreen)](https://github.com/agendav/agendav/blob/develop/CONTRIBUTING.md)
+[![Maintenance mode](https://img.shields.io/badge/maintenance_mode-%F0%9F%9A%A7-grey.svg?labelColor=orange)](https://github.com/agendav/agendav/#maintenance-mode)
+[![Build Status](https://img.shields.io/github/workflow/status/agendav/agendav/CI/main)](https://github.com/agendav/agendav/actions)
+[![Docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](https://agendav.readthedocs.io/)
+[![Made With](https://img.shields.io/badge/made_with-php-blue)](https://github.com/agendav/agendav#requirements)
+[![License](https://img.shields.io/badge/license-gpl--3.0--or--later-blue.svg)](https://spdx.org/licenses/GPL-3.0-or-later.html)
+[![Contribution](https://img.shields.io/badge/contributions_welcome-%F0%9F%94%B0-brightgreen.svg?labelColor=brightgreen)](https://github.com/agendav/agendav/blob/development/CONTRIBUTING.md)
 
 AgenDAV is a CalDAV web client which features an AJAX interface to allow
 users to manage their own calendars and shared ones.
@@ -36,11 +36,11 @@ https://agendav.readthedocs.io/
 
 ## Installation
 
-See [installation guide](https://agendav.readthedocs.io/en/develop/admin/installation/)
+See [installation guide](https://agendav.readthedocs.io/en/latest/admin/installation/)
 
 ### Docker Image
 
-Agendav offers no official Docker image. However, you may use unofficial docker images provided by community instead, for example https://ghcr.io/nagimov/agendav-docker.
+Agendav offers no official Docker image. However, you may use unofficial docker images provided by the community instead, for example https://ghcr.io/nagimov/agendav-docker.
 
 ## Source
 
