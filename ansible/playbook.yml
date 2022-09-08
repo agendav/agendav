@@ -141,7 +141,7 @@
       - name: install node dependencies for development
         npm: path=/vagrant state=present
 
-      - name: run npm build
+      - name: run npm build (install PHP dependencies via Composer and build assets)
         environment:
           COMPOSER_VENDOR_DIR: /var/agendav-vendors
         command: npm run build chdir=/vagrant
