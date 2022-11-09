@@ -32,7 +32,7 @@ https://agendav.readthedocs.io/
 
 ## Installation
 
-See [installation guide](https://agendav.readthedocs.io/en/develop/admin/installation/)
+See [installation guide](https://agendav.readthedocs.io/en/latest/admin/installation/)
 
 ### Docker Image
 
