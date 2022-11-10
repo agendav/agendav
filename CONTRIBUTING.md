@@ -42,7 +42,7 @@ Have a look at the `doc/` directory.
 
 There are some facts that will help you when contributing code to AgenDAV:
 
-* AgenDAV ships with a [Vagrant environment](https://agendav.readthedocs.io/en/2.2.0/development/#virtual-machine)
+* AgenDAV ships with a [Vagrant environment](https://agendav.readthedocs.io/en/latest/development/#virtual-machine)
   that is absolutely recommended when developing
 * AgenDAV includes unit tests as well, run via `./web/vendor/bin/phpunit tests`
 * AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
@@ -78,6 +78,7 @@ All notable changes made between each release are documented in the
 
 Manual release steps done by project maintainers.
 
+- Checkout latest »development« branch and rebase against »main«
 - Use the projects base PHP version, stored in the
   [.php-version](https://packagist.org/packages/webit-de/php-version-pickup)
   file (or run `php-version-pickup use`)
@@ -91,6 +92,7 @@ Manual release steps done by project maintainers.
   - `doc/source/conf.py`
   - `package.json`
   - `web/src/Version.php`
+- Run some manual test in the Vagrant box
 - Create a release commit
   ([example commit](https://github.com/agendav/agendav/commit/7d2f1bba00deb090943f14bf9c47c4a6ac4d1387))
 - Merge »development« branch to »main«

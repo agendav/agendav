@@ -26,5 +26,5 @@ namespace AgenDAV;
  */
 class Version
 {
-    const V = '2.5.0';
+    const V = '2.6.0';
 }

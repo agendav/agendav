@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0] - 2022-11-10
+
+- FEATURE Docs: Replace outdated badge links
+- FEATURE Composer: Bump versions & version ranges
+- FEATURE Replace deprecated license identifier
+- FEATURE !! Drop support for PHP < 7.2
+
 ## [2.5.0] - 2022-09-06
 
 - FEATURE Pass username to CalDAV baseurl (#254)
