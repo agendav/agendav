@@ -75,8 +75,8 @@ class Toolkit
     /**
      * Generates the XML body for a request
      *
-     * @param string $request   One of MKCALENDAR, PROPFIND, PROPPATCH, REPORT-CALENDAR or
-     *                          REPORT-PRINCIPAL-SEARCH
+     * @param string $request   One of MKCALENDAR, PROPFIND, PROPPATCH, REPORT-CALENDAR,
+     *                          REPORT-PRINCIPAL-SEARCH or EXPAND-PROPERTY
      * @param mixed $parameters array of properties, \AgenDAV\CalDAV\ComponentFilter
      *                          object if $request is REPORT or \AgenDAV\CalDAV\Share\ACL
      *                          if $request is ACL
@@ -86,6 +86,8 @@ class Toolkit
     public function generateRequestBody($request, $parameters)
     {
         switch ($request) {
+            case 'EXPAND-PROPERTY':
+                return $this->generator->expandPropertyBody($parameters);
             case 'MKCALENDAR':
                 return $this->generator->mkCalendarBody($parameters);
             case 'PROPFIND':

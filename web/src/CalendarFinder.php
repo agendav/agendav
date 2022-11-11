@@ -84,6 +84,15 @@ class CalendarFinder
             $calendar->setOwner($this->current_principal);
         }
 
+        $urls = $this->client->getProxyFor($calendar_home_set);
+        foreach ($urls as $url) {
+            $other_calendars = $this->client->getCalendars($url);
+            foreach ($other_calendars as $calendar) {
+                $calendar->setOwner($this->current_principal); # FIXME: this is required to avoid null ptr exception
+            }
+            $calendars = array_merge($calendars, $other_calendars);
+        }
+
         if ($this->sharing_enabled) {
             // Add share info to own calendars
             $this->addShares($calendars);
