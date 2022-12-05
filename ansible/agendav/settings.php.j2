@@ -27,6 +27,9 @@ $app['csrf.secret'] = 'lkjihgfedcba';
 // Log path
 $app['log.path'] = '/var/log/agendav/';
 
+// Log file
+$app['log.file'] = $app['log.path'] . date('Y-m-d') . '.log';
+
 // Base URL
 $app['caldav.baseurl'] = 'http://localhost:81/cal.php';
 
