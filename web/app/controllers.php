@@ -25,6 +25,9 @@ $controllers->get('/', function () use ($app) {
     return $app['twig']->render('calendar.html');
 })
 ->bind('calendar');
+$controllers->get('/iframe', function () use ($app) {
+    return $app['twig']->render('calendar_iframe.html');
+});
 
 $controllers->get('/preferences', '\AgenDAV\Controller\Preferences::indexAction')->bind('preferences');
 $controllers->post('/preferences', '\AgenDAV\Controller\Preferences::saveAction')->bind('preferences.save');
