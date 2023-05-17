@@ -63,6 +63,15 @@ class DateHelperTest extends TestCase
         $expected = new \DateTimeImmutable('2012-10-07 00:00:00', $this->utc);
 
         $this->assertEquals($expected, $dt);
+
+
+        $str = '2023-06-05T00:00:00';
+        $dt = DateHelper::fullcalendarToDateTime($str, $this->utc);
+
+        $expected = new \DateTimeImmutable('2023-06-05 00:00:00', $this->utc);
+
+        $this->assertEquals($expected, $dt);
+
     }
 
     public function testAddMinutesTo()

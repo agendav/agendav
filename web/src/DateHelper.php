@@ -83,8 +83,13 @@ class DateHelper
      */
     public static function fullcalendarToDateTime($input, \DateTimeZone $timezone)
     {
-        $format = 'Y-m-d\THis';
-        $input .= 'T000000';
+        // depending of the view type Month, Week, Day the format sent by fullcalendar is Y-m-d or Y-m-d\TH:i:s
+        if (strpos($input, 'T') == 10) {
+            $format = 'Y-m-d\TH:i:s';
+        } else {
+            $format = 'Y-m-d\THis';
+            $input .= 'T000000';
+        }
 
         $result = self::createDateTime($format, $input, $timezone);
 
