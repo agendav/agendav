@@ -16,7 +16,7 @@ users to manage their own calendars and shared ones.
 
 AgenDAV requires:
 
-- A CalDAV server like [Baïkal](http://baikal-server.com/),
+- A CalDAV server like [Baïkal](https://github.com/sabre-io/Baikal),
   [DAViCal](http://www.davical.org/),
   [Radicale](https://radicale.org/tutorial/), etc
 - A web server
