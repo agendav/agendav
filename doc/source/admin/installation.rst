@@ -17,7 +17,6 @@ AgenDAV |release| requires the following software to be installed:
 
   * ctype
   * curl
-  * curl
   * mbstring
   * mcrypt
   * tokenizer
