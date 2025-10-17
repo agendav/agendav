@@ -84,11 +84,9 @@ class DateHelper
      */
     public static function fullcalendarToDateTime($input, \DateTimeZone $timezone)
     {
+        $format = 'Y-m-d\TH:i:s';
         if (strlen($input) === 10) {
-            $format = 'Y-m-d\THis';
-            $input .= 'T000000';
-        } else {
-            $format = 'Y-m-d\TH:i:s';
+            $input .= 'T00:00:00';
         }
 
         return self::createDateTime($format, $input, $timezone);
