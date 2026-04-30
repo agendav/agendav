@@ -31,7 +31,7 @@ class VObjectEventInstanceTest extends TestCase
         'SEQUENCE' => '2',
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->vcalendar = new VCalendar;
         $this->now = new \DateTimeImmutable('2015-01-09 01:23:45');

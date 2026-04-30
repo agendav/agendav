@@ -15,7 +15,7 @@ class CalendarTransformerTest extends TestCase
     /** @var AgenDAV\CalDAV\Resource\Calendar */
     private $calendar;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->calendar = new Calendar(
             'http://test.url',

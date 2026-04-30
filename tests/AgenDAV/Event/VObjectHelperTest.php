@@ -13,7 +13,7 @@ class VObjectHelperTest extends TestCase
 {
     protected $vcalendar;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->vcalendar = new VCalendar;
     }
