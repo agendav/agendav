@@ -15,11 +15,9 @@ class CalendarTest extends TestCase
         $this->assertEquals($c->getProperty(Calendar::DISPLAYNAME), 'Test');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testSetUrl()
     {
+        $this->expectException(\RuntimeException::class);
         $c = new Calendar('/path');
         $c->setProperty('url',  '/should_not_change');
     }

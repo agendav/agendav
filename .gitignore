@@ -15,6 +15,9 @@
 *.phar
 *.sqlite
 
+# PHPUnit
+/tests/.phpunit.result.cache
+
 agendav-built*
 web/public/dist/css/*.css
 web/public/dist/js/*.js

@@ -61,12 +61,9 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * Should throw an exception
-     * @expectedException AgenDAV\Exception\NotAuthenticated
-     */
     public function test401()
     {
+        $this->expectException(\AgenDAV\Exception\NotAuthenticated::class);
         $client = $this->createClient([
             new Response(401)
         ]);
@@ -74,36 +71,29 @@ class ClientTest extends TestCase
         $client->request('GET', '/');
     }
 
-    /**
-     * Should throw an exception
-     * @expectedException AgenDAV\Exception\PermissionDenied
-     */
     public function test403()
     {
+        $this->expectException(\AgenDAV\Exception\PermissionDenied::class);
         $client = $this->createClient([
             new Response(403)
         ]);
 
         $client->request('GET', '/');
     }
-    /**
-     * Should throw an exception
-     * @expectedException AgenDAV\Exception\NotFound
-     */
+
     public function test404()
     {
+        $this->expectException(\AgenDAV\Exception\NotFound::class);
         $client = $this->createClient([
             new Response(404)
         ]);
 
         $client->request('GET', '/');
     }
-    /**
-     * Should throw an exception
-     * @expectedException AgenDAV\Exception\ElementModified
-     */
+
     public function test412()
     {
+        $this->expectException(\AgenDAV\Exception\ElementModified::class);
         $client = $this->createClient([
             new Response(412)
         ]);
