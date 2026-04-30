@@ -44,7 +44,7 @@ class ClientTest extends TestCase
     protected $event_parser;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->xml_generator = new Generator();
         $this->xml_parser = new Parser();
@@ -81,9 +81,9 @@ class ClientTest extends TestCase
         $this->validateCheckAuthenticatedRequests();
     }
 
-    /** @expectedException \AgenDAV\Exception\NotFound */
     public function testGetCurrentUserPrincipalNotFound()
     {
+        $this->expectException(\AgenDAV\Exception\NotFound::class);
         $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"></d:multistatus>
@@ -127,9 +127,9 @@ BODY;
         );
     }
 
-    /** @expectedException \AgenDAV\Exception\NotFound */
     public function testGetCalendarHomeSetNotFound()
     {
+        $this->expectException(\AgenDAV\Exception\NotFound::class);
         $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"></d:multistatus>
@@ -543,11 +543,9 @@ BODY;
       $this->validateFetchObjectsRequest($calendar, new TimeRange($start, $end));
     }
 
-    /**
-     * @expectedException \AgenDAV\Exception\NotFound
-     */
     public function testFetchObjectByUidNonExistant()
     {
+        $this->expectException(\AgenDAV\Exception\NotFound::class);
         $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"/>

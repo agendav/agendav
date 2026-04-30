@@ -5,20 +5,16 @@ use PHPUnit\Framework\TestCase;
 
 class PermissionsTest extends TestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testEmptyPrivileges()
     {
+        $this->expectException(\RuntimeException::class);
         $perms = new Permissions();
         $perms->getPrivilegesFor('owner');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testAlreadyConfiguredRole()
     {
+        $this->expectException(\RuntimeException::class);
         $perms = new Permissions([
             'owner' => [ '{DAV:}all' ],
         ]);

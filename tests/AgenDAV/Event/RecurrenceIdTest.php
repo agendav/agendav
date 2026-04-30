@@ -11,7 +11,7 @@ class RecurrenceIdTest extends TestCase
 
     const DATETIME_STRING = '2015-06-17 19:36:00';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->datetime = new \DateTimeImmutable(
             self::DATETIME_STRING,

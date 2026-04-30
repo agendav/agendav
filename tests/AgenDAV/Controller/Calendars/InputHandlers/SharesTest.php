@@ -5,11 +5,9 @@ use PHPUnit\Framework\TestCase;
 
 class SharesTest extends TestCase
 {
-    /**
-     * @expectedException \LengthException
-     */
     public function testWrongLength()
     {
+        $this->expectException(\LengthException::class);
         $result = Shares::buildFromInput([ 'a' ], [ '0', '1' ], '/owner', '/calendar');
     }
 
