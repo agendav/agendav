@@ -27,12 +27,14 @@ $app['locale'] = function($app) { return $app['defaults.language']; };
 $app['orm'] = function($app) {
     $development_mode = ($app['environment'] === 'dev');
 
-    $setup = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
+    $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
         [ __DIR__ . '/../src/Data' ],
         $development_mode
     );
 
-    return Doctrine\ORM\EntityManager::create($app['db.options'], $setup);
+    $connection = \Doctrine\DBAL\DriverManager::getConnection($app['db.options'], $config);
+
+    return new \Doctrine\ORM\EntityManager($connection, $config);
 };
 
 // Fractal manager

@@ -354,7 +354,7 @@ class VObjectEventInstance implements EventInstance
      *
      * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
-    public function setRecurrenceId(RecurrenceId $recurrence_id = null)
+    public function setRecurrenceId(?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
             $this->setProperty('RECURRENCE-ID', null);

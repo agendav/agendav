@@ -25,23 +25,19 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+
 /**
  * Holds user preferences
  */
-
-/**
- * @Entity
- * @Table(name="prefs")
- */
+#[Entity]
+#[Table(name: 'prefs')]
 class Preferences
 {
-    /**
-     * @Id
-     * @Column(type="string")
-     */
+    #[Id]
+    #[Column(type: 'string')]
     private $username;
 
-    /** @Column(type="json_array") */
+    #[Column(type: 'json')]
     private $options = array();
 
     public function __construct($arr_values = array()) {

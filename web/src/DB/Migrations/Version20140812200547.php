@@ -10,14 +10,14 @@ use \AgenDAV\DB\Migrations\AgenDAVMigration;
  */
 class Version20140812200547 extends AgenDAVMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->skipIf(!$this->upgradingFrom1x(), 'This migration only applies to AgenDAV 1.x upgrades');
         $this->write('Migrating the old shared table');
 
         $platform = $this->connection->getDatabasePlatform();
 
-        if ($platform->getName() === 'mysql') {
+        if ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
             $sql = 'INSERT INTO shares (`sid`, `owner`, `calendar`, `with`, `options`, `rw`) SELECT'
                 .' `sid`, `user_from`, `calendar`, `user_which`, `options`, `write_access` FROM shared';
         } else {
@@ -28,7 +28,7 @@ class Version20140812200547 extends AgenDAVMigration
         $this->addSql($sql);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->write('Sorry, no way back!');
     }

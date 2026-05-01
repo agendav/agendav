@@ -3,7 +3,7 @@
 namespace AgenDAV\CalDAV;
 
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Middleware;
@@ -88,7 +88,7 @@ class ClientTest extends TestCase
 <?xml version="1.0" encoding="utf-8"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"></d:multistatus>
 BODY;
-        $response = new Response(207, [], Stream::factory($body));
+        $response = new Response(207, [], Utils::streamFor($body));
         $caldav_client = $this->createCalDAVClient($response);
 
         $caldav_client->getCurrentUserPrincipal();
@@ -112,7 +112,7 @@ BODY;
   </d:response>
 </d:multistatus>
 BODY;
-        $response = new Response(207, [], Stream::factory($body));
+        $response = new Response(207, [], Utils::streamFor($body));
         $caldav_client = $this->createCalDAVClient($response);
 
         $this->assertEquals(
@@ -134,7 +134,7 @@ BODY;
 <?xml version="1.0" encoding="utf-8"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/"></d:multistatus>
 BODY;
-        $response = new Response(207, [], Stream::factory($body));
+        $response = new Response(207, [], Utils::streamFor($body));
         $caldav_client = $this->createCalDAVClient($response);
 
         $caldav_client->getCalendarHomeSet(new Principal('/principal/url'));
@@ -158,7 +158,7 @@ BODY;
   </d:response>
 </d:multistatus>
 BODY;
-        $response = new Response(207, [], Stream::factory($body));
+        $response = new Response(207, [], Utils::streamFor($body));
         $caldav_client = $this->createCalDAVClient($response);
 
         $calendar_home_set = $caldav_client->getCalendarHomeSet(new Principal('/principal/url'));
@@ -276,7 +276,7 @@ BODY;
         $response = new Response(
             207,
             [],
-            Stream::factory($body)
+            Utils::streamFor($body)
         );
 
         $client = $this->createCalDAVClient($response);
@@ -349,7 +349,7 @@ BODY;
         $response = new Response(
             207,
             [],
-            Stream::factory($body)
+            Utils::streamFor($body)
         );
 
         $client = $this->createCalDAVClient($response);
@@ -504,7 +504,7 @@ BODY;
       $response = new Response(
           207,
           [],
-          Stream::factory($body)
+          Utils::streamFor($body)
       );
 
       $this->event_parser
@@ -553,7 +553,7 @@ BODY;
         $response = new Response(
             207,
             [],
-            Stream::factory($body)
+            Utils::streamFor($body)
         );
 
         $client = $this->createCalDAVClient($response);
@@ -599,7 +599,7 @@ BODY;
         $response = new Response(
             207,
             [],
-            Stream::factory($body)
+            Utils::streamFor($body)
         );
 
         $this->event_parser

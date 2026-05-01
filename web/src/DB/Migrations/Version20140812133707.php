@@ -7,7 +7,7 @@ use \AgenDAV\DB\Migrations\AgenDAVMigration;
 
 class Version20140812133707 extends AgenDAVMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->write('Creating initial schema for AgenDAV');
         $this->createSessionsTable($schema);
@@ -21,7 +21,7 @@ class Version20140812133707 extends AgenDAVMigration
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->write('Sorry, no way back!');
     }

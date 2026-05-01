@@ -83,7 +83,7 @@ interface Event
      *
      * @return boolean
      */
-    public function isException(RecurrenceId $recurrence_id = null);
+    public function isException(?RecurrenceId $recurrence_id = null);
 
     /**
      * Checks if a RECURRENCE-ID is a removed instance from the recurrence
@@ -92,7 +92,7 @@ interface Event
      *
      * @return boolean
      */
-    public function isRemovedInstance(RecurrenceId $recurrence_id = null);
+    public function isRemovedInstance(?RecurrenceId $recurrence_id = null);
 
     /**
      * Returns an iCalendar string representation of this event
@@ -127,7 +127,7 @@ interface Event
      * is specified
      */
 
-    public function getEventInstance(RecurrenceId $recurrence_id = null);
+    public function getEventInstance(?RecurrenceId $recurrence_id = null);
 
     /**
      * Adds an EventInstance for this event. In case the event is not recurrent,

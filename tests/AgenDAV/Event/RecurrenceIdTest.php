@@ -59,8 +59,7 @@ class RecurrenceIdTest extends TestCase
         $this->assertTrue($recurrence_id->matchesDateTime($this->datetime));
 
         // Test with a different timezone
-        $new_datetime = clone $this->datetime;
-        $new_datetime->setTimeZone(new \DateTimeZone('Africa/Asmara'));
+        $new_datetime = $this->datetime->setTimeZone(new \DateTimeZone('Africa/Asmara'));
         $this->assertTrue(
             $recurrence_id->matchesDateTime($new_datetime),
             'matchesDateTime() can\'t handle different time zones'

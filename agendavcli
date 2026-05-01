@@ -12,32 +12,35 @@ $app = require_once __DIR__ . '/web/app/app.php';
 require_once __DIR__ . '/web/app/services.php';
 require __DIR__.'/web/config/prod.php';
 
-$helperSet = new \Symfony\Component\Console\Helper\HelperSet(
-    [
-    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($app['db']),
-    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($app['orm']),
-    'dialog' => new \Symfony\Component\Console\Helper\DialogHelper(),
-    ]
-);
-
 $cli = new \Symfony\Component\Console\Application('AgenDAV CLI', \AgenDAV\Version::V);
 $cli->setCatchExceptions(true);
-$cli->setHelperSet($helperSet);
-$cli->addCommands(array(
+
+$em = $app['orm'];
+$connection = $em->getConnection();
+
+// Doctrine Migrations 3 dependency factory
+$migrationsConfig = new \Doctrine\Migrations\Configuration\Migration\ConfigurationFile(
+    __DIR__ . '/migrations.yml'
+);
+$dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
+    $migrationsConfig,
+    new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
+);
+
+\Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($cli, $dependencyFactory);
+
+$cli->addCommands([
     // DBAL Commands
-    new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(),
-    new \Doctrine\DBAL\Tools\Console\Command\ImportCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
-    new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
+    new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(
+        new \Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider($connection)
+    ),
 
     // ORM
-    new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(),
+    new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(
+        new \Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
+    ),
 
     // Clear sessions command
-    new \AgenDAV\Console\Command\SessionsClearCommand(),
-));
+    new \AgenDAV\Console\Command\SessionsClearCommand($connection),
+]);
 $cli->run();
