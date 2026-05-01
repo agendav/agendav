@@ -18,7 +18,7 @@ class ReminderTest extends TestCase
 
         $this->assertEquals(2, $reminder->getPosition());
         $this->assertEquals(
-            new \DateInterval('PT0M'),
+            \DateInterval::createFromDateString('0 minutes'),
             $reminder->getWhen()
         );
 
@@ -32,7 +32,7 @@ class ReminderTest extends TestCase
 
         $this->assertNull($reminder->getPosition());
         $this->assertEquals(
-            new \DateInterval('PT3H'),
+            \DateInterval::createFromDateString('3 hours'),
             $reminder->getWhen()
         );
     }

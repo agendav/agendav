@@ -10,7 +10,7 @@ use \AgenDAV\DB\Migrations\AgenDAVMigration;
  */
 class Version20140812203419 extends AgenDAVMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->skipIf(!$this->upgradingFrom1x(), 'This migration only applies to AgenDAV 1.x upgrades');
         $this->write('Removing old AgenDAV 1.x tables');
@@ -18,7 +18,7 @@ class Version20140812203419 extends AgenDAVMigration
         $schema->dropTable('shared');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->write('Sorry, no way back!');
     }

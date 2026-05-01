@@ -160,7 +160,7 @@ class VObjectEvent implements Event
      * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return boolean
      */
-    public function isException(RecurrenceId $recurrence_id = null)
+    public function isException(?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
             return false;
@@ -183,7 +183,7 @@ class VObjectEvent implements Event
      * @param \AgenDAV\Event\RecurrenceId $recurrence_id
      * @return boolean
      */
-    public function isRemovedInstance(RecurrenceId $recurrence_id = null)
+    public function isRemovedInstance(?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
             return false;
@@ -372,7 +372,7 @@ class VObjectEvent implements Event
      * is specified
      */
 
-    public function getEventInstance(RecurrenceId $recurrence_id = null)
+    public function getEventInstance(?RecurrenceId $recurrence_id = null)
     {
         $vevent = null;
 

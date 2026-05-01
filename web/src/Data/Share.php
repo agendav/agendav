@@ -30,39 +30,35 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\PostLoad;
+
 /**
  * Holds information about a calendar that has been shared
  */
-
-/**
- * @Entity
- * @HasLifecycleCallbacks
- * @Table(name="shares")
- */
+#[Entity]
+#[HasLifecycleCallbacks]
+#[Table(name: 'shares')]
 class Share
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue
-     */
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue]
     private $sid;
 
-    /** @Column(type="string") */
+    #[Column(type: 'string')]
     private $owner;
 
-    /** @Column(type="string") */
+    #[Column(type: 'string')]
     private $calendar;
 
-    /** @Column(name="`with`", type="string") */
+    #[Column(name: '`with`', type: 'string')]
     private $with;
 
     private $with_principal;
 
-    /** @Column(type="array") */
+    #[Column(type: 'array')]
     private $options = [];
 
-    /** @Column(type="boolean") */
+    #[Column(type: 'boolean')]
     private $rw;
 
 
@@ -239,7 +235,7 @@ class Share
         }
     }
 
-    /** @PostLoad */
+    #[PostLoad]
     public function replaceOldProperties() {
         $replacements = [
             'displayname' => Calendar::DISPLAYNAME,

@@ -1,4 +1,8 @@
 name: AgenDAV DB schema
-migrations_namespace: AgenDAV\DB\Migrations
-table_name: schema_versions
-migrations_directory: web/src/DB/Migrations
+table_storage:
+    table_name: schema_versions
+    version_column_name: version
+migrations_paths:
+    'AgenDAV\DB\Migrations': web/src/DB/Migrations
+all_or_nothing: true
+check_database_platform: true

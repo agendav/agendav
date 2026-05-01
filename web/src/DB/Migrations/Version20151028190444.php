@@ -2,7 +2,7 @@
 
 namespace AgenDAV\DB\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -10,10 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20151028190444 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $principals = $schema->createTable('principals');
         $principals->addColumn('url', 'string', ['length' => 255])->setNotnull(true);
@@ -23,12 +20,7 @@ class Version20151028190444 extends AbstractMigration
         $principals->setPrimaryKey(['url']);
     }
 
-    /**
-     * @param Schema $schema
-     */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
