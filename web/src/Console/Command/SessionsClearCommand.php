@@ -20,28 +20,32 @@ namespace AgenDAV\Console\Command;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SessionsClearCommand extends Command
 {
-    protected function configure()
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
+    {
+        parent::__construct();
+        $this->connection = $connection;
+    }
+
+    protected function configure(): void
     {
         $this
             ->setName('sessions:clear')
             ->setDescription('Removes all user sessions');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $db = $this->getHelper('db');
-        $connection = $db->getConnection();
+        $this->connection->executeStatement('DELETE FROM sessions');
 
-        $sql = 'DELETE FROM sessions';
-        $stmt = $connection->prepare($sql);
-        $stmt->execute();
+        return Command::SUCCESS;
     }
 }

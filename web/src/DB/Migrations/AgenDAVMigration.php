@@ -21,7 +21,7 @@
 
 namespace AgenDAV\DB\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 
 abstract class AgenDAVMigration extends AbstractMigration
 {
@@ -33,7 +33,7 @@ abstract class AgenDAVMigration extends AbstractMigration
      */
     protected function upgradingFrom1x()
     {
-        $tables = $this->connection->getSchemaManager()->listTables();
+        $tables = $this->connection->createSchemaManager()->listTables();
 
         foreach ($tables as $table) {
             if ($table->getName() == 'migrations') {

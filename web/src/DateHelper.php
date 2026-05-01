@@ -40,10 +40,11 @@ class DateHelper
     {
         $result = \DateTimeImmutable::createFromFormat($format, $value, $timezone);
 
-        // Check for errors
+        // Check for errors. PHP 8.2+ returns false from getLastErrors() when there
+        // are no warnings or errors at all.
         $err = \DateTimeImmutable::getLastErrors();
 
-        if (false === $result || $err['warning_count']>0) {
+        if (false === $result || (is_array($err) && ($err['warning_count'] > 0 || $err['error_count'] > 0))) {
             throw new \InvalidArgumentException('Error building DateTimeImmutable object');
         }
 
@@ -60,7 +61,7 @@ class DateHelper
      * @return \DateTimeImmutable Date and time parsed from initial string
      * @throws \InvalidArgumentException
      */
-    public static function frontEndToDateTime($str, \DateTimeZone $tz = null)
+    public static function frontEndToDateTime($str, ?\DateTimeZone $tz = null)
     {
         $format = 'Y-m-d\TH:i:s.u\Z';
 

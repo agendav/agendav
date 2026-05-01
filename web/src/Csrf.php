@@ -28,7 +28,7 @@ class Csrf
 {
     public static function check(Request $request, Application $app)
     {
-        $app['monolog']->addDebug('Starting CSRF check');
+        $app['monolog']->debug('Starting CSRF check');
 
         // This also generates a new CSRF token if not present
         $current_token = self::getCurrentToken($app);
@@ -38,7 +38,7 @@ class Csrf
         }
 
         if (!$request->request->has('_token')) {
-            $app['monolog']->addDebug('_token not found on request');
+            $app['monolog']->debug('_token not found on request');
             $app->abort(401, 'CSRF token not present');
             return;
         }
@@ -47,17 +47,17 @@ class Csrf
 
         $token = new CsrfToken($app['csrf.secret'], $csrf_provided_value);
 
-        $app['monolog']->addDebug('CSRF token sent by user', [
+        $app['monolog']->debug('CSRF token sent by user', [
             'value' => $csrf_provided_value,
         ]);
 
         if (!$app['csrf.manager']->isTokenValid($token)) {
-            $app['monolog']->addDebug('CSRF token is not valid. Aborting');
+            $app['monolog']->debug('CSRF token is not valid. Aborting');
             $app->abort(401, 'Invalid CSRF token');
             return;
         }
 
-        $app['monolog']->addDebug('CSRF token successfully validated');
+        $app['monolog']->debug('CSRF token successfully validated');
         return;
     }
 

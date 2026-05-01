@@ -118,7 +118,7 @@ abstract class JSONController
             );
 
         } catch (\AgenDAV\Exception\ConnectionProblem $exception) {
-            $app['monolog']->addError(sprintf(
+            $app['monolog']->error(sprintf(
                 "Having issues contacting the CalDAV server: %s",
                 var_export($exception->getMessage(), true)
             ));
@@ -128,7 +128,7 @@ abstract class JSONController
             return $this->generateError($message, 503);
 
         } catch (\AgenDAV\Exception $exception) {
-            $app['monolog']->addWarning(sprintf(
+            $app['monolog']->warning(sprintf(
                 "Received unexpected HTTP code %d (%s) for input: %s",
                 $exception->getCode(),
                 $exception->getMessage(),
@@ -140,7 +140,7 @@ abstract class JSONController
             );
 
         } catch (\Exception $exception) {
-            $app['monolog']->addCritical(
+            $app['monolog']->critical(
                 sprintf('Received unexpected exception %s (%s:%d): %s',
                     get_class($exception),
                     $exception->getFile(),

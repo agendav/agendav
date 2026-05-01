@@ -44,7 +44,7 @@ class Authentication
                 $success = $this->processLogin($user, $password, $app);
 
                 if ($success === true) {
-                    $app['monolog']->addInfo(
+                    $app['monolog']->info(
                         sprintf('User %s logged in from %s', $user, $request->getClientIp())
                     );
                     return new RedirectResponse(
@@ -52,7 +52,7 @@ class Authentication
                     );
                 }
 
-                $app['monolog']->addInfo(
+                $app['monolog']->info(
                     sprintf('Failed login for %s from %s', $user, $request->getClientIp())
                 );
                 $template_vars['error'] =  $app['translator']->trans('messages.error_auth');
