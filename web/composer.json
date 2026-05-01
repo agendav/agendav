@@ -5,7 +5,7 @@
     "homepage": "https://github.com/agendav/agendav/",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.5",
         "doctrine/cache": "^1.13",
         "doctrine/common": "^2.13",
         "doctrine/dbal": "^2.13",
