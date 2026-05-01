@@ -12,13 +12,12 @@ AgenDAV |release| requires the following software to be installed:
 
 * A CalDAV server
 * A web server
-* PHP >= 7.2.0
+* PHP >= 8.5.0
 * PHP extensions:
 
   * ctype
   * curl
   * mbstring
-  * mcrypt
   * tokenizer
   * xml
   * xmlreader
