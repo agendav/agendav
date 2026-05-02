@@ -22,88 +22,62 @@ namespace AgenDAV\Controller\Event;
  */
 
 use AgenDAV\Controller\JSONController;
-use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
 use AgenDAV\Event\RecurrenceId;
-use Silex\Application;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Delete extends JSONController
 {
-    /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
     protected function validateInput(ParameterBag $input)
     {
-        $fields = [
-            'calendar',
-            'uid',
-            'href',
-            'etag',
-        ];
-
-        foreach ($fields as $name) {
+        foreach (['calendar', 'uid', 'href', 'etag'] as $name) {
             if (empty($input->get($name))) {
                 return false;
             }
         }
-
         return true;
     }
 
-    public function execute(ParameterBag $input, Application $app)
-    {
-        // Load calendar object
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
         $calendar = $this->client->getCalendarByUrl($input->get('calendar'));
         $uid = $input->get('uid');
         $object = $this->client->fetchObjectByUid($calendar, $uid);
         $object->setEtag($input->get('etag'));
 
-        // Single instance removal. We need the full object
         if (!empty($input->get('recurrence_id'))) {
-            return $this->removeInstance($object, $input->get('recurrence_id'));
+            return $this->removeInstance($object, $input->get('recurrence_id'), $response);
         }
 
-        return $this->removeObject($object);
+        return $this->removeObject($object, $response);
     }
 
-    /**
-     * Completely removes an object from the server
-     *
-     * @param \AgenDAV\CalDAV\Resource\CalendarObject $object
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    protected function removeObject(CalendarObject $object)
+    protected function removeObject(CalendarObject $object, ResponseInterface $response): ResponseInterface
     {
         $this->client->deleteCalendarObject($object);
-        return $this->generateSuccess();
+        return $this->generateSuccess($response);
     }
 
-    /**
-     * Remove an event instance
-     *
-     * @param \AgenDAV\CalDAV\Resource\CalendarObject $object
-     * @param string $recurrence_id_string
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    protected function removeInstance(CalendarObject $object, $recurrence_id_string)
-    {
+    protected function removeInstance(
+        CalendarObject $object,
+        string $recurrence_id_string,
+        ResponseInterface $response
+    ): ResponseInterface {
         $recurrence_id = RecurrenceId::buildFromString($recurrence_id_string);
 
         $event = $object->getEvent();
         $event->removeInstance($recurrence_id);
         $object->setEvent($event);
 
-        $response = $this->client->uploadCalendarObject($object);
+        $caldavResponse = $this->client->uploadCalendarObject($object);
 
-        return $this->generateSuccess([
-            'etag' => $response->getHeaderLine('ETag'),
+        return $this->generateSuccess($response, [
+            'etag' => $caldavResponse->getHeaderLine('ETag'),
         ]);
     }
-
 }

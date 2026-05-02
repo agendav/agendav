@@ -22,145 +22,112 @@ namespace AgenDAV\Controller;
  */
 
 use AgenDAV\CalDAV\Client;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * This class is used to find all accessible calendars for an user
+ * Base class for JSON-returning controllers. Slim invokes __invoke per route.
  */
 abstract class JSONController
 {
-
-    /**
-     * @var \AgenDAV\CalDAV\Client
-     */
+    /** @var \AgenDAV\CalDAV\Client */
     protected $client;
 
-    /**
-     * @var string HTTP method
-     */
+    /** @var string HTTP method (used to pick parsed body vs query params) */
     protected $method = 'POST';
 
-    /**
-     * @var array
-     */
-    protected $headers;
+    /** @var array<string, string> */
+    protected $headers = [];
 
-    /**
-     * Builds a new JSONController
-     */
-    public function __construct()
+    /** @var ContainerInterface */
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
     {
-        $this->headers = [];
+        $this->container = $container;
+        $this->client = $container->get('caldav.client');
     }
 
     /**
-     * Executes the action assigned to this controller
-     *
-     * @param Request $request
-     * @param Application $app
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     *
-     * @throws \InvalidArgumentException
+     * Slim entry point.
      */
-    public function doAction(Request $request, Application $app)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = []): ResponseInterface
     {
-        $this->client = $app['caldav.client'];
-
-        // Read input
         if ($this->method === 'POST') {
-            $input = $request->request;
+            $raw = $request->getParsedBody() ?? [];
         } elseif ($this->method === 'GET') {
-            $input = $request->query;
+            $raw = $request->getQueryParams();
         } else {
             throw new \InvalidArgumentException('Unknown method: ' . $this->method);
         }
 
+        $input = new ParameterBag(is_array($raw) ? $raw : []);
+
         if (!$this->validateInput($input)) {
             return $this->generateException(
-                $app['translator']->trans('messages.error_invalidinput')
+                $response,
+                $this->container->get('translator')->trans('messages.error_invalidinput')
             );
         }
 
-        return $this->controlledExecution($input, $app);
+        return $this->controlledExecution($input, $request, $response);
     }
 
     /**
-     * Proceeds to execute this action, taking care of possible exceptions
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @param \Silex\Application $app
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * Catches the exceptions our controllers commonly raise and converts them
+     * to user-facing JSON errors.
      */
-    protected function controlledExecution(ParameterBag $input, Application $app)
-    {
+    protected function controlledExecution(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $translator = $this->container->get('translator');
+
         try {
-            $result = $this->execute($input, $app);
-            return $result;
-
+            return $this->execute($input, $request, $response);
         } catch (\AgenDAV\Exception\PermissionDenied $exception) {
-            return $this->generateException(
-                $app['translator']->trans('messages.error_denied')
-            );
-
+            return $this->generateException($response, $translator->trans('messages.error_denied'));
         } catch (\AgenDAV\Exception\NotFound $exception) {
-            return $this->generateException(
-                $app['translator']->trans('messages.error_element_not_found')
-            );
-
+            return $this->generateException($response, $translator->trans('messages.error_element_not_found'));
         } catch (\AgenDAV\Exception\ElementModified $exception) {
-            return $this->generateException(
-                $app['translator']->trans('messages.error_element_changed')
-            );
-
+            return $this->generateException($response, $translator->trans('messages.error_element_changed'));
         } catch (\AgenDAV\Exception\ConnectionProblem $exception) {
-            $app['monolog']->error(sprintf(
-                "Having issues contacting the CalDAV server: %s",
+            $this->container->get('monolog')->error(sprintf(
+                'Having issues contacting the CalDAV server: %s',
                 var_export($exception->getMessage(), true)
             ));
-
-            $message = $app['translator']->trans('messages.error_network_issues');
-
-            return $this->generateError($message, 503);
-
+            return $this->generateError($response, $translator->trans('messages.error_network_issues'), 503);
         } catch (\AgenDAV\Exception $exception) {
-            $app['monolog']->warning(sprintf(
-                "Received unexpected HTTP code %d (%s) for input: %s",
+            $this->container->get('monolog')->warning(sprintf(
+                'Received unexpected HTTP code %d (%s) for input: %s',
                 $exception->getCode(),
                 $exception->getMessage(),
-                var_export($input, true)
+                var_export($input->all(), true)
             ));
-
             return $this->generateError(
-                $app['translator']->trans('messages.error_unexpectedhttpcode', ['%code%' => $exception->getCode()])
+                $response,
+                $translator->trans('messages.error_unexpectedhttpcode', ['%code%' => $exception->getCode()])
             );
-
         } catch (\Exception $exception) {
-            $app['monolog']->critical(
-                sprintf('Received unexpected exception %s (%s:%d): %s',
+            $this->container->get('monolog')->critical(
+                sprintf(
+                    'Received unexpected exception %s (%s:%d): %s',
                     get_class($exception),
                     $exception->getFile(),
                     $exception->getLine(),
                     $exception->getMessage()
                 ),
-                [ 'input' => $input ]
+                ['input' => $input->all()]
             );
-
-            return $this->generateError(
-                $app['translator']->trans('messages.internal_server_error')
-            );
+            return $this->generateError($response, $translator->trans('messages.internal_server_error'));
         }
     }
 
     /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
+     * @return bool true if $input passes validation
      */
     protected function validateInput(ParameterBag $input)
     {
@@ -168,75 +135,47 @@ abstract class JSONController
     }
 
     /**
-     * Performs an operation using the information from input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @param \Silex\Application $app
-     *
-     * @return JsonResponse
+     * Performs the action.
      */
-    abstract protected function execute(ParameterBag $input, Application $app);
+    abstract protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface;
 
-    /**
-     * Generates an exception message
-     *
-     * @param string $message
-     * @param int $code Optional HTTP response code
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    protected function generateException($message, $code = 400)
+    protected function generateException(ResponseInterface $response, string $message, int $code = 400): ResponseInterface
     {
-        $result = [
-            'result' => 'EXCEPTION',
-            'message' => $message
-        ];
+        return $this->jsonResponse($response, ['result' => 'EXCEPTION', 'message' => $message], $code);
+    }
 
-        return new JsonResponse($result, $code, $this->headers);
+    protected function generateError(ResponseInterface $response, string $message, int $code = 500): ResponseInterface
+    {
+        return $this->jsonResponse($response, ['result' => 'ERROR', 'message' => $message], $code);
     }
 
     /**
-     * Generates an error message
-     *
-     * @param string $message
-     * @param int $code Optional HTTP response code
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    protected function generateError($message, $code = 500)
-    {
-        $result = [
-            'result' => 'ERROR',
-            'message' => $message
-        ];
-
-        return new JsonResponse($result, $code, $this->headers);
-    }
-
-    /**
-     * Generates a success message
-     *
      * @param array|string $message
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function generateSuccess($message = '')
+    protected function generateSuccess(ResponseInterface $response, $message = ''): ResponseInterface
     {
-        $result = [
-            'result' => 'SUCCESS',
-            'message' => $message
-        ];
+        return $this->jsonResponse($response, ['result' => 'SUCCESS', 'message' => $message], 200);
+    }
 
-        return new JsonResponse($result, 200, $this->headers);
+    protected function jsonResponse(ResponseInterface $response, array $payload, int $code): ResponseInterface
+    {
+        $response->getBody()->write((string) json_encode($payload));
+        $response = $response->withStatus($code)->withHeader('Content-Type', 'application/json');
+        foreach ($this->headers as $name => $value) {
+            $response = $response->withHeader($name, $value);
+        }
+        return $response;
     }
 
     /**
-     * Adds a header to this response
-     *
-     * @param string $name
-     * @param string $value
+     * Adds a header to be applied on the JSON response.
      */
-    protected function addHeader($name, $value)
+    protected function addHeader(string $name, string $value): void
     {
         $this->headers[$name] = $value;
     }
-
 }

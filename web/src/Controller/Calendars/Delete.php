@@ -22,43 +22,25 @@ namespace AgenDAV\Controller\Calendars;
  */
 
 use AgenDAV\Controller\JSONController;
-use League\Fractal\Resource\Collection;
 use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\Data\Transformer\CalendarTransformer;
-use Silex\Application;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Delete extends JSONController
 {
-    /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
     protected function validateInput(ParameterBag $input)
     {
-        $fields = [
-            'calendar',
-        ];
-
-        foreach ($fields as $name) {
-            if (empty($input->get($name))) {
-                return false;
-            }
-        }
-
-        return true;
+        return !empty($input->get('calendar'));
     }
 
-    public function execute(ParameterBag $input, Application $app)
-    {
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
         $calendar = new Calendar($input->get('calendar'));
-
-        // Proceed to remove calendar from CalDAV server
         $this->client->deleteCalendar($calendar);
-
-        return $this->generateSuccess($calendar->getUrl());
+        return $this->generateSuccess($response, $calendar->getUrl());
     }
-
 }

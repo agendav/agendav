@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Preserve the Authorization header (HTTP Basic auth) when running under
+# mod_php/CGI — Apache strips it by default, breaking AgenDAV's HTTP Basic
+# fallback authentication.
+RewriteCond %{HTTP:Authorization} ^(.+)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
