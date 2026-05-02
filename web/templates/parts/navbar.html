@@ -8,17 +8,17 @@
    </p>
    <ul class="nav navbar-nav navbar-right" id="usermenu">
        <li>
-       <a class="prefs" href="{{ app.url_generator.generate('preferences') }}">
+       <a class="prefs" href="{{ url_for('preferences') }}">
          <i title="{% trans %}labels.preferences{% endtrans %}" class="fa fa-lg fa-wrench"></i>
        </a>
        </li>
        <li>
-       <a class="logout" href="{{ app.url_generator.generate('logout') }}">
+       <a class="logout" href="{{ url_for('logout') }}">
          <i title="{% trans %}labels.logout{% endtrans %}" class="fa fa-lg fa-power-off"></i>
        </a>
        </li>
        <li><a href="javascript:void(0)">
-       {{ app.session.get('displayname') }}
+       {{ displayname }}
        </a>
        </li>
    </ul>

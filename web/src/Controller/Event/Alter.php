@@ -22,58 +22,34 @@ namespace AgenDAV\Controller\Event;
  */
 
 use AgenDAV\Controller\JSONController;
-use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\CalDAV\Resource\CalendarObject;
-use AgenDAV\DateHelper;
-use AgenDAV\CalDAV\Client;
 use AgenDAV\EventInstance;
 use AgenDAV\Event\RecurrenceId;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 abstract class Alter extends JSONController
 {
-
-    /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
     protected function validateInput(ParameterBag $input)
     {
-        $fields = [
-            'calendar',
-            'timezone',
-            'uid',
-        ];
-
-        foreach ($fields as $name) {
+        foreach (['calendar', 'timezone', 'uid'] as $name) {
             if (empty($input->get($name))) {
                 return false;
             }
         }
-
         return true;
     }
 
-    /**
-     * Executes this operation
-     *
-     * @param ParameterBag $input
-     * @param Application $app
-     *
-     * @return JsonResponse
-     */
-    public function execute(ParameterBag $input, Application $app)
-    {
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
         $timezone = new \DateTimeZone($input->get('timezone'));
         $calendar = $this->client->getCalendarByUrl($input->get('calendar'));
         $resource = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
 
         $recurrence_id = null;
-
         if (!empty($input->get('recurrence_id'))) {
             $recurrence_id = RecurrenceId::buildFromString($input->get('recurrence_id'));
         }
@@ -87,28 +63,18 @@ abstract class Alter extends JSONController
 
         $minutes = $input->getInt('delta');
 
-        // Run specific operation on this event instance
         $this->modifyInstance($instance, $timezone, $minutes, $input);
 
         $instance->touch();
-
         $event->storeInstance($instance);
         $resource->setEvent($event);
-        $response = $this->client->uploadCalendarObject($resource);
+        $caldavResponse = $this->client->uploadCalendarObject($resource);
 
-        return $this->generateSuccess([
-            'etag' => $response->getHeaderLine('ETag'),
+        return $this->generateSuccess($response, [
+            'etag' => $caldavResponse->getHeaderLine('ETag'),
         ]);
     }
 
-    /**
-     * Changes the instance to reflect an event resize
-     *
-     * @param \AgenDAV\EventInstance $instance
-     * @param \DateTimeZone $timezone
-     * @param int $minutes
-     * @param ParameterBag $input
-     */
     abstract protected function modifyInstance(
         EventInstance $instance,
         \DateTimeZone $timezone,

@@ -1,4 +1,5 @@
 <?php
+
 namespace AgenDAV\Controller;
 
 /*
@@ -20,89 +21,103 @@ namespace AgenDAV\Controller;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 
-/**
- * Authentication controller for login/logout actions
- */
 class Authentication
 {
-    public function loginAction(Request $request, Application $app)
+    public function __construct(private ContainerInterface $container)
     {
-        $success = false;
+    }
+
+    public function loginAction(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
         $template_vars = [];
 
-        if ($request->isMethod('POST')) {
-            $user = $request->request->get('user');
-            $password = $request->request->get('password');
+        if ($request->getMethod() === 'POST') {
+            $body = (array) ($request->getParsedBody() ?? []);
+            $user = $body['user'] ?? null;
+            $password = $body['password'] ?? null;
+            $translator = $this->container->get('translator');
+            $logger = $this->container->get('monolog');
+            $serverParams = $request->getServerParams();
+            $clientIp = $serverParams['REMOTE_ADDR'] ?? '?';
 
             if (empty($user) || empty($password)) {
-                $template_vars['error'] = $app['translator']->trans('messages.error_empty_fields');
+                $template_vars['error'] = $translator->trans('messages.error_empty_fields');
             } else {
-                $success = $this->processLogin($user, $password, $app);
+                $success = $this->processLogin($user, $password);
 
                 if ($success === true) {
-                    $app['monolog']->info(
-                        sprintf('User %s logged in from %s', $user, $request->getClientIp())
-                    );
-                    return new RedirectResponse(
-                        $app['url_generator']->generate('calendar')
-                    );
+                    $logger->info(sprintf('User %s logged in from %s', $user, $clientIp));
+                    /** @var RouteParserInterface $routeParser */
+                    $routeParser = $this->container->get(RouteParserInterface::class);
+                    return $response
+                        ->withStatus(302)
+                        ->withHeader('Location', $routeParser->urlFor('calendar'));
                 }
 
-                $app['monolog']->info(
-                    sprintf('Failed login for %s from %s', $user, $request->getClientIp())
-                );
-                $template_vars['error'] =  $app['translator']->trans('messages.error_auth');
+                $logger->info(sprintf('Failed login for %s from %s', $user, $clientIp));
+                $template_vars['error'] = $translator->trans('messages.error_auth');
             }
         }
 
-        return $app['twig']->render('login.html', $template_vars);
+        $body = $this->container->get('twig')->render('login.html', $template_vars);
+        $response->getBody()->write($body);
+        return $response;
     }
 
-    public function logoutAction(Request $request, Application $app)
-    {
-        $app['session']->clear();
+    public function logoutAction(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $this->container->get('session')->clear();
 
-        $url = $app['url_generator']->generate('login');
-        if (!empty($app['logout.redirection'])) {
-            $url = $app['logout.redirection'];
+        $url = $this->container->get('logout.redirection');
+        if (empty($url)) {
+            /** @var RouteParserInterface $routeParser */
+            $routeParser = $this->container->get(RouteParserInterface::class);
+            $url = $routeParser->urlFor('login');
         }
 
-        return new RedirectResponse($url);
+        return $response->withStatus(302)->withHeader('Location', $url);
     }
 
     /**
-     * Uses passed credentials to authenticate a user. In case they are valid, session is
-     * populated with user data (principal, etc)
+     * Authenticates a user using passed credentials. Populates the session on
+     * success.
      *
-     * @param string $user
-     * @param string $password
-     * @param Application $app
-     * @return bool false if authentication failed, true otherwise
+     * @return bool true on success
      */
-    public function processLogin($user, $password, Application $app)
+    public function processLogin(string $user, string $password): bool
     {
-        $app['http.client']->setAuthentication($user, $password, $app['caldav.authmethod']);
+        $this->container->get('http.client')->setAuthentication(
+            $user,
+            $password,
+            $this->container->get('caldav.authmethod')
+        );
 
-        $caldav_client = $app['caldav.client'];
+        $caldav_client = $this->container->get('caldav.client');
 
         if (!$caldav_client->canAuthenticate()) {
             return false;
         }
 
-        $app['session']->set('username', $user);
-        $app['session']->set('password', $password);
+        $session = $this->container->get('session');
+        $session->set('username', $user);
+        $session->set('password', $password);
+
         $principal_url = $caldav_client->getCurrentUserPrincipal();
 
-        $principals_repository = $app['principals.repository'];
-        $principal = $principals_repository->get($principal_url);
+        $principal = $this->container->get('principals.repository')->get($principal_url);
 
-        $app['session']->set('principal_url', $principal_url);
-        $app['session']->set('calendar_home_set', $caldav_client->getCalendarHomeSet($principal));
-        $app['session']->set('displayname', $principal->getDisplayName());
+        $session->set('principal_url', $principal_url);
+        $session->set('calendar_home_set', $caldav_client->getCalendarHomeSet($principal));
+        $session->set('displayname', $principal->getDisplayName());
 
         return true;
     }
