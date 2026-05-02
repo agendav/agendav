@@ -1,19 +1,17 @@
 <?php
+
 namespace AgenDAV\Authentication;
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Interace used to implement new authentication methods
+ * Interface for alternative authentication methods (HTTP Basic, etc.).
  */
 interface AuthenticationMethodInterface
 {
     /**
-     * Use this authentication method to login
-     * @param  Request     $request HTTP request
-     * @param  Application $app     Application object
-     * @return bool                 true if login is successful, false otherwise
+     * Attempt to authenticate the user from the given request. Returns true
+     * if the session has been populated with a logged-in user.
      */
-    public static function login(Request $request, Application $app);
+    public function login(ServerRequestInterface $request): bool;
 }

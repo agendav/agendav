@@ -9,25 +9,27 @@
         "doctrine/cache": "^2.2",
         "doctrine/common": "^3.4",
         "doctrine/dbal": "^3.8",
-        "doctrine/migrations": "^3.6",
+        "doctrine/migrations": "^3.8",
         "doctrine/orm": "^2.20",
         "guzzlehttp/guzzle": "^7.9",
         "league/fractal": "^0.20",
-        "monolog/monolog": "^2.10",
+        "monolog/monolog": "^3.7",
+        "php-di/php-di": "^7.0",
+        "php-di/slim-bridge": "^3.4",
         "ramsey/uuid": "^4.7",
         "sabre/dav": "^4.6",
-        "silex/silex": "^2.2",
-        "symfony/asset": "^4.4",
-        "symfony/console": "^4.4 || ^5.4 || ^6.0 || ^7.0",
-        "symfony/event-dispatcher": "^4.4",
-        "symfony/http-foundation": "^4.4",
-        "symfony/http-kernel": "^4.4",
-        "symfony/property-access": "^4.4",
-        "symfony/routing": "^4.4",
-        "symfony/security-csrf": "^4.4",
-        "symfony/translation": "^4.4",
-        "symfony/twig-bridge": "^4.4",
-        "symfony/yaml": "^4.4"
+        "slim/psr7": "^1.6",
+        "slim/slim": "^4.14",
+        "slim/twig-view": "^3.4",
+        "symfony/asset": "^7.0",
+        "symfony/cache": "^7.0",
+        "symfony/console": "^7.0",
+        "symfony/http-foundation": "^7.0",
+        "symfony/security-csrf": "^7.0",
+        "symfony/translation": "^7.0",
+        "symfony/twig-bridge": "^7.0",
+        "symfony/yaml": "^7.0",
+        "twig/twig": "^3.10"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6"
@@ -38,14 +40,6 @@
         }
     },
     "config": {
-        "audit": {
-            "abandoned": "ignore",
-            "block-insecure": false
-        },
-        "allow-plugins": {
-            "composer/package-versions-deprecated": true
-        }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+        "allow-plugins": {}
+    }
 }

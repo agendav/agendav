@@ -1,4 +1,3 @@
-name: AgenDAV DB schema
 table_storage:
     table_name: schema_versions
     version_column_name: version

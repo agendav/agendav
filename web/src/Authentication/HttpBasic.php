@@ -1,33 +1,35 @@
 <?php
+
 namespace AgenDAV\Authentication;
 
 use AgenDAV\Controller\Authentication;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Authentication method using HTTP basic authentication
+ * HTTP Basic authentication: pulls credentials from PHP_AUTH_USER /
+ * PHP_AUTH_PW server parameters and delegates to the Authentication controller
+ * for the actual session setup.
  */
 class HttpBasic implements AuthenticationMethodInterface
 {
-    /**
-     * Try to login using the Authorization HTTP header
-     * @param  Request     $request HTTP request
-     * @param  Application $app     Application object
-     * @return bool                 true if login is successful, false otherwise
-     */
-    public static function login(Request $request, Application $app)
+    public function __construct(private Authentication $authentication)
     {
-        if ($request->headers->get('authorization') != null) {
-            $authController = new Authentication();
-            if ($authController->processLogin(
-                $request->headers->get('php-auth-user'),
-                $request->headers->get('php-auth-pw'),
-                $app
-            )) {
-                return true;
-            }
+    }
+
+    public function login(ServerRequestInterface $request): bool
+    {
+        $serverParams = $request->getServerParams();
+        if (empty($serverParams['HTTP_AUTHORIZATION'])) {
+            return false;
         }
-        return false;
+
+        $user = $serverParams['PHP_AUTH_USER'] ?? null;
+        $password = $serverParams['PHP_AUTH_PW'] ?? null;
+
+        if ($user === null || $password === null) {
+            return false;
+        }
+
+        return $this->authentication->processLogin($user, $password);
     }
 }

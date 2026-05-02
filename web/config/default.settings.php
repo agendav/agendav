@@ -1,159 +1,135 @@
 <?php
 /**
- * Site configuration
+ * Site configuration defaults.
  *
  * IMPORTANT: These are AgenDAV defaults. Do not change this file, apply your
- * changes to settings.php
+ * changes to settings.php (which must also return an array of overrides).
  */
 
-// Site title
-$app['site.title'] = 'Our calendar';
+return [
+    // Site title
+    'site.title' => 'Our calendar',
 
-// Site logo (should be placed in public/img). Optional
-$app['site.logo'] = 'agendav_100transp.png';
+    // Site logo (should be placed in public/img). Optional
+    'site.logo' => 'agendav_100transp.png',
 
-// Site favicon (should be placed in public/img). Optional
-$app['site.favicon'] = 'favicon.ico';
+    // Site favicon (should be placed in public/img). Optional
+    'site.favicon' => 'favicon.ico',
 
-// Site footer. Optional
-$app['site.footer'] = 'AgenDAV ' . \AgenDAV\Version::V;
+    // Site footer. Optional
+    'site.footer' => 'AgenDAV ' . \AgenDAV\Version::V,
 
-// Trusted proxy ips
-$app['proxies'] = [];
+    // Trusted proxy ips
+    'proxies' => [],
 
-// Database settings
-$app['db.options'] = [
+    // Database settings
+    'db.options' => [
         'dbname' => 'agendav',
         'user' => 'root',
         'password' => '',
         'host' => 'localhost',
-        'driver' => 'pdo_mysql'
+        'driver' => 'pdo_mysql',
+    ],
+
+    // CSRF secret
+    'csrf.secret' => 'lkjihgfedcba',
+
+    // Log path
+    'log.path' => __DIR__ . '/../var/log/',
+
+    // Logging level
+    'log.level' => 'INFO',
+
+    // Base URL
+    'caldav.baseurl' => 'http://localhost:81/',
+
+    // Authentication method required by CalDAV server (basic or digest)
+    'caldav.authmethod' => 'basic',
+
+    // Whether to show public CalDAV urls
+    'caldav.publicurls' => true,
+
+    // Public CalDAV URL shown to users
+    'caldav.baseurl.public' => 'https://caldav.server.com',
+
+    // Connection timeout for CalDAV requests (default: wait forever)
+    'caldav.connect.timeout' => 0,
+
+    // Response timeout for CalDAV requests (default: wait forever)
+    'caldav.response.timeout' => 0,
+
+    // Whether to verify the SSL certificate (default: true)
+    'caldav.certificate.verify' => true,
+
+    // Email attribute name
+    'principal.email.attribute' => '{DAV:}email',
+
+    // Calendar sharing
+    'calendar.sharing' => false,
+
+    // Calendar sharing permissions. In case of doubt, do not modify them
+    // These defaults are only useful for DAViCal (http://wiki.davical.org/index.php/Permissions)
+    'calendar.sharing.permissions' => [
+        'owner' => [
+            '{DAV:}all',
+            '{DAV:}read',
+            '{DAV:}unlock',
+            '{DAV:}read-acl',
+            '{DAV:}read-current-user-privilege-set',
+            '{DAV:}write-acl',
+            '{urn:ietf:params:xml:ns:caldav}read-free-busy',
+            '{DAV:}write',
+            '{DAV:}write-properties',
+            '{DAV:}write-content',
+            '{DAV:}bind',
+            '{DAV:}unbind',
+        ],
+        'read-only' => ['{DAV:}read', '{urn:ietf:params:xml:ns:caldav}read-free-busy'],
+        'read-write' => ['{DAV:}read', '{DAV:}write', '{urn:ietf:params:xml:ns:caldav}read-free-busy'],
+        'default' => ['{urn:ietf:params:xml:ns:caldav}read-free-busy'],
+    ],
+
+    // Default timezone
+    'defaults.timezone' => 'Europe/Madrid',
+
+    // Default language
+    'defaults.language' => 'en',
+
+    // Default time format. Options: '12' / '24'
+    'defaults.time_format' => '24',
+
+    // Default date format. Options: ymd, dmy, mdy
+    'defaults.date_format' => 'ymd',
+
+    // Default first day of week. Options: 0 (Sunday), 1 (Monday)
+    'defaults.weekstart' => 0,
+
+    // Default for showing the week numbers. Options: true/false
+    'defaults.show_week_nb' => false,
+
+    // Default for showing the "now" indicator
+    'defaults.show_now_indicator' => true,
+
+    // Default number of days covered by the "list" (agenda) view. Allowed values: 7, 14 or 31
+    'defaults.list_days' => 7,
+
+    // Default view (month, week, day or list)
+    'defaults.default_view' => 'month',
+
+    // Logout redirection. Optional
+    'logout.redirection' => '',
+
+    // Calendar colors
+    'calendar.colors' => [
+        '03A9F4', '3F51B5', 'F44336', 'E91E63', '9C27B0', '673AB7',
+        'B3E5FC', 'C5CAE9', 'FFCDD2', 'F8BBD0', 'E1BEE7', 'D1C4E9',
+        '4CAF50', 'FFC107', 'CDDC39', 'FF9800', '795548', '9E9E9E',
+        'C8E6C9', 'FFF9C4', 'F0F4C3', 'FFE0B2', 'D7CCC8', 'F5F5F5',
+    ],
+
+    // Additional authentication methods (FQCNs implementing AuthenticationMethodInterface)
+    'auth.methods' => [],
+
+    // HTTP debug logging
+    'http.debug' => false,
 ];
-
-// CSRF secret
-$app['csrf.secret'] = 'lkjihgfedcba';
-
-// Log path
-$app['log.path'] = __DIR__.'/../var/log/';
-
-// Logging level
-$app['log.level'] = 'INFO';
-
-// Base URL
-$app['caldav.baseurl'] = 'http://localhost:81/';
-
-// Authentication method required by CalDAV server (basic or digest)
-$app['caldav.authmethod'] = 'basic';
-
-// Whether to show public CalDAV urls
-$app['caldav.publicurls'] = true;
-
-// Whether to show public CalDAV urls
-$app['caldav.baseurl.public'] = 'https://caldav.server.com';
-
-// Connection timeout for CalDAV requests (default: wait forever)
-$app['caldav.connect.timeout'] = 0;
-//
-// Response timeout for CalDAV requests (default: wait forever)
-$app['caldav.response.timeout'] = 0;
-
-// Whether to verify the SSL certificate (default: true)
-$app['caldav.certificate.verify'] = true;
-
-// Email attribute name
-$app['principal.email.attribute'] = '{DAV:}email';
-
-// Calendar sharing
-$app['calendar.sharing'] = false;
-
-// Calendar sharing permissions. In case of doubt, do not modify them
-// These defaults are only useful for DAViCal (http://wiki.davical.org/index.php/Permissions)
-$app['calendar.sharing.permissions'] = [
-    'owner' => [
-        '{DAV:}all',
-        '{DAV:}read',
-        '{DAV:}unlock',
-        '{DAV:}read-acl',
-        '{DAV:}read-current-user-privilege-set',
-        '{DAV:}write-acl',
-        '{urn:ietf:params:xml:ns:caldav}read-free-busy',
-        '{DAV:}write',
-        '{DAV:}write-properties',
-        '{DAV:}write-content',
-        '{DAV:}bind',
-        '{DAV:}unbind'
-     ],
-    'read-only' => [ '{DAV:}read', '{urn:ietf:params:xml:ns:caldav}read-free-busy'],
-    'read-write' => [ '{DAV:}read', '{DAV:}write', '{urn:ietf:params:xml:ns:caldav}read-free-busy' ],
-    'default' => [ '{urn:ietf:params:xml:ns:caldav}read-free-busy' ]
-];
-
-// Default timezone
-$app['defaults.timezone'] = 'Europe/Madrid';
-
-// Default languajge
-$app['defaults.language'] = 'en';
-
-// Default time format. Options: '12' / '24'
-$app['defaults.time_format'] = '24';
-
-/*
- * Default date format. Options:
- *
- * - ymd: YYYY-mm-dd
- * - dmy: dd-mm-YYYY
- * - mdy: mm-dd-YYYY
- */
-$app['defaults.date_format'] = 'ymd';
-
-// Default first day of week. Options: 0 (Sunday), 1 (Monday)
-$app['defaults.weekstart'] = 0;
-
-// Default for showing the week numbers. Options: true/false
-$app['defaults.show_week_nb'] = false;
-
-// Default for showing the "now" indicator, a line on current time. Options: true/false
-$app['defaults.show_now_indicator'] = true;
-//
-// Default number of days covered by the "list" (agenda) view. Allowed values: 7, 14 or 31
-$app['defaults.list_days'] = 7;
-
-// Default view (month, week, day or list)
-$app['defaults.default_view'] = 'month';
-
-// Logout redirection. Optional
-$app['logout.redirection'] = '';
-
-// Calendar colors
-$app['calendar.colors'] = [
-    '03A9F4', // Light blue
-    '3F51B5', // Indigo
-    'F44336', // Red
-    'E91E63', // Pink
-    '9C27B0', // Purple
-    '673AB7', // Deep purple
-
-    'B3E5FC', // Pale light blue
-    'C5CAE9', // Pale Indigo
-    'FFCDD2', // Pale red
-    'F8BBD0', // Pale pink
-    'E1BEE7', // Pale purple
-    'D1C4E9', // Pale deep purple
-
-    '4CAF50', // Green
-    'FFC107', // Yellow
-    'CDDC39', // Lime
-    'FF9800', // Orange
-    '795548', // Brown
-    '9E9E9E', // Gray
-
-    'C8E6C9', // Pale green
-    'FFF9C4', // Pale yellow
-    'F0F4C3', // Pale lime
-    'FFE0B2', // Pale orange
-    'D7CCC8', // Pale brown
-    'F5F5F5', // Pale gray
-];
-
-// Additionnal authentication methods
-//$app['auth.methods'] = ['AgenDAV\Authentication\HttpBasic'];

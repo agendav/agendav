@@ -27,14 +27,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Resize extends Alter
 {
-    /**
-     * Changes the instance to reflect an event resize
-     *
-     * @param \AgenDAV\EventInstance $instance
-     * @param \DateTimeZone $timezone
-     * @param int $minutes
-     * @param ParameterBag $input
-     */
     protected function modifyInstance(
         EventInstance $instance,
         \DateTimeZone $timezone,
@@ -42,10 +34,7 @@ class Resize extends Alter
         ParameterBag $input
     )
     {
-        $end = $instance->getEnd();
-
-        $end = DateHelper::addMinutesTo($end, $minutes);
+        $end = DateHelper::addMinutesTo($instance->getEnd(), $minutes);
         $instance->setEnd($end, $instance->isAllDay());
     }
-
 }

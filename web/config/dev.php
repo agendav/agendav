@@ -1,19 +1,14 @@
 <?php
 
-// Load defaults
-require __DIR__ . '/prod.php';
+$config = require __DIR__ . '/prod.php';
 
-$app['debug'] = true;
-$app['http.debug'] = true;
+$config['debug'] = true;
+$config['http.debug'] = true;
+$config['log.level'] = 'DEBUG';
+$config['scripts'] = ['agendav.js'];
 
-// Disable twig cache
-$twig_options = $app['twig.options'];
-unset($twig_options['cache']);
-$app['twig.options'] = $twig_options;
+// Disable Twig cache in development
+unset($config['twig.options']['cache']);
+$config['twig.options']['debug'] = true;
 
-// Enable debug logging
-$app['monolog.level'] = 'DEBUG';
-
-$app['scripts'] = [
-    'agendav.js',
-];
+return $config;

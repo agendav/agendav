@@ -21,79 +21,68 @@ namespace AgenDAV\Controller;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\DateHelper;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use AgenDAV\UserContext;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class JavaScriptCode
 {
-    /**
-     * Generates JavaScript code to provide the frontend the site configuration
-     * and some user preferences
-     *
-     * @param Request $request
-     * @param Application $app
-     *
-     * @return Response
-     */
-    public function settingsAction(Request $request, Application $app)
+    public function __construct(private ContainerInterface $container)
     {
-        $site_config = $this->getSiteConfig($request, $app);
+    }
 
-        $preferences = $this->getPreferences($request, $app);
+    public function settingsAction(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $site_config = $this->getSiteConfig($request);
+        $preferences = $this->getPreferences();
 
-        $response = new Response(
-            $app['twig']->render('jsconfig.html', [
-                'site_config' => $site_config,
-                'preferences' => $preferences,
-            ])
-        );
+        $body = $this->container->get('twig')->render('jsconfig.html', [
+            'site_config' => $site_config,
+            'preferences' => $preferences,
+        ]);
 
-        $response->headers->set('Content-Type', 'text/javascript');
-        $response->setPrivate();
-        $response->mustRevalidate();
-        $response->setExpires(new \DateTime);;
-        $response->headers->set('Pragma', 'no-cache');
-
-        return $response;
+        $response->getBody()->write($body);
+        return $response
+            ->withHeader('Content-Type', 'text/javascript')
+            ->withHeader('Cache-Control', 'private, must-revalidate')
+            ->withHeader('Expires', gmdate('D, d M Y H:i:s', time()) . ' GMT')
+            ->withHeader('Pragma', 'no-cache');
     }
 
     /**
-     * @param Request $request
-     * @param Application $app
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function getSiteConfig(Request $request, Application $app)
+    protected function getSiteConfig(ServerRequestInterface $request): array
     {
+        $serverParams = $request->getServerParams();
+        $scriptName = $serverParams['SCRIPT_NAME'] ?? '';
+        $basePath = rtrim(dirname($scriptName), '/\\');
+
         $settings = [
-            'base_url' => $request->getBasePath(),
-            'base_app_url' => $request->getBaseUrl() . '/',
+            'base_url' => $basePath,
+            'base_app_url' => $basePath . '/',
             'agendav_version' => \AgenDAV\Version::V,
-            'enable_calendar_sharing' => $app['calendar.sharing'],
-            'calendar_colors' => $app['calendar.colors'],
-            'default_calendar_color' => '#' . $app['calendar.colors'][0],
-            'show_public_caldav_url' => $app['caldav.publicurls'],
+            'enable_calendar_sharing' => $this->container->get('calendar.sharing'),
+            'calendar_colors' => $this->container->get('calendar.colors'),
+            'default_calendar_color' => '#' . $this->container->get('calendar.colors')[0],
+            'show_public_caldav_url' => $this->container->get('caldav.publicurls'),
         ];
 
-        if ($app['caldav.publicurls']) {
-            $settings['caldav_public_base_url'] = $app['caldav.baseurl.public'];
+        if ($this->container->get('caldav.publicurls')) {
+            $settings['caldav_public_base_url'] = $this->container->get('caldav.baseurl.public');
         }
 
         return $settings;
     }
 
     /**
-     * @param Request $request
-     * @param Application $app
-     *
-     * @return mixed
+     * @return array<string, mixed>
      */
-    protected function getPreferences(Request $request, Application $app)
+    protected function getPreferences(): array
     {
-        $preferences = $app['user.preferences'];
-
-        return $preferences->getAll();
+        return $this->container->get(UserContext::class)->getPreferences()->getAll();
     }
 }

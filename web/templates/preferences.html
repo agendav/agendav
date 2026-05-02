@@ -131,7 +131,7 @@
     <div id="prefs_buttons">
       <input type="submit" class="btn btn-success" value="{% trans %}labels.save{% endtrans %}">
 
-        <a href="{{ app.url_generator.generate('calendar') }}" id="return_button" class="btn btn-default"><i class="fa fa-calendar"></i> {% trans %}labels.return{% endtrans %}</a>
+        <a href="{{ url_for('calendar') }}" id="return_button" class="btn btn-default"><i class="fa fa-calendar"></i> {% trans %}labels.return{% endtrans %}</a>
     </div>
 
     </form>

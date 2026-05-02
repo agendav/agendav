@@ -1,4 +1,5 @@
 <?php
+
 namespace AgenDAV\Controller;
 
 /*
@@ -22,21 +23,27 @@ namespace AgenDAV\Controller;
 
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\DateHelper;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Silex\Application;
+use AgenDAV\UserContext;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Interfaces\RouteParserInterface;
 
-/**
- * This class is used to find all accessible calendars for an user
- */
 class Preferences
 {
-    public function indexAction(Request $request, Application $app)
+    public function __construct(private ContainerInterface $container)
     {
-        $preferences = $app['user.preferences'];
+    }
+
+    public function indexAction(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $preferences = $this->container->get(UserContext::class)->getPreferences();
 
         /** @var Calendar[] $calendars */
-        $calendars = $app['calendar.finder']->getCalendars();
+        $calendars = $this->container->get('calendar.finder')->getCalendars();
 
         $calendars_as_options = [];
         foreach ($calendars as $calendar) {
@@ -44,13 +51,12 @@ class Preferences
             $calendars_as_options[$key] = $calendar->getProperty(Calendar::DISPLAYNAME);
         }
 
-
-        return $app['twig']->render(
+        $body = $this->container->get('twig')->render(
             'preferences.html',
             [
                 'scripts' => [],
                 'available_timezones' => DateHelper::getAllTimeZones(),
-                'available_languages' => $app['languages'],
+                'available_languages' => $this->container->get('languages'),
                 'timezone' => $preferences->get('timezone'),
                 'calendars' => $calendars_as_options,
                 'default_calendar' => $preferences->get('default_calendar'),
@@ -64,34 +70,50 @@ class Preferences
                 'default_view' => $preferences->get('default_view'),
             ]
         );
+
+        $response->getBody()->write($body);
+        return $response;
     }
 
-    public function saveAction(Request $request, Application $app)
-    {
-        $input = $request->request;
+    public function saveAction(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $input = (array) ($request->getParsedBody() ?? []);
 
-        if (!$input->has('language') || !$input->has('timezone') || !$input->has('default_calendar')
-        || !$input->has('date_format') || !$input->has('time_format') || !$input->has('weekstart')
-        || !$input->has('show_week_nb')) {
-            $app->abort(400, $app['translator']->trans('messages.error_empty_fields'));
+        $required = [
+            'language', 'timezone', 'default_calendar', 'date_format',
+            'time_format', 'weekstart', 'show_week_nb',
+        ];
+        foreach ($required as $key) {
+            if (!array_key_exists($key, $input)) {
+                throw new HttpBadRequestException(
+                    $request,
+                    $this->container->get('translator')->trans('messages.error_empty_fields')
+                );
+            }
         }
 
-        $username = $app['session']->get('username');
-        $preferences = $app['user.preferences'];
+        $username = $this->container->get('session')->get('username');
+        $preferences = $this->container->get(UserContext::class)->getPreferences();
         $preferences->setAll([
-            'language' => $input->get('language'),
-            'timezone' => $input->get('timezone'),
-            'date_format' => $input->get('date_format'),
-            'time_format' => $input->get('time_format'),
-            'weekstart' => $input->get('weekstart'),
-            'default_calendar' => $input->get('default_calendar'),
-            'show_week_nb' => $input->get('show_week_nb') == 'true',
-            'show_now_indicator' => $input->get('show_now_indicator') == 'true',
-            'list_days' => $input->get('list_days'),
-            'default_view' => $input->get('default_view'),
+            'language' => $input['language'],
+            'timezone' => $input['timezone'],
+            'date_format' => $input['date_format'],
+            'time_format' => $input['time_format'],
+            'weekstart' => $input['weekstart'],
+            'default_calendar' => $input['default_calendar'],
+            'show_week_nb' => ($input['show_week_nb'] ?? null) === 'true',
+            'show_now_indicator' => ($input['show_now_indicator'] ?? null) === 'true',
+            'list_days' => $input['list_days'] ?? null,
+            'default_view' => $input['default_view'] ?? null,
         ]);
-        $app['preferences.repository']->save($username, $preferences);
+        $this->container->get('preferences.repository')->save($username, $preferences);
 
-        return new RedirectResponse($app['url_generator']->generate('calendar'));
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $this->container->get(RouteParserInterface::class);
+        return $response
+            ->withStatus(302)
+            ->withHeader('Location', $routeParser->urlFor('calendar'));
     }
 }
