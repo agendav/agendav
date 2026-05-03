@@ -34,7 +34,7 @@ After the run:
 
 ## Constraints
 
-- The script targets **dev mode** (`AGENDAV_ENVIRONMENT=dev`). The custom 404/error template path in prod mode has an open `TODO(phase4-followup)` in `web/src/ErrorHandler.php` — do **not** flip the stack into prod without explicit user approval.
+- The script targets **dev mode** (`AGENDAV_ENVIRONMENT=dev`). The prod-mode error-template path is exercised by a single dedicated assertion via `docker compose exec` with `AGENDAV_ENVIRONMENT=prod`, so we don't need to flip the stack.
 - Don't add curl loops outside the script. If a new assertion is needed, add it to `docker/smoke-test.sh` so future runs benefit.
 - Side-effect verification (event in baikal sqlite, prefs in mariadb) is intentional — it's how we caught the `PlainSerializer` signature bug in the original by-hand run. Preserve that pattern for new assertions.
 
