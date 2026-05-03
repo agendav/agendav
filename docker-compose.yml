@@ -20,6 +20,12 @@ services:
       - baikal-config:/var/www/baikal/config
       - baikal-data:/var/www/baikal/Specific
 
+  web-builder:
+    build: ./docker/builder
+    volumes:
+      - ./:/app
+    restart: "no"
+
   web:
     build: ./docker/agendav
     ports:
@@ -33,6 +39,8 @@ services:
         condition: service_healthy
       baikal:
         condition: service_started
+      web-builder:
+        condition: service_completed_successfully
 
 volumes:
   baikal-config:
