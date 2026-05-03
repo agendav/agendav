@@ -49,6 +49,16 @@ assert_status() {  # name url expected [extra_curl_args...]
   if [[ "$code" == "$expected" ]]; then pass "$name [$code]"; else fail "$name expected $expected got $code ($url)"; fi
 }
 
+assert_content_type() {  # name url expected_prefix
+  # Catches the "missing dist/* file falls through .htaccess to Slim's 404
+  # HTML page" regression: any text/html response for a static asset path
+  # means the file isn't on disk (asset build never ran).
+  local name=$1 url=$2 expected=$3
+  local ct
+  ct=$(curl -sI "$url" | awk -F': ' 'tolower($1)=="content-type"{sub(/[\r;].*/,"",$2);print $2;exit}')
+  if [[ "$ct" == "$expected"* ]]; then pass "$name [$ct]"; else fail "$name expected ${expected}* got '${ct}' ($url)"; fi
+}
+
 # ----- teardown -----
 teardown() {
   echo "==> docker compose down -v"
@@ -164,6 +174,12 @@ docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite \
 JAR=$(mktemp)
 JAR_FRESH=$(mktemp)
 trap 'rm -f "$JAR" "$JAR_FRESH"' EXIT
+
+# 0. front-end bundle is actually on disk (and not falling through .htaccess
+#    to Slim's 404 HTML page). Without these, the calendar UI shows a
+#    permanent loading spinner because the JS never loads.
+assert_content_type "GET /dist/css/agendav.css" http://localhost:8080/dist/css/agendav.css text/css
+assert_content_type "GET /dist/js/agendav.min.js" http://localhost:8080/dist/js/agendav.min.js text/javascript
 
 # 1. login form GET
 assert_status "GET /login" http://localhost:8080/login 200 -c "$JAR"
