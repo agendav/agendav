@@ -117,8 +117,8 @@ You will need a dedicated directory for the database::
 Web server configuration
 ------------------------
 
-It is recommended to read the `Silex Webserver configuration guide
-<http://silex.sensiolabs.org/doc/web_servers.html>`_ to learn how to configure your preferred web
+It is recommended to read the `Slim 4 Web Servers guide
+<https://www.slimframework.com/docs/v4/start/web-servers.html>`_ to learn how to configure your preferred web
 server software to serve AgenDAV. Just make sure to point your web server to the ``web/public``
 subdirectory.
 

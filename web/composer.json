@@ -6,7 +6,6 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": ">=8.5",
-        "doctrine/cache": "^2.2",
         "doctrine/common": "^3.4",
         "doctrine/dbal": "^3.8",
         "doctrine/migrations": "^3.8",
