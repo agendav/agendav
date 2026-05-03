@@ -294,6 +294,24 @@ LO_LOC=$(curl -s -o /dev/null -w '%{redirect_url}' -b "$JAR" http://localhost:80
 # 21. unknown route → 404
 assert_status "GET /this-does-not-exist" http://localhost:8080/this-does-not-exist 404
 
+# 21b. unknown route in PROD env renders the error template (regression guard:
+# routing-mw throws before TwigGlobalsMiddleware runs, so the error handler
+# must still see title/lang/favicon globals or layout.html crashes).
+PROD_404=$(docker compose exec -T -e AGENDAV_ENVIRONMENT=prod web php -r '
+$_SERVER["REQUEST_METHOD"]="GET"; $_SERVER["REQUEST_URI"]="/nope"; $_SERVER["HTTP_HOST"]="localhost";
+$_SERVER["SERVER_NAME"]="localhost"; $_SERVER["SERVER_PORT"]="80"; $_SERVER["SCRIPT_NAME"]="/index.php";
+$_SERVER["HTTPS"]=""; $_SERVER["QUERY_STRING"]="";
+chdir("/app/web/public"); ob_start(); require "/app/web/public/index.php";
+$body = ob_get_clean();
+echo http_response_code() . "|" . strlen($body) . "|" . (strpos($body, "<title>") !== false ? "1" : "0");
+' 2>/dev/null)
+IFS='|' read -r STATUS LEN HAS_TITLE <<<"$PROD_404"
+if [[ "$STATUS" == "404" && "${LEN:-0}" -gt 200 && "$HAS_TITLE" == "1" ]]; then
+  pass "prod-mode /nope renders 404 template [$STATUS, ${LEN}B]"
+else
+  fail "prod-mode 404 template (got status=$STATUS len=$LEN has_title=$HAS_TITLE)"
+fi
+
 # 22. POST without _token → 401
 assert_status "POST /preferences (no _token)" http://localhost:8080/preferences 401 -b "$JAR_FRESH" -X POST -d "x=1"
 
