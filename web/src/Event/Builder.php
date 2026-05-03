@@ -45,7 +45,7 @@ interface Builder
      * @return \AgenDAV\EventInstance
      * @throws \LogicException If $event has no UID assigned
      */
-    public function createEventInstanceFor(\AgenDAV\Event $event, RecurrenceId $recurrence_id = null);
+    public function createEventInstanceFor(\AgenDAV\Event $event, ?RecurrenceId $recurrence_id = null);
 
     /**
      * Creates an EventInstance object after receiving an array of properties

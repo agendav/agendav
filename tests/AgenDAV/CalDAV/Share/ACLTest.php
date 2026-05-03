@@ -11,7 +11,7 @@ class ACLTest extends TestCase
 
     private $permissions;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$privileges = [
             'default' => [
@@ -31,7 +31,7 @@ class ACLTest extends TestCase
 
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->permissions = new Permissions(self::$privileges);
     }
@@ -55,11 +55,9 @@ class ACLTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testAddGrantInvalidRole()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $acl = new ACL($this->permissions);
         $acl->addGrant('/principal/1', 'owner');
     }

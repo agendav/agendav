@@ -19,205 +19,276 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$app['monolog.logfile'] = function($app) { return $app['log.path'] . '/' . date('Y-m-d') . '.log'; };
-$app['monolog.level'] = function($app) { return $app['log.level']; };
-$app['locale'] = function($app) { return $app['defaults.language']; };
+use Psr\Container\ContainerInterface;
 
-// ORM Entity manager
-$app['orm'] = function($app) {
-    $development_mode = ($app['environment'] === 'dev');
+return [
+    // Default environment (overridden in index.php)
+    'environment' => 'prod',
 
-    $setup = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
-        [ __DIR__ . '/../src/Data' ],
-        $development_mode
-    );
+    // Translator locale (depends on user preferences; updated per request)
+    'locale' => fn (ContainerInterface $c) => $c->get('defaults.language'),
 
-    return Doctrine\ORM\EntityManager::create($app['db.options'], $setup);
-};
+    // Per-request user context. AuthMiddleware populates the singleton.
+    \AgenDAV\UserContext::class => \DI\create(\AgenDAV\UserContext::class),
 
-// Fractal manager
-$app['fractal'] = function($app) {
-    $fractal = new League\Fractal\Manager();
-    $fractal->setSerializer(new League\Fractal\Serializer\DataArraySerializer());
+    // Symfony HttpFoundation Session (kept for the PdoSessionHandler bridge and the CSRF token storage)
+    'session' => function (ContainerInterface $c) {
+        $storage = new \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage(
+            $c->get('session.storage.options'),
+            $c->get('session.storage.handler')
+        );
+        return new \Symfony\Component\HttpFoundation\Session\Session($storage);
+    },
 
-    return $fractal;
-};
+    'session.storage.handler' => function (ContainerInterface $c) {
+        // PdoSessionHandler uses its own options (db_table, db_id_col, ...).
+        // session.storage.options carries cookie_* options that belong to
+        // NativeSessionStorage, so we don't forward them here.
+        // lock_mode: LOCK_ADVISORY uses MySQL GET_LOCK() instead of a
+        // transaction so the session connection doesn't collide with
+        // Doctrine ORM (which begins its own transaction on flush()).
+        return new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
+            $c->get('db')->getNativeConnection(),
+            ['lock_mode' => \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_ADVISORY]
+        );
+    },
 
-// Preferences repository
-$app['preferences.repository'] = function($app) {
-    $em = $app['orm'];
-    $repository = new AgenDAV\Repositories\DoctrineOrmPreferencesRepository($em);
+    // Doctrine DBAL connection
+    'db' => function (ContainerInterface $c) {
+        $config = new \Doctrine\DBAL\Configuration();
+        return \Doctrine\DBAL\DriverManager::getConnection($c->get('db.options'), $config);
+    },
 
-    // Default values
-    $repository->setDefaults([
-        'language' => $app['defaults.language'],
-        'default_calendar' => null,
-        'hidden_calendars' => [],
-        'time_format' => $app['defaults.time_format'],
-        'date_format' => $app['defaults.date_format'],
-        'weekstart' => $app['defaults.weekstart'],
-        'timezone' => $app['defaults.timezone'],
-        'show_week_nb' => $app['defaults.show_week_nb'],
-        'show_now_indicator' => $app['defaults.show_now_indicator'],
-        'list_days' => $app['defaults.list_days'],
-        'default_view' => $app['defaults.default_view'],
-    ]);
+    // Doctrine ORM EntityManager
+    'orm' => function (ContainerInterface $c) {
+        $development_mode = ($c->get('environment') === 'dev');
 
-    return $repository;
-};
+        $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+            [__DIR__ . '/../src/Data'],
+            $development_mode
+        );
 
-// Principals repository (queries the CalDAV server)
-$app['principals.repository'] = function($app) {
-    $repository = new AgenDAV\Repositories\DAVPrincipalsRepository(
-        $app['xml.toolkit'],
-        $app['caldav.client'],
-        $app['principal.email.attribute']
-    );
+        return new \Doctrine\ORM\EntityManager($c->get('db'), $config);
+    },
 
-    return $repository;
-};
+    // Monolog logger
+    'monolog' => function (ContainerInterface $c) {
+        $logger = new \Monolog\Logger('agendav');
+        $log_level = constant('\\Monolog\\Logger::' . strtoupper($c->get('log.level')));
+        $log_file = rtrim($c->get('log.path'), '/') . '/' . date('Y-m-d') . '.log';
+        $handler = new \Monolog\Handler\StreamHandler($log_file, $log_level);
+        $logger->pushHandler($handler);
+        return $logger;
+    },
 
+    // HTTP traffic logger (used by Guzzle middleware in dev)
+    'monolog.http' => function (ContainerInterface $c) {
+        return \AgenDAV\Log::generateHttpLogger($c->get('log.path'));
+    },
 
-// Sessions handler
-$app['session.storage.handler'] = function($app) {
-    $pdo_handler = new Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
-        $app['db']->getWrappedConnection(),
-        $app['session.storage.options']
-    );
+    // Translator
+    'translator' => function (ContainerInterface $c) {
+        $translator = new \Symfony\Component\Translation\Translator(
+            $c->get('defaults.language'),
+            null,
+            null,
+            $c->get('debug') ?? false
+        );
+        $translator->setFallbackLocales(['en']);
+        $translator->addLoader('php', new \Symfony\Component\Translation\Loader\PhpFileLoader());
 
-    return $pdo_handler;
-};
+        $languages = array_keys($c->get('languages'));
+        foreach ($languages as $language) {
+            $translator->addResource('php', __DIR__ . '/../lang/' . $language . '.php', $language);
+        }
 
+        return $translator;
+    },
 
-// HTTP connection logger
-$app['monolog.http'] = function($app) {
-    return \AgenDAV\Log::generateHttpLogger($app['log.path']);
-};
+    // Twig environment
+    'twig' => function (ContainerInterface $c) {
+        $loader = new \Twig\Loader\FilesystemLoader($c->get('twig.path'));
+        $env = new \Twig\Environment($loader, $c->get('twig.options'));
 
-// Guzzle HTTP client
-$app['guzzle'] = function($app) {
-    // Generate Guzzle default stack handler
-    $stack = GuzzleHttp\HandlerStack::create();
+        // Translator integration
+        $env->addExtension(new \Symfony\Bridge\Twig\Extension\TranslationExtension($c->get('translator')));
 
-    // Add the log middleware to the stack
-    if (isset($app['http.debug']) && $app['http.debug'] === true) {
-        $stack->push(
-            GuzzleHttp\Middleware::log(
-                $app['monolog.http'],
-                new GuzzleHttp\MessageFormatter(
+        // {{ asset(...) }} support
+        $env->addExtension(new \Symfony\Bridge\Twig\Extension\AssetExtension($c->get('asset.packages')));
+
+        // {{ url_for('route_name', { params }) }}
+        $env->addExtension(new \AgenDAV\Twig\UrlForExtension($c));
+
+        if (!empty($c->get('debug'))) {
+            $env->addExtension(new \Twig\Extension\DebugExtension());
+        }
+
+        return $env;
+    },
+
+    // Symfony Asset Packages (for the asset() Twig function)
+    'asset.packages' => function (ContainerInterface $c) {
+        $version = 'v' . \AgenDAV\Version::V;
+        $default_package = new \Symfony\Component\Asset\Package(
+            new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy($version)
+        );
+
+        $named = [
+            'css' => new \Symfony\Component\Asset\PathPackage(
+                '/dist/css',
+                new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
+            ),
+            'js' => new \Symfony\Component\Asset\PathPackage(
+                '/dist/js',
+                new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
+            ),
+            'img' => new \Symfony\Component\Asset\PathPackage(
+                '/img',
+                new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
+            ),
+        ];
+
+        return new \Symfony\Component\Asset\Packages($default_package, $named);
+    },
+
+    // CSRF token manager
+    'csrf.manager' => function (ContainerInterface $c) {
+        // Make sure the session has been started so $_SESSION is initialized
+        // before NativeSessionTokenStorage touches it.
+        $session = $c->get('session');
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+        $storage = new \Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage();
+        return new \Symfony\Component\Security\Csrf\CsrfTokenManager(null, $storage);
+    },
+
+    // Fractal manager (Note: serializer is changed per controller as needed)
+    'fractal' => function (ContainerInterface $c) {
+        $fractal = new \League\Fractal\Manager();
+        $fractal->setSerializer(new \League\Fractal\Serializer\DataArraySerializer());
+        return $fractal;
+    },
+
+    // Preferences repository
+    'preferences.repository' => function (ContainerInterface $c) {
+        $repository = new \AgenDAV\Repositories\DoctrineOrmPreferencesRepository($c->get('orm'));
+        $repository->setDefaults([
+            'language' => $c->get('defaults.language'),
+            'default_calendar' => null,
+            'hidden_calendars' => [],
+            'time_format' => $c->get('defaults.time_format'),
+            'date_format' => $c->get('defaults.date_format'),
+            'weekstart' => $c->get('defaults.weekstart'),
+            'timezone' => $c->get('defaults.timezone'),
+            'show_week_nb' => $c->get('defaults.show_week_nb'),
+            'show_now_indicator' => $c->get('defaults.show_now_indicator'),
+            'list_days' => $c->get('defaults.list_days'),
+            'default_view' => $c->get('defaults.default_view'),
+        ]);
+        return $repository;
+    },
+
+    // Principals repository
+    'principals.repository' => function (ContainerInterface $c) {
+        return new \AgenDAV\Repositories\DAVPrincipalsRepository(
+            $c->get('xml.toolkit'),
+            $c->get('caldav.client'),
+            $c->get('principal.email.attribute')
+        );
+    },
+
+    // Shares repository
+    'shares.repository' => function (ContainerInterface $c) {
+        return new \AgenDAV\Repositories\DoctrineOrmSharesRepository($c->get('orm'));
+    },
+
+    // Sharing resolver
+    'sharing.resolver' => function (ContainerInterface $c) {
+        return new \AgenDAV\Sharing\SharingResolver(
+            $c->get('shares.repository'),
+            $c->get('principals.repository')
+        );
+    },
+
+    // Configured permissions
+    'permissions' => function (ContainerInterface $c) {
+        return new \AgenDAV\CalDAV\Share\Permissions($c->get('calendar.sharing.permissions'));
+    },
+
+    // ACL factory: each request gets a fresh ACL via php-di's factory pattern
+    'acl' => \DI\factory(function (ContainerInterface $c) {
+        return new \AgenDAV\CalDAV\Share\ACL($c->get('permissions'));
+    }),
+
+    // Guzzle HTTP client
+    'guzzle' => function (ContainerInterface $c) {
+        $stack = \GuzzleHttp\HandlerStack::create();
+
+        if ($c->has('http.debug') && $c->get('http.debug') === true) {
+            $stack->push(\GuzzleHttp\Middleware::log(
+                $c->get('monolog.http'),
+                new \GuzzleHttp\MessageFormatter(
                     "\n{request}\n~~~~~~~~~~~~\n\n{response}\n~~~~~~~~~~~~\nError?: {error}\n"
                 )
-            )
+            ));
+        }
+
+        $baseurl = $c->get('caldav.baseurl');
+        $username = $c->get('session')->get('username');
+        $baseurl = str_replace('%u', (string) $username, $baseurl);
+
+        return new \GuzzleHttp\Client([
+            'base_uri' => $baseurl,
+            'handler' => $stack,
+            'connect_timeout' => $c->get('caldav.connect.timeout'),
+            'timeout' => $c->get('caldav.response.timeout'),
+            'verify' => $c->get('caldav.certificate.verify'),
+        ]);
+    },
+
+    // AgenDAV HTTP client
+    'http.client' => function (ContainerInterface $c) {
+        return \AgenDAV\Http\ClientFactory::create(
+            $c->get('guzzle'),
+            $c->get('session'),
+            $c->get('caldav.authmethod')
         );
-    }
+    },
 
-    $baseurl = $app['caldav.baseurl'];
-    // Pass username of logged-in user to baseurl to select calendar dynamically
-    $baseurl = str_replace('%u', $app['session']->get('username'), $baseurl);
+    // XML
+    'xml.generator' => fn (ContainerInterface $c) => new \AgenDAV\XML\Generator(),
+    'xml.parser' => fn (ContainerInterface $c) => new \AgenDAV\XML\Parser(),
+    'xml.toolkit' => fn (ContainerInterface $c) => new \AgenDAV\XML\Toolkit(
+        $c->get('xml.parser'),
+        $c->get('xml.generator')
+    ),
 
-    $client = new \GuzzleHttp\Client([
-        'base_uri' => $baseurl,
-        'handler' => $stack,
-        'connect_timeout' => $app['caldav.connect.timeout'],
-        'timeout' => $app['caldav.response.timeout'],
-        'verify' => $app['caldav.certificate.verify'],
-    ]);
+    // Event parser
+    'event.parser' => fn (ContainerInterface $c) => new \AgenDAV\Event\Parser\VObjectParser(),
 
-    return $client;
-};
+    // CalDAV client
+    'caldav.client' => function (ContainerInterface $c) {
+        return new \AgenDAV\CalDAV\Client(
+            $c->get('http.client'),
+            $c->get('xml.toolkit'),
+            $c->get('event.parser')
+        );
+    },
 
-// AgenDAV HTTP client, based on Guzzle
-$app['http.client'] = function($app) {
-    return \AgenDAV\Http\ClientFactory::create(
-        $app['guzzle'],
-        $app['session'],
-        $app['caldav.authmethod']
-    );
-};
+    // Calendar finder
+    'calendar.finder' => function (ContainerInterface $c) {
+        $finder = new \AgenDAV\CalendarFinder($c->get('session'), $c->get('caldav.client'));
+        if ($c->get('calendar.sharing') === true) {
+            $finder->setSharesRepository($c->get('shares.repository'));
+        }
+        return $finder;
+    },
 
-// XML generator
-$app['xml.generator'] = function($app) {
-    return new \AgenDAV\XML\Generator();
-};
-
-// XML parser
-$app['xml.parser'] = function($app) {
-    return new \AgenDAV\XML\Parser();
-};
-
-// XML toolkit
-$app['xml.toolkit'] = function($app) {
-    return new \AgenDAV\XML\Toolkit(
-        $app['xml.parser'],
-        $app['xml.generator']
-    );
-};
-
-// Event parser
-$app['event.parser'] = function($app) {
-    return new \AgenDAV\Event\Parser\VObjectParser;
-};
-
-// CalDAV client
-$app['caldav.client'] = function($app) {
-    return new \AgenDAV\CalDAV\Client(
-        $app['http.client'],
-        $app['xml.toolkit'],
-        $app['event.parser']
-    );
-};
-
-// Calendar finder
-$app['calendar.finder'] = function($app) {
-
-    $finder = new \AgenDAV\CalendarFinder(
-        $app['session'],
-        $app['caldav.client']
-    );
-
-    // Add the shares repository to the calendar finder service
-    if ($app['calendar.sharing']=== true) {
-        $finder->setSharesRepository($app['shares.repository']);
-    }
-
-
-    return $finder;
-};
-
-// Event builder
-$app['event.builder'] = function($app) {
-    $timezone = new \DateTimeZone($app['user.timezone']);
-    return new \AgenDAV\Event\Builder\VObjectBuilder($timezone);
-};
-
-
-// CSRF manager that stores tokens inside sessions
-$app['csrf.manager'] = function ($app) {
-    $storage = new Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage($app['session']);
-    return new Symfony\Component\Security\Csrf\CsrfTokenManager(null, $storage);
-};
-
-// Shares repository
-$app['shares.repository'] = function($app) {
-    $em = $app['orm'];
-    return new AgenDAV\Repositories\DoctrineOrmSharesRepository($em);
-};
-
-$app['sharing.resolver'] = function($app) {
-    $shares_repository = $app['shares.repository'];
-    $principals_repository = $app['principals.repository'];
-    return new AgenDAV\Sharing\SharingResolver(
-        $shares_repository,
-        $principals_repository
-    );
-};
-
-// Configured permissions
-$app['permissions'] = function($app) {
-    return new \AgenDAV\CalDAV\Share\Permissions($app['calendar.sharing.permissions']);
-};
-
-// ACL factory
-$app['acl'] = $app->factory(function($app) {
-    return new \AgenDAV\CalDAV\Share\ACL($app['permissions']);
-});
+    // Event builder (depends on the user's timezone, set by AuthMiddleware via UserContext)
+    'event.builder' => \DI\factory(function (ContainerInterface $c) {
+        $userContext = $c->get(\AgenDAV\UserContext::class);
+        $tz = $userContext->getTimezone() ?? $c->get('defaults.timezone');
+        return new \AgenDAV\Event\Builder\VObjectBuilder(new \DateTimeZone($tz));
+    }),
+];

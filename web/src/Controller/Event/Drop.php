@@ -22,7 +22,6 @@ namespace AgenDAV\Controller\Event;
  */
 
 use AgenDAV\DateHelper;
-use AgenDAV\CalDAV\Client;
 use AgenDAV\EventInstance;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -38,14 +37,6 @@ class Drop extends Alter
 
     const ALLDAY_TYPE = 1;
 
-    /**
-     * Changes the instance to reflect an event drop
-     *
-     * @param \AgenDAV\EventInstance $instance
-     * @param \DateTimeZone $timezone
-     * @param int $minutes
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     */
     protected function modifyInstance(
         EventInstance $instance,
         \DateTimeZone $timezone,
@@ -67,38 +58,22 @@ class Drop extends Alter
         }
 
         if ($movement === self::ALLDAY_TO_TIMED) {
-            // Original event is in UTC. Switch it to user timezone
             $start = DateHelper::switchTimeZone($start, $timezone);
             $start = DateHelper::addMinutesTo($start, $minutes);
-
-            // defaultTimedEventDuration (Fullcalendar) is set to 1h
             $end = DateHelper::addMinutesTo($start, 60);
         }
 
         if ($movement === self::TIMED_TO_ALLDAY) {
-            // Ignore original time, switch to UTC at 00:00:00
             $start = DateHelper::getStartOfDayUTC($start);
             $start = DateHelper::addMinutesTo($start, $minutes);
-
-            // defaultAllDayEventDuration (Fullcalendar) is set to 1 day
-            $end = DateHelper::addMinutesTo($start, 60*24);
+            $end = DateHelper::addMinutesTo($start, 60 * 24);
         }
 
-        // Update start and end on instance, depending on movement
         $allday = ($movement & self::ALLDAY_TYPE) !== 0;
         $instance->setStart($start, $allday);
         $instance->setEnd($end, $allday);
     }
 
-    /**
-     * Decides which type of movement the user has done. This applies to
-     * event dropping
-     *
-     * @param string $was_allday    Possible values: 'true' or 'false'
-     * @param string $now_allday    Possible values: 'true' or 'false'
-     *
-     * @return int|null             One of the constants from this class or null
-     */
     protected function describeMovement($was_allday, $now_allday)
     {
         if ($was_allday === 'false' && $now_allday === 'false') {

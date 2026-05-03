@@ -24,11 +24,9 @@ namespace AgenDAV\Controller\Event;
 use AgenDAV\Uuid;
 use AgenDAV\DateHelper;
 use AgenDAV\Controller\JSONController;
-use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\CalDAV\Resource\CalendarObject;
-use AgenDAV\Data\Transformer\CalendarTransformer;
-use League\Fractal\Resource\Collection;
-use Silex\Application;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Save extends JSONController
@@ -36,21 +34,9 @@ class Save extends JSONController
     /** @var \AgenDAV\Event\Builder */
     protected $builder;
 
-    /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
     protected function validateInput(ParameterBag $input)
     {
-        $fields = [
-            'calendar',
-            'summary',
-            'timezone',
-            'start',
-            'end',
-        ];
+        $fields = ['calendar', 'summary', 'timezone', 'start', 'end'];
 
         if ($this->isModification($input)) {
             $fields[] = 'etag';
@@ -63,45 +49,33 @@ class Save extends JSONController
             }
         }
 
-        // Check if end >= start
         $start = DateHelper::frontEndToDateTime($input->get('start'), new \DateTimeZone('UTC'));
         $end = DateHelper::frontEndToDateTime($input->get('end'), new \DateTimeZone('UTC'));
 
-        if ($end < $start) {
-            return false;
-        }
-
-
-        return true;
+        return $end >= $start;
     }
 
-    public function execute(ParameterBag $input, Application $app)
-    {
-        $this->builder = $app['event.builder'];
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $this->builder = $this->container->get('event.builder');
         if ($this->isModification($input)) {
-            return $this->modifyObject($input);
+            return $this->modifyObject($input, $response);
         }
-
-        return $this->createObject($input);
+        return $this->createObject($input, $response);
     }
 
-    /**
-     * Decides whether this request tries to create a new event or update
-     * an existing one
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
-    protected function isModification(ParameterBag $input)
+    protected function isModification(ParameterBag $input): bool
     {
         return !empty($input->get('uid'));
     }
 
-    protected function createObject(ParameterBag $input)
+    protected function createObject(ParameterBag $input, ResponseInterface $response): ResponseInterface
     {
         $calendar = $this->client->getCalendarByUrl($input->get('calendar'));
 
-        // Create a new CalendarObject inside $calendar
         $uid = Uuid::generate();
         $object = CalendarObject::generateOnCalendar($calendar, $uid);
         $event = $this->builder->createEvent($uid);
@@ -112,18 +86,14 @@ class Save extends JSONController
         $object->setEvent($event);
         $this->client->uploadCalendarObject($object);
 
-        // Frontend expects us to return the list of affected calendars
-        return $this->generateSuccess([ $input->get('calendar') ]);
+        return $this->generateSuccess($response, [$input->get('calendar')]);
     }
 
-    protected function modifyObject(ParameterBag $input)
+    protected function modifyObject(ParameterBag $input, ResponseInterface $response): ResponseInterface
     {
-        $source_calendar = $this->client->getCalendarByUrl(
-            $input->get('original_calendar')
-        );
+        $source_calendar = $this->client->getCalendarByUrl($input->get('original_calendar'));
         $destination_calendar = $this->client->getCalendarByUrl($input->get('calendar'));
 
-        // Fetch current event to apply modifications on top of it
         $uid = $input->get('uid');
         $source_object = $this->client->fetchObjectByUid($source_calendar, $uid);
         $event = $source_object->getEvent();
@@ -135,7 +105,6 @@ class Save extends JSONController
         $object->setEtag($input->get('etag'));
         $object->setEvent($event);
 
-        // New object, so don't overwrite existing objects
         if ($source_calendar->getUrl() !== $destination_calendar->getUrl()) {
             $object->setEtag(null);
         }
@@ -144,14 +113,12 @@ class Save extends JSONController
 
         if ($source_calendar->getUrl() !== $destination_calendar->getUrl()) {
             $this->client->deleteCalendarObject($source_object);
-
-            return $this->generateSuccess([
+            return $this->generateSuccess($response, [
                 $input->get('original_calendar'),
-                $input->get('calendar')
+                $input->get('calendar'),
             ]);
         }
 
-        // Frontend expects us to return the list of affected calendars
-        return $this->generateSuccess([ $input->get('calendar') ]);
+        return $this->generateSuccess($response, [$input->get('calendar')]);
     }
 }

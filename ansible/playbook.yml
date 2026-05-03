@@ -34,14 +34,13 @@
         with_items:
             - curl
             - git
-            - php7.2
-            - php7.2-cli
-            - php7.2-curl
-            - php7.2-mysql
-            - php7.2-mcrypt
-            - php7.2-sqlite3
-            - php7.2-dom
-            - php7.2-mbstring
+            - php8.5
+            - php8.5-cli
+            - php8.5-curl
+            - php8.5-mysql
+            - php8.5-sqlite3
+            - php8.5-dom
+            - php8.5-mbstring
             - mysql-client
             - mysql-server
             - python-dev
@@ -76,7 +75,7 @@
         when: baikal.stat.exists == false
 
       - name: configure php
-        template: src=php/php.ini.j2 dest=/etc/php/7.2/apache2/php.ini owner=root mode=644 backup=yes
+        template: src=php/php.ini.j2 dest=/etc/php/8.5/apache2/php.ini owner=root mode=644 backup=yes
         become: yes
         notify: restart apache
 

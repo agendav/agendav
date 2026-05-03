@@ -11,7 +11,7 @@ class RecurrenceIdTest extends TestCase
 
     const DATETIME_STRING = '2015-06-17 19:36:00';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->datetime = new \DateTimeImmutable(
             self::DATETIME_STRING,
@@ -59,8 +59,7 @@ class RecurrenceIdTest extends TestCase
         $this->assertTrue($recurrence_id->matchesDateTime($this->datetime));
 
         // Test with a different timezone
-        $new_datetime = clone $this->datetime;
-        $new_datetime->setTimeZone(new \DateTimeZone('Africa/Asmara'));
+        $new_datetime = $this->datetime->setTimeZone(new \DateTimeZone('Africa/Asmara'));
         $this->assertTrue(
             $recurrence_id->matchesDateTime($new_datetime),
             'matchesDateTime() can\'t handle different time zones'

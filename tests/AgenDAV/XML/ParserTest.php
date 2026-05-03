@@ -76,12 +76,9 @@ EOBODY;
         );
     }
 
-    /**
-     * @expectedException \Sabre\Xml\LibXMLException
-     */
-
     public function testInvalidXML()
     {
+        $this->expectException(\Sabre\Xml\LibXMLException::class);
         $parser = new Parser();
         $parser->extractPropertiesFromMultistatus('this is clearly not an xml document');
     }

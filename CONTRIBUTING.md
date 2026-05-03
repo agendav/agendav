@@ -44,6 +44,16 @@ There are some facts that will help you when contributing code to AgenDAV:
 
 * AgenDAV ships with a [Vagrant environment](https://agendav.readthedocs.io/en/latest/development/#virtual-machine)
   that is absolutely recommended when developing
+* As a lighter-weight alternative, a `docker-compose.yml` is provided with
+  three services: AgenDAV (PHP-Apache), MariaDB, and a Baikal CalDAV server.
+  Run `docker compose up` from the repository root; a one-shot `web-builder`
+  service runs `npm install`, `composer install`, and the asset build on
+  first start, then exits. AgenDAV is then served at <http://localhost:8080>
+  and Baikal at <http://localhost:8081>. Subsequent starts skip the build.
+* `bash docker/smoke-test.sh` brings the stack up (if needed) and runs an
+  end-to-end regression check covering login, calendar/event CRUD against
+  Baikal, preferences persistence, CSRF, 404 handling, and HTTP Basic auth.
+  Run it before submitting a PR.
 * AgenDAV includes unit tests as well, run via `./web/vendor/bin/phpunit tests`
 * AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
 

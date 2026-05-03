@@ -161,12 +161,12 @@ class Generator
         $writer = $this->createNewWriter();
         $writer->startElement('{DAV:}acl');
 
-        $this->generateAceTag($writer, 'owner', null, $acl->getOwnerPrivileges());
-        $this->generateAceTag($writer, 'default', null, $acl->getDefaultPrivileges());
+        $this->generateAceTag($writer, 'owner', $acl->getOwnerPrivileges());
+        $this->generateAceTag($writer, 'default', $acl->getDefaultPrivileges());
 
         $grants = $acl->getGrantsPrivileges();
         foreach ($grants as $principal => $privileges) {
-            $this->generateAceTag($writer, 'grant', $principal, $privileges);
+            $this->generateAceTag($writer, 'grant', $privileges, $principal);
         }
         $writer->endElement();
 
@@ -238,8 +238,8 @@ class Generator
     protected function generateAceTag(
         Writer $writer,
         $type,
-        $principal = null,
-        array $privileges
+        array $privileges,
+        $principal = null
     )
     {
         $writer->startElement('{DAV:}ace');

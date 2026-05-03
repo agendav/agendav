@@ -26,59 +26,48 @@ use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\DateHelper;
 use AgenDAV\Event\FullCalendarEvent;
 use AgenDAV\Data\Transformer\FullCalendarEventTransformer;
-use AgenDAV\Data\Serializer\PlainSerializer;;
+use AgenDAV\Data\Serializer\PlainSerializer;
 use League\Fractal\Resource\Collection;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Listing extends JSONController
 {
+    protected $method = 'GET';
+
     /** @var \DateTimeZone */
     private $utc;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        parent::__construct();
+        parent::__construct($container);
         $this->utc = new \DateTimeZone('UTC');
-        $this->method = 'GET';
     }
 
-    /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
     protected function validateInput(ParameterBag $input)
     {
-        $fields = [
-            'calendar',
-            'timezone',
-            'start',
-            'end',
-        ];
-
-        foreach ($fields as $name) {
+        foreach (['calendar', 'timezone', 'start', 'end'] as $name) {
             if (empty($input->get($name))) {
                 return false;
             }
         }
-
         return true;
     }
 
-    protected function execute(ParameterBag $input, Application $app)
-    {
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
         $calendar = new Calendar($input->get('calendar'));
         $timezone = new \DateTimeZone($input->get('timezone'));
         $start = DateHelper::fullcalendarToDateTime($input->get('start'), $timezone);
         $end = DateHelper::fullcalendarToDateTime($input->get('end'), $timezone);
 
-        // These are needed to query the server
         $start_string = $this->getTimeFilterDatestring($start);
         $end_string = $this->getTimeFilterDatestring($end);
-
 
         $execution_fetch_start = microtime(true);
 
@@ -86,7 +75,7 @@ class Listing extends JSONController
             $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
         } else {
             $object = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
-            $objects = array($object);
+            $objects = [$object];
         }
 
         $execution_fetch_end = microtime(true);
@@ -100,21 +89,12 @@ class Listing extends JSONController
             $execution_parse_end - $execution_parse_start
         );
 
-        return $this->serializeFullCalendarEvents($fullcalendar_events, $timezone, $app);
+        return $this->serializeFullCalendarEvents($fullcalendar_events, $timezone, $response);
     }
 
-
-    /**
-     * Generates a string suitable for a timefilter for querying the calendar
-     *
-     * @param \DateTimeImmutable $datetime
-     * @return string
-     */
     protected function getTimeFilterDatestring(\DateTimeImmutable $datetime)
     {
-        $datetime_utc = $datetime->setTimezone($this->utc);
-
-        return $datetime_utc->format('Ymd\THis\Z');
+        return $datetime->setTimezone($this->utc)->format('Ymd\THis\Z');
     }
 
     protected function buildFullCalendarEvents(
@@ -125,53 +105,31 @@ class Listing extends JSONController
     )
     {
         $result = [];
-
         foreach ($objects as $object) {
             $master_event = $object->getEvent();
             $instances = $master_event->expand($start, $end);
-            $fullcalendar_events = FullCalendarEvent::generateFrom(
-                $object,
-                $calendar,
-                $instances
-            );
+            $fullcalendar_events = FullCalendarEvent::generateFrom($object, $calendar, $instances);
             $result = array_merge($result, $fullcalendar_events);
         }
-
         return $result;
     }
 
-    /**
-     * Serialize a list of FullCalendar events using Fractal
-     *
-     * @param array $events FullCalendar events
-     * @param \DateTimeZone $timezone Time zone the user has
-     * @param \Silex\Application $app
-     *
-     * @return JsonResponse
-     */
-    protected function serializeFullCalendarEvents(array $events, \DateTimeZone $timezone, Application $app)
-    {
-        $fractal = $app['fractal'];
-        $fractal->setSerializer(new PlainSerializer);
+    protected function serializeFullCalendarEvents(
+        array $events,
+        \DateTimeZone $timezone,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $fractal = $this->container->get('fractal');
+        $fractal->setSerializer(new PlainSerializer());
         $transformer = new FullCalendarEventTransformer($timezone);
         $collection = new Collection($events, $transformer);
 
-        return new JsonResponse($fractal->createData($collection)->toArray());
+        return $this->jsonResponse($response, $fractal->createData($collection)->toArray(), 200);
     }
 
-    /**
-     * Adds performance headers, that contain total fetch time and total parse time
-     *
-     * @param int $execution_fetch
-     * @param int $execution_parse
-     */
     protected function addPerformanceHeaders($execution_fetch, $execution_parse)
     {
-        $total_fetch = sprintf('%.4F', $execution_fetch);
-        $total_parse = sprintf('%.4F', $execution_parse);
-
-        $this->addHeader("X-Fetch-Time", $total_fetch);
-        $this->addHeader("X-Parse-Time", $total_parse);
+        $this->addHeader('X-Fetch-Time', sprintf('%.4F', $execution_fetch));
+        $this->addHeader('X-Parse-Time', sprintf('%.4F', $execution_parse));
     }
-
 }

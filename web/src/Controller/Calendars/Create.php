@@ -24,39 +24,28 @@ namespace AgenDAV\Controller\Calendars;
 use AgenDAV\Uuid;
 use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\Calendar;
-use AgenDAV\Data\Transformer\CalendarTransformer;
-use League\Fractal\Resource\Collection;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Create extends JSONController
 {
-    /**
-     * Validates user input
-     *
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $input
-     * @return bool
-     */
     protected function validateInput(ParameterBag $input)
     {
-        $fields = [
-            'displayname',
-            'calendar_color',
-        ];
-
-        foreach ($fields as $name) {
+        foreach (['displayname', 'calendar_color'] as $name) {
             if (empty($input->get($name))) {
                 return false;
             }
         }
-
         return true;
     }
 
-    public function execute(ParameterBag $input, Application $app)
-    {
-        $calendar_home_set = $app['session']->get('calendar_home_set');
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $calendar_home_set = $this->container->get('session')->get('calendar_home_set');
         $url = $calendar_home_set . Uuid::generate();
 
         $calendar = new Calendar($url, [
@@ -66,7 +55,6 @@ class Create extends JSONController
 
         $this->client->createCalendar($calendar);
 
-        return $this->generateSuccess();
+        return $this->generateSuccess($response);
     }
-
 }

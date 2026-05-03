@@ -25,22 +25,18 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-/**
- * @Entity
- * @Table(name="principals")
- */
+#[Entity]
+#[Table(name: 'principals')]
 class Principal
 {
-    /**
-     * @Id
-     * @Column(type="string")
-     */
+    #[Id]
+    #[Column(type: 'string')]
     private $url;
 
-    /** @Column(type="string") */
+    #[Column(type: 'string')]
     private $displayname;
 
-    /** @Column(type="string") */
+    #[Column(type: 'string')]
     private $email;
 
     // Property names

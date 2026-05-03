@@ -5,37 +5,40 @@
     "homepage": "https://github.com/agendav/agendav/",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=7.2",
-        "doctrine/cache": "^1.13",
-        "doctrine/common": "^2.13",
-        "doctrine/dbal": "^2.13",
-        "doctrine/migrations": "^1.5",
-        "doctrine/orm": "^2.4",
-        "guzzlehttp/guzzle": "^6.5",
-        "guzzlehttp/streams": "^3.0",
-        "league/fractal": "^0.15",
-        "monolog/monolog": "^1.22",
-        "ramsey/uuid": "^3.9",
-        "sabre/dav": "^3.2",
-        "silex/silex": "^2.2",
-        "symfony/asset": "^2.8",
-        "symfony/console": "^2.8",
-        "symfony/event-dispatcher": "^2.8",
-        "symfony/http-foundation": "^2.8",
-        "symfony/http-kernel": "^2.8",
-        "symfony/property-access": "^2.8",
-        "symfony/routing": "^2.8",
-        "symfony/security": "^2.8",
-        "symfony/translation": "^2.8",
-        "symfony/twig-bridge": "^2.8",
-        "symfony/yaml": "^2.8"
+        "php": ">=8.5",
+        "doctrine/common": "^3.4",
+        "doctrine/dbal": "^3.8",
+        "doctrine/migrations": "^3.8",
+        "doctrine/orm": "^2.20",
+        "guzzlehttp/guzzle": "^7.9",
+        "league/fractal": "^0.20",
+        "monolog/monolog": "^3.7",
+        "php-di/php-di": "^7.0",
+        "php-di/slim-bridge": "^3.4",
+        "ramsey/uuid": "^4.7",
+        "sabre/dav": "^4.6",
+        "slim/psr7": "^1.6",
+        "slim/slim": "^4.14",
+        "slim/twig-view": "^3.4",
+        "symfony/asset": "^7.0",
+        "symfony/cache": "^7.0",
+        "symfony/console": "^7.0",
+        "symfony/http-foundation": "^7.0",
+        "symfony/security-csrf": "^7.0",
+        "symfony/translation": "^7.0",
+        "symfony/twig-bridge": "^7.0",
+        "symfony/yaml": "^7.0",
+        "twig/twig": "^3.10"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {
             "AgenDAV\\": "src/"
         }
+    },
+    "config": {
+        "allow-plugins": {}
     }
 }

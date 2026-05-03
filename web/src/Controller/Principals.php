@@ -1,4 +1,5 @@
 <?php
+
 namespace AgenDAV\Controller;
 
 /*
@@ -20,34 +21,37 @@ namespace AgenDAV\Controller;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use AgenDAV\Data\Transformer\PrincipalTransformer;
 use AgenDAV\Data\Serializer\PlainSerializer;
 use League\Fractal\Resource\Collection;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-/**
- * Principals controller. Used to search principals by username or email
- */
 class Principals
 {
-    public function search(Request $request, Application $app)
+    public function __construct(private ContainerInterface $container)
     {
-        $principals_repository = $app['principals.repository'];
+    }
 
-        $filter = $request->query->get('term');
+    public function search(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $filter = $request->getQueryParams()['term'] ?? null;
         if ($filter === null) {
-            return new JsonResponse([]);
+            $response->getBody()->write('[]');
+            return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $result = $principals_repository->search($filter);
+        $result = $this->container->get('principals.repository')->search($filter);
 
-        $fractal = $app['fractal'];
-        $fractal->setSerializer(new PlainSerializer);
+        $fractal = $this->container->get('fractal');
+        $fractal->setSerializer(new PlainSerializer());
         $transformer = new PrincipalTransformer();
         $collection = new Collection($result, $transformer);
 
-        return new JsonResponse($fractal->createData($collection)->toArray());
+        $response->getBody()->write((string) json_encode($fractal->createData($collection)->toArray()));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

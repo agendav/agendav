@@ -67,14 +67,12 @@ class Log
      */
     public static function hideAuthorizationHeader()
     {
-        return function($record) {
-            $record['message'] = preg_replace(
+        return function (\Monolog\LogRecord $record): \Monolog\LogRecord {
+            return $record->with(message: preg_replace(
                 '/^Authorization: .+$/m',
                 'Authorization: ***HIDDEN***',
-                $record['message']
-            );
-
-            return $record;
+                $record->message
+            ));
         };
     }
 }

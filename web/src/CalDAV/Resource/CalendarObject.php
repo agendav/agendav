@@ -70,7 +70,7 @@ class CalendarObject
      * @param string $url
      * @param \AgenDAV\Event $event
      */
-    public function __construct($url, Event $event = null)
+    public function __construct($url, ?Event $event = null)
     {
         $this->url = $url;
         $this->event = $event;

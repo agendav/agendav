@@ -196,7 +196,7 @@ interface EventInstance
      *
      * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
-    public function setRecurrenceId(RecurrenceId $recurrence_id = null);
+    public function setRecurrenceId(?RecurrenceId $recurrence_id = null);
 
     /**
      * Sets the exception status for this instance. This is useful on

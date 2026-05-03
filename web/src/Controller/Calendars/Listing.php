@@ -22,24 +22,31 @@ namespace AgenDAV\Controller\Calendars;
  */
 
 use AgenDAV\Controller\JSONController;
-use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Listing extends JSONController
 {
-    public function execute(ParameterBag $input, Application $app)
-    {
-        $calendars = $app['calendar.finder']->getCalendars();
-        $current_user_principal = $app['session']->get('principal_url');
+    protected $method = 'GET';
 
-        $fractal = $app['fractal'];
-        $collection = new Collection($calendars, new CalendarTransformer($current_user_principal), 'calendars');
+    protected function execute(
+        ParameterBag $input,
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $calendars = $this->container->get('calendar.finder')->getCalendars();
+        $current_user_principal = $this->container->get('session')->get('principal_url');
 
-        return new JsonResponse($fractal->createData($collection)->toArray());
+        $fractal = $this->container->get('fractal');
+        $collection = new Collection(
+            $calendars,
+            new CalendarTransformer($current_user_principal),
+            'calendars'
+        );
+
+        return $this->jsonResponse($response, $fractal->createData($collection)->toArray(), 200);
     }
-
 }
