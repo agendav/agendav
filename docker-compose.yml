@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: agendav
+      MARIADB_USER: agendav
+      MARIADB_PASSWORD: agendav
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  baikal:
+    image: ckulka/baikal:nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - baikal-config:/var/www/baikal/config
+      - baikal-data:/var/www/baikal/Specific
+
+  web:
+    build: ./docker/agendav
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/app
+    environment:
+      AGENDAV_ENVIRONMENT: dev
+    depends_on:
+      db:
+        condition: service_healthy
+      baikal:
+        condition: service_started
+
+volumes:
+  baikal-config:
+  baikal-data:
