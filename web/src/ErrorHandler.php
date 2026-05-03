@@ -40,11 +40,6 @@ class ErrorHandler
             return $response->withStatus($code)->withHeader('Content-Type', 'text/html; charset=utf-8');
         }
 
-        // TODO(phase4-followup): in prod mode an unknown route returns HTTP 500
-        // with empty body instead of rendering errors/404.html. The dev path
-        // works, so the failure is in this prod branch — likely Twig template
-        // resolution or render. Reproduce with AGENDAV_ENVIRONMENT=prod and
-        // tail apache's error log (display_errors=0 swallows it from the body).
         $templates = [
             sprintf('errors/%d.html', $code),
             sprintf('errors/%dx.html', intdiv($code, 10)),

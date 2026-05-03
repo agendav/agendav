@@ -49,8 +49,6 @@ $container->set(RouteParserInterface::class, $app->getRouteCollector()->getRoute
 // Register routes
 (require __DIR__ . '/../app/routes.php')($app);
 
-// Global middleware (outer-most first)
-$app->add(new TwigGlobalsMiddleware($container));
 $app->add(new CsrfMiddleware($container));
 
 // Routing + error handling come last so they run first
@@ -63,5 +61,10 @@ $errorMiddleware = $app->addErrorMiddleware(
     $container->get('monolog')
 );
 $errorMiddleware->setDefaultErrorHandler(new \AgenDAV\ErrorHandler($container));
+
+// TwigGlobalsMiddleware must wrap the error middleware: a routing failure
+// throws before any inner middleware runs, and the error template references
+// these globals (title, lang, favicon, ...).
+$app->add(new TwigGlobalsMiddleware($container));
 
 $app->run();
