@@ -58,6 +58,32 @@ class Generator
     }
 
     /**
+     * Generates a EXPAND-PROPERTY body
+     *
+     * @param array $properties List of properties, specified using Clark notation
+     * @return string           XML body for the propfind request
+     */
+    public function expandPropertyBody(array $properties)
+    {
+        $writer = $this->createNewWriter();
+        $writer->startElement('{DAV:}expand-property');
+
+        foreach ($properties as $property) {
+           $writer->startElement('{DAV:}property');
+            list(
+                $namespace,
+                $localName
+            ) = \Sabre\Xml\Service::parseClarkNotation($property);
+           $writer->writeAttribute('name', $localName);
+           $writer->writeAttribute('namespace', $namespace);
+           $writer->endElement();
+        }
+        $writer->endElement();
+
+        return $writer->outputMemory();
+    }
+
+    /**
      * Generates a PROPFIND body
      *
      * @param array $properties List of properties, specified using Clark notation
