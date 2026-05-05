@@ -24,9 +24,10 @@ AgenDAV requires:
 - PHP ctype extension
 - PHP mbstring extension
 - PHP cURL extension
-- A database supported by
-  [Doctrine DBAL](https://www.doctrine-project.org/projects/doctrine-dbal/en/2.12/reference/configuration.html#configuration)
-  like MySQL, PostgreSQL, SQLite
+- A database supported by Doctrine-DBAL like MySQL, PostgreSQL, SQLite
+- A CalDAV server like [Baïkal](http://baikal-server.com/),
+  [DAViCal](https://www.davical.org/),
+  or [Radicale](https://radicale.org/)
 - Optional: nodejs & npm to build assets (releases include a build)
 
 ## Documentation
