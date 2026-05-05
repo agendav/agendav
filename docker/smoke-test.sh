@@ -33,7 +33,10 @@ for bin in docker curl sha256sum md5sum python3; do
   command -v "$bin" >/dev/null 2>&1 || { echo "missing dependency: $bin" >&2; exit 2; }
 done
 [[ -f docker-compose.yml ]] || { echo "docker-compose.yml not found in $(pwd)" >&2; exit 2; }
-[[ -f web/config/settings.php ]] || { echo "web/config/settings.php missing" >&2; exit 2; }
+if [[ ! -f web/config/settings.php ]]; then
+  echo "==> copying docker/fixtures/settings.php to web/config/settings.php"
+  cp docker/fixtures/settings.php web/config/settings.php
+fi
 
 # ----- helpers -----
 PASSES=0
