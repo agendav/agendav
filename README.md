@@ -40,7 +40,14 @@ See [installation guide](https://agendav.readthedocs.io/en/latest/admin/installa
 
 ### Docker Image
 
-Agendav offers no official Docker image. However, you may use unofficial docker images provided by the community instead, for example https://ghcr.io/nagimov/agendav-docker.
+Agendav offers no official Docker image.
+
+A `docker-compose.yml` is provided in this repository for local development.
+It brings up AgenDAV (PHP-Apache, on port 8080), MariaDB, and a Baikal CalDAV
+server (on port 8081). Run `docker compose up` from the repository root: a
+one-shot `web-builder` service runs `npm install`, `composer install`, and the
+asset build the first time (allow 1-2 minutes), then exits. Subsequent starts
+detect the existing build and skip it, so the stack comes up in a few seconds.
 
 ## Source
 
