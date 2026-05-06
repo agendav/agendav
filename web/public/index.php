@@ -2,6 +2,8 @@
 
 use AgenDAV\Middleware\AuthMiddleware;
 use AgenDAV\Middleware\CsrfMiddleware;
+use AgenDAV\Middleware\NoStoreMiddleware;
+use AgenDAV\Middleware\SecurityHeadersMiddleware;
 use AgenDAV\Middleware\TwigGlobalsMiddleware;
 use DI\Bridge\Slim\Bridge as SlimBridge;
 use DI\ContainerBuilder;
@@ -60,6 +62,8 @@ $container->set(RouteParserInterface::class, $app->getRouteCollector()->getRoute
 (require __DIR__ . '/../app/routes.php')($app);
 
 $app->add(new CsrfMiddleware($container));
+$app->add(new NoStoreMiddleware());
+$app->add(new SecurityHeadersMiddleware());
 
 // Routing + error handling come last so they run first
 $app->addRoutingMiddleware();

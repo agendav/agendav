@@ -29,11 +29,18 @@ class ErrorHandler
         $code = $exception instanceof HttpException ? $exception->getCode() : 500;
 
         if ($displayErrorDetails) {
+            // Class + message + file:line is enough to diagnose in the
+            // browser. Stack traces are NOT echoed: if AGENDAV_ENVIRONMENT
+            // ever ends up 'dev' on a public host, the trace would leak
+            // file paths, class internals and any argument values captured
+            // by closures (potentially secrets). Operators wanting the full
+            // trace should consult web/var/log/<today>.log — addErrorMiddleware
+            // is configured with logErrorDetails=true, so the trace is there.
             $body = sprintf(
                 '<h1>%d %s</h1><pre>%s</pre>',
                 $code,
                 htmlspecialchars(get_class($exception) . ': ' . $exception->getMessage()),
-                htmlspecialchars((string) $exception)
+                htmlspecialchars(sprintf('%s:%d', $exception->getFile(), $exception->getLine()))
             );
             $response = new Response();
             $response->getBody()->write($body);

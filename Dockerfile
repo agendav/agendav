@@ -53,4 +53,8 @@ COPY --from=builder --chown=www-data:www-data /app /app
 
 RUN chmod -R 750 /app/web/var
 
+# Production image: refuse to leak stack traces by accident. docker-compose
+# overrides this to 'dev' for the local development stack.
+ENV AGENDAV_ENVIRONMENT=prod
+
 EXPOSE 80
