@@ -1,11 +1,20 @@
+# Local development stack only — NOT a production deployment.
+# Credentials below are the defaults used when running `docker compose up`
+# without a .env file. Override them by creating a .env file next to this
+# compose file:
+#
+#   AGENDAV_DB_ROOT_PASSWORD=...
+#   AGENDAV_DB_PASSWORD=...
+#
+# Ports are bound to 127.0.0.1 so the stack is not reachable from other hosts.
 services:
   db:
     image: mariadb:10.11
     environment:
-      MARIADB_ROOT_PASSWORD: root
-      MARIADB_DATABASE: agendav
-      MARIADB_USER: agendav
-      MARIADB_PASSWORD: agendav
+      MARIADB_ROOT_PASSWORD: ${AGENDAV_DB_ROOT_PASSWORD:-dev-root-only-do-not-deploy}
+      MARIADB_DATABASE: ${AGENDAV_DB_NAME:-agendav}
+      MARIADB_USER: ${AGENDAV_DB_USER:-agendav}
+      MARIADB_PASSWORD: ${AGENDAV_DB_PASSWORD:-agendav}
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
@@ -15,7 +24,7 @@ services:
   baikal:
     image: ckulka/baikal:nginx
     ports:
-      - "8081:80"
+      - "127.0.0.1:8081:80"
     volumes:
       - baikal-config:/var/www/baikal/config
       - baikal-data:/var/www/baikal/Specific
@@ -29,7 +38,7 @@ services:
   web:
     build: ./docker/agendav
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     volumes:
       - ./:/app
     environment:

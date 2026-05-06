@@ -20,6 +20,8 @@ class CsrfMiddleware implements MiddlewareInterface
     {
     }
 
+    private const PROTECTED_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $logger = $this->container->get('monolog');
@@ -28,19 +30,23 @@ class CsrfMiddleware implements MiddlewareInterface
         // Generate a new CSRF token if not present
         $this->container->get('csrf.manager')->getToken($this->container->get('csrf.secret'));
 
-        if ($request->getMethod() === 'GET') {
+        if (!in_array($request->getMethod(), self::PROTECTED_METHODS, true)) {
             return $handler->handle($request);
         }
 
+        // Token can be supplied either via the X-CSRF-Token header (preferred for
+        // JSON / XHR requests) or via the _token field of a form-encoded body.
+        $headerToken = $request->getHeaderLine('X-CSRF-Token');
         $body = (array) ($request->getParsedBody() ?? []);
-        if (!array_key_exists('_token', $body)) {
-            $logger->debug('_token not found on request');
+        $bodyToken = isset($body['_token']) ? (string) $body['_token'] : '';
+        $submitted = $headerToken !== '' ? $headerToken : $bodyToken;
+
+        if ($submitted === '') {
+            $logger->debug('CSRF token missing from request');
             throw new HttpUnauthorizedException($request, 'CSRF token not present');
         }
 
-        $token = new CsrfToken($this->container->get('csrf.secret'), (string) $body['_token']);
-
-        $logger->debug('CSRF token sent by user', ['value' => $body['_token']]);
+        $token = new CsrfToken($this->container->get('csrf.secret'), $submitted);
 
         if (!$this->container->get('csrf.manager')->isTokenValid($token)) {
             $logger->debug('CSRF token is not valid. Aborting');
