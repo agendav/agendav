@@ -222,8 +222,27 @@ echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars create" || 
 CAL_COUNT=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;print(len(json.load(sys.stdin)["data"]))')
 [[ "$CAL_COUNT" == "2" ]] && pass "calendars count == 2" || fail "calendars count == $CAL_COUNT"
 
-# 8. POST /calendars/delete
+# locate the just-created calendar (URL is stable across rename — reused for update + delete)
 NEW_URL=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;cs=json.load(sys.stdin)["data"];print([c for c in cs if c["displayname"]=="smoke-test cal"][0]["url"])')
+
+# 7b. POST /calendars/save (rename + recolor)
+RESP=$(curl -s -b "$JAR" -X POST \
+  --data-urlencode "_token=$T" \
+  --data-urlencode "calendar=$NEW_URL" \
+  --data-urlencode "displayname=smoke-test cal RENAMED" \
+  --data-urlencode "calendar_color=00FF00" \
+  http://localhost:8080/calendars/save)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/save (rename+recolor)" || fail "POST /calendars/save: $RESP"
+
+# 7c. /calendars reflects the rename (new name present, old name gone)
+CAL_LIST=$(curl -s -b "$JAR" http://localhost:8080/calendars)
+if echo "$CAL_LIST" | python3 -c 'import sys,json;ns=[c["displayname"] for c in json.load(sys.stdin)["data"]];sys.exit(0 if ("smoke-test cal RENAMED" in ns and "smoke-test cal" not in ns) else 1)'; then
+  pass "/calendars shows renamed cal (old name gone)"
+else
+  fail "/calendars rename not reflected: $CAL_LIST"
+fi
+
+# 8. POST /calendars/delete
 RESP=$(curl -s -b "$JAR" -X POST \
   --data-urlencode "_token=$T" \
   --data-urlencode "calendar=$NEW_URL" \
@@ -252,6 +271,35 @@ echo "$EVT_LIST" | grep -q '"title":"Smoke event"' && pass "GET /events contains
 
 EVT_UID=$(echo "$EVT_LIST" | python3 -c 'import sys,json;e=json.load(sys.stdin)[0];print(e["uid"])')
 EVT_HREF=$(echo "$EVT_LIST" | python3 -c 'import sys,json;e=json.load(sys.stdin)[0];print(e["href"])')
+EVT_ETAG=$(echo "$EVT_LIST" | python3 -c 'import sys,json;e=json.load(sys.stdin)[0];print(e["etag"])')
+
+# 11b. POST /events/save in modify mode (edit summary + description in place)
+RESP=$(curl -s -b "$JAR" -X POST \
+  --data-urlencode "_token=$T" \
+  --data-urlencode "calendar=/dav.php/calendars/test/default/" \
+  --data-urlencode "original_calendar=/dav.php/calendars/test/default/" \
+  --data-urlencode "uid=$EVT_UID" \
+  --data-urlencode "etag=$EVT_ETAG" \
+  --data-urlencode "summary=Smoke event UPDATED" \
+  --data-urlencode "description=smoke description added" \
+  --data "timezone=UTC" \
+  --data "start=2026-05-15T09:00:00.000Z" \
+  --data "end=2026-05-15T10:00:00.000Z" \
+  --data "allday=false" \
+  http://localhost:8080/events/save)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /events/save (edit summary+description)" || fail "POST /events/save edit: $RESP"
+
+# 11c. GET /events reflects the new title
+EVT_LIST=$(curl -s -b "$JAR" "http://localhost:8080/events?calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&timezone=UTC&start=2026-05-01&end=2026-06-01")
+echo "$EVT_LIST" | grep -q '"title":"Smoke event UPDATED"' && pass "GET /events shows updated title" || fail "GET /events missing updated title ($EVT_LIST)"
+
+# 11d. baikal sqlite: ICS blob carries new SUMMARY + DESCRIPTION (proves edit reached CalDAV storage)
+ICS=$(docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite "SELECT calendardata FROM calendarobjects WHERE componenttype='VEVENT' LIMIT 1;")
+if echo "$ICS" | grep -q 'SUMMARY:Smoke event UPDATED' && echo "$ICS" | grep -q 'DESCRIPTION:smoke description added'; then
+  pass "baikal ICS has updated SUMMARY + DESCRIPTION"
+else
+  fail "baikal ICS missing updates: $ICS"
+fi
 
 # 12. POST /events/drop
 RESP=$(curl -s -b "$JAR" -X POST \
