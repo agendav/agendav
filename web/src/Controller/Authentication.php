@@ -96,7 +96,7 @@ class Authentication
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        $this->container->get('session')->clear();
+        $this->container->get('session')->invalidate();
 
         $url = $this->container->get('logout.redirection');
         if (empty($url)) {
