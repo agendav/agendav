@@ -108,8 +108,14 @@ class Authentication
         }
 
         $session = $this->container->get('session');
+        // Defeat session fixation: regenerate the session id and destroy the
+        // old store before writing any authenticated state. Refresh the CSRF
+        // token afterwards so it is bound to the new session id.
+        $session->migrate(true);
+        $this->container->get('csrf.manager')->refreshToken($this->container->get('csrf.secret'));
+
         $session->set('username', $user);
-        $session->set('password', $password);
+        $session->set('password.encrypted', $this->container->get('password.cipher')->encrypt($password));
 
         $principal_url = $caldav_client->getCurrentUserPrincipal();
 

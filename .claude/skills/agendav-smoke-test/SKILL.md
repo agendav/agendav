@@ -9,7 +9,11 @@ A single bash script (`docker/smoke-test.sh`) brings up a docker-compose stack (
 
 ## How to invoke
 
-From the project root (`web/composer.json` must exist):
+From the project root (`web/composer.json` must exist). On first run the script
+auto-generates `web/config/settings.php` with random `csrf.secret` and
+`session.encryption.key` values — the file is gitignored, so fresh clones
+bootstrap themselves. Delete the file to force-regenerate (e.g. to rotate
+secrets); existing sessions get invalidated.
 
 ```bash
 bash docker/smoke-test.sh           # idempotent; reuses stack + Baikal seed if already in place
