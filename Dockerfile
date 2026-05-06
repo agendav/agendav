@@ -51,7 +51,11 @@ WORKDIR /app/web
 
 COPY --from=builder --chown=www-data:www-data /app /app
 
-RUN chmod -R 750 /app/web/var
+# Strip world-read on directories holding secrets (settings.php with the
+# csrf secret + DB password) and runtime state (var/session.key, sessions
+# DB credentials in cache, log files). Apache runs the workers as
+# www-data, which retains rwx via the group.
+RUN chmod -R 750 /app/web/var /app/web/config
 
 # Production image: refuse to leak stack traces by accident. docker-compose
 # overrides this to 'dev' for the local development stack.
