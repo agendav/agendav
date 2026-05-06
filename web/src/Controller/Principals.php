@@ -34,15 +34,25 @@ class Principals
     {
     }
 
+    /**
+     * Defensive cap on the search term — long inputs would still be forwarded
+     * to the CalDAV server, which becomes a DoS amplifier for clients that can
+     * send a 1KB query but make the server scan a much larger principal set.
+     * Real autocompletion queries are short.
+     */
+    private const MAX_TERM_LENGTH = 64;
+
     public function search(
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
         $filter = $request->getQueryParams()['term'] ?? null;
-        if ($filter === null) {
+        if ($filter === null || $filter === '') {
             $response->getBody()->write('[]');
             return $response->withHeader('Content-Type', 'application/json');
         }
+
+        $filter = mb_substr((string) $filter, 0, self::MAX_TERM_LENGTH);
 
         $result = $this->container->get('principals.repository')->search($filter);
 

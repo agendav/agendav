@@ -1,6 +1,6 @@
-var AgenDAVConf = {{ site_config|json_encode|raw }};
+var AgenDAVConf = {{ site_config|js_json }};
 
-var AgenDAVUserPrefs = {{ preferences|json_encode|raw }};
+var AgenDAVUserPrefs = {{ preferences|js_json }};
 
 function set_default_colorpicker_options() {
   $.fn.colorPicker.defaultColors = AgenDAVConf.calendar_colors;

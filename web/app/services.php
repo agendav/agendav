@@ -119,6 +119,9 @@ return [
         // {{ url_for('route_name', { params }) }}
         $env->addExtension(new \AgenDAV\Twig\UrlForExtension($c));
 
+        // {{ value|js_json }} — JSON encoding safe for inline <script> blocks
+        $env->addExtension(new \AgenDAV\Twig\SafeJsonExtension());
+
         if (!empty($c->get('debug'))) {
             $env->addExtension(new \Twig\Extension\DebugExtension());
         }

@@ -128,6 +128,19 @@ class Authentication
             return false;
         }
 
+        // Resolve the principal BEFORE touching the session. A null
+        // principal_url (network race, malformed CalDAV response) or a
+        // throw from the principals repository must leave the session
+        // untouched — otherwise AuthMiddleware would let a partially
+        // authenticated user through with a null principal, widening
+        // ACL / share visibility.
+        $principal_url = $caldav_client->getCurrentUserPrincipal();
+        if (empty($principal_url)) {
+            return false;
+        }
+        $principal = $this->container->get('principals.repository')->get($principal_url);
+        $calendar_home_set = $caldav_client->getCalendarHomeSet($principal);
+
         $session = $this->container->get('session');
         // Defeat session fixation: regenerate the session id and destroy the
         // old store before writing any authenticated state. Refresh the CSRF
@@ -137,13 +150,8 @@ class Authentication
 
         $session->set('username', $user);
         $session->set('password.encrypted', $this->container->get('password.cipher')->encrypt($password));
-
-        $principal_url = $caldav_client->getCurrentUserPrincipal();
-
-        $principal = $this->container->get('principals.repository')->get($principal_url);
-
         $session->set('principal_url', $principal_url);
-        $session->set('calendar_home_set', $caldav_client->getCalendarHomeSet($principal));
+        $session->set('calendar_home_set', $calendar_home_set);
         $session->set('displayname', $principal->getDisplayName());
 
         return true;
