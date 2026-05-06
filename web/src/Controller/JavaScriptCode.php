@@ -25,6 +25,7 @@ use AgenDAV\UserContext;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteParserInterface;
 
 class JavaScriptCode
 {
@@ -45,11 +46,8 @@ class JavaScriptCode
         ]);
 
         $response->getBody()->write($body);
-        return $response
-            ->withHeader('Content-Type', 'text/javascript')
-            ->withHeader('Cache-Control', 'private, must-revalidate')
-            ->withHeader('Expires', gmdate('D, d M Y H:i:s', time()) . ' GMT')
-            ->withHeader('Pragma', 'no-cache');
+        // Cache-Control / Pragma are stamped globally by NoStoreMiddleware.
+        return $response->withHeader('Content-Type', 'text/javascript');
     }
 
     /**
@@ -57,13 +55,19 @@ class JavaScriptCode
      */
     protected function getSiteConfig(ServerRequestInterface $request): array
     {
-        $serverParams = $request->getServerParams();
-        $scriptName = $serverParams['SCRIPT_NAME'] ?? '';
-        $basePath = rtrim(dirname($scriptName), '/\\');
+        // Derive base URLs from Slim's RouteParser rather than $_SERVER['SCRIPT_NAME'].
+        // Behind a misconfigured reverse proxy SCRIPT_NAME can be attacker-
+        // controlled (X-Original-URL, X-Rewrite-URL, path traversal); urlFor
+        // honours the App's configured basePath, which is set explicitly in
+        // index.php and not derived from request headers.
+        /** @var RouteParserInterface $routeParser */
+        $routeParser = $this->container->get(RouteParserInterface::class);
+        $appUrl = $routeParser->urlFor('calendar');
+        $baseUrl = rtrim($appUrl, '/');
 
         $settings = [
-            'base_url' => $basePath,
-            'base_app_url' => $basePath . '/',
+            'base_url' => $baseUrl,
+            'base_app_url' => $appUrl,
             'agendav_version' => \AgenDAV\Version::V,
             'enable_calendar_sharing' => $this->container->get('calendar.sharing'),
             'calendar_colors' => $this->container->get('calendar.colors'),
