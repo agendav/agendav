@@ -151,6 +151,58 @@ return [
         return new \Symfony\Component\Asset\Packages($default_package, $named);
     },
 
+    // Password cipher used to encrypt CalDAV credentials at rest in the
+    // session store. The key is read from 'session.encryption.key' (hex-
+    // encoded 32 bytes) when set in settings.php, otherwise generated and
+    // persisted to var/session.key on first use.
+    'password.cipher' => function (ContainerInterface $c) {
+        $key = null;
+
+        if ($c->has('session.encryption.key')) {
+            $hex = $c->get('session.encryption.key');
+            if (is_string($hex) && $hex !== '') {
+                try {
+                    $key = sodium_hex2bin($hex);
+                } catch (\SodiumException $e) {
+                    throw new \RuntimeException(
+                        "'session.encryption.key' must be a hex-encoded 32-byte string (64 hex chars)"
+                    );
+                }
+            }
+        }
+
+        if ($key === null) {
+            $keyFile = dirname(rtrim($c->get('log.path'), '/')) . '/session.key';
+
+            if (is_readable($keyFile)) {
+                $key = file_get_contents($keyFile);
+                if ($key === false || strlen($key) !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES) {
+                    throw new \RuntimeException(
+                        "Corrupt session encryption key file: $keyFile (delete it to force regeneration; existing sessions will be invalidated)"
+                    );
+                }
+            } else {
+                $key = random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
+                // O_EXCL: only create if it doesn't already exist; lets concurrent workers race safely.
+                $fp = @fopen($keyFile, 'xb');
+                if ($fp !== false) {
+                    fwrite($fp, $key);
+                    fclose($fp);
+                    @chmod($keyFile, 0600);
+                } elseif (is_readable($keyFile)) {
+                    // Someone else won the race. Read theirs.
+                    $key = file_get_contents($keyFile);
+                } else {
+                    throw new \RuntimeException(
+                        "Cannot create session encryption key file: $keyFile (check that the parent directory is writable, or set 'session.encryption.key' in settings.php)"
+                    );
+                }
+            }
+        }
+
+        return new \AgenDAV\Session\PasswordCipher($key);
+    },
+
     // CSRF token manager
     'csrf.manager' => function (ContainerInterface $c) {
         // Make sure the session has been started so $_SESSION is initialized
@@ -252,7 +304,8 @@ return [
         return \AgenDAV\Http\ClientFactory::create(
             $c->get('guzzle'),
             $c->get('session'),
-            $c->get('caldav.authmethod')
+            $c->get('caldav.authmethod'),
+            $c->get('password.cipher')
         );
     },
 

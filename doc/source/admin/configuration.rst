@@ -56,7 +56,14 @@ modify,  and start configuring your instance.
 
 .. confval:: csrf.secret
 
-   Internal CSRF token id.
+   Per-installation secret used by the CSRF token manager. **Required**: AgenDAV
+   refuses to start if this is missing or empty. Generate a value with::
+
+      php -r 'echo bin2hex(random_bytes(32));'
+
+   and set it in ``settings.php``. Treat it like any other secret — do not
+   commit it, do not share it, and rotate it if you suspect a leak (rotation
+   invalidates outstanding sessions and CSRF tokens).
 
 .. confval:: log.level
 

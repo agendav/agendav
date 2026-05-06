@@ -31,8 +31,9 @@ return [
         'driver' => 'pdo_mysql',
     ],
 
-    // CSRF secret
-    'csrf.secret' => 'lkjihgfedcba',
+    // CSRF secret — REQUIRED. Override in settings.php with a per-installation
+    // random string. Generate with: php -r 'echo bin2hex(random_bytes(32))."\n";'
+    // 'csrf.secret' => 'change-me',
 
     // Log path
     'log.path' => __DIR__ . '/../var/log/',
