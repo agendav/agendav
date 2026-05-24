@@ -13,7 +13,9 @@
 - FEATURE Drop the `mcrypt` Ansible/php.ini references (extension removed since PHP 7.2)
 - FEATURE CI now runs a single PHP 8.5 job (Travis config removed)
 - BUGFIX Render unknown routes as a proper 404 instead of a 500 error page
+- BUGFIX Support running AgenDAV under a subpath
 - TASK Security hardening: address Critical/High, Medium and Low findings from the dependency-upgrade audit
+- TASK Security: refresh composer.lock — symfony/* to 7.4.11–7.4.13, twig/twig to 3.27.1
 - TASK Drop abandoned/unused dependencies: doctrine/cache, doctrine/common, slim/twig-view
 - TASK Update installation docs to reference Slim 4 web server guide
 
