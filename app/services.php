@@ -147,22 +147,30 @@ return [
 
     // Symfony Asset Packages (for the asset() Twig function)
     'asset.packages' => function (ContainerInterface $c) {
+        // Prefix every asset URL with the configured base path so they resolve
+        // when AgenDAV is served from a subdirectory. Empty = served at root.
+        $basePath = rtrim((string) ($c->has('app.base_path') ? $c->get('app.base_path') : ''), '/');
         $version = 'v' . \AgenDAV\Version::V;
-        $default_package = new \Symfony\Component\Asset\Package(
-            new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy($version)
-        );
+        $default_package = $basePath === ''
+            ? new \Symfony\Component\Asset\Package(
+                new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy($version)
+            )
+            : new \Symfony\Component\Asset\PathPackage(
+                $basePath,
+                new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy($version)
+            );
 
         $named = [
             'css' => new \Symfony\Component\Asset\PathPackage(
-                '/dist/css',
+                $basePath . '/dist/css',
                 new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
             ),
             'js' => new \Symfony\Component\Asset\PathPackage(
-                '/dist/js',
+                $basePath . '/dist/js',
                 new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
             ),
             'img' => new \Symfony\Component\Asset\PathPackage(
-                '/img',
+                $basePath . '/img',
                 new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
             ),
         ];

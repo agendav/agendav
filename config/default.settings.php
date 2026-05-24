@@ -19,6 +19,11 @@ return [
     // Site footer. Optional
     'site.footer' => 'AgenDAV ' . \AgenDAV\Version::V,
 
+    // Base path when AgenDAV is served from a subdirectory (e.g. '/agendav').
+    // Empty string means it is served at the root of the domain. Used to set
+    // Slim's base path (routing + url_for) and to prefix generated asset URLs.
+    'app.base_path' => '',
+
     // Trusted proxy ips
     'proxies' => [],
 

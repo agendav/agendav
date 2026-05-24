@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# When AgenDAV is served with path aliases you need to uncomment the line below
+# RewriteBase /
+# When you run it from a subdirectory then adjust the basepath here and the option 'app.base_path' in settings.php
+# RewriteBase /agendav
+
 # Preserve the Authorization header (HTTP Basic auth) when running under
 # mod_php/CGI — Apache strips it by default, breaking AgenDAV's HTTP Basic
 # fallback authentication.

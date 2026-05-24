@@ -55,6 +55,13 @@ if (!is_string($csrfSecret) || $csrfSecret === '') {
 // Build the Slim app via the PHP-DI bridge so controllers can be autowired
 $app = SlimBridge::create($container);
 
+// Honour a configured base path so AgenDAV can be served from a subdirectory
+// (e.g. behind a reverse proxy at '/agendav'). Empty = served at the root.
+$basePath = rtrim((string) $container->get('app.base_path'), '/');
+if ($basePath !== '') {
+    $app->setBasePath($basePath);
+}
+
 // Make the RouteParser available to Twig (for url_for) and to AuthMiddleware
 $container->set(RouteParserInterface::class, $app->getRouteCollector()->getRouteParser());
 
