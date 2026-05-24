@@ -425,6 +425,26 @@ assert_status "POST /preferences (no _token)" http://localhost:8080/preferences 
 # 23. HTTP Basic auth → 200
 assert_status "GET /calendars (HTTP Basic)" http://localhost:8080/calendars 200 -u test:test
 
+# 24. shares.options PHP-serialized -> JSON data migration (Version20260524120000).
+# DBAL 4 removed the 'array' type, so Share::$options is now 'json'. This drives
+# the migration's up() against real MySQL: seed a legacy serialized row, then
+# down()+up() the migration (it already ran on the fresh DB) and assert the row
+# is now JSON. Idempotent: the test row is deleted up-front and cleaned up after.
+SHARE_MIG='AgenDAV\DB\Migrations\Version20260524120000'
+docker compose exec -T db mysql -uagendav -pagendav agendav <<'SQL' 2>/dev/null
+DELETE FROM shares WHERE owner='smoke-owner';
+INSERT INTO shares (owner, calendar, `with`, options, rw) VALUES ('smoke-owner','smoke-cal','smoke-with','a:1:{s:5:"color";s:7:"#ff0000";}', 1);
+SQL
+docker compose exec -T web php /app/agendavcli migrations:execute "$SHARE_MIG" --down --no-interaction >/dev/null 2>&1 || true
+docker compose exec -T web php /app/agendavcli migrations:execute "$SHARE_MIG" --up --no-interaction >/dev/null 2>&1
+SHARE_OPTS=$(docker compose exec -T db mysql -N -uagendav -pagendav agendav -e "SELECT options FROM shares WHERE owner='smoke-owner';" 2>/dev/null | tr -d '\r')
+if echo "$SHARE_OPTS" | grep -q '{"color":"#ff0000"}'; then
+  pass "shares.options serialized->JSON migration ($SHARE_OPTS)"
+else
+  fail "shares.options not converted to JSON: got '$SHARE_OPTS'"
+fi
+docker compose exec -T db mysql -uagendav -pagendav agendav -e "DELETE FROM shares WHERE owner='smoke-owner';" 2>/dev/null
+
 # ----- summary -----
 echo
 echo "================================================="

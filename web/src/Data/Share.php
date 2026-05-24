@@ -55,7 +55,7 @@ class Share
 
     private $with_principal;
 
-    #[Column(type: 'array')]
+    #[Column(type: 'json')]
     private $options = [];
 
     #[Column(type: 'boolean')]

@@ -45,7 +45,7 @@ class Version20140812133707 extends AgenDAVMigration
     public function createSessionsTable(Schema $schema)
     {
         $sessions = $schema->createTable('sessions');
-        $sessions->addColumn('sess_id', 'string');
+        $sessions->addColumn('sess_id', 'string', ['length' => 255]);
         $sessions->addColumn('sess_data', 'text')->setNotnull(true);
         $sessions->addColumn('sess_time', 'integer')->setNotnull(true)->setUnsigned(true);
         $sessions->setPrimaryKey(array('sess_id'));

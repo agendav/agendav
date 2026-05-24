@@ -7,9 +7,9 @@
     "require": {
         "php": ">=8.5",
         "doctrine/common": "^3.4",
-        "doctrine/dbal": "^3.8",
+        "doctrine/dbal": "^4.0",
         "doctrine/migrations": "^3.8",
-        "doctrine/orm": "^2.20",
+        "doctrine/orm": "^3.0",
         "guzzlehttp/guzzle": "^7.9",
         "league/fractal": "^0.20",
         "monolog/monolog": "^3.7",
