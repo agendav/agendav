@@ -25,13 +25,13 @@ jobs:
           coverage: none
 
       - name: Validate composer.json and composer.lock
-        run: composer validate --strict --working-dir=web/
+        run: composer validate --strict
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --working-dir=web/
+        run: composer install --prefer-dist --no-progress
 
       - name: Audit dependencies for known vulnerabilities
-        run: composer audit --working-dir=web/ --locked
+        run: composer audit --locked
 
       # All npm packages are devDependencies (build-time tooling only — they
       # never reach the runtime image). Surfaced on every PR for visibility;
@@ -42,4 +42,4 @@ jobs:
         continue-on-error: true
 
       - name: Run test suite
-        run: ./web/vendor/bin/phpunit -c tests/phpunit.xml
+        run: ./vendor/bin/phpunit -c tests/phpunit.xml

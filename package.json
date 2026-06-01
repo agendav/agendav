@@ -3,25 +3,25 @@
   "version": "3.0.0",
   "description": "A web CalDAV client",
   "directories": {
-    "doc": "doc",
+    "doc": "docs",
     "test": "tests"
   },
   "scripts": {
-    "clean": "rm -rf node_modules && rm -rf web/public/dist/js/* && rm -rf web/public/dist/css/*",
-    "composer": "cd web && composer install --no-dev --prefer-dist",
-    "composer-dev": "cd web && composer install --dev --prefer-source",
+    "clean": "rm -rf node_modules && rm -rf public/dist/js/* && rm -rf public/dist/css/*",
+    "composer": "composer install --no-dev --prefer-dist",
+    "composer-dev": "composer install --dev --prefer-source",
     "build:templates": "dustc --pwd assets/templates -o assets/templates/templates.js assets/templates/*.dust",
-    "prebuild:css": "lessc assets/less/agendav.less web/public/dist/css/app.css",
-    "build:css": "cat web/public/dist/css/app.css assets/css/*.css | cleancss -o web/public/dist/css/agendav.css && cat assets/print-css/*.css | cleancss -o web/public/dist/css/agendav.print.css",
-    "prebuild:js": "uglifyjs assets/js/core/*.js assets/js/other/*.js assets/js/app/*.js assets/templates/templates.js -b -o web/public/dist/js/agendav.js",
-    "build:js": "uglifyjs web/public/dist/js/agendav.js -c -m -o web/public/dist/js/agendav.min.js",
+    "prebuild:css": "lessc assets/less/agendav.less public/dist/css/app.css",
+    "build:css": "cat public/dist/css/app.css assets/css/*.css | cleancss -o public/dist/css/agendav.css && cat assets/print-css/*.css | cleancss -o public/dist/css/agendav.print.css",
+    "prebuild:js": "uglifyjs assets/js/core/*.js assets/js/other/*.js assets/js/app/*.js assets/templates/templates.js -b -o public/dist/js/agendav.js",
+    "build:js": "uglifyjs public/dist/js/agendav.js -c -m -o public/dist/js/agendav.min.js",
     "build": "npm run composer && npm run build:templates && npm run build:css && npm run build:js",
     "dist-clean": "rm -rf node_modules && rm -rf .git && rm -rf ansible",
     "dist": "npm run composer && npm run build:css && npm run build:js && npm run dist-clean"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adobo/agendav.git"
+    "url": "https://github.com/agendav/agendav.git"
   },
   "keywords": [
     "CalDAV",
@@ -30,9 +30,9 @@
   "author": "Jorge López Pérez",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/adobo/agendav/issues"
+    "url": "https://github.com/agendav/agendav/issues"
   },
-  "homepage": "https://github.com/adobo/agendav",
+  "homepage": "https://github.com/agendav/agendav",
   "devDependencies": {
     "bootstrap": "~3.3.1",
     "clean-css": "~3.4.22",

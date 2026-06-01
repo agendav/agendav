@@ -34,7 +34,7 @@ class ErrorHandler
             // ever ends up 'dev' on a public host, the trace would leak
             // file paths, class internals and any argument values captured
             // by closures (potentially secrets). Operators wanting the full
-            // trace should consult web/var/log/<today>.log — addErrorMiddleware
+            // trace should consult var/log/<today>.log — addErrorMiddleware
             // is configured with logErrorDetails=true, so the trace is there.
             $body = sprintf(
                 '<h1>%d %s</h1><pre>%s</pre>',

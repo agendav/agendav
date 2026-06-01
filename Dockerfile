@@ -18,13 +18,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 COPY . /app
 
-RUN cd web && composer install --no-dev --prefer-dist --no-interaction --no-progress \
- && cd /app && npm install --legacy-peer-deps --no-audit --no-fund \
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress \
+ && npm install --legacy-peer-deps --no-audit --no-fund \
  && npm run build:templates \
  && npm run build:css \
  && npm run build:js \
  && rm -rf node_modules \
- && rm -rf web/var/log/* web/var/cache/twig/* web/var/cache/profiler/*
+ && rm -rf var/log/* var/cache/twig/* var/cache/profiler/*
 
 
 FROM php:8.5-apache AS runtime
@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN a2enmod rewrite
 
-ENV APACHE_DOCUMENT_ROOT=/app/web/public
+ENV APACHE_DOCUMENT_ROOT=/app/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
         /etc/apache2/sites-available/*.conf \
@@ -47,7 +47,7 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 COPY docker/agendav/agendav.conf /etc/apache2/conf-available/agendav.conf
 RUN a2enconf agendav
 
-WORKDIR /app/web
+WORKDIR /app
 
 COPY --from=builder --chown=www-data:www-data /app /app
 
@@ -55,7 +55,7 @@ COPY --from=builder --chown=www-data:www-data /app /app
 # csrf secret + DB password) and runtime state (var/session.key, sessions
 # DB credentials in cache, log files). Apache runs the workers as
 # www-data, which retains rwx via the group.
-RUN chmod -R 750 /app/web/var /app/web/config
+RUN chmod -R 750 /app/var /app/config
 
 # Production image: refuse to leak stack traces by accident. docker-compose
 # overrides this to 'dev' for the local development stack.

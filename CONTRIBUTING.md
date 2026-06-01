@@ -54,7 +54,7 @@ There are some facts that will help you when contributing code to AgenDAV:
   end-to-end regression check covering login, calendar/event CRUD against
   Baikal, preferences persistence, CSRF, 404 handling, and HTTP Basic auth.
   Run it before submitting a PR.
-* AgenDAV includes unit tests as well, run via `./web/vendor/bin/phpunit tests`
+* AgenDAV includes unit tests as well, run via `./vendor/bin/phpunit tests`
 * AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
 
 ### Pull requests
@@ -101,7 +101,7 @@ Manual release steps done by project maintainers.
 - Change the version, using semantic versioning, in these files:
   - `docs/source/conf.py`
   - `package.json`
-  - `web/src/Version.php`
+  - `src/Version.php`
 - Run some manual test in the Vagrant box
 - Create a release commit
   ([example commit](https://github.com/agendav/agendav/commit/7d2f1bba00deb090943f14bf9c47c4a6ac4d1387))
@@ -113,8 +113,8 @@ Manual release steps done by project maintainers.
   - Clone the git repository using
     `git clone -b <version> https://github.com/agendav/agendav.git agendav-<version>`
   - Run `npm install && npm run-script dist`
-    - Creates build files in `web/public/dist/css/`, `web/public/dist/js/`
-      and `web/vendor/`
+    - Creates build files in `public/dist/css/`, `public/dist/js/`
+      and `vendor/`
     - Removes `.git`, `ansible`, `node_modules`
   - Zip directory `tar -czf ../agendav-<version>.tar.gz ../agendav-<version>`
 - Sip a tea

@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN a2enmod rewrite
 
-ENV APACHE_DOCUMENT_ROOT=/app/web/public
+ENV APACHE_DOCUMENT_ROOT=/app/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
         /etc/apache2/sites-available/*.conf \
@@ -18,4 +18,4 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 COPY agendav.conf /etc/apache2/conf-available/agendav.conf
 RUN a2enconf agendav
 
-WORKDIR /app/web
+WORKDIR /app

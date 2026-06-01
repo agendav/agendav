@@ -4,7 +4,7 @@ Upgrading
 =========
 
 Before starting this process, **make sure you have a backup** of your current
-AgenDAV directory, specially the ``web/config/`` directory, and a dump of your
+AgenDAV directory, specially the ``config/`` directory, and a dump of your
 database schema and contents.
 
 Please, do not continue unless you have both backups.
@@ -13,6 +13,17 @@ Read all the :ref:`releasenotes` starting at the version you are currently using
 important changes may have happened. Apply those changes after updating the files from AgenDAV.
 
 Make sure your system meets the requirements before upgrading. Read the :ref:`requirements` section.
+
+Upgrading from 3.x.x
+--------------------
+
+The directory layout changed in this release. Two manual steps are required:
+
+1. **Web server document root** - change the document root from ``web/public/``
+   to ``public/``.
+
+2. **Configuration file** - move your ``web/config/settings.php`` to
+   ``config/settings.php``. The file contents are unchanged.
 
 Upgrading from 1.x.x
 --------------------

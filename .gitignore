@@ -5,8 +5,8 @@
 .LSOverride
 
 /var/logs/
-/doc/build
-/web/vendor
+/docs/build
+/vendor
 
 # Vagrant
 /.vagrant
@@ -19,11 +19,11 @@
 /tests/.phpunit.result.cache
 
 agendav-built*
-web/public/dist/css/*.css
-web/public/dist/js/*.js
+public/dist/css/*.css
+public/dist/js/*.js
 
 # Configuration file
-/web/config/settings*
+/config/settings*
 
 # Development
 /node_modules/

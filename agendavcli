@@ -5,22 +5,22 @@ use DI\ContainerBuilder;
 
 $vendor_directory = getenv('COMPOSER_VENDOR_DIR');
 if ($vendor_directory === false) {
-    $vendor_directory = __DIR__ . '/web/vendor';
+    $vendor_directory = __DIR__ . '/vendor';
 }
 
 require_once $vendor_directory . '/autoload.php';
 
-if (!file_exists(__DIR__ . '/web/config/settings.php')) {
+if (!file_exists(__DIR__ . '/config/settings.php')) {
     fwrite(STDERR, "settings.php file not found\n");
     exit(255);
 }
 
 $builder = new ContainerBuilder();
 $builder->useAutowiring(true);
-$builder->addDefinitions(__DIR__ . '/web/config/default.settings.php');
-$builder->addDefinitions(__DIR__ . '/web/config/settings.php');
-$builder->addDefinitions(__DIR__ . '/web/config/prod.php');
-$builder->addDefinitions(__DIR__ . '/web/app/services.php');
+$builder->addDefinitions(__DIR__ . '/config/default.settings.php');
+$builder->addDefinitions(__DIR__ . '/config/settings.php');
+$builder->addDefinitions(__DIR__ . '/config/prod.php');
+$builder->addDefinitions(__DIR__ . '/app/services.php');
 $builder->addDefinitions(['environment' => 'prod']);
 $container = $builder->build();
 

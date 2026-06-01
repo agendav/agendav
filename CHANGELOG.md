@@ -3,17 +3,19 @@
 ## [3.0.0] - 2026-05-03
 
 - FEATURE !! Drop support for PHP < 8.5; PHP 8.5 is now the minimum and only supported runtime
-- FEATURE !! Replace Silex 2 with Slim 4 + PHP-DI 7 (PSR-7 / PSR-11 / PSR-15 stack)
+  - Breaking: Upgrade to PHP 8.5
+- FEATURE !! Replace Silex 2 with Slim 4 + PHP-DI 7
+- FEATURE !! Flatten project structure and remove redundant web dir
+  - Breaking: Change web server document root from `web/public/` to `public/`
+  - Breaking: Move `web/config/settings.php` to `config/settings.php`
 - FEATURE Doctrine entities migrated from annotations to PHP 8 attributes; `json_array` columns moved to `json`
-- FEATURE Upgrade Symfony components to ^7.0 (console, translation, twig-bridge, asset, yaml, http-foundation, security-csrf)
-- FEATURE Upgrade Doctrine ORM to ^2.20, DBAL ^3.8, Migrations ^3.8
-- FEATURE Upgrade Monolog to ^3.7, Guzzle to ^7.9, Twig to ^3.10, Sabre/DAV to ^4.6, ramsey/uuid to ^4.7, league/fractal to ^0.20
+- FEATURE Upgrade Symfony and ORM components
 - FEATURE Modernize test harness: PHPUnit 5 → 9.6
-- FEATURE Add docker-compose stack (Apache + PHP 8.5 + MariaDB + Baikal) for local development
+- FEATURE Add docker-compose stack for local development
 - FEATURE Drop the `mcrypt` Ansible/php.ini references (extension removed since PHP 7.2)
-- FEATURE CI now runs a single PHP 8.5 job (Travis config removed)
+- FEATURE Drop olf PHP versions in CI, remove Travis
 - BUGFIX Render unknown routes as a proper 404 instead of a 500 error page
-- TASK Update installation docs to reference Slim 4 web server guide
+- TASK Update upgrade & installation docs
 
 ## [2.6.0] - 2022-11-10
 
