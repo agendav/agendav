@@ -115,7 +115,7 @@ Stylesheets
 ***********
 
 Stylesheets are built using the Less pre-processor. They are written as ``.less`` files and
-can be found inside the ``assets/less`` directory.
+can be found inside the ``resources/private/assets/less`` directory.
 
 Run the following command to rebuild them::
 
@@ -125,7 +125,7 @@ Templates
 *********
 
 Stylesheets are built using the dustjs templating engine.  They can be found inside the
-``assets/less`` directory.
+``resources/private/assets/less`` directory.
 
 Run the following command to rebuild them::
 

@@ -111,7 +111,7 @@ return [
 
         $languages = array_keys($c->get('languages'));
         foreach ($languages as $language) {
-            $translator->addResource('php', __DIR__ . '/../lang/' . $language . '.php', $language);
+            $translator->addResource('php', __DIR__ . '/../resources/private/lang/' . $language . '.php', $language);
         }
 
         return $translator;

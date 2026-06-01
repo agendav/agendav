@@ -2,7 +2,7 @@
 
 return [
     'debug' => false,
-    'twig.path' => [__DIR__ . '/../templates'],
+    'twig.path' => [__DIR__ . '/../resources/private/templates'],
     'twig.options' => ['cache' => __DIR__ . '/../var/cache/twig'],
 
     // Assets
