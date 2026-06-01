@@ -31,11 +31,14 @@ return [
     // Per-request user context. AuthMiddleware populates the singleton.
     \AgenDAV\UserContext::class => \DI\create(\AgenDAV\UserContext::class),
 
-    // Symfony HttpFoundation Session (kept for the PdoSessionHandler bridge and the CSRF token storage)
+    // Symfony Session Handler: 'pdo' (default) uses DB-backed sessions, 'native' falls back to PHP file sessions
     'session' => function (ContainerInterface $c) {
+        $handler = $c->get('session.handler') === 'native'
+            ? null
+            : $c->get('session.storage.handler');
         $storage = new \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage(
             $c->get('session.storage.options'),
-            $c->get('session.storage.handler')
+            $handler
         );
         return new \Symfony\Component\HttpFoundation\Session\Session($storage);
     },

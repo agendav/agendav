@@ -133,4 +133,8 @@ return [
 
     // HTTP debug logging
     'http.debug' => false,
+
+    // Session storage backend. 'pdo' uses the database (default); 'native' uses
+    // PHP file sessions (useful on hosts where MariaDB GET_LOCK() is unavailable).
+    'session.handler' => 'pdo',
 ];
