@@ -160,11 +160,11 @@ Now you should configure AgenDAV following the :doc:`configuration` section.
 Create AgenDAV tables
 ---------------------
 
-AgenDAV tables are created by running the provided ``agendavcli`` script.
+AgenDAV tables are created by running the provided ``bin/agendavcli`` script.
 
 After configuring your AgenDAV instance, including your database settings, just run the script like
 this::
 
-  $ php agendavcli migrations:migrate
+  $ php bin/agendavcli migrations:migrate
 
 Confirm the operation, and your database should be ready.

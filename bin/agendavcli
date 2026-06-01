@@ -5,22 +5,22 @@ use DI\ContainerBuilder;
 
 $vendor_directory = getenv('COMPOSER_VENDOR_DIR');
 if ($vendor_directory === false) {
-    $vendor_directory = __DIR__ . '/vendor';
+    $vendor_directory = __DIR__ . '/../vendor';
 }
 
 require_once $vendor_directory . '/autoload.php';
 
-if (!file_exists(__DIR__ . '/config/settings.php')) {
+if (!file_exists(__DIR__ . '/../config/settings.php')) {
     fwrite(STDERR, "settings.php file not found\n");
     exit(255);
 }
 
 $builder = new ContainerBuilder();
 $builder->useAutowiring(true);
-$builder->addDefinitions(__DIR__ . '/config/default.settings.php');
-$builder->addDefinitions(__DIR__ . '/config/settings.php');
-$builder->addDefinitions(__DIR__ . '/config/prod.php');
-$builder->addDefinitions(__DIR__ . '/app/services.php');
+$builder->addDefinitions(__DIR__ . '/../config/default.settings.php');
+$builder->addDefinitions(__DIR__ . '/../config/settings.php');
+$builder->addDefinitions(__DIR__ . '/../config/prod.php');
+$builder->addDefinitions(__DIR__ . '/../app/services.php');
 $builder->addDefinitions(['environment' => 'prod']);
 $container = $builder->build();
 
@@ -32,7 +32,7 @@ $cli->setCatchExceptions(true);
 
 // Doctrine Migrations 3 dependency factory
 $migrationsConfig = new \Doctrine\Migrations\Configuration\Migration\YamlFile(
-    __DIR__ . '/migrations.yml'
+    __DIR__ . '/../migrations.yml'
 );
 $dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
     $migrationsConfig,

@@ -44,8 +44,8 @@ a) Updating from a tar.gz file
 After downloading the new tar.gz file and uncompressing it, copy your
 configuration files from the old directory::
 
-  $ cp -a /path/to/old_agendav/web/config/settings.php \
-    /path/to/new/agendav/web/config/
+  $ cp -a /path/to/old_agendav/config/settings.php \
+    /path/to/new/agendav/config/
 
 This will only work if you are upgrading from AgenDAV 2.x, as older releases
 used different configuration files.
@@ -67,7 +67,6 @@ checking out AgenDAV 2.0.0 can be achieved with::
 Next step is downloading latest AgenDAV dependencies using Composer. If you
 already have Composer installed, just run::
 
- $ cd web/
  $ composer install
 
 If you are upgrading from AgenDAV 1.2.x, you will need to install Composer.
@@ -84,12 +83,12 @@ and with no need to check which files you should apply to your current
 version.
 
 Follow the guide at :ref:`configuration` to create a new ``settings.php`` file inside
-``web/config`` which contains at least the database connection details.
+``config/`` which contains at least the database connection details.
 
-Once you have your database configuration prepared, run the provided ``agendavcli`` script this
+Once you have your database configuration prepared, run the provided ``bin/agendavcli`` script this
 way::
 
-  $ php agendavcli migrations:migrate
+  $ php bin/agendavcli migrations:migrate
 
 
 
@@ -99,20 +98,20 @@ Clear sessions and caches
 It is recommended to remove all active sessions. Do it by running the
 following command::
 
-  $ php agendavcli sessions:clear
+  $ php bin/agendavcli sessions:clear
 
 If you are running AgenDAV on a production environment, you should clear several
 caches:
 
 - Remove the contents of the _twig_ cache directory. The cache path is configured
   using the option ``twig.options`` on your ``settings.php`` file. If you did not override the
-  default value, it should be found at `web/var/cache/twig/` subdirectory::
+  default value, it should be found at `var/cache/twig/` subdirectory::
 
-    $ rm -rf web/var/cache/twig/*
+    $ rm -rf var/cache/twig/*
 
-- Remove the Doctrine ORM metadata cache (stored in ``web/var/cache/doctrine/`` by default)::
+- Remove the Doctrine ORM metadata cache (stored in ``var/cache/doctrine/`` by default)::
 
-   $ php agendavcli orm:clear-cache:metadata
+   $ php bin/agendavcli orm:clear-cache:metadata
 
 Finishing the upgrade from AgenDAV 1.2.x (shares)
 -------------------------------------------------

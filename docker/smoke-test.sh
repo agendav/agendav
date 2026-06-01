@@ -148,9 +148,9 @@ echo "==> agendavcli migrations:migrate"
 # rollback only". Pre-mark them as executed (idempotent: --add returns
 # non-zero if already present, hence || true).
 for v in Version20140812113548 Version20140812200547 Version20140812203419; do
-  docker compose exec -T web php /app/agendavcli migrations:version "AgenDAV\\DB\\Migrations\\$v" --add --no-interaction >/dev/null 2>&1 || true
+  docker compose exec -T web php /app/bin/agendavcli migrations:version "AgenDAV\\DB\\Migrations\\$v" --add --no-interaction >/dev/null 2>&1 || true
 done
-docker compose exec -T web php /app/agendavcli migrations:migrate --no-interaction >/dev/null
+docker compose exec -T web php /app/bin/agendavcli migrations:migrate --no-interaction >/dev/null
 
 # ----- seed Baikal (idempotent: skip if config already present) -----
 if docker compose exec -T baikal test -s /var/www/baikal/config/baikal.yaml 2>/dev/null; then
