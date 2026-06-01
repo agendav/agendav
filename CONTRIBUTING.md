@@ -36,7 +36,7 @@ adding a new language or upadting an existing translation.
 Documentation is automatically generated and placed on https://agendav.readthedocs.io/.
 Updating the documentation requires some [Sphinx](http://sphinx-doc.org/) knowledge.
 
-Have a look at the `doc/` directory.
+Have a look at the `docs/` directory.
 
 ## Contributing code
 
@@ -97,9 +97,9 @@ Manual release steps done by project maintainers.
 - Compare the »development« branch to »main«
   - Add a list of noteworthy features and bugfixes to CHANGELOG.md
   - Describe breaking changes in CHANGELOG.md
-  - Describe changes in `doc/source/releasenotes.rst` as well
+  - Describe changes in `docs/source/releasenotes.rst` as well
 - Change the version, using semantic versioning, in these files:
-  - `doc/source/conf.py`
+  - `docs/source/conf.py`
   - `package.json`
   - `web/src/Version.php`
 - Run some manual test in the Vagrant box
