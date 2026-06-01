@@ -99,8 +99,7 @@ caches:
 
     $ rm -rf web/var/cache/twig/*
 
-- Remove the Doctrine ORM metadata cache. Even if you didn't configure it, the ORM tries to
-  find any available caches (APC, memcached, etc). Clear it with::
+- Remove the Doctrine ORM metadata cache (stored in ``web/var/cache/doctrine/`` by default)::
 
    $ php agendavcli orm:clear-cache:metadata
 

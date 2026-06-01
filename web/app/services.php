@@ -66,9 +66,18 @@ return [
     'orm' => function (ContainerInterface $c) {
         $development_mode = ($c->get('environment') === 'dev');
 
+        if ($c->get('orm.cache') === 'redis') {
+            $redis = \Symfony\Component\Cache\Adapter\RedisAdapter::createConnection($c->get('orm.cache.redis.dsn'));
+            $cache = new \Symfony\Component\Cache\Adapter\RedisAdapter($redis, 'doctrine');
+        } else {
+            $cache = new \Symfony\Component\Cache\Adapter\FilesystemAdapter('doctrine', 0, __DIR__ . '/../var/cache');
+        }
+
         $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
             [__DIR__ . '/../src/Data'],
-            $development_mode
+            $development_mode,
+            null,
+            $cache
         );
 
         return new \Doctrine\ORM\EntityManager($c->get('db'), $config);

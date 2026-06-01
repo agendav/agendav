@@ -137,4 +137,11 @@ return [
     // Session storage backend. 'pdo' uses the database (default); 'native' uses
     // PHP file sessions (useful on hosts where MariaDB GET_LOCK() is unavailable).
     'session.handler' => 'pdo',
+
+    // Doctrine ORM metadata/query cache driver. 'filesystem' (default) writes to
+    // var/cache/. Set to 'redis' when a Redis server is reachable at orm.cache.redis.dsn.
+    'orm.cache' => 'filesystem',
+
+    // Redis DSN used when orm.cache = 'redis'. Example: 'redis://localhost:6379'
+    'orm.cache.redis.dsn' => 'redis://localhost:6379',
 ];
