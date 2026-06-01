@@ -43,52 +43,6 @@ Stop and tear down::
    $ docker compose down            # stop containers, keep volumes
    $ docker compose down -v         # also drop the Baikal/MariaDB volumes
 
-Vagrant (alternative)
-*********************
-
-If you also want to test the Ansible deployment recipe, the Vagrant flow provisions a full VM
-with the same playbook used in production. Otherwise prefer the Docker Compose flow above.
-
-Software you will need:
-
-* `VirtualBox <https://www.virtualbox.org/wiki/Downloads>`_: virtualization software
-* `Vagrant <https://docs.vagrantup.com/v2/installation/>`_: VM manager
-* `Ansible <http://docs.ansible.com/intro_installation.html>`_: automation platform
-
-Once you have them installed, let Vagrant initialize the virtual machine::
-
-   $ vagrant up
-
-A base image has to be downloaded, and lot of packages have to be installed
-inside the machine, so this will take a while. Go grab a drink until the machine
-is ready!
-
-The virtual machine can be stopped and started again using Vagrant. The
-initialization process will only run the first time you do ``vagrant up``, and
-next starts will just require a few seconds.
-
-You can stop the machine with ``vagrant halt``, and running ``vagrant up`` again
-will bring it back to life.
-
-Your current working directory is shared with the virtual machine, so you can
-develop on your local machine and your changes will be visible inside the
-virtual machine.
-
-The environment created inside the virtual machine will be accessible using the
-following URLs and commands:
-
-* AgenDAV: http://localhost:8080/
-* Baïkal server: http://localhost:8081/
-* SSH: ``vagrant ssh``. Your local machine working directory will be mounted at
-  ``/vagrant`` inside the virtual machine
-
-The credentials for this environment are:
-
-* Username: ``demo``
-* Password: ``demo``
-
-Note that :ref:`development_environment` will be enabled by default.
-
 Validation
 ----------
 

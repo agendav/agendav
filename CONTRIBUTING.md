@@ -42,11 +42,9 @@ Have a look at the `docs/` directory.
 
 There are some facts that will help you when contributing code to AgenDAV:
 
-* AgenDAV ships with a [Vagrant environment](https://agendav.readthedocs.io/en/latest/development/#virtual-machine)
-  that is absolutely recommended when developing
-* As a lighter-weight alternative, a `docker-compose.yml` is provided with
-  three services: AgenDAV (PHP-Apache), MariaDB, and a Baikal CalDAV server.
-  Run `docker compose up` from the repository root; a one-shot `web-builder`
+* A `docker-compose.yml` is provided with three services: AgenDAV
+  (PHP-Apache), MariaDB, and a Baikal CalDAV server. Run
+  `docker compose up` from the repository root; a one-shot `web-builder`
   service runs `npm install`, `composer install`, and the asset build on
   first start, then exits. AgenDAV is then served at <http://localhost:8080>
   and Baikal at <http://localhost:8081>. Subsequent starts skip the build.
@@ -102,7 +100,7 @@ Manual release steps done by project maintainers.
   - `docs/source/conf.py`
   - `package.json`
   - `src/Version.php`
-- Run some manual test in the Vagrant box
+- Run `bash docker/smoke-test.sh` to verify the stack
 - Create a release commit
   ([example commit](https://github.com/agendav/agendav/commit/7d2f1bba00deb090943f14bf9c47c4a6ac4d1387))
 - Merge »development« branch to »main«
@@ -115,6 +113,6 @@ Manual release steps done by project maintainers.
   - Run `npm install && npm run-script dist`
     - Creates build files in `public/dist/css/`, `public/dist/js/`
       and `vendor/`
-    - Removes `.git`, `ansible`, `node_modules`
+    - Removes `.git`, `node_modules`
   - Zip directory `tar -czf ../agendav-<version>.tar.gz ../agendav-<version>`
 - Sip a tea

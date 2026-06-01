@@ -16,7 +16,7 @@
     "prebuild:js": "uglifyjs resources/private/assets/js/core/*.js resources/private/assets/js/other/*.js resources/private/assets/js/app/*.js resources/private/assets/templates/templates.js -b -o public/dist/js/agendav.js",
     "build:js": "uglifyjs public/dist/js/agendav.js -c -m -o public/dist/js/agendav.min.js",
     "build": "npm run composer && npm run build:templates && npm run build:css && npm run build:js",
-    "dist-clean": "rm -rf node_modules && rm -rf .git && rm -rf ansible",
+    "dist-clean": "rm -rf node_modules && rm -rf .git",
     "dist": "npm run composer && npm run build:css && npm run build:js && npm run dist-clean"
   },
   "repository": {

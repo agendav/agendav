@@ -8,10 +8,6 @@
 /docs/build
 /vendor
 
-# Vagrant
-/.vagrant
-/vagrant_ansible_inventory_default
-
 *.phar
 *.sqlite
 

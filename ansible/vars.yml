@@ -1,7 +1,0 @@
-# Customize the following settings for your development VM
----
-
-# System wide timezone, used in php.in too
-timezone: 'Europe/Madrid'
-mysql_password: 'localtest'
-ansible_python_interpreter: python3

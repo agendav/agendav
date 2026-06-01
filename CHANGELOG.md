@@ -8,13 +8,13 @@
 - FEATURE !! Flatten project structure and remove redundant web dir
   - Breaking: Change web server document root from `web/public/` to `public/`
   - Breaking: Move `web/config/settings.php` to `config/settings.php`
-- FEATURE Doctrine entities migrated from annotations to PHP 8 attributes; `json_array` columns moved to `json`
 - FEATURE Upgrade Symfony and ORM components
-- FEATURE Modernize test harness: PHPUnit 5 → 9.6
-- FEATURE Add docker-compose stack for local development
+- FEATURE Modernize test framework PHPUnit 5 → 9.6
 - FEATURE Drop the `mcrypt` Ansible/php.ini references (extension removed since PHP 7.2)
 - FEATURE Drop olf PHP versions in CI, remove Travis
-- BUGFIX Render unknown routes as a proper 404 instead of a 500 error page
+- FEATURE Add docker stack for local development
+- TASK Drop vagrant stack for local development
+- FEATURE Render unknown routes as a proper 404 instead of a 500 error page
 - TASK Update upgrade & installation docs
 
 ## [2.6.0] - 2022-11-10
