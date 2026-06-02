@@ -2,9 +2,10 @@
 
 ## [3.0.0] - 2026-06-02
 
-- FEATURE !! Drop support for PHP < 8.5; PHP 8.5 is now the minimum and only supported runtime
+- FEATURE !! Drop support for PHP < 8.5
   - Breaking: Upgrade to PHP 8.5
-- FEATURE !! Replace Silex 2 with Slim 4 + PHP-DI 7
+- FEATURE !! Replace Silex 2 with Slim 4 + PHP-DI 7 - Thanks to @madtibo for the work on this!
+  - Breaking: Run `composer install` to update dependencies
 - FEATURE !! Flatten project structure and remove redundant web dir
   - Breaking: Change web server document root from `web/public/` to `public/`
   - Breaking: Move `web/config/settings.php` to `config/settings.php`
