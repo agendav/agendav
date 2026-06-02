@@ -17,13 +17,24 @@ Make sure your system meets the requirements before upgrading. Read the :ref:`re
 Upgrading from 2.x.x
 --------------------
 
-The directory layout changed in this release. Two manual steps are required:
+The directory layout changed in this release. Three manual steps are required:
 
 1. **Web server document root** - change the document root from ``web/public/``
    to ``public/``.
 
 2. **Configuration file** - move your ``web/config/settings.php`` to
-   ``config/settings.php``. The file contents are unchanged.
+   ``config/settings.php``.
+
+3. **Database connection** - Doctrine DBAL 4 removed the ``url`` shorthand.
+   Replace the ``url`` key in ``db.options`` with explicit parameters::
+
+     'db.options' => [
+         'driver'   => 'pdo_mysql',
+         'host'     => 'localhost',
+         'dbname'   => 'agendav',
+         'user'     => 'agendav',
+         'password' => 'secret',
+     ],
 
 Upgrading from 1.x.x
 --------------------
@@ -90,8 +101,6 @@ way::
 
   $ php bin/agendavcli migrations:migrate
 
-
-
 Clear sessions and caches
 -------------------------
 
@@ -100,18 +109,9 @@ following command::
 
   $ php bin/agendavcli sessions:clear
 
-If you are running AgenDAV on a production environment, you should clear several
-caches:
+Also clear the cache directory within the variable data directory::
 
-- Remove the contents of the _twig_ cache directory. The cache path is configured
-  using the option ``twig.options`` on your ``settings.php`` file. If you did not override the
-  default value, it should be found at `var/cache/twig/` subdirectory::
-
-    $ rm -rf var/cache/twig/*
-
-- Remove the Doctrine ORM metadata cache (stored in ``var/cache/doctrine/`` by default)::
-
-   $ php bin/agendavcli orm:clear-cache:metadata
+  $ rm -rf var/*
 
 Finishing the upgrade from AgenDAV 1.2.x (shares)
 -------------------------------------------------

@@ -8,9 +8,13 @@
 - FEATURE !! Flatten project structure and remove redundant web dir
   - Breaking: Change web server document root from `web/public/` to `public/`
   - Breaking: Move `web/config/settings.php` to `config/settings.php`
+  - Breaking: Clear the `var/` directory
 - FEATURE !! Move binary `agendavcli` to `bin/cli`
   - Breaking: Change CLI command from `agendavcli` to `bin/agendavcli`
-- FEATURE Upgrade Symfony and ORM components
+- FEATURE !! Upgrade Symfony and ORM components
+  - Breaking: Run database migrations `bin/agendavcli migrations:migrate`
+  - Breaking: Dropped support for `url` shorthand config in `db.options`,
+    replace with explicit `driver`, `host`, `dbname`, `user`, `password` keys (see example in `default.settings.php`)
 - FEATURE Modernize test framework PHPUnit 5 → 9.6
 - FEATURE Drop the `mcrypt` Ansible/php.ini references (extension removed since PHP 7.2)
 - FEATURE Drop PHP versions in CI, remove Travis
