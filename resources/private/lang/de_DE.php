@@ -129,7 +129,7 @@ $translations = array(
     'labels.return' => 'Zurück',
 
     'labels.defaultcalendar' => 'Standardkalender',
-    'labels.default_view' => 'Default view',
+    'labels.default_view' => 'Standardansicht',
 
     'labels.toggleallcalendars' => 'Alle anzeigen/verstecken',
 
@@ -168,12 +168,12 @@ $translations = array(
     'labels.weekstart' => 'Die Woche startet am',
     'labels.show_week_nb' => 'Kalenderwoche anzeigen',
     'labels.show_now_indicator' => 'Markierung der aktuellen Zeit anzeigen',
-    'labels.list_days' => 'List view days',
+    'labels.list_days' => 'Tage in Listenansicht',
 
-    'labels.view_month' => 'Month',
-    'labels.view_week' => 'Week',
-    'labels.view_day' => 'Day',
-    'labels.view_list' => 'List',
+    'labels.view_month' => 'Monat',
+    'labels.view_week' => 'Woche',
+    'labels.view_day' => 'Tag',
+    'labels.view_list' => 'Liste',
 
 
 // Messages
