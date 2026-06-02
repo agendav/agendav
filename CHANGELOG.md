@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] - 2026-05-03
+## [3.0.0] - 2026-06-02
 
 - FEATURE !! Drop support for PHP < 8.5; PHP 8.5 is now the minimum and only supported runtime
   - Breaking: Upgrade to PHP 8.5
