@@ -2,8 +2,6 @@
 
 return [
     'debug' => false,
-    'twig.path' => [__DIR__ . '/../resources/private/templates'],
-    'twig.options' => ['cache' => __DIR__ . '/../var/cache/twig'],
 
     // Assets
     'stylesheets' => ['agendav.css'],
@@ -26,30 +24,5 @@ return [
         // Refuse uninitialised session ids supplied by clients (prevents
         // session-fixation pre-login by planting a known cookie).
         'use_strict_mode' => 1,
-    ],
-
-    // Languages
-    'languages' => require __DIR__ . '/languages.php',
-
-    // Fullcalendar language packs
-    'fullcalendar.languages' => [
-        'ca' => 'ca',
-        'de_DE' => 'de',
-        'es_ES' => 'es',
-        'et' => 'et',
-        'fi' => 'fi',
-        'fr_FR' => 'fr',
-        'hr_HR' => 'hr',
-        'it_IT' => 'it',
-        'ja_JP' => 'ja',
-        'nb_NO' => 'nb',
-        'nl_NL' => 'nl',
-        'pl' => 'pl',
-        'pt_BR' => 'pt-br',
-        'pt_PT' => 'pt',
-        'ru_RU' => 'ru',
-        'sk' => 'sk',
-        'sv_SE' => 'sv',
-        'tr' => 'tr',
     ],
 ];

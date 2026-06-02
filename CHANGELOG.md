@@ -8,12 +8,15 @@
 - FEATURE !! Flatten project structure and remove redundant web dir
   - Breaking: Change web server document root from `web/public/` to `public/`
   - Breaking: Move `web/config/settings.php` to `config/settings.php`
+- FEATURE !! Move binary `agendavcli` to `bin/cli`
+  - Breaking: Change CLI command from `agendavcli` to `bin/agendavcli`
 - FEATURE Upgrade Symfony and ORM components
 - FEATURE Modernize test framework PHPUnit 5 → 9.6
 - FEATURE Drop the `mcrypt` Ansible/php.ini references (extension removed since PHP 7.2)
-- FEATURE Drop olf PHP versions in CI, remove Travis
+- FEATURE Drop PHP versions in CI, remove Travis
 - FEATURE Add docker stack for local development
 - TASK Drop vagrant stack for local development
+- FEATURE Move path options from prod.php to default.settings.php
 - FEATURE Render unknown routes as a proper 404 instead of a 500 error page
 - TASK Update upgrade & installation docs
 

@@ -14,7 +14,7 @@ important changes may have happened. Apply those changes after updating the file
 
 Make sure your system meets the requirements before upgrading. Read the :ref:`requirements` section.
 
-Upgrading from 3.x.x
+Upgrading from 2.x.x
 --------------------
 
 The directory layout changed in this release. Two manual steps are required:

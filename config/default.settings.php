@@ -35,6 +35,37 @@ return [
     // random string. Generate with: php -r 'echo bin2hex(random_bytes(32))."\n";'
     // 'csrf.secret' => 'change-me',
 
+    // Languages
+    'languages' => require __DIR__ . '/languages.php',
+
+    // Maps AgenDAV locale codes to FullCalendar locale file names
+    'fullcalendar.languages' => [
+        'ca' => 'ca',
+        'de_DE' => 'de',
+        'es_ES' => 'es',
+        'et' => 'et',
+        'fi' => 'fi',
+        'fr_FR' => 'fr',
+        'hr_HR' => 'hr',
+        'it_IT' => 'it',
+        'ja_JP' => 'ja',
+        'nb_NO' => 'nb',
+        'nl_NL' => 'nl',
+        'pl' => 'pl',
+        'pt_BR' => 'pt-br',
+        'pt_PT' => 'pt',
+        'ru_RU' => 'ru',
+        'sk' => 'sk',
+        'sv_SE' => 'sv',
+        'tr' => 'tr',
+    ],
+
+    // Twig templates path
+    'twig.path' => [__DIR__ . '/../resources/private/templates'],
+
+    // Twig options (cache disabled in dev.php)
+    'twig.options' => ['cache' => __DIR__ . '/../var/cache/twig'],
+
     // Log path
     'log.path' => __DIR__ . '/../var/log/',
 
