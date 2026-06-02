@@ -4,8 +4,9 @@
 .AppleDouble
 .LSOverride
 
-/var/logs/
 /docs/build
+/var/*
+!/var/.gitkeep
 /vendor
 
 *.phar

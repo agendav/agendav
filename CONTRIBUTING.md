@@ -42,18 +42,28 @@ Have a look at the `docs/` directory.
 
 There are some facts that will help you when contributing code to AgenDAV:
 
-* A `docker-compose.yml` is provided with three services: AgenDAV
-  (PHP-Apache), MariaDB, and a Baikal CalDAV server. Run
-  `docker compose up` from the repository root; a one-shot `web-builder`
-  service runs `npm install`, `composer install`, and the asset build on
-  first start, then exits. AgenDAV is then served at <http://localhost:8080>
-  and Baikal at <http://localhost:8081>. Subsequent starts skip the build.
-* `bash docker/smoke-test.sh` brings the stack up (if needed) and runs an
+- A docker development instance is provided with AgenDAV
+  and Baikal as CalDAV server. Run `docker compose up`
+  from the repository root to start it up.
+  - A `web-builder` service runs `npm install`, `composer install`,
+    and the asset build on first start, then exits.
+  - AgenDAV is then served at <http://localhost:8080> and Baikal at
+    <http://localhost:8081>.
+  - The example calendar is named `default`, and the calendar URL is
+    `http://localhost:8081/cal.php/calendars/admin/default/`
+  - The user for AgendDav is `test` and the password is `test`.
+  - The credentials for the Baikal server are `admin` / `admin`.
+- Run `bash docker/seed-events.sh` to populate the calendar with example
+  events (1-hour, 4-hour, concurrent, all-day, overnight, multi-day,…).
+  This removes any existing events in the container!
+- `bash docker/smoke-test.sh` brings the stack up and runs an
   end-to-end regression check covering login, calendar/event CRUD against
   Baikal, preferences persistence, CSRF, 404 handling, and HTTP Basic auth.
   Run it before submitting a PR.
-* AgenDAV includes unit tests as well, run via `./vendor/bin/phpunit tests`
-* AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
+- Use the projects base PHP version, stored in the [.php-version](https://packagist.org/packages/webit-de/php-version-pickup)
+  file (or run `php-version-pickup use`)
+- AgenDAV includes unit tests as well, run via `./vendor/bin/phpunit tests`
+- AgenDAV repository uses [nvie's git flow](http://nvie.com/posts/a-successful-git-branching-model/)
 
 ### Pull requests
 
