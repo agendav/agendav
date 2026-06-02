@@ -43,6 +43,9 @@
             "AgenDAV\\": "src/"
         }
     },
+    "scripts": {
+        "test": "vendor/bin/phpunit --configuration tests/phpunit.xml"
+    },
     "config": {
         "allow-plugins": {}
     }
