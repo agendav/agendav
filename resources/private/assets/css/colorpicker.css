@@ -1,13 +1,14 @@
 /* colorPicker starts */
 div.color_picker {
   float: left;
-  height: 16px;
-  width: 32px;
+  height: 24px;
+  width: 24px;
   padding: 0 !important;
-  border-width: 0;
-  background: url(../../img/arrow_colorpicker.gif) no-repeat top right;
+  border: 1px solid #aaa !important;
+  border-radius: 3px;
   cursor: pointer;
-  line-height: 16px;
+  line-height: 24px;
+  box-sizing: border-box;
 }
 
 div#color_selector {

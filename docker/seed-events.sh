@@ -150,10 +150,11 @@ put('seed-4h', make_ics(
     fmtt(today, 14), fmtt(today, 18),
 ))
 
-# Concurrent event (overlaps the 1-hour meeting)
+# Concurrent event (overlaps the 1-hour meeting) - red to mark urgency
 put('seed-concurrent', make_ics(
     'seed-concurrent', 'Client call (concurrent)',
     fmtt(today, 10, 30), fmtt(today, 11, 30),
+    extra=['COLOR:#FFCDD2'],
 ))
 
 # All-day single event
@@ -166,12 +167,14 @@ put('seed-allday', make_ics(
 put('seed-overnight', make_ics(
     'seed-overnight', 'Overnight server maintenance',
     fmtt(today, 20), fmtt(tom, 9),
+    extra=['COLOR:#D7CCC8'],
 ))
 
 # Multi-day all-day event
 put('seed-multiday', make_ics(
     'seed-multiday', 'Multi-day conference',
     fmtd(two_ago), fmtd(four_ahead),
+    extra=['COLOR:#C5CAE9'],
 ))
 
 # Recurring weekly meeting (next Monday, repeating)
