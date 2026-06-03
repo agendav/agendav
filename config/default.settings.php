@@ -157,11 +157,12 @@ return [
     'logout.redirection' => '',
 
     // Calendar colors (hex codes)
+    // @deprecated Bare hex without '#' (e.g. '03A9F4') is still accepted but deprecated
     'calendar.colors' => [
-        '03A9F4', '3F51B5', 'F44336', 'E91E63', '9C27B0', '673AB7',
-        'B3E5FC', 'C5CAE9', 'FFCDD2', 'F8BBD0', 'E1BEE7', 'D1C4E9',
-        '4CAF50', 'FFC107', 'CDDC39', 'FF9800', '795548', '9E9E9E',
-        'C8E6C9', 'FFF9C4', 'F0F4C3', 'FFE0B2', 'D7CCC8', 'F5F5F5',
+        '#03A9F4', '#3F51B5', '#F44336', '#E91E63', '#9C27B0', '#673AB7',
+        '#B3E5FC', '#C5CAE9', '#FFCDD2', '#F8BBD0', '#E1BEE7', '#D1C4E9',
+        '#4CAF50', '#FFC107', '#CDDC39', '#FF9800', '#795548', '#9E9E9E',
+        '#C8E6C9', '#FFF9C4', '#F0F4C3', '#FFE0B2', '#D7CCC8', '#F5F5F5',
     ],
 
     // Additional authentication methods (FQCNs implementing AuthenticationMethodInterface)

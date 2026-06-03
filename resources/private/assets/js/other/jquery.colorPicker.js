@@ -19,7 +19,7 @@
   buildPicker = function(element){
     //build color picker
     control = $("<div class='color_picker'>&nbsp;</div>")
-    control.css('background-color', '#' + $(element).val());
+    control.css('background-color', $(element).val());
 
     //bind click event to color picker
     control.bind("click", toggleSelector);
@@ -30,7 +30,7 @@
     //add even listener to input box
     $(element).bind("change", function() {
       selectedValue = $(element).val();
-      $(element).next(".color_picker").css("background-color", '#' + selectedValue);
+      $(element).next(".color_picker").css("background-color", selectedValue);
     });
 
     //hide the input box
@@ -44,7 +44,7 @@
     //add color pallete
     $.each($.fn.colorPicker.defaultColors, function(i, color){
       swatch = $("<div class='color_swatch'>&nbsp;</div>")
-      swatch.css("background-color", '#' + color);
+      swatch.css("background-color", color);
       swatch.bind("click", function(e){ changeColor(color) });
       swatch.bind("mouseover", function(e){
         $(this).css("border-color", "#598FEF");
@@ -123,7 +123,7 @@
 
   changeColor = function(value){
     selectedValue = value;
-    $(selectorOwner).css("background-color", '#' + selectedValue);
+    $(selectorOwner).css("background-color", selectedValue);
     $(selectorOwner).prev("input").val(selectedValue).change();
 
     //close the selector
@@ -131,9 +131,9 @@
   };
 
   resetColor = function(){
-    var defaultColor = $.fn.colorPicker.calendarColor || 'FFFFFF';
+    var defaultColor = $.fn.colorPicker.calendarColor || '#FFFFFF';
     $(selectorOwner).prev("input").val(null).change();
-    $(selectorOwner).css("background-color", '#' + defaultColor);
+    $(selectorOwner).css("background-color", defaultColor);
 
     // Update the color value input field
     $("input#color_value").val(defaultColor);

@@ -56,7 +56,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'url' => $calendar->getUrl(),
             'calendar' => $calendar->getUrl(),
             'displayname' => $calendar->getProperty(Calendar::DISPLAYNAME),
-            'color' => $calendar->getProperty(Calendar::COLOR),
+            'color' => ($c = $calendar->getProperty(Calendar::COLOR)) ? '#' . ltrim($c, '#') : $c,
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
             'is_owned' => ($owner_url === $this->principal_url),

@@ -65,7 +65,7 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
             'etag' => $fc_event->getEtag(),
             'uid' => $event->getUid(),
             'title' => $event->getSummary(),
-            'color' => $event->getColor(),
+            'color' => ($c = $event->getColor()) ? '#' . ltrim($c, '#') : $c,
             'start' => $start->format('c'),
             'end' => $end->format('c'),
             'allDay' => $event->isAllDay(),

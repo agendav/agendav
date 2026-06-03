@@ -70,8 +70,11 @@ class JavaScriptCode
             'base_app_url' => $appUrl,
             'agendav_version' => \AgenDAV\Version::V,
             'enable_calendar_sharing' => $this->container->get('calendar.sharing'),
-            'calendar_colors' => $this->container->get('calendar.colors'),
-            'default_calendar_color' => '#' . $this->container->get('calendar.colors')[0],
+            'calendar_colors' => array_map(
+                fn($c) => '#' . ltrim($c, '#'),
+                $this->container->get('calendar.colors')
+            ),
+            'default_calendar_color' => '#' . ltrim($this->container->get('calendar.colors')[0], '#'),
             'show_public_caldav_url' => $this->container->get('caldav.publicurls'),
         ];
 
