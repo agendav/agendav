@@ -63,6 +63,7 @@ return [
         'sk' => 'sk',
         'sv_SE' => 'sv',
         'tr' => 'tr',
+        'zh_CN' => 'zh-cn',
     ],
 
     // Twig templates path

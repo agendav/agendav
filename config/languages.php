@@ -21,4 +21,5 @@ return [
     'sk'    => 'Slovenčina',
     'sv_SE' => 'Svenska (Sverige)',
     'tr'    => 'Türkçe',
+    'zh_CN' => '中文（简体）',
 ];
