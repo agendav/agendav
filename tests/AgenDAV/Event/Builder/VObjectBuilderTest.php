@@ -78,6 +78,7 @@ class VObjectBuilderTest  extends TestCase
             'class' => 'PRIVATE',
             'transp' => 'OPAQUE',
             'rrule' => 'FREQ=DAILY',
+            'color' => 'peachpuff',
         ];
 
         $instance = $this->builder->createEventInstanceWithInput(
@@ -98,6 +99,7 @@ class VObjectBuilderTest  extends TestCase
         $this->assertEquals($input['class'], $instance->getClass());
         $this->assertEquals($input['transp'], $instance->getTransp());
         $this->assertEquals($input['rrule'], $instance->getRepeatRule());
+        $this->assertEquals($input['color'], $instance->getColor());
     }
 
     public function testCreateEventInstanceWithInputAllDay()

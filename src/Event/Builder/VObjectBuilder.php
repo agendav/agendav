@@ -127,6 +127,9 @@ class VObjectBuilder implements Builder
             case 'summary':
                 $instance->setSummary($value);
                 break;
+            case 'color':
+                $instance->setColor($value);
+                break;
             case 'location':
                 $instance->setLocation($value);
                 break;

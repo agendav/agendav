@@ -113,6 +113,13 @@ interface EventInstance
     public function getRecurrenceId();
 
     /**
+     * Get the COLOR property of this event
+     *
+     * @return string
+     */
+    public function getColor();
+
+    /**
      * Returns all recognized reminders for this instance
      *
      * @return \AgenDAV\Data\Reminder[]
@@ -197,6 +204,13 @@ interface EventInstance
      * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
      */
     public function setRecurrenceId(?RecurrenceId $recurrence_id = null);
+
+    /**
+     * Set the COLOR property for this event
+     *
+     * @param string $color
+     */
+    public function setColor($color);
 
     /**
      * Sets the exception status for this instance. This is useful on

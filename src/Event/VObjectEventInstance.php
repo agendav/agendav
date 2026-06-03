@@ -82,6 +82,11 @@ class VObjectEventInstance implements EventInstance
         return (string) $this->vevent->SUMMARY;
     }
 
+    public function getColor()
+    {
+        return (string) $this->vevent->COLOR;
+    }
+
     /**
      * Get the LOCATION property of this event
      *
@@ -266,6 +271,11 @@ class VObjectEventInstance implements EventInstance
         $this->setProperty('SUMMARY', $summary);
     }
 
+    public function setColor($color)
+    {
+        $this->setProperty('COLOR', $color);
+    }
+
     /**
      * Set the LOCATION property for this event
      *
@@ -443,6 +453,7 @@ class VObjectEventInstance implements EventInstance
     public function copyPropertiesFrom(EventInstance $source)
     {
         $this->setSummary($source->getSummary());
+        $this->setColor($source->getColor());
         $this->setLocation($source->getLocation());
         $this->setDescription($source->getDescription());
         $this->setClass($source->getClass());

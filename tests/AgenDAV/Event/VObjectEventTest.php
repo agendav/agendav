@@ -25,6 +25,7 @@ class VObjectEventTest extends TestCase
         $this->vevent = $this->vcalendar->add('VEVENT', [
             'UID' => '123456',
             'SUMMARY' => 'Initial event instance',
+            'COLOR' => 'peachpuff',
             'MYPROPERTY' => 'Check',
         ]);
     }
@@ -272,6 +273,7 @@ class VObjectEventTest extends TestCase
         $instance->setStart($now, true);
         $instance->setSummary('New test summary');
         $instance->setRecurrenceId(RecurrenceId::buildFromString('20150110T100500Z'));
+        $instance->setColor('navajowhite');
 
         $event->storeInstance($instance);
 
@@ -280,6 +282,7 @@ class VObjectEventTest extends TestCase
         $this->assertEmpty($vevent->{'RECURRENCE-ID'});
         $this->assertEquals('Check', $vevent->MYPROPERTY);
         $this->assertEquals('New test summary', $vevent->SUMMARY);
+        $this->assertEquals('navajowhite', $vevent->COLOR);
     }
 
 

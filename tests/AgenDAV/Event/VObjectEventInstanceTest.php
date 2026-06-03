@@ -28,6 +28,7 @@ class VObjectEventInstanceTest extends TestCase
         'TRANSP' => 'OPAQUE',
         'RRULE' => 'FREQ=MONTHLY',
         'RECURRENCE-ID' => '20150109T123456Z',
+        'COLOR' => 'peachpuff',
         'SEQUENCE' => '2',
     ];
 
@@ -184,10 +185,12 @@ class VObjectEventInstanceTest extends TestCase
         $vevent = $this->vcalendar->add('VEVENT', [
             'SUMMARY' => 'Test summary',
             'LOCATION' => 'Test location',
+            'COLOR' => 'peachpuff',
         ]);
         $instance = new VObjectEventInstance($vevent);
         $instance->setSummary('New summary');
         $instance->setLocation('');
+        $instance->setColor('navajowhite');
         $this->assertEquals(
             'New summary',
             $instance->getSummary()
@@ -195,6 +198,10 @@ class VObjectEventInstanceTest extends TestCase
         $this->assertEquals(
             '',
             $instance->getLocation()
+        );
+        $this->assertEquals(
+            'navajowhite',
+            $instance->getColor()
         );
     }
 
@@ -512,6 +519,7 @@ ICS;
         } else {
             $this->assertEquals('FREQ=MONTHLY', $instance->getRepeatRule());
         }
+        $this->assertEquals('peachpuff', $instance->getColor());
     }
 
     protected function setSomeVAlarms(VEvent $vevent)

@@ -156,7 +156,7 @@ return [
     // Logout redirection. Optional
     'logout.redirection' => '',
 
-    // Calendar colors
+    // Calendar colors (hex codes)
     'calendar.colors' => [
         '03A9F4', '3F51B5', 'F44336', 'E91E63', '9C27B0', '673AB7',
         'B3E5FC', 'C5CAE9', 'FFCDD2', 'F8BBD0', 'E1BEE7', 'D1C4E9',

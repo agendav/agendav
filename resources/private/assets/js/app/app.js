@@ -570,7 +570,6 @@ var open_event_edit_dialog = function open_event_edit_dialog(event) {
   }
 
   // Clone original object
-  // TODO use a better approach (lodash.clone?)
   event = jQuery.extend(true, {}, event);
 
   // Deal with events not from Fullcalendar (i.e. directly from backend)
@@ -703,8 +702,34 @@ var open_event_edit_dialog = function open_event_edit_dialog(event) {
         AgenDAVRepeat.setRepeatRuleOnForm(event.rrule, $('#tabs-recurrence'));
       }
 
+      // Initialize color picker
+      $('input.pick_color').colorPicker();
+      $('#color_selector').find('#reset_color').show();
+
+      if (is_new) {
+        $('input.pick_color').next('.color_picker').css('background-color', $.fn.colorPicker.calendarColor);
+      } else {
+        if (event.color === undefined || event.color === null || event.color === '') {
+          $('input.pick_color').next('.color_picker').css('background-color', $.fn.colorPicker.calendarColor);
+        } else {
+          $('input.pick_color').next('.color_picker').css('background-color', event.color);
+        }
+      }
+
       // Reminders
       reminders_manager();
+
+      // Update color picker when calendar selection changes
+      $('#event_edit_form select[name="calendar"]').on('change', function() {
+        var selectedCalendarId = $(this).val();
+        var selectedCalendar = event.calendars.find(function(calendar) {
+          return calendar.calendar === selectedCalendarId;
+        });
+        if (selectedCalendar) {
+          $.fn.colorPicker.calendarColor = selectedCalendar.color;
+          $('input.pick_color').next('.color_picker').css('background-color', $.fn.colorPicker.calendarColor);
+        }
+      });
     }
   });
 };
@@ -952,6 +977,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
     width: 500,
     pre_func: function() {
       $('input.pick_color').colorPicker();
+      $('#color_selector').find('#reset_color').hide();
 
       if (AgenDAVConf.enable_calendar_sharing === true && data.is_shared !== true) {
         shares_manager();
@@ -1115,6 +1141,8 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       } else {
         own_calendars.appendChild(li[0]);
       }
+
+      $.fn.colorPicker.calendarColor = calendar.color;
 
     });
 
@@ -1526,6 +1554,11 @@ var reminders_manager_no_entries_placeholder = function reminders_manager_no_ent
 var event_render_callback = function event_render_callback(event, element) {
   // Icons
   var icons = [];
+
+  if (event.color) {
+    element.css('background-color', event.color);
+    element.css('color', fg_for_bg(event.color));
+  }
 
   if (event.rrule !== undefined) {
     icons.push('fa-repeat');

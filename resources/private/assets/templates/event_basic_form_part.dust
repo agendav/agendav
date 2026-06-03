@@ -69,3 +69,7 @@
 {>form_element_start for="description" label="description" /}
 <textarea name="description" class="form-control" rows="4">{description}</textarea>
 {>form_element_end/}
+
+{>form_element_start for="color" label="color" /}
+<input name="color" type="text" value="{color}" class="color form-control pick_color" />
+{>form_element_end/}

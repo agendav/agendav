@@ -12,7 +12,7 @@ value="{?displayname}{displayname}{/displayname}" class="displayname form-contro
 {>form_element_start for="color" label="color" /}
 <input name="calendar_color"
 value="{?color}{color}{:else}{default_calendar_color}{/color}" 
-class="calendar_color pick_color form-control" maxlength="7" size="7" />
+class="calendar_color pick_color form-control" />
 {>form_element_end/}
 {?public_url}
  <div class="public_url_container">
