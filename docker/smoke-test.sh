@@ -135,6 +135,10 @@ for _ in $(seq 1 30); do
 done
 [[ "${code:-000}" =~ ^[2345] ]] || { echo " TIMEOUT"; exit 1; }
 
+APP_ENV=$(docker compose exec -T web printenv AGENDAV_ENVIRONMENT 2>/dev/null | tr -d '\r')
+[[ "$APP_ENV" == "dev" ]] \
+  || { echo "ERROR: AGENDAV_ENVIRONMENT is '$APP_ENV', not 'dev'. Refusing to run destructive tests against a non-dev stack." >&2; exit 1; }
+
 # ----- ensure host-side writable dirs (container runs www-data) -----
 chmod -R a+rwX var/log var/cache 2>/dev/null || true
 
@@ -209,10 +213,11 @@ fi
 echo
 echo "==> running assertions"
 
-# Clean any stale events left by an interrupted previous run, so the assertions
-# can rely on "exactly 1 event present after create".
+# Clean any stale events or calendars left by an interrupted previous run
 docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite \
   "DELETE FROM calendarobjects; DELETE FROM calendarchanges;" >/dev/null 2>&1 || true
+docker compose exec -T db mysql -uagendav -pagendav agendav \
+  -e "DELETE FROM subscriptions;" >/dev/null 2>&1 || true
 
 JAR=$(mktemp)
 JAR_FRESH=$(mktemp)
@@ -288,6 +293,44 @@ RESP=$(curl -s -b "$JAR" -X POST \
   --data-urlencode "calendar=$NEW_URL" \
   http://localhost:8080/calendars/delete)
 echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/delete" || fail "POST /calendars/delete: $RESP"
+
+# 8b. POST /calendars (subscribe to ICS)
+ICS_URL='http://localhost/test-calendar.ics'
+ICS_URL_ENC='http%3A%2F%2Flocalhost%2Ftest-calendar.ics'
+RESP=$(curl -s -b "$JAR" -X POST \
+  --data-urlencode "_token=$T" \
+  --data-urlencode "is_subscribed=true" \
+  --data-urlencode "displayname=Test ICS subscription" \
+  --data-urlencode "calendar_color=#4CAF50" \
+  --data-urlencode "url=$ICS_URL" \
+  http://localhost:8080/calendars)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars (subscribe)" || fail "POST /calendars subscribe: $RESP"
+
+# 8c. /calendars lists the subscription
+CALS=$(curl -s -b "$JAR" http://localhost:8080/calendars)
+echo "$CALS" | python3 -c '
+import sys, json
+cs = json.load(sys.stdin)["data"]
+match = [c for c in cs if c.get("is_subscribed") and c.get("displayname") == "Test ICS subscription"]
+assert match, "subscription not found in: " + str(cs)
+' && pass "GET /calendars contains subscription" || fail "GET /calendars missing subscription"
+
+# 8d. GET /events for subscribed calendar returns the ICS events
+EVT_RESP=$(curl -s -b "$JAR" \
+  "http://localhost:8080/events?calendar=${ICS_URL_ENC}&is_subscribed=true&timezone=UTC&start=2026-06-01&end=2026-08-01")
+echo "$EVT_RESP" | python3 -c '
+import sys, json
+d = json.load(sys.stdin)
+assert len(d) > 0, "expected events, got: " + str(d)
+' && pass "GET /events (subscribed calendar)" || fail "GET /events subscribed: $EVT_RESP"
+
+# 8e. POST /calendars/delete (subscription)
+RESP=$(curl -s -b "$JAR" -X POST \
+  --data-urlencode "_token=$T" \
+  --data-urlencode "is_subscribed=true" \
+  --data-urlencode "calendar=$ICS_URL" \
+  http://localhost:8080/calendars/delete)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/delete (subscription)" || fail "POST /calendars/delete subscription: $RESP"
 
 # 9. POST /events/save (create event; controller generates the uid)
 RESP=$(curl -s -b "$JAR" -X POST \

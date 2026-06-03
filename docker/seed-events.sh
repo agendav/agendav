@@ -19,6 +19,10 @@ done
 docker compose ps --services --filter status=running 2>/dev/null | grep -q "^web$" \
   || { echo "Stack not running. Start it with: docker compose up -d" >&2; exit 2; }
 
+APP_ENV=$(docker compose exec -T web printenv AGENDAV_ENVIRONMENT 2>/dev/null | tr -d '\r')
+[[ "$APP_ENV" == "dev" ]] \
+  || { echo "ERROR: AGENDAV_ENVIRONMENT is '$APP_ENV', not 'dev'. Refusing to run against a non-dev stack." >&2; exit 2; }
+
 CAL_BASE="http://127.0.0.1:8081/dav.php/calendars/test/default"
 
 # ----- ensure Baikal test user exists -----
@@ -75,6 +79,9 @@ YAML
   "
   echo "==> Baikal test user created"
 fi
+
+# ----- run AgenDAV migrations  -----
+docker compose exec -T web php /app/bin/agendavcli migrations:migrate --no-interaction >/dev/null 2>&1
 
 # ----- clear existing events -----
 echo "==> clearing existing events"
@@ -198,5 +205,16 @@ put('seed-weekend', make_ics(
 ))
 
 PY
+
+# ----- seed ICS subscription -----
+echo "==> seeding ICS subscription"
+docker compose exec -T db mysql -uagendav -pagendav agendav 2>/dev/null <<'SQL'
+DELETE FROM subscriptions WHERE calendar='http://localhost/test-calendar.ics';
+INSERT INTO subscriptions (owner, calendar, options) VALUES (
+  '/dav.php/principals/test/',
+  'http://localhost/test-calendar.ics',
+  '{"{DAV:}displayname":"Public test calendar","{http://apple.com/ns/ical/}calendar-color":"#4CAF50"}'
+);
+SQL
 
 echo "==> done. Open http://localhost:8080 and log in as test/test"
