@@ -111,6 +111,9 @@ return [
     // Calendar sharing
     'calendar.sharing' => false,
 
+    // Enable iCal feed subscriptions
+    'calendar.subscriptions' => false,
+
     // Calendar sharing permissions. In case of doubt, do not modify them
     // These defaults are only useful for DAViCal (http://wiki.davical.org/index.php/Permissions)
     'calendar.sharing.permissions' => [

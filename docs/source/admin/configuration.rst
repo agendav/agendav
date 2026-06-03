@@ -192,6 +192,12 @@ modify,  and start configuring your instance.
    recommended to disable calendar sharing on other CalDAV servers unless
    you know what you are doing.
 
+.. confval:: calendar.subscriptions
+
+   Allows users to subscribe to external iCal feeds. Disabled by default
+   because it causes the server to fetch arbitrary external URLs on behalf
+   of users. Set to ``true`` to enable the subscriptions box in the sidebar.
+
 .. confval:: calendar.sharing.permissions
 
    Configures ACL permissions for calendar sharing. The default values will

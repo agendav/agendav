@@ -48,6 +48,7 @@ class TwigGlobalsMiddleware implements MiddlewareInterface
 
         $session = $this->container->get('session');
         $twig->addGlobal('displayname', $session->has('displayname') ? $session->get('displayname') : '');
+        $twig->addGlobal('calendar_subscriptions', $this->container->get('calendar.subscriptions'));
 
         $twig->addGlobal(
             'csrf_token',

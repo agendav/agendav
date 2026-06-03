@@ -70,6 +70,7 @@ class JavaScriptCode
             'base_app_url' => $appUrl,
             'agendav_version' => \AgenDAV\Version::V,
             'enable_calendar_sharing' => $this->container->get('calendar.sharing'),
+            'enable_calendar_subscriptions' => $this->container->get('calendar.subscriptions'),
             'calendar_colors' => array_map(
                 fn($c) => '#' . ltrim($c, '#'),
                 $this->container->get('calendar.colors')
