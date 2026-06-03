@@ -1692,7 +1692,7 @@ var event_click_callback = function event_click_callback(event,
   render_template('event_details_popup', event_data, function(out) {
     event_details_popup.set({
       'content.text': out,
-      'content.title': event_data.title,
+      'content.title': $('<span>').text(event_data.title),
     })
     .reposition(jsEvent)
     .show(jsEvent);
