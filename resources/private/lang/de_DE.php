@@ -90,6 +90,7 @@ $translations = array(
     'labels.newcalendar' => 'Neuer Kalender',
     'labels.modifycalendar' => 'Kalender bearbeiten',
     'labels.deletecalendar' => 'Kalender löschen',
+    'labels.unsubscribe' => 'Abbestellen',
 
     'labels.createevent' => 'Termin anlegen',
     'labels.editevent' => 'Termin bearbeiten',
@@ -104,7 +105,9 @@ $translations = array(
     'labels.close' => 'Schließen',
     'labels.save' => 'Speichern',
     'labels.create' => 'Anlegen',
+    'labels.create_calendar' => 'Neuen Kalender anlegen',
     'labels.subscribe' => 'Abonnieren',
+    'labels.subscribe_ical' => 'iCal-Feed abonnieren',
     'labels.login' => 'Anmelden',
     'labels.logout' => 'Abmelden',
     'labels.modify' => 'Ändern',

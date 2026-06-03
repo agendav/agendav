@@ -56,17 +56,11 @@ class Save extends JSONController
             Calendar::COLOR => $input->get('calendar_color'),
         ]);
 
-        if ($this->container->get('calendar.sharing') === false) {
-            return $this->updateCalDAV($calendar, $response);
-        }
-
-        $shares_repository = $this->container->get('shares.repository');
-        $subscriptions_repository = $this->container->get('subscriptions.repository');
-        $user_principal_url = $this->container->get('session')->get('principal_url');
-        $current_user_principal = new Principal($user_principal_url);
-
         if ($input->getBoolean('is_subscribed') === true) {
-            // Subscribed calendar properties are saved locally
+            $subscriptions_repository = $this->container->get('subscriptions.repository');
+            $user_principal_url = $this->container->get('session')->get('principal_url');
+            $current_user_principal = new Principal($user_principal_url);
+
             $calendar->setSubscribed(true);
             $subscription = $subscriptions_repository->getSubscriptionByUrl(
                 $calendar,
@@ -77,6 +71,15 @@ class Save extends JSONController
             $subscriptions_repository->save($subscription);
             return $this->generateSuccess($response);
         }
+
+        if ($this->container->get('calendar.sharing') === false) {
+            return $this->updateCalDAV($calendar, $response);
+        }
+
+        $shares_repository = $this->container->get('shares.repository');
+        $subscriptions_repository = $this->container->get('subscriptions.repository');
+        $user_principal_url = $this->container->get('session')->get('principal_url');
+        $current_user_principal = new Principal($user_principal_url);
 
         if ($input->getBoolean('is_owned') === false) {
             $share = $shares_repository->getSourceShare($calendar, $current_user_principal);

@@ -305,31 +305,6 @@ $(document).ready(function() {
     }
   });
 
-  $('#sidebar').on('click', '#toggle_all_subscribed_calendars', function(e) {
-    var subscribed_cals = $('#subscribed_calendar_list').find('ul').children();
-    if ($(this).hasClass('hide_all')) {
-      $.map(subscribed_cals, function(e, i) {
-        hide_calendar($(e));
-      });
-      $(this)
-        .removeClass('hide_all')
-        .addClass('show_all')
-        .find('i')
-          .removeClass('fa-eye-slash')
-          .addClass('fa-eye');
-    } else {
-      $.map(subscribed_cals, function(e, i) {
-        show_calendar($(e));
-      });
-      $(this)
-        .removeClass('show_all')
-        .addClass('hide_all')
-        .find('i')
-          .removeClass('fa-eye')
-          .addClass('fa-eye-slash');
-    }
-  });
-
   // Create calendar
   $('#calendar_add')
     .on('click', calendar_create_dialog);
@@ -1017,7 +992,7 @@ var calendar_modify_dialog = function calendar_modify_dialog(calendar_obj) {
   var buttons_and_actions =
     [
       {
-        'text': t('labels', 'deletecalendar'),
+        'text': data.is_subscribed ? t('labels', 'unsubscribe') : t('labels', 'deletecalendar'),
         'class': 'addicon btn-icon-calendar-delete',
         'click': function() {
           calendar_delete_dialog(calendar_obj);
@@ -1273,12 +1248,14 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         .appendChild(shared_calendars);
       $('#shared_calendar_list').show();
     }
-    if (count_subscribed === 0) {
-      $('#subscribed_calendar_list').hide();
-    } else {
-      $('#subscribed_calendar_list ul')[0]
-        .appendChild(subscribed_calendars);
+    if (AgenDAVConf.enable_calendar_subscriptions) {
+      if (count_subscribed > 0) {
+        $('#subscribed_calendar_list ul')[0]
+          .appendChild(subscribed_calendars);
+      }
       $('#subscribed_calendar_list').show();
+    } else {
+      $('#subscribed_calendar_list').hide();
     }
 
     // Add event sources
