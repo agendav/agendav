@@ -1,0 +1,64 @@
+# This file is for unifying the coding style for different editors and IDEs
+# editorconfig.org
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = tab
+indent_size = 2
+
+### Assets
+[{*.css,*.less,*.js}]
+indent_style = space
+indent_size = 2
+
+### PHP
+[*.php]
+indent_style = space
+indent_size = 4
+
+[{*.xml,*.xlf}]
+indent_style = tab
+indent_size = 4
+
+[*.sql]
+indent_style = tab
+indent_size = 2
+
+[{*.html,*.tmpl,*.dust}]
+indent_style = space
+indent_size = 2
+
+### Docs
+[*.md]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
+[*.rst]
+indent_style = space
+indent_size = 3
+
+[*.txt]
+trim_trailing_whitespace = false
+
+### Misc
+[*.yaml]
+indent_style = space
+indent_size = 2
+
+[{*.conf,*.cnf}]
+indent_style = space
+indent_size = 4
+
+[{*.json,*.yml,*.yaml,build.xml}]
+indent_style = space
+indent_size = 2
+
+[{composer.json,composer.lock}]
+indent_style = space
+indent_size = 4
