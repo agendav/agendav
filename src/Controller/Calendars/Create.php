@@ -56,9 +56,15 @@ class Create extends JSONController
 
         if ($input->getBoolean('is_subscribed') === true) {
             // If the calendar is a subscription, we save it in the database
+            $feedUrl = $input->get('url');
+            $scheme = parse_url($feedUrl, PHP_URL_SCHEME);
+            if (!in_array($scheme, ['http', 'https'], true)) {
+                return $this->generateException($response, $this->container->get('translator')->trans('messages.error_invalidinput'));
+            }
+
             $subscription = new Subscription();
             $subscription->setOwner($current_user_principal->getURL());
-            $subscription->setCalendar($input->get('url'));
+            $subscription->setCalendar($feedUrl);
             $subscription->setProperty(Calendar::DISPLAYNAME, $input->get('displayname'));
             $subscription->setProperty(Calendar::COLOR, $input->get('calendar_color'));
 

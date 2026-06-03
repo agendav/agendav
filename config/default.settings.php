@@ -112,6 +112,10 @@ return [
     'calendar.sharing' => false,
 
     // Enable iCal feed subscriptions
+    // Disabled by default because it causes the server to fetch external
+    // URLs on behalf of users. Only http/https URLs are accepted.
+    // Do not enable on servers reachable from untrusted users if
+    // AgenDAV runs in a local network and may expose internal services (SSRF risk).
     'calendar.subscriptions' => false,
 
     // Calendar sharing permissions. In case of doubt, do not modify them

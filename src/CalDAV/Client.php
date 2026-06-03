@@ -414,7 +414,9 @@ class Client
      */
     public function get($url)
     {
-        $response = $this->http_client->request('GET', $url);
+        // Use a plain client without CalDAV credentials to avoid leaking
+        // the user's password to external ICS feed hosts.
+        $response = (new \GuzzleHttp\Client())->request('GET', $url);
 
         $contents = (string)$response->getBody();
 
