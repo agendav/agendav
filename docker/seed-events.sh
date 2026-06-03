@@ -23,6 +23,13 @@ APP_ENV=$(docker compose exec -T web printenv AGENDAV_ENVIRONMENT 2>/dev/null | 
 [[ "$APP_ENV" == "dev" ]] \
   || { echo "ERROR: AGENDAV_ENVIRONMENT is '$APP_ENV', not 'dev'. Refusing to run against a non-dev stack." >&2; exit 2; }
 
+if [[ ! -f config/settings.php ]]; then
+  echo "==> copying tests/fixtures/settings.docker.php -> config/settings.php"
+  cp tests/fixtures/settings.docker.php config/settings.php
+else
+  echo "==> using existing config/settings.php"
+fi
+
 CAL_BASE="http://127.0.0.1:8081/dav.php/calendars/test/default"
 
 # ----- ensure Baikal test user exists -----
@@ -83,10 +90,12 @@ fi
 # ----- run AgenDAV migrations  -----
 docker compose exec -T web php /app/bin/agendavcli migrations:migrate --no-interaction >/dev/null 2>&1
 
-# ----- clear existing events -----
-echo "==> clearing existing events"
+# ----- clear existing events and extra calendars -----
+echo "==> clearing existing events and extra calendars"
 docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite \
-  "DELETE FROM calendarobjects WHERE calendarid IN (SELECT calendarid FROM calendarinstances WHERE principaluri='principals/test');"
+  "DELETE FROM calendarobjects WHERE calendarid IN (SELECT calendarid FROM calendarinstances WHERE principaluri='principals/test');
+   DELETE FROM calendarinstances WHERE principaluri='principals/test' AND uri != 'default';
+   DELETE FROM calendars WHERE id NOT IN (SELECT calendarid FROM calendarinstances);"
 
 # ----- PUT events via Python -----
 echo "==> seeding events"
