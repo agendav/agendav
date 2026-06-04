@@ -11,8 +11,8 @@ if [[ -f "$CSS" && -f "$JS" && -f "$VENDOR" && -z "${FORCE:-}" ]]; then
 fi
 
 cd /app
-echo "[builder] npm install"
-npm install --legacy-peer-deps --no-audit --no-fund
+echo "[builder] npm ci"
+npm ci --legacy-peer-deps --no-audit --no-fund
 
 echo "[builder] composer install"
 composer install --prefer-dist --no-interaction --no-progress

@@ -63,7 +63,7 @@ Building assets
 If you are going to work on stylesheets, scripts or templates, you will need `npm
 <https://www.npmjs.com/>`_. Run the following command to download all required dependencies::
 
-   $ npm install
+   $ npm ci
 
 Stylesheets
 ***********
