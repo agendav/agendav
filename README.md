@@ -1,7 +1,7 @@
 # AgenDAV - CalDAV web client
 
 [![Maintenance mode](https://img.shields.io/badge/maintenance_mode-%F0%9F%9A%A7-grey.svg?labelColor=orange)](https://github.com/agendav/agendav/#maintenance-mode)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/agendav/agendav/test.yml?branch=main)](https://github.com/agendav/agendav/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/agendav/agendav/ci.yml?branch=main)](https://github.com/agendav/agendav/actions)
 [![Docs](https://readthedocs.org/projects/agendav/badge/?version=latest)](https://agendav.readthedocs.io/)
 [![Made With](https://img.shields.io/badge/made_with-php-blue)](https://github.com/agendav/agendav#requirements)
 [![License](https://img.shields.io/badge/license-gpl--3.0--or--later-blue.svg)](https://spdx.org/licenses/GPL-3.0-or-later.html)
