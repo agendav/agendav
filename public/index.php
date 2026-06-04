@@ -14,6 +14,10 @@ $vendor_directory = getenv('COMPOSER_VENDOR_DIR');
 if ($vendor_directory === false) {
     $vendor_directory = __DIR__ . '/../vendor';
 }
+if (!file_exists($vendor_directory . '/autoload.php')) {
+    echo 'Composer vendor directory not found. Run: composer install';
+    exit(255);
+}
 require_once $vendor_directory . '/autoload.php';
 
 // Available environments: prod, dev
