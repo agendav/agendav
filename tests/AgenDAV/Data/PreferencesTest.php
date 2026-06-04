@@ -14,17 +14,17 @@ class PreferencesTest extends TestCase
 
     public function testCreation()
     {
-        $prefs = new Preferences(array('id1' => 'value1', 'id2' => 'value2'));
+        $prefs = new Preferences(['id1' => 'value1', 'id2' => 'value2']);
         $this->assertEquals($prefs->id1, 'value1');
         $this->assertEquals($prefs->id2, 'value2');
     }
 
     public function testSetAll()
     {
-        $values = array(
+        $values = [
             'i1' => 'v1',
             'i2' => 'v2',
-        );
+        ];
         $prefs = new Preferences();
         $prefs->setAll($values);
         $this->assertEquals($prefs->i1, 'v1');

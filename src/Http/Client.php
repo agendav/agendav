@@ -64,12 +64,12 @@ class Client
      * @param \GuzzleHttp\Client $guzzle Actual Guzzle HTTP client
      * @param array $custom_options     Options to be used on every request. Overrides default values
      */
-    public function __construct(GuzzleClient $guzzle, array $custom_options = array())
+    public function __construct(GuzzleClient $guzzle, array $custom_options = [])
     {
         $this->guzzle = $guzzle;
         $this->options = $custom_options;
 
-        $this->request_headers = array();
+        $this->request_headers = [];
     }
 
     /**
@@ -82,7 +82,7 @@ class Client
      **/
     public function setAuthentication($username, $password, $type = 'basic')
     {
-        $this->options['auth'] = array($username, $password, $type);
+        $this->options['auth'] = [$username, $password, $type];
     }
 
     /**
@@ -110,10 +110,10 @@ class Client
             if (is_array($this->request_headers[$name])) {
                 $this->request_headers[$name][] = $value;
             } else {
-                $this->request_headers[$name] = array(
+                $this->request_headers[$name] = [
                     $this->request_headers[$name],
                     $value
-                );
+                ];
             }
         } else {
             $this->setHeader($name, $value);
@@ -164,7 +164,7 @@ class Client
         );
 
         // Clean current headers
-        $this->request_headers = array();
+        $this->request_headers = [];
 
         try {
             $this->response = $this->guzzle->send($this->request, $this->options);

@@ -16,7 +16,7 @@
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$translations = array(
+$translations = [
     'labels.username' => 'Nombre de usuario',
     'labels.password' => 'Contraseña',
 
@@ -263,6 +263,6 @@ existen',
     'rrule.nd' => ',',
     'rrule.rd' => ',',
     'rrule.th' => ',',
-);
+];
 
 return $translations;

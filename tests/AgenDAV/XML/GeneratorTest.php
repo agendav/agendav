@@ -17,52 +17,52 @@ class GeneratorTest extends TestCase
     {
         $generator = $this->createXMLGenerator();
 
-        $body = trim($generator->propfindBody(array(
+        $body = trim($generator->propfindBody([
             '{DAV:}resourcetype',
             '{urn:ietf:params:xml:ns:caldav}calendar-home-set',
             '{http://apple.com/ns/ical/}calendar-color',
             '{http://fake.namespace.org}calendar-color'
-        )));
+        ]));
 
-        $expected = array (
+        $expected =  [
           'name' => '{DAV:}propfind',
           'value' =>
-          array (
+           [
             0 =>
-            array (
+             [
               'name' => '{DAV:}prop',
               'value' =>
-              array (
+               [
                 0 =>
-                array (
+                 [
                   'name' => '{DAV:}resourcetype',
                   'value' => NULL,
-                  'attributes' => array (),
-                ),
+                  'attributes' =>  [],
+                ],
                 1 =>
-                array (
+                 [
                   'name' => '{urn:ietf:params:xml:ns:caldav}calendar-home-set',
                   'value' => NULL,
-                  'attributes' => array (),
-                ),
+                  'attributes' =>  [],
+                ],
                 2 =>
-                array (
+                 [
                   'name' => '{http://apple.com/ns/ical/}calendar-color',
                   'value' => NULL,
-                  'attributes' => array (),
-                ),
+                  'attributes' =>  [],
+                ],
                 3 =>
-                array (
+                 [
                   'name' => '{http://fake.namespace.org}calendar-color',
                   'value' => NULL,
-                  'attributes' => array (),
-                ),
-              ),
-              'attributes' => array (),
-            ),
-          ),
-          'attributes' => array (),
-        );
+                  'attributes' =>  [],
+                ],
+              ],
+              'attributes' =>  [],
+            ],
+          ],
+          'attributes' =>  [],
+        ];
         $reader = new Reader();
         $reader->xml($body);
         $this->assertEquals($expected, $reader->parse());
@@ -79,41 +79,41 @@ class GeneratorTest extends TestCase
 
         $body = $generator->mkCalendarBody($properties);
 
-        $expected = array (
+        $expected =  [
           'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
           'value' =>
-          array (
+           [
             0 =>
-            array (
+             [
               'name' => '{DAV:}set',
               'value' =>
-              array (
+               [
                 0 =>
-                array (
+                 [
                   'name' => '{DAV:}prop',
                   'value' =>
-                  array (
+                   [
                     0 =>
-                    array (
+                     [
                       'name' => '{DAV:}displayname',
                       'value' => 'Calendar name',
-                      'attributes' => array (),
-                    ),
+                      'attributes' =>  [],
+                    ],
                     1 =>
-                    array (
+                     [
                       'name' => '{urn:fake}attr',
                       'value' => 'value',
-                      'attributes' => array (),
-                    ),
-                  ),
-                  'attributes' => array (),
-                ),
-              ),
-              'attributes' => array (),
-            ),
-          ),
-          'attributes' => array (),
-        );
+                      'attributes' =>  [],
+                    ],
+                  ],
+                  'attributes' =>  [],
+                ],
+              ],
+              'attributes' =>  [],
+            ],
+          ],
+          'attributes' =>  [],
+        ];
 
         $reader = new Reader();
         $reader->xml($body);
@@ -130,11 +130,11 @@ class GeneratorTest extends TestCase
 
         $body = $generator->mkCalendarBody([]);
 
-        $expected = array (
+        $expected =  [
           'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
           'value' => null,
-          'attributes' => array (),
-        );
+          'attributes' =>  [],
+        ];
         $reader = new Reader();
         $reader->xml($body);
 
@@ -153,47 +153,47 @@ class GeneratorTest extends TestCase
 
         $body = $generator->proppatchBody($properties);
 
-        $expected = array (
+        $expected =  [
           'name' => '{DAV:}propertyupdate',
           'value' =>
-          array (
+           [
             0 =>
-            array (
+             [
               'name' => '{DAV:}set',
               'value' =>
-              array (
+               [
                 0 =>
-                array (
+                 [
                   'name' => '{DAV:}prop',
                   'value' =>
-                  array (
+                   [
                     0 =>
-                    array (
+                     [
                       'name' => '{DAV:}displayname',
                       'value' => 'Calendar name',
-                      'attributes' => array (),
-                    ),
+                      'attributes' =>  [],
+                    ],
                     1 =>
-                    array (
+                     [
                       'name' => '{http://apple.com/ns/ical/}calendar-color',
                       'value' => '#f0f0f0aa',
-                      'attributes' => array (),
-                    ),
+                      'attributes' =>  [],
+                    ],
                     2 =>
-                    array (
+                     [
                       'name' => '{urn:fake}attr',
                       'value' => 'value',
-                      'attributes' => array (),
-                    ),
-                  ),
-                  'attributes' => array (),
-                ),
-              ),
-              'attributes' => array (),
-            ),
-          ),
-          'attributes' => array (),
-        );
+                      'attributes' =>  [],
+                    ],
+                  ],
+                  'attributes' =>  [],
+                ],
+              ],
+              'attributes' =>  [],
+            ],
+          ],
+          'attributes' =>  [],
+        ];
 
         $reader = new Reader();
         $reader->xml($body);

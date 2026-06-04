@@ -29,14 +29,14 @@ class ClientTest extends TestCase
         $client->addHeader('Test-Header', 'Additional value');
         $this->assertEquals(
             $client->getHeader('Test-Header'),
-            array('Second value', 'Additional value')
+            ['Second value', 'Additional value']
         );
 
         // Add one more value to the header
         $client->addHeader('Test-Header', 'One more additional value');
         $this->assertEquals(
             $client->getHeader('Test-Header'),
-            array('Second value', 'Additional value', 'One more additional value')
+            ['Second value', 'Additional value', 'One more additional value']
         );
 
         // addHeader for non-defined header

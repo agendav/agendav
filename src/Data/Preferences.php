@@ -38,9 +38,9 @@ class Preferences
     private $username;
 
     #[Column(type: 'json')]
-    private $options = array();
+    private $options = [];
 
-    public function __construct($arr_values = array()) {
+    public function __construct($arr_values = []) {
         foreach($arr_values as $name => $value) {
             $this->options[$name] = $value;
         }
