@@ -44,6 +44,7 @@
         }
     },
     "scripts": {
+        "lint": "node_modules/.bin/eclint check 'app/**' 'bin/**' 'config/**' 'resources/**' 'src/**' 'tests/**' '*.json' '*.md' '*.php' '*.yaml'",
         "test": "vendor/bin/phpunit --configuration tests/phpunit.xml"
     },
     "config": {
