@@ -15,6 +15,9 @@
 # PHPUnit
 /tests/.phpunit.result.cache
 
+# PHP CS Fixer
+.php-cs-fixer.cache
+
 agendav-built*
 public/dist/css/*.css
 public/dist/js/*.js

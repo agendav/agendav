@@ -36,6 +36,7 @@
         "twig/twig": "^3.10"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phpunit/phpunit": "^9.6"
     },
     "autoload": {
@@ -44,7 +45,11 @@
         }
     },
     "scripts": {
-        "lint": "node_modules/.bin/eclint check 'app/**' 'bin/**' 'config/**' 'resources/**' 'src/**' 'tests/**' '*.json' '*.md' '*.php' '*.yaml'",
+        "lint": [
+            "node_modules/.bin/eclint check 'app/**' 'bin/**' 'config/**' 'resources/**' 'src/**' 'tests/**' '*.json' '*.md' '*.php' '*.yaml'",
+            "vendor/bin/php-cs-fixer check"
+        ],
+        "fix": "vendor/bin/php-cs-fixer fix",
         "test": "vendor/bin/phpunit --configuration tests/phpunit.xml"
     },
     "config": {
