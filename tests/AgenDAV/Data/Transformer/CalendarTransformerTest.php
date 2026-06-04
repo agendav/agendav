@@ -48,6 +48,7 @@ class CalendarTransformerTest extends TestCase
                 'is_shared' => false,
                 'owner' => '/owner/principal',
                 'is_owned' => true,
+                'is_subscribed' => false,
                 'writable' => true,
                 'shares' => [],
             ]
@@ -75,6 +76,7 @@ class CalendarTransformerTest extends TestCase
                 'is_shared' => true,
                 'owner' => '/owner/principal',
                 'is_owned' => false,
+                'is_subscribed' => false,
                 'writable' => true,
                 'shares' => [],
             ]
