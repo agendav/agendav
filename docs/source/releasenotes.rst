@@ -3,6 +3,20 @@
 Release notes
 =============
 
+.. _v3.1.0:
+3.1.0 (2026-06-04)
+-------------------
+
+- FEATURE iCalendar URL subscription support (fixes #156)
+- FEATURE Allow to enable/disable iCal subscriptions per instance
+- FEATURE Add RFC 7986 color support for VEVENT objects
+- FEATURE Add Chinese (zh_CN) language
+- FEATURE Add stdout logging support (configurable in settings)
+- FEATURE Add Code Style Fixers
+- BUGFIX Events do not load in week view (#303)
+- BUGFIX Escape event title in modal to prevent XSS
+- BUGFIX Do not leak user data to ICS subscription target
+
 .. _v3.0.0:
 3.0.0 (2026-06-02)
 -------------------
