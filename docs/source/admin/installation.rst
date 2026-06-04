@@ -138,6 +138,26 @@ Being Apache one of the most used web servers, a sample configuration is shown b
   </Location>
  </VirtualHost>
 
+A sample Nginx configuration is shown below::
+
+ server {
+     listen 443 ssl;
+     server_name agendav.host;
+     root /path/to/agendav/web/public;
+
+     location ~ \.php$ {
+         try_files      $uri =404;
+         fastcgi_pass   unix:/run/php/php8.5-fpm.sock;
+         fastcgi_index  index.php;
+         include        fastcgi.conf;
+     }
+
+     location / {
+         index index.php;
+         try_files $uri $uri/ /index.php?$args;
+     }
+ }
+
 
 You can enable development mode by following the instructions at
 :ref:`development_environment`.
