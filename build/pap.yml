@@ -1,0 +1,50 @@
+settings:
+  web-directory: public/
+  sync-paths:
+    - source: composer.json
+      target: composer.json
+    - source: composer.lock
+      target: composer.lock
+    - source: bin/
+      target: bin/
+    - source: app/
+      target: app/
+    - source: config/default.settings.php
+      target: config/default.settings.php
+    - source: config/dev.php
+      target: config/dev.php
+    - source: config/languages.php
+      target: config/languages.php
+    - source: config/prod.php
+      target: config/prod.php
+    - source: migrations.yml
+      target: migrations.yml
+    - source: public/
+      target: public/
+    - source: resources/
+      target: resources/
+    - source: src/
+      target: src/
+    - source: vendor/
+      target: vendor/
+  lint:
+    scripts:
+      - composer lint
+    fix:
+      scripts:
+        - composer fix
+  assets:
+    scripts:
+      - npm ci
+      - npm run build
+  composer:
+    working-directory: ./
+
+stages:
+  demo:
+    user: deploy
+    host: 198.51.100.2
+    origin: https://agendav.example.com/
+    working-directory: /var/www/agendav/
+    rsync:
+      options: -azce 'ssh -p 22'
