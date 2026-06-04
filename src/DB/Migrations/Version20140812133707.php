@@ -50,5 +50,5 @@ class Version20140812133707 extends AgenDAVMigration
         $sessions->addColumn('sess_time', 'integer')->setNotnull(true)->setUnsigned(true);
         $sessions->setPrimaryKey(['sess_id']);
     }
-    
+
 }

@@ -236,7 +236,8 @@ class Share
     }
 
     #[PostLoad]
-    public function replaceOldProperties() {
+    public function replaceOldProperties()
+    {
         $replacements = [
             'displayname' => Calendar::DISPLAYNAME,
             'color' => Calendar::COLOR,

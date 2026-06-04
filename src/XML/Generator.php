@@ -33,14 +33,14 @@ use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
  */
 class Generator
 {
-     /**
-      * Default namespace prefixes
-      */
-     public static $default_ns = [
-         'DAV:' => 'd',
-         'urn:ietf:params:xml:ns:caldav' => 'C',
-         'http://apple.com/ns/ical/' => 'A',
-     ];
+    /**
+     * Default namespace prefixes
+     */
+    public static $default_ns = [
+        'DAV:' => 'd',
+        'urn:ietf:params:xml:ns:caldav' => 'C',
+        'http://apple.com/ns/ical/' => 'A',
+    ];
 
     /**
      * Generate formatted XML documents
@@ -240,8 +240,7 @@ class Generator
         $type,
         array $privileges,
         $principal = null
-    )
-    {
+    ) {
         $writer->startElement('{DAV:}ace');
 
         // Affected principals

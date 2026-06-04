@@ -32,8 +32,7 @@ class Resize extends Alter
         \DateTimeZone $timezone,
         $minutes,
         ParameterBag $input
-    )
-    {
+    ) {
         $end = DateHelper::addMinutesTo($instance->getEnd(), $minutes);
         $instance->setEnd($end, $instance->isAllDay());
     }

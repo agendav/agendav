@@ -24,7 +24,6 @@ namespace AgenDAV\Repositories;
 use Doctrine\ORM\EntityManager;
 use AgenDAV\Data\Preferences;
 
-
 class DoctrineOrmPreferencesRepository implements PreferencesRepository
 {
 

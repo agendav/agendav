@@ -24,7 +24,6 @@ namespace AgenDAV\Data\Transformer;
 use League\Fractal;
 use AgenDAV\Data\Principal;
 
-
 class PrincipalTransformer extends Fractal\TransformerAbstract
 {
     public function transform(Principal $principal)

@@ -36,25 +36,25 @@ class GeneratorTest extends TestCase
                 0 =>
                  [
                   'name' => '{DAV:}resourcetype',
-                  'value' => NULL,
+                  'value' => null,
                   'attributes' =>  [],
                 ],
                 1 =>
                  [
                   'name' => '{urn:ietf:params:xml:ns:caldav}calendar-home-set',
-                  'value' => NULL,
+                  'value' => null,
                   'attributes' =>  [],
                 ],
                 2 =>
                  [
                   'name' => '{http://apple.com/ns/ical/}calendar-color',
-                  'value' => NULL,
+                  'value' => null,
                   'attributes' =>  [],
                 ],
                 3 =>
                  [
                   'name' => '{http://fake.namespace.org}calendar-color',
-                  'value' => NULL,
+                  'value' => null,
                   'attributes' =>  [],
                 ],
               ],
@@ -302,10 +302,10 @@ ACLBODY;
 
     public function testPrincipalPropertySearchBody()
     {
-      $filter = new \AgenDAV\CalDAV\Filter\PrincipalPropertySearch('example');
-      $generator = $this->createXMLGenerator();
-      $body = $generator->principalPropertySearchBody($filter);
-      $expected_body = <<<BODY
+        $filter = new \AgenDAV\CalDAV\Filter\PrincipalPropertySearch('example');
+        $generator = $this->createXMLGenerator();
+        $body = $generator->principalPropertySearchBody($filter);
+        $expected_body = <<<BODY
 <?xml version="1.0" encoding="UTF-8"?>
 <d:principal-property-search xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" test="anyof">
   <d:property-search>
@@ -327,7 +327,7 @@ ACLBODY;
 </d:principal-property-search>
 BODY;
 
-      $this->assertXmlStringEqualsXmlString($expected_body, $body);
+        $this->assertXmlStringEqualsXmlString($expected_body, $body);
     }
 
     /**

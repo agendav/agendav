@@ -130,11 +130,10 @@ class Parser
         }
 
         $result = [];
-        foreach($parsed_multistatus as $href => $statusList) {
+        foreach ($parsed_multistatus as $href => $statusList) {
             $result[$href] = isset($statusList[200])?$statusList[200]:[];
         }
 
         return $result;
     }
 }
-

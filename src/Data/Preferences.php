@@ -40,13 +40,15 @@ class Preferences
     #[Column(type: 'json')]
     private $options = [];
 
-    public function __construct($arr_values = []) {
-        foreach($arr_values as $name => $value) {
+    public function __construct($arr_values = [])
+    {
+        foreach ($arr_values as $name => $value) {
             $this->options[$name] = $value;
         }
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->options[$name] = $value;
     }
 
@@ -56,11 +58,13 @@ class Preferences
      *
      * @return bool
      */
-    public function __isset($name) {
+    public function __isset($name)
+    {
         return array_key_exists($name, $this->options);
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         if ($this->__isset($name)) {
             return $this->options[$name];
         } else {
@@ -95,11 +99,13 @@ class Preferences
         return $this->username;
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         return $this->options;
     }
 
-    public function setAll($options) {
+    public function setAll($options)
+    {
         $this->options = $options;
     }
 
@@ -122,7 +128,8 @@ class Preferences
         }
     }
 
-    public function to_json() {
+    public function to_json()
+    {
         return json_encode($this->options);
     }
 }

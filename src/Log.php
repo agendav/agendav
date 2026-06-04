@@ -7,7 +7,6 @@ use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\WebProcessor;
 use Monolog\Formatter\LineFormatter;
 
-
 /*
  * Copyright (C) Jorge López Pérez <jorge@adobo.org>
  *

@@ -25,7 +25,7 @@ use AgenDAV\CalDAV\ComponentFilter;
 use Sabre\Xml\Writer;
 
 /**
- * Filter for principal property search 
+ * Filter for principal property search
  * (https://tools.ietf.org/html/rfc3744#section-9.4)
  */
 class PrincipalPropertySearch implements ComponentFilter
@@ -74,4 +74,3 @@ class PrincipalPropertySearch implements ComponentFilter
         $writer->endElement();
     }
 }
-

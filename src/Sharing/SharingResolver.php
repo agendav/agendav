@@ -27,7 +27,7 @@ use AgenDAV\Data\Share;
 use AgenDAV\CalDAV\Resource\Calendar;
 
 /**
- * This is a service to retrieve shares and related principals. Also proxies a SharesRepository 
+ * This is a service to retrieve shares and related principals. Also proxies a SharesRepository
  */
 class SharingResolver implements SharesRepository
 {
@@ -44,8 +44,7 @@ class SharingResolver implements SharesRepository
     public function __construct(
         SharesRepository $shares_repository,
         PrincipalsRepository $principals_repository
-    )
-    {
+    ) {
         $this->shares_repository = $shares_repository;
         $this->principals_repository = $principals_repository;
     }

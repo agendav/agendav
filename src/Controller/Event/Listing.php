@@ -76,7 +76,7 @@ class Listing extends JSONController
 
         if ($calendar->isSubscribed()) {
             $objects = $this->client->fetchObjectsOnSubscribedCalendar($calendar);
-        } else if (!$input->has('uid')) {
+        } elseif (!$input->has('uid')) {
             $objects = $this->client->fetchObjectsOnCalendar($calendar, $start_string, $end_string);
         } else {
             $object = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
@@ -107,8 +107,7 @@ class Listing extends JSONController
         array $objects,
         \DateTimeImmutable $start,
         \DateTimeImmutable $end
-    )
-    {
+    ) {
         $result = [];
         foreach ($objects as $object) {
             $master_event = $object->getEvent();

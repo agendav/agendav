@@ -201,7 +201,7 @@ class VObjectBuilder implements Builder
      * @param array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
      * @return \AgenDAV\Data\Reminder[]
      */
-    protected function buildReminders(Array $input)
+    protected function buildReminders(array $input)
     {
         $result = [];
         $total = count($input['unit']);

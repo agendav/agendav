@@ -62,4 +62,3 @@ class TimeRange implements ComponentFilter
         ]);
     }
 }
-

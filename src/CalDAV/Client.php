@@ -49,8 +49,7 @@ class Client
         \AgenDAV\Http\Client $http_client,
         \AgenDAV\XML\Toolkit $xml_toolkit,
         \AgenDAV\Event\Parser $event_parser
-    )
-    {
+    ) {
         $this->http_client = $http_client;
         $this->xml_toolkit = $xml_toolkit;
         $this->event_parser = $event_parser;

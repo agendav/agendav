@@ -299,7 +299,8 @@ class VObjectEventInstanceTest extends TestCase
         // copyPropertiesFrom should not copy RRULE
         $this->assertEmpty(
             $instance_2->getRepeatRule(),
-            'RRULE should not be set when copying properties on recurrence exceptions');
+            'RRULE should not be set when copying properties on recurrence exceptions'
+        );
     }
 
     public function testGetReminders()

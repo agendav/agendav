@@ -206,7 +206,7 @@ class CalendarFinder
      *
      * @param \AgenDAV\CalDAV\Resource\Calendar[] $calendars
      */
-    protected function addShares(Array $calendars)
+    protected function addShares(array $calendars)
     {
         foreach ($calendars as $calendar) {
             $shares = $this->shares_repository->getSharesOnCalendar($calendar);

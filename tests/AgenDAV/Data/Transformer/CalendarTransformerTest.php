@@ -9,7 +9,6 @@ use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Data\Principal;
 use PHPUnit\Framework\TestCase;
 
-
 class CalendarTransformerTest extends TestCase
 {
     /** @var AgenDAV\CalDAV\Resource\Calendar */

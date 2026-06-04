@@ -61,4 +61,3 @@ class Uid implements ComponentFilter
         $writer->endElement();
     }
 }
-

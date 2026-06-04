@@ -257,4 +257,3 @@ interface EventInstance
      */
     public function copyPropertiesFrom(EventInstance $source);
 }
-

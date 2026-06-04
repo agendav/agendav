@@ -21,7 +21,6 @@
 
 namespace AgenDAV\Repositories;
 
-
 /**
  * Interface for preferences retrieval
  *

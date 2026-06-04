@@ -227,7 +227,8 @@ class VObjectEventTest extends TestCase
 
         $another_vevent = $this->vcalendar->add('VEVENT', [
             'UID' => 'xxxx',
-        ]);;
+        ]);
+        ;
 
         $instance = new VObjectEventInstance($another_vevent);
         $event->storeInstance($instance);
@@ -326,9 +327,9 @@ class VObjectEventTest extends TestCase
         // Check that base VEVENT is still there
         $base = $event->getEventInstance();
         $this->assertEquals(
-           $this->vevent->SUMMARY,
-           $base->getSummary()
-       );
+            $this->vevent->SUMMARY,
+            $base->getSummary()
+        );
 
         // Some checks on new instance
         $this->assertTrue($event->isException($recurrence_id));
@@ -355,9 +356,9 @@ class VObjectEventTest extends TestCase
         // Check that base VEVENT is still there
         $base = $event->getEventInstance();
         $this->assertEquals(
-           $this->vevent->SUMMARY,
-           $base->getSummary()
-       );
+            $this->vevent->SUMMARY,
+            $base->getSummary()
+        );
 
         $this->assertTrue($event->isException($recurrence_id));
     }

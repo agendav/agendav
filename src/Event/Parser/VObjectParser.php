@@ -56,4 +56,3 @@ class VObjectParser implements Parser
     }
 
 }
-

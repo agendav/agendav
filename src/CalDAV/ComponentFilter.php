@@ -35,4 +35,3 @@ interface ComponentFilter
      */
     public function addFilter(\Sabre\Xml\Writer $writer);
 }
-

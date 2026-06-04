@@ -25,7 +25,6 @@ use AgenDAV\Data\Subscription;
 use AgenDAV\Data\Principal;
 use AgenDAV\CalDAV\Resource\Calendar;
 
-
 /**
  * Interface for a shares repository
  *

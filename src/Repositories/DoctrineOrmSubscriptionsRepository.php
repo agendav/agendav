@@ -26,7 +26,6 @@ use AgenDAV\Data\Subscription;
 use AgenDAV\Data\Principal;
 use AgenDAV\CalDAV\Resource\Calendar;
 
-
 /**
  * Implements the subscriptions repository using Doctrine ORM
  *

@@ -22,7 +22,7 @@ namespace AgenDAV;
  */
 
 /**
- * This class parses and generates date and time formats 
+ * This class parses and generates date and time formats
  */
 class DateHelper
 {
@@ -31,7 +31,7 @@ class DateHelper
      * timezone
      *
      * @param string $format DateTime format (see http://php.net/manual/en/datetime.createfromformat.php)
-     * @param string $value Input value that has to match the format above 
+     * @param string $value Input value that has to match the format above
      * @param \DateTimeZone $timezone Time zone the resulting \DateTimeImmutable will be generated
      * @return \DateTimeImmutable
      * @throws \InvalidArgumentException

@@ -42,8 +42,7 @@ class Drop extends Alter
         \DateTimeZone $timezone,
         $minutes,
         ParameterBag $input
-    )
-    {
+    ) {
         $movement = $this->describeMovement(
             $input->get('was_allday'),
             $input->get('allday')

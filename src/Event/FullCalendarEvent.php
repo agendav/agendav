@@ -103,9 +103,8 @@ class FullCalendarEvent
     public static function generateFrom(
         CalendarObject $calendar_object,
         Calendar $calendar,
-        Array $instances
-    )
-    {
+        array $instances
+    ) {
         $result = [];
         $url = $calendar_object->getUrl();
         $etag = $calendar_object->getEtag();
@@ -118,4 +117,3 @@ class FullCalendarEvent
         return $result;
     }
 }
-

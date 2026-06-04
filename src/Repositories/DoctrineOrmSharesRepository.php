@@ -26,7 +26,6 @@ use AgenDAV\Data\Share;
 use AgenDAV\Data\Principal;
 use AgenDAV\CalDAV\Resource\Calendar;
 
-
 /**
  * Implements the shares repository using Doctrine ORM
  *

@@ -10,7 +10,7 @@ class CalendarTest extends TestCase
     public function testSet()
     {
         $c = new Calendar('/path');
-        $c->setProperty(Calendar::DISPLAYNAME,  'Test');
+        $c->setProperty(Calendar::DISPLAYNAME, 'Test');
 
         $this->assertEquals($c->getProperty(Calendar::DISPLAYNAME), 'Test');
     }
@@ -19,7 +19,7 @@ class CalendarTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $c = new Calendar('/path');
-        $c->setProperty('url',  '/should_not_change');
+        $c->setProperty('url', '/should_not_change');
     }
 
     public function testGetAllProperties()
@@ -123,4 +123,3 @@ class CalendarTest extends TestCase
     }
 
 }
-

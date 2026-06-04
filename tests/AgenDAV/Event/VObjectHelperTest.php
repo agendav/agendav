@@ -125,7 +125,8 @@ class VObjectHelperTest extends TestCase
 
         $this->assertEquals(
             VObjectHelper::findExceptionVEvent(
-                $this->vcalendar, RecurrenceId::buildFromString('20150302T184900Z')
+                $this->vcalendar,
+                RecurrenceId::buildFromString('20150302T184900Z')
             ),
             $new_exception,
             'VEVENT exceptions are not added'
@@ -140,7 +141,8 @@ class VObjectHelperTest extends TestCase
 
         $this->assertEquals(
             VObjectHelper::findExceptionVEvent(
-                $this->vcalendar, RecurrenceId::buildFromString('20150302T184900Z')
+                $this->vcalendar,
+                RecurrenceId::buildFromString('20150302T184900Z')
             ),
             $modified_exception,
             'VEVENT exceptions are not replaced'

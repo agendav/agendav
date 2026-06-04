@@ -44,7 +44,7 @@ class SharesDiff
      *
      * @param \AgenDAV\Data\Share[] $current_shares Current list of shares
      */
-    public function __construct(Array $current_shares)
+    public function __construct(array $current_shares)
     {
         $this->current_shares = $current_shares;
         $this->keep = [];
@@ -59,7 +59,7 @@ class SharesDiff
      * @param \AgenDAV\Data\Share[] $input
      * @return void
      */
-    public function decide(Array $input)
+    public function decide(array $input)
     {
         $pending_inputs = array_keys($input);
 

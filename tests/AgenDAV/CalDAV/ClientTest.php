@@ -301,7 +301,7 @@ BODY;
         $this->assertEquals('#3e4147ff', $second_calendar->getProperty(Calendar::COLOR));
 
         $this->validatePropfindRequest(
-          [
+            [
             '{DAV:}resourcetype',
             '{DAV:}displayname',
             '{http://calendarserver.org/ns/}getctag',
@@ -309,8 +309,8 @@ BODY;
             '{http://apple.com/ns/ical/}calendar-color',
             '{http://apple.com/ns/ical/}calendar-order',
           ],
-          '/calendar-home',
-          1
+            '/calendar-home',
+            1
         );
     }
 
@@ -367,7 +367,7 @@ BODY;
         $this->assertEquals('#ff4e50ff', $calendar->getProperty(Calendar::COLOR));
 
         $this->validatePropfindRequest(
-          [
+            [
             '{DAV:}resourcetype',
             '{DAV:}displayname',
             '{http://calendarserver.org/ns/}getctag',
@@ -375,8 +375,8 @@ BODY;
             '{http://apple.com/ns/ical/}calendar-color',
             '{http://apple.com/ns/ical/}calendar-order',
           ],
-          $fake_calendar_url,
-          0
+            $fake_calendar_url,
+            0
         );
 
         // Reuse this test for getCalendarByUrl
@@ -386,63 +386,63 @@ BODY;
         $calendar = $client->getCalendarByUrl($fake_calendar_url);
 
         $this->assertInstanceOf(
-          '\AgenDAV\CalDAV\Resource\Calendar',
-          $calendar
+            '\AgenDAV\CalDAV\Resource\Calendar',
+            $calendar
         );
     }
 
     public function testCreateCalendar()
     {
-      $response = new Response(201);
-      $client = $this->createCalDAVClient($response);
+        $response = new Response(201);
+        $client = $this->createCalDAVClient($response);
 
-      $properties = [
-        Calendar::DISPLAYNAME => 'Calendar name',
-        Calendar::CTAG => 'x',
-      ];
-      $calendar = new Calendar(
-        '/fake/calendar',
-        $properties
-      );
+        $properties = [
+          Calendar::DISPLAYNAME => 'Calendar name',
+          Calendar::CTAG => 'x',
+        ];
+        $calendar = new Calendar(
+            '/fake/calendar',
+            $properties
+        );
 
-      $client->createCalendar($calendar);
-      $this->validateMkCalendarRequest($calendar);
+        $client->createCalendar($calendar);
+        $this->validateMkCalendarRequest($calendar);
     }
 
     public function testUpdateCalendar()
     {
-      $response = new Response(200);
-      $client = $this->createCalDAVClient($response);
+        $response = new Response(200);
+        $client = $this->createCalDAVClient($response);
 
-      $properties = [
-        Calendar::DISPLAYNAME => 'Calendar name',
-        Calendar::CTAG => 'x',
-      ];
-      $calendar = new Calendar(
-        '/fake/calendar',
-        $properties
-      );
+        $properties = [
+          Calendar::DISPLAYNAME => 'Calendar name',
+          Calendar::CTAG => 'x',
+        ];
+        $calendar = new Calendar(
+            '/fake/calendar',
+            $properties
+        );
 
-      $client->updateCalendar($calendar);
-      $this->validateProppatchRequest($calendar);
+        $client->updateCalendar($calendar);
+        $this->validateProppatchRequest($calendar);
     }
 
     public function testDeleteCalendar()
     {
-      $response = new Response(204);
-      $client = $this->createCalDAVClient($response);
+        $response = new Response(204);
+        $client = $this->createCalDAVClient($response);
 
-      $calendar = new Calendar('/fake/calendar');
+        $calendar = new Calendar('/fake/calendar');
 
-      $client->deleteCalendar($calendar);
-      $this->validateDeleteCalendarRequest($calendar);
+        $client->deleteCalendar($calendar);
+        $this->validateDeleteCalendarRequest($calendar);
     }
 
 
 
     public function testFetchObjectsFromCalendar()
     {
-      $body = <<<BODY
+        $body = <<<BODY
 <?xml version="1.0" encoding="utf-8"?>
 <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">
   <d:response>
@@ -501,46 +501,46 @@ END:VCALENDAR
   </d:response>
 </d:multistatus>
 BODY;
-      $response = new Response(
-          207,
-          [],
-          Utils::streamFor($body)
-      );
-
-      $this->event_parser
-        ->expects($this->exactly(2))
-        ->method('parse')
-        ->willReturn(
-          $this->createMock(\AgenDAV\Event::class),
-          $this->createMock(\AgenDAV\Event::class)
+        $response = new Response(
+            207,
+            [],
+            Utils::streamFor($body)
         );
 
-      $client = $this->createCalDAVClient($response);
+        $this->event_parser
+          ->expects($this->exactly(2))
+          ->method('parse')
+          ->willReturn(
+              $this->createMock(\AgenDAV\Event::class),
+              $this->createMock(\AgenDAV\Event::class)
+          );
 
-      $calendar = new Calendar('/cal.php/calendars/demo/fake/');
+        $client = $this->createCalDAVClient($response);
 
-      $start = '20141101T000000Z';
-      $end = '20141201T000000Z';
-      $objects = $client->fetchObjectsOnCalendar($calendar, $start, $end);
+        $calendar = new Calendar('/cal.php/calendars/demo/fake/');
 
-      $this->assertCount(2, $objects);
-      $this->assertEquals(
-          '/cal.php/calendars/demo/fake/c160fd13-829d-4d59-96d2-92fc0f9e6787.ics',
-          $objects[0]->getUrl()
-      );
-      $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $objects[0]->getEtag());
-      $this->assertEquals($calendar, $objects[0]->getCalendar());
-      $this->assertInstanceOf('\AgenDAV\Event', $objects[0]->getEvent());
+        $start = '20141101T000000Z';
+        $end = '20141201T000000Z';
+        $objects = $client->fetchObjectsOnCalendar($calendar, $start, $end);
 
-      $this->assertEquals(
-          '/cal.php/calendars/demo/fake/e2f43f04-030d-4c79-9c8b-d20c87ca5f9d.ics',
-          $objects[1]->getUrl()
-      );
-      $this->assertEquals('"cf03e087c6bf4f8473f5f76cf17d65fd"', $objects[1]->getEtag());
-      $this->assertEquals($calendar, $objects[1]->getCalendar());
-      $this->assertInstanceOf('\AgenDAV\Event', $objects[1]->getEvent());
+        $this->assertCount(2, $objects);
+        $this->assertEquals(
+            '/cal.php/calendars/demo/fake/c160fd13-829d-4d59-96d2-92fc0f9e6787.ics',
+            $objects[0]->getUrl()
+        );
+        $this->assertEquals('"cf1ba7bcb47ca422f65854470feaeefd"', $objects[0]->getEtag());
+        $this->assertEquals($calendar, $objects[0]->getCalendar());
+        $this->assertInstanceOf('\AgenDAV\Event', $objects[0]->getEvent());
 
-      $this->validateFetchObjectsRequest($calendar, new TimeRange($start, $end));
+        $this->assertEquals(
+            '/cal.php/calendars/demo/fake/e2f43f04-030d-4c79-9c8b-d20c87ca5f9d.ics',
+            $objects[1]->getUrl()
+        );
+        $this->assertEquals('"cf03e087c6bf4f8473f5f76cf17d65fd"', $objects[1]->getEtag());
+        $this->assertEquals($calendar, $objects[1]->getCalendar());
+        $this->assertInstanceOf('\AgenDAV\Event', $objects[1]->getEvent());
+
+        $this->validateFetchObjectsRequest($calendar, new TimeRange($start, $end));
     }
 
     public function testFetchObjectByUidNonExistant()
@@ -606,7 +606,7 @@ BODY;
           ->expects($this->once())
           ->method('parse')
           ->willReturn(
-            $this->createMock(\AgenDAV\Event::class)
+              $this->createMock(\AgenDAV\Event::class)
           );
 
         $client = $this->createCalDAVClient($response);
@@ -734,7 +734,7 @@ BODY;
         }
 
         if ($depth !== null) {
-          $this->validateDepth($request, $depth);
+            $this->validateDepth($request, $depth);
         }
 
         $this->validateContentType($request);
@@ -748,8 +748,8 @@ BODY;
         $this->assertEquals($calendar->getUrl(), $request->getUri()->getPath());
         $this->validateContentType($request);
         $this->validateBody(
-          $request,
-          $this->xml_generator->mkCalendarBody($calendar->getWritableProperties())
+            $request,
+            $this->xml_generator->mkCalendarBody($calendar->getWritableProperties())
         );
     }
 
@@ -839,9 +839,9 @@ BODY;
         $request = $transaction['request'];
 
         $this->assertEquals(
-          $method,
-          $request->getMethod(),
-          'Expected request method to be ' . $method . ', found ' . $request->getMethod()
+            $method,
+            $request->getMethod(),
+            'Expected request method to be ' . $method . ', found ' . $request->getMethod()
         );
 
         return $request;
@@ -864,11 +864,11 @@ BODY;
      */
     private function validateDepth(RequestInterface $request, $depth)
     {
-          $this->assertEquals(
+        $this->assertEquals(
             $depth,
             (int)$request->getHeaderLine('Depth'),
             'Expected Depth to be ' . $depth . ', is ' . $request->getHeaderLine('Depth')
-          );
+        );
     }
 
     /**

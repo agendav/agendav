@@ -151,4 +151,3 @@ interface Event
      */
     public function removeInstance(RecurrenceId $recurrence_id);
 }
-

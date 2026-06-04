@@ -559,4 +559,3 @@ class VObjectEvent implements Event
         }
     }
 }
-

@@ -153,7 +153,7 @@ class SharesDiffTest extends TestCase
         $result = [];
 
         $total = $start + $n;
-        for($i=$start;$i<$total;$i++) {
+        for ($i=$start;$i<$total;$i++) {
             $share = new Share;
             $share->setWith($with . '-' . $i);
             $share->setCalendar('/calendar');
@@ -175,7 +175,7 @@ class SharesDiffTest extends TestCase
             return false;
         }
 
-        $diff = array_udiff($second, $first, function(Share $s1, Share $s2) {
+        $diff = array_udiff($second, $first, function (Share $s1, Share $s2) {
             if ($s1->getWith() == $s2->getWith() && $s1->isWritable() === $s2->isWritable()) {
                 return 0;
             }

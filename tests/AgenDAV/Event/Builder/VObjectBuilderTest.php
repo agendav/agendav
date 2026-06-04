@@ -8,7 +8,7 @@ use AgenDAV\Event\RecurrenceId;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
 
-class VObjectBuilderTest  extends TestCase
+class VObjectBuilderTest extends TestCase
 {
     const INPUT_DATETIME_FORMAT = 'Y-m-d\TH:i:s.u\Z';
 

@@ -23,7 +23,6 @@ namespace AgenDAV\Repositories;
 
 use AgenDAV\Data\Principal;
 
-
 /**
  * Interface for a principals repository
  */

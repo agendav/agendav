@@ -38,4 +38,3 @@ interface Parser
      */
     public function parse($icalendar);
 }
-

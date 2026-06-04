@@ -181,7 +181,7 @@ class Reminder
         $template = '';
 
         // Generate a template for result format
-        switch($unit) {
+        switch ($unit) {
             case 'months':
                 $count *= 28;
                 $template = '%dD';
