@@ -100,7 +100,7 @@ Manual release steps done by project maintainers.
 - Use the projects base PHP version, stored in the
   [.php-version](https://packagist.org/packages/webit-de/php-version-pickup)
   file (or run `php-version-pickup use`)
-- Create test build runing `npm install && npm run-script build`
+- Create test build runing `npm ci && npm run-script build`
 - Run code quality tools
 - Compare the »development« branch to »main«
   - Add a list of noteworthy features and bugfixes to CHANGELOG.md
