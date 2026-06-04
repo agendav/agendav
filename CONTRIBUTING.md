@@ -120,7 +120,7 @@ Manual release steps done by project maintainers.
 - Add release download file to release page ([example file](https://github.com/agendav/agendav/releases/tag/2.2.0))
   - Clone the git repository using
     `git clone -b <version> https://github.com/agendav/agendav.git agendav-<version>`
-  - Run `npm install && npm run-script dist`
+  - Run `npm ci && npm run-script dist`
     - Creates build files in `public/dist/css/`, `public/dist/js/`
       and `vendor/`
     - Removes `.git`, `node_modules`
