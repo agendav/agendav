@@ -6,7 +6,6 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": ">=8.5",
-        "doctrine/common": "^3.4",
         "doctrine/dbal": "^4.0",
         "doctrine/migrations": "^3.8",
         "doctrine/orm": "^3.0",
@@ -19,7 +18,6 @@
         "sabre/dav": "^4.6",
         "slim/psr7": "^1.6",
         "slim/slim": "^4.14",
-        "slim/twig-view": "^3.4",
         "symfony/asset": "^7.4",
         "symfony/cache": "^7.4",
         "symfony/console": "^7.4",
