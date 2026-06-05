@@ -324,6 +324,18 @@ class VObjectEventInstance implements EventInstance
      */
     public function setStart(\DateTimeImmutable $start, $all_day = false)
     {
+        // Shift EXDATE entries by the same delta when the time component changes,
+        // so previously removed instances stay removed after editing all repetitions.
+        if ($all_day === false && isset($this->vevent->EXDATE)) {
+            $old_start = $this->vevent->DTSTART->getDateTime();
+            $delta = $old_start->diff($start);
+            $shifted = array_map(
+                fn (\DateTimeImmutable $exdate) => $exdate->add($delta),
+                $this->vevent->EXDATE->getDateTimes()
+            );
+            $this->vevent->EXDATE->setDateTimes($shifted);
+        }
+
         $this->vevent->DTSTART = $start;
         if ($all_day === true) {
             $this->vevent->DTSTART['VALUE'] = 'DATE';

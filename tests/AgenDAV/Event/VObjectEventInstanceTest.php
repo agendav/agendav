@@ -218,6 +218,28 @@ class VObjectEventInstanceTest extends TestCase
         $this->assertTrue($instance->isAllDay());
     }
 
+    public function testSetStartShiftsExdates()
+    {
+        $start = new \DateTimeImmutable('2025-01-10 10:00:00', new \DateTimeZone('UTC'));
+        $exdate = new \DateTimeImmutable('2025-01-15 10:00:00', new \DateTimeZone('UTC'));
+        $vevent = $this->vcalendar->add('VEVENT', [
+            'DTSTART' => $start,
+            'RRULE' => 'FREQ=DAILY',
+        ]);
+        $vevent->add('EXDATE', [$exdate]);
+
+        $instance = new VObjectEventInstance($vevent);
+        $new_start = new \DateTimeImmutable('2025-01-10 10:30:00', new \DateTimeZone('UTC'));
+        $instance->setStart($new_start);
+
+        $exdates = $vevent->EXDATE->getDateTimes();
+        $this->assertCount(1, $exdates);
+        $this->assertEquals(
+            new \DateTimeImmutable('2025-01-15 10:30:00', new \DateTimeZone('UTC')),
+            $exdates[0]
+        );
+    }
+
     public function testSetEnd()
     {
         $vevent = $this->vcalendar->add('VEVENT');
