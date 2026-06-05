@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.1] - 2026-06-05
+
+- BUGFIX Fix middleware language order, using the users language preference (#340)
+- BUGFIX Fix missing sess_lifetime column in sessions table (#308)
+- BUGFIX Fix repetitions and keep removed events removed (#261)
+
 ## [3.1.0] - 2026-06-04
 
 - FEATURE iCalendar URL subscription support (fixes #156)

@@ -3,6 +3,14 @@
 Release notes
 =============
 
+.. _v3.1.1:
+3.1.1 (2026-06-05)
+-------------------
+
+- BUGFIX Fix middleware language order, using the users language preference (#340)
+- BUGFIX Fix missing sess_lifetime column in sessions table (#308)
+- BUGFIX Fix repetitions and keep removed events removed (#261)
+
 .. _v3.1.0:
 3.1.0 (2026-06-04)
 -------------------
