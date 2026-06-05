@@ -12,13 +12,14 @@
     "composer": "composer install --no-dev --prefer-dist",
     "composer-dev": "composer install --dev --prefer-source",
     "build:templates": "dustc --pwd resources/private/assets/templates -o resources/private/assets/templates/templates.js resources/private/assets/templates/*.dust",
+    "build:copy": "cp node_modules/es5-shim/es5-shim.js public/es5-shim.js && cp -r node_modules/font-awesome/fonts/. public/font/fa/ && cp -r node_modules/bootstrap/fonts/. public/font/bootstrap/ && cp -r node_modules/fullcalendar/dist/locale/. public/fullcalendar-locale/",
     "prebuild:css": "lessc resources/private/assets/less/agendav.less public/dist/css/app.css",
-    "build:css": "cat public/dist/css/app.css resources/private/assets/css/*.css | cleancss -o public/dist/css/agendav.css && cat resources/private/assets/print-css/*.css | cleancss -o public/dist/css/agendav.print.css",
-    "prebuild:js": "uglifyjs resources/private/assets/js/core/*.js resources/private/assets/js/other/*.js resources/private/assets/js/app/*.js resources/private/assets/templates/templates.js -b -o public/dist/js/agendav.js",
+    "build:css": "cat public/dist/css/app.css node_modules/fullcalendar/dist/fullcalendar.css resources/private/assets/css/jquery-ui.css resources/private/assets/css/jquery-ui.structure.css resources/private/assets/css/jquery-ui.theme.css resources/private/assets/css/colorpicker.css resources/private/assets/css/freeow.css resources/private/assets/css/jquery.qtip.css resources/private/assets/css/jquery.timepicker.css | cleancss -o public/dist/css/agendav.css && cat node_modules/fullcalendar/dist/fullcalendar.print.css resources/private/assets/print-css/print.css | cleancss -o public/dist/css/agendav.print.css",
+    "prebuild:js": "uglifyjs node_modules/moment/moment.js node_modules/moment-timezone/builds/moment-timezone-with-data.min.js node_modules/jquery/dist/jquery.js node_modules/jquery-migrate/dist/jquery-migrate.js node_modules/bootstrap/js/button.js node_modules/bootstrap/js/tab.js resources/private/assets/js/other/jquery-ui.js node_modules/fullcalendar/dist/fullcalendar.js node_modules/dustjs-linkedin/dist/dust-core.js node_modules/dustjs-helpers/dist/dust-helpers.js resources/private/assets/js/other/rrule-000.js resources/private/assets/js/other/rrule-nlp.js resources/private/assets/js/other/imagesloaded.pkg.min.js resources/private/assets/js/other/jquery.colorPicker.js resources/private/assets/js/other/jquery.freeow.min.js resources/private/assets/js/other/jquery.qtip.js resources/private/assets/js/other/jquery.serializeobject.js resources/private/assets/js/other/jquery.timepicker.js resources/private/assets/js/app/app.js resources/private/assets/js/app/datetime.js resources/private/assets/js/app/repeat-form.js resources/private/assets/templates/templates.js -b -o public/dist/js/agendav.js",
     "build:js": "uglifyjs public/dist/js/agendav.js -c -m -o public/dist/js/agendav.min.js",
-    "build": "npm run composer && npm run build:templates && npm run build:css && npm run build:js",
+    "build": "npm run composer && npm run build:templates && npm run build:copy && npm run build:css && npm run build:js",
     "dist-clean": "rm -rf node_modules && rm -rf .git",
-    "dist": "npm run composer && npm run build:css && npm run build:js && npm run dist-clean"
+    "dist": "npm run composer && npm run build:copy && npm run build:css && npm run build:js && npm run dist-clean"
   },
   "repository": {
     "type": "git",
@@ -35,20 +36,19 @@
   },
   "homepage": "https://github.com/agendav/agendav",
   "devDependencies": {
-    "bootstrap": "~3.3.1",
+    "bootstrap": "~3.3.7",
     "clean-css": "~3.4.22",
-    "dustjs-helpers": "~1.7.0",
-    "dustjs-linkedin": "~2.7.1",
+    "dustjs-helpers": "~1.7.3",
+    "dustjs-linkedin": "~2.7.5",
+    "eclint": "^2.8.1",
     "es5-shim": "~4.6.7",
     "font-awesome": "~4.7.0",
     "fullcalendar": "~3.8.0",
-    "jquery": "~3.7.1",
-    "jquery-migrate": "~3.0.0",
-    "jquery-ui": "~1.14.2",
+    "jquery": "~3.3.1",
+    "jquery-migrate": "~3.0.1",
     "less": "~2.7.1",
-    "moment-timezone": "~0.5.0",
-    "rrule": "~2.8.1",
-    "eclint": "^2.8.1",
+    "moment": "~2.15.2",
+    "moment-timezone": "~0.5.33",
     "uglify-js": "~2.7.5"
   }
 }

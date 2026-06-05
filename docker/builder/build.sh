@@ -19,6 +19,7 @@ composer install --prefer-dist --no-interaction --no-progress
 
 echo "[builder] build assets"
 npm run build:templates
+npm run build:copy
 npm run build:css
 npm run build:js
 

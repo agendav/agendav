@@ -21,6 +21,10 @@
 agendav-built*
 public/dist/css/*.css
 public/dist/js/*.js
+public/es5-shim.js
+public/font/fa/
+public/font/bootstrap/
+public/fullcalendar-locale/
 
 # Configuration file
 /config/settings*
