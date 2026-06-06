@@ -214,9 +214,9 @@ LOGIN_CODE=$(curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -c "$JAR" -X POST 
 # 3. calendar UI
 assert_status "GET / (calendar UI)" http://localhost:8080/ 200 -b "$JAR"
 
-# 4. /jssettings
-JSCT=$(curl -s -o /dev/null -w '%{content_type}' -b "$JAR" http://localhost:8080/jssettings)
-[[ "$JSCT" == text/javascript* ]] && pass "GET /jssettings ct=$JSCT" || fail "GET /jssettings ct=$JSCT"
+# 4. /jssettings.js
+JSCT=$(curl -s -o /dev/null -w '%{content_type}' -b "$JAR" http://localhost:8080/jssettings.js)
+[[ "$JSCT" == text/javascript* ]] && pass "GET /jssettings.js ct=$JSCT" || fail "GET /jssettings.js ct=$JSCT"
 
 # 5. /calendars
 CAL_LIST=$(curl -s -b "$JAR" http://localhost:8080/calendars)

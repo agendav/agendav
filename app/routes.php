@@ -47,7 +47,7 @@ return function (App $app) {
         $g->get('/principals', Principals::class . ':search')->setName('principals.search');
 
         // Dynamic JavaScript (configuration + per-user prefs)
-        $g->get('/jssettings', JavaScriptCode::class . ':settingsAction')->setName('settings.js');
+        $g->get('/jssettings.js', JavaScriptCode::class . ':settingsAction')->setName('settings.js');
 
         // Session keepalive
         $g->get('/keepalive', function (ServerRequestInterface $request, ResponseInterface $response) {
