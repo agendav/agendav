@@ -391,13 +391,13 @@ PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
 T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
 PREF_CODE=$(curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -c "$JAR" -X POST \
   --data-urlencode "_token=$T" \
-  --data "language=fr&timezone=Europe%2FParis&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
+  --data "language=fr_FR&timezone=Europe%2FParis&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
   http://localhost:8080/preferences)
 [[ "$PREF_CODE" == "302" ]] && pass "POST /preferences [302]" || fail "POST /preferences expected 302 got $PREF_CODE"
 
 # 17. DB check: prefs persisted
 PREF_DB=$(docker compose exec -T db mysql -N -uagendav -pagendav agendav -e "SELECT options FROM prefs WHERE username='test';" 2>/dev/null)
-echo "$PREF_DB" | grep -q '"language":"fr"' && pass "prefs persisted to DB" || fail "prefs not persisted: $PREF_DB"
+echo "$PREF_DB" | grep -q '"language":"fr_FR"' && pass "prefs persisted to DB" || fail "prefs not persisted: $PREF_DB"
 
 # 18. /keepalive
 assert_status "GET /keepalive" http://localhost:8080/keepalive 200 -b "$JAR"
