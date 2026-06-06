@@ -107,7 +107,7 @@ $(document).ready(function() {
     navLinks: true,
 
     defaultView: fullcalendar_views[AgenDAVUserPrefs.default_view],
-    theme: true, // use jQuery UI themeing
+    theme: false,
     slotLabelFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
     slotMinutes: 30,
     firstHour: 8,
@@ -514,7 +514,7 @@ var show_dialog = function show_dialog(params) {
         if (pre_func !== undefined) {
           pre_func();
         }
-        $('#' + divname).dialog('option', 'position', 'center');
+        $('#' + divname).dialog('option', 'position', { my: 'center', at: 'center', of: window });
         var buttons = $(event.target).parent().find('.ui-dialog-buttonset').children();
         add_button_icons(buttons);
       },
@@ -1314,13 +1314,11 @@ var keep_session_active = function keep_session_active() {
 var add_button_icons = function add_button_icons(buttons) {
   buttons.filter('button.addicon')
     .removeClass('addicon')
-    .removeClass('ui-button-text-only')
-    .addClass('ui-button-text-icon-primary')
     .each(function(k, v) {
       var classes = $(v).attr('class').split(' ');
       $.each(classes, function(i, j) {
         if (j.match(/^btn-icon-/)) {
-          $(v).prepend('<span class="ui-button-icon-primary ui-icon '+ j +'"></span>');
+          $(v).button('option', 'icon', j);
           $(v).removeClass(j);
           return false;
         }
