@@ -18,13 +18,13 @@
 {^fixed_repeat_rule}
 
 {>form_element_start for="frequency" label="repeat" /}
- <select name="repeat_frequency" class="form-control" id="repeat_frequency">
+  <select name="repeat_frequency" class="form-control" id="repeat_frequency">
   <option value="-1">{@i18n type="labels" name="repeatno"/}</option>
   <option value="{daily}">{@i18n type="labels" name="repeatdaily"/}</option>
   <option value="{weekly}">{@i18n type="labels" name="repeatweekly"/}</option>
   <option value="{monthly}">{@i18n type="labels" name="repeatmonthly"/}</option>
   <option value="{yearly}">{@i18n type="labels" name="repeatyearly"/}</option>
- </select>
+  </select>
 {>form_element_end /}
 
 <div class="container_repeat_options">
@@ -40,27 +40,27 @@
 {>form_element_end /}
 
 {>form_element_start for="byday" label="repeat_by_day" class="container_repeat_by_day" /}
- <label class="checkbox-inline">
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="sunday"> {@i18n type="labels" name="sunday_short" /}
- </label>
- <label class="checkbox-inline">
+  </label>
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="monday"> {@i18n type="labels" name="monday_short" /}
- </label>
- <label class="checkbox-inline">
+  </label>
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="tuesday"> {@i18n type="labels" name="tuesday_short" /}
- </label>
- <label class="checkbox-inline">
+  </label>
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="wednesday"> {@i18n type="labels" name="wednesday_short" /}
- </label>
- <label class="checkbox-inline">
+  </label>
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="thursday"> {@i18n type="labels" name="thursday_short" /}
- </label>
- <label class="checkbox-inline">
+  </label>
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="friday"> {@i18n type="labels" name="friday_short" /}
- </label>
- <label class="checkbox-inline">
+  </label>
+  <label class="checkbox-inline">
   <input class="secondary" type="checkbox" name="repeat_by_day" value="saturday"> {@i18n type="labels" name="saturday_short" /}
- </label>
+  </label>
 {>form_element_end /}
 
 {>form_element_start for="repeat_by_month_day" label="repeat_by_month_day" class="container_repeat_by_month_day" /}
@@ -76,14 +76,14 @@
 
 {>form_element_start for="" label="ends" class="container_repeat_ends" /}
 <div class="row">
- <div class="col-md-5">
+  <div class="col-md-5">
     <select name="repeat_ends" class="form-control" id="repeat_ends">
       <option value="never">{@i18n type="labels" name="never"/}</option>
       <option value="after">{@i18n type="labels" name="after"/}</option>
       <option value="date">{@i18n type="labels" name="choose_date"/}</option>
     </select>
- </div>
- <div class="col-md-5 container_repeat_ends_options">
+  </div>
+  <div class="col-md-5 container_repeat_ends_options">
   <div class="container_repeat_count">
       <div class="col-md-6">
         <select name="repeat_count" class="secondary form-control" id="repeat_count">
@@ -100,8 +100,8 @@
         <input type="hidden" class="generated" name="repeat_until_date" />
         <input type="text" name="repeat_until" class="date form-control" id="repeat_until" maxlength="10" size="15"/>
   </div><!-- container_repeat_until -->
- </div><!-- container_repeat_ends_options, inside container_repeat_ends -->
- </div><!-- row, inside container_repeat_ends -->
+  </div><!-- container_repeat_ends_options, inside container_repeat_ends -->
+  </div><!-- row, inside container_repeat_ends -->
 {>form_element_end /}
 
 {>form_element_start for="" label="repeat_explanation" /}

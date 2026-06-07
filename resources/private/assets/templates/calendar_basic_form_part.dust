@@ -17,10 +17,10 @@ value="{?color}{color}{:else}{default_calendar_color}{/color}"
 class="calendar_color pick_color form-control" maxlength="7" size="7" />
 {>form_element_end/}
 {?public_url}
- <div class="public_url_container">
+  <div class="public_url_container">
   <i class="fa fa-lg fa-link"></i>
   <a href="{public_url}">
   {@i18n type="labels" name="publicurl"/}</p>
   </a>
- </div>
+  </div>
 {/public_url}

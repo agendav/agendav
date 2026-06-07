@@ -7,9 +7,9 @@
   <button id="shortcut_add_event" class="btn btn-default btn-block">
     <i class="fa fa-plus"></i> {% trans %}labels.createevent{% endtrans %}
   </button>
- </div>
+  </div>
 
- <div class="block calendar_list panel panel-default" id="own_calendar_list">
+  <div class="block calendar_list panel panel-default" id="own_calendar_list">
   <div class="panel-heading">
     <h3 class="panel-title">{% trans %}labels.calendars{% endtrans %}</h3>
   </div>
@@ -20,9 +20,9 @@
   <i title="{% trans %}labels.create_calendar{% endtrans %}" id="calendar_add" class="pseudobutton fa fa-plus"></i>
   </div>
   </div><!-- panel-body -->
- </div><!-- panel -->
+  </div><!-- panel -->
 
- <div class="block calendar_list panel panel-default shared_calendars " id="shared_calendar_list">
+  <div class="block calendar_list panel panel-default shared_calendars " id="shared_calendar_list">
   <div class="panel-heading">
     <h3 class="panel-title">{% trans %}labels.shared_calendars{% endtrans %}</h3>
   </div>
@@ -35,10 +35,10 @@
     ><i class="fa fa-eye-slash fa-lg"></i></span>
   </div>
   </div><!-- panel-body -->
- </div><!-- panel -->
+  </div><!-- panel -->
 
- {% if calendar_subscriptions %}
- <div class="block calendar_list panel panel-default subscribed_calendars " id="subscribed_calendar_list">
+  {% if calendar_subscriptions %}
+  <div class="block calendar_list panel panel-default subscribed_calendars " id="subscribed_calendar_list">
   <div class="panel-heading">
     <h3 class="panel-title">{% trans %}labels.subscribed_calendars{% endtrans %}</h3>
   </div>
@@ -49,11 +49,11 @@
   <i title="{% trans %}labels.subscribe_ical{% endtrans %}" id="calendar_subscribe" class="pseudobutton fa fa-plus"></i>
   </div>
   </div><!-- panel-body -->
- </div><!-- panel -->
- {% endif %}
+  </div><!-- panel -->
+  {% endif %}
 
- <div id="footer">
+  <div id="footer">
   {% if footer %}
   <p>{{ footer|raw }}</p>
   {% endif %}
- </div> <!-- footer -->
+  </div> <!-- footer -->

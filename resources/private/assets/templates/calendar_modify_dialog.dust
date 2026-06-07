@@ -5,15 +5,15 @@
     <i class="tab-icon fa fa-tag"></i>
     {@i18n type="labels" name="generaloptions" /}</a>
     </li>
- {?enable_calendar_sharing}
+  {?enable_calendar_sharing}
   {^is_shared}
     <li role="presentation"><a role="tab" href="#tabs-share" data-toggle="tab">
     <i class="tab-icon fa fa-group"></i>
     {@i18n type="labels" name="shareoptions" /}</a>
     </li>
   {/is_shared}
- {/enable_calendar_sharing}
- </ul>
+  {/enable_calendar_sharing}
+  </ul>
 
 <div class="tab-content">
 <div role="tabpanel" id="tabs-general" class="tab-pane active">
@@ -31,11 +31,11 @@
 </div>
 
 {?enable_calendar_sharing}
- {^is_shared}
+  {^is_shared}
   <div role="tabpanel" id="tabs-share" class="tab-pane">
   {>calendar_share_table/}
   </div>
- {/is_shared}
+  {/is_shared}
 {/enable_calendar_sharing}
 
 </div><!-- tab-content -->

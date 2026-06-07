@@ -182,8 +182,8 @@ echo "==> running assertions"
 # Clean any stale events or calendars left by an interrupted previous run
 docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite \
   "DELETE FROM calendarobjects; DELETE FROM calendarchanges;
-   DELETE FROM calendarinstances WHERE uri != 'default';
-   DELETE FROM calendars WHERE id NOT IN (SELECT calendarid FROM calendarinstances);" \
+  DELETE FROM calendarinstances WHERE uri != 'default';
+  DELETE FROM calendars WHERE id NOT IN (SELECT calendarid FROM calendarinstances);" \
   >/dev/null 2>&1 || true
 docker compose exec -T db mysql -uagendav -pagendav agendav \
   -e "DELETE FROM subscriptions;" >/dev/null 2>&1 || true

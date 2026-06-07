@@ -44,45 +44,45 @@ if [[ "$STATUS" != "207" ]]; then
   TMP_YAML=$(mktemp)
   cat > "$TMP_YAML" <<YAML
 system:
-    configured_version: '0.10.1'
-    timezone: 'Europe/Paris'
-    card_enabled: true
-    cal_enabled: true
-    dav_auth_type: 'Basic'
-    admin_passwordhash: '$ADMIN_PASS_HASH'
-    failed_access_message: 'user %u authentication failure for Baikal'
-    auth_realm: 'BaikalDAV'
-    base_uri: ''
-    invite_from: 'noreply@baikal'
+  configured_version: '0.10.1'
+  timezone: 'Europe/Paris'
+  card_enabled: true
+  cal_enabled: true
+  dav_auth_type: 'Basic'
+  admin_passwordhash: '$ADMIN_PASS_HASH'
+  failed_access_message: 'user %u authentication failure for Baikal'
+  auth_realm: 'BaikalDAV'
+  base_uri: ''
+  invite_from: 'noreply@baikal'
 
 database:
-    backend: 'sqlite'
-    sqlite_file: '/var/www/baikal/Specific/db/db.sqlite'
-    mysql_host: ''
-    mysql_dbname: ''
-    mysql_username: ''
-    mysql_password: ''
-    encryption_key: '$ENC_KEY'
-    pgsql_host: ''
-    pgsql_dbname: ''
-    pgsql_username: ''
-    pgsql_password: ''
+  backend: 'sqlite'
+  sqlite_file: '/var/www/baikal/Specific/db/db.sqlite'
+  mysql_host: ''
+  mysql_dbname: ''
+  mysql_username: ''
+  mysql_password: ''
+  encryption_key: '$ENC_KEY'
+  pgsql_host: ''
+  pgsql_dbname: ''
+  pgsql_username: ''
+  pgsql_password: ''
 YAML
   docker compose cp "$TMP_YAML" baikal:/var/www/baikal/config/baikal.yaml
   rm -f "$TMP_YAML"
   docker compose exec -T baikal sh -c '
-    touch /var/www/baikal/Specific/INSTALL_DISABLED
-    touch /var/www/baikal/Specific/db/db.sqlite
-    cat /var/www/baikal/Core/Resources/Db/SQLite/db.sql | sqlite3 /var/www/baikal/Specific/db/db.sqlite
-    chown -R nginx:nginx /var/www/baikal/Specific /var/www/baikal/config
-    chmod 664 /var/www/baikal/Specific/db/db.sqlite
+  touch /var/www/baikal/Specific/INSTALL_DISABLED
+  touch /var/www/baikal/Specific/db/db.sqlite
+  cat /var/www/baikal/Core/Resources/Db/SQLite/db.sql | sqlite3 /var/www/baikal/Specific/db/db.sqlite
+  chown -R nginx:nginx /var/www/baikal/Specific /var/www/baikal/config
+  chmod 664 /var/www/baikal/Specific/db/db.sqlite
   '
   docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite "
-    INSERT INTO principals (uri, email, displayname) VALUES ('principals/test', 'test@example.org', 'Test User');
-    INSERT INTO users (username, digesta1) VALUES ('test', '$TEST_DIGEST');
-    INSERT INTO calendarinstances (principaluri, uri, displayname, description, calendarid, transparent, share_href, share_invitestatus, access)
-      VALUES ('principals/test', 'default', 'Default calendar', 'Default Baikal calendar', 1, 0, NULL, 2, 1);
-    INSERT INTO calendars (synctoken, components) VALUES (1, 'VEVENT,VTODO');
+  INSERT INTO principals (uri, email, displayname) VALUES ('principals/test', 'test@example.org', 'Test User');
+  INSERT INTO users (username, digesta1) VALUES ('test', '$TEST_DIGEST');
+  INSERT INTO calendarinstances (principaluri, uri, displayname, description, calendarid, transparent, share_href, share_invitestatus, access)
+  VALUES ('principals/test', 'default', 'Default calendar', 'Default Baikal calendar', 1, 0, NULL, 2, 1);
+  INSERT INTO calendars (synctoken, components) VALUES (1, 'VEVENT,VTODO');
   "
   echo "==> Baikal test user created"
 fi
@@ -94,8 +94,8 @@ docker compose exec -T web php /app/bin/agendavcli migrations:migrate --no-inter
 echo "==> clearing existing events and extra calendars"
 docker compose exec -T baikal sqlite3 /var/www/baikal/Specific/db/db.sqlite \
   "DELETE FROM calendarobjects WHERE calendarid IN (SELECT calendarid FROM calendarinstances WHERE principaluri='principals/test');
-   DELETE FROM calendarinstances WHERE principaluri='principals/test' AND uri != 'default';
-   DELETE FROM calendars WHERE id NOT IN (SELECT calendarid FROM calendarinstances);"
+  DELETE FROM calendarinstances WHERE principaluri='principals/test' AND uri != 'default';
+  DELETE FROM calendars WHERE id NOT IN (SELECT calendarid FROM calendarinstances);"
 
 # ----- PUT events via Python -----
 echo "==> seeding events"
@@ -116,101 +116,101 @@ dtstamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 crlf    = '\r\n'
 
 def fmt(d):
-    return d.strftime('%Y%m%d')
+  return d.strftime('%Y%m%d')
 
 def fmtt(d, h, m=0):
-    return f':{fmt(d)}T{h:02d}{m:02d}00Z'
+  return f':{fmt(d)}T{h:02d}{m:02d}00Z'
 
 def fmtd(d):
-    return f';VALUE=DATE:{fmt(d)}'
+  return f';VALUE=DATE:{fmt(d)}'
 
 def make_ics(uid, summary, dtstart, dtend, extra=None):
-    # dtstart/dtend are full property suffixes, e.g. ':20260601T100000Z'
-    # or ';VALUE=DATE:20260601' for all-day events.
-    lines = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//AgenDAV//seed-events//EN',
-        'BEGIN:VEVENT',
-        f'UID:{uid}@agendav-dev',
-        f'DTSTAMP:{dtstamp}',
-        f'DTSTART{dtstart}',
-        f'DTEND{dtend}',
-        f'SUMMARY:{summary}',
-    ]
-    if extra:
-        lines.extend(extra)
-    lines += ['END:VEVENT', 'END:VCALENDAR', '']
-    return (crlf.join(lines)).encode('utf-8')
+  # dtstart/dtend are full property suffixes, e.g. ':20260601T100000Z'
+  # or ';VALUE=DATE:20260601' for all-day events.
+  lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//AgenDAV//seed-events//EN',
+    'BEGIN:VEVENT',
+    f'UID:{uid}@agendav-dev',
+    f'DTSTAMP:{dtstamp}',
+    f'DTSTART{dtstart}',
+    f'DTEND{dtend}',
+    f'SUMMARY:{summary}',
+  ]
+  if extra:
+    lines.extend(extra)
+  lines += ['END:VEVENT', 'END:VCALENDAR', '']
+  return (crlf.join(lines)).encode('utf-8')
 
 def put(uid, content):
-    url = f'http://127.0.0.1:8081/dav.php/calendars/test/default/{uid}.ics'
-    req = urllib.request.Request(url, data=content, method='PUT')
-    req.add_header('Content-Type', 'text/calendar; charset=utf-8')
-    req.add_header('Authorization', 'Basic ' + base64.b64encode(b'test:test').decode())
-    try:
-        urllib.request.urlopen(req)
-        print(f'  PUT {uid}')
-    except urllib.error.HTTPError as e:
-        print(f'  FAIL {uid} [HTTP {e.code}]', file=sys.stderr)
+  url = f'http://127.0.0.1:8081/dav.php/calendars/test/default/{uid}.ics'
+  req = urllib.request.Request(url, data=content, method='PUT')
+  req.add_header('Content-Type', 'text/calendar; charset=utf-8')
+  req.add_header('Authorization', 'Basic ' + base64.b64encode(b'test:test').decode())
+  try:
+    urllib.request.urlopen(req)
+    print(f'  PUT {uid}')
+  except urllib.error.HTTPError as e:
+    print(f'  FAIL {uid} [HTTP {e.code}]', file=sys.stderr)
 
 # 1-hour meeting
 put('seed-1h', make_ics(
-    'seed-1h', '1-hour team standup',
-    fmtt(today, 10), fmtt(today, 11),
+  'seed-1h', '1-hour team standup',
+  fmtt(today, 10), fmtt(today, 11),
 ))
 
 # 4-hour workshop
 put('seed-4h', make_ics(
-    'seed-4h', '4-hour workshop',
-    fmtt(today, 14), fmtt(today, 18),
+  'seed-4h', '4-hour workshop',
+  fmtt(today, 14), fmtt(today, 18),
 ))
 
 # Concurrent event (overlaps the 1-hour meeting) - red to mark urgency
 put('seed-concurrent', make_ics(
-    'seed-concurrent', 'Client call (concurrent)',
-    fmtt(today, 10, 30), fmtt(today, 11, 30),
-    extra=['COLOR:#FFCDD2'],
+  'seed-concurrent', 'Client call (concurrent)',
+  fmtt(today, 10, 30), fmtt(today, 11, 30),
+  extra=['COLOR:#FFCDD2'],
 ))
 
 # All-day single event
 put('seed-allday', make_ics(
-    'seed-allday', 'All-day: team offsite',
-    fmtd(today), fmtd(tom),
+  'seed-allday', 'All-day: team offsite',
+  fmtd(today), fmtd(tom),
 ))
 
 # Overnight event (today 20:00 - tomorrow 09:00)
 put('seed-overnight', make_ics(
-    'seed-overnight', 'Overnight server maintenance',
-    fmtt(today, 20), fmtt(tom, 9),
-    extra=['COLOR:#D7CCC8'],
+  'seed-overnight', 'Overnight server maintenance',
+  fmtt(today, 20), fmtt(tom, 9),
+  extra=['COLOR:#D7CCC8'],
 ))
 
 # Multi-day all-day event
 put('seed-multiday', make_ics(
-    'seed-multiday', 'Multi-day conference',
-    fmtd(two_ago), fmtd(four_ahead),
-    extra=['COLOR:#C5CAE9'],
+  'seed-multiday', 'Multi-day conference',
+  fmtd(two_ago), fmtd(four_ahead),
+  extra=['COLOR:#C5CAE9'],
 ))
 
 # Recurring weekly meeting (next Monday, repeating)
 put('seed-recurring', make_ics(
-    'seed-recurring', 'Weekly sync (recurring)',
-    fmtt(next_mon, 9), fmtt(next_mon, 9, 30),
-    extra=['RRULE:FREQ=WEEKLY;BYDAY=MO'],
+  'seed-recurring', 'Weekly sync (recurring)',
+  fmtt(next_mon, 9), fmtt(next_mon, 9, 30),
+  extra=['RRULE:FREQ=WEEKLY;BYDAY=MO'],
 ))
 
 # Event with location (tomorrow)
 put('seed-location', make_ics(
-    'seed-location', 'Sprint review',
-    fmtt(tom, 9), fmtt(tom, 10),
-    extra=['LOCATION:Conference Room A'],
+  'seed-location', 'Sprint review',
+  fmtt(tom, 9), fmtt(tom, 10),
+  extra=['LOCATION:Conference Room A'],
 ))
 
 # Weekend all-day event
 put('seed-weekend', make_ics(
-    'seed-weekend', 'Weekend getaway',
-    fmtd(next_sat), fmtd(next_sun + timedelta(1)),
+  'seed-weekend', 'Weekend getaway',
+  fmtd(next_sat), fmtd(next_sun + timedelta(1)),
 ))
 
 PY

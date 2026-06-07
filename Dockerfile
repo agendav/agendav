@@ -1,37 +1,37 @@
 FROM php:8.5-cli AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        ca-certificates \
-        curl \
-        git \
-        gnupg \
-        libicu-dev \
-        libzip-dev \
-        unzip \
+    ca-certificates \
+    curl \
+    git \
+    gnupg \
+    libicu-dev \
+    libzip-dev \
+    unzip \
     && docker-php-ext-install -j"$(nproc)" intl zip \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && curl -sS https://getcomposer.org/installer | php -- \
-        --install-dir=/usr/local/bin --filename=composer \
+    --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY . /app
 
 RUN composer install --no-dev --prefer-dist --no-interaction --no-progress \
- && npm install --legacy-peer-deps --no-audit --no-fund \
- && npm run build:templates \
- && npm run build:css \
- && npm run build:js \
- && rm -rf node_modules \
- && rm -rf var/log/* var/cache/twig/* var/cache/profiler/*
+    && npm install --legacy-peer-deps --no-audit --no-fund \
+    && npm run build:templates \
+    && npm run build:css \
+    && npm run build:js \
+    && rm -rf node_modules \
+    && rm -rf var/log/* var/cache/twig/* var/cache/profiler/*
 
 
 FROM php:8.5-apache AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libzip-dev \
-        libicu-dev \
+    libzip-dev \
+    libicu-dev \
     && docker-php-ext-install -j"$(nproc)" pdo_mysql intl zip \
     && rm -rf /var/lib/apt/lists/*
 
@@ -40,9 +40,9 @@ RUN a2enmod rewrite
 ENV APACHE_DOCUMENT_ROOT=/app/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-        /etc/apache2/sites-available/*.conf \
-        /etc/apache2/apache2.conf \
-        /etc/apache2/conf-available/*.conf
+    /etc/apache2/sites-available/*.conf \
+    /etc/apache2/apache2.conf \
+    /etc/apache2/conf-available/*.conf
 
 COPY docker/agendav/agendav.conf /etc/apache2/conf-available/agendav.conf
 RUN a2enconf agendav

@@ -2,7 +2,7 @@
 <dl class="dl-horizontal">
 <dt>{@i18n type="labels" name="calendar"/}</dt>
 <dd>
- <i class="calendar_color fa fa-lg fa-square" style="color: {caldata.color}"></i>
+  <i class="calendar_color fa fa-lg fa-square" style="color: {caldata.color}"></i>
 {caldata.displayname}
 </dd>
 
@@ -29,11 +29,11 @@
 
 {^disable_actions}
 <div class="actions">
- <span class="right">
+  <span class="right">
     <a href="javascript:void(0)" data-event-id="{id}" class="modify">{@i18n type="labels" name="modify"/}</a>
- </span>
- <span class="left">
+  </span>
+  <span class="left">
     <a href="javascript:void(0)" data-event-id="{id}" class="remove">{@i18n type="labels" name="delete"/}</a>
- </span>
+  </span>
 </div>
 {/disable_actions}
