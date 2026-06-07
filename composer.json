@@ -46,10 +46,13 @@
     },
     "scripts": {
         "lint": [
-            "node_modules/.bin/eclint check 'app/**' 'bin/**' 'config/**' 'resources/**' 'src/**' 'tests/**' '*.json' '*.md' '*.php' '*.yaml'",
+            "node_modules/.bin/ec",
             "vendor/bin/php-cs-fixer check"
         ],
-        "fix": "vendor/bin/php-cs-fixer fix",
+        "fix": [
+            "node_modules/.bin/eclint fix 'app/**' 'bin/**' 'config/**' 'docker/**' 'migrations/**' 'resources/**' 'src/**' 'tests/**' '*.json' '*.md' '*.php' '*.yaml' '*.yml' '*.xml' '*.txt'",
+            "vendor/bin/php-cs-fixer fix"
+        ],
         "test": "vendor/bin/phpunit --configuration tests/phpunit.xml"
     },
     "config": {
