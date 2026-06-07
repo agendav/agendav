@@ -338,6 +338,18 @@ $(document).ready(function() {
     // Printing
     setup_print_tweaks();
 
+    // Auto-refresh calendar, skipped when a dialog is open or a load is in progress
+    var AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
+    setInterval(function() {
+      if ($('.ui-dialog:visible').length > 0) {
+        return;
+      }
+      if ($('#loading').is(':visible')) {
+        return;
+      }
+      update_calendar_list(false);
+    }, AUTO_REFRESH_INTERVAL);
+
 });
 
 
