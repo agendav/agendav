@@ -28,8 +28,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class Drop extends Alter
 {
     /*
-     * Event drop possibilities
-     */
+    * Event drop possibilities
+    */
     const TIMED_TO_TIMED = 0;
     const TIMED_TO_ALLDAY = 1;
     const ALLDAY_TO_TIMED = 2;

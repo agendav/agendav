@@ -42,12 +42,12 @@ class DAVPrincipalsRepository implements PrincipalsRepository
     protected $email_attribute;
 
     /**
-     * Builds a new repository
-     *
-     * @param \AgenDAV\XML\Toolkit $xml_toolkit
-     * @param \AgenDAV\CalDAV\Client $caldav_client
-     * @param string $email_attribute
-     */
+    * Builds a new repository
+    *
+    * @param \AgenDAV\XML\Toolkit $xml_toolkit
+    * @param \AgenDAV\CalDAV\Client $caldav_client
+    * @param string $email_attribute
+    */
     public function __construct(Toolkit $xml_toolkit, Client $caldav_client, $email_attribute)
     {
         $this->xml_toolkit = $xml_toolkit;
@@ -56,11 +56,11 @@ class DAVPrincipalsRepository implements PrincipalsRepository
     }
 
     /**
-     * Returns a Principal object for a given URL
-     *
-     * @param string $url
-     * @return \AgenDAV\Data\Principal
-     */
+    * Returns a Principal object for a given URL
+    *
+    * @param string $url
+    * @return \AgenDAV\Data\Principal
+    */
     public function get($url)
     {
         $body = $this->xml_toolkit->generateRequestBody(
@@ -84,11 +84,11 @@ class DAVPrincipalsRepository implements PrincipalsRepository
     }
 
     /**
-     * Searchs a principal using a filter string
-     *
-     * @param string $filter
-     * @return \AgenDAV\Data\Principal[]
-     */
+    * Searchs a principal using a filter string
+    *
+    * @param string $filter
+    * @return \AgenDAV\Data\Principal[]
+    */
     public function search($filter)
     {
         $result = [];

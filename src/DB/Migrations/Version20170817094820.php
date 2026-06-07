@@ -11,8 +11,8 @@ use Doctrine\DBAL\Schema\Schema;
 class Version20170817094820 extends AbstractMigration
 {
     /**
-     * @param Schema $schema
-     */
+    * @param Schema $schema
+    */
     public function up(Schema $schema): void
     {
         $subscriptions_table = $schema->createTable('subscriptions');
@@ -27,8 +27,8 @@ class Version20170817094820 extends AbstractMigration
     }
 
     /**
-     * @param Schema $schema
-     */
+    * @param Schema $schema
+    */
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

@@ -34,19 +34,19 @@ class PrincipalPropertySearch implements ComponentFilter
     protected $input;
 
     /**
-     * @param string $input User input
-     */
+    * @param string $input User input
+    */
     public function __construct($input)
     {
         $this->input = $input;
     }
 
     /**
-     * Adds a filter to the passed Sabre\Xml\Writer object
-     *
-     * @param \Sabre\Xml\Writer $writer XML writer
-     * @return void
-     */
+    * Adds a filter to the passed Sabre\Xml\Writer object
+    *
+    * @param \Sabre\Xml\Writer $writer XML writer
+    * @return void
+    */
     public function addFilter(\Sabre\Xml\Writer $writer)
     {
         $writer->startElement('{DAV:}principal-property-search');

@@ -342,9 +342,9 @@ class VObjectEventInstanceTest extends TestCase
     }
 
     /**
-     * Tests a TRIGGER:0PTS VALARM, which is an alarm set to
-     * 'when the start events' by some CalDAV clients
-     */
+    * Tests a TRIGGER:0PTS VALARM, which is an alarm set to
+    * 'when the start events' by some CalDAV clients
+    */
     public function testGetRemindersOnStart()
     {
         $ics = <<<ICS

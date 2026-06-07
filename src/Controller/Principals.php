@@ -35,11 +35,11 @@ class Principals
     }
 
     /**
-     * Defensive cap on the search term — long inputs would still be forwarded
-     * to the CalDAV server, which becomes a DoS amplifier for clients that can
-     * send a 1KB query but make the server scan a much larger principal set.
-     * Real autocompletion queries are short.
-     */
+    * Defensive cap on the search term — long inputs would still be forwarded
+    * to the CalDAV server, which becomes a DoS amplifier for clients that can
+    * send a 1KB query but make the server scan a much larger principal set.
+    * Real autocompletion queries are short.
+    */
     private const MAX_TERM_LENGTH = 64;
 
     public function search(

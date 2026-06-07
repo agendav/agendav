@@ -26,11 +26,11 @@ use Doctrine\Migrations\AbstractMigration;
 abstract class AgenDAVMigration extends AbstractMigration
 {
     /**
-     * Checks if there is a table named 'migrations', which suggests we were
-     * using AgenDAV 1.x
-     *
-     * @return bool
-     */
+    * Checks if there is a table named 'migrations', which suggests we were
+    * using AgenDAV 1.x
+    *
+    * @return bool
+    */
     protected function upgradingFrom1x()
     {
         $tables = $this->connection->createSchemaManager()->listTables();

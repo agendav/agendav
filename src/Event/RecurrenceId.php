@@ -33,21 +33,21 @@ class RecurrenceId
     protected $datetime;
 
     /**
-     * Builds a new RECURRENCE-ID. Stores the \DateTime object using UTC
-     *
-     * @param \DateTimeImmutable $datetime
-     */
+    * Builds a new RECURRENCE-ID. Stores the \DateTime object using UTC
+    *
+    * @param \DateTimeImmutable $datetime
+    */
     public function __construct(\DateTimeImmutable $datetime)
     {
         $this->datetime = $datetime->setTimezone(new \DateTimeZone('UTC'));
     }
 
     /**
-     * Creates a new RecurrenceId from an iCalendar string
-     *
-     * @param string $recurrence_id_string
-     * @return \AgenDAV\Event\RecurrenceId
-     */
+    * Creates a new RecurrenceId from an iCalendar string
+    *
+    * @param string $recurrence_id_string
+    * @return \AgenDAV\Event\RecurrenceId
+    */
     public static function buildFromString($recurrence_id_string)
     {
         $datetime = DateTimeParser::parse($recurrence_id_string, null); // UTC
@@ -56,21 +56,21 @@ class RecurrenceId
     }
 
     /*
-     * Returns this RECURRENCE-ID datetime
-     *
-     * @return \DateTimeImmutable
-     */
+    * Returns this RECURRENCE-ID datetime
+    *
+    * @return \DateTimeImmutable
+    */
     public function getDateTime()
     {
         return $this->datetime;
     }
 
     /**
-     * Returns an iCalendar formatted string in UTC
-     *
-     * @param bool $all_day If true, resulting string will be a DATE value
-     * @return string
-     */
+    * Returns an iCalendar formatted string in UTC
+    *
+    * @param bool $all_day If true, resulting string will be a DATE value
+    * @return string
+    */
     public function getString($all_day = false)
     {
         if ($all_day) {
@@ -81,15 +81,15 @@ class RecurrenceId
     }
 
     /**
-     * Checks if a given \DateTime object matches this
-     * recurrence instance.
-     *
-     * Time zones are ignored, as the equals (==) operator for
-     * \DateTime objects behaves like that.
-     *
-     * @param \DateTimeInterface $datetime
-     * @return bool true if they match, false otherwise
-     */
+    * Checks if a given \DateTime object matches this
+    * recurrence instance.
+    *
+    * Time zones are ignored, as the equals (==) operator for
+    * \DateTime objects behaves like that.
+    *
+    * @param \DateTimeInterface $datetime
+    * @return bool true if they match, false otherwise
+    */
     public function matchesDateTime(\DateTimeInterface $datetime)
     {
         return $this->datetime == $datetime;

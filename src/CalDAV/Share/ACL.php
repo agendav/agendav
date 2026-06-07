@@ -26,24 +26,24 @@ class ACL
 {
 
     /**
-     * Privileges storage
-     *
-     * @var \AgenDAV\CalDAV\Share\Permissions
-     */
+    * Privileges storage
+    *
+    * @var \AgenDAV\CalDAV\Share\Permissions
+    */
     private $permissions;
 
     /**
-     * Current grants
-     *
-     * @var array $grants
-     */
+    * Current grants
+    *
+    * @var array $grants
+    */
     private $grants;
 
     /**
-     * Creates a new ACL
-     *
-     * @param \AgenDAV\CalDAV\Share\Permissions $permissions
-     */
+    * Creates a new ACL
+    *
+    * @param \AgenDAV\CalDAV\Share\Permissions $permissions
+    */
     public function __construct(Permissions $permissions)
     {
         $this->permissions = $permissions;
@@ -51,13 +51,13 @@ class ACL
     }
 
     /**
-     * Adds a new grant to this ACL
-     *
-     * @param string $principal Principal path
-     * @param string $role Principal role (e.g. owner, read-write, read-only, default)
-     * @throws \InvalidArgumentException if role is owner or default
-     * @throws \RuntimeException if grant for $principal was already set
-     */
+    * Adds a new grant to this ACL
+    *
+    * @param string $principal Principal path
+    * @param string $role Principal role (e.g. owner, read-write, read-only, default)
+    * @throws \InvalidArgumentException if role is owner or default
+    * @throws \RuntimeException if grant for $principal was already set
+    */
     public function addGrant($principal, $role)
     {
         if ($role === 'owner' || $role === 'default') {
@@ -73,43 +73,43 @@ class ACL
 
 
     /**
-     * Gets a list of grants provided by this ACL
-     *
-     * @return array
-     */
+    * Gets a list of grants provided by this ACL
+    *
+    * @return array
+    */
     public function getGrants()
     {
         return $this->grants;
     }
 
     /**
-     * Returns a list of privileges configured for the owner of the resource
-     * affected by this ACL
-     *
-     * @return array
-     */
+    * Returns a list of privileges configured for the owner of the resource
+    * affected by this ACL
+    *
+    * @return array
+    */
     public function getOwnerPrivileges()
     {
         return $this->permissions->getPrivilegesFor('owner');
     }
 
     /**
-     * Returns a list of default privileges configured for the resource affected
-     * by this ACL
-     *
-     * @return array
-     */
+    * Returns a list of default privileges configured for the resource affected
+    * by this ACL
+    *
+    * @return array
+    */
     public function getDefaultPrivileges()
     {
         return $this->permissions->getPrivilegesFor('default');
     }
 
     /**
-     * Gets a list of privileges given to granted principals
-     *
-     * @return array Associative array, where keys = owner/default/{principal-URL}
-     *               and values are arrays of privileges in Clark notation
-     */
+    * Gets a list of privileges given to granted principals
+    *
+    * @return array Associative array, where keys = owner/default/{principal-URL}
+    *               and values are arrays of privileges in Clark notation
+    */
     public function getGrantsPrivileges()
     {
         $result = [];

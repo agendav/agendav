@@ -32,44 +32,44 @@ use AgenDAV\Event;
 class CalendarObject
 {
     /**
-     * Some property names required from outside
-     */
+    * Some property names required from outside
+    */
     const DATA = '{urn:ietf:params:xml:ns:caldav}calendar-data';
     const ETAG = '{DAV:}getetag';
 
     /**
-     * Contained event
-     *
-     * @var \AgenDAV\Event
-     */
+    * Contained event
+    *
+    * @var \AgenDAV\Event
+    */
     protected $event;
 
     /**
-     * URL of this object
-     *
-     * @var string
-     */
+    * URL of this object
+    *
+    * @var string
+    */
     protected $url;
 
     /**
-     * Calendar this object is stored at
-     *
-     * @var \AgenDAV\CalDAV\Resource\Calendar
-     */
+    * Calendar this object is stored at
+    *
+    * @var \AgenDAV\CalDAV\Resource\Calendar
+    */
     protected $calendar;
 
     /**
-     * Object Etag
-     *
-     * @var string
-     */
+    * Object Etag
+    *
+    * @var string
+    */
     protected $etag;
 
 
     /**
-     * @param string $url
-     * @param \AgenDAV\Event $event
-     */
+    * @param string $url
+    * @param \AgenDAV\Event $event
+    */
     public function __construct($url, ?Event $event = null)
     {
         $this->url = $url;
@@ -77,20 +77,20 @@ class CalendarObject
     }
 
     /*
-     * Getter for event
-     *
-     * @return AgenDAV\Event
-     */
+    * Getter for event
+    *
+    * @return AgenDAV\Event
+    */
     public function getEvent()
     {
         return $this->event;
     }
 
     /*
-     * Setter for event
-     *
-     * @param AgenDAV\Event $event
-     */
+    * Setter for event
+    *
+    * @param AgenDAV\Event $event
+    */
     public function setEvent($event)
     {
         $this->event = $event;
@@ -98,20 +98,20 @@ class CalendarObject
     }
 
     /*
-     * Getter for url
-     *
-     * @return string
-     */
+    * Getter for url
+    *
+    * @return string
+    */
     public function getUrl()
     {
         return $this->url;
     }
 
     /*
-     * Setter for url
-     *
-     * @param string $url
-     */
+    * Setter for url
+    *
+    * @param string $url
+    */
     public function setUrl($url)
     {
         $this->url = $url;
@@ -119,20 +119,20 @@ class CalendarObject
     }
 
     /*
-     * Getter for calendar
-     *
-     * @return AgenDAV\CalDAV\Resource\Calendar
-     */
+    * Getter for calendar
+    *
+    * @return AgenDAV\CalDAV\Resource\Calendar
+    */
     public function getCalendar()
     {
         return $this->calendar;
     }
 
     /*
-     * Setter for calendar
-     *
-     * @param AgenDAV\CalDAV\Resource\Calendar $calendar
-     */
+    * Setter for calendar
+    *
+    * @param AgenDAV\CalDAV\Resource\Calendar $calendar
+    */
     public function setCalendar(Calendar $calendar)
     {
         $this->calendar = $calendar;
@@ -140,20 +140,20 @@ class CalendarObject
     }
 
     /*
-     * Getter for etag
-     *
-     * @return string|null
-     */
+    * Getter for etag
+    *
+    * @return string|null
+    */
     public function getEtag()
     {
         return $this->etag;
     }
 
     /*
-     * Setter for etag
-     *
-     * @param string|null $etag
-     */
+    * Setter for etag
+    *
+    * @param string|null $etag
+    */
     public function setEtag($etag)
     {
         $this->etag = $etag;
@@ -161,13 +161,13 @@ class CalendarObject
     }
 
     /**
-     * Gets all event instances for a range of dates. If the event is not
-     * recurrent, a single instance will be returned
-     *
-     * @param \DateTimeInterface $start
-     * @param \DateTimeInterface $end
-     * @return \AgenDAV\EventInstance[]
-     */
+    * Gets all event instances for a range of dates. If the event is not
+    * recurrent, a single instance will be returned
+    *
+    * @param \DateTimeInterface $start
+    * @param \DateTimeInterface $end
+    * @return \AgenDAV\EventInstance[]
+    */
     public function getEventInstances(\DateTimeInterface $start, \DateTimeInterface $end)
     {
         $events = $this->getEvent()->expand(
@@ -182,10 +182,10 @@ class CalendarObject
 
 
     /**
-     * Returns the event stored in this object as an iCalendar text resource
-     *
-     * @return string
-     */
+    * Returns the event stored in this object as an iCalendar text resource
+    *
+    * @return string
+    */
     public function getRenderedEvent()
     {
         return $this->getEvent()->render();
@@ -193,12 +193,12 @@ class CalendarObject
 
 
     /**
-     * Creates a new CalendarObject with a given UID
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param string $uid
-     * @return \AgenDAV\CalDAV\Resource\CalendarObject
-     */
+    * Creates a new CalendarObject with a given UID
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param string $uid
+    * @return \AgenDAV\CalDAV\Resource\CalendarObject
+    */
     public static function generateOnCalendar(Calendar $calendar, $uid)
     {
         $url = $calendar->getUrl() . $uid . '.ics';

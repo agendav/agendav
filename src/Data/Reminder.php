@@ -28,22 +28,22 @@ use Sabre\VObject;
 class Reminder
 {
     /**
-     * Stores the position for this reminder in the original
-     * event
-     *
-     * @var integer
-     */
+    * Stores the position for this reminder in the original
+    * event
+    *
+    * @var integer
+    */
     protected $position;
 
     /**
-     * @var \DateInterval
-     */
+    * @var \DateInterval
+    */
     protected $when;
 
     /**
-     * @param \DateInterval $when
-     * @param integer $position
-     */
+    * @param \DateInterval $when
+    * @param integer $position
+    */
     public function __construct(\DateInterval $when, $position = null)
     {
         $this->when = $when;
@@ -51,14 +51,14 @@ class Reminder
     }
 
     /**
-     * Parses an input array and returns a Reminder
-     *
-     * @param array $input Key-value based array. Expected keys are:
-     *                     - count: number of <units>
-     *                     - unit: one of minutes, hours or days
-     *                     - position (optional)
-     * @return \AgenDAV\Data\Reminder
-     */
+    * Parses an input array and returns a Reminder
+    *
+    * @param array $input Key-value based array. Expected keys are:
+    *                     - count: number of <units>
+    *                     - unit: one of minutes, hours or days
+    *                     - position (optional)
+    * @return \AgenDAV\Data\Reminder
+    */
     public static function createFromInput(array $input)
     {
         $string = $input['count'] . ' ' . $input['unit'];
@@ -70,14 +70,14 @@ class Reminder
     }
 
     /**
-     * Receives an VObject VALARM and creates a new Reminder.
-     *
-     * If the VALARM is not supported by AgenDAV, a null value will be returned
-     *
-     * @param \Sabre\VObject\Component\VAlarm $valarm
-     * @param integer $position Position of this VALARM inside the VEVENT
-     * @return \AgenDAV\Data\Reminder|null
-     */
+    * Receives an VObject VALARM and creates a new Reminder.
+    *
+    * If the VALARM is not supported by AgenDAV, a null value will be returned
+    *
+    * @param \Sabre\VObject\Component\VAlarm $valarm
+    * @param integer $position Position of this VALARM inside the VEVENT
+    * @return \AgenDAV\Data\Reminder|null
+    */
     public static function createFromVObject(VAlarm $valarm, $position)
     {
         $trigger = $valarm->TRIGGER;
@@ -105,10 +105,10 @@ class Reminder
     }
 
     /**
-     * Parses current date interval
-     *
-     * @return array [count, unit]
-     */
+    * Parses current date interval
+    *
+    * @return array [count, unit]
+    */
     public function getParsedWhen()
     {
         $count_minutes = self::countMinutes($this->when);
@@ -140,40 +140,40 @@ class Reminder
     }
 
     /*
-     * Getter for position
-     *
-     * @return int|null
-     */
+    * Getter for position
+    *
+    * @return int|null
+    */
     public function getPosition()
     {
         return $this->position;
     }
 
     /*
-     * Setter for position
-     *
-     * @param int|null $position
-     */
+    * Setter for position
+    *
+    * @param int|null $position
+    */
     public function setPosition($position = null)
     {
         $this->position = $position;
     }
 
     /*
-     * Getter for when
-     *
-     * @return \DateInterval
-     */
+    * Getter for when
+    *
+    * @return \DateInterval
+    */
     public function getWhen()
     {
         return $this->when;
     }
 
     /**
-     * Returns an ISO8601 representation of current $when
-     *
-     * @return string
-     */
+    * Returns an ISO8601 representation of current $when
+    *
+    * @return string
+    */
     public function getISO8601String()
     {
         list($count, $unit) = $this->getParsedWhen();
@@ -207,11 +207,11 @@ class Reminder
     }
 
     /**
-     * Counts the minutes of a \DateInterval
-     *
-     * @param \DateInterval $dateinterval
-     * @return int
-     */
+    * Counts the minutes of a \DateInterval
+    *
+    * @param \DateInterval $dateinterval
+    * @return int
+    */
     public static function countMinutes(\DateInterval $dateinterval)
     {
         $dateinterval_units = [

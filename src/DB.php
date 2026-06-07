@@ -27,14 +27,14 @@ use \Doctrine\DBAL\DriverManager;
 class DB
 {
     /**
-     * @var Connection
-     */
+    * @var Connection
+    */
     private $connection;
 
 
     /**
-     * @param array $options    Doctrine connection options
-     */
+    * @param array $options    Doctrine connection options
+    */
     public function __construct($options)
     {
         $dbal_config = new \Doctrine\DBAL\Configuration();
@@ -42,8 +42,8 @@ class DB
     }
 
     /**
-     * Returns the DBAL connection
-     */
+    * Returns the DBAL connection
+    */
     public function getConnection()
     {
         return $this->connection;

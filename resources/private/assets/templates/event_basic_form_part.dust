@@ -34,10 +34,10 @@
 <div class="row">
  <div class="col-sm-4">
   <input required name="start_date" type="text" size="15" maxlength="10" value="{start_date}"
-   class="start_date date form-control" />
+  class="start_date date form-control" />
  </div>
  <div class="col-sm-3">
-    <input required name="start_time" type="text" size="15" maxlength="10" value="{start_time}" 
+    <input required name="start_time" type="text" size="15" maxlength="10" value="{start_time}"
     class="start_time time form-control" />
  </div>
 </div>

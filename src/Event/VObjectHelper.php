@@ -31,17 +31,17 @@ use AgenDAV\Event\RecurrenceId;
 class VObjectHelper
 {
     /**
-     * Sets the base VEVENT on a VCALENDAR. A base VEVENT is understood as:
-     *
-     * - The only VEVENT in a non recurring event
-     * - The VEVENT which has the RRULE set and no RECURRENCE-IDs assigned on a
-     *   recurring event
-     *
-     * @param \Sabre\VObject\Component\VCalendar $vcalendar
-     * @param \Sabre\VObject\Component\VEvent $base
-     *
-     * @return void
-     */
+    * Sets the base VEVENT on a VCALENDAR. A base VEVENT is understood as:
+    *
+    * - The only VEVENT in a non recurring event
+    * - The VEVENT which has the RRULE set and no RECURRENCE-IDs assigned on a
+    *   recurring event
+    *
+    * @param \Sabre\VObject\Component\VCalendar $vcalendar
+    * @param \Sabre\VObject\Component\VEvent $base
+    *
+    * @return void
+    */
     public static function setBaseVEvent(VCalendar $vcalendar, VEvent $base)
     {
         foreach ($vcalendar->select('VEVENT') as $i => $vevent) {
@@ -55,14 +55,14 @@ class VObjectHelper
     }
 
     /**
-     * Sets an exception VEVENT on a VCALENDAR. Replaces the existing exception
-     * if found, adds it otherwise.
-     *
-     * @param \Sabre\VObject\Component\VCalendar $vcalendar
-     * @param \Sabre\VObject\Component\VEvent $vevent
-     *
-     * @return void
-     */
+    * Sets an exception VEVENT on a VCALENDAR. Replaces the existing exception
+    * if found, adds it otherwise.
+    *
+    * @param \Sabre\VObject\Component\VCalendar $vcalendar
+    * @param \Sabre\VObject\Component\VEvent $vevent
+    *
+    * @return void
+    */
     public static function setExceptionVEvent(VCalendar $vcalendar, VEvent $vevent)
     {
         $recurrence_id_datetime = $vevent->{'RECURRENCE-ID'}->getDateTime();
@@ -77,13 +77,13 @@ class VObjectHelper
     }
 
     /**
-     * Finds an existing recurrence exception by RECURRENCE-ID
-     *
-     * @param \Sabre\VObject\Component\VCalendar $vcalendar
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     *
-     * @return \Sabre\VObject\Component\VEvent|null
-     */
+    * Finds an existing recurrence exception by RECURRENCE-ID
+    *
+    * @param \Sabre\VObject\Component\VCalendar $vcalendar
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    *
+    * @return \Sabre\VObject\Component\VEvent|null
+    */
     public static function findExceptionVEvent(VCalendar $vcalendar, RecurrenceId $recurrence_id)
     {
         foreach ($vcalendar->select('VEVENT') as $vevent) {
@@ -101,12 +101,12 @@ class VObjectHelper
     }
 
     /**
-     * Removes all recurrence exceptions from a VCALENDAR
-     *
-     * @param \Sabre\VObject\Component\VCalendar $vcalendar
-     *
-     * @return void
-     */
+    * Removes all recurrence exceptions from a VCALENDAR
+    *
+    * @param \Sabre\VObject\Component\VCalendar $vcalendar
+    *
+    * @return void
+    */
     public static function removeAllExceptions(VCalendar $vcalendar)
     {
         foreach ($vcalendar->select('VEVENT') as $vevent) {
@@ -120,13 +120,13 @@ class VObjectHelper
     }
 
     /**
-     * Adds a new value to the EXDATE property of a VEVENT
-     *
-     * @param VEvent $vevent
-     * @param \DateTimeImmutable $datetime
-     *
-     * @return \DateTimeImmutable[] List of new EXDATE values
-     */
+    * Adds a new value to the EXDATE property of a VEVENT
+    *
+    * @param VEvent $vevent
+    * @param \DateTimeImmutable $datetime
+    *
+    * @return \DateTimeImmutable[] List of new EXDATE values
+    */
     public static function addExdateToVEvent(VEvent $vevent, \DateTimeImmutable $datetime)
     {
         $exdates = [];

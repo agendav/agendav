@@ -5,14 +5,14 @@ use DI\ContainerBuilder;
 
 $vendor_directory = getenv('COMPOSER_VENDOR_DIR');
 if ($vendor_directory === false) {
-    $vendor_directory = __DIR__ . '/../vendor';
+	$vendor_directory = __DIR__ . '/../vendor';
 }
 
 require_once $vendor_directory . '/autoload.php';
 
 if (!file_exists(__DIR__ . '/../config/settings.php')) {
-    fwrite(STDERR, "settings.php file not found\n");
-    exit(255);
+	fwrite(STDERR, "settings.php file not found\n");
+	exit(255);
 }
 
 $builder = new ContainerBuilder();
@@ -32,28 +32,28 @@ $cli->setCatchExceptions(true);
 
 // Doctrine Migrations 3 dependency factory
 $migrationsConfig = new \Doctrine\Migrations\Configuration\Migration\YamlFile(
-    __DIR__ . '/../migrations.yml'
+	__DIR__ . '/../migrations.yml'
 );
 $dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
-    $migrationsConfig,
-    new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
+	$migrationsConfig,
+	new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
 );
 
 \Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($cli, $dependencyFactory);
 
 $cli->addCommands([
-    // DBAL Commands
-    new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(
-        new \Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider($connection)
-    ),
+	// DBAL Commands
+	new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(
+		new \Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider($connection)
+	),
 
-    // ORM
-    new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(
-        new \Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
-    ),
+	// ORM
+	new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(
+		new \Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
+	),
 
-    // Clear sessions command
-    new \AgenDAV\Console\Command\SessionsClearCommand($connection),
+	// Clear sessions command
+	new \AgenDAV\Console\Command\SessionsClearCommand($connection),
 ]);
 
 $cli->run();

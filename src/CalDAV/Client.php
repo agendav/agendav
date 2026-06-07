@@ -41,10 +41,10 @@ class Client
 
 
     /**
-     * @param \AgenDAV\Http\Client $http_client
-     * @param \AgenDAV\XML\Toolkit $xml_toolkit
-     * @param \AgenDAV\Event\Parser $event_parser
-     */
+    * @param \AgenDAV\Http\Client $http_client
+    * @param \AgenDAV\XML\Toolkit $xml_toolkit
+    * @param \AgenDAV\Event\Parser $event_parser
+    */
     public function __construct(
         \AgenDAV\Http\Client $http_client,
         \AgenDAV\XML\Toolkit $xml_toolkit,
@@ -56,12 +56,12 @@ class Client
     }
 
     /**
-     * Checks if the HTTP client can access the configured base URL by
-     * sending an OPTIONS request. It will fail if a) provided credentials are
-     * not valid or b) can't find 'calendar-access' in the DAV header
-     *
-     * @return boolean
-     */
+    * Checks if the HTTP client can access the configured base URL by
+    * sending an OPTIONS request. It will fail if a) provided credentials are
+    * not valid or b) can't find 'calendar-access' in the DAV header
+    *
+    * @return boolean
+    */
     public function canAuthenticate()
     {
         try {
@@ -76,12 +76,12 @@ class Client
     }
 
     /**
-     * Retrieves DAV:current-user-principal for the current authenticated
-     * user
-     *
-     * @return string   Principal URL
-     * @throws \AgenDAV\Exception\NotFound if no current-user-principal is returned
-     */
+    * Retrieves DAV:current-user-principal for the current authenticated
+    * user
+    *
+    * @return string   Principal URL
+    * @throws \AgenDAV\Exception\NotFound if no current-user-principal is returned
+    */
     public function getCurrentUserPrincipal()
     {
         $body = $this->xml_toolkit->generateRequestBody(
@@ -103,15 +103,15 @@ class Client
     }
 
     /**
-     * Queries the CalDAV server for the calendar-home-set. It will be
-     * requested on the principal URL
-     *
-     * @param \AgenDAV\Data\Principal $principal User principal
-     *
-     * @return string Calendar home set for given principal
-     *
-     * @throws \AgenDAV\Exception\NotFound if no calendar-home-set is returned
-     */
+    * Queries the CalDAV server for the calendar-home-set. It will be
+    * requested on the principal URL
+    *
+    * @param \AgenDAV\Data\Principal $principal User principal
+    *
+    * @return string Calendar home set for given principal
+    *
+    * @throws \AgenDAV\Exception\NotFound if no calendar-home-set is returned
+    */
     public function getCalendarHomeSet(Principal $principal)
     {
         $body = $this->xml_toolkit->generateRequestBody(
@@ -135,13 +135,13 @@ class Client
 
 
     /**
-     * Gets the list of calendars accessible by current user on a given URL
-     *
-     * @param string $url   URL
-     * @param bool $recurse Whether to recurse (Depth: 1) or not (Depth: 0).
-     *                       Default to true
-     * @return array        Associative array, [url => Calendar]
-     */
+    * Gets the list of calendars accessible by current user on a given URL
+    *
+    * @param string $url   URL
+    * @param bool $recurse Whether to recurse (Depth: 1) or not (Depth: 0).
+    *                       Default to true
+    * @return array        Associative array, [url => Calendar]
+    */
     public function getCalendars($url, $recurse = true)
     {
         $body = $this->xml_toolkit->generateRequestBody(
@@ -178,15 +178,15 @@ class Client
     }
 
     /**
-     * Gets a calendar details
-     *
-     * @param string $url   URL
-     *
-     * @return Calendar
-     *
-     * @throws \AgenDAV\Exception\NotFound In case the server replies with a 2xx code but
-     *                                     no valid calendars are found
-     */
+    * Gets a calendar details
+    *
+    * @param string $url   URL
+    *
+    * @return Calendar
+    *
+    * @throws \AgenDAV\Exception\NotFound In case the server replies with a 2xx code but
+    *                                     no valid calendars are found
+    */
     public function getCalendarByUrl($url)
     {
         $result = $this->getCalendars($url, false);
@@ -199,11 +199,11 @@ class Client
     }
 
     /**
-     * Creates a calendar collection
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
-     * @return void
-     */
+    * Creates a calendar collection
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar   Calendar that we want to create
+    * @return void
+    */
     public function createCalendar(Calendar $calendar)
     {
         $calendar_properties = $calendar->getWritableProperties();
@@ -217,11 +217,11 @@ class Client
     }
 
     /**
-     * Modifies an existing calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @return void
-     */
+    * Modifies an existing calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @return void
+    */
     public function updateCalendar(Calendar $calendar)
     {
         $calendar_properties = $calendar->getWritableProperties();
@@ -235,24 +235,24 @@ class Client
     }
 
     /**
-     * Deletes a calendar from the server
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @return void
-     */
+    * Deletes a calendar from the server
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @return void
+    */
     public function deleteCalendar(Calendar $calendar)
     {
         $this->http_client->request('DELETE', $calendar->getUrl());
     }
 
     /**
-     * Fetches all objects from a calendar that are in the range of [start, end)
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
-     * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
-     * @return array Array of CalendarObject
-     */
+    * Fetches all objects from a calendar that are in the range of [start, end)
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param string $start UTC start time filter, based on ISO8601: 20141120T230000Z
+    * @param string $end UTC end time filter, based on ISO8601: 20141121T230000Z
+    * @return array Array of CalendarObject
+    */
     public function fetchObjectsOnCalendar(Calendar $calendar, $start, $end)
     {
         $time_range_filter = new TimeRange($start, $end);
@@ -263,11 +263,11 @@ class Client
     }
 
     /**
-     * Fetches all objects from a subscribed calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @return array Array of CalendarObject
-     */
+    * Fetches all objects from a subscribed calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @return array Array of CalendarObject
+    */
     public function fetchObjectsOnSubscribedCalendar(Calendar $calendar)
     {
         $data = $this->get($calendar->getUrl());
@@ -276,13 +276,13 @@ class Client
     }
 
     /**
-     * Fetches the calendar object that has the specified UID
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param string $uid Calendar object UID
-     * @return \AgenDAV\CalDAV\Resource\CalendarObject
-     * @throws \AgenDAV\Exception\NotFound if calendar object is not found
-     */
+    * Fetches the calendar object that has the specified UID
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param string $uid Calendar object UID
+    * @return \AgenDAV\CalDAV\Resource\CalendarObject
+    * @throws \AgenDAV\Exception\NotFound if calendar object is not found
+    */
     public function fetchObjectByUid(Calendar $calendar, $uid)
     {
         $uid_filter = new Uid($uid);
@@ -302,11 +302,11 @@ class Client
     }
 
     /**
-     * Puts an calendar object on the CalDAV server, inside its parent collection
-     *
-     * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
-     * @return \GuzzleHttp\Psr7\Response
-     */
+    * Puts an calendar object on the CalDAV server, inside its parent collection
+    *
+    * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
+    * @return \GuzzleHttp\Psr7\Response
+    */
     public function uploadCalendarObject(CalendarObject $calendar_object)
     {
         $this->http_client->setContentTypeiCalendar();
@@ -326,12 +326,12 @@ class Client
     }
 
     /**
-     * Deletes a calendar object from the CalDAV server
-     *
-     * @param CalendarObject $calendar_object
-     *
-     * @return \GuzzleHttp\Psr7\Response
-     */
+    * Deletes a calendar object from the CalDAV server
+    *
+    * @param CalendarObject $calendar_object
+    *
+    * @return \GuzzleHttp\Psr7\Response
+    */
     public function deleteCalendarObject(CalendarObject $calendar_object)
     {
         $etag = $calendar_object->getEtag();
@@ -345,12 +345,12 @@ class Client
     }
 
     /**
-     * Sets an ACL on a calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param \AgenDAV\CalDAV\Share\ACL $acl
-     * @return \GuzzleHttp\Psr7\Response
-     */
+    * Sets an ACL on a calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param \AgenDAV\CalDAV\Share\ACL $acl
+    * @return \GuzzleHttp\Psr7\Response
+    */
     public function applyACL(Calendar $calendar, ACL $acl)
     {
         $url = $calendar->getUrl();
@@ -361,14 +361,14 @@ class Client
     }
 
     /**
-     * Issues a PROPFIND and parses the response
-     *
-     * @param string $url   URL
-     * @param int $depth   Depth header
-     * @param string $body  Request body
-     *
-     * @return array key-value array, where keys are paths and properties are values
-     */
+    * Issues a PROPFIND and parses the response
+    *
+    * @param string $url   URL
+    * @param int $depth   Depth header
+    * @param string $body  Request body
+    *
+    * @return array key-value array, where keys are paths and properties are values
+    */
     public function propfind($url, $depth, $body)
     {
         $this->http_client->setHeader('Depth', $depth);
@@ -383,14 +383,14 @@ class Client
     }
 
     /**
-     * Issues a REPORT and parses the response
-     *
-     * @param string $url   URL
-     * @param string $body   Request body
-     * @param int $depth Depth header for this request. Default value: 1
-     *
-     * @return array key-value array, where keys are paths and properties are values
-     */
+    * Issues a REPORT and parses the response
+    *
+    * @param string $url   URL
+    * @param string $body   Request body
+    * @param int $depth Depth header for this request. Default value: 1
+    *
+    * @return array key-value array, where keys are paths and properties are values
+    */
     public function report($url, $body, $depth = 1)
     {
         $this->http_client->setHeader('Depth', $depth);
@@ -404,13 +404,13 @@ class Client
     }
 
     /**
-     * Issues a GET and parses the response
-     *
-     * @param string $url   URL
-     * @param string $body  Request body
-     * @param int    $depth Depth header for this request. Default value: 1
-     * @result array key-value array, where keys are paths and properties are values
-     */
+    * Issues a GET and parses the response
+    *
+    * @param string $url   URL
+    * @param string $body  Request body
+    * @param int    $depth Depth header for this request. Default value: 1
+    * @result array key-value array, where keys are paths and properties are values
+    */
     public function get($url)
     {
         // Use a plain client without CalDAV credentials to avoid leaking
@@ -431,13 +431,13 @@ class Client
 
 
     /**
-     * Converts a pre-parsed REPORT response to an array of CalendarObject
-     *
-     * @param array $raw_data Data returned by report()
-     * @param Calendar $calendar Calendar these objects come from
-     *
-     * @return CalendarObject[]
-     */
+    * Converts a pre-parsed REPORT response to an array of CalendarObject
+    *
+    * @param array $raw_data Data returned by report()
+    * @param Calendar $calendar Calendar these objects come from
+    *
+    * @return CalendarObject[]
+    */
     protected function buildObjectCollection(array $raw_data, Calendar $calendar)
     {
         $result = [];

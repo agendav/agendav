@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 interface AuthenticationMethodInterface
 {
     /**
-     * Attempt to authenticate the user from the given request. Returns true
-     * if the session has been populated with a logged-in user.
-     */
+    * Attempt to authenticate the user from the given request. Returns true
+    * if the session has been populated with a logged-in user.
+    */
     public function login(ServerRequestInterface $request): bool;
 }

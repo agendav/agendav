@@ -33,37 +33,37 @@ use Psr\Http\Message\RequestInterface;
 class Client
 {
     /**
-     * Internal Guzzle client
-     */
+    * Internal Guzzle client
+    */
     private $guzzle;
 
     /**
-     * Request headers
-     */
+    * Request headers
+    */
     private $request_headers;
 
     /**
-     * Request object
-     */
+    * Request object
+    */
     private $request;
 
     /**
-     * Response object
-     */
+    * Response object
+    */
     private $response;
 
     /**
-     * Common request options
-     */
+    * Common request options
+    */
     private $options;
 
     /**
-     * Creates a new Client
-     *
-     * TODO add comments to documentation about SSL certificate validation
-     * @param \GuzzleHttp\Client $guzzle Actual Guzzle HTTP client
-     * @param array $custom_options     Options to be used on every request. Overrides default values
-     */
+    * Creates a new Client
+    *
+    * TODO add comments to documentation about SSL certificate validation
+    * @param \GuzzleHttp\Client $guzzle Actual Guzzle HTTP client
+    * @param array $custom_options     Options to be used on every request. Overrides default values
+    */
     public function __construct(GuzzleClient $guzzle, array $custom_options = [])
     {
         $this->guzzle = $guzzle;
@@ -73,37 +73,37 @@ class Client
     }
 
     /**
-     * Sets the client authentication parameters
-     *
-     * @param string $username  Authentication user name
-     * @param string $password  Authentication password
-     * @param string $type  Optional authentication method. Supported types are 'basic' and 'digest'
-     * @return void
-     **/
+    * Sets the client authentication parameters
+    *
+    * @param string $username  Authentication user name
+    * @param string $password  Authentication password
+    * @param string $type  Optional authentication method. Supported types are 'basic' and 'digest'
+    * @return void
+    **/
     public function setAuthentication($username, $password, $type = 'basic')
     {
         $this->options['auth'] = [$username, $password, $type];
     }
 
     /**
-     * Sets a header, overwriting previous values
-     *
-     * @param string $name  Header name
-     * @param string $value  Header value
-     * @return void
-     **/
+    * Sets a header, overwriting previous values
+    *
+    * @param string $name  Header name
+    * @param string $value  Header value
+    * @return void
+    **/
     public function setHeader($name, $value)
     {
         $this->request_headers[$name] = $value;
     }
 
     /**
-     * Adds a header
-     *
-     * @param string $name  Header name
-     * @param string $value  Header value
-     * @return void
-     **/
+    * Adds a header
+    *
+    * @param string $name  Header name
+    * @param string $value  Header value
+    * @return void
+    **/
     public function addHeader($name, $value)
     {
         if (isset($this->request_headers[$name])) {
@@ -121,11 +121,11 @@ class Client
     }
 
     /**
-     * Retrieves a previously set request header
-     *
-     * @param string $name  Header name
-     * @return mixed        String or array of strings in case the header is defined, null otherwise
-     **/
+    * Retrieves a previously set request header
+    *
+    * @param string $name  Header name
+    * @return mixed        String or array of strings in case the header is defined, null otherwise
+    **/
     public function getHeader($name)
     {
         return isset($this->request_headers[$name]) ?
@@ -133,10 +133,10 @@ class Client
     }
 
     /**
-     * Gets last request sent using this client
-     *
-     * @return \Psr\Http\Message\RequestInterface     Last request sent
-     **/
+    * Gets last request sent using this client
+    *
+    * @return \Psr\Http\Message\RequestInterface     Last request sent
+    **/
     public function getLastRequest()
     {
         return $this->request;
@@ -144,14 +144,14 @@ class Client
 
 
     /**
-     * Sends a request
-     *
-     * @param string $method       HTTP verb
-     * @param string $url          URL to send the request to
-     * @param string|null|resource $body
-     * @return \GuzzleHttp\Psr7\Response
-     * @throws \AgenDAV\Exception\* (see available exceptions)
-     **/
+    * Sends a request
+    *
+    * @param string $method       HTTP verb
+    * @param string $url          URL to send the request to
+    * @param string|null|resource $body
+    * @return \GuzzleHttp\Psr7\Response
+    * @throws \AgenDAV\Exception\* (see available exceptions)
+    **/
     public function request($method, $url, $body = null)
     {
         $this->setHeader('User-Agent', 'AgenDAV/' . Version::V);
@@ -195,16 +195,16 @@ class Client
     }
 
     /**
-     * Sets Content-Type for next request to be XML
-     */
+    * Sets Content-Type for next request to be XML
+    */
     public function setContentTypeXML()
     {
         $this->setHeader('Content-Type', 'application/xml; charset=utf-8');
     }
 
     /**
-     * Sets Content-Type for next request to be an iCalendar resource
-     */
+    * Sets Content-Type for next request to be an iCalendar resource
+    */
     public function setContentTypeiCalendar()
     {
         $this->setHeader('Content-Type', 'text/calendar');

@@ -31,22 +31,22 @@ class CalendarTransformer extends Fractal\TransformerAbstract
     protected $principal_url;
 
     /**
-     * Creates a new Calendar transformer
-     *
-     * @param string $principal_url Current user principal
-     */
+    * Creates a new Calendar transformer
+    *
+    * @param string $principal_url Current user principal
+    */
     public function __construct($principal_url)
     {
         $this->principal_url = $principal_url;
     }
 
     /**
-     * Transforms a Calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     *
-     * @return array
-     */
+    * Transforms a Calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    *
+    * @return array
+    */
     public function transform(Calendar $calendar)
     {
         $owner_url = $calendar->getOwner()->getUrl();

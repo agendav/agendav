@@ -35,8 +35,8 @@ class PasswordCipher
     }
 
     /**
-     * Returns null if the payload is malformed or fails authentication.
-     */
+    * Returns null if the payload is malformed or fails authentication.
+    */
     public function decrypt(string $payload): ?string
     {
         $raw = base64_decode($payload, true);

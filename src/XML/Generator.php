@@ -34,8 +34,8 @@ use AgenDAV\CalDAV\Filter\PrincipalPropertySearch;
 class Generator
 {
     /**
-     * Default namespace prefixes
-     */
+    * Default namespace prefixes
+    */
     public static $default_ns = [
         'DAV:' => 'd',
         'urn:ietf:params:xml:ns:caldav' => 'C',
@@ -43,26 +43,26 @@ class Generator
     ];
 
     /**
-     * Generate formatted XML documents
-     */
+    * Generate formatted XML documents
+    */
     protected $formatted;
 
     /**
-     * Creates a new XML generator
-     *
-     * @param boolean $formatted       Whether to format XML output or not (default: yes)
-     */
+    * Creates a new XML generator
+    *
+    * @param boolean $formatted       Whether to format XML output or not (default: yes)
+    */
     public function __construct($formatted = true)
     {
         $this->formatted = $formatted;
     }
 
     /**
-     * Generates a PROPFIND body
-     *
-     * @param array $properties List of properties, specified using Clark notation
-     * @return string           XML body for the propfind request
-     **/
+    * Generates a PROPFIND body
+    *
+    * @param array $properties List of properties, specified using Clark notation
+    * @return string           XML body for the propfind request
+    **/
     public function propfindBody(array $properties)
     {
         $writer = $this->createNewWriter();
@@ -74,11 +74,11 @@ class Generator
     }
 
     /**
-     * Generates a MKCALENDAR body XML
-     *
-     * @param array $properties Associative array, keys are in Clark notation
-     * @return string XML body
-     */
+    * Generates a MKCALENDAR body XML
+    *
+    * @param array $properties Associative array, keys are in Clark notation
+    * @return string XML body
+    */
     public function mkCalendarBody(array $properties)
     {
         $writer = $this->createNewWriter();
@@ -96,11 +96,11 @@ class Generator
     }
 
     /**
-     * Generates the XML body for a PROPPATCH request
-     *
-     * @param array $properties Associative array, keys are in Clark notation
-     * @return string XML body
-     */
+    * Generates the XML body for a PROPPATCH request
+    *
+    * @param array $properties Associative array, keys are in Clark notation
+    * @return string XML body
+    */
     public function proppatchBody(array $properties)
     {
         $writer = $this->createNewWriter();
@@ -116,11 +116,11 @@ class Generator
     }
 
     /**
-     * Generates the REPORT XML body to get a list of events within a given range
-     *
-     * @param \AgenDAV\CalDAV\ComponentFilter $component_filter Filter for this report
-     * @return string
-     */
+    * Generates the REPORT XML body to get a list of events within a given range
+    *
+    * @param \AgenDAV\CalDAV\ComponentFilter $component_filter Filter for this report
+    * @return string
+    */
     public function calendarQueryBody(\AgenDAV\CalDAV\ComponentFilter $component_filter)
     {
         $writer = $this->createNewWriter();
@@ -151,11 +151,11 @@ class Generator
     }
 
     /**
-     * Generates an XML body suitable for an ACL operation
-     *
-     * @param \AgenDAV\CalDAV\Share\ACL $acl ACL definition to be applied
-     * @return string XML generated body
-     */
+    * Generates an XML body suitable for an ACL operation
+    *
+    * @param \AgenDAV\CalDAV\Share\ACL $acl ACL definition to be applied
+    * @return string XML generated body
+    */
     public function aclBody(ACL $acl)
     {
         $writer = $this->createNewWriter();
@@ -174,11 +174,11 @@ class Generator
     }
 
     /**
-     * Generates the REPORT XML body to get a list of principals that match a given filter
-     *
-     * @param \AgenDAV\CalDAV\Filter\PrincipalPropertySearch $filter
-     * @return string
-     */
+    * Generates the REPORT XML body to get a list of principals that match a given filter
+    *
+    * @param \AgenDAV\CalDAV\Filter\PrincipalPropertySearch $filter
+    * @return string
+    */
     public function principalPropertySearchBody(PrincipalPropertySearch $filter)
     {
         $writer = $this->createNewWriter();
@@ -190,14 +190,14 @@ class Generator
 
 
     /**
-     * Adds a list of tags with a <tag_name> root tag to the passed Writer
-     *
-     * @param \Sabre\Xml\Writer $writer XML writer onto we want to add this list
-     * @param string $tag_name Wrapping tag name, in Clark notation
-     * @param array $properties Associative array of properties, keys are in Clark notation
-     * @param bool $use_values  read values from the array too. Defaults to true
-     * @return void
-     */
+    * Adds a list of tags with a <tag_name> root tag to the passed Writer
+    *
+    * @param \Sabre\Xml\Writer $writer XML writer onto we want to add this list
+    * @param string $tag_name Wrapping tag name, in Clark notation
+    * @param array $properties Associative array of properties, keys are in Clark notation
+    * @param bool $use_values  read values from the array too. Defaults to true
+    * @return void
+    */
     protected function addPropertiesList(Writer $writer, $tag_name, array $properties, $use_values = true)
     {
         if ($use_values) {
@@ -210,10 +210,10 @@ class Generator
     }
 
     /**
-     * Generates an empty XML writer
-     *
-     * @return \Sabre\Xml\Writer     Base document to start working on
-     **/
+    * Generates an empty XML writer
+    *
+    * @return \Sabre\Xml\Writer     Base document to start working on
+    **/
     protected function createNewWriter()
     {
         $writer = new Writer();
@@ -227,14 +227,14 @@ class Generator
 
 
     /**
-     * Generates a <d:ace> element, which is used on ACLs
-     *
-     * @param \Sabre\Xml\Writer $writer
-     * @param string $type one of 'owner', 'default' or 'grant'
-     * @param string $principal Specific principal URL that this ACE affects
-     * @param array $privileges
-     * @return void
-     */
+    * Generates a <d:ace> element, which is used on ACLs
+    *
+    * @param \Sabre\Xml\Writer $writer
+    * @param string $type one of 'owner', 'default' or 'grant'
+    * @param string $principal Specific principal URL that this ACE affects
+    * @param array $privileges
+    * @return void
+    */
     protected function generateAceTag(
         Writer $writer,
         $type,
@@ -256,12 +256,12 @@ class Generator
     }
 
     /**
-     * Returns a <principal> tag for an <ace>
-     *
-     * @param \Sabre\Xml\Writer $writer
-     * @param string $type one of 'owner', 'default' or 'grant'
-     * @param string $principal Used when $type is 'grant'
-     */
+    * Returns a <principal> tag for an <ace>
+    *
+    * @param \Sabre\Xml\Writer $writer
+    * @param string $type one of 'owner', 'default' or 'grant'
+    * @param string $principal Used when $type is 'grant'
+    */
     protected function generatePrincipalForAce(Writer $writer, $type, $principal = '')
     {
         $writer->startElement('{DAV:}principal');

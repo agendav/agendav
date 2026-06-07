@@ -69,9 +69,9 @@ class VObjectHelperTest extends TestCase
     }
 
     /**
-     * Issue #159: setBaseVEvent replaces iCalendar properties (e.g. VERSION)
-     * with the base VEVENT, and it should not
-     */
+    * Issue #159: setBaseVEvent replaces iCalendar properties (e.g. VERSION)
+    * with the base VEVENT, and it should not
+    */
     public function testSetBaseVEventIssue159()
     {
         $vevent = $this->vcalendar->create('VEVENT');
@@ -206,9 +206,9 @@ class VObjectHelperTest extends TestCase
     }
 
     /**
-     * Internal function, used to add a base VEVENT and two exceptions
-     * to the test VCALENDAR
-     */
+    * Internal function, used to add a base VEVENT and two exceptions
+    * to the test VCALENDAR
+    */
     protected function addBaseEventAndExceptions()
     {
         $this->vcalendar->add('VEVENT', [

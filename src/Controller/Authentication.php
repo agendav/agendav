@@ -109,11 +109,11 @@ class Authentication
     }
 
     /**
-     * Authenticates a user using passed credentials. Populates the session on
-     * success.
-     *
-     * @return bool true on success
-     */
+    * Authenticates a user using passed credentials. Populates the session on
+    * success.
+    *
+    * @return bool true on success
+    */
     public function processLogin(string $user, string $password): bool
     {
         $this->container->get('http.client')->setAuthentication(

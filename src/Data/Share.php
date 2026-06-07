@@ -63,50 +63,50 @@ class Share
 
 
     /*
-     * Getter for sid
-     *
-     * @return int
-     */
+    * Getter for sid
+    *
+    * @return int
+    */
     public function getSid()
     {
         return $this->sid;
     }
 
     /*
-     * Returns the owner principal URL
-     *
-     * @return string
-     */
+    * Returns the owner principal URL
+    *
+    * @return string
+    */
     public function getOwner()
     {
         return $this->owner;
     }
 
     /*
-     * Setter for owner
-     *
-     * @param string $owner Owner principal URL
-     */
+    * Setter for owner
+    *
+    * @param string $owner Owner principal URL
+    */
     public function setOwner($owner)
     {
         $this->owner = $owner;
     }
 
     /*
-     * Returns the calendar URL
-     *
-     * @return string
-     */
+    * Returns the calendar URL
+    *
+    * @return string
+    */
     public function getCalendar()
     {
         return $this->calendar;
     }
 
     /*
-     * Setter for calendar
-     *
-     * @param string $calendar
-     */
+    * Setter for calendar
+    *
+    * @param string $calendar
+    */
     public function setCalendar($calendar)
     {
         $this->calendar = $calendar;
@@ -114,20 +114,20 @@ class Share
     }
 
     /*
-     * Returns the grantee principal URL
-     *
-     * @return string
-     */
+    * Returns the grantee principal URL
+    *
+    * @return string
+    */
     public function getWith()
     {
         return $this->with;
     }
 
     /*
-     * Sets the principal URL this is calendar is shared with
-     *
-     * @param string $with
-     */
+    * Sets the principal URL this is calendar is shared with
+    *
+    * @param string $with
+    */
     public function setWith($with)
     {
         $this->with = $with;
@@ -135,52 +135,52 @@ class Share
     }
 
     /*
-     * Returns Share associated principal, if set
-     *
-     * @return AgenDAV\Data\Principal
-     */
+    * Returns Share associated principal, if set
+    *
+    * @return AgenDAV\Data\Principal
+    */
     public function getPrincipal()
     {
         return $this->with_principal;
     }
-    
+
     /*
-     * Sets this share associated Principal
-     *
-     * @param AgenDAV\Data\Principal $principal
-     */
+    * Sets this share associated Principal
+    *
+    * @param AgenDAV\Data\Principal $principal
+    */
     public function setPrincipal(Principal $principal)
     {
         $this->with_principal = $principal;
         return $this;
     }
-    
+
 
     /*
-     * Returns true if a share allows modifications
-     *
-     * @return bool
-     */
+    * Returns true if a share allows modifications
+    *
+    * @return bool
+    */
     public function isWritable()
     {
         return $this->rw === true;
     }
 
     /*
-     * Setter for rw
-     *
-     * @param bool $rw  Whether this share allows modifications or not
-     */
+    * Setter for rw
+    *
+    * @param bool $rw  Whether this share allows modifications or not
+    */
     public function setWritePermission($rw)
     {
         $this->rw = $rw;
     }
 
     /**
-     * Returns all properties/options set on the shared resource
-     *
-     * @return array
-     */
+    * Returns all properties/options set on the shared resource
+    *
+    * @return array
+    */
     public function getProperties()
     {
         if ($this->options === null) {
@@ -191,13 +191,13 @@ class Share
     }
 
     /**
-     * Returns a property/option set on this resource, or null if it
-     * is not set
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
+    * Returns a property/option set on this resource, or null if it
+    * is not set
+    *
+    * @param string $name
+    *
+    * @return string|null
+    */
     public function getProperty($name)
     {
         if ($this->options === null) {
@@ -208,12 +208,12 @@ class Share
     }
 
     /**
-     * Sets a property/option on this resource
-     *
-     * @param string $name
-     *
-     * @param string $value
-     */
+    * Sets a property/option on this resource
+    *
+    * @param string $name
+    *
+    * @param string $value
+    */
     public function setProperty($name, $value)
     {
         if ($this->options === null) {
@@ -224,10 +224,10 @@ class Share
     }
 
     /**
-     * Applies custom properties to passed calendar object
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     */
+    * Applies custom properties to passed calendar object
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    */
     public function applyCustomPropertiesTo(Calendar $calendar)
     {
         foreach ($this->getProperties() as $property => $value) {

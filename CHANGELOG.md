@@ -396,4 +396,3 @@ This is a beta release. Calendar sharing is not available.
 - Dialogs have now icons within buttons to make them clearer
 - Several bugfixes and optimizations
 - Changed to perifer timePicker (resembles Google Calendar timepicker)
-

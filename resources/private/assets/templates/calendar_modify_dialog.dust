@@ -2,14 +2,14 @@
 {>form_open applyclass="form-horizontal" applyid="calendar_modify_form" /}
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a role="tab" href="#tabs-general" data-toggle="tab">
-     <i class="tab-icon fa fa-tag"></i>
-     {@i18n type="labels" name="generaloptions" /}</a>
+    <i class="tab-icon fa fa-tag"></i>
+    {@i18n type="labels" name="generaloptions" /}</a>
     </li>
  {?enable_calendar_sharing}
   {^is_shared}
     <li role="presentation"><a role="tab" href="#tabs-share" data-toggle="tab">
-     <i class="tab-icon fa fa-group"></i>
-     {@i18n type="labels" name="shareoptions" /}</a>
+    <i class="tab-icon fa fa-group"></i>
+    {@i18n type="labels" name="shareoptions" /}</a>
     </li>
   {/is_shared}
  {/enable_calendar_sharing}
@@ -20,7 +20,7 @@
 
 {^is_owned}
 <div class="share_info ui-corner-all">
-{@i18n type="messages" name="info_sharedby" user="{owner}"/} 
+{@i18n type="messages" name="info_sharedby" user="{owner}"/}
 {@eq key="{rw}" value="0"}
 ({@i18n type="labels" name="readonly" /})
 {/eq}
@@ -33,7 +33,7 @@
 {?enable_calendar_sharing}
  {^is_shared}
   <div role="tabpanel" id="tabs-share" class="tab-pane">
-   {>calendar_share_table/}
+  {>calendar_share_table/}
   </div>
  {/is_shared}
 {/enable_calendar_sharing}

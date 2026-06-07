@@ -44,11 +44,11 @@ class FullCalendarEvent
     protected $event;
 
     /**
-     * @param string $url
-     * @param string $etag
-     * @param string $calendar_url Calendar URL
-     * @param \AgenDAV\EventInstance $event Event instance
-     */
+    * @param string $url
+    * @param string $etag
+    * @param string $calendar_url Calendar URL
+    * @param \AgenDAV\EventInstance $event Event instance
+    */
     public function __construct($url, $etag, $calendar_url, EventInstance $event)
     {
         $this->url = $url;
@@ -59,16 +59,16 @@ class FullCalendarEvent
 
 
     /*
-     * Getter for url
-     */
+    * Getter for url
+    */
     public function getUrl()
     {
         return $this->url;
     }
 
     /*
-     * Getter for etag
-     */
+    * Getter for etag
+    */
     public function getEtag()
     {
         return $this->etag;
@@ -76,30 +76,30 @@ class FullCalendarEvent
 
 
     /*
-     * Getter for calendar_url
-     */
+    * Getter for calendar_url
+    */
     public function getCalendarUrl()
     {
         return $this->calendar_url;
     }
 
     /*
-     * Getter for event
-     */
+    * Getter for event
+    */
     public function getEvent()
     {
         return $this->event;
     }
 
     /**
-     * Generates an array of FullCalendarEvent that refer to a list of event
-     * instances that come from a given CalendarObject and Calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param \AgenDAV\EventInstance[] $instances
-     * @return \AgenDAV\Event\FullCalendarEvent[]
-     */
+    * Generates an array of FullCalendarEvent that refer to a list of event
+    * instances that come from a given CalendarObject and Calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\CalendarObject $calendar_object
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param \AgenDAV\EventInstance[] $instances
+    * @return \AgenDAV\Event\FullCalendarEvent[]
+    */
     public static function generateFrom(
         CalendarObject $calendar_object,
         Calendar $calendar,

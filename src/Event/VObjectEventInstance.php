@@ -50,10 +50,10 @@ class VObjectEventInstance implements EventInstance
     protected $parent_has_exceptions;
 
     /**
-     * Builds a new VObjectEventInstance
-     *
-     * @param \Sabre\VObject\Component\VEvent $vevent
-     */
+    * Builds a new VObjectEventInstance
+    *
+    * @param \Sabre\VObject\Component\VEvent $vevent
+    */
     public function __construct(VEvent $vevent)
     {
         $this->vevent = $vevent;
@@ -63,20 +63,20 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Returns the UID for this VEVENT
-     *
-     * @return string
-     */
+    * Returns the UID for this VEVENT
+    *
+    * @return string
+    */
     public function getUid()
     {
         return (string) $this->vevent->UID;
     }
 
     /**
-     * Get the SUMMARY property of this event
-     *
-     * @return string
-     */
+    * Get the SUMMARY property of this event
+    *
+    * @return string
+    */
     public function getSummary()
     {
         return (string) $this->vevent->SUMMARY;
@@ -88,60 +88,60 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Get the LOCATION property of this event
-     *
-     * @return string
-     */
+    * Get the LOCATION property of this event
+    *
+    * @return string
+    */
     public function getLocation()
     {
         return (string) $this->vevent->LOCATION;
     }
 
     /**
-     * Get the DESCRIPTION property of this event
-     *
-     * @return string
-     */
+    * Get the DESCRIPTION property of this event
+    *
+    * @return string
+    */
     public function getDescription()
     {
         return (string) $this->vevent->DESCRIPTION;
     }
 
     /**
-     * Get the CLASS property of this event
-     *
-     * @return string
-     */
+    * Get the CLASS property of this event
+    *
+    * @return string
+    */
     public function getClass()
     {
         return (string) $this->vevent->CLASS;
     }
 
     /**
-     * Get the TRANSP property of this event
-     *
-     * @return string
-     */
+    * Get the TRANSP property of this event
+    *
+    * @return string
+    */
     public function getTransp()
     {
         return (string) $this->vevent->TRANSP;
     }
 
     /**
-     * Get the start of this event
-     *
-     * @return \DateTimeImmutable
-     */
+    * Get the start of this event
+    *
+    * @return \DateTimeImmutable
+    */
     public function getStart()
     {
         return $this->vevent->DTSTART->getDateTime();
     }
 
     /**
-     * Get the effective end of this event
-     *
-     * @return \DateTimeImmutable
-     */
+    * Get the effective end of this event
+    *
+    * @return \DateTimeImmutable
+    */
     public function getEnd()
     {
         if (isset($this->vevent->DTEND)) {
@@ -166,10 +166,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Check if this event is an all day event or not
-     *
-     * @return bool
-     */
+    * Check if this event is an all day event or not
+    *
+    * @return bool
+    */
     public function isAllDay()
     {
         if (!$this->vevent->DTSTART->hasTime()) {
@@ -180,30 +180,30 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Check if this event repeats
-     *
-     * @return bool
-     */
+    * Check if this event repeats
+    *
+    * @return bool
+    */
     public function isRecurrent()
     {
         return isset($this->vevent->RRULE);
     }
 
     /**
-     * Get the repeat rule of this event (RRULE)
-     *
-     * @return string
-     */
+    * Get the repeat rule of this event (RRULE)
+    *
+    * @return string
+    */
     public function getRepeatRule()
     {
         return (string) $this->vevent->RRULE;
     }
 
     /**
-     * Gets the RECURRENCE-ID property of this instance
-     *
-     * @return \AgenDAV\Event\RecurrenceId|null
-     */
+    * Gets the RECURRENCE-ID property of this instance
+    *
+    * @return \AgenDAV\Event\RecurrenceId|null
+    */
     public function getRecurrenceId()
     {
         $vobject_recurrence_id = $this->vevent->{'RECURRENCE-ID'};
@@ -217,10 +217,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Returns all recognized reminders for this instance
-     *
-     * @return \AgenDAV\Data\Reminder[]
-     */
+    * Returns all recognized reminders for this instance
+    *
+    * @return \AgenDAV\Data\Reminder[]
+    */
     public function getReminders()
     {
         return $this->reminders;
@@ -228,10 +228,10 @@ class VObjectEventInstance implements EventInstance
 
 
     /**
-     * Adds a new reminder
-     *
-     * @param \AgenDAV\Data\Reminder $reminder
-     */
+    * Adds a new reminder
+    *
+    * @param \AgenDAV\Data\Reminder $reminder
+    */
     public function addReminder(\AgenDAV\Data\Reminder $reminder)
     {
         $this->reminders[] = $reminder;
@@ -239,10 +239,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Removes all recognized reminders from this instance
-     *
-     * @return void
-     */
+    * Removes all recognized reminders from this instance
+    *
+    * @return void
+    */
     public function clearReminders()
     {
         $reminder_positions = $this->getReminderPositions();
@@ -262,10 +262,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Set the SUMMARY property for this event
-     *
-     * @param string $summary
-     */
+    * Set the SUMMARY property for this event
+    *
+    * @param string $summary
+    */
     public function setSummary($summary)
     {
         $this->setProperty('SUMMARY', $summary);
@@ -277,51 +277,51 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Set the LOCATION property for this event
-     *
-     * @param string $location
-     */
+    * Set the LOCATION property for this event
+    *
+    * @param string $location
+    */
     public function setLocation($location)
     {
         $this->setProperty('LOCATION', $location);
     }
 
     /**
-     * Set the DESCRIPTION property for this event
-     *
-     * @param string $description
-     */
+    * Set the DESCRIPTION property for this event
+    *
+    * @param string $description
+    */
     public function setDescription($description)
     {
         $this->setProperty('DESCRIPTION', $description);
     }
 
     /**
-     * Set the CLASS property for this event
-     *
-     * @param string $class
-     */
+    * Set the CLASS property for this event
+    *
+    * @param string $class
+    */
     public function setClass($class)
     {
         $this->setProperty('CLASS', $class);
     }
 
     /**
-     * Set the TRANSP property for this event
-     *
-     * @param string $transp
-     */
+    * Set the TRANSP property for this event
+    *
+    * @param string $transp
+    */
     public function setTransp($transp)
     {
         $this->setProperty('TRANSP', $transp);
     }
 
     /**
-     * Set the start moment for this instance
-     *
-     * @param \DateTimeImmutable $start
-     * @param bool $all_day
-     */
+    * Set the start moment for this instance
+    *
+    * @param \DateTimeImmutable $start
+    * @param bool $all_day
+    */
     public function setStart(\DateTimeImmutable $start, $all_day = false)
     {
         // Shift EXDATE entries by the same delta when the time component changes,
@@ -343,11 +343,11 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Set the end moment for this instance
-     *
-     * @param \DateTimeImmutable $end
-     * @param bool $all_day
-     */
+    * Set the end moment for this instance
+    *
+    * @param \DateTimeImmutable $end
+    * @param bool $all_day
+    */
     public function setEnd(\DateTimeImmutable $end, $all_day = false)
     {
         // We prefer DTEND to DURATION
@@ -362,20 +362,20 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Set the repeat rule for this event
-     *
-     * @param string $rrule
-     */
+    * Set the repeat rule for this event
+    *
+    * @param string $rrule
+    */
     public function setRepeatRule($rrule)
     {
         $this->setProperty('RRULE', $rrule);
     }
 
     /**
-     * Set the RECURRENCE-ID property for this event
-     *
-     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
-     */
+    * Set the RECURRENCE-ID property for this event
+    *
+    * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
+    */
     public function setRecurrenceId(?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
@@ -394,53 +394,53 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Sets the exception status for this instance. This is useful on
-     * recurrent events which have exceptions (with their own RECURRENCE-ID)
-     *
-     * @param bool $is_exception
-     */
+    * Sets the exception status for this instance. This is useful on
+    * recurrent events which have exceptions (with their own RECURRENCE-ID)
+    *
+    * @param bool $is_exception
+    */
     public function markAsException($is_exception = true)
     {
         $this->is_exception = $is_exception;
     }
 
     /**
-     * Gets the exception status for this instance
-     *
-     * @return bool
-     */
+    * Gets the exception status for this instance
+    *
+    * @return bool
+    */
     public function isException()
     {
         return $this->is_exception;
     }
 
     /**
-     * Sets the 'hasExceptions' flag on this event instance. This means
-     * that this instance comes from an event that has one or more
-     * recurrence exceptions
-     *
-     * @param bool $new_value defaults to true
-     */
+    * Sets the 'hasExceptions' flag on this event instance. This means
+    * that this instance comes from an event that has one or more
+    * recurrence exceptions
+    *
+    * @param bool $new_value defaults to true
+    */
     public function setHasExceptions($new_value = true)
     {
         $this->parent_has_exceptions = $new_value;
     }
 
     /**
-     * Checks if parent event has any recurrence exceptions or removed instances
-     *
-     * @return boolean
-     */
+    * Checks if parent event has any recurrence exceptions or removed instances
+    *
+    * @return boolean
+    */
     public function hasExceptions()
     {
         return $this->parent_has_exceptions;
     }
 
     /**
-     * Adds (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
-     *
-     * @return void
-     */
+    * Adds (or updates) CREATED, LAST-MODIFIED, DTSTAMP and SEQUENCE
+    *
+    * @return void
+    */
     public function touch()
     {
         $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
@@ -458,10 +458,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Copies basic properties from another EventInstance to this instance
-     *
-     * @param \AgenDAV\EventInstance $source
-     */
+    * Copies basic properties from another EventInstance to this instance
+    *
+    * @param \AgenDAV\EventInstance $source
+    */
     public function copyPropertiesFrom(EventInstance $source)
     {
         $this->setSummary($source->getSummary());
@@ -486,10 +486,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Return a copy the internal VEvent object
-     *
-     * @return \Sabre\VObject\Component\VEvent
-     */
+    * Return a copy the internal VEvent object
+    *
+    * @return \Sabre\VObject\Component\VEvent
+    */
     public function getInternalVEvent()
     {
         $vevent = clone $this->vevent;
@@ -498,14 +498,14 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Updates start and end based on the passed RECURRENCE-ID.
-     *
-     * It is useful to generate a new recurrence exception
-     *
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     *
-     * @return void
-     */
+    * Updates start and end based on the passed RECURRENCE-ID.
+    *
+    * It is useful to generate a new recurrence exception
+    *
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    *
+    * @return void
+    */
     public function updateForRecurrenceId(RecurrenceId $recurrence_id)
     {
         $recurrence_moment = $recurrence_id->getDateTime();
@@ -524,12 +524,12 @@ class VObjectEventInstance implements EventInstance
 
 
     /**
-     * Set a property on the internal VEVENT. If a null
-     * value is provided, the property gets removed from the resource
-     *
-     * @param string $property_name
-     * @param mixed $value
-     */
+    * Set a property on the internal VEVENT. If a null
+    * value is provided, the property gets removed from the resource
+    *
+    * @param string $property_name
+    * @param mixed $value
+    */
     protected function setProperty($property_name, $value)
     {
         if (empty($value)) {
@@ -540,10 +540,10 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Finds all VALARMs on this instance
-     *
-     * @return \AgenDAV\Data\Reminder[]
-     */
+    * Finds all VALARMs on this instance
+    *
+    * @return \AgenDAV\Data\Reminder[]
+    */
     protected function findReminders()
     {
         $result = [];
@@ -563,11 +563,11 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Loops on current recognized reminders and returns all their original
-     * positions on the internal VEVENT, if any
-     *
-     * @return void|array
-     */
+    * Loops on current recognized reminders and returns all their original
+    * positions on the internal VEVENT, if any
+    *
+    * @return void|array
+    */
     protected function getReminderPositions()
     {
         $result = [];
@@ -585,11 +585,11 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
-     * Adds a VALARM on the internal VEVENT, based on a passed reminder
-     *
-     * @param \AgenDAV\Data\Reminder $reminder
-     * @return \AgenDAV\Data\Reminder $reminder With updated position
-     */
+    * Adds a VALARM on the internal VEVENT, based on a passed reminder
+    *
+    * @param \AgenDAV\Data\Reminder $reminder
+    * @return \AgenDAV\Data\Reminder $reminder With updated position
+    */
     protected function addVAlarm(Reminder $reminder)
     {
         $valarm = $this->vevent->add('VALARM', [

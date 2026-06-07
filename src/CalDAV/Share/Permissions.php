@@ -27,32 +27,32 @@ namespace AgenDAV\CalDAV\Share;
 class Permissions
 {
     /**
-     * Lists of permissions per role
-     *
-     * @var array $list
-     */
+    * Lists of permissions per role
+    *
+    * @var array $list
+    */
     private $list;
 
     /**
-     * Creates a new Permissions manager
-     *
-     * @param array $permissions Associative array, where keys are role names
-     *                           (owner, read-write, read-only and default) and
-     *                           values are arrays of permissions in Clark
-     *                           notation
-     */
+    * Creates a new Permissions manager
+    *
+    * @param array $permissions Associative array, where keys are role names
+    *                           (owner, read-write, read-only and default) and
+    *                           values are arrays of permissions in Clark
+    *                           notation
+    */
     public function __construct(array $permissions = [])
     {
         $this->list = $permissions;
     }
 
     /**
-     * Sets permissions for a given role
-     *
-     * @param string $role Role name (owner, read-write, read-only, default)
-     * @param array  $permissions List of permissions in Clark notation
-     * @throws \RuntimeException If the role was already configured
-     */
+    * Sets permissions for a given role
+    *
+    * @param string $role Role name (owner, read-write, read-only, default)
+    * @param array  $permissions List of permissions in Clark notation
+    * @throws \RuntimeException If the role was already configured
+    */
     public function setPrivilegesFor($role, array $permissions)
     {
         if (isset($this->list[$role])) {
@@ -63,12 +63,12 @@ class Permissions
     }
 
     /**
-     * Gets the set of privileges configured for a given role
-     *
-     * @param string $role Role name
-     * @return array List of privileges in Clark notation
-     * @throws \RuntimeException If role is not configured
-     */
+    * Gets the set of privileges configured for a given role
+    *
+    * @param string $role Role name
+    * @return array List of privileges in Clark notation
+    * @throws \RuntimeException If role is not configured
+    */
     public function getPrivilegesFor($role)
     {
         if (!isset($this->list[$role])) {
@@ -79,8 +79,8 @@ class Permissions
     }
 
     /**
-     * Returns privileges for all configured roles
-     */
+    * Returns privileges for all configured roles
+    */
     public function getAll()
     {
         return $this->list;

@@ -33,34 +33,34 @@ use AgenDAV\CalDAV\Resource\Calendar;
 interface SubscriptionsRepository
 {
     /**
-     * Returns all calendars subscribed a user
-     *
-     * @param \AgenDAV\Data\Principal $principal  User principal
-     * @return \AgenDAV\Data\Subscription[]
-     */
+    * Returns all calendars subscribed a user
+    *
+    * @param \AgenDAV\Data\Principal $principal  User principal
+    * @return \AgenDAV\Data\Subscription[]
+    */
     public function getSubscriptionsFor(Principal $principal);
 
     /**
-     * Returns a specific calendar subscribed by a user
-     *
-     * @param \AgenDAV\Data\Calendar  $calendar  Calendar object
-     * @param \AgenDAV\Data\Principal $principal User principal
-     * @return \AgenDAV\Data\Subscription[]
-     */
+    * Returns a specific calendar subscribed by a user
+    *
+    * @param \AgenDAV\Data\Calendar  $calendar  Calendar object
+    * @param \AgenDAV\Data\Principal $principal User principal
+    * @return \AgenDAV\Data\Subscription[]
+    */
     public function getSubscriptionByUrl(Calendar $calendar, Principal $principal);
 
     /**
-     * Stores a subscription in the database
-     *
-     * @param AgenDAV\Data\Subscription $subscription  Subscription object
-     */
+    * Stores a subscription in the database
+    *
+    * @param AgenDAV\Data\Subscription $subscription  Subscription object
+    */
     public function save(Subscription $subscription);
 
     /**
-     * Removes a subscription from the database
-     *
-     * @param AgenDAV\Data\Subscription $subscription  Subscription object
-     */
+    * Removes a subscription from the database
+    *
+    * @param AgenDAV\Data\Subscription $subscription  Subscription object
+    */
     public function remove(Subscription $subscription);
 
 }

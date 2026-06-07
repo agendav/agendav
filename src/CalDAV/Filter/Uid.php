@@ -33,19 +33,19 @@ class Uid implements ComponentFilter
     protected $uid;
 
     /**
-     * @param string $uid Calendar object uid
-     */
+    * @param string $uid Calendar object uid
+    */
     public function __construct($uid)
     {
         $this->uid = $uid;
     }
 
     /**
-     * Adds a filter to the passed Sabre\Xml\Writer object
-     *
-     * @param \Sabre\Xml\Writer $writer XML writer
-     * @return void
-     */
+    * Adds a filter to the passed Sabre\Xml\Writer object
+    *
+    * @param \Sabre\Xml\Writer $writer XML writer
+    * @return void
+    */
     public function addFilter(\Sabre\Xml\Writer $writer)
     {
         $ns_c = '{urn:ietf:params:xml:ns:caldav}';

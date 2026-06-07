@@ -54,10 +54,10 @@ class Preferences
 
 
     /**
-     * @param string $name
-     *
-     * @return bool
-     */
+    * @param string $name
+    *
+    * @return bool
+    */
     public function __isset($name)
     {
         return array_key_exists($name, $this->options);
@@ -73,13 +73,13 @@ class Preferences
     }
 
     /**
-     * Gets an user preference
-     *
-     * @param string $name Preference name
-     * @param mixed $default_value Default value if preference is not set
-     *
-     * @return mixed Preference value, or default_value if it is not set
-     */
+    * Gets an user preference
+    *
+    * @param string $name Preference name
+    * @param mixed $default_value Default value if preference is not set
+    *
+    * @return mixed Preference value, or default_value if it is not set
+    */
     public function get($name, $default_value = null)
     {
         if (array_key_exists($name, $this->options)) {
@@ -110,13 +110,13 @@ class Preferences
     }
 
     /**
-     * Sets default values for usual preferences. If a preference already
-     * has a value, it will not get overwritten
-     *
-     * @param array $defaults
-     *
-     * @return void
-     */
+    * Sets default values for usual preferences. If a preference already
+    * has a value, it will not get overwritten
+    *
+    * @param array $defaults
+    *
+    * @return void
+    */
     public function addDefaults(array $defaults)
     {
         foreach ($defaults as $name => $default_value) {

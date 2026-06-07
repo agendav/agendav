@@ -55,10 +55,10 @@ class VObjectEvent implements Event
     protected $uid;
 
     /**
-     * Builds a new VObjectEvent
-     *
-     * @param \Sabre\VObject\Component\VCalendar $vcalendar
-     */
+    * Builds a new VObjectEvent
+    *
+    * @param \Sabre\VObject\Component\VCalendar $vcalendar
+    */
     public function __construct(VCalendar $vcalendar)
     {
         $this->vcalendar = $vcalendar;
@@ -69,20 +69,20 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Checks if current event is recurrent
-     *
-     * @return bool
-     */
+    * Checks if current event is recurrent
+    *
+    * @return bool
+    */
     public function isRecurrent()
     {
         return $this->is_recurrent;
     }
 
     /**
-     * Returns the UID for all event instances under this event
-     *
-     * @return string
-     */
+    * Returns the UID for all event instances under this event
+    *
+    * @return string
+    */
     public function getUid()
     {
         return $this->uid;
@@ -90,11 +90,11 @@ class VObjectEvent implements Event
 
 
     /**
-     * Sets UID for this event.
-     *
-     * @param string $uid
-     * @throws \LogicException if this event already has an UID assigned
-     */
+    * Sets UID for this event.
+    *
+    * @param string $uid
+    * @throws \LogicException if this event already has an UID assigned
+    */
     public function setUid($uid)
     {
         if ($this->uid !== null) {
@@ -105,23 +105,23 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Returns the RRULE for all event instances under this event
-     *
-     * @return string
-     */
+    * Returns the RRULE for all event instances under this event
+    *
+    * @return string
+    */
     public function getRepeatRule()
     {
         return $this->repeat_rule;
     }
 
     /**
-     * Gets all event instances for a range of dates. If the event is not
-     * recurrent, a single instance will be returned
-     *
-     * @param \DateTimeInterface $start
-     * @param \DateTimeInterface $end
-     * @return \AgenDAV\EventInstance[]
-     */
+    * Gets all event instances for a range of dates. If the event is not
+    * recurrent, a single instance will be returned
+    *
+    * @param \DateTimeInterface $start
+    * @param \DateTimeInterface $end
+    * @return \AgenDAV\EventInstance[]
+    */
     public function expand(\DateTimeInterface $start, \DateTimeInterface $end)
     {
         $expanded_vcalendar = $this->vcalendar->expand($start, $end);
@@ -140,10 +140,10 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Checks if this event has any recurrence exceptions or removed instances
-     *
-     * @return boolean
-     */
+    * Checks if this event has any recurrence exceptions or removed instances
+    *
+    * @return boolean
+    */
     public function hasExceptions()
     {
         if (!$this->isRecurrent()) {
@@ -154,12 +154,12 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Checks if a RECURRENCE-ID string (that could be the result of
-     * expanding a recurrent event) was an exception to the rule or not
-     *
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     * @return boolean
-     */
+    * Checks if a RECURRENCE-ID string (that could be the result of
+    * expanding a recurrent event) was an exception to the rule or not
+    *
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    * @return boolean
+    */
     public function isException(?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
@@ -178,11 +178,11 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Checks if a RECURRENCE-ID is a removed instance from the recurrence
-     *
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     * @return boolean
-     */
+    * Checks if a RECURRENCE-ID is a removed instance from the recurrence
+    *
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    * @return boolean
+    */
     public function isRemovedInstance(?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
@@ -201,24 +201,24 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Returns an iCalendar string representation of this event
-     *
-     * @return string
-     */
+    * Returns an iCalendar string representation of this event
+    *
+    * @return string
+    */
     public function render()
     {
         return $this->vcalendar->serialize();
     }
 
     /**
-     * Creates a new EventInstance for this event. If the event already
-     * had a base event instance assigned, a copy of it will be returned.
-     *
-     * If not, a clean event instance will be returned.
-     *
-     * @return \AgenDAV\EventInstance
-     * @throws \LogicException If current event has no UID assigned
-     */
+    * Creates a new EventInstance for this event. If the event already
+    * had a base event instance assigned, a copy of it will be returned.
+    *
+    * If not, a clean event instance will be returned.
+    *
+    * @return \AgenDAV\EventInstance
+    * @throws \LogicException If current event has no UID assigned
+    */
     public function createEventInstance()
     {
         if (empty($this->uid)) {
@@ -241,16 +241,16 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Adds an EventInstance for this event. In case the event is not recurrent,
-     * or it is but this is not an recurrence exception, it will get stored as the
-     * "base" event instance
-     *
-     * @param \AgenDAV\EventInstance $instance
-     * @throws \InvalidArgumentException If event instance UID does not match
-     *                                   current event UID
-     * @throws \LogicException If a recurrence exception is passed for a date
-     *                         that is removed (EXDATE)
-     */
+    * Adds an EventInstance for this event. In case the event is not recurrent,
+    * or it is but this is not an recurrence exception, it will get stored as the
+    * "base" event instance
+    *
+    * @param \AgenDAV\EventInstance $instance
+    * @throws \InvalidArgumentException If event instance UID does not match
+    *                                   current event UID
+    * @throws \LogicException If a recurrence exception is passed for a date
+    *                         that is removed (EXDATE)
+    */
     public function storeInstance(EventInstance $instance)
     {
         // Check if UID matches
@@ -316,12 +316,12 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Removes an event instance by its RECURRENCE-ID from this event
-     *
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     * @throws \LogicException if this event is not recurrent
-     * @throws \AgenDAV\Exception\NotFound if the instance was already removed
-     */
+    * Removes an event instance by its RECURRENCE-ID from this event
+    *
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    * @throws \LogicException if this event is not recurrent
+    * @throws \AgenDAV\Exception\NotFound if the instance was already removed
+    */
     public function removeInstance(RecurrenceId $recurrence_id)
     {
         if (!$this->isRecurrent()) {
@@ -358,19 +358,19 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Gets the base EventInstance for this event if $recurrence_id is null,
-     * or the EventInstance for the recurrence exception identified by
-     * $recurrence_id.
-     *
-     * If the passed RECURRENCE-ID does not match any existing exceptions,
-     * a new EventInstance will be created with RECURRENCE-ID set
-     *
-     * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
-     * @return \AgenDAV\EventInstance|null
-     * @throws \LogicException if this event is not recurrent and a $recurrence_id
-     * @throws \AgenDAV\Exception\NotFound if the instance was removed
-     * is specified
-     */
+    * Gets the base EventInstance for this event if $recurrence_id is null,
+    * or the EventInstance for the recurrence exception identified by
+    * $recurrence_id.
+    *
+    * If the passed RECURRENCE-ID does not match any existing exceptions,
+    * a new EventInstance will be created with RECURRENCE-ID set
+    *
+    * @param \AgenDAV\Event\RecurrenceId|null $recurrence_id
+    * @return \AgenDAV\EventInstance|null
+    * @throws \LogicException if this event is not recurrent and a $recurrence_id
+    * @throws \AgenDAV\Exception\NotFound if the instance was removed
+    * is specified
+    */
 
     public function getEventInstance(?RecurrenceId $recurrence_id = null)
     {
@@ -403,11 +403,11 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Extracts the RRULE property from the main VEVENT contained in the
-     * VCALENDAR, if any.
-     *
-     * @return string|null RRULE definition, or null if not found
-     */
+    * Extracts the RRULE property from the main VEVENT contained in the
+    * VCALENDAR, if any.
+    *
+    * @return string|null RRULE definition, or null if not found
+    */
     protected function extractRRule()
     {
 
@@ -425,12 +425,12 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Gets a list of RECURRENCE-IDs defined for this event
-     *
-     * @param VCalendar $vcalendar
-     *
-     * @return \DateTimeImmutable[]
-     */
+    * Gets a list of RECURRENCE-IDs defined for this event
+    *
+    * @param VCalendar $vcalendar
+    *
+    * @return \DateTimeImmutable[]
+    */
     protected function findRecurrenceExceptions(VCalendar $vcalendar)
     {
         $result = [];
@@ -447,11 +447,11 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Gets a list of Removed instances for this event
-     *
-     * @param \Sabre\VObject\Component\VCalendar $vcalendar
-     * @return \DateTimeImmutable[]
-     */
+    * Gets a list of Removed instances for this event
+    *
+    * @param \Sabre\VObject\Component\VCalendar $vcalendar
+    * @return \DateTimeImmutable[]
+    */
     protected function findRemovedInstances(VCalendar $vcalendar)
     {
         $base = $vcalendar->getBaseComponent();
@@ -465,10 +465,10 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Finds UID for the base event instance
-     *
-     * @return string
-     */
+    * Finds UID for the base event instance
+    *
+    * @return string
+    */
     protected function findUid()
     {
         $base_component = $this->vcalendar->getBaseComponent('VEVENT');
@@ -481,13 +481,13 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Builds a VObjectEventInstance using the passed VEVENT object,
-     * copying the recurrence rule and marking it as an exception in case
-     * it is
-     *
-     * @param \Sabre\VObject\Component\VEvent $vevent
-     * @return \AgenDAV\Event\VObjectEventInstance
-     */
+    * Builds a VObjectEventInstance using the passed VEVENT object,
+    * copying the recurrence rule and marking it as an exception in case
+    * it is
+    *
+    * @param \Sabre\VObject\Component\VEvent $vevent
+    * @return \AgenDAV\Event\VObjectEventInstance
+    */
     protected function getExpandedInstance(VEvent $vevent)
     {
         $instance = new VObjectEventInstance($vevent);
@@ -509,15 +509,15 @@ class VObjectEvent implements Event
     }
 
     /**
-     * Gets the VEVENT associated to the passed RECURRENCE-ID.
-     *
-     * If the event is not recurrent, a \LogicException will be thrown
-     *
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     * @return \Sabre\VObject\Component\VEvent
-     * @throws \LogicException if this event is not recurrent
-     * @throws \AgenDAV\Exception\NotFound if the instance was removed
-     */
+    * Gets the VEVENT associated to the passed RECURRENCE-ID.
+    *
+    * If the event is not recurrent, a \LogicException will be thrown
+    *
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    * @return \Sabre\VObject\Component\VEvent
+    * @throws \LogicException if this event is not recurrent
+    * @throws \AgenDAV\Exception\NotFound if the instance was removed
+    */
     protected function getRecurrenceExceptionVEvent(RecurrenceId $recurrence_id)
     {
         if (!$this->isRecurrent()) {
@@ -542,9 +542,9 @@ class VObjectEvent implements Event
 
 
     /**
-     * Checks if current event is recurrent. In case it is, sets required properties
-     *
-     */
+    * Checks if current event is recurrent. In case it is, sets required properties
+    *
+    */
     private function updateRecurrentStatus()
     {
         $this->is_recurrent = false;

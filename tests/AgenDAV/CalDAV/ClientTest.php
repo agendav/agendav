@@ -102,12 +102,12 @@ BODY;
   <d:response>
     <d:href>/cal.php/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:current-user-principal>
-          <d:href>/cal.php/principals/demo/</d:href>
+        <d:href>/cal.php/principals/demo/</d:href>
         </d:current-user-principal>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
   </d:response>
 </d:multistatus>
@@ -148,12 +148,12 @@ BODY;
   <d:response>
     <d:href>/cal.php/principals/demo/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <cal:calendar-home-set>
-          <d:href>/cal.php/calendars/demo/</d:href>
+        <d:href>/cal.php/calendars/demo/</d:href>
         </cal:calendar-home-set>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
   </d:response>
 </d:multistatus>
@@ -181,94 +181,94 @@ BODY;
   <d:response>
     <d:href>/cal.php/calendars/demo/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:resourcetype>
-          <d:collection/>
+        <d:collection/>
         </d:resourcetype>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:displayname/>
         <cs:getctag/>
         <cal:supported-calendar-component-set/>
         <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/"/>
         <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
-      </d:prop>
-      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 404 Not Found</d:status>
     </d:propstat>
   </d:response>
   <d:response>
     <d:href>/cal.php/calendars/demo/first/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:displayname>First calendar</d:displayname>
         <cs:getctag>44</cs:getctag>
         <cal:supported-calendar-component-set>
-          <cal:comp name="VEVENT"/>
-          <cal:comp name="VTODO"/>
+        <cal:comp name="VEVENT"/>
+        <cal:comp name="VTODO"/>
         </cal:supported-calendar-component-set>
         <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/">#ff4e50ff</x4:calendar-color>
         <d:resourcetype>
-          <d:collection/>
-          <cal:calendar/>
+        <d:collection/>
+        <cal:calendar/>
         </d:resourcetype>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
-      </d:prop>
-      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 404 Not Found</d:status>
     </d:propstat>
   </d:response>
   <d:response>
     <d:href>/cal.php/calendars/demo/second/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:displayname>Second calendar</d:displayname>
         <cs:getctag>15</cs:getctag>
         <cal:supported-calendar-component-set>
-          <cal:comp name="VEVENT"/>
-          <cal:comp name="VTODO"/>
+        <cal:comp name="VEVENT"/>
+        <cal:comp name="VTODO"/>
         </cal:supported-calendar-component-set>
         <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/">#3e4147ff</x4:calendar-color>
         <d:resourcetype>
-          <d:collection/>
-          <cal:calendar/>
+        <d:collection/>
+        <cal:calendar/>
         </d:resourcetype>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
-      </d:prop>
-      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 404 Not Found</d:status>
     </d:propstat>
   </d:response>
   <d:response>
     <d:href>/cal.php/calendars/demo/outbox/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:resourcetype>
-          <d:collection/>
-          <cal:schedule-outbox/>
+        <d:collection/>
+        <cal:schedule-outbox/>
         </d:resourcetype>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:displayname/>
         <cs:getctag/>
         <cal:supported-calendar-component-set/>
         <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/"/>
         <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
-      </d:prop>
-      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 404 Not Found</d:status>
     </d:propstat>
   </d:response>
 </d:multistatus>
@@ -308,7 +308,7 @@ BODY;
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set',
             '{http://apple.com/ns/ical/}calendar-color',
             '{http://apple.com/ns/ical/}calendar-order',
-          ],
+        ],
             '/calendar-home',
             1
         );
@@ -322,26 +322,26 @@ BODY;
   <d:response>
     <d:href>/cal.php/calendars/demo/single/</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <d:displayname>First calendar</d:displayname>
         <cs:getctag>44</cs:getctag>
         <cal:supported-calendar-component-set>
-          <cal:comp name="VEVENT"/>
-          <cal:comp name="VTODO"/>
+        <cal:comp name="VEVENT"/>
+        <cal:comp name="VTODO"/>
         </cal:supported-calendar-component-set>
         <x4:calendar-color xmlns:x4="http://apple.com/ns/ical/">#ff4e50ff</x4:calendar-color>
         <d:resourcetype>
-          <d:collection/>
-          <cal:calendar/>
+        <d:collection/>
+        <cal:calendar/>
         </d:resourcetype>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <x4:calendar-order xmlns:x4="http://apple.com/ns/ical/"/>
-      </d:prop>
-      <d:status>HTTP/1.1 404 Not Found</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 404 Not Found</d:status>
     </d:propstat>
   </d:response>
 </d:multistatus>
@@ -374,7 +374,7 @@ BODY;
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set',
             '{http://apple.com/ns/ical/}calendar-color',
             '{http://apple.com/ns/ical/}calendar-order',
-          ],
+        ],
             $fake_calendar_url,
             0
         );
@@ -397,8 +397,8 @@ BODY;
         $client = $this->createCalDAVClient($response);
 
         $properties = [
-          Calendar::DISPLAYNAME => 'Calendar name',
-          Calendar::CTAG => 'x',
+        Calendar::DISPLAYNAME => 'Calendar name',
+        Calendar::CTAG => 'x',
         ];
         $calendar = new Calendar(
             '/fake/calendar',
@@ -415,8 +415,8 @@ BODY;
         $client = $this->createCalDAVClient($response);
 
         $properties = [
-          Calendar::DISPLAYNAME => 'Calendar name',
-          Calendar::CTAG => 'x',
+        Calendar::DISPLAYNAME => 'Calendar name',
+        Calendar::CTAG => 'x',
         ];
         $calendar = new Calendar(
             '/fake/calendar',
@@ -448,7 +448,7 @@ BODY;
   <d:response>
     <d:href>/cal.php/calendars/demo/fake/c160fd13-829d-4d59-96d2-92fc0f9e6787.ics</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <cal:calendar-data>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-////NONSGML kigkonsult.se iCalcreator 2.14//
@@ -468,14 +468,14 @@ END:VEVENT
 END:VCALENDAR
         </cal:calendar-data>
         <d:getetag>"cf1ba7bcb47ca422f65854470feaeefd"</d:getetag>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
   </d:response>
   <d:response>
     <d:href>/cal.php/calendars/demo/fake/e2f43f04-030d-4c79-9c8b-d20c87ca5f9d.ics</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <cal:calendar-data>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-////NONSGML kigkonsult.se iCalcreator 2.14//
@@ -495,8 +495,8 @@ END:VEVENT
 END:VCALENDAR
         </cal:calendar-data>
         <d:getetag>"cf03e087c6bf4f8473f5f76cf17d65fd"</d:getetag>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
   </d:response>
 </d:multistatus>
@@ -508,12 +508,12 @@ BODY;
         );
 
         $this->event_parser
-          ->expects($this->exactly(2))
-          ->method('parse')
-          ->willReturn(
-              $this->createMock(\AgenDAV\Event::class),
-              $this->createMock(\AgenDAV\Event::class)
-          );
+        ->expects($this->exactly(2))
+        ->method('parse')
+        ->willReturn(
+            $this->createMock(\AgenDAV\Event::class),
+            $this->createMock(\AgenDAV\Event::class)
+        );
 
         $client = $this->createCalDAVClient($response);
 
@@ -570,7 +570,7 @@ BODY;
   <d:response>
     <d:href>/cal.php/calendars/demo/fake/c160fd13-829d-4d59-96d2-92fc0f9e6787.ics</d:href>
     <d:propstat>
-      <d:prop>
+    <d:prop>
         <cal:calendar-data>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-////NONSGML kigkonsult.se iCalcreator 2.14//
@@ -590,8 +590,8 @@ END:VEVENT
 END:VCALENDAR
         </cal:calendar-data>
         <d:getetag>"cf1ba7bcb47ca422f65854470feaeefd"</d:getetag>
-      </d:prop>
-      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:prop>
+    <d:status>HTTP/1.1 200 OK</d:status>
     </d:propstat>
   </d:response>
 </d:multistatus>
@@ -603,11 +603,11 @@ BODY;
         );
 
         $this->event_parser
-          ->expects($this->once())
-          ->method('parse')
-          ->willReturn(
-              $this->createMock(\AgenDAV\Event::class)
-          );
+        ->expects($this->once())
+        ->method('parse')
+        ->willReturn(
+            $this->createMock(\AgenDAV\Event::class)
+        );
 
         $client = $this->createCalDAVClient($response);
         $calendar = new Calendar('/cal.php/calendars/demo/fake');
@@ -630,9 +630,9 @@ BODY;
         // the validity check
         $event = $this->createMock(\AgenDAV\Event::class);
         $event
-          ->expects($this->exactly(2))
-          ->method('render')
-          ->willReturn('iCalendar resource');
+        ->expects($this->exactly(2))
+        ->method('render')
+        ->willReturn('iCalendar resource');
 
 
         $object = new CalendarObject('/url', $event);
@@ -650,9 +650,9 @@ BODY;
         // the validity check
         $event = $this->createMock(\AgenDAV\Event::class);
         $event
-          ->expects($this->exactly(2))
-          ->method('render')
-          ->willReturn('iCalendar resource');
+        ->expects($this->exactly(2))
+        ->method('render')
+        ->willReturn('iCalendar resource');
 
         $object = new CalendarObject('/url', $event);
         $object->setEtag('test_etag');
@@ -680,16 +680,16 @@ BODY;
 
         $acl = $this->createMock(\AgenDAV\CalDAV\Share\ACL::class);
         $acl->method('getOwnerPrivileges')
-          ->willReturn([ '{DAV:}all' ]);
+        ->willReturn([ '{DAV:}all' ]);
 
         $acl->method('getDefaultPrivileges')
-          ->willReturn(['{DAV:}minimal']);
+        ->willReturn(['{DAV:}minimal']);
 
         $acl->method('getGrantsPrivileges')
-          ->willReturn([
+        ->willReturn([
             '/u1' => ['{DAV:}write'],
             '/u2' => ['{DAV:}read'],
-          ]);
+        ]);
 
         $calendar = new Calendar('/url');
 
@@ -698,8 +698,8 @@ BODY;
     }
 
     /**
-     * Create CalDAV client using mocked responses
-     */
+    * Create CalDAV client using mocked responses
+    */
     protected function createCalDAVClient(Response $response)
     {
         $mock = new MockHandler([ $response ]);
@@ -715,16 +715,16 @@ BODY;
 
 
     /**
-     * Validates the request generated by a canAuthenticate() method call
-     */
+    * Validates the request generated by a canAuthenticate() method call
+    */
     protected function validateCheckAuthenticatedRequests()
     {
         $this->getAndValidateLastRequest('OPTIONS');
     }
 
     /**
-     * Validates a PROPFIND request
-     */
+    * Validates a PROPFIND request
+    */
     protected function validatePropfindRequest(array $properties, $url = null, $depth = null)
     {
         $request = $this->getAndValidateLastRequest('PROPFIND');
@@ -827,11 +827,11 @@ BODY;
     }
 
     /**
-     * Returns last request
-     *
-     * @string $method HTTP method
-     * @return \Psr\Http\Message\RequestInterface
-     */
+    * Returns last request
+    *
+    * @string $method HTTP method
+    * @return \Psr\Http\Message\RequestInterface
+    */
     private function getAndValidateLastRequest($method)
     {
         $this->assertCount(1, $this->history);
@@ -848,8 +848,8 @@ BODY;
     }
 
     /**
-     * Validates Content-Type header
-     */
+    * Validates Content-Type header
+    */
     private function validateContentType(RequestInterface $request, $match = 'application/xml; charset=utf-8')
     {
         $this->assertEquals(
@@ -860,8 +860,8 @@ BODY;
     }
 
     /**
-     * Validates Depth header
-     */
+    * Validates Depth header
+    */
     private function validateDepth(RequestInterface $request, $depth)
     {
         $this->assertEquals(
@@ -872,8 +872,8 @@ BODY;
     }
 
     /**
-     * Validates request body
-     */
+    * Validates request body
+    */
     private function validateBody(RequestInterface $request, $body)
     {
         $this->assertEquals(

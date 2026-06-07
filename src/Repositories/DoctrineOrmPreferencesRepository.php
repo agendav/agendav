@@ -28,19 +28,19 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
 {
 
     /**
-     * @var EntityManager
-     */
+    * @var EntityManager
+    */
     private $em;
 
     /**
-     * @var array
-     */
+    * @var array
+    */
     protected $defaults;
 
 
     /**
-     * @param EntityManager $em
-     */
+    * @param EntityManager $em
+    */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
@@ -48,12 +48,12 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     }
 
     /**
-     * Gets all preferences for the given user
-     *
-     * @param string $username User name
-     *
-     * @return Preferences
-     */
+    * Gets all preferences for the given user
+    *
+    * @param string $username User name
+    *
+    * @return Preferences
+    */
     public function userPreferences($username)
     {
         /** @var Preferences|null $preferences */
@@ -68,11 +68,11 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     }
 
     /**
-     * Saves user preferences
-     *
-     * @param string $username User name
-     * @param \AgenDAV\Data\Preferences $preferences
-     */
+    * Saves user preferences
+    *
+    * @param string $username User name
+    * @param \AgenDAV\Data\Preferences $preferences
+    */
     public function save($username, \AgenDAV\Data\Preferences $preferences)
     {
         $preferences->setUsername($username);
@@ -81,11 +81,11 @@ class DoctrineOrmPreferencesRepository implements PreferencesRepository
     }
 
     /**
-     * Sets a list of available preferences and their default value
-     *
-     * @param array $defaults key => default value
-     * @return void
-     */
+    * Sets a list of available preferences and their default value
+    *
+    * @param array $defaults key => default value
+    * @return void
+    */
     public function setDefaults(array $defaults)
     {
         $this->defaults = $defaults;

@@ -33,9 +33,9 @@ class TimeRange implements ComponentFilter
     protected $end;
 
     /**
-     * @param string $start ISO8601 based time string, in UTC
-     * @param string $end ISO8601 based time string, in UTC
-     */
+    * @param string $start ISO8601 based time string, in UTC
+    * @param string $end ISO8601 based time string, in UTC
+    */
     public function __construct($start, $end)
     {
         $this->start = $start;
@@ -43,11 +43,11 @@ class TimeRange implements ComponentFilter
     }
 
     /**
-     * Adds a filter to the passed Sabre\Xml\Writer object
-     *
-     * @param \Sabre\Xml\Writer $writer XML writer
-     * @return void
-     */
+    * Adds a filter to the passed Sabre\Xml\Writer object
+    *
+    * @param \Sabre\Xml\Writer $writer XML writer
+    * @return void
+    */
     public function addFilter(\Sabre\Xml\Writer $writer)
     {
         $writer->write([

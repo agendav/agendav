@@ -136,12 +136,12 @@ class Save extends JSONController
     }
 
     /**
-     * Saves calendar name and color into the Subscription object
-     *
-     * @param AgenDAV\Data\Subscription $subscription
-     * @param ParameterBag $input
-     * @return void
-     */
+    * Saves calendar name and color into the Subscription object
+    *
+    * @param AgenDAV\Data\Subscription $subscription
+    * @param ParameterBag $input
+    * @return void
+    */
     protected function applySubscribedCalendarProperties(Subscription $subscription, ParameterBag $input)
     {
         $subscription->setProperty(Calendar::DISPLAYNAME, $input->get('displayname'));

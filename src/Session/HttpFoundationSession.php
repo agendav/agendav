@@ -34,95 +34,95 @@ class HttpFoundationSession implements Session
 {
 
     /**
-     * Actual Http Foundation session
-     */
+    * Actual Http Foundation session
+    */
     private $session;
 
     /**
-     * @param SessionStorageInterface $storage  Symfony storage to use
-     */
+    * @param SessionStorageInterface $storage  Symfony storage to use
+    */
     public function __construct(SessionStorageInterface $storage)
     {
         $this->session = new InternalSession($storage);
     }
 
     /**
-     * Gets a session variable value
-     *
-     * @access public
-     * @return mixed If variable was not found, returns null
-     */
+    * Gets a session variable value
+    *
+    * @access public
+    * @return mixed If variable was not found, returns null
+    */
     public function initialize()
     {
     }
 
     /**
-     * Gets a session variable value
-     *
-     * @param string $name Session variable
-     * @access public
-     * @return mixed If variable was not found, returns null
-     */
+    * Gets a session variable value
+    *
+    * @param string $name Session variable
+    * @access public
+    * @return mixed If variable was not found, returns null
+    */
     public function get($name)
     {
         return $this->session->get($name);
     }
 
     /**
-     * Sets a session variable
-     *
-     * @param string $name Session variable
-     * @param mixed $value Value
-     * @access public
-     * @return mixed
-     */
+    * Sets a session variable
+    *
+    * @param string $name Session variable
+    * @param mixed $value Value
+    * @access public
+    * @return mixed
+    */
     public function set($name, $value)
     {
         return $this->session->set($name, $value);
     }
 
     /**
-     * Sets multiple session variables
-     *
-     * @param array $data Associative array: name => value
-     * @access public
-     * @return void
-     */
+    * Sets multiple session variables
+    *
+    * @param array $data Associative array: name => value
+    * @access public
+    * @return void
+    */
     public function setAll($data)
     {
         $this->session->replace($data);
     }
 
     /**
-     * Checks if current session contains a variable
-     *
-     * @param string $name
-     * @access public
-     * @return boolean
-     */
+    * Checks if current session contains a variable
+    *
+    * @param string $name
+    * @access public
+    * @return boolean
+    */
     public function has($name)
     {
         return $this->session->has($name);
     }
 
     /**
-     * Removes a session variable from current session
-     *
-     * @param string $name
-     * @access public
-     * @return mixed
-     */
+    * Removes a session variable from current session
+    *
+    * @param string $name
+    * @access public
+    * @return mixed
+    */
     public function remove($name)
     {
         return $this->session->remove($name);
     }
 
     /**
-     * Checks if current user is authenticated
-     *
-     * @access public
-     * @return boolean  true if user is authenticated, false if not
-     */
+    * Checks if current user is authenticated
+    *
+    * @access public
+    * @return boolean  true if user is authenticated, false if not
+    */
     public function isAuthenticated()
     {
         return $this->session->has('username') &&
@@ -130,11 +130,11 @@ class HttpFoundationSession implements Session
     }
 
     /**
-     * Clears current session
-     *
-     * @access public
-     * @return void
-     */
+    * Clears current session
+    *
+    * @access public
+    * @return void
+    */
     public function clear()
     {
         $this->session->clear();

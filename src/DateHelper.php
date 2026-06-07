@@ -27,15 +27,15 @@ namespace AgenDAV;
 class DateHelper
 {
     /**
-     * Creates a new \DateTimeImmutable object using a value, a format string and a
-     * timezone
-     *
-     * @param string $format DateTime format (see http://php.net/manual/en/datetime.createfromformat.php)
-     * @param string $value Input value that has to match the format above
-     * @param \DateTimeZone $timezone Time zone the resulting \DateTimeImmutable will be generated
-     * @return \DateTimeImmutable
-     * @throws \InvalidArgumentException
-     */
+    * Creates a new \DateTimeImmutable object using a value, a format string and a
+    * timezone
+    *
+    * @param string $format DateTime format (see http://php.net/manual/en/datetime.createfromformat.php)
+    * @param string $value Input value that has to match the format above
+    * @param \DateTimeZone $timezone Time zone the resulting \DateTimeImmutable will be generated
+    * @return \DateTimeImmutable
+    * @throws \InvalidArgumentException
+    */
     public static function createDateTime($format, $value, \DateTimeZone $timezone)
     {
         $result = \DateTimeImmutable::createFromFormat($format, $value, $timezone);
@@ -52,15 +52,15 @@ class DateHelper
     }
 
     /**
-     * Creates a DateTime object from a ISO8601 string coming from the
-     * frontend
-     *
-     * @param string $str String coming from frontend
-     * @param \DateTimeZone $tz Timezone to use
-     * @access public
-     * @return \DateTimeImmutable Date and time parsed from initial string
-     * @throws \InvalidArgumentException
-     */
+    * Creates a DateTime object from a ISO8601 string coming from the
+    * frontend
+    *
+    * @param string $str String coming from frontend
+    * @param \DateTimeZone $tz Timezone to use
+    * @access public
+    * @return \DateTimeImmutable Date and time parsed from initial string
+    * @throws \InvalidArgumentException
+    */
     public static function frontEndToDateTime($str, ?\DateTimeZone $tz = null)
     {
         $format = 'Y-m-d\TH:i:s.u\Z';
@@ -74,14 +74,14 @@ class DateHelper
     }
 
     /**
-     * Creates a DateTime object from a date formatted by FullCalendar
-     * events
-     *
-     * @param string $input String provided by FullCalendar
-     * @param \DateTimeZone $timezone User timezone
-     * @return \DateTimeImmutable Using the provided timezone
-     * @throws \InvalidArgumentException
-     */
+    * Creates a DateTime object from a date formatted by FullCalendar
+    * events
+    *
+    * @param string $input String provided by FullCalendar
+    * @param \DateTimeZone $timezone User timezone
+    * @return \DateTimeImmutable Using the provided timezone
+    * @throws \InvalidArgumentException
+    */
     public static function fullcalendarToDateTime($input, \DateTimeZone $timezone)
     {
         $format = 'Y-m-d\TH:i:s';
@@ -93,26 +93,26 @@ class DateHelper
     }
 
     /**
-     * Adds (or subtracts) an amount of minutes to a \DateTime object.
-     * Modifies original object
-     *
-     * @param \DateTimeImmutable $datetime
-     * @param string|int $minutes
-     * @return \DateTimeImmutable
-     */
+    * Adds (or subtracts) an amount of minutes to a \DateTime object.
+    * Modifies original object
+    *
+    * @param \DateTimeImmutable $datetime
+    * @param string|int $minutes
+    * @return \DateTimeImmutable
+    */
     public static function addMinutesTo(\DateTimeImmutable $datetime, $minutes)
     {
         return $datetime->modify($minutes . ' minutes');
     }
 
     /**
-     * Returns a new \DateTimeImmutable based on an existing \DateTimeImmutable, with a different
-     * timezone but keeping the same date and time.
-     *
-     * @param \DateTimeImmutable $datetime
-     * @param \DateTimeZone $timezone
-     * @return \DateTimeImmutable
-     */
+    * Returns a new \DateTimeImmutable based on an existing \DateTimeImmutable, with a different
+    * timezone but keeping the same date and time.
+    *
+    * @param \DateTimeImmutable $datetime
+    * @param \DateTimeZone $timezone
+    * @return \DateTimeImmutable
+    */
     public static function switchTimeZone(\DateTimeImmutable $datetime, \DateTimeZone $timezone)
     {
         $result = self::createDateTime('YmdHis', $datetime->format('YmdHis'), $timezone);
@@ -121,12 +121,12 @@ class DateHelper
     }
 
     /**
-     * Converts a \DateTimeImmutable from a timed event to a \DateTimeImmutable in UTC starting at
-     * 0:00:00 on the same date as the original one
-     *
-     * @param \DateTimeImmutable $datetime
-     * @return \DateTimeImmutable
-     */
+    * Converts a \DateTimeImmutable from a timed event to a \DateTimeImmutable in UTC starting at
+    * 0:00:00 on the same date as the original one
+    *
+    * @param \DateTimeImmutable $datetime
+    * @return \DateTimeImmutable
+    */
     public static function getStartOfDayUTC(\DateTimeImmutable $datetime)
     {
         $result = $datetime->setTime(0, 0, 0);
@@ -136,10 +136,10 @@ class DateHelper
     }
 
     /**
-     * Returns an array of timezone names
-     *
-     * @return array (key = value)
-     */
+    * Returns an array of timezone names
+    *
+    * @return array (key = value)
+    */
     public static function getAllTimeZones()
     {
         $timezones = \DateTimeZone::listIdentifiers();

@@ -43,30 +43,30 @@ class Principal
     const DISPLAYNAME = '{DAV:}displayname';
 
     /**
-     * Builds a new Principal
-     *
-     * @param string $url
-     */
+    * Builds a new Principal
+    *
+    * @param string $url
+    */
     public function __construct($url)
     {
         $this->url = $url;
     }
 
     /*
-     * Getter for URL
-     *
-     * @return string
-     */
+    * Getter for URL
+    *
+    * @return string
+    */
     public function getUrl()
     {
         return $this->url;
     }
 
     /**
-     * Getter for displayname
-     *
-     * @return string
-     */
+    * Getter for displayname
+    *
+    * @return string
+    */
     public function getDisplayName()
     {
         if ($this->displayname === null) {
@@ -77,30 +77,30 @@ class Principal
     }
 
     /**
-     * Setter for displayname
-     *
-     * @param string $displayname
-     */
+    * Setter for displayname
+    *
+    * @param string $displayname
+    */
     public function setDisplayName($displayname)
     {
         $this->displayname = $displayname;
     }
 
     /**
-     * Getter for email
-     *
-     * @return string
-     */
+    * Getter for email
+    *
+    * @return string
+    */
     public function getEmail()
     {
         return $this->email;
     }
 
     /**
-     * Setter for email
-     *
-     * @param string $email
-     */
+    * Setter for email
+    *
+    * @param string $email
+    */
     public function setEmail($email)
     {
         $this->email = $email;

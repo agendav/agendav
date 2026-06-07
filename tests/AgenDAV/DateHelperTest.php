@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 class DateHelperTest extends TestCase
 {
     /**
-     * UTC timezone, cached
-     */
+    * UTC timezone, cached
+    */
     private $utc;
 
     public function setUp(): void

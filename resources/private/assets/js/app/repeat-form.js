@@ -456,4 +456,3 @@ AgenDAVRepeat.generateUntilDate = function generateUntilDate(is_allday) {
 
     return result.toDate();
 };
-

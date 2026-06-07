@@ -30,71 +30,71 @@ use \AgenDAV\Data\Principal;
 class Calendar
 {
     /**
-     * URL of this calendar
-     *
-     * @var string
-     */
+    * URL of this calendar
+    *
+    * @var string
+    */
     protected $url;
 
     /**
-     * Calendar properties
-     *
-     * @var array
-     */
+    * Calendar properties
+    *
+    * @var array
+    */
     protected $properties;
 
     /**
-     * Writable calendar
-     *
-     * @var boolean
-     */
+    * Writable calendar
+    *
+    * @var boolean
+    */
     protected $writable;
 
     /**
-     * Subscribed calendar
-     *
-     * @var boolean
-     */
+    * Subscribed calendar
+    *
+    * @var boolean
+    */
     protected $subscribed;
 
     /**
-     * Owner of this calendar.
-     *
-     * Required on shared calendars
-     *
-     * @var \AgenDAV\Data\Principal
-     */
+    * Owner of this calendar.
+    *
+    * Required on shared calendars
+    *
+    * @var \AgenDAV\Data\Principal
+    */
     protected $owner;
 
     /**
-     * Shares for this calendar, when working on shared calendars
-     *
-     * @var \AgenDAV\Data\Share[]
-     */
+    * Shares for this calendar, when working on shared calendars
+    *
+    * @var \AgenDAV\Data\Share[]
+    */
     protected $shares;
 
     /**
-     * Property names including namespaces
-     */
+    * Property names including namespaces
+    */
     const DISPLAYNAME = '{DAV:}displayname';
     const CTAG = '{http://calendarserver.org/ns/}getctag';
     const COLOR = '{http://apple.com/ns/ical/}calendar-color';
     const ORDER = '{http://apple.com/ns/ical/}calendar-order';
 
     /**
-     * Properties that AgenDAV can write
-     */
+    * Properties that AgenDAV can write
+    */
     public static $writable_properties = [
         '{DAV:}displayname',
         '{http://apple.com/ns/ical/}calendar-color',
     ];
 
     /**
-     * Creates a new calendar
-     *
-     * @param string $url   Calendar URL
-     * @param array $properties More properties for this calendar
-     */
+    * Creates a new calendar
+    *
+    * @param string $url   Calendar URL
+    * @param array $properties More properties for this calendar
+    */
     public function __construct($url, $properties = [])
     {
         $this->url = $url;
@@ -109,19 +109,19 @@ class Calendar
     }
 
     /*
-     * Getter for URL
-     */
+    * Getter for URL
+    */
     public function getUrl()
     {
         return $this->url;
     }
 
     /**
-     * Returns a property value from this calendar
-     *
-     * @param string $property Property to return
-     * @return mixed Stored value, or null if the property is missing
-     */
+    * Returns a property value from this calendar
+    *
+    * @param string $property Property to return
+    * @return mixed Stored value, or null if the property is missing
+    */
     public function getProperty($property)
     {
         if (array_key_exists($property, $this->properties) && !empty($this->properties[$property])) {
@@ -133,11 +133,11 @@ class Calendar
 
 
     /**
-     * Sets a property value for this calendar
-     *
-     * @param string $property  Property name
-     * @param mixed $value  Value
-     */
+    * Sets a property value for this calendar
+    *
+    * @param string $property  Property name
+    * @param mixed $value  Value
+    */
     public function setProperty($property, $value)
     {
         // Backwards compatibility
@@ -155,20 +155,20 @@ class Calendar
     }
 
     /**
-     * Returns all properties set for this calendar, excluding the URL
-     *
-     * @return array Properties (associative array), in Clark notation
-     */
+    * Returns all properties set for this calendar, excluding the URL
+    *
+    * @return array Properties (associative array), in Clark notation
+    */
     public function getAllProperties()
     {
         return $this->properties;
     }
 
     /**
-     * Returns all writable properties from this calendar
-     *
-     * @return array Properties (associative array), in Clark notation
-     */
+    * Returns all writable properties from this calendar
+    *
+    * @return array Properties (associative array), in Clark notation
+    */
     public function getWritableProperties()
     {
         return array_intersect_key(
@@ -178,20 +178,20 @@ class Calendar
     }
 
     /*
-     * Getter for writable
-     *
-     * @return boolean
-     */
+    * Getter for writable
+    *
+    * @return boolean
+    */
     public function isWritable()
     {
         return $this->writable;
     }
 
     /*
-     * Setter for writable
-     *
-     * @param boolean $writable
-     */
+    * Setter for writable
+    *
+    * @param boolean $writable
+    */
     public function setWritable($writable)
     {
         $this->writable = $writable;
@@ -199,77 +199,77 @@ class Calendar
 
 
     /*
-     * Getter for subscribed
-     *
-     * @return boolean
-     */
+    * Getter for subscribed
+    *
+    * @return boolean
+    */
     public function isSubscribed()
     {
         return $this->subscribed;
     }
 
     /*
-     * Setter for subscribed
-     *
-     * @param boolean $subscribed
-     */
+    * Setter for subscribed
+    *
+    * @param boolean $subscribed
+    */
     public function setSubscribed($subscribed)
     {
         $this->subscribed = $subscribed;
     }
 
     /*
-     * Getter for owner
-     */
+    * Getter for owner
+    */
     public function getOwner()
     {
         return $this->owner;
     }
     /*
-     * Setter for owner
-     */
+    * Setter for owner
+    */
     public function setOwner(Principal $owner)
     {
         $this->owner = $owner;
     }
 
     /*
-     * Getter for shares
-     *
-     * @return \AgenDAV\Data\Share[]
-     */
+    * Getter for shares
+    *
+    * @return \AgenDAV\Data\Share[]
+    */
     public function getShares()
     {
         return $this->shares;
     }
 
     /*
-     * Setter for shares
-     *
-     * @param \AgenDAV\Data\Share[]
-     */
+    * Setter for shares
+    *
+    * @param \AgenDAV\Data\Share[]
+    */
     public function setShares(array $shares)
     {
         $this->shares = $shares;
     }
 
     /**
-     * Adds a new share to this calendar
-     *
-     * @param \AgenDAV\Data\Share $share
-     */
+    * Adds a new share to this calendar
+    *
+    * @param \AgenDAV\Data\Share $share
+    */
     public function addShare(Share $share)
     {
         $this->shares[] = $share;
     }
 
     /**
-     * Removes a Share from this calendar
-     *
-     * @param \AgenDAV\Data\Share $share_to_remove
-     *
-     * @return boolean true if the share was found and removed, false otherwise
-     */
+    * Removes a Share from this calendar
+    *
+    * @param \AgenDAV\Data\Share $share_to_remove
+    *
+    * @return boolean true if the share was found and removed, false otherwise
+    */
     public function removeShare(Share $share_to_remove)
     {
         $searched_sid = $share_to_remove->getSid();
@@ -284,12 +284,12 @@ class Calendar
     }
 
     /**
-     * Modifies the provided color to make sure it has an alpha channel
-     *
-     * @param string $color
-     *
-     * @return string
-     */
+    * Modifies the provided color to make sure it has an alpha channel
+    *
+    * @param string $color
+    *
+    * @return string
+    */
     protected function ensureRgbaColor($color)
     {
         // Missing alpha channel

@@ -29,26 +29,26 @@ namespace AgenDAV\Repositories;
 interface PreferencesRepository
 {
     /**
-     * Gets all preferences for the given user
-     *
-     * @param string $username  User name
-     * @return \AgenDAV\Data\Preferences
-     */
+    * Gets all preferences for the given user
+    *
+    * @param string $username  User name
+    * @return \AgenDAV\Data\Preferences
+    */
     public function userPreferences($username);
 
     /**
-     * Saves user preferences
-     *
-     * @param string $username User name
-     * @param \AgenDAV\Data\Preferences $preferences
-     */
+    * Saves user preferences
+    *
+    * @param string $username User name
+    * @param \AgenDAV\Data\Preferences $preferences
+    */
     public function save($username, \AgenDAV\Data\Preferences $preferences);
 
     /**
-     * Sets a list of available preferences and their default value
-     *
-     * @param array $defaults key => default value
-     * @return void
-     */
+    * Sets a list of available preferences and their default value
+    *
+    * @param array $defaults key => default value
+    * @return void
+    */
     public function setDefaults(array $defaults);
 }

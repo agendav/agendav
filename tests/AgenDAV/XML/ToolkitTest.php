@@ -11,8 +11,8 @@ class ToolkitTest extends TestCase
     protected $generator;
 
     /*
-     * Used to create bodies
-     */
+    * Used to create bodies
+    */
     public static $property_list = [
         'prop1',
         'prop2',

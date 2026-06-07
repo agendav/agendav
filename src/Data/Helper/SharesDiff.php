@@ -40,10 +40,10 @@ class SharesDiff
     protected $current_shares;
 
     /**
-     * Creates empty lists on $keep and $remove
-     *
-     * @param \AgenDAV\Data\Share[] $current_shares Current list of shares
-     */
+    * Creates empty lists on $keep and $remove
+    *
+    * @param \AgenDAV\Data\Share[] $current_shares Current list of shares
+    */
     public function __construct(array $current_shares)
     {
         $this->current_shares = $current_shares;
@@ -52,13 +52,13 @@ class SharesDiff
     }
 
     /**
-     * Loops over the passed input, and stores a list of Shares that should be
-     * kept, and those that are not present on input anymore, so they should
-     * be removed.
-     *
-     * @param \AgenDAV\Data\Share[] $input
-     * @return void
-     */
+    * Loops over the passed input, and stores a list of Shares that should be
+    * kept, and those that are not present on input anymore, so they should
+    * be removed.
+    *
+    * @param \AgenDAV\Data\Share[] $input
+    * @return void
+    */
     public function decide(array $input)
     {
         $pending_inputs = array_keys($input);
@@ -96,20 +96,20 @@ class SharesDiff
     }
 
     /**
-     * Get existing shares that need to be kept and also new ones
-     *
-     * @return \AgenDAV\Data\Share[]
-     */
+    * Get existing shares that need to be kept and also new ones
+    *
+    * @return \AgenDAV\Data\Share[]
+    */
     public function getKeptShares()
     {
         return $this->keep;
     }
 
     /**
-     * Get shares that have to be deleted
-     *
-     * @return \AgenDAV\Data\Share[]
-     */
+    * Get shares that have to be deleted
+    *
+    * @return \AgenDAV\Data\Share[]
+    */
     public function getMarkedForRemoval()
     {
         return $this->remove;

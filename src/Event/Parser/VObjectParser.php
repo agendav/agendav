@@ -35,13 +35,13 @@ use Sabre\VObject\ParseException;
 class VObjectParser implements Parser
 {
     /**
-     * Parses an iCalendar text resource
-     *
-     * @param string $icalendar
-     * @return \AgenDAV\Event
-     * @throws \UnexpectedValueException If $icalendar is not a valid iCalendar
-     *                                   resource
-     */
+    * Parses an iCalendar text resource
+    *
+    * @param string $icalendar
+    * @return \AgenDAV\Event
+    * @throws \UnexpectedValueException If $icalendar is not a valid iCalendar
+    *                                   resource
+    */
     public function parse($icalendar)
     {
         try {

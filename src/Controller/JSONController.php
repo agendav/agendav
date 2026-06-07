@@ -51,8 +51,8 @@ abstract class JSONController
     }
 
     /**
-     * Slim entry point.
-     */
+    * Slim entry point.
+    */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = []): ResponseInterface
     {
         if ($this->method === 'POST') {
@@ -76,9 +76,9 @@ abstract class JSONController
     }
 
     /**
-     * Catches the exceptions our controllers commonly raise and converts them
-     * to user-facing JSON errors.
-     */
+    * Catches the exceptions our controllers commonly raise and converts them
+    * to user-facing JSON errors.
+    */
     protected function controlledExecution(
         ParameterBag $input,
         ServerRequestInterface $request,
@@ -127,16 +127,16 @@ abstract class JSONController
     }
 
     /**
-     * @return bool true if $input passes validation
-     */
+    * @return bool true if $input passes validation
+    */
     protected function validateInput(ParameterBag $input)
     {
         return true;
     }
 
     /**
-     * Performs the action.
-     */
+    * Performs the action.
+    */
     abstract protected function execute(
         ParameterBag $input,
         ServerRequestInterface $request,
@@ -154,8 +154,8 @@ abstract class JSONController
     }
 
     /**
-     * @param array|string $message
-     */
+    * @param array|string $message
+    */
     protected function generateSuccess(ResponseInterface $response, $message = ''): ResponseInterface
     {
         return $this->jsonResponse($response, ['result' => 'SUCCESS', 'message' => $message], 200);
@@ -172,8 +172,8 @@ abstract class JSONController
     }
 
     /**
-     * Adds a header to be applied on the JSON response.
-     */
+    * Adds a header to be applied on the JSON response.
+    */
     protected function addHeader(string $name, string $value): void
     {
         $this->headers[$name] = $value;

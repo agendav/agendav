@@ -30,42 +30,42 @@ use AgenDAV\Event\RecurrenceId;
 interface Builder
 {
     /**
-     * Creates an empty Event object
-     *
-     * @param string $uid UID for this event
-     * @return \AgenDAV\Event
-     */
+    * Creates an empty Event object
+    *
+    * @param string $uid UID for this event
+    * @return \AgenDAV\Event
+    */
     public function createEvent($uid);
 
     /**
-     * Creates an empty EventInstance object
-     *
-     * @param \AgenDAV\Event $event Event this instance will be attached to
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     * @return \AgenDAV\EventInstance
-     * @throws \LogicException If $event has no UID assigned
-     */
+    * Creates an empty EventInstance object
+    *
+    * @param \AgenDAV\Event $event Event this instance will be attached to
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    * @return \AgenDAV\EventInstance
+    * @throws \LogicException If $event has no UID assigned
+    */
     public function createEventInstanceFor(\AgenDAV\Event $event, ?RecurrenceId $recurrence_id = null);
 
     /**
-     * Creates an EventInstance object after receiving an array of properties
-     * with the following keys:
-     *
-     * summary
-     * location
-     * start
-     * end
-     * timezone
-     * allday
-     * rrule
-     * description
-     * class
-     * transp
-     * recurrence-id
-     *
-     * @param \AgenDAV\Event $event Parent event
-     * @param array $attributes
-     * @return \AgenDAV\EventInstance
-     */
+    * Creates an EventInstance object after receiving an array of properties
+    * with the following keys:
+    *
+    * summary
+    * location
+    * start
+    * end
+    * timezone
+    * allday
+    * rrule
+    * description
+    * class
+    * transp
+    * recurrence-id
+    *
+    * @param \AgenDAV\Event $event Parent event
+    * @param array $attributes
+    * @return \AgenDAV\EventInstance
+    */
     public function createEventInstanceWithInput(\AgenDAV\Event $event, array $attributes);
 }

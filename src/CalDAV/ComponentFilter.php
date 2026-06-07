@@ -28,10 +28,10 @@ interface ComponentFilter
 {
 
     /**
-     * Adds a filter to the passed Sabre\Xml\Writer object
-     *
-     * @param \Sabre\Xml\Writer $writer XML writer
-     * @return void
-     */
+    * Adds a filter to the passed Sabre\Xml\Writer object
+    *
+    * @param \Sabre\Xml\Writer $writer XML writer
+    * @return void
+    */
     public function addFilter(\Sabre\Xml\Writer $writer);
 }

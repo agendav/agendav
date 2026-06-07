@@ -30,18 +30,18 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
 {
 
     /**
-     * Timezone the events will be converted to
-     *
-     * @var \DateTimeZone
-     */
+    * Timezone the events will be converted to
+    *
+    * @var \DateTimeZone
+    */
     protected $timezone;
 
     /**
-     * Creates a new transformer, specifying the timezone Fullcalendar
-     * is configured to receive the events
-     *
-     * @param \DateTimeZone $timezone
-     */
+    * Creates a new transformer, specifying the timezone Fullcalendar
+    * is configured to receive the events
+    *
+    * @param \DateTimeZone $timezone
+    */
     public function __construct(\DateTimeZone $timezone)
     {
         $this->timezone = $timezone;

@@ -33,8 +33,8 @@ class Exception extends \RuntimeException
     protected $response;
 
     /**
-     * @param \GuzzleHttp\Exception\BadResponseException|string $message_or_exception
-     */
+    * @param \GuzzleHttp\Exception\BadResponseException|string $message_or_exception
+    */
     public function __construct($message_or_exception)
     {
         if ($message_or_exception instanceof \GuzzleHttp\Exception\BadResponseException) {
@@ -49,10 +49,10 @@ class Exception extends \RuntimeException
     }
 
     /*
-     * Getter for response
-     *
-     * @return \GuzzleHttp\Psr7\Response
-     */
+    * Getter for response
+    *
+    * @return \GuzzleHttp\Psr7\Response
+    */
     public function getResponse()
     {
         return $this->response;

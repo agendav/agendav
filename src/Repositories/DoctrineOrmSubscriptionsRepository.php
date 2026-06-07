@@ -34,25 +34,25 @@ use AgenDAV\CalDAV\Resource\Calendar;
 class DoctrineOrmSubscriptionsRepository implements SubscriptionsRepository
 {
     /**
-     * @var EntityManager
-     */
+    * @var EntityManager
+    */
     private $em;
 
 
     /**
-     * @param Doctrine\ORM\EntityManager Entity manager
-     */
+    * @param Doctrine\ORM\EntityManager Entity manager
+    */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
     }
 
     /**
-     * Returns all calendars subscribed by a user
-     *
-     * @param \AgenDAV\Data\Principal $principal  User principal
-     * @return \AgenDAV\Data\Subscription[]
-     */
+    * Returns all calendars subscribed by a user
+    *
+    * @param \AgenDAV\Data\Principal $principal  User principal
+    * @return \AgenDAV\Data\Subscription[]
+    */
     public function getSubscriptionsFor(Principal $principal)
     {
         $subscriptions = $this->em->getRepository('AgenDAV\Data\Subscription')
@@ -62,12 +62,12 @@ class DoctrineOrmSubscriptionsRepository implements SubscriptionsRepository
     }
 
     /**
-     * Returns a specific calendar subscribed by a user
-     *
-     * @param \AgenDAV\Data\Calendar  $calendar  Calendar object
-     * @param \AgenDAV\Data\Principal $principal User principal
-     * @return \AgenDAV\Data\Subscription[]
-     */
+    * Returns a specific calendar subscribed by a user
+    *
+    * @param \AgenDAV\Data\Calendar  $calendar  Calendar object
+    * @param \AgenDAV\Data\Principal $principal User principal
+    * @return \AgenDAV\Data\Subscription[]
+    */
     public function getSubscriptionByUrl(Calendar $calendar, Principal $principal)
     {
         $subscriptions = $this->em->getRepository('AgenDAV\Data\Subscription')
@@ -77,10 +77,10 @@ class DoctrineOrmSubscriptionsRepository implements SubscriptionsRepository
     }
 
     /**
-     * Stores a subscription in the database
-     *
-     * @param AgenDAV\Data\Subscription $subscription  Subscription object
-     */
+    * Stores a subscription in the database
+    *
+    * @param AgenDAV\Data\Subscription $subscription  Subscription object
+    */
     public function save(Subscription $subscription)
     {
         $this->em->persist($subscription);
@@ -88,10 +88,10 @@ class DoctrineOrmSubscriptionsRepository implements SubscriptionsRepository
     }
 
     /**
-     * Removes a subscription from the database
-     *
-     * @param AgenDAV\Data\Subscription $subscription  Subscription object
-     */
+    * Removes a subscription from the database
+    *
+    * @param AgenDAV\Data\Subscription $subscription  Subscription object
+    */
     public function remove(Subscription $subscription)
     {
         $this->em->remove($subscription);

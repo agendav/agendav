@@ -51,9 +51,9 @@ class CalendarFinder
     protected $current_principal;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Session\Session $session
-     * @param \AgenDAV\CalDAV\Client $client
-     */
+    * @param \Symfony\Component\HttpFoundation\Session\Session $session
+    * @param \AgenDAV\CalDAV\Client $client
+    */
     public function __construct(Session $session, Client $client)
     {
         $this->sharing_enabled = false;
@@ -63,11 +63,11 @@ class CalendarFinder
     }
 
     /**
-     * Sets the shares repository for this finder. Until it is called,
-     * the finder disables all functionalities related to shared calendars
-     *
-     * @param \AgenDAV\Repositories\SharesRepository $shares_repository
-     */
+    * Sets the shares repository for this finder. Until it is called,
+    * the finder disables all functionalities related to shared calendars
+    *
+    * @param \AgenDAV\Repositories\SharesRepository $shares_repository
+    */
     public function setSharesRepository(SharesRepository $shares_repository)
     {
         $this->sharing_enabled = true;
@@ -75,20 +75,20 @@ class CalendarFinder
     }
 
     /**
-     * Sets the subscriptions repository for this finder.
-     *
-     * @param \AgenDAV\Repositories\SubscriptionsRepository $subscriptions_repository
-     */
+    * Sets the subscriptions repository for this finder.
+    *
+    * @param \AgenDAV\Repositories\SubscriptionsRepository $subscriptions_repository
+    */
     public function setSubscriptionsRepository(SubscriptionsRepository $subscriptions_repository)
     {
         $this->subscriptions_repository = $subscriptions_repository;
     }
 
     /**
-     * Returns all calendars for the current user
-     *
-     * @return \AgenDAV\CalDAV\Resource\Calendar[] Array of calendars
-     */
+    * Returns all calendars for the current user
+    *
+    * @return \AgenDAV\CalDAV\Resource\Calendar[] Array of calendars
+    */
     public function getCalendars()
     {
         $calendar_home_set = $this->session->get('calendar_home_set');
@@ -114,11 +114,11 @@ class CalendarFinder
     }
 
     /**
-     * Gets all calendars subscribed by current principal
-     *
-     * @param \AgenDAV\Data\Principal $principal Principal
-     * @return \AgenDAV\CalDAV\Resource\Calendar[]
-     */
+    * Gets all calendars subscribed by current principal
+    *
+    * @param \AgenDAV\Data\Principal $principal Principal
+    * @return \AgenDAV\CalDAV\Resource\Calendar[]
+    */
     protected function getSubscribedCalendars(Principal $principal)
     {
         $result = [];
@@ -143,11 +143,11 @@ class CalendarFinder
     }
 
     /**
-     * Gets all calendars shared with current principal
-     *
-     * @param \AgenDAV\Data\Principal $principal Principal
-     * @return \AgenDAV\CalDAV\Resource\Calendar[]
-     */
+    * Gets all calendars shared with current principal
+    *
+    * @param \AgenDAV\Data\Principal $principal Principal
+    * @return \AgenDAV\CalDAV\Resource\Calendar[]
+    */
     protected function getCalendarSharedWith(Principal $principal)
     {
         $result = [];
@@ -178,12 +178,12 @@ class CalendarFinder
     }
 
     /**
-     * Applies custom properties to a calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param array $properties
-     * @return void
-     */
+    * Applies custom properties to a calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param array $properties
+    * @return void
+    */
     protected function applySharedProperties(Calendar $calendar, array $properties)
     {
         // These are not real properties (with their XML namespace)
@@ -202,10 +202,10 @@ class CalendarFinder
     }
 
     /**
-     * Stores existing calendar shares inside each Calendar object
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar[] $calendars
-     */
+    * Stores existing calendar shares inside each Calendar object
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar[] $calendars
+    */
     protected function addShares(array $calendars)
     {
         foreach ($calendars as $calendar) {

@@ -33,11 +33,11 @@ class Log
 {
 
     /**
-     * Generates a new HTTP logger
-     *
-     * @param string $log_file
-     * @return \Monolog\Logger
-     */
+    * Generates a new HTTP logger
+    *
+    * @param string $log_file
+    * @return \Monolog\Logger
+    */
     public static function generateHttpLogger($log_file)
     {
         $logger = new \Monolog\Logger('http');
@@ -60,10 +60,10 @@ class Log
     }
 
     /**
-     * Monolog processor to hide Authorization: headers
-     *
-     * @return \Closure
-     */
+    * Monolog processor to hide Authorization: headers
+    *
+    * @return \Closure
+    */
     public static function hideAuthorizationHeader()
     {
         return function (\Monolog\LogRecord $record): \Monolog\LogRecord {

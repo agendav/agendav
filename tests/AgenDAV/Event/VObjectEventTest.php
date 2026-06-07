@@ -502,9 +502,9 @@ class VObjectEventTest extends TestCase
     }
 
     /**
-     * This test is used to check if searching for RECURRENCE-IDs works with
-     * different timezones
-     */
+    * This test is used to check if searching for RECURRENCE-IDs works with
+    * different timezones
+    */
     public function testGetEventInstanceForExistingExceptionWithTimeZoneOnRecurrentEvent()
     {
         $datetime = new \DateTimeImmutable('2015-07-01 13:29:00', new \DateTimeZone('Europe/Madrid'));

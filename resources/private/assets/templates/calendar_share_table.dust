@@ -1,5 +1,5 @@
 <p id="no_shares" class="text-center">
-   {@i18n type="messages" name="info_notshared"/}
+  {@i18n type="messages" name="info_notshared"/}
 </p>
 
 <div id="shares">
@@ -14,4 +14,3 @@
     <i class="fa fa-plus"></i> {@i18n type="labels" name="add_share"/}
     </a>
 </div>
-

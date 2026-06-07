@@ -37,21 +37,21 @@ class VObjectBuilder implements Builder
     protected $timezone;
 
     /**
-     * Creates a new VObjectBuilder, specifying the user default timezone
-     *
-     * @param \DateTimeZone $timezone
-     */
+    * Creates a new VObjectBuilder, specifying the user default timezone
+    *
+    * @param \DateTimeZone $timezone
+    */
     public function __construct(\DateTimeZone $timezone)
     {
         $this->timezone = $timezone;
     }
 
     /**
-     * Creates an empty Event object
-     *
-     * @param string $uid UID for this event
-     * @return \AgenDAV\Event
-     */
+    * Creates an empty Event object
+    *
+    * @param string $uid UID for this event
+    * @return \AgenDAV\Event
+    */
     public function createEvent($uid)
     {
         $vcalendar = new VCalendar();
@@ -63,13 +63,13 @@ class VObjectBuilder implements Builder
     }
 
     /**
-     * Creates an empty EventInstance object
-     *
-     * @param \AgenDAV\Event $event Event this instance will be attached to
-     * @param \AgenDAV\Event\RecurrenceId $recurrence_id
-     * @return \AgenDAV\EventInstance
-     * @throws \LogicException If $event has no UID assigned
-     */
+    * Creates an empty EventInstance object
+    *
+    * @param \AgenDAV\Event $event Event this instance will be attached to
+    * @param \AgenDAV\Event\RecurrenceId $recurrence_id
+    * @return \AgenDAV\EventInstance
+    * @throws \LogicException If $event has no UID assigned
+    */
     public function createEventInstanceFor(\AgenDAV\Event $event, ?RecurrenceId $recurrence_id = null)
     {
         if ($recurrence_id === null) {
@@ -80,25 +80,25 @@ class VObjectBuilder implements Builder
     }
 
     /**
-     * Creates an EventInstance object after receiving an array of properties
-     * with the following keys:
-     *
-     * summary
-     * location
-     * start_date
-     * start_time
-     * end_date
-     * end_time
-     * allday
-     * description
-     * class
-     * transp
-     * recurrence_id
-     *
-     * @param \AgenDAV\Event $event Parent event
-     * @param array $attributes
-     * @return \AgenDAV\EventInstance
-     */
+    * Creates an EventInstance object after receiving an array of properties
+    * with the following keys:
+    *
+    * summary
+    * location
+    * start_date
+    * start_time
+    * end_date
+    * end_time
+    * allday
+    * description
+    * class
+    * transp
+    * recurrence_id
+    *
+    * @param \AgenDAV\Event $event Parent event
+    * @param array $attributes
+    * @return \AgenDAV\EventInstance
+    */
     public function createEventInstanceWithInput(\AgenDAV\Event $event, array $attributes)
     {
         $recurrence_id = null;
@@ -151,11 +151,11 @@ class VObjectBuilder implements Builder
     }
 
     /**
-     * Sets start and end on a VObjectEventInstance.
-     *
-     * @param \AgenDAV\Event\VObjectEventInstance $instance
-     * @param array $attributes Needs the following keys: 'allday', 'start' and 'end'
-     */
+    * Sets start and end on a VObjectEventInstance.
+    *
+    * @param \AgenDAV\Event\VObjectEventInstance $instance
+    * @param array $attributes Needs the following keys: 'allday', 'start' and 'end'
+    */
     protected function setStartAndEnd(VObjectEventInstance $instance, array $attributes)
     {
         $is_all_day = !empty($attributes['allday']) && $attributes['allday'] === 'true';
@@ -176,11 +176,11 @@ class VObjectBuilder implements Builder
     }
 
     /**
-     * Sets current instance reminders
-     *
-     * @param VObjectEventInstance $instance
-     * @param array|null $reminders_input
-     */
+    * Sets current instance reminders
+    *
+    * @param VObjectEventInstance $instance
+    * @param array|null $reminders_input
+    */
     protected function setReminders(VObjectEventInstance $instance, $reminders_input)
     {
         $reminders = [];
@@ -196,11 +196,11 @@ class VObjectBuilder implements Builder
     }
 
     /**
-     * Returns a set of Reminder
-     *
-     * @param array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
-     * @return \AgenDAV\Data\Reminder[]
-     */
+    * Returns a set of Reminder
+    *
+    * @param array $input In the form: [ 'unit' => [ ... ], 'count' => [ ... ] ]
+    * @return \AgenDAV\Data\Reminder[]
+    */
     protected function buildReminders(array $input)
     {
         $result = [];

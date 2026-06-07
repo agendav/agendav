@@ -34,19 +34,19 @@ class Test implements ComponentFilter
     private $tag;
 
     /**
-     * @param string $tag In Clark notation
-     */
+    * @param string $tag In Clark notation
+    */
     public function __construct($tag)
     {
         $this->tag = $tag;
     }
 
     /**
-     * Adds a filter to the passed Sabre\Xml\Writer object
-     *
-     * @param \Sabre\Xml\Writer $writer XML writer
-     * @return void
-     */
+    * Adds a filter to the passed Sabre\Xml\Writer object
+    *
+    * @param \Sabre\Xml\Writer $writer XML writer
+    * @return void
+    */
     public function addFilter(\Sabre\Xml\Writer $writer)
     {
         $writer->write([ $this->tag => [] ]);

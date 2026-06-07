@@ -25,43 +25,43 @@ class GeneratorTest extends TestCase
         ]));
 
         $expected =  [
-          'name' => '{DAV:}propfind',
-          'value' =>
-           [
+        'name' => '{DAV:}propfind',
+        'value' =>
+            [
             0 =>
-             [
-              'name' => '{DAV:}prop',
-              'value' =>
-               [
+            [
+            'name' => '{DAV:}prop',
+            'value' =>
+                [
                 0 =>
-                 [
-                  'name' => '{DAV:}resourcetype',
-                  'value' => null,
-                  'attributes' =>  [],
+                [
+                'name' => '{DAV:}resourcetype',
+                'value' => null,
+                'attributes' =>  [],
                 ],
                 1 =>
-                 [
-                  'name' => '{urn:ietf:params:xml:ns:caldav}calendar-home-set',
-                  'value' => null,
-                  'attributes' =>  [],
+                [
+                'name' => '{urn:ietf:params:xml:ns:caldav}calendar-home-set',
+                'value' => null,
+                'attributes' =>  [],
                 ],
                 2 =>
-                 [
-                  'name' => '{http://apple.com/ns/ical/}calendar-color',
-                  'value' => null,
-                  'attributes' =>  [],
+                [
+                'name' => '{http://apple.com/ns/ical/}calendar-color',
+                'value' => null,
+                'attributes' =>  [],
                 ],
                 3 =>
-                 [
-                  'name' => '{http://fake.namespace.org}calendar-color',
-                  'value' => null,
-                  'attributes' =>  [],
+                [
+                'name' => '{http://fake.namespace.org}calendar-color',
+                'value' => null,
+                'attributes' =>  [],
                 ],
-              ],
-              'attributes' =>  [],
             ],
-          ],
-          'attributes' =>  [],
+            'attributes' =>  [],
+            ],
+        ],
+        'attributes' =>  [],
         ];
         $reader = new Reader();
         $reader->xml($body);
@@ -80,39 +80,39 @@ class GeneratorTest extends TestCase
         $body = $generator->mkCalendarBody($properties);
 
         $expected =  [
-          'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
-          'value' =>
-           [
+        'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
+        'value' =>
+            [
             0 =>
-             [
-              'name' => '{DAV:}set',
-              'value' =>
-               [
+            [
+            'name' => '{DAV:}set',
+            'value' =>
+                [
                 0 =>
-                 [
-                  'name' => '{DAV:}prop',
-                  'value' =>
-                   [
+                [
+                'name' => '{DAV:}prop',
+                'value' =>
+                    [
                     0 =>
-                     [
-                      'name' => '{DAV:}displayname',
-                      'value' => 'Calendar name',
-                      'attributes' =>  [],
+                    [
+                    'name' => '{DAV:}displayname',
+                    'value' => 'Calendar name',
+                    'attributes' =>  [],
                     ],
                     1 =>
-                     [
-                      'name' => '{urn:fake}attr',
-                      'value' => 'value',
-                      'attributes' =>  [],
+                    [
+                    'name' => '{urn:fake}attr',
+                    'value' => 'value',
+                    'attributes' =>  [],
                     ],
-                  ],
-                  'attributes' =>  [],
                 ],
-              ],
-              'attributes' =>  [],
+                'attributes' =>  [],
+                ],
             ],
-          ],
-          'attributes' =>  [],
+            'attributes' =>  [],
+            ],
+        ],
+        'attributes' =>  [],
         ];
 
         $reader = new Reader();
@@ -122,8 +122,8 @@ class GeneratorTest extends TestCase
     }
 
     /**
-     * Make sure that the body doesn't contain a <set><prop></prop></set> group
-     */
+    * Make sure that the body doesn't contain a <set><prop></prop></set> group
+    */
     public function testMkCalendarBodyWithoutProperties()
     {
         $generator = $this->createXMLGenerator();
@@ -131,9 +131,9 @@ class GeneratorTest extends TestCase
         $body = $generator->mkCalendarBody([]);
 
         $expected =  [
-          'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
-          'value' => null,
-          'attributes' =>  [],
+        'name' => '{urn:ietf:params:xml:ns:caldav}mkcalendar',
+        'value' => null,
+        'attributes' =>  [],
         ];
         $reader = new Reader();
         $reader->xml($body);
@@ -154,45 +154,45 @@ class GeneratorTest extends TestCase
         $body = $generator->proppatchBody($properties);
 
         $expected =  [
-          'name' => '{DAV:}propertyupdate',
-          'value' =>
-           [
+        'name' => '{DAV:}propertyupdate',
+        'value' =>
+            [
             0 =>
-             [
-              'name' => '{DAV:}set',
-              'value' =>
-               [
+            [
+            'name' => '{DAV:}set',
+            'value' =>
+                [
                 0 =>
-                 [
-                  'name' => '{DAV:}prop',
-                  'value' =>
-                   [
+                [
+                'name' => '{DAV:}prop',
+                'value' =>
+                    [
                     0 =>
-                     [
-                      'name' => '{DAV:}displayname',
-                      'value' => 'Calendar name',
-                      'attributes' =>  [],
+                    [
+                    'name' => '{DAV:}displayname',
+                    'value' => 'Calendar name',
+                    'attributes' =>  [],
                     ],
                     1 =>
-                     [
-                      'name' => '{http://apple.com/ns/ical/}calendar-color',
-                      'value' => '#f0f0f0aa',
-                      'attributes' =>  [],
+                    [
+                    'name' => '{http://apple.com/ns/ical/}calendar-color',
+                    'value' => '#f0f0f0aa',
+                    'attributes' =>  [],
                     ],
                     2 =>
-                     [
-                      'name' => '{urn:fake}attr',
-                      'value' => 'value',
-                      'attributes' =>  [],
+                    [
+                    'name' => '{urn:fake}attr',
+                    'value' => 'value',
+                    'attributes' =>  [],
                     ],
-                  ],
-                  'attributes' =>  [],
                 ],
-              ],
-              'attributes' =>  [],
+                'attributes' =>  [],
+                ],
             ],
-          ],
-          'attributes' =>  [],
+            'attributes' =>  [],
+            ],
+        ],
+        'attributes' =>  [],
         ];
 
         $reader = new Reader();
@@ -217,9 +217,9 @@ class GeneratorTest extends TestCase
   </d:prop>
   <C:filter>
     <C:comp-filter name="VCALENDAR">
-      <C:comp-filter name="VEVENT">
+    <C:comp-filter name="VEVENT">
         <x1:test xmlns:x1="http://fake.com/"/>
-      </C:comp-filter>
+    </C:comp-filter>
     </C:comp-filter>
   </C:filter>
 </C:calendar-query>
@@ -250,47 +250,47 @@ EOXML;
 <d:acl xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/">
   <d:ace>
     <d:principal>
-      <d:property>
+    <d:property>
         <d:owner/>
-      </d:property>
+    </d:property>
     </d:principal>
     <d:grant>
-      <d:privilege>
+    <d:privilege>
         <d:all/>
-      </d:privilege>
-      <d:privilege>
+    </d:privilege>
+    <d:privilege>
         <x1:master-of-universe xmlns:x1="urn:he:man"/>
-      </d:privilege>
+    </d:privilege>
     </d:grant>
   </d:ace>
   <d:ace>
     <d:principal>
-      <d:authenticated/>
+    <d:authenticated/>
     </d:principal>
     <d:grant>
-      <d:privilege>
+    <d:privilege>
         <C:read-free-busy/>
-      </d:privilege>
+    </d:privilege>
     </d:grant>
   </d:ace>
   <d:ace>
     <d:principal>
-      <d:href>/jorge</d:href>
+    <d:href>/jorge</d:href>
     </d:principal>
     <d:grant>
-      <d:privilege>
+    <d:privilege>
         <d:write/>
-      </d:privilege>
+    </d:privilege>
     </d:grant>
   </d:ace>
   <d:ace>
     <d:principal>
-      <d:href>/rigodon</d:href>
+    <d:href>/rigodon</d:href>
     </d:principal>
     <d:grant>
-      <d:privilege>
+    <d:privilege>
         <d:read/>
-      </d:privilege>
+    </d:privilege>
     </d:grant>
   </d:ace>
 </d:acl>
@@ -310,13 +310,13 @@ ACLBODY;
 <d:principal-property-search xmlns:d="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav" xmlns:A="http://apple.com/ns/ical/" test="anyof">
   <d:property-search>
     <d:prop>
-      <C:calendar-user-address-set/>
+    <C:calendar-user-address-set/>
     </d:prop>
     <d:match>example</d:match>
   </d:property-search>
   <d:property-search>
     <d:prop>
-      <d:displayname/>
+    <d:displayname/>
     </d:prop>
     <d:match>example</d:match>
   </d:property-search>
@@ -331,8 +331,8 @@ BODY;
     }
 
     /**
-     * Create a new XMLGenerator without output formatting
-     **/
+    * Create a new XMLGenerator without output formatting
+    **/
     public function createXMLGenerator()
     {
         return new Generator(false);

@@ -85,9 +85,9 @@ EOBODY;
 
 
     /*
-     * Tests that <resourcetype> get converted into a Sabre\DAV\Property\ResourceType
-     * object
-     */
+    * Tests that <resourcetype> get converted into a Sabre\DAV\Property\ResourceType
+    * object
+    */
     public function testResourceTypeClass()
     {
         $body = <<<EOBODY

@@ -38,9 +38,9 @@ class SharingResolver implements SharesRepository
     protected $principals_repository;
 
     /**
-     * @param \AgenDAV\Repositories\SharesRepository $shares_repository
-     * @param \AgenDAV\Repositories\PrincipalsRepository $principals_repository
-     */
+    * @param \AgenDAV\Repositories\SharesRepository $shares_repository
+    * @param \AgenDAV\Repositories\PrincipalsRepository $principals_repository
+    */
     public function __construct(
         SharesRepository $shares_repository,
         PrincipalsRepository $principals_repository
@@ -50,11 +50,11 @@ class SharingResolver implements SharesRepository
     }
 
     /**
-     * Resolves principals for a list of shares
-     *
-     * @param \AgenDAV\Data\Share[] $shares
-     * @return void
-     */
+    * Resolves principals for a list of shares
+    *
+    * @param \AgenDAV\Data\Share[] $shares
+    * @return void
+    */
     public function resolveShares(array $shares)
     {
         foreach ($shares as $share) {
@@ -65,11 +65,11 @@ class SharingResolver implements SharesRepository
     }
 
     /**
-     * Returns all calendars shared with a user
-     *
-     * @param \AgenDAV\Data\Principal $principal  User principal
-     * @return \AgenDAV\Data\Share[]
-     */
+    * Returns all calendars shared with a user
+    *
+    * @param \AgenDAV\Data\Principal $principal  User principal
+    * @return \AgenDAV\Data\Share[]
+    */
     public function getSharesFor(Principal $principal)
     {
         $shares = $this->shares_repository->getSharesFor($principal);
@@ -79,11 +79,11 @@ class SharingResolver implements SharesRepository
     }
 
     /**
-     * Returns all grants that have been given to a calendar
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @return \AgenDAV\Data\Share[]
-     */
+    * Returns all grants that have been given to a calendar
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @return \AgenDAV\Data\Share[]
+    */
     public function getSharesOnCalendar(Calendar $calendar)
     {
         $shares = $this->shares_repository->getSharesOnCalendar($calendar);
@@ -93,42 +93,42 @@ class SharingResolver implements SharesRepository
     }
 
     /**
-     * Stores a grant on the database
-     *
-     * @param \AgenDAV\Data\Share $share  Share object
-     */
+    * Stores a grant on the database
+    *
+    * @param \AgenDAV\Data\Share $share  Share object
+    */
     public function save(Share $share)
     {
         $this->shares_repository->save($share);
     }
 
     /**
-     * Removes a grant for a calendar
-     *
-     * @param \AgenDAV\Data\Share $share  Share object
-     */
+    * Removes a grant for a calendar
+    *
+    * @param \AgenDAV\Data\Share $share  Share object
+    */
     public function remove(Share $share)
     {
         $this->shares_repository->remove($share);
     }
 
     /**
-     * Saves all calendar shares. Any other existing shares will get removed
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     */
+    * Saves all calendar shares. Any other existing shares will get removed
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    */
     public function saveFromCalendar(Calendar $calendar)
     {
         $this->shares_repository->saveFromCalendar($calendar);
     }
 
     /**
-     * Retrieves the Share object for a calendar which is shared with
-     * a given principal
-     *
-     * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
-     * @param \AgenDAV\Data\Principal $principal  User principal
-     */
+    * Retrieves the Share object for a calendar which is shared with
+    * a given principal
+    *
+    * @param \AgenDAV\CalDAV\Resource\Calendar $calendar
+    * @param \AgenDAV\Data\Principal $principal  User principal
+    */
     public function getSourceShare(Calendar $calendar, Principal $principal)
     {
         $share = $this->shares_repository->getSourceShare($calendar, $principal);
