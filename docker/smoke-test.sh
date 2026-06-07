@@ -457,6 +457,14 @@ else
 fi
 docker compose exec -T db mysql -uagendav -pagendav agendav -e "DELETE FROM shares WHERE owner='smoke-owner';" 2>/dev/null
 
+# 25. restore prefs to English so subsequent runs start from a neutral state
+PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
+T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
+curl -s -o /dev/null -b "$JAR" -c "$JAR" -X POST \
+  --data-urlencode "_token=$T" \
+  --data "language=en&timezone=UTC&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
+  http://localhost:8080/preferences
+
 # ----- summary -----
 echo
 echo "================================================="
