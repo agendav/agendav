@@ -6,6 +6,8 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": ">=8.5",
+        "ext-mbstring": "*",
+        "ext-sodium": "*",
         "doctrine/dbal": "^4.0",
         "doctrine/migrations": "^3.8",
         "doctrine/orm": "^3.0",
