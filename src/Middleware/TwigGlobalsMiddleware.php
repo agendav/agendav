@@ -34,10 +34,8 @@ class TwigGlobalsMiddleware implements MiddlewareInterface
         $translator = $this->container->get('translator');
         $locale = $translator->getLocale();
         $twig->addGlobal('lang', $locale);
-        $twig->addGlobal(
-            'translations',
-            $translator->getCatalogue($locale)->all('messages')
-        );
+        $translations = $translator->getCatalogue($locale)->all('messages');
+        $twig->addGlobal('translations', $translations ?: $translator->getCatalogue('en')->all('messages'));
 
         $twig->addGlobal(
             'fullcalendar_languages',

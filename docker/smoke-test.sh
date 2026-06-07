@@ -402,18 +402,26 @@ echo "$PREF_DB" | grep -q '"language":"fr_FR"' && pass "prefs persisted to DB" |
 # 18. /keepalive
 assert_status "GET /keepalive" http://localhost:8080/keepalive 200 -b "$JAR"
 
-# 19. /logout → 302 → /login
+# 19. restore prefs to English so subsequent runs start from a neutral state
+PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
+T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
+curl -s -o /dev/null -b "$JAR" -c "$JAR" -X POST \
+  --data-urlencode "_token=$T" \
+  --data "language=en&timezone=Europe%2FMadrid&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
+  http://localhost:8080/preferences
+
+# 20. /logout → 302 → /login
 LOGOUT_LOC=$(curl -s -o /dev/null -w '%{redirect_url}' -b "$JAR" -c "$JAR" http://localhost:8080/logout)
 [[ "$LOGOUT_LOC" == */login ]] && pass "GET /logout redirects to /login" || fail "GET /logout redirected to: $LOGOUT_LOC"
 
-# 20. logged-out /preferences → 302 → /login
+# 21. logged-out /preferences → 302 → /login
 LO_LOC=$(curl -s -o /dev/null -w '%{redirect_url}' -b "$JAR" http://localhost:8080/preferences)
 [[ "$LO_LOC" == */login ]] && pass "logged-out /preferences redirects to /login" || fail "logged-out /preferences redirected to: $LO_LOC"
 
-# 21. unknown route → 404
+# 22. unknown route → 404
 assert_status "GET /this-does-not-exist" http://localhost:8080/this-does-not-exist 404
 
-# 21b. unknown route in PROD env renders the error template (regression guard:
+# 22b. unknown route in PROD env renders the error template (regression guard:
 # routing-mw throws before TwigGlobalsMiddleware runs, so the error handler
 # must still see title/lang/favicon globals or layout.html crashes).
 PROD_404=$(docker compose exec -T -e AGENDAV_ENVIRONMENT=prod web php -r '
@@ -431,13 +439,13 @@ else
   fail "prod-mode 404 template (got status=$STATUS len=$LEN has_title=$HAS_TITLE)"
 fi
 
-# 22. POST without _token → 401
+# 23. POST without _token → 401
 assert_status "POST /preferences (no _token)" http://localhost:8080/preferences 401 -b "$JAR_FRESH" -X POST -d "x=1"
 
-# 23. HTTP Basic auth → 200
+# 24. HTTP Basic auth → 200
 assert_status "GET /calendars (HTTP Basic)" http://localhost:8080/calendars 200 -u test:test
 
-# 24. shares.options PHP-serialized -> JSON data migration (Version20260524120000).
+# 25. shares.options PHP-serialized -> JSON data migration (Version20260524120000).
 # DBAL 4 removed the 'array' type, so Share::$options is now 'json'. This drives
 # the migration's up() against real MySQL: seed a legacy serialized row, then
 # down()+up() the migration (it already ran on the fresh DB) and assert the row
@@ -456,14 +464,6 @@ else
   fail "shares.options not converted to JSON: got '$SHARE_OPTS'"
 fi
 docker compose exec -T db mysql -uagendav -pagendav agendav -e "DELETE FROM shares WHERE owner='smoke-owner';" 2>/dev/null
-
-# 25. restore prefs to English so subsequent runs start from a neutral state
-PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
-T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
-curl -s -o /dev/null -b "$JAR" -c "$JAR" -X POST \
-  --data-urlencode "_token=$T" \
-  --data "language=en&timezone=UTC&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
-  http://localhost:8080/preferences
 
 # ----- summary -----
 echo
