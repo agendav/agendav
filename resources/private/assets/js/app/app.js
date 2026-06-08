@@ -1686,8 +1686,15 @@ var event_render_callback = function event_render_callback(event, element) {
       icon_html.append('<i class="fa ' + i + '"></i>');
     });
 
-    element.find('.fc-title').after(icon_html);
+    element.find('.fc-title').append(icon_html);
   }
+
+  // Hover tooltip with full time and title
+  var fmt = AgenDAVDateAndTime.momentFormat[AgenDAVUserPrefs.time_format];
+  var tooltip = event.allDay
+    ? event.title
+    : event.start.format(fmt) + ' - ' + event.end.format(fmt) + ' ' + event.title;
+  element.attr('title', tooltip);
 
 };
 
