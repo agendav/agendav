@@ -112,6 +112,10 @@ $(document).ready(function() {
     slotMinutes: 30,
     firstHour: 8,
     nowIndicator: AgenDAVUserPrefs.show_now_indicator,
+    hiddenDays: AgenDAVUserPrefs.hide_weekends ? [0, 6] : [],
+    minTime: AgenDAVUserPrefs.working_hours_start || '00:00:00',
+    maxTime: AgenDAVUserPrefs.working_hours_end || '24:00:00',
+    scrollTime: AgenDAVUserPrefs.working_hours_start || '06:00:00',
 
     // Default event durations. Used when dropping events
     defaultTimedEventDuration: '01:00:00',

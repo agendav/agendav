@@ -69,6 +69,9 @@ class Preferences
                 'list_days' => $preferences->get('list_days'),
                 'default_view' => $preferences->get('default_view'),
                 'default_reminder' => $preferences->get('default_reminder'),
+                'hide_weekends' => $preferences->get('hide_weekends'),
+                'working_hours_start' => $preferences->get('working_hours_start'),
+                'working_hours_end' => $preferences->get('working_hours_end'),
             ]
         );
 
@@ -109,6 +112,9 @@ class Preferences
             'list_days' => $input['list_days'] ?? null,
             'default_view' => $input['default_view'] ?? null,
             'default_reminder' => $this->parseDefaultReminder($input),
+            'hide_weekends' => ($input['hide_weekends'] ?? null) === 'true',
+            'working_hours_start' => $this->parseWorkingHour($input['working_hours_start'] ?? null),
+            'working_hours_end' => $this->parseWorkingHour($input['working_hours_end'] ?? null),
         ]);
         $this->container->get('preferences.repository')->save($username, $preferences);
 
@@ -117,6 +123,17 @@ class Preferences
         return $response
             ->withStatus(302)
             ->withHeader('Location', $routeParser->urlFor('calendar'));
+    }
+
+    private function parseWorkingHour(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+        if (!preg_match('/^([01]\d|2[0-3]):00$/', $value)) {
+            return null;
+        }
+        return $value;
     }
 
     private function parseDefaultReminder(array $input): ?array

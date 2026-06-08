@@ -129,6 +129,45 @@
     </div>
 
     <div class="form-group">
+        <label for="hide_weekends">{% trans %}labels.hide_weekends{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="hide_weekends" {% if hide_weekends == true %} checked="checked" {% endif %} value="true"> {% trans %}labels.yes{% endtrans %}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="hide_weekends" {% if hide_weekends == false %} checked="checked" {% endif %} value="false"> {% trans %}labels.no{% endtrans %}
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>{% trans %}labels.working_hours{% endtrans %}</label>
+        <div class="row">
+            <div class="col-md-2">
+                <select class="form-control" name="working_hours_start">
+                    <option value="">-</option>
+                    {% for h in range(0, 23) %}
+                    {% set hh = '%02d'|format(h) ~ ':00' %}
+                    <option value="{{ hh }}"{% if working_hours_start == hh %} selected="selected"{% endif %}>{{ hh }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-1">
+                <p class="form-control-static">-</p>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="working_hours_end">
+                    <option value="">-</option>
+                    {% for h in range(1, 24) %}
+                    {% set hh = '%02d'|format(h) ~ ':00' %}
+                    <option value="{{ hh }}"{% if working_hours_end == hh %} selected="selected"{% endif %}>{{ hh }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <span class="help-block">{% trans %}messages.help_working_hours{% endtrans %}</span>
+    </div>
+
+    <div class="form-group">
         <label for="default_reminder_count">{% trans %}labels.default_reminder{% endtrans %}</label>
         <div class="row">
             <div class="col-md-2">

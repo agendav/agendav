@@ -137,6 +137,8 @@ $translations = [
 
     'labels.defaultcalendar' => 'Standardkalender',
     'labels.default_view' => 'Standardansicht',
+    'labels.hide_weekends' => 'Wochenenden ausblenden',
+    'labels.working_hours' => 'Arbeitszeiten',
     'labels.default_reminder' => 'Standard-Erinnerung',
 
     'labels.toggleallcalendars' => 'Alle anzeigen/verstecken',
@@ -226,6 +228,7 @@ $translations = [
 
     'messages.help_defaultcalendar' => 'Neue Einträge werden standardmässig in diesem Kalender angelegt. Geben Sie hier den Kalender an, den Sie am Meisten verwenden.',
     'messages.help_default_view' => 'Default view when you access your calendar',
+    'messages.help_working_hours' => 'Sichtbaren Zeitbereich in Wochen- und Tagesansicht einschränken. Beide auf - lassen für volle Anzeige.',
     'messages.help_default_reminder' => 'Wenn gesetzt, wird diese Erinnerung bei neuen Terminen vorbelegt. Leer lassen um zu deaktivieren.',
     'messages.help_timezone' => 'Wählen Sie Ihre aktuelle Zeitzone. Dies beinflusst, wie Sie bereits vorhandene Termin angezeigt bekommen. Neue Termine werden mit dieser Zeitzoneninformation angelegt.',
     'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
