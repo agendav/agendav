@@ -215,6 +215,9 @@ put('seed-weekend', make_ics(
 
 PY
 
+# ----- copy ICS fixture -----
+cp tests/fixtures/test-calendar.ics public/test-calendar.ics
+
 # ----- seed ICS subscription -----
 echo "==> seeding ICS subscription"
 docker compose exec -T db mysql -uagendav -pagendav agendav 2>/dev/null <<'SQL'

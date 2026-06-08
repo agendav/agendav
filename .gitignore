@@ -23,7 +23,7 @@ public/dist/css/*.css
 public/dist/js/*.js
 public/dist/css/images/
 public/img/jquery-ui/
-public/es5-shim.js
+public/test-calendar.ics
 public/font/fa/
 public/font/bootstrap/
 public/fullcalendar-locale/

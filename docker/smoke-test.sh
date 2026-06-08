@@ -264,6 +264,7 @@ RESP=$(curl -s -b "$JAR" -X POST \
 echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/delete" || fail "POST /calendars/delete: $RESP"
 
 # 8b. POST /calendars (subscribe to ICS)
+cp tests/fixtures/test-calendar.ics public/test-calendar.ics
 ICS_URL='http://localhost/test-calendar.ics'
 ICS_URL_ENC='http%3A%2F%2Flocalhost%2Ftest-calendar.ics'
 RESP=$(curl -s -b "$JAR" -X POST \
