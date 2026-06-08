@@ -6,11 +6,17 @@ Configuration
 Configuring AgenDAV requires creating a ``settings.php`` file in the
 ``web/config/`` directory.
 
-You will find all available settings inside the file ``default.settings.php``. Please, do not
-modify ``default.settings.php``, as any changes will be lost if you upgrade AgenDAV.
+The quickest way to get started is to copy the provided template::
 
-Save a copy of the ``default.settings.php`` file as ``settings.php``, or just copy the settings you want to
-modify,  and start configuring your instance.
+  $ cp web/config/settings.template.php web/config/settings.php
+
+The template contains the most common settings with sensible defaults and
+inline comments. You only need to set ``csrf.secret``, ``db.options``, and
+``caldav.baseurl`` to get a working installation.
+
+All available settings with full documentation are listed in
+``default.settings.php``. Do not modify ``default.settings.php`` - it is
+overwritten on upgrades.
 
 .. confval:: site.title
 

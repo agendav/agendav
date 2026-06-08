@@ -30,6 +30,7 @@ public/fullcalendar-locale/
 
 # Configuration file
 /config/settings*
+!/config/settings.template.php
 
 # Development
 /node_modules/

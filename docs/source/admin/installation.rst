@@ -175,7 +175,12 @@ assumes your web server runs as `www-data` user and `www-data` group::
 Configuration
 -------------
 
-Now you should configure AgenDAV following the :doc:`configuration` section.
+A ready-to-edit template is provided at ``web/config/settings.template.php``. Copy it to
+``web/config/settings.php`` and adjust the values for your setup::
+
+  $ cp web/config/settings.template.php web/config/settings.php
+
+Then follow the :doc:`configuration` section for a description of every option.
 
 Create AgenDAV tables
 ---------------------
