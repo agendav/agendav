@@ -169,15 +169,15 @@ return [
 
         $named = [
             'css' => new \Symfony\Component\Asset\PathPackage(
-                $basePath . '/dist/css',
+                $basePath . '/assets/dist/css',
                 new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
             ),
             'js' => new \Symfony\Component\Asset\PathPackage(
-                $basePath . '/dist/js',
+                $basePath . '/assets/dist/js',
                 new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
             ),
             'img' => new \Symfony\Component\Asset\PathPackage(
-                $basePath . '/img',
+                $basePath . '/assets/img',
                 new \Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy(\AgenDAV\Version::V)
             ),
         ];

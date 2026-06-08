@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CSS=/app/public/dist/css/agendav.css
-JS=/app/public/dist/js/agendav.min.js
+CSS=/app/resources/public/assets/dist/css/agendav.css
+JS=/app/resources/public/assets/dist/js/agendav.min.js
 VENDOR=/app/vendor/autoload.php
 
 if [[ -f "$CSS" && -f "$JS" && -f "$VENDOR" && -z "${FORCE:-}" ]]; then

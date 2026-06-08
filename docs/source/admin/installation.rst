@@ -131,6 +131,11 @@ Being Apache one of the most used web servers, a sample configuration is shown b
   ErrorLog logs/agendav_error_log
   CustomLog logs/agendav_access_log common
 
+  <Directory /path/to/agendav/web/public>
+    Options +FollowSymLinks
+    AllowOverride All
+  </Directory>
+
   <Location />
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f

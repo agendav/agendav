@@ -7,6 +7,6 @@
 
 {% if load_fullcalendar_locale is defined and fullcalendar_languages[lang] is defined %}
   {% set fullcalendar_locale = fullcalendar_languages[lang] %}
-  {% set locale_path = 'fullcalendar-locale/' ~ fullcalendar_locale ~ '.js' %}
+  {% set locale_path = 'assets/fullcalendar-locale/' ~ fullcalendar_locale ~ '.js' %}
   <script language="JavaScript" type="text/javascript" src="{{ asset(locale_path) }}"></script>
 {% endif %}

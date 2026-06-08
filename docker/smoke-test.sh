@@ -195,8 +195,8 @@ trap 'rm -f "$JAR" "$JAR_FRESH"' EXIT
 # 0. front-end bundle is actually on disk (and not falling through .htaccess
 #    to Slim's 404 HTML page). Without these, the calendar UI shows a
 #    permanent loading spinner because the JS never loads.
-assert_content_type "GET /dist/css/agendav.css" http://localhost:8080/dist/css/agendav.css text/css
-assert_content_type "GET /dist/js/agendav.min.js" http://localhost:8080/dist/js/agendav.min.js text/javascript
+assert_content_type "GET /assets/dist/css/agendav.css" http://localhost:8080/assets/dist/css/agendav.css text/css
+assert_content_type "GET /assets/dist/js/agendav.min.js" http://localhost:8080/assets/dist/js/agendav.min.js text/javascript
 
 # 1. login form GET
 assert_status "GET /login" http://localhost:8080/login 200 -c "$JAR"

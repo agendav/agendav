@@ -19,14 +19,13 @@
 .php-cs-fixer.cache
 
 agendav-built*
-public/dist/css/*.css
-public/dist/js/*.js
-public/dist/css/images/
-public/img/jquery-ui/
+resources/public/assets/dist/css/*.css
+resources/public/assets/dist/js/*.js
+resources/public/assets/dist/css/images/
+resources/public/assets/img/jquery-ui/
+resources/public/assets/font/
+resources/public/assets/fullcalendar-locale/
 public/test-calendar.ics
-public/font/fa/
-public/font/bootstrap/
-public/fullcalendar-locale/
 
 # Configuration file
 /config/settings*
