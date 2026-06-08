@@ -128,6 +128,29 @@
         <span class="help-block">{% trans %}messages.help_list_days{% endtrans %}</span>
     </div>
 
+    <div class="form-group">
+        <label for="default_reminder_count">{% trans %}labels.default_reminder{% endtrans %}</label>
+        <div class="row">
+            <div class="col-md-2">
+                <input class="form-control" type="number" min="0" name="default_reminder_count"
+                    value="{{ default_reminder ? default_reminder.count : '' }}">
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" name="default_reminder_unit">
+                    {% for unit in ['minutes', 'hours', 'days', 'weeks', 'months'] %}
+                    <option value="{{ unit }}"{% if default_reminder and default_reminder.unit == unit %} selected="selected"{% endif %}>
+                        {{ ('labels.' ~ unit) | trans }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-7">
+                <p class="form-control-static">{% trans %}labels.before_start{% endtrans %}</p>
+            </div>
+        </div>
+        <span class="help-block">{% trans %}messages.help_default_reminder{% endtrans %}</span>
+    </div>
+
     <div id="prefs_buttons">
       <input type="submit" class="btn btn-success" value="{% trans %}labels.save{% endtrans %}">
 

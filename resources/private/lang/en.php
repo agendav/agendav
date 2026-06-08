@@ -137,6 +137,7 @@ $translations = [
 
     'labels.defaultcalendar' => 'Default calendar',
     'labels.default_view' => 'Default view',
+    'labels.default_reminder' => 'Default reminder',
 
     'labels.toggleallcalendars' => 'Show/hide all',
 
@@ -225,6 +226,7 @@ $translations = [
 
     'messages.help_defaultcalendar' => 'New events will be placed in this calendar by default. Set here your most used calendar',
     'messages.help_default_view' => 'Default view when you access your calendar',
+    'messages.help_default_reminder' => 'When set, new events will have this reminder pre-filled. Leave count empty to disable.',
     'messages.help_timezone' => 'Choose your current timezone. This will affect how you see existing events, and new events will be created using this timezone',
     'messages.help_list_days' => 'Choose how many consecutive days do you want to be shown on the "list" view',
 

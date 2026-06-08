@@ -642,6 +642,13 @@ var open_event_edit_dialog = function open_event_edit_dialog(event) {
     event.calendar = AgenDAVUserPrefs.default_calendar;
   }
 
+  // Pre-fill default reminder for new events
+  if (is_new && (!event.reminders || event.reminders.length === 0)) {
+    if (AgenDAVUserPrefs.default_reminder) {
+      event.reminders = [AgenDAVUserPrefs.default_reminder];
+    }
+  }
+
   // Recurrence instances: allow modifying recurrence rules or calendar only
   // on the base event
   if (event.rrule !== undefined && event.recurrence_id !== undefined) {

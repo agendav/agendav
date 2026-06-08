@@ -68,6 +68,7 @@ class Preferences
                 'show_now_indicator' => $preferences->get('show_now_indicator'),
                 'list_days' => $preferences->get('list_days'),
                 'default_view' => $preferences->get('default_view'),
+                'default_reminder' => $preferences->get('default_reminder'),
             ]
         );
 
@@ -107,6 +108,7 @@ class Preferences
             'show_now_indicator' => ($input['show_now_indicator'] ?? null) === 'true',
             'list_days' => $input['list_days'] ?? null,
             'default_view' => $input['default_view'] ?? null,
+            'default_reminder' => $this->parseDefaultReminder($input),
         ]);
         $this->container->get('preferences.repository')->save($username, $preferences);
 
@@ -115,5 +117,18 @@ class Preferences
         return $response
             ->withStatus(302)
             ->withHeader('Location', $routeParser->urlFor('calendar'));
+    }
+
+    private function parseDefaultReminder(array $input): ?array
+    {
+        $count = $input['default_reminder_count'] ?? '';
+        $unit = $input['default_reminder_unit'] ?? '';
+        $allowed_units = ['minutes', 'hours', 'days', 'weeks', 'months'];
+
+        if ($count === '' || !ctype_digit((string) $count) || !in_array($unit, $allowed_units, true)) {
+            return null;
+        }
+
+        return ['count' => (int) $count, 'unit' => $unit];
     }
 }
