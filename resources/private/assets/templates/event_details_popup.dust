@@ -29,11 +29,14 @@
 
 {^disable_actions}
 <div class="actions">
-  <span class="right">
-    <a href="javascript:void(0)" data-event-id="{id}" class="modify">{@i18n type="labels" name="modify"/}</a>
-  </span>
-  <span class="left">
+  <span>
     <a href="javascript:void(0)" data-event-id="{id}" class="remove">{@i18n type="labels" name="delete"/}</a>
+  </span>
+  <span>
+    <a href="javascript:void(0)" data-event-id="{id}" class="duplicate">{@i18n type="labels" name="duplicate"/}</a>
+  </span>
+  <span>
+    <a href="javascript:void(0)" data-event-id="{id}" class="modify">{@i18n type="labels" name="modify"/}</a>
   </span>
 </div>
 {/disable_actions}

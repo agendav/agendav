@@ -204,6 +204,18 @@ $(document).ready(function() {
             // Close tooltip
             event_details_popup.hide();
             e.preventDefault();
+          })
+        .end()
+          .find('.duplicate')
+          .off('click')
+          .on('click', function(e) {
+            var event_id = $(this).data('event-id');
+
+            duplicate_event_handler(event_id);
+
+            // Close tooltip
+            event_details_popup.hide();
+            e.preventDefault();
           });
 
         $(window).on('keydown.tooltipevents', function(e) {
@@ -1936,6 +1948,29 @@ var modify_event_handler = function modify_event_handler(event_id) {
   open_event_modify_recurrent_dialog(current_event);
 };
 
+// Duplicate link
+var duplicate_event_handler = function duplicate_event_handler(event_id) {
+  var current_event = get_event_data(event_id);
+  if (current_event === undefined) {
+    show_error(t('messages', 'error_interfacefailure'),
+      t('messages', 'error_current_event_not_loaded'));
+    return;
+  }
+
+  var copy = jQuery.extend(true, {}, current_event);
+  // Remove any unique keys from duplicated event, to create a new event when saving
+  delete copy.id;
+  delete copy.uid;
+  delete copy.url;
+  delete copy.href;
+  delete copy.etag;
+  delete copy.rrule;
+  delete copy.recurrence_id;
+  delete copy.fixed_calendar;
+  delete copy.fixed_repeat_rule;
+
+  open_event_edit_dialog(copy);
+};
 
 /**
  * Opens a dialog asking the user what he/she wants to do: edit the

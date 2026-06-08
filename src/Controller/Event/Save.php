@@ -101,17 +101,22 @@ class Save extends JSONController
         $instance = $this->builder->createEventInstanceWithInput($event, $input->all());
         $event->storeInstance($instance);
 
-        $object = CalendarObject::generateOnCalendar($destination_calendar, $uid);
-        $object->setEtag($input->get('etag'));
-        $object->setEvent($event);
+        $moving = $source_calendar->getUrl() !== $destination_calendar->getUrl();
 
-        if ($source_calendar->getUrl() !== $destination_calendar->getUrl()) {
+        if ($moving) {
+            $object = CalendarObject::generateOnCalendar($destination_calendar, $uid);
             $object->setEtag(null);
+        } else {
+            // Reuse the fetched object so the real server URL is used, not a generated one.
+            // This avoids a 412 when the file is not named after the UID.
+            $object = $source_object;
+            $object->setEtag($input->get('etag'));
         }
 
+        $object->setEvent($event);
         $this->client->uploadCalendarObject($object);
 
-        if ($source_calendar->getUrl() !== $destination_calendar->getUrl()) {
+        if ($moving) {
             $this->client->deleteCalendarObject($source_object);
             return $this->generateSuccess($response, [
                 $input->get('original_calendar'),

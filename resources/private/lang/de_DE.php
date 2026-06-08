@@ -110,6 +110,7 @@ $translations = [
     'labels.subscribe_ical' => 'iCal-Feed abonnieren',
     'labels.login' => 'Anmelden',
     'labels.logout' => 'Abmelden',
+    'labels.duplicate' => 'Duplizieren',
     'labels.modify' => 'Ändern',
     'labels.cancel' => 'Abbrechen',
     'labels.yes' => 'Ja',
