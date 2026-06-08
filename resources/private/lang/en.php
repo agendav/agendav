@@ -237,7 +237,7 @@ $translations = [
 
     'messages.more_events' => '+ %count events',
 
-    'messages.info_reminders_agendav_support' => 'Note: notifications will only be shown by compatible CalDAV clients. AgenDAV cannot show them',
+    'messages.info_reminders_agendav_support' => 'Note: Notifications are only shown in compatible CalDAV clients. AgenDAV is currently unable to display them.',
 
     'messages.request_error' => 'Error found on your request',
     'messages.page_not_found' => 'Page not found',

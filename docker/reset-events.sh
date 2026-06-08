@@ -108,6 +108,7 @@ today = date.today()
 tom   = today + timedelta(1)
 two_ago     = today - timedelta(2)
 four_ahead  = today + timedelta(5)
+this_mon    = today - timedelta(days=today.weekday())  # Monday of the current week
 next_mon    = today + timedelta(days=(7 - today.weekday()) % 7 or 7)
 next_sat    = today + timedelta(days=(5 - today.weekday()) % 7 or 7)
 next_sun    = next_sat + timedelta(1)
@@ -124,7 +125,7 @@ def fmtt(d, h, m=0):
 def fmtd(d):
   return f';VALUE=DATE:{fmt(d)}'
 
-def make_ics(uid, summary, dtstart, dtend, extra=None):
+def make_ics(uid, summary, dtstart, dtend, extra=None, alarm_minutes=None):
   # dtstart/dtend are full property suffixes, e.g. ':20260601T100000Z'
   # or ';VALUE=DATE:20260601' for all-day events.
   lines = [
@@ -140,6 +141,14 @@ def make_ics(uid, summary, dtstart, dtend, extra=None):
   ]
   if extra:
     lines.extend(extra)
+  if alarm_minutes is not None:
+    lines += [
+      'BEGIN:VALARM',
+      'ACTION:DISPLAY',
+      f'TRIGGER:-PT{alarm_minutes}M',
+      'DESCRIPTION:Reminder',
+      'END:VALARM',
+    ]
   lines += ['END:VEVENT', 'END:VCALENDAR', '']
   return (crlf.join(lines)).encode('utf-8')
 
@@ -193,10 +202,10 @@ put('seed-multiday', make_ics(
   extra=['COLOR:#C5CAE9'],
 ))
 
-# Recurring weekly meeting (next Monday, repeating)
+# Recurring weekly meeting (starts this week's Monday, repeating)
 put('seed-recurring', make_ics(
   'seed-recurring', 'Weekly sync (recurring)',
-  fmtt(next_mon, 9), fmtt(next_mon, 9, 30),
+  fmtt(this_mon, 9), fmtt(this_mon, 9, 30),
   extra=['RRULE:FREQ=WEEKLY;BYDAY=MO'],
 ))
 
@@ -211,6 +220,13 @@ put('seed-location', make_ics(
 put('seed-weekend', make_ics(
   'seed-weekend', 'Weekend getaway',
   fmtd(next_sat), fmtd(next_sun + timedelta(1)),
+))
+
+# Event with reminder (30-minute alarm)
+put('seed-reminder', make_ics(
+  'seed-reminder', 'Doctor appointment',
+  fmtt(tom, 15), fmtt(tom, 16),
+  alarm_minutes=30,
 ))
 
 PY
