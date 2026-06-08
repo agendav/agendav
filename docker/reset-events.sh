@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Seeds example calendar events into the local development stack.
+# Resets example calendar events in the local development stack.
 #
 # Usage:
-#   bash docker/seed-events.sh
+#   bash docker/reset-events.sh
 #
 # Requires the docker-compose stack to be running (docker compose up -d).
 # Safe to re-run: events are PUT by fixed UID and overwrite existing ones.

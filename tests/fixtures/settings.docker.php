@@ -1,6 +1,6 @@
 <?php
 // Docker dev stack settings. Copied to config/settings.php by smoke-test.sh
-// and seed-events.sh. Not for production use.
+// and reset-events.sh. Not for production use.
 return [
     'db.options' => [
         'dbname'   => 'agendav',

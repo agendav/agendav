@@ -53,7 +53,7 @@ There are some facts that will help you when contributing code to AgenDAV:
     `http://localhost:8081/cal.php/calendars/admin/default/`
   - The user for AgendDav is `test` and the password is `test`.
   - The credentials for the Baikal server are `admin` / `admin`.
-- Run `bash docker/seed-events.sh` to populate the calendar with example
+- Run `bash docker/reset-events.sh` to populate the calendar with example
   events (1-hour, 4-hour, concurrent, all-day, overnight, multi-day,…).
   This removes any existing events in the container!
 - `bash docker/smoke-test.sh` brings the stack up and runs an
