@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.0] - 2026-06-09
+
+- FEATURE Add duplicate event action
+- FEATURE Add automatic calendar refresh every 5 minutes
+- FEATURE Add preference to hide weekends and working hours
+- FEATURE Add default reminder preference for new events
+- FEATURE Show full event title on hover
+- FEATURE Use English as fallback language
+- FEATURE Provide default settings template file
+- FEATURE Replace static frontend library copies with NPM packages
+- FEATURE Bump frontend dependencies (bootstrap, jquery, fullcalendar, moment)
+- FEATURE Consolidate public asset directories under single symlink
+- BUGFIX Remove duplicate sess_lifetime database migration
+
 ## [3.1.1] - 2026-06-05
 
 - BUGFIX Fix middleware language order, using the users language preference (#340)
