@@ -42,7 +42,7 @@
     "dustjs-helpers": "~1.7.3",
     "dustjs-linkedin": "~2.7.5",
     "eclint": "^2.8.1",
-    "editorconfig-checker": "^3.3.0",
+    "editorconfig-checker": "^6.1.1",
     "es5-shim": "~4.6.7",
     "font-awesome": "~4.7.0",
     "fullcalendar": "~3.10.5",
