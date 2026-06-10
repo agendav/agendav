@@ -41,6 +41,7 @@ services:
       - "127.0.0.1:8080:80"
     volumes:
       - ./:/app
+      - agendav-var:/app/var
     environment:
       AGENDAV_ENVIRONMENT: dev
     depends_on:
@@ -54,3 +55,4 @@ services:
 volumes:
   baikal-config:
   baikal-data:
+  agendav-var:

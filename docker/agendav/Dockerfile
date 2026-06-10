@@ -18,4 +18,6 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 COPY agendav.conf /etc/apache2/conf-available/agendav.conf
 RUN a2enconf agendav
 
+RUN mkdir -p /app/var && chown www-data:www-data /app/var
+
 WORKDIR /app
