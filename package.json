@@ -36,6 +36,9 @@
     "url": "https://github.com/agendav/agendav/issues"
   },
   "homepage": "https://github.com/agendav/agendav",
+  "engines": {
+    "node": ">=20.11.0"
+  },
   "devDependencies": {
     "bootstrap": "~3.4.1",
     "clean-css": "~3.4.22",
