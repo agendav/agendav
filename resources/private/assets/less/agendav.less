@@ -406,4 +406,50 @@ div.container_repeat_options {
     display: none;
 }
 
+#quick_create_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+#quick_create {
+  position: absolute;
+  z-index: 10000;
+  background: #fff;
+  border: 1px solid @gray-light;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 10px;
+  width: 240px;
+
+  #quick_create_title {
+    width: 100%;
+    border: 1px solid @gray-light;
+    border-radius: 3px;
+    padding: 6px 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+
+    &:focus {
+      border-color: @brand-primary;
+    }
+  }
+
+  .quick_create_footer {
+    margin-top: 6px;
+    font-size: 12px;
+    color: @gray;
+
+    a {
+      color: @gray;
+      text-decoration: underline;
+    }
+  }
+}
+
 // vim: ft=css sw=2 tabstop=2 expandtab

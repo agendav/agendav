@@ -20,6 +20,8 @@
 // Useful names
 var dustbase = {};
 var event_details_popup;
+var quick_create_timer = null;
+var quick_create_last_time = 0;
 
 
 $(document).ready(function() {
@@ -1757,15 +1759,151 @@ var slots_drag_callback = function slots_drag_callback(start, end, jsEvent, view
   }
 
   var data = {
-    start: start,
-    end: end,
+    start: start.clone(),
+    end: end.clone(),
     allDay: pass_allday,
     view: view.name
   };
 
   // Unselect every single day/slot
   $('#calendar_view').fullCalendar('unselect');
+
+  if (!pass_allday && view.name !== 'month') {
+    var now = Date.now();
+    var elapsed = now - quick_create_last_time;
+    quick_create_last_time = now;
+
+    // Second click within 400ms: double-click -> open full modal immediately
+    if (elapsed < 400 && elapsed > 0) {
+      clearTimeout(quick_create_timer);
+      quick_create_timer = null;
+      open_event_edit_dialog(data);
+      return;
+    }
+
+    // First click: wait 400ms before showing popover in case a second click comes
+    quick_create_timer = setTimeout(function() {
+      quick_create_timer = null;
+      show_quick_create(data, jsEvent);
+    }, 400);
+    return;
+  }
+
   open_event_edit_dialog(data);
+};
+
+var show_quick_create = function show_quick_create(eventData, jsEvent) {
+  $('#quick_create').remove();
+  $('#quick_create_overlay').remove();
+  $(document).off('mousedown.quick_create');
+
+  $('<div id="quick_create_overlay"></div>').appendTo('body');
+
+  var placeholder = t('labels', 'summary');
+  var more_label = t('labels', 'moredetails');
+
+  var $popover = $(
+    '<div id="quick_create">' +
+      '<input type="text" id="quick_create_title" placeholder="' + placeholder + '" maxlength="255" autocomplete="off" />' +
+      '<div class="quick_create_footer"><a id="quick_create_more" href="#">' + more_label + '</a></div>' +
+    '</div>'
+  );
+
+  var offset_x = jsEvent.pageX + 8;
+  var offset_y = jsEvent.pageY - 20;
+  $popover.css({ left: offset_x, top: offset_y });
+  $('body').append($popover);
+
+  var $input = $('#quick_create_title');
+  $input.focus();
+
+  var do_dismiss = function() {
+    $('#quick_create').remove();
+    $('#quick_create_overlay').remove();
+    $(document).off('mousedown.quick_create');
+  };
+
+  var to_backend_iso = function(m) {
+    var local_str = moment.utc(m.valueOf()).format('YYYY-MM-DDTHH:mm:ss');
+    return moment.tz(local_str, AgenDAVUserPrefs.timezone).toISOString();
+  };
+
+  var do_save = function() {
+    var title = $input.val().trim();
+    if (!title) {
+      do_dismiss();
+      return;
+    }
+
+    var start = eventData.start.clone();
+    // For a single slot click (30 min), default to a 1-hour event
+    var end = eventData.end.diff(eventData.start, 'minutes') <= 30
+      ? start.clone().add(1, 'hours')
+      : eventData.end.clone();
+
+    // Use default calendar, falling back to the first available one
+    var calendars = calendar_list();
+    var cal = AgenDAVUserPrefs.default_calendar || (calendars.length ? calendars[0].calendar : null);
+
+    if (!cal) {
+      show_error(t('messages', 'error_invalidinput'), '');
+      do_dismiss();
+      return;
+    }
+
+    var save_data = {
+      summary: title,
+      calendar: cal,
+      timezone: AgenDAVUserPrefs.timezone,
+      start: to_backend_iso(start),
+      end: to_backend_iso(end)
+    };
+    if (AgenDAVUserPrefs.default_reminder) {
+      save_data['reminders'] = {
+        count: [AgenDAVUserPrefs.default_reminder.count],
+        unit: [AgenDAVUserPrefs.default_reminder.unit]
+      };
+    }
+    save_data[csrf_id] = get_csrf_token();
+
+    do_dismiss();
+
+    send_form({
+      form_object: { url: AgenDAVConf.base_app_url + 'events/save', data: save_data },
+      success: function(affected_calendars) {
+        for (var i = 0; i < affected_calendars.length; i++) {
+          reload_event_source(affected_calendars[i]);
+        }
+      },
+      exception: function(error) {
+        show_error(t('messages', 'error_invalidinput'), error);
+      }
+    });
+  };
+
+  $input.on('keydown', function(e) {
+    if (e.which === 13) {
+      do_save();
+    } else if (e.which === 27) {
+      do_dismiss();
+    }
+  });
+
+  $('#quick_create_more').on('click', function(e) {
+    e.preventDefault();
+    do_dismiss();
+    open_event_edit_dialog(eventData);
+  });
+
+  $(document).on('mousedown.quick_create', function(e) {
+    if (!$(e.target).closest('#quick_create').length) {
+      do_dismiss();
+    }
+  });
+
+  $('#quick_create_overlay').on('mousedown', function() {
+    do_dismiss();
+  });
 };
 
 /**

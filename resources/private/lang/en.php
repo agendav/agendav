@@ -95,6 +95,7 @@ $translations = [
     'labels.createevent' => 'Create event',
     'labels.editevent' => 'Edit event',
     'labels.deleteevent' => 'Delete event',
+    'labels.editdetails' => 'Edit details',
 
     'labels.calendars' => 'Calendars',
     'labels.shared_calendars' => 'Shared calendars',
