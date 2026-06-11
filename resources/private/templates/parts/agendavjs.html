@@ -1,6 +1,6 @@
-<script language="JavaScript" type="text/javascript" src="{{ url_for('settings.js') }}"></script>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
+{{ jsconfig|raw }}
 var translations = {{ translations|js_json }};
 var csrf_id = '_token';
 var csrf_value = {{ csrf_token.getValue()|js_json }};
