@@ -24,7 +24,18 @@ return function (App $app) {
     // Authenticated routes
     $app->group('', function (RouteCollectorProxy $g) use ($container) {
         $g->get('/', function (ServerRequestInterface $request, ResponseInterface $response) use ($container) {
-            $body = $container->get('twig')->render('calendar.html');
+            // Inline AgenDAVConf/UserPrefs into the page so the JS bootstrap does
+            // not depend on a separate /jssettings.js request. Some SSO/reverse-proxy
+            // setups (notably YunoHost) gate that subresource as a protected page
+            // even when the parent navigation is allowed, breaking <script src>.
+            $jsCode = new JavaScriptCode($container);
+            $jsconfig = $container->get('twig')->render('jsconfig.html', [
+                'site_config' => $jsCode->getSiteConfig($request),
+                'preferences' => $jsCode->getPreferences(),
+            ]);
+            $body = $container->get('twig')->render('calendar.html', [
+                'jsconfig' => $jsconfig,
+            ]);
             $response->getBody()->write($body);
             return $response;
         })->setName('calendar');

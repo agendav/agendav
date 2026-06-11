@@ -53,7 +53,7 @@ class JavaScriptCode
     /**
     * @return array<string, mixed>
     */
-    protected function getSiteConfig(ServerRequestInterface $request): array
+    public function getSiteConfig(ServerRequestInterface $request): array
     {
         // Derive base URLs from Slim's RouteParser rather than $_SERVER['SCRIPT_NAME'].
         // Behind a misconfigured reverse proxy SCRIPT_NAME can be attacker-
@@ -89,7 +89,7 @@ class JavaScriptCode
     /**
     * @return array<string, mixed>
     */
-    protected function getPreferences(): array
+    public function getPreferences(): array
     {
         return $this->container->get(UserContext::class)->getPreferences()->getAll();
     }
