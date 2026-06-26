@@ -183,6 +183,11 @@ return [
     // Additional authentication methods (FQCNs implementing AuthenticationMethodInterface)
     'auth.methods' => [],
 
+    // Automatically log in to the CalDAV backend with configured credentials
+    'autologin.enabled' => false,
+    'autologin.username' => '',
+    'autologin.password' => '',
+
     // HTTP debug logging
     'http.debug' => false,
 
