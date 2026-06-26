@@ -71,8 +71,12 @@ class Client
             return false;
         }
 
-        return ($response->hasHeader('DAV') &&
-            false !== strpos($response->getHeaderLine('DAV'), "calendar-access"));
+        // A successful DAV response is sufficient here.
+        // Authentication is fully validated afterwards by requesting the
+        // current-user-principal and calendar-home-set.
+        return $response->getStatusCode() >= 200
+            && $response->getStatusCode() < 300
+            && $response->hasHeader('DAV');
     }
 
     /**
