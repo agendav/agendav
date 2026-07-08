@@ -60,6 +60,7 @@ class Authentication
             if ($autologinUser !== '' && $autologinPassword !== '') {
                 $logContext = ['user' => substr($autologinUser, 0, 64)];
                 if ($this->processLogin($autologinUser, $autologinPassword)) {
+                    $session->set('autologin', true);
                     $this->container->get('monolog')->info('Automatic login succeeded', $logContext);
                     /** @var RouteParserInterface $routeParser */
                     $routeParser = $this->container->get(RouteParserInterface::class);

@@ -31,6 +31,14 @@ return [
     // Per-request user context. AuthMiddleware populates the singleton.
     \AgenDAV\UserContext::class => \DI\create(\AgenDAV\UserContext::class),
 
+    \AgenDAV\AutologinState::class => fn (ContainerInterface $c) => new \AgenDAV\AutologinState(
+        $c->get('session'),
+        $c->get('autologin.enabled') === true,
+        (string) $c->get('autologin.username'),
+        $c->get('autologin.hide_preferences') === true,
+        $c->get('autologin.read_only') === true
+    ),
+
     // Symfony Session Handler: 'pdo' (default) uses DB-backed sessions, 'native' falls back to PHP file sessions
     'session' => function (ContainerInterface $c) {
         $handler = $c->get('session.handler') === 'native'

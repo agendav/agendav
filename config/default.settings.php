@@ -188,6 +188,8 @@ return [
     // account for this feature.
     'autologin.username' => '',
     'autologin.password' => '',
+    'autologin.hide_preferences' => false,
+    'autologin.read_only' => false,
 
     // HTTP debug logging
     'http.debug' => false,

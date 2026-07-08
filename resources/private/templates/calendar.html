@@ -21,4 +21,38 @@
   {% set load_fullcalendar_locale = true %}
   {% include 'parts/agendavjs.html' %}
   {% include 'parts/bottom.html' %}
+  {% if autologin_read_only %}
+  <style type="text/css">
+    #shortcut_add_event, #calendar_add, #calendar_subscribe, i.cfg, .view_event_details .actions {
+      display: none !important;
+    }
+  </style>
+  <script language="JavaScript" type="text/javascript">
+  //<![CDATA[
+  (function() {
+    document.addEventListener('click', function(event) {
+      if (event.target.closest && event.target.closest('i.cfg, .view_event_details .actions a')) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+      }
+    }, true);
+
+    if (window.jQuery) {
+      jQuery(function($) {
+        $('#calendar_view').fullCalendar('option', 'selectable', false);
+        $('#calendar_view').fullCalendar('option', 'editable', false);
+        window.open_event_edit_dialog = function() {};
+        window.calendar_modify_dialog = function() {};
+        window.calendar_create_dialog = function() {};
+        window.calendar_subscribe_dialog = function() {};
+        window.modify_event_handler = function() {};
+        window.duplicate_event_handler = function() {};
+        window.event_delete = function() {};
+      });
+    }
+  }());
+  //]]>
+  </script>
+  {% endif %}
 {% endblock %}
