@@ -7,11 +7,13 @@
       <img src="{{ asset('loading.gif', 'img') }}" alt="">
     </p>
     <ul class="nav navbar-nav navbar-right" id="usermenu">
+        {% if not autologin_hide_preferences %}
         <li>
         <a class="prefs" href="{{ url_for('preferences') }}">
           <i title="{% trans %}labels.preferences{% endtrans %}" class="fa fa-lg fa-wrench"></i>
         </a>
         </li>
+        {% endif %}
         <li>
         <a class="logout" href="{{ url_for('logout') }}">
           <i title="{% trans %}labels.logout{% endtrans %}" class="fa fa-lg fa-power-off"></i>

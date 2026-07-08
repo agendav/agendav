@@ -187,6 +187,8 @@ return [
     'autologin.enabled' => false,
     'autologin.username' => '',
     'autologin.password' => '',
+    'autologin.hide_preferences' => false,
+    'autologin.read_only' => false,
 
     // HTTP debug logging
     'http.debug' => false,
