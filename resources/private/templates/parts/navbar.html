@@ -14,11 +14,13 @@
         </a>
         </li>
         {% endif %}
+        {% if not autologin_read_only %}
         <li>
         <a class="logout" href="{{ url_for('logout') }}">
           <i title="{% trans %}labels.logout{% endtrans %}" class="fa fa-lg fa-power-off"></i>
         </a>
         </li>
+        {% endif %}
         <li><a href="javascript:void(0)">
         {{ displayname }}
         </a>
