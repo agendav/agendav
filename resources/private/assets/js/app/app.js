@@ -1205,6 +1205,24 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
     var calendars = data.data;
 
+    calendars.sort(function(a, b) {
+      var order_a = parseInt(a.order, 10);
+      var order_b = parseInt(b.order, 10);
+
+      if (isNaN(order_a)) {
+        order_a = 0;
+      }
+      if (isNaN(order_b)) {
+        order_b = 0;
+      }
+
+      if (order_a !== order_b) {
+        return order_a - order_b;
+      }
+
+      return (a.displayname || '').localeCompare(b.displayname || '');
+    });
+
     $.each(calendars, function(key, calendar) {
       // This is a hidden calendar
       if (AgenDAVUserPrefs.hidden_calendars[calendar.calendar] !== undefined) {
