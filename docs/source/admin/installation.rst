@@ -21,6 +21,13 @@ user account. Popular options:
 Once your CalDAV server is running and you have a user account on it, continue
 with the AgenDAV installation below and point it at your CalDAV server URL.
 
+Don't have a CalDAV server yet?
+
+* Just want to try out AgenDAV? Run the Docker demo locally - see
+  :doc:`/development/index`.
+* Want to quickly set up a complete, self-hosted calendar stack? See the
+  :doc:`quickstart` guide.
+
 .. _requirements:
 
 Requirements

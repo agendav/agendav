@@ -116,6 +116,7 @@ docker/smoke-test prerequisites are the same as described in
 - Push branch and tag
 - Update the documentation
   - Run a new release in [ReadTheDocs](https://readthedocs.org/projects/agendav/builds/)
+- Update the ([Packagist](https://packagist.org/packages/agendav/agendav)) release
 - Build and upload the release download file
   - Clone the git repository using
     `git clone -b <version> https://github.com/agendav/agendav.git agendav-<version>`
