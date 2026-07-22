@@ -103,7 +103,7 @@ $(document).ready(function() {
       center: 'title',
       left:  'today prev,next'
     },
-    navLinks: true,
+    navLinks: false,
 
     defaultView: fullcalendar_views[AgenDAVUserPrefs.default_view],
     theme: false,
@@ -129,6 +129,13 @@ $(document).ready(function() {
       loading(bool);
     },
 
+    // Only day headers that can actually switch to day view (i.e. there
+    // is more than one column) should look clickable
+    viewRender: function() {
+      var headers = $('#calendar_view .fc-day-header[data-date]');
+      headers.toggleClass('fc-clickable-day-header', headers.length > 1);
+    },
+
     eventRender: event_render_callback,
     eventClick: event_click_callback,
 
@@ -143,6 +150,18 @@ $(document).ready(function() {
 
     eventResize: event_resize_callback,
     eventDrop: event_drop_callback
+  });
+
+  // Switch to day view when a week-column header is clicked - voids when
+  // day view is already active
+  $('#calendar_view').on('click', '.fc-day-header[data-date]', function(e) {
+    if ($(this).siblings('.fc-day-header[data-date]').length === 0) {
+      return;
+    }
+    e.preventDefault();
+    var date = $(this).attr('data-date');
+    $('#calendar_view').fullCalendar('changeView', 'agendaDay');
+    $('#calendar_view').fullCalendar('gotoDate', date);
   });
 
   // Event details popup
@@ -2365,6 +2384,3 @@ var handle_expired_session = function handle_expired_session() {
     }
   });
 };
-
-
-// vim: sw=2 tabstop=2
