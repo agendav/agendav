@@ -37,11 +37,12 @@ class Authentication
         ResponseInterface $response
     ): ResponseInterface {
         $template_vars = [];
+        $session = $this->container->get('session');
 
         // GET: try alternative auth methods (HTTP Basic, ...) before showing
         // the form. Lets clients that follow a 302 redirect chain authenticate
         // transparently with credentials already on the request.
-        if ($request->getMethod() === 'GET' && !$this->container->get('session')->has('username')) {
+        if ($request->getMethod() === 'GET' && !$session->has('username')) {
             foreach ((array) $this->container->get('auth.methods') as $methodClass) {
                 if ($this->container->get($methodClass)->login($request)) {
                     /** @var RouteParserInterface $routeParser */
@@ -50,6 +51,29 @@ class Authentication
                         ->withStatus(302)
                         ->withHeader('Location', $routeParser->urlFor('calendar'));
                 }
+            }
+
+            $autologinUser = (string) $this->container->get('autologin.username');
+            $autologinPassword = (string) $this->container->get('autologin.password');
+            // Automatically authenticate a dedicated dashboard account when enabled.
+            // Falls back to the regular login page if authentication fails.
+            if (
+                $this->container->get('autologin.enabled') === true
+                && $autologinUser !== ''
+                && $autologinPassword !== ''
+            ) {
+                $logContext = ['user' => substr($autologinUser, 0, 64)];
+                if ($this->processLogin($autologinUser, $autologinPassword)) {
+                    $session->set('autologin', true);
+                    $this->container->get('monolog')->info('Automatic login succeeded', $logContext);
+                    /** @var RouteParserInterface $routeParser */
+                    $routeParser = $this->container->get(RouteParserInterface::class);
+                    return $response
+                        ->withStatus(302)
+                        ->withHeader('Location', $routeParser->urlFor('calendar'));
+                }
+
+                $this->container->get('monolog')->warning('Automatic login failed', $logContext);
             }
         }
 

@@ -3,11 +3,13 @@
   <img src="{{ asset(logo, 'img') }}" alt="Logo">
 </div>
 {% endif %}
+{% if not autologin_read_only %}
 <div id="shortcuts" class="block">
   <button id="shortcut_add_event" class="btn btn-default btn-block">
     <i class="fa fa-plus"></i> {% trans %}labels.createevent{% endtrans %}
   </button>
   </div>
+{% endif %}
 
   <div class="block calendar_list panel panel-default" id="own_calendar_list">
   <div class="panel-heading">
@@ -16,9 +18,11 @@
   <div class="panel-body">
   <ul class="fa-ul">
   </ul>
+  {% if not autologin_read_only %}
   <div class="buttons">
   <i title="{% trans %}labels.create_calendar{% endtrans %}" id="calendar_add" class="pseudobutton fa fa-plus"></i>
   </div>
+  {% endif %}
   </div><!-- panel-body -->
   </div><!-- panel -->
 
@@ -45,9 +49,11 @@
   <div class="panel-body">
   <ul class="fa-ul">
   </ul>
+  {% if not autologin_read_only %}
   <div class="buttons">
   <i title="{% trans %}labels.subscribe_ical{% endtrans %}" id="calendar_subscribe" class="pseudobutton fa fa-plus"></i>
   </div>
+  {% endif %}
   </div><!-- panel-body -->
   </div><!-- panel -->
   {% endif %}

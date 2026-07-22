@@ -21,6 +21,7 @@ namespace AgenDAV\Controller;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use AgenDAV\AutologinState;
 use AgenDAV\UserContext;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -71,6 +72,7 @@ class JavaScriptCode
             ),
             'default_calendar_color' => '#' . ltrim($this->container->get('calendar.colors')[0], '#'),
             'show_public_caldav_url' => $this->container->get('caldav.publicurls'),
+            'autologin_read_only' => $this->container->get(AutologinState::class)->isReadOnly(),
         ];
 
         if ($this->container->get('caldav.publicurls')) {

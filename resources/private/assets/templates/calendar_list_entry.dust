@@ -18,5 +18,7 @@
   {^is_owned}
   title="{@i18n type="messages" name="info_sharedby" user="{owner}"/}"
   {/is_owned}>{displayname}</span>
+  {^autologin_read_only}
   <i title="{@i18n type="labels" name="modifycalendar"/}" class="cfg pseudobutton fa fa-cogs"></i>
+  {/autologin_read_only}
 </li>
