@@ -32,7 +32,8 @@ FROM php:8.5-apache AS runtime
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     libicu-dev \
-    && docker-php-ext-install -j"$(nproc)" pdo_mysql intl zip \
+    libpq-dev \
+    && docker-php-ext-install -j"$(nproc)" pdo_mysql pdo_pgsql pgsql intl zip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
