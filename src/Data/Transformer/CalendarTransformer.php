@@ -22,6 +22,7 @@ namespace AgenDAV\Data\Transformer;
  */
 
 use League\Fractal;
+use AgenDAV\Data\Helper\Color;
 use AgenDAV\CalDAV\Resource\Calendar;
 
 class CalendarTransformer extends Fractal\TransformerAbstract
@@ -55,7 +56,7 @@ class CalendarTransformer extends Fractal\TransformerAbstract
             'url' => $calendar->getUrl(),
             'calendar' => $calendar->getUrl(),
             'displayname' => $calendar->getProperty(Calendar::DISPLAYNAME),
-            'color' => ($c = $calendar->getProperty(Calendar::COLOR)) ? '#' . ltrim($c, '#') : $c,
+            'color' => Color::toHex($calendar->getProperty(Calendar::COLOR)),
             'order' => (int) $calendar->getProperty(Calendar::ORDER),
             'ctag' => $calendar->getProperty(Calendar::CTAG),
             'is_owned' => ($owner_url === $this->principal_url),
