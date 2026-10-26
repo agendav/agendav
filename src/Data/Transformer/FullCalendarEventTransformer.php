@@ -22,6 +22,7 @@ namespace AgenDAV\Data\Transformer;
  */
 
 use League\Fractal;
+use AgenDAV\Data\Helper\Color;
 use AgenDAV\EventInstance;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\Event\FullCalendarEvent;
@@ -65,7 +66,7 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
             'etag' => $fc_event->getEtag(),
             'uid' => $event->getUid(),
             'title' => $event->getSummary(),
-            'color' => ($c = $event->getColor()) ? '#' . ltrim($c, '#') : $c,
+            'color' => Color::toHex($event->getColor()),
             'start' => $start->format('c'),
             'end' => $end->format('c'),
             'allDay' => $event->isAllDay(),
