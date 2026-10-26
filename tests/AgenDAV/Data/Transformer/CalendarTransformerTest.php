@@ -82,4 +82,14 @@ class CalendarTransformerTest extends TestCase
         );
 
     }
+
+    public function testTransformNamedColor()
+    {
+        $calendar = new Calendar('http://test.url', [Calendar::COLOR => 'limegreen']);
+        $calendar->setOwner(new Principal('/owner/principal'));
+
+        $result = (new CalendarTransformer('/owner/principal'))->transform($calendar);
+
+        $this->assertEquals('#32cd32', $result['color']);
+    }
 }
