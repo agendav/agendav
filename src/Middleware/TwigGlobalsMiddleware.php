@@ -2,7 +2,6 @@
 
 namespace AgenDAV\Middleware;
 
-use AgenDAV\AutologinState;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -48,14 +47,11 @@ class TwigGlobalsMiddleware implements MiddlewareInterface
         $session = $this->container->get('session');
         $twig->addGlobal('displayname', $session->has('displayname') ? $session->get('displayname') : '');
         $twig->addGlobal('calendar_subscriptions', $this->container->get('calendar.subscriptions'));
-        $autologinState = $this->container->get(AutologinState::class);
+        $twig->addGlobal('calendar_read_only', $this->container->get('calendar.read_only') === true);
         $twig->addGlobal(
-            'autologin_hide_preferences',
-            $autologinState->shouldHidePreferences()
-        );
-        $twig->addGlobal(
-            'autologin_read_only',
-            $autologinState->isReadOnly()
+            'autologin_enabled',
+            (string) $this->container->get('autologin.username') !== ''
+            && (string) $this->container->get('autologin.password') !== ''
         );
 
         $twig->addGlobal(

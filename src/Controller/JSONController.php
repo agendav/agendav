@@ -21,7 +21,6 @@ namespace AgenDAV\Controller;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\AutologinState;
 use AgenDAV\CalDAV\Client;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -66,7 +65,7 @@ abstract class JSONController
 
         $input = new ParameterBag(is_array($raw) ? $raw : []);
 
-        if ($this->method === 'POST' && $this->container->get(AutologinState::class)->isReadOnly()) {
+        if ($this->method === 'POST' && $this->container->get('calendar.read_only') === true) {
             return $this->generateException(
                 $response,
                 $this->container->get('translator')->trans('messages.error_denied'),

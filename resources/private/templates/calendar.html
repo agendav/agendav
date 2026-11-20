@@ -21,7 +21,7 @@
   {% set load_fullcalendar_locale = true %}
   {% include 'parts/agendavjs.html' %}
   {% include 'parts/bottom.html' %}
-  {% if autologin_read_only %}
+  {% if calendar_read_only %}
   <style type="text/css">
     #shortcut_add_event, #calendar_add, #calendar_subscribe, i.cfg, .view_event_details .actions {
       display: none !important;

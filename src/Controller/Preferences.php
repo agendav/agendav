@@ -21,7 +21,6 @@ namespace AgenDAV\Controller;
  *  along with AgenDAV.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use AgenDAV\AutologinState;
 use AgenDAV\CalDAV\Resource\Calendar;
 use AgenDAV\DateHelper;
 use AgenDAV\UserContext;
@@ -41,7 +40,7 @@ class Preferences
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        if ($this->shouldHideForAutologin()) {
+        if ($this->container->get('calendar.read_only') === true) {
             return $this->redirectToCalendar($response);
         }
 
@@ -88,7 +87,7 @@ class Preferences
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        if ($this->shouldHideForAutologin()) {
+        if ($this->container->get('calendar.read_only') === true) {
             return $this->redirectToCalendar($response);
         }
 
@@ -128,11 +127,6 @@ class Preferences
         $this->container->get('preferences.repository')->save($username, $preferences);
 
         return $this->redirectToCalendar($response);
-    }
-
-    private function shouldHideForAutologin(): bool
-    {
-        return $this->container->get(AutologinState::class)->shouldHidePreferences();
     }
 
     private function redirectToCalendar(ResponseInterface $response): ResponseInterface

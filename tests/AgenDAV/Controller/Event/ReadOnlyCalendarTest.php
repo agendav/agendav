@@ -2,7 +2,6 @@
 
 namespace AgenDAV\Controller\Event;
 
-use AgenDAV\AutologinState;
 use AgenDAV\CalDAV\Resource\Calendar;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -32,16 +31,12 @@ class ReadOnlyCalendarTest extends TestCase
         $translator->method('trans')
             ->willReturn('Calendar is read-only');
 
-        $autologinState = $this->createMock(AutologinState::class);
-        $autologinState->method('isReadOnly')
-            ->willReturn(false);
-
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
             ->willReturnMap([
                 ['caldav.client', $client],
                 ['translator', $translator],
-                [AutologinState::class, $autologinState],
+                ['calendar.read_only', false],
             ]);
 
         return $container;

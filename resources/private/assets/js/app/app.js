@@ -55,7 +55,7 @@ $(document).ready(function() {
     csrf_token_name: csrf_id,
     csrf_token_value: csrf_value,
     enable_calendar_sharing: AgenDAVConf.enable_calendar_sharing,
-    autologin_read_only: AgenDAVConf.autologin_read_only,
+    calendar_read_only: AgenDAVConf.calendar_read_only,
     // Sorry for this!
     numbers1to31: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
   });
@@ -78,8 +78,8 @@ $(document).ready(function() {
 
   // Enable full calendar
   $('#calendar_view').fullCalendar({
-    selectable: AgenDAVConf.autologin_read_only !== true,
-    editable: AgenDAVConf.autologin_read_only !== true,
+    selectable: AgenDAVConf.calendar_read_only !== true,
+    editable: AgenDAVConf.calendar_read_only !== true,
     timezone: AgenDAVUserPrefs.timezone,
     firstDay: AgenDAVUserPrefs.weekstart,
     timeFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
@@ -1333,7 +1333,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         collected_event_sources[count]);
     }
 
-    if (AgenDAVConf.autologin_read_only !== true) {
+    if (AgenDAVConf.calendar_read_only !== true) {
       $('#shortcut_add_event').removeAttr('disabled');
     }
 
@@ -1428,7 +1428,7 @@ var generate_calendar_entry = function generate_calendar_entry(data) {
     // Disable text selection on this (useful for dblclick)
     $out.disableSelection();
 
-    if (AgenDAVConf.autologin_read_only === true) {
+    if (AgenDAVConf.calendar_read_only === true) {
       $out.find('i.cfg').remove();
     }
   });
@@ -1763,7 +1763,7 @@ var event_click_callback = function event_click_callback(event,
   );
 
   if (
-      AgenDAVConf.autologin_read_only === true
+      AgenDAVConf.calendar_read_only === true
       || caldata.writable === false
   ) {
     event_data.disable_actions = true;

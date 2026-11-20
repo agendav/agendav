@@ -180,16 +180,20 @@ return [
         '#C8E6C9', '#FFF9C4', '#F0F4C3', '#FFE0B2', '#D7CCC8', '#F5F5F5',
     ],
 
+    // Make the whole instance read-only: disables creating, editing and
+    // deleting events and calendars, and hides the preferences page.
+    'calendar.read_only' => false,
+
     // Additional authentication methods (FQCNs implementing AuthenticationMethodInterface)
     'auth.methods' => [],
 
     // Automatically log in to the CalDAV backend with the credentials below.
     // Leave both empty to disable. Use a dedicated, low-privilege CalDAV
-    // account for this feature.
+    // account for this, not a personal account, since the password is
+    // stored in plaintext in this file. Hides the logout button automatically.
+    // Combine with calendar.read_only for an unattended kiosk display.
     'autologin.username' => '',
     'autologin.password' => '',
-    'autologin.hide_preferences' => false,
-    'autologin.read_only' => false,
 
     // HTTP debug logging
     'http.debug' => false,

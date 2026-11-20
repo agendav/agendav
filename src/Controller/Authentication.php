@@ -55,12 +55,11 @@ class Authentication
 
             $autologinUser = (string) $this->container->get('autologin.username');
             $autologinPassword = (string) $this->container->get('autologin.password');
-            // Automatically authenticate a dedicated dashboard account when configured.
+            // Automatically authenticate a dedicated account when configured.
             // Falls back to the regular login page if authentication fails.
             if ($autologinUser !== '' && $autologinPassword !== '') {
                 $logContext = ['user' => substr($autologinUser, 0, 64)];
                 if ($this->processLogin($autologinUser, $autologinPassword)) {
-                    $session->set('autologin', true);
                     $this->container->get('monolog')->info('Automatic login succeeded', $logContext);
                     /** @var RouteParserInterface $routeParser */
                     $routeParser = $this->container->get(RouteParserInterface::class);
