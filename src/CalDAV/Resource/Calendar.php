@@ -284,7 +284,9 @@ class Calendar
     }
 
     /**
-    * Modifies the provided color to make sure it has an alpha channel
+    * Modifies the provided color to make sure it has an alpha channel.
+    * Values that are not #rgb or #rrggbb (e.g. CSS3 color names) are
+    * returned unchanged.
     *
     * @param string $color
     *
@@ -293,12 +295,11 @@ class Calendar
     protected function ensureRgbaColor($color)
     {
         // Missing alpha channel
-        if (strlen($color) === 7) {
+        if (preg_match('/^#[0-9a-f]{6}$/i', (string) $color) === 1) {
             return $color . 'ff';
         }
 
-        if (strlen($color) === 4) {
-            preg_match('/#(.)(.)(.)/', $color, $matches);
+        if (preg_match('/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i', (string) $color, $matches) === 1) {
             return '#' .
                 $matches[1] . $matches[1] .
                 $matches[2] . $matches[2] .

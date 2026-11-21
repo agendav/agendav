@@ -83,13 +83,25 @@ class CalendarTransformerTest extends TestCase
 
     }
 
-    public function testTransformNamedColor()
+    /**
+     * @dataProvider namedColors
+     */
+    public function testTransformNamedColor($name, $expected)
     {
-        $calendar = new Calendar('http://test.url', [Calendar::COLOR => 'limegreen']);
+        $calendar = new Calendar('http://test.url', [Calendar::COLOR => $name]);
         $calendar->setOwner(new Principal('/owner/principal'));
 
         $result = (new CalendarTransformer('/owner/principal'))->transform($calendar);
 
-        $this->assertEquals('#32cd32', $result['color']);
+        $this->assertEquals($expected, $result['color']);
+    }
+
+    public static function namedColors()
+    {
+        return [
+            '4 chars' => ['navy', '#000080'],
+            '7 chars' => ['skyblue', '#87ceeb'],
+            '9 chars' => ['limegreen', '#32cd32'],
+        ];
     }
 }

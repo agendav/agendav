@@ -122,4 +122,14 @@ class CalendarTest extends TestCase
         $this->assertEquals('#001122ff', $calendar->getProperty(Calendar::COLOR));
     }
 
+    public function testNamedColorIsNotModified()
+    {
+        $calendar = new Calendar('/cal1');
+        $calendar->setProperty(Calendar::COLOR, 'navy');
+        $this->assertEquals('navy', $calendar->getProperty(Calendar::COLOR));
+
+        $calendar->setProperty(Calendar::COLOR, 'skyblue');
+        $this->assertEquals('skyblue', $calendar->getProperty(Calendar::COLOR));
+    }
+
 }
