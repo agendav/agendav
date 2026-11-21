@@ -1765,9 +1765,11 @@ var event_render_callback = function event_render_callback(event, element) {
 
   // Hover tooltip with full time and title
   var fmt = AgenDAVDateAndTime.momentFormat[AgenDAVUserPrefs.time_format];
+  // FullCalendar sets end to null on zero-duration events, so show no end time
+  var end = event.end ? ' - ' + event.end.format(fmt) : '';
   var tooltip = event.allDay
     ? event.title
-    : event.start.format(fmt) + ' - ' + event.end.format(fmt) + ' ' + event.title;
+    : event.start.format(fmt) + end + ' ' + event.title;
   element.attr('title', tooltip);
 
 };

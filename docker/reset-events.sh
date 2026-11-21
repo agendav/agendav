@@ -229,6 +229,12 @@ put('seed-reminder', make_ics(
   alarm_minutes=30,
 ))
 
+# Zero-duration event (DTSTART == DTEND, #381)
+put('seed-zero-duration', make_ics(
+  'seed-zero-duration', 'Deadline: submit report',
+  fmtt(today, 17), fmtt(today, 17),
+))
+
 PY
 
 # ----- copy ICS fixture -----
