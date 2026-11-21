@@ -11,10 +11,12 @@ ansible
 doc
 tests
 node_modules
-web/vendor
-web/public/dist/**/*
-!web/public/dist/**/.keep
-web/config/settings.php
+vendor
+config/settings.php
+config/settings.*.php
+!config/settings.template.php
 *.log
 .idea
 .vscode
+var/*
+!var/.gitkeep
