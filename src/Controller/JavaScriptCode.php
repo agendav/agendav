@@ -72,6 +72,7 @@ class JavaScriptCode
             'default_calendar_color' => '#' . ltrim($this->container->get('calendar.colors')[0], '#'),
             'show_public_caldav_url' => $this->container->get('caldav.publicurls'),
             'calendar_read_only' => $this->container->get('calendar.read_only') === true,
+            'calendar_kiosk_mode' => $this->container->get('calendar.kiosk_mode') === true,
         ];
 
         if ($this->container->get('caldav.publicurls')) {

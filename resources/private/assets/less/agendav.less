@@ -105,6 +105,20 @@ span.username {
   .make-md-column(10);
 }
 
+// Kiosk mode: show the calendar only
+.kiosk-mode {
+  // Space at the top, since the navbar is hidden
+  padding-top: @grid-gutter-width;
+
+  #sidebar {
+    display: none;
+  }
+
+  #content {
+    width: 100%;
+  }
+}
+
 #footer {
   text-align: center;
 }

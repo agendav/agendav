@@ -216,6 +216,39 @@ overwritten on upgrades.
    Configures ACL permissions for calendar sharing. The default values will
    work with DAViCal.
 
+.. confval:: calendar.read_only
+
+   Makes the whole instance read-only for every session, regardless of the
+   login method: disables creating, editing and deleting events and
+   calendars, and hides the preferences page. Useful for a team calendar
+   where users can see their own calendars but not change them.
+
+.. confval:: calendar.kiosk_mode
+
+   Kiosk mode for an unattended wall screen: hides the navbar, the sidebar
+   and the calendar controls, disables clicks on events and reloads the
+   page every night shortly after midnight. Always enables
+   :confval:`calendar.read_only` automatically.
+
+   Recommended setup: a dedicated AgenDAV instance with
+   :confval:`autologin.username` and :confval:`autologin.password`, using
+   a low-privilege CalDAV account that only has read access to the calendars to show,
+   since all calendars of this account are shown. Set the default view and other
+   preferences with the ``defaults.*`` settings, e.g.
+   :confval:`defaults.default_view`.
+   Fullscreen view is handled by the browser, e.g. ``chromium --kiosk``.
+
+.. confval:: autologin.username
+
+   Username for the automatic login. Together with
+   :confval:`autologin.password`, AgenDAV logs in this account without
+   showing the login page, and hides the logout button. Leave both empty
+   to disable the autologin feature. Use a dedicated, low-privilege CalDAV account.
+
+.. confval:: autologin.password
+
+   Password for :confval:`autologin.username`.
+
 .. confval:: defaults.timezone
 
    Timezone to be used by default.

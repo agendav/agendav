@@ -76,10 +76,27 @@ $(document).ready(function() {
     'list': 'customizable_list'
   };
 
+  // Kiosk mode: unattended wall screen without controls and interaction
+  var kiosk_mode = AgenDAVConf.calendar_kiosk_mode === true;
+
+  // Calendar controls, hidden in kiosk mode (title only)
+  var calendar_header = {
+    right:   'month,agendaWeek,agendaDay customizable_list',
+    center: 'title',
+    left:  'today prev,next'
+  };
+  if (kiosk_mode) {
+    calendar_header = {
+      right: '',
+      center: 'title',
+      left: ''
+    };
+  }
+
   // Enable full calendar
   $('#calendar_view').fullCalendar({
-    selectable: AgenDAVConf.calendar_read_only !== true,
-    editable: AgenDAVConf.calendar_read_only !== true,
+    selectable: AgenDAVConf.calendar_read_only !== true && !kiosk_mode,
+    editable: AgenDAVConf.calendar_read_only !== true && !kiosk_mode,
     timezone: AgenDAVUserPrefs.timezone,
     firstDay: AgenDAVUserPrefs.weekstart,
     timeFormat: AgenDAVDateAndTime.fullCalendarFormat[AgenDAVUserPrefs.time_format],
@@ -99,11 +116,7 @@ $(document).ready(function() {
         listDayAltFormat: 'dddd'
       }
     },
-    header: {
-      right:   'month,agendaWeek,agendaDay customizable_list',
-      center: 'title',
-      left:  'today prev,next'
-    },
+    header: calendar_header,
     navLinks: false,
 
     defaultView: fullcalendar_views[AgenDAVUserPrefs.default_view],
@@ -131,14 +144,14 @@ $(document).ready(function() {
     },
 
     // Only day headers that can actually switch to day view (i.e. there
-    // is more than one column) should look clickable
+    // is more than one column) should look clickable, never in kiosk mode
     viewRender: function() {
       var headers = $('#calendar_view .fc-day-header[data-date]');
-      headers.toggleClass('fc-clickable-day-header', headers.length > 1);
+      headers.toggleClass('fc-clickable-day-header', headers.length > 1 && !kiosk_mode);
     },
 
     eventRender: event_render_callback,
-    eventClick: event_click_callback,
+    eventClick: kiosk_mode ? undefined : event_click_callback,
 
     // Add new event by dragging. Click also triggers this event,
     // if you define dayClick and select there is some kind of
@@ -154,8 +167,11 @@ $(document).ready(function() {
   });
 
   // Switch to day view when a week-column header is clicked - voids when
-  // day view is already active
+  // day view is already active or in kiosk mode
   $('#calendar_view').on('click', '.fc-day-header[data-date]', function(e) {
+    if (kiosk_mode) {
+      return;
+    }
     if ($(this).siblings('.fc-day-header[data-date]').length === 0) {
       return;
     }
@@ -256,34 +272,37 @@ $(document).ready(function() {
   }).qtip('api');
 
 
-  // Refresh link
-  $('<button id="button-refresh" class="btn btn-default">' +
-    '<i class="fa fa-refresh"></i> ' +
-    t('labels', 'refresh') + '</button>')
-    .appendTo('#calendar_view div.fc-right')
-    .on('click', function() {
-      update_calendar_list(true);
-    })
-    .before('<span class="fc-header-space">');
-
-  // Date picker above calendar
-  render_template('datepicker_button', {}, function(out) {
-    $('#calendar_view .fc-center').append(out);
-    $('#datepicker_fullcalendar') .datepicker({
-      changeYear: true,
-      closeText: t('labels', 'cancel'),
-      onSelect: function(date, text) {
-        var d = $('#datepicker_fullcalendar').datepicker('getDate');
-        $('#calendar_view').fullCalendar('gotoDate', d);
-      }
-    })
-    .prev()
+  // Refresh button and date picker, not shown in kiosk mode
+  if (!kiosk_mode) {
+    // Refresh link
+    $('<button id="button-refresh" class="btn btn-default">' +
+      '<i class="fa fa-refresh"></i> ' +
+      t('labels', 'refresh') + '</button>')
+      .appendTo('#calendar_view div.fc-right')
       .on('click', function() {
-        var current_date = $('#calendar_view').fullCalendar('getDate').toDate();
-        $('#datepicker_fullcalendar').datepicker('setDate', current_date);
-        $('#datepicker_fullcalendar').datepicker('show');
-      });
-  });
+        update_calendar_list(true);
+      })
+      .before('<span class="fc-header-space">');
+
+    // Date picker above calendar
+    render_template('datepicker_button', {}, function(out) {
+      $('#calendar_view .fc-center').append(out);
+      $('#datepicker_fullcalendar') .datepicker({
+        changeYear: true,
+        closeText: t('labels', 'cancel'),
+        onSelect: function(date, text) {
+          var d = $('#datepicker_fullcalendar').datepicker('getDate');
+          $('#calendar_view').fullCalendar('gotoDate', d);
+        }
+      })
+      .prev()
+        .on('click', function() {
+          var current_date = $('#calendar_view').fullCalendar('getDate').toDate();
+          $('#datepicker_fullcalendar').datepicker('setDate', current_date);
+          $('#datepicker_fullcalendar').datepicker('show');
+        });
+    });
+  }
 
   $('#calendar_view').fullCalendar('renderEvent',
     {
@@ -384,6 +403,16 @@ $(document).ready(function() {
       }
       update_calendar_list(false);
     }, AUTO_REFRESH_INTERVAL);
+
+    // Kiosk mode: reload the whole page every night at 00:05, so the
+    // visible date range moves forward
+    if (kiosk_mode) {
+      var now = new Date();
+      var next_reload = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 5, 0);
+      setTimeout(function() {
+        window.location.reload();
+      }, next_reload - now);
+    }
 
 });
 

@@ -46,6 +46,11 @@ $builder->addDefinitions(__DIR__ . '/../app/services.php');
 $builder->addDefinitions(['environment' => $environment]);
 $container = $builder->build();
 
+// Kiosk mode always implies read-only mode
+if ($container->get('calendar.kiosk_mode') === true) {
+    $container->set('calendar.read_only', true);
+}
+
 // Required settings sanity check — fail loudly rather than mid-request.
 $csrfSecret = $container->has('csrf.secret') ? $container->get('csrf.secret') : null;
 if (!is_string($csrfSecret) || $csrfSecret === '') {

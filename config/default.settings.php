@@ -184,6 +184,12 @@ return [
     // deleting events and calendars, and hides the preferences page.
     'calendar.read_only' => false,
 
+    // Kiosk mode for an unattended wall screen: hides the navbar, the
+    // sidebar and the calendar controls, disables clicks on events.
+    // Shows all calendars of the account. Activates calendar.read_only.
+    // Combine this with the autologin settings below.
+    'calendar.kiosk_mode' => false,
+
     // Additional authentication methods (FQCNs implementing AuthenticationMethodInterface)
     'auth.methods' => [],
 
@@ -191,7 +197,7 @@ return [
     // Leave both empty to disable. Use a dedicated, low-privilege CalDAV
     // account for this, not a personal account, since the password is
     // stored in plaintext in this file. Hides the logout button automatically.
-    // Combine with calendar.read_only for an unattended kiosk display.
+    // Combine with calendar.kiosk_mode for an unattended kiosk display.
     'autologin.username' => '',
     'autologin.password' => '',
 

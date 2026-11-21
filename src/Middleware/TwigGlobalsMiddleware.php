@@ -48,6 +48,7 @@ class TwigGlobalsMiddleware implements MiddlewareInterface
         $twig->addGlobal('displayname', $session->has('displayname') ? $session->get('displayname') : '');
         $twig->addGlobal('calendar_subscriptions', $this->container->get('calendar.subscriptions'));
         $twig->addGlobal('calendar_read_only', $this->container->get('calendar.read_only') === true);
+        $twig->addGlobal('calendar_kiosk_mode', $this->container->get('calendar.kiosk_mode') === true);
         $twig->addGlobal(
             'autologin_enabled',
             (string) $this->container->get('autologin.username') !== ''

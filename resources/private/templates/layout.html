@@ -19,7 +19,7 @@
 <script src="{{ asset('dist/js/es5-shim.js') }}"></script>
 <![endif]-->
     </head>
-    <body>
+    <body{% if calendar_kiosk_mode %} class="kiosk-mode"{% endif %}>
         {% block content %}{% endblock %}
         {% block bottom %}{% endblock %}
     </body>
