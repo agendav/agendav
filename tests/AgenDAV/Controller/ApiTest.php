@@ -179,7 +179,7 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ['/cal/']], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['calendars' => ['/cal/']]], $this->decode($response));
     }
 
     public static function allDayValues(): array
@@ -230,7 +230,7 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ['/cal/']], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['calendars' => ['/cal/']]], $this->decode($response));
     }
 
     public function testEventMoveReturnsBothCalendars()
@@ -247,7 +247,7 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ['/old/', '/new/']], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['calendars' => ['/old/', '/new/']]], $this->decode($response));
     }
 
     public static function dropMovements(): array
@@ -288,7 +288,7 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ['etag' => '"e2"']], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['etag' => '"e2"']], $this->decode($response));
         $instance = $uploaded->getEvent()->getEventInstance();
         $this->assertSame($expectedStart, $instance->getStart()->format('Y-m-d H:i'));
         $this->assertSame($expectedEnd, $instance->getEnd()->format('Y-m-d H:i'));
@@ -311,7 +311,7 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ['etag' => '"e2"']], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['etag' => '"e2"']], $this->decode($response));
         $instance = $uploaded->getEvent()->getEventInstance();
         $this->assertSame('2026-11-23 10:00', $instance->getStart()->format('Y-m-d H:i'));
         $this->assertSame('2026-11-23 11:30', $instance->getEnd()->format('Y-m-d H:i'));
@@ -333,7 +333,8 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ''], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => []], $this->decode($response));
+        $this->assertStringContainsString('"data":{}', (string) $response->getBody());
     }
 
     public function testEventDeleteInstanceReturnsEtag()
@@ -354,7 +355,7 @@ class ApiTest extends TestCase
             $this->makeResponse()
         );
 
-        $this->assertSame(['result' => 'SUCCESS', 'message' => ['etag' => '"e2"']], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['etag' => '"e2"']], $this->decode($response));
     }
 
     public function testEventBaseReturnsSingleEventObject()
@@ -418,7 +419,7 @@ class ApiTest extends TestCase
         );
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['result' => 'SUCCESS', 'message' => '/cal/'], $this->decode($response));
+        $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['calendar' => '/cal/']], $this->decode($response));
     }
 
     public function testCalendarListingReturnsPlainArray()

@@ -59,6 +59,6 @@ class Delete extends JSONController
             $this->client->deleteCalendar($calendar);
         }
 
-        return $this->generateSuccess($response, $calendar->getUrl());
+        return $this->generateSuccess($response, ['calendar' => $calendar->getUrl()]);
     }
 }

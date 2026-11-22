@@ -162,11 +162,15 @@ abstract class JSONController
     }
 
     /**
-    * @param array|string $message
+    * @param array $data Named values for the client, always sent as JSON object
     */
-    protected function generateSuccess(ResponseInterface $response, $message = ''): ResponseInterface
+    protected function generateSuccess(ResponseInterface $response, array $data = []): ResponseInterface
     {
-        return $this->jsonResponse($response, ['result' => 'SUCCESS', 'message' => $message], 200);
+        return $this->jsonResponse(
+            $response,
+            ['result' => 'SUCCESS', 'message' => '', 'data' => (object) $data],
+            200
+        );
     }
 
     protected function jsonResponse(ResponseInterface $response, array $payload, int $code): ResponseInterface

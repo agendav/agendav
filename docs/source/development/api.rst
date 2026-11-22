@@ -52,15 +52,19 @@ Write endpoints answer with a JSON envelope:
 
 .. code-block:: json
 
-   {"result": "SUCCESS", "message": ""}
+   {"result": "SUCCESS", "message": "", "data": {"etag": "\"5f1c…\""}}
 
 ``result`` is one of:
 
-- ``SUCCESS`` - the action was done, ``message`` may carry data (see each endpoint)
+- ``SUCCESS`` - the action was done, ``data`` is a JSON object with named values for the
+  client (see each endpoint), ``{}`` if there are none
 - ``EXCEPTION`` - an expected problem (invalid input, permission denied, …), ``message``
   is a translated text for the user
 - ``ERROR`` - an unexpected problem (CalDAV server unreachable, internal error), ``message``
   is a translated text for the user
+
+``message`` is always text for the user, never data. Only ``SUCCESS`` responses have
+``data``.
 
 Read endpoints (``GET /calendars``, ``GET /events``, ``GET /eventbase``,
 ``GET /principals``) return their data directly, without the envelope. Errors on these
@@ -158,7 +162,7 @@ Creates a calendar, or a subscription to an external ``.ics`` feed.
      - for subscriptions
      - Feed URL, ``http`` or ``https`` only
 
-Response: envelope, empty ``message``.
+Response: envelope, ``data`` is ``{}``.
 
 ``POST /calendars/save``
 ************************
@@ -193,7 +197,7 @@ Updates name, color and shares of a calendar.
      - no
      - ``1`` (read-write) or ``0`` (read-only), same order and length as ``shares[with][]``
 
-Response: envelope, empty ``message``.
+Response: envelope, ``data`` is ``{}``.
 
 ``POST /calendars/delete``
 **************************
@@ -211,7 +215,7 @@ Response: envelope, empty ``message``.
      - no
      - ``true`` to remove a subscription
 
-Response: envelope, ``message`` is the calendar URL.
+Response: envelope, ``data`` is ``{"calendar": "…"}`` (the removed calendar URL).
 
 Events
 ------
@@ -340,8 +344,8 @@ Creates an event (no ``uid``) or modifies one (with ``uid``).
      - no
      - Reminders, same order and length
 
-Response: envelope, ``message`` is an array of the calendar URLs that changed (one, or
-two when the event was moved).
+Response: envelope, ``data`` is ``{"calendars": […]}``, the calendar URLs that changed
+(one, or two when the event was moved).
 
 ``POST /events/drop``
 *********************
@@ -367,7 +371,7 @@ Moves an event instance by a number of minutes (drag and drop).
      - no
      - Move only this instance
 
-Response: envelope, ``message`` is ``{"etag": "…"}``.
+Response: envelope, ``data`` is ``{"etag": "…"}``.
 
 ``POST /events/resize``
 ***********************
@@ -377,7 +381,7 @@ Changes the end of an event instance by a number of minutes.
 Parameters: ``calendar``, ``uid``, ``timezone``, ``delta`` (minutes, required),
 ``recurrence_id`` (optional).
 
-Response: envelope, ``message`` is ``{"etag": "…"}``.
+Response: envelope, ``data`` is ``{"etag": "…"}``.
 
 ``POST /events/delete``
 ***********************
@@ -395,7 +399,7 @@ Response: envelope, ``message`` is ``{"etag": "…"}``.
      - no
      - Delete only this instance
 
-Response: envelope. ``message`` is empty, or ``{"etag": "…"}`` when a single instance was
+Response: envelope, ``data`` is ``{}``, or ``{"etag": "…"}`` when a single instance was
 removed.
 
 Other endpoints
@@ -418,8 +422,3 @@ Response: a JSON array, empty if ``term`` is missing:
 ******************
 
 Keeps the session alive. Empty ``200`` response.
-
-Known inconsistencies
----------------------
-
-- The ``message`` of ``SUCCESS`` responses has a different type per endpoint

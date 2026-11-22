@@ -549,7 +549,7 @@ var send_form = function send_form(params) {
       return;
     }
 
-    successFunc(data.message);
+    successFunc(data.data);
   });
 };
 
@@ -745,8 +745,9 @@ var open_event_edit_dialog = function open_event_edit_dialog(event) {
       send_form({
         form_object: $('#event_edit_form'),
         data: event_fields,
-        success: function(affected_calendars) {
+        success: function(data) {
           // Reload only affected calendars
+          var affected_calendars = data.calendars;
           var total = affected_calendars.length;
           for (var i=0;i<total;i++) {
             reload_event_source(affected_calendars[i]);
@@ -1162,8 +1163,9 @@ var calendar_delete_dialog = function calendar_delete_dialog(calendar_obj) {
 
       send_form({
         form_object: fake_form,
-        success: function(removed_calendar) {
+        success: function(data) {
           // Just remove deleted calendar
+          var removed_calendar = data.calendar;
           $('.calendar_list li.available_calendar').each(function(index) {
             var thiscal = $(this).data();
             if (thiscal.calendar == removed_calendar) {

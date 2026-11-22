@@ -91,7 +91,7 @@ class Save extends JSONController
         $object->setEvent($event);
         $this->client->uploadCalendarObject($object);
 
-        return $this->generateSuccess($response, [$input->get('calendar')]);
+        return $this->generateSuccess($response, ['calendars' => [$input->get('calendar')]]);
     }
 
     protected function modifyObject(ParameterBag $input, ResponseInterface $response): ResponseInterface
@@ -129,11 +129,10 @@ class Save extends JSONController
         if ($moving) {
             $this->client->deleteCalendarObject($source_object);
             return $this->generateSuccess($response, [
-                $input->get('original_calendar'),
-                $input->get('calendar'),
+                'calendars' => [$input->get('original_calendar'), $input->get('calendar')],
             ]);
         }
 
-        return $this->generateSuccess($response, [$input->get('calendar')]);
+        return $this->generateSuccess($response, ['calendars' => [$input->get('calendar')]]);
     }
 }
