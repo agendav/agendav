@@ -8,7 +8,10 @@
 
 {% if logo %}
 <div id="logo" class="block">
-  <img src="{{ asset(logo, 'img') }}" alt="Logo">
+  <img class="logo-light" src="{{ asset(logo, 'img') }}" alt="Logo">
+  {% if logo_dark %}
+  <img class="logo-dark" src="{{ asset(logo_dark, 'img') }}" alt="Logo">
+  {% endif %}
 </div>
 {% endif %}
 

@@ -27,6 +27,16 @@ overwritten on upgrades.
    Image filename which will be used as a logo. Has to be a valid filename
    placed inside ``public/img/`` directory.
 
+.. confval:: site.logo_dark
+
+   Image filename which will be used as a logo in the dark color scheme. Has to be a
+   valid filename placed inside ``public/img/`` directory.
+
+   Defaults to ``agendav_100transp_dark.png``, a dark variant of the default
+   logo. When using a custom :confval:`site.logo`, set a matching dark logo
+   here, or set it to an empty string to use :confval:`site.logo` in the dark
+   color scheme as well.
+
 .. confval:: site.favicon
 
    Icon filename which will be used as favicon. Has to be placed inside
@@ -313,6 +323,14 @@ overwritten on upgrades.
 .. confval:: defaults.default_view
 
    Default calendar view when accessing AgenDAV. Allowed values: month, week, day and list
+
+   Specify it as a string.
+
+.. confval:: defaults.color_scheme
+
+   Default color scheme. Users may change it in their preferences. Allowed
+   values: light, dark and auto (follows the color scheme of the operating
+   system)
 
    Specify it as a string.
 

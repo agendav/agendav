@@ -26,6 +26,8 @@ class TwigGlobalsMiddleware implements MiddlewareInterface
         $twig->addGlobal('environment', $this->container->get('environment'));
         $twig->addGlobal('title', $this->container->get('site.title'));
         $twig->addGlobal('logo', $this->container->get('site.logo'));
+        $twig->addGlobal('logo_dark', $this->container->get('site.logo_dark'));
+        $twig->addGlobal('color_scheme', $this->container->get('defaults.color_scheme'));
         $twig->addGlobal('favicon', $this->container->get('site.favicon'));
         $twig->addGlobal('footer', $this->container->get('site.footer'));
         $twig->addGlobal('stylesheets', $this->container->get('stylesheets'));

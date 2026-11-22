@@ -74,5 +74,6 @@ class AuthMiddleware implements MiddlewareInterface
         $twig->addGlobal('lang', $locale);
         $translations = $translator->getCatalogue($locale)->all('messages');
         $twig->addGlobal('translations', $translations ?: $translator->getCatalogue('en')->all('messages'));
+        $twig->addGlobal('color_scheme', (string) $preferences->get('color_scheme'));
     }
 }

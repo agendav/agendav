@@ -1,0 +1,377 @@
+// Dark color scheme
+//
+// Applied by the data-color-scheme attribute on <html>:
+// - "dark": always dark
+// - "auto": dark if the operating system prefers a dark color scheme
+// - "light" (or missing): no changes
+//
+// Event colors are calendar colors and stay untouched.
+
+@dark-bg:           #1e1f22;
+@dark-surface:      #2b2d31;
+@dark-surface-alt:  #34363b;
+@dark-border:       #45474d;
+@dark-text:         #dcdde0;
+@dark-text-muted:   #9a9ca3;
+@dark-link:         #6cb2f0;
+@dark-highlight:    #3d4a5c;
+
+// Dark logo is hidden unless the dark color scheme is active
+#logo .logo-dark {
+  display: none;
+}
+
+.dark-color-scheme() {
+  color-scheme: dark;
+
+  body {
+    background-color: @dark-bg;
+    color: @dark-text;
+  }
+
+  a {
+    color: @dark-link;
+  }
+
+  hr {
+    border-top-color: @dark-border;
+  }
+
+  .text-muted, .help-block, #footer p {
+    color: @dark-text-muted;
+  }
+
+  // Login
+  .loginform {
+    background-color: @dark-surface;
+  }
+
+  // Navbar
+  .navbar-default {
+    background-color: @dark-surface;
+    background-image: none;
+    border-color: @dark-border;
+    box-shadow: none;
+
+    .navbar-brand, .navbar-nav > li > a, .navbar-text {
+      color: @dark-text;
+      text-shadow: none;
+    }
+
+    .navbar-nav > li > a:hover, .navbar-nav > li > a:focus,
+    .navbar-nav > .open > a, .navbar-nav > .active > a {
+      background-color: @dark-surface-alt;
+      background-image: none;
+      color: #fff;
+    }
+  }
+
+  // Panels
+  .panel {
+    background-color: @dark-surface;
+    border-color: @dark-border;
+  }
+
+  .panel-default > .panel-heading {
+    background-color: @dark-surface-alt;
+    background-image: none;
+    border-color: @dark-border;
+    color: @dark-text;
+  }
+
+  .panel-footer {
+    background-color: @dark-surface-alt;
+    border-color: @dark-border;
+  }
+
+  // Buttons
+  .btn-default {
+    background-color: @dark-surface-alt;
+    background-image: none;
+    border-color: @dark-border;
+    color: @dark-text;
+    text-shadow: none;
+
+    &:hover, &:focus, &:active, &.active {
+      background-color: @dark-border;
+      color: #fff;
+    }
+  }
+
+  .btn-success {
+    background-color: #2e6b34;
+    background-image: none;
+    border-color: #2e6b34;
+    color: #fff;
+
+    &:hover, &:focus, &:active {
+      background-color: #3a8040;
+      border-color: #3a8040;
+    }
+  }
+
+  .btn-link {
+    color: @dark-link;
+  }
+
+  // Swap to the dark logo, if one is configured
+  #logo .logo-dark {
+    display: inline;
+  }
+
+  #logo .logo-light:has(~ .logo-dark) {
+    display: none;
+  }
+
+  // Forms
+  .form-control {
+    background-color: @dark-bg;
+    border-color: @dark-border;
+    color: @dark-text;
+
+    &[disabled], &[readonly] {
+      background-color: @dark-surface-alt;
+    }
+  }
+
+  .input-group-addon {
+    background-color: @dark-surface-alt;
+    border-color: @dark-border;
+    color: @dark-text;
+  }
+
+  // Dropdowns
+  .dropdown-menu {
+    background-color: @dark-surface;
+    border-color: @dark-border;
+
+    > li > a {
+      color: @dark-text;
+
+      &:hover, &:focus {
+        background-color: @dark-surface-alt;
+        background-image: none;
+        color: #fff;
+      }
+    }
+
+    .divider {
+      background-color: @dark-border;
+    }
+  }
+
+  // Tabs
+  .nav-tabs {
+    border-bottom-color: @dark-border;
+
+    > li > a:hover {
+      background-color: @dark-surface-alt;
+      border-color: @dark-border;
+    }
+
+    > li.active > a, > li.active > a:hover, > li.active > a:focus {
+      background-color: @dark-surface;
+      border-color: @dark-border @dark-border transparent;
+      color: @dark-text;
+    }
+  }
+
+  // Tables
+  .table > thead > tr > th, .table > tbody > tr > td,
+  .table > tbody > tr > th, .table > thead > tr > td {
+    border-color: @dark-border;
+  }
+
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: @dark-surface-alt;
+  }
+
+  // Alerts and list groups
+  .list-group-item {
+    background-color: @dark-surface;
+    border-color: @dark-border;
+    color: @dark-text;
+  }
+
+  .close {
+    color: @dark-text;
+    text-shadow: none;
+  }
+
+  // Sidebar calendar list
+  .calendar_list li {
+    span.icons {
+      color: @dark-text-muted;
+    }
+
+    &:hover {
+      background-color: @dark-surface-alt;
+    }
+
+    &.hidden_calendar, &.hidden_calendar i {
+      color: #5a5c62 !important;
+    }
+  }
+
+  .pseudobutton {
+    color: @dark-text-muted;
+
+    &:hover {
+      color: #fff;
+      background-color: @dark-highlight !important;
+    }
+  }
+
+  div.share_info {
+    background-color: @dark-surface-alt;
+    border-color: @dark-border;
+  }
+
+  // FullCalendar
+  .fc-unthemed {
+    th, td, thead, tbody, .fc-divider, .fc-row, .fc-content,
+    .fc-popover, .fc-list-view, .fc-list-heading td {
+      border-color: @dark-border;
+    }
+
+    .fc-popover, .fc-list-empty {
+      background-color: @dark-surface;
+    }
+
+    .fc-divider, .fc-popover .fc-header, .fc-list-heading td {
+      background-color: @dark-surface-alt;
+    }
+
+    td.fc-today {
+      background-color: @dark-highlight;
+    }
+
+    .fc-list-item:hover td {
+      background-color: @dark-surface-alt;
+    }
+  }
+
+  .fc-nonbusiness {
+    background-color: #000;
+  }
+
+  // Event text uses the calendar foreground color, not the link color
+  .fc-list-item-title a, .fc-list-item-title a[href]:hover {
+    color: inherit;
+  }
+
+  // FullCalendar lightens events with a white overlay
+  .fc-event .fc-bg {
+    display: none;
+  }
+
+  // Calendar colors are often pastel, dim them to fit the dark background
+  .fc-event, .fc-list-item[style*="background-color"] {
+    filter: brightness(0.8);
+  }
+
+  td.fc-day-number.fc-today {
+    color: #8fd19e;
+  }
+
+  .fc-state-default {
+    background-color: @dark-surface-alt;
+    background-image: none;
+    border-color: @dark-border;
+    color: @dark-text;
+    text-shadow: none;
+    box-shadow: none;
+  }
+
+  .fc-state-hover, .fc-state-active, .fc-state-down {
+    background-color: @dark-border;
+    color: #fff;
+  }
+
+  // jQuery UI (dialogs, datepicker)
+  .ui-widget-content {
+    background: @dark-surface;
+    border-color: @dark-border;
+    color: @dark-text;
+
+    a {
+      color: @dark-text;
+    }
+  }
+
+  .ui-widget-header {
+    background: @dark-surface-alt;
+    border-color: @dark-border;
+    color: @dark-text;
+  }
+
+  .ui-state-default, .ui-widget-content .ui-state-default,
+  .ui-widget-header .ui-state-default, .ui-button {
+    background: @dark-surface-alt;
+    border-color: @dark-border;
+    color: @dark-text;
+  }
+
+  .ui-state-hover, .ui-widget-content .ui-state-hover,
+  .ui-state-focus, .ui-widget-content .ui-state-focus,
+  .ui-button:hover, .ui-button:focus {
+    background: @dark-border;
+    border-color: @dark-border;
+    color: #fff;
+  }
+
+  .ui-state-active, .ui-widget-content .ui-state-active {
+    background: @dark-link;
+    border-color: @dark-link;
+    color: #fff;
+  }
+
+  .ui-state-highlight, .ui-widget-content .ui-state-highlight {
+    background: @dark-highlight;
+    border-color: @dark-link;
+    color: @dark-text;
+  }
+
+  .ui-widget-overlay {
+    background: #000;
+    opacity: 0.6;
+  }
+
+  // qTip popups (event details)
+  .qtip-default, .qtip-bootstrap {
+    background-color: @dark-surface;
+    border-color: @dark-border;
+    color: @dark-text;
+  }
+
+  .qtip-default .qtip-titlebar {
+    background-color: @dark-surface-alt;
+  }
+
+  // Time picker
+  .ui-timepicker-wrapper {
+    background-color: @dark-surface;
+    border-color: @dark-border;
+    color: @dark-text;
+
+    .ui-timepicker-list li:hover, .ui-timepicker-selected {
+      background-color: @dark-highlight;
+      color: #fff;
+    }
+  }
+}
+
+// The data-color-scheme attribute on the html-tag holds the preference,
+// see layout.html
+
+// Preference "dark": always dark
+html[data-color-scheme="dark"] {
+  .dark-color-scheme();
+}
+
+// Preference "auto": dark only if the operating system prefers it
+@media (prefers-color-scheme: dark) {
+  html[data-color-scheme="auto"] {
+    .dark-color-scheme();
+  }
+}

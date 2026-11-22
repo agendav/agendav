@@ -25,10 +25,13 @@ sends your changes back to the CalDAV server.
 - Drag and drop - move events to a new time slot or day, resize to adjust duration
 - Recurring events - create and edit repeating events with recurrence rules
 - Reminders - per-event reminders with a configurable default for new events
+- Event status - cancelled, confirmed and tentative events marked differently
+- Event colors - per-event colors on top of calendar colors
 - Calendar delegations - access calendars delegated by other users (read or read/write)
 - iCal subscriptions - subscribe to external iCal feeds
 - User preferences - each user may set language, timezone, week start, hide weekends and working hours
-- Auto-refresh - calendar data refreshes automatically every 5 minutes
+- Dark mode - light, dark or automatic following system preference
+- Kiosk mode - read-only calendar view for unattended wall screens
 - Multi-language - localized UI with fallback to English
 - Multiple CalDAV backends - works with Baikal, DAViCal, Radicale, Nextcloud, and others
 - Interoperable - the same calendars stay usable from other CalDAV apps

@@ -143,6 +143,20 @@
     </div>
 
     <div class="form-group">
+        <label for="color_scheme">{% trans %}labels.color_scheme{% endtrans %}</label>
+        <br>
+        <label class="radio-inline">
+          <input type="radio" name="color_scheme" {% if color_scheme == "light" %} checked="checked" {% endif %} value="light"> {% trans %}labels.color_scheme_light{% endtrans %}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="color_scheme" {% if color_scheme == "dark" %} checked="checked" {% endif %} value="dark"> {% trans %}labels.color_scheme_dark{% endtrans %}
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="color_scheme" {% if color_scheme == "auto" %} checked="checked" {% endif %} value="auto"> {% trans %}labels.color_scheme_auto{% endtrans %}
+        </label>
+    </div>
+
+    <div class="form-group">
         <label>{% trans %}labels.working_hours{% endtrans %}</label>
         <div class="row">
             <div class="col-md-2">

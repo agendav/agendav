@@ -67,6 +67,18 @@ steps (if any) are listed in the sections below - check those before starting.
 Version-specific steps
 -----------------------
 
+Upgrading from 3.3.x
+*********************
+
+**Custom logo and dark color scheme**
+
+Users may now choose a dark color scheme. In this case AgenDAV shows
+:confval:`site.logo_dark` instead of :confval:`site.logo`. It defaults to a
+dark variant of the AgenDAV logo. If you use a custom logo,
+set a matching dark logo, or use your regular logo in both color schemes::
+
+  'site.logo_dark' => '',
+
 Upgrading from 2.x to 3.x
 **************************
 

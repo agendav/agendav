@@ -270,6 +270,7 @@ return [
             'show_now_indicator' => $c->get('defaults.show_now_indicator'),
             'list_days' => $c->get('defaults.list_days'),
             'default_view' => $c->get('defaults.default_view'),
+            'color_scheme' => $c->get('defaults.color_scheme'),
         ]);
         return $repository;
     },

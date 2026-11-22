@@ -10,10 +10,15 @@ return [
     // Site title
     'site.title' => 'Our calendar',
 
-    // Site logo (should be placed in public/img). Optional
+    // Site logo (stored in public/img)
     'site.logo' => 'agendav_100transp.png',
 
-    // Site favicon (should be placed in public/img). Optional
+    // Site logo for the dark color scheme (stored in public/img)
+    // When using a custom site.logo, set a matching dark logo here, or leave
+    // it empty to use the regular logo in the dark color scheme as well
+    'site.logo_dark' => 'agendav_100transp_dark.png',
+
+    // Site favicon (stored public/img)
     'site.favicon' => 'favicon.ico',
 
     // Site footer. Optional
@@ -167,6 +172,9 @@ return [
 
     // Default view (month, week, day or list)
     'defaults.default_view' => 'month',
+
+    // Default color scheme. Options: light, dark, auto (follows the operating system)
+    'defaults.color_scheme' => 'light',
 
     // Logout redirection. Optional
     'logout.redirection' => '',

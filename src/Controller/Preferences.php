@@ -76,6 +76,7 @@ class Preferences
                 'hide_weekends' => $preferences->get('hide_weekends'),
                 'working_hours_start' => $preferences->get('working_hours_start'),
                 'working_hours_end' => $preferences->get('working_hours_end'),
+                'color_scheme' => $preferences->get('color_scheme'),
             ]
         );
 
@@ -123,6 +124,7 @@ class Preferences
             'hide_weekends' => ($input['hide_weekends'] ?? null) === 'true',
             'working_hours_start' => $this->parseWorkingHour($input['working_hours_start'] ?? null),
             'working_hours_end' => $this->parseWorkingHour($input['working_hours_end'] ?? null),
+            'color_scheme' => $this->parseColorScheme($input['color_scheme'] ?? null),
         ]);
         $this->container->get('preferences.repository')->save($username, $preferences);
 
@@ -147,6 +149,14 @@ class Preferences
             return null;
         }
         return $value;
+    }
+
+    private function parseColorScheme(?string $value): string
+    {
+        if (in_array($value, ['light', 'dark', 'auto'], true)) {
+            return $value;
+        }
+        return $this->container->get('defaults.color_scheme');
     }
 
     private function parseDefaultReminder(array $input): ?array

@@ -142,6 +142,10 @@ $translations = [
     'labels.default_view' => 'Standardansicht',
     'labels.hide_weekends' => 'Wochenenden ausblenden',
     'labels.working_hours' => 'Arbeitszeiten',
+    'labels.color_scheme' => 'Farbschema',
+    'labels.color_scheme_light' => 'Hell',
+    'labels.color_scheme_dark' => 'Dunkel',
+    'labels.color_scheme_auto' => 'Automatisch (Systemeinstellung)',
     'labels.default_reminder' => 'Standard-Erinnerung',
 
     'labels.toggleallcalendars' => 'Alle anzeigen/verstecken',
