@@ -158,7 +158,7 @@ class VObjectBuilder implements Builder
     */
     protected function setStartAndEnd(VObjectEventInstance $instance, array $attributes)
     {
-        $is_all_day = !empty($attributes['allday']) && $attributes['allday'] === 'true';
+        $is_all_day = filter_var($attributes['allday'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
         if ($is_all_day === true) {
             $utc = new \DateTimeZone('UTC');

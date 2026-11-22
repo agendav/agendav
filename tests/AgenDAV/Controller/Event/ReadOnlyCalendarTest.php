@@ -66,6 +66,7 @@ class ReadOnlyCalendarTest extends TestCase
         );
 
         $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', json_decode((string) $response->getBody(), true)['result']);
     }
 
     public function testSaveCreateRejectsReadOnlyCalendar()
@@ -86,6 +87,7 @@ class ReadOnlyCalendarTest extends TestCase
         );
 
         $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', json_decode((string) $response->getBody(), true)['result']);
     }
 
     public function testSaveModifyRejectsReadOnlySourceCalendar()
@@ -110,6 +112,7 @@ class ReadOnlyCalendarTest extends TestCase
         );
 
         $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', json_decode((string) $response->getBody(), true)['result']);
     }
 
     public function testSaveModifyRejectsReadOnlyDestinationCalendar()
@@ -134,6 +137,7 @@ class ReadOnlyCalendarTest extends TestCase
         );
 
         $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', json_decode((string) $response->getBody(), true)['result']);
     }
 
     public function testDropRejectsReadOnlyCalendar()
@@ -148,6 +152,7 @@ class ReadOnlyCalendarTest extends TestCase
         );
 
         $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', json_decode((string) $response->getBody(), true)['result']);
     }
 
     public function testResizeRejectsReadOnlyCalendar()
@@ -162,6 +167,7 @@ class ReadOnlyCalendarTest extends TestCase
         );
 
         $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', json_decode((string) $response->getBody(), true)['result']);
     }
 
     public function testDeleteSucceedsOnWritableCalendar()

@@ -78,7 +78,7 @@ class Save extends JSONController
 
         if (!$calendar->isWritable()) {
             $translator = $this->container->get('translator');
-            return $this->generateError($response, $translator->trans('messages.error_calendar_readonly'), 403);
+            return $this->generateException($response, $translator->trans('messages.error_calendar_readonly'), 403);
         }
 
         $uid = Uuid::generate();
@@ -101,7 +101,7 @@ class Save extends JSONController
 
         if (!$source_calendar->isWritable() || !$destination_calendar->isWritable()) {
             $translator = $this->container->get('translator');
-            return $this->generateError($response, $translator->trans('messages.error_calendar_readonly'), 403);
+            return $this->generateException($response, $translator->trans('messages.error_calendar_readonly'), 403);
         }
 
         $uid = $input->get('uid');

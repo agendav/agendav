@@ -49,7 +49,7 @@ class Delete extends JSONController
 
         if (!$calendar->isWritable()) {
             $translator = $this->container->get('translator');
-            return $this->generateError($response, $translator->trans('messages.error_calendar_readonly'), 403);
+            return $this->generateException($response, $translator->trans('messages.error_calendar_readonly'), 403);
         }
 
         $uid = $input->get('uid');

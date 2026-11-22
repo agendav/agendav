@@ -1254,7 +1254,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
       subscribed_calendars = document.createDocumentFragment(),
       collected_event_sources = [];
 
-    var calendars = data.data;
+    var calendars = data;
 
     calendars.sort(function(a, b) {
       var order_a = parseInt(a.order, 10);

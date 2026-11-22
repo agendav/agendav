@@ -35,7 +35,7 @@ Request format
 ``GET`` endpoints read query parameters. ``POST`` endpoints read a form-encoded body
 (``application/x-www-form-urlencoded``).
 
-Boolean values are sent as the strings ``true`` and ``false``.
+Boolean values can be sent as the strings ``true``/``false`` or ``1``/``0``.
 
 Date formats used in requests:
 
@@ -82,20 +82,20 @@ Status codes
      - 400
      - ``EXCEPTION``
    * - Permission denied by the CalDAV server
-     - 400
-     - ``EXCEPTION``
-   * - Element not found
-     - 400
-     - ``EXCEPTION``
-   * - Element was modified meanwhile (etag mismatch)
-     - 400
+     - 403
      - ``EXCEPTION``
    * - Write request while ``calendar.read_only`` is enabled
      - 403
      - ``EXCEPTION``
    * - Write request on a read-only calendar
      - 403
-     - ``ERROR``
+     - ``EXCEPTION``
+   * - Element not found
+     - 404
+     - ``EXCEPTION``
+   * - Element was modified meanwhile (etag mismatch)
+     - 412
+     - ``EXCEPTION``
    * - CalDAV server unreachable
      - 503
      - ``ERROR``
@@ -115,26 +115,24 @@ Response:
 
 .. code-block:: json
 
-   {
-     "data": [
-       {
-         "url": "/dav.php/calendars/test/default/",
-         "calendar": "/dav.php/calendars/test/default/",
-         "displayname": "Default",
-         "color": "#3a89c9",
-         "order": 0,
-         "ctag": "http://sabre.io/ns/sync/12",
-         "is_owned": true,
-         "is_shared": false,
-         "is_subscribed": false,
-         "owner": "/dav.php/principals/test/",
-         "writable": true,
-         "shares": [
-           {"sid": 1, "with": "/dav.php/principals/demo/", "displayname": "/dav.php/principals/demo/", "rw": 1}
-         ]
-       }
-     ]
-   }
+   [
+     {
+       "url": "/dav.php/calendars/test/default/",
+       "calendar": "/dav.php/calendars/test/default/",
+       "displayname": "Default",
+       "color": "#3a89c9",
+       "order": 0,
+       "ctag": "http://sabre.io/ns/sync/12",
+       "is_owned": true,
+       "is_shared": false,
+       "is_subscribed": false,
+       "owner": "/dav.php/principals/test/",
+       "writable": true,
+       "shares": [
+         {"sid": 1, "with": "/dav.php/principals/demo/", "displayname": "/dav.php/principals/demo/", "rw": 1}
+       ]
+     }
+   ]
 
 ``POST /calendars``
 *******************
@@ -286,7 +284,7 @@ Response: a JSON array of event objects. Response headers ``X-Fetch-Time`` and
 ``X-Parse-Time`` carry timing information in seconds.
 
 If the calendar is readable but its events are not, the response is ``403`` with an
-empty body.
+``EXCEPTION`` envelope.
 
 ``GET /eventbase``
 ******************
@@ -360,12 +358,11 @@ Moves an event instance by a number of minutes (drag and drop).
      - yes
      - Event to move
    * - ``delta``
-     - no
-     - Minutes to move, may be negative, defaults to ``0``
+     - yes
+     - Minutes to move, may be negative
    * - ``was_allday``, ``allday``
-     - no
-     - ``true``/``false``, all-day state before and after the move. Without them the
-       event is not moved and is stored as a timed event
+     - yes
+     - All-day state before and after the move
    * - ``recurrence_id``
      - no
      - Move only this instance
@@ -377,8 +374,8 @@ Response: envelope, ``message`` is ``{"etag": "…"}``.
 
 Changes the end of an event instance by a number of minutes.
 
-Parameters: ``calendar``, ``uid``, ``timezone`` (required), ``delta`` (minutes, defaults to
-``0``), ``recurrence_id`` (optional).
+Parameters: ``calendar``, ``uid``, ``timezone``, ``delta`` (minutes, required),
+``recurrence_id`` (optional).
 
 Response: envelope, ``message`` is ``{"etag": "…"}``.
 
@@ -425,12 +422,4 @@ Keeps the session alive. Empty ``200`` response.
 Known inconsistencies
 ---------------------
 
-- Permission denied, not found and etag mismatch return ``400`` instead of ``403``,
-  ``404`` and ``412``
-- A read-only calendar returns ``ERROR``, read-only mode returns ``EXCEPTION``
-- ``GET /events`` returns ``403`` with an empty body when access to events is denied
-- ``GET /calendars`` wraps its list in ``data``, the other read endpoints do not
-- ``POST /events/drop`` and ``POST /events/resize`` do not validate ``delta``,
-  ``was_allday`` and ``allday``
-- Booleans are strings (``true``/``false``), not JSON booleans
 - The ``message`` of ``SUCCESS`` responses has a different type per endpoint

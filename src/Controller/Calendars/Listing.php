@@ -22,6 +22,7 @@ namespace AgenDAV\Controller\Calendars;
  */
 
 use AgenDAV\Controller\JSONController;
+use AgenDAV\Data\Serializer\PlainSerializer;
 use AgenDAV\Data\Transformer\CalendarTransformer;
 use League\Fractal\Resource\Collection;
 use Psr\Http\Message\ResponseInterface;
@@ -41,11 +42,8 @@ class Listing extends JSONController
         $current_user_principal = $this->container->get('session')->get('principal_url');
 
         $fractal = $this->container->get('fractal');
-        $collection = new Collection(
-            $calendars,
-            new CalendarTransformer($current_user_principal),
-            'calendars'
-        );
+        $fractal->setSerializer(new PlainSerializer());
+        $collection = new Collection($calendars, new CalendarTransformer($current_user_principal));
 
         return $this->jsonResponse($response, $fractal->createData($collection)->toArray(), 200);
     }

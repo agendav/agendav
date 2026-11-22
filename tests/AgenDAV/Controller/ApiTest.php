@@ -103,11 +103,15 @@ class ApiTest extends TestCase
                 'calendar' => '/cal/',
                 'timezone' => 'UTC',
                 'uid' => 'uid1',
+                'delta' => '30',
+                'was_allday' => 'false',
+                'allday' => 'false',
             ]],
             'event resize' => [Event\Resize::class, 'POST', [
                 'calendar' => '/cal/',
                 'timezone' => 'UTC',
                 'uid' => 'uid1',
+                'delta' => '30',
             ]],
         ];
 
@@ -178,6 +182,43 @@ class ApiTest extends TestCase
         $this->assertSame(['result' => 'SUCCESS', 'message' => ['/cal/']], $this->decode($response));
     }
 
+    public static function allDayValues(): array
+    {
+        return [
+            'string true' => ['true', true],
+            'string false' => ['false', false],
+            'JSON true' => [true, true],
+            'JSON false' => [false, false],
+            'missing' => [null, false],
+        ];
+    }
+
+    /**
+     * @dataProvider allDayValues
+     */
+    public function testEventCreateAcceptsAllDayValues(string|bool|null $allDay, bool $expected)
+    {
+        $uploaded = null;
+        $client = $this->makeEventClient(['/cal/' => $this->makeWritableCalendar('/cal/')], $uploaded);
+
+        $input = [
+            'calendar' => '/cal/',
+            'summary' => 'Meeting',
+            'timezone' => 'UTC',
+            'start' => '2026-11-23T10:00:00.000Z',
+            'end' => '2026-11-23T11:00:00.000Z',
+        ];
+        if ($allDay !== null) {
+            $input['allday'] = $allDay;
+        }
+        (new Event\Save($this->makeContainer($client)))->__invoke(
+            $this->makeRequest('POST', $input),
+            $this->makeResponse()
+        );
+
+        $this->assertSame($expected, $uploaded->getEvent()->getEventInstance()->isAllDay());
+    }
+
     public function testEventModifyReturnsChangedCalendar()
     {
         $client = $this->makeEventClient(['/cal/' => $this->makeWritableCalendar('/cal/')]);
@@ -214,17 +255,18 @@ class ApiTest extends TestCase
         return [
             'timed to timed' => ['false', 'false', 30, '2026-11-23 10:30', '2026-11-23 11:30', false],
             'timed to all day' => ['false', 'true', 0, '2026-11-23 00:00', '2026-11-24 00:00', true],
+            'JSON booleans' => [false, true, 0, '2026-11-23 00:00', '2026-11-24 00:00', true],
         ];
     }
 
     /**
-     * Booleans are sent as the strings "true" and "false".
+     * Booleans are accepted as strings ("true"/"false") and as JSON booleans.
      *
      * @dataProvider dropMovements
      */
     public function testEventDropMovesEventAndReturnsEtag(
-        string $wasAllDay,
-        string $allDay,
+        string|bool $wasAllDay,
+        string|bool $allDay,
         int $delta,
         string $expectedStart,
         string $expectedEnd,
@@ -337,9 +379,9 @@ class ApiTest extends TestCase
     public static function exceptionMapping(): array
     {
         return [
-            'permission denied' => [new \AgenDAV\Exception\PermissionDenied('denied'), 400, 'EXCEPTION'],
-            'not found' => [new \AgenDAV\Exception\NotFound('missing'), 400, 'EXCEPTION'],
-            'element modified' => [new \AgenDAV\Exception\ElementModified('changed'), 400, 'EXCEPTION'],
+            'permission denied' => [new \AgenDAV\Exception\PermissionDenied('denied'), 403, 'EXCEPTION'],
+            'not found' => [new \AgenDAV\Exception\NotFound('missing'), 404, 'EXCEPTION'],
+            'element modified' => [new \AgenDAV\Exception\ElementModified('changed'), 412, 'EXCEPTION'],
             'connection problem' => [new \AgenDAV\Exception\ConnectionProblem('down'), 503, 'ERROR'],
             'unexpected CalDAV status' => [new \AgenDAV\Exception('teapot'), 500, 'ERROR'],
             'internal error' => [new \RuntimeException('boom'), 500, 'ERROR'],
@@ -379,7 +421,7 @@ class ApiTest extends TestCase
         $this->assertSame(['result' => 'SUCCESS', 'message' => '/cal/'], $this->decode($response));
     }
 
-    public function testCalendarListingIsWrappedInData()
+    public function testCalendarListingReturnsPlainArray()
     {
         $calendar = new Calendar('/cal/', [Calendar::DISPLAYNAME => 'Default']);
         $calendar->setOwner(new Principal('/principals/test/'));
@@ -399,17 +441,17 @@ class ApiTest extends TestCase
 
         $this->assertSame(200, $response->getStatusCode());
         $body = $this->decode($response);
-        $this->assertSame(['data'], array_keys($body));
+        $this->assertSame([0], array_keys($body));
         $this->assertSame(
             [
                 'url', 'calendar', 'displayname', 'color', 'order', 'ctag', 'is_owned',
                 'is_shared', 'is_subscribed', 'owner', 'writable', 'shares',
             ],
-            array_keys($body['data'][0])
+            array_keys($body[0])
         );
-        $this->assertSame('/cal/', $body['data'][0]['url']);
-        $this->assertTrue($body['data'][0]['is_owned']);
-        $this->assertTrue($body['data'][0]['writable']);
+        $this->assertSame('/cal/', $body[0]['url']);
+        $this->assertTrue($body[0]['is_owned']);
+        $this->assertTrue($body[0]['writable']);
     }
 
     public function testEventListingReturnsPlainArray()
@@ -431,6 +473,26 @@ class ApiTest extends TestCase
         $this->assertSame([], $this->decode($response));
         $this->assertNotSame('', $response->getHeaderLine('X-Fetch-Time'));
         $this->assertNotSame('', $response->getHeaderLine('X-Parse-Time'));
+    }
+
+    public function testEventListingDeniedReturnsExceptionEnvelope()
+    {
+        $client = $this->createMock(\AgenDAV\CalDAV\Client::class);
+        $client->method('fetchObjectsOnCalendar')
+            ->willThrowException(new \AgenDAV\Exception\PermissionDenied('denied'));
+
+        $response = (new Event\Listing($this->makeContainer($client)))->__invoke(
+            $this->makeRequest('GET', [
+                'calendar' => '/cal/',
+                'timezone' => 'Europe/Berlin',
+                'start' => '2026-11-01',
+                'end' => '2026-12-01',
+            ]),
+            $this->makeResponse()
+        );
+
+        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(['result' => 'EXCEPTION', 'message' => 'Translated'], $this->decode($response));
     }
 
     public function testPrincipalSearchWithoutTermReturnsEmptyArray()

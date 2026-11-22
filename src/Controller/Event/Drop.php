@@ -37,6 +37,14 @@ class Drop extends Alter
 
     const ALLDAY_TYPE = 1;
 
+    protected function validateInput(ParameterBag $input)
+    {
+        if (!$input->has('was_allday') || !$input->has('allday')) {
+            return false;
+        }
+        return parent::validateInput($input);
+    }
+
     protected function modifyInstance(
         EventInstance $instance,
         \DateTimeZone $timezone,
@@ -44,8 +52,8 @@ class Drop extends Alter
         ParameterBag $input
     ) {
         $movement = $this->describeMovement(
-            $input->get('was_allday'),
-            $input->get('allday')
+            $input->getBoolean('was_allday'),
+            $input->getBoolean('allday')
         );
 
         $start = $instance->getStart();
@@ -73,21 +81,17 @@ class Drop extends Alter
         $instance->setEnd($end, $allday);
     }
 
-    protected function describeMovement($was_allday, $now_allday)
+    protected function describeMovement(bool $was_allday, bool $now_allday): int
     {
-        if ($was_allday === 'false' && $now_allday === 'false') {
+        if (!$was_allday && !$now_allday) {
             return self::TIMED_TO_TIMED;
         }
-        if ($was_allday === 'false' && $now_allday === 'true') {
+        if (!$was_allday && $now_allday) {
             return self::TIMED_TO_ALLDAY;
         }
-        if ($was_allday === 'true' && $now_allday === 'false') {
+        if ($was_allday && !$now_allday) {
             return self::ALLDAY_TO_TIMED;
         }
-        if ($was_allday === 'true' && $now_allday === 'true') {
-            return self::ALLDAY_TO_ALLDAY;
-        }
-
-        return null;
+        return self::ALLDAY_TO_ALLDAY;
     }
 }

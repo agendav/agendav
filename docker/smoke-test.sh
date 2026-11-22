@@ -248,11 +248,11 @@ RESP=$(curl -s -b "$JAR" -X POST \
 echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars create" || fail "POST /calendars create: $RESP"
 
 # 7. /calendars now lists 2
-CAL_COUNT=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;print(len(json.load(sys.stdin)["data"]))')
+CAL_COUNT=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))')
 [[ "$CAL_COUNT" == "2" ]] && pass "calendars count == 2" || fail "calendars count == $CAL_COUNT"
 
 # locate the just-created calendar (URL is stable across rename — reused for update + delete)
-NEW_URL=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;cs=json.load(sys.stdin)["data"];print([c for c in cs if c["displayname"]=="smoke-test cal"][0]["url"])')
+NEW_URL=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;cs=json.load(sys.stdin);print([c for c in cs if c["displayname"]=="smoke-test cal"][0]["url"])')
 
 # 7b. POST /calendars/save (rename + recolor)
 RESP=$(curl -s -b "$JAR" -X POST \
@@ -265,7 +265,7 @@ echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/save (renam
 
 # 7c. /calendars reflects the rename (new name present, old name gone)
 CAL_LIST=$(curl -s -b "$JAR" http://localhost:8080/calendars)
-if echo "$CAL_LIST" | python3 -c 'import sys,json;ns=[c["displayname"] for c in json.load(sys.stdin)["data"]];sys.exit(0 if ("smoke-test cal RENAMED" in ns and "smoke-test cal" not in ns) else 1)'; then
+if echo "$CAL_LIST" | python3 -c 'import sys,json;ns=[c["displayname"] for c in json.load(sys.stdin)];sys.exit(0 if ("smoke-test cal RENAMED" in ns and "smoke-test cal" not in ns) else 1)'; then
   pass "/calendars shows renamed cal (old name gone)"
 else
   fail "/calendars rename not reflected: $CAL_LIST"
@@ -295,7 +295,7 @@ echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars (subscribe)
 CALS=$(curl -s -b "$JAR" http://localhost:8080/calendars)
 echo "$CALS" | python3 -c '
 import sys, json
-cs = json.load(sys.stdin)["data"]
+cs = json.load(sys.stdin)
 match = [c for c in cs if c.get("is_subscribed") and c.get("displayname") == "Test ICS subscription"]
 assert match, "subscription not found in: " + str(cs)
 ' && pass "GET /calendars contains subscription" || fail "GET /calendars missing subscription"

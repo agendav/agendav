@@ -97,11 +97,11 @@ abstract class JSONController
         try {
             return $this->execute($input, $request, $response);
         } catch (\AgenDAV\Exception\PermissionDenied $exception) {
-            return $this->generateException($response, $translator->trans('messages.error_denied'));
+            return $this->generateException($response, $translator->trans('messages.error_denied'), 403);
         } catch (\AgenDAV\Exception\NotFound $exception) {
-            return $this->generateException($response, $translator->trans('messages.error_element_not_found'));
+            return $this->generateException($response, $translator->trans('messages.error_element_not_found'), 404);
         } catch (\AgenDAV\Exception\ElementModified $exception) {
-            return $this->generateException($response, $translator->trans('messages.error_element_changed'));
+            return $this->generateException($response, $translator->trans('messages.error_element_changed'), 412);
         } catch (\AgenDAV\Exception\ConnectionProblem $exception) {
             $this->container->get('monolog')->error(sprintf(
                 'Having issues contacting the CalDAV server: %s',

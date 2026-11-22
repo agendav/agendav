@@ -37,7 +37,7 @@ abstract class Alter extends JSONController
                 return false;
             }
         }
-        return true;
+        return is_numeric($input->get('delta'));
     }
 
     protected function execute(
@@ -50,7 +50,7 @@ abstract class Alter extends JSONController
 
         if (!$calendar->isWritable()) {
             $translator = $this->container->get('translator');
-            return $this->generateError($response, $translator->trans('messages.error_calendar_readonly'), 403);
+            return $this->generateException($response, $translator->trans('messages.error_calendar_readonly'), 403);
         }
 
         $resource = $this->client->fetchObjectByUid($calendar, $input->get('uid'));

@@ -85,7 +85,11 @@ class Listing extends JSONController
                     'Calendar %s is readable but access to events was denied',
                     $input->get('calendar')
                 ));
-                return $response->withStatus(403);
+                return $this->generateException(
+                    $response,
+                    $this->container->get('translator')->trans('messages.error_denied'),
+                    403
+                );
             }
         } else {
             $object = $this->client->fetchObjectByUid($calendar, $input->get('uid'));
