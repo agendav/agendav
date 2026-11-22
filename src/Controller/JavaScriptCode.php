@@ -73,6 +73,7 @@ class JavaScriptCode
             'show_public_caldav_url' => $this->container->get('caldav.publicurls'),
             'calendar_read_only' => $this->container->get('calendar.read_only') === true,
             'calendar_kiosk_mode' => $this->container->get('calendar.kiosk_mode') === true,
+            'calendar_start_hidden' => $this->container->get('calendar.start_hidden') === true,
         ];
 
         if ($this->container->get('caldav.publicurls')) {

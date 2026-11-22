@@ -180,6 +180,10 @@ return [
         '#C8E6C9', '#FFF9C4', '#F0F4C3', '#FFE0B2', '#D7CCC8', '#F5F5F5',
     ],
 
+    // Hide all calendars when the page loads, so no events are fetched until
+    // the user enables a calendar.
+    'calendar.start_hidden' => false,
+
     // Make the whole instance read-only: disables creating, editing and
     // deleting events and calendars, and hides the preferences page.
     'calendar.read_only' => false,

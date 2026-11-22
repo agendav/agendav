@@ -1230,6 +1230,8 @@ var update_calendar_list = function update_calendar_list(maskbody) {
 
   updcalendar_ajax_req.done(function(data, textStatus, jqXHR) {
     var was_hidden = {};
+    var is_first_load = $('.calendar_list li.available_calendar').length === 0;
+    var hide_all = is_first_load && AgenDAVConf.calendar_start_hidden === true;
 
     // Remove old eventSources and remove every list item
     $('.calendar_list li.available_calendar').each(function(index) {
@@ -1293,7 +1295,7 @@ var update_calendar_list = function update_calendar_list(maskbody) {
         li.addClass('default_calendar');
       }
 
-      if (was_hidden[calendar.calendar]) {
+      if (hide_all || was_hidden[calendar.calendar]) {
         li.addClass('hidden_calendar');
       } else {
         collected_event_sources.push($(li).data().eventsource);
