@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.4.0] - 2026-11-22
+
+- FEATURE Add dark mode with light/dark/auto color scheme preference (#325)
+- FEATURE Show event STATUS (cancelled, tentative, and confirmed events) (#59)
+- FEATURE Add option calendar.start_hidden to hide all calendars on page load (#258, #316)
+- FEATURE Add optional automatic login (#373) - Thanks to @tetzlav
+- FEATURE Add read-only mode option calendar.read_only (#373) - Thanks to @tetzlav
+- FEATURE Add kiosk mode option calendar.kiosk_mode for unattended wall screens (#373)
+- FEATURE Sort calendar list by server order - Thanks to @tetzlav
+- FEATURE Add quickstart guide to the documentation
+- BUGFIX Handle zero-duration events with same start and end (#381)
+- BUGFIX Accept CSS3 color names in event and calendar colors (#328) - Thanks to @ghsioux
+- BUGFIX Fix login failure on databases upgraded from AgenDAV 2.x (#387) - Thanks to @ghsioux
+- BUGFIX Add PostgreSQL extension to Docker images (#384) - Thanks to @ddoyaguez
+- BUGFIX Switch to day view when clicking a day in the week view
+
 ## [3.3.1] - 2026-07-02
 
 - BUGFIX Remove dead Transifex translations, document manual translation process (#370)
