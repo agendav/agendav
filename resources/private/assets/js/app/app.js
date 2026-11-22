@@ -1748,6 +1748,14 @@ var event_render_callback = function event_render_callback(event, element) {
     element.css('color', fg_for_bg(event.color));
   }
 
+  // STATUS: CANCELLED is struck through, TENTATIVE is dimmed
+  if (event.status === 'CANCELLED') {
+    element.addClass('event-status-cancelled');
+  }
+  if (event.status === 'TENTATIVE') {
+    element.addClass('event-status-tentative');
+  }
+
   if (event.rrule !== undefined) {
     icons.push('fa-repeat');
   }

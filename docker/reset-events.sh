@@ -229,10 +229,24 @@ put('seed-reminder', make_ics(
   alarm_minutes=30,
 ))
 
-# Zero-duration event (DTSTART == DTEND, #381)
+# Zero-duration event (DTSTART == DTEND)
 put('seed-zero-duration', make_ics(
   'seed-zero-duration', 'Deadline: submit report',
-  fmtt(today, 17), fmtt(today, 17),
+  fmtt(next_mon, 17), fmtt(next_mon, 17),
+))
+
+# Cancelled event (STATUS = CANCELLED)
+put('seed-status-cancelled', make_ics(
+  'seed-status-cancelled', 'Cancelled: budget meeting',
+  fmtt(next_mon + timedelta(1), 11), fmtt(next_mon + timedelta(1), 12),
+  extra=['STATUS:CANCELLED'],
+))
+
+# Tentative event (STATUS = TENTATIVE)
+put('seed-status-tentative', make_ics(
+  'seed-status-tentative', 'Tentative: lunch with partner',
+  fmtt(next_mon + timedelta(2), 12), fmtt(next_mon + timedelta(2), 13),
+  extra=['STATUS:TENTATIVE'],
 ))
 
 PY

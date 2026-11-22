@@ -75,6 +75,7 @@ class FullCalendarEventTransformer extends Fractal\TransformerAbstract
             'location' => $event->getLocation(),
             'icalendar_class' => $event->getClass(),
             'transp' => $event->getTransp(),
+            'status' => $event->getStatus(),
             'description' => $event->getDescription(),
         ];
 

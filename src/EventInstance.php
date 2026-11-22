@@ -71,6 +71,13 @@ interface EventInstance
     public function getTransp();
 
     /**
+    * Get the STATUS property of this event
+    *
+    * @return string
+    */
+    public function getStatus();
+
+    /**
     * Get the start of this event
     *
     * @return \DateTimeImmutable

@@ -128,6 +128,17 @@ class VObjectEventInstance implements EventInstance
     }
 
     /**
+    * Get the STATUS property of this event, uppercased because
+    * enumerated values are case-insensitive (RFC 5545)
+    *
+    * @return string
+    */
+    public function getStatus()
+    {
+        return strtoupper((string) $this->vevent->STATUS);
+    }
+
+    /**
     * Get the start of this event
     *
     * @return \DateTimeImmutable

@@ -48,6 +48,22 @@ class FullCalendarEventTransformerTest extends TestCase
         $this->assertFalse($result['allDay']);
     }
 
+    public function testTransformStatus()
+    {
+        $start = new \DateTimeImmutable('2026-10-26 13:00:00', new \DateTimeZone('UTC'));
+        $event = $this->createMock(EventInstance::class);
+        $event->method('getStart')->willReturn($start);
+        $event->method('getEnd')->willReturn($start);
+        $event->method('getReminders')->willReturn([]);
+        $event->method('getColor')->willReturn('');
+        $event->method('getStatus')->willReturn('CANCELLED');
+
+        $transformer = new FullCalendarEventTransformer(new \DateTimeZone('UTC'));
+        $result = $transformer->transform(new FullCalendarEvent('/e.ics', 'etag', '/cal/', $event));
+
+        $this->assertSame('CANCELLED', $result['status']);
+    }
+
     public static function colors()
     {
         return [

@@ -302,6 +302,45 @@ class VObjectEventInstanceTest extends TestCase
         );
     }
 
+    public function testGetStatus()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', ['STATUS' => 'CANCELLED']);
+        $instance = new VObjectEventInstance($vevent);
+
+        $this->assertSame('CANCELLED', $instance->getStatus());
+    }
+
+    public function testGetStatusIsUppercased()
+    {
+        $vevent = $this->vcalendar->add('VEVENT', ['STATUS' => 'Tentative']);
+        $instance = new VObjectEventInstance($vevent);
+
+        $this->assertSame('TENTATIVE', $instance->getStatus());
+    }
+
+    public function testGetStatusNotDefined()
+    {
+        $vevent = $this->vcalendar->add('VEVENT');
+        $instance = new VObjectEventInstance($vevent);
+
+        $this->assertSame('', $instance->getStatus());
+    }
+
+    /**
+     * Editing an event in AgenDAV must not drop its STATUS (#59)
+     */
+    public function testCopyPropertiesFromKeepsStatus()
+    {
+        $source = new VObjectEventInstance($this->vcalendar->add('VEVENT', self::$some_properties));
+        $source->setStart($this->now);
+
+        $vevent = $this->vcalendar->add('VEVENT', ['STATUS' => 'TENTATIVE']);
+        $instance = new VObjectEventInstance($vevent);
+        $instance->copyPropertiesFrom($source);
+
+        $this->assertSame('TENTATIVE', $instance->getStatus());
+    }
+
     public function testCopyPropertiesOnRecurrenceException()
     {
         $vevent = $this->vcalendar->add('VEVENT', self::$some_properties);
