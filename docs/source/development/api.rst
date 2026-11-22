@@ -1,0 +1,436 @@
+HTTP API
+========
+
+The AgenDAV frontend talks to the backend through a small JSON API. This page documents the
+current contract. The routes are defined in ``app/routes.php``, the controllers live in
+``src/Controller/``.
+
+All endpoints except ``/login`` and ``/logout`` require an authenticated session.
+
+General rules
+-------------
+
+Authentication
+**************
+
+Requests need a valid session cookie. Alternatively, HTTP Basic authentication can be used
+if it is enabled (see ``auth.methods``).
+
+Without authentication, requests that send ``X-Requested-With: XMLHttpRequest`` get a
+``401`` response with the body ``{}``. All other requests get a ``302`` redirect to
+``/login``.
+
+CSRF protection
+***************
+
+All ``POST`` requests must carry a CSRF token, either in the ``X-CSRF-Token`` header
+(preferred) or in the ``_token`` field of a form-encoded body. A missing or invalid token
+results in ``401``.
+
+The current token is injected into the calendar page as ``csrf_value``.
+
+Request format
+**************
+
+``GET`` endpoints read query parameters. ``POST`` endpoints read a form-encoded body
+(``application/x-www-form-urlencoded``).
+
+Boolean values are sent as the strings ``true`` and ``false``.
+
+Date formats used in requests:
+
+- *Range dates* (``start``/``end`` of ``GET /events``): ``YYYY-MM-DD`` or
+  ``YYYY-MM-DDTHH:MM:SS``, interpreted in the timezone given by ``timezone``
+- *Event dates* (``start``/``end`` of ``POST /events/save``): ``YYYY-MM-DDTHH:MM:SS.uuuZ``
+  (UTC, as produced by JavaScript ``Date.toISOString()``)
+- ``timezone``: an IANA timezone name, for example ``Europe/Berlin``
+
+Response envelope
+*****************
+
+Write endpoints answer with a JSON envelope:
+
+.. code-block:: json
+
+   {"result": "SUCCESS", "message": ""}
+
+``result`` is one of:
+
+- ``SUCCESS`` - the action was done, ``message`` may carry data (see each endpoint)
+- ``EXCEPTION`` - an expected problem (invalid input, permission denied, …), ``message``
+  is a translated text for the user
+- ``ERROR`` - an unexpected problem (CalDAV server unreachable, internal error), ``message``
+  is a translated text for the user
+
+Read endpoints (``GET /calendars``, ``GET /events``, ``GET /eventbase``,
+``GET /principals``) return their data directly, without the envelope. Errors on these
+endpoints use the envelope.
+
+Status codes
+************
+
+.. list-table::
+   :header-rows: 1
+
+   * - Situation
+     - Status
+     - ``result``
+   * - Success
+     - 200
+     - ``SUCCESS``
+   * - Invalid or missing input
+     - 400
+     - ``EXCEPTION``
+   * - Permission denied by the CalDAV server
+     - 400
+     - ``EXCEPTION``
+   * - Element not found
+     - 400
+     - ``EXCEPTION``
+   * - Element was modified meanwhile (etag mismatch)
+     - 400
+     - ``EXCEPTION``
+   * - Write request while ``calendar.read_only`` is enabled
+     - 403
+     - ``EXCEPTION``
+   * - Write request on a read-only calendar
+     - 403
+     - ``ERROR``
+   * - CalDAV server unreachable
+     - 503
+     - ``ERROR``
+   * - Unexpected CalDAV status or internal error
+     - 500
+     - ``ERROR``
+
+Calendars
+---------
+
+``GET /calendars``
+******************
+
+Lists all calendars of the current user, including shared calendars and subscriptions.
+
+Response:
+
+.. code-block:: json
+
+   {
+     "data": [
+       {
+         "url": "/dav.php/calendars/test/default/",
+         "calendar": "/dav.php/calendars/test/default/",
+         "displayname": "Default",
+         "color": "#3a89c9",
+         "order": 0,
+         "ctag": "http://sabre.io/ns/sync/12",
+         "is_owned": true,
+         "is_shared": false,
+         "is_subscribed": false,
+         "owner": "/dav.php/principals/test/",
+         "writable": true,
+         "shares": [
+           {"sid": 1, "with": "/dav.php/principals/demo/", "displayname": "/dav.php/principals/demo/", "rw": 1}
+         ]
+       }
+     ]
+   }
+
+``POST /calendars``
+*******************
+
+Creates a calendar, or a subscription to an external ``.ics`` feed.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``displayname``
+     - yes
+     - Calendar name
+   * - ``calendar_color``
+     - yes
+     - Color, for example ``#3a89c9``
+   * - ``is_subscribed``
+     - no
+     - ``true`` to create a subscription
+   * - ``url``
+     - for subscriptions
+     - Feed URL, ``http`` or ``https`` only
+
+Response: envelope, empty ``message``.
+
+``POST /calendars/save``
+************************
+
+Updates name, color and shares of a calendar.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``calendar``
+     - yes
+     - Calendar URL
+   * - ``displayname``
+     - yes
+     - Calendar name
+   * - ``calendar_color``
+     - yes
+     - Color
+   * - ``is_subscribed``
+     - no
+     - ``true`` for a subscription
+   * - ``is_owned``
+     - no
+     - ``false`` for a calendar shared with the user, only name and color are stored locally
+   * - ``shares[with][]``
+     - no
+     - Principal URLs to share the calendar with (only with ``calendar.sharing`` enabled)
+   * - ``shares[rw][]``
+     - no
+     - ``1`` (read-write) or ``0`` (read-only), same order and length as ``shares[with][]``
+
+Response: envelope, empty ``message``.
+
+``POST /calendars/delete``
+**************************
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``calendar``
+     - yes
+     - Calendar URL
+   * - ``is_subscribed``
+     - no
+     - ``true`` to remove a subscription
+
+Response: envelope, ``message`` is the calendar URL.
+
+Events
+------
+
+Event object
+************
+
+``GET /events`` and ``GET /eventbase`` return event objects:
+
+.. code-block:: json
+
+   {
+     "id": "/dav.php/calendars/test/default/1234-abcd",
+     "calendar": "/dav.php/calendars/test/default/",
+     "href": "/dav.php/calendars/test/default/1234-abcd.ics",
+     "etag": "\"5f1c…\"",
+     "uid": "1234-abcd",
+     "title": "Meeting",
+     "color": "#3a89c9",
+     "start": "2026-11-23T10:00:00+01:00",
+     "end": "2026-11-23T11:00:00+01:00",
+     "allDay": false,
+     "orig_allday": false,
+     "location": "Office",
+     "icalendar_class": "PUBLIC",
+     "transp": "OPAQUE",
+     "status": "CONFIRMED",
+     "description": "",
+     "reminders": [{"count": 15, "unit": "minutes"}]
+   }
+
+Timed events use ISO 8601 with offset, converted to the requested ``timezone``. All-day
+events are not converted.
+
+Recurrent events have these extra fields:
+
+- ``rrule`` - the RRULE string
+- ``has_exceptions``, ``is_exception`` - booleans
+- ``recurrence_id`` - the RECURRENCE-ID of the instance, also appended to ``id`` as
+  ``@<recurrence_id>``
+
+``GET /events``
+***************
+
+Lists event instances of one calendar in a time range. Recurrent events are expanded.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``calendar``
+     - yes
+     - Calendar URL
+   * - ``start``, ``end``
+     - yes
+     - Range dates
+   * - ``timezone``
+     - yes
+     - Timezone for range dates and the response
+   * - ``is_subscribed``
+     - no
+     - ``true`` for a subscription
+   * - ``uid``
+     - no
+     - Only return instances of this event
+
+Response: a JSON array of event objects. Response headers ``X-Fetch-Time`` and
+``X-Parse-Time`` carry timing information in seconds.
+
+If the calendar is readable but its events are not, the response is ``403`` with an
+empty body.
+
+``GET /eventbase``
+******************
+
+Returns the master instance of an event (used to edit recurrent events).
+
+Parameters: ``calendar``, ``uid``, ``timezone`` (all required).
+
+Response: a single event object.
+
+``POST /events/save``
+*********************
+
+Creates an event (no ``uid``) or modifies one (with ``uid``).
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``calendar``
+     - yes
+     - Target calendar URL
+   * - ``summary``
+     - yes
+     - Title
+   * - ``start``, ``end``
+     - yes
+     - Event dates, ``end`` must not be before ``start``
+   * - ``timezone``
+     - yes
+     - Timezone of the event
+   * - ``allday``
+     - no
+     - ``true`` for an all-day event
+   * - ``uid``
+     - for modifications
+     - Event UID
+   * - ``etag``
+     - for modifications
+     - Current etag
+   * - ``original_calendar``
+     - for modifications
+     - Calendar the event is in now, differs from ``calendar`` when moving the event
+   * - ``recurrence_id``
+     - no
+     - Modify only this instance of a recurrent event
+   * - ``location``, ``description``, ``class``, ``transp``, ``color``, ``rrule``
+     - no
+     - Event properties
+   * - ``reminders[count][]``, ``reminders[unit][]``
+     - no
+     - Reminders, same order and length
+
+Response: envelope, ``message`` is an array of the calendar URLs that changed (one, or
+two when the event was moved).
+
+``POST /events/drop``
+*********************
+
+Moves an event instance by a number of minutes (drag and drop).
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``calendar``, ``uid``, ``timezone``
+     - yes
+     - Event to move
+   * - ``delta``
+     - no
+     - Minutes to move, may be negative, defaults to ``0``
+   * - ``was_allday``, ``allday``
+     - no
+     - ``true``/``false``, all-day state before and after the move. Without them the
+       event is not moved and is stored as a timed event
+   * - ``recurrence_id``
+     - no
+     - Move only this instance
+
+Response: envelope, ``message`` is ``{"etag": "…"}``.
+
+``POST /events/resize``
+***********************
+
+Changes the end of an event instance by a number of minutes.
+
+Parameters: ``calendar``, ``uid``, ``timezone`` (required), ``delta`` (minutes, defaults to
+``0``), ``recurrence_id`` (optional).
+
+Response: envelope, ``message`` is ``{"etag": "…"}``.
+
+``POST /events/delete``
+***********************
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``calendar``, ``uid``, ``href``, ``etag``
+     - yes
+     - Event to delete
+   * - ``recurrence_id``
+     - no
+     - Delete only this instance
+
+Response: envelope. ``message`` is empty, or ``{"etag": "…"}`` when a single instance was
+removed.
+
+Other endpoints
+---------------
+
+``GET /principals``
+*******************
+
+Searches principals for calendar sharing.
+
+Parameters: ``term`` (search text, cut to 64 characters).
+
+Response: a JSON array, empty if ``term`` is missing:
+
+.. code-block:: json
+
+   [{"url": "/dav.php/principals/demo/", "displayname": "Demo", "email": "demo@example.com"}]
+
+``GET /keepalive``
+******************
+
+Keeps the session alive. Empty ``200`` response.
+
+Known inconsistencies
+---------------------
+
+- Permission denied, not found and etag mismatch return ``400`` instead of ``403``,
+  ``404`` and ``412``
+- A read-only calendar returns ``ERROR``, read-only mode returns ``EXCEPTION``
+- ``GET /events`` returns ``403`` with an empty body when access to events is denied
+- ``GET /calendars`` wraps its list in ``data``, the other read endpoints do not
+- ``POST /events/drop`` and ``POST /events/resize`` do not validate ``delta``,
+  ``was_allday`` and ``allday``
+- Booleans are strings (``true``/``false``), not JSON booleans
+- The ``message`` of ``SUCCESS`` responses has a different type per endpoint

@@ -144,3 +144,13 @@ JavaScript
 Run the following command to rebuild them::
 
    $ npm run build:js
+
+HTTP API
+--------
+
+The frontend uses a JSON API, see :doc:`api`.
+
+.. toctree::
+   :hidden:
+
+   api
