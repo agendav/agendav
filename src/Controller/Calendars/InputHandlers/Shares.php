@@ -46,7 +46,8 @@ class Shares
         }
 
         for ($i=0;$i<$entries;$i++) {
-            $writable = ($rw[$i] === '1');
+            // Accepts "1"/"0" from forms and 1/0 or true/false from JSON
+            $writable = filter_var($rw[$i], FILTER_VALIDATE_BOOLEAN);
 
             $share = new Share;
             $share->setWith($with[$i]);

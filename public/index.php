@@ -78,6 +78,9 @@ $container->set(RouteParserInterface::class, $app->getRouteCollector()->getRoute
 (require __DIR__ . '/../app/routes.php')($app);
 
 $app->add(new CsrfMiddleware($container));
+// Parses JSON request bodies (form bodies are parsed by PHP). Added after
+// CsrfMiddleware so it runs before it.
+$app->addBodyParsingMiddleware();
 $app->add(new NoStoreMiddleware());
 $app->add(new SecurityHeadersMiddleware());
 

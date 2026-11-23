@@ -33,10 +33,16 @@ The current token is returned by ``GET /config``.
 Request format
 **************
 
-``GET`` endpoints read query parameters. ``POST`` endpoints read a form-encoded body
-(``application/x-www-form-urlencoded``).
+``GET`` endpoints read query parameters. ``POST`` endpoints read either a form-encoded
+body (``application/x-www-form-urlencoded``) or a JSON body (``application/json``). Both
+use the same parameter names. Form fields like ``shares[with][]`` become nested JSON:
 
-Boolean values can be sent as the strings ``true``/``false`` or ``1``/``0``.
+.. code-block:: json
+
+   {"calendar": "/cal/", "shares": {"with": ["/principals/demo/"], "rw": [true]}}
+
+Boolean values can be sent as JSON booleans or as the strings ``true``/``false`` or
+``1``/``0``.
 
 Date formats used in requests:
 

@@ -37,4 +37,23 @@ class SharesTest extends TestCase
         $this->assertFalse($result[0]->isWritable(), 'First generated share was marked as writable');
         $this->assertTrue($result[1]->isWritable(), 'Second generated share was marked as non-writable');
     }
+
+    public static function jsonWritePermissions(): array
+    {
+        return [
+            'integers' => [[0, 1]],
+            'booleans' => [[false, true]],
+        ];
+    }
+
+    /**
+     * @dataProvider jsonWritePermissions
+     */
+    public function testBuildFromJsonInput(array $rw)
+    {
+        $result = Shares::buildFromInput(['/first/principal', '/second/principal'], $rw, '/owner', '/calendar');
+
+        $this->assertFalse($result[0]->isWritable());
+        $this->assertTrue($result[1]->isWritable());
+    }
 }

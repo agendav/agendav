@@ -288,6 +288,21 @@ RESP=$(curl -s -b "$JAR" -X POST \
   http://localhost:8080/calendars/delete)
 echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/delete" || fail "POST /calendars/delete: $RESP"
 
+# 8a. JSON request bodies with the CSRF token in the X-CSRF-Token header
+RESP=$(curl -s -b "$JAR" -X POST \
+  -H 'Content-Type: application/json' \
+  -H "X-CSRF-Token: $T" \
+  --data '{"displayname":"smoke-test json cal","calendar_color":"#0000FF"}' \
+  http://localhost:8080/calendars)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars create (JSON)" || fail "POST /calendars create (JSON): $RESP"
+JSON_URL=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;cs=json.load(sys.stdin);m=[c["url"] for c in cs if c["displayname"]=="smoke-test json cal"];print(m[0] if m else "")')
+RESP=$(curl -s -b "$JAR" -X POST \
+  -H 'Content-Type: application/json' \
+  -H "X-CSRF-Token: $T" \
+  --data "{\"calendar\":\"$JSON_URL\"}" \
+  http://localhost:8080/calendars/delete)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/delete (JSON)" || fail "POST /calendars/delete (JSON): $RESP"
+
 # 8b. POST /calendars (subscribe to ICS)
 cp tests/fixtures/test-calendar.ics public/test-calendar.ics
 ICS_URL='http://localhost/test-calendar.ics'
