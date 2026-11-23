@@ -5,7 +5,8 @@ The AgenDAV frontend talks to the backend through a small JSON API. This page do
 current contract. The routes are defined in ``app/routes.php``, the controllers live in
 ``src/Controller/``.
 
-All endpoints except ``/login`` and ``/logout`` require an authenticated session.
+All endpoints except ``/login``, ``/logout`` and ``/translations/{language}`` require an
+authenticated session.
 
 General rules
 -------------
@@ -27,7 +28,7 @@ All ``POST`` requests must carry a CSRF token, either in the ``X-CSRF-Token`` he
 (preferred) or in the ``_token`` field of a form-encoded body. A missing or invalid token
 results in ``401``.
 
-The current token is injected into the calendar page as ``csrf_value``.
+The current token is returned by ``GET /config``.
 
 Request format
 **************
@@ -404,6 +405,60 @@ removed.
 
 Other endpoints
 ---------------
+
+``GET /config``
+***************
+
+Returns the settings the frontend needs to start. The calendar page only carries the URL of
+this endpoint (``data-config-url`` on ``#calendar_view``), it has no inline configuration.
+
+Response:
+
+.. code-block:: json
+
+   {
+     "config": {
+       "base_url": "/agendav",
+       "base_app_url": "/agendav/",
+       "agendav_version": "3.4.0",
+       "enable_calendar_sharing": true,
+       "enable_calendar_subscriptions": true,
+       "calendar_colors": ["#3a89c9", "#ff0000"],
+       "default_calendar_color": "#3a89c9",
+       "show_public_caldav_url": false,
+       "calendar_read_only": false,
+       "calendar_kiosk_mode": false,
+       "calendar_start_hidden": false
+     },
+     "preferences": {"language": "de", "timezone": "Europe/Berlin", "…": "…"},
+     "csrf_token": "…"
+   }
+
+- ``config`` is a fixed list of site settings. ``caldav_public_base_url`` is added when
+  ``caldav.publicurls`` is enabled. Secrets like autologin credentials are never included
+- ``preferences`` are the preferences of the current user
+- ``csrf_token`` is the token for ``POST`` requests (see CSRF protection)
+
+``GET /translations/{language}``
+********************************
+
+Returns the UI messages of one language, for example ``/translations/de_DE``. Messages
+that are not translated into that language are returned in English. Unknown languages
+return ``404`` with an empty body.
+
+The messages are the same for every user, so this endpoint needs no login. The response
+is cached by the browser (``Cache-Control: public, max-age=31536000, immutable``). During
+development, use a hard reload or disable the browser cache to see changed messages.
+
+The frontend loads ``translations/<preferences.language>?v=<agendav_version>`` after
+``GET /config``. The version parameter loads new messages after an update. On ``404`` the
+frontend loads ``translations/en`` instead.
+
+Response:
+
+.. code-block:: json
+
+   {"labels.calendar": "Kalender", "labels.save": "Speichern", "…": "…"}
 
 ``GET /principals``
 *******************

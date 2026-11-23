@@ -229,9 +229,19 @@ LOGIN_CODE=$(curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -c "$JAR" -X POST 
 # 3. calendar UI
 assert_status "GET / (calendar UI)" http://localhost:8080/ 200 -b "$JAR"
 
-# 4. JSON config embedded in calendar page
+# 4. Calendar page points to /config, /config returns the frontend settings
 CAL_HTML=$(curl -s -b "$JAR" http://localhost:8080/)
-echo "$CAL_HTML" | grep -q 'id="agendav-conf"' && pass "GET / contains agendav-conf JSON element" || fail "GET / missing agendav-conf JSON element"
+echo "$CAL_HTML" | grep -q 'data-config-url="/config"' && pass "GET / contains data-config-url" || fail "GET / missing data-config-url"
+CONFIG_JSON=$(curl -s -b "$JAR" http://localhost:8080/config)
+if echo "$CONFIG_JSON" | python3 -c 'import sys,json;d=json.load(sys.stdin);sys.exit(0 if d["config"]["base_app_url"] and d["preferences"]["timezone"] and d["csrf_token"] else 1)'; then
+  pass "GET /config returns config, preferences and csrf_token"
+else
+  fail "GET /config ($CONFIG_JSON)"
+fi
+# Translations need no login, unknown languages are 404
+TRANSLATIONS_JSON=$(curl -s http://localhost:8080/translations/es_ES)
+echo "$TRANSLATIONS_JSON" | grep -q '"labels.calendar":' && pass "GET /translations/es_ES (no login) contains labels" || fail "GET /translations/es_ES (${TRANSLATIONS_JSON:0:200})"
+assert_status "GET /translations/doesnotexist" http://localhost:8080/translations/doesnotexist 404
 
 # 5. /calendars
 CAL_LIST=$(curl -s -b "$JAR" http://localhost:8080/calendars)
@@ -433,6 +443,8 @@ LOGOUT_LOC=$(curl -s -o /dev/null -w '%{redirect_url}' -b "$JAR" -c "$JAR" http:
 # 21. logged-out /preferences → 302 → /login
 LO_LOC=$(curl -s -o /dev/null -w '%{redirect_url}' -b "$JAR" http://localhost:8080/preferences)
 [[ "$LO_LOC" == */login ]] && pass "logged-out /preferences redirects to /login" || fail "logged-out /preferences redirected to: $LO_LOC"
+LO_CONFIG=$(curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -H 'X-Requested-With: XMLHttpRequest' http://localhost:8080/config)
+[[ "$LO_CONFIG" == "401" ]] && pass "logged-out /config (XHR) [401]" || fail "logged-out /config (XHR) expected 401 got $LO_CONFIG"
 
 # 22. unknown route → 404
 assert_status "GET /this-does-not-exist" http://localhost:8080/this-does-not-exist 404

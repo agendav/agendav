@@ -3,9 +3,10 @@
 use AgenDAV\Controller\Authentication;
 use AgenDAV\Controller\Calendars;
 use AgenDAV\Controller\Event;
-use AgenDAV\Controller\JavaScriptCode;
+use AgenDAV\Controller\Config;
 use AgenDAV\Controller\Preferences;
 use AgenDAV\Controller\Principals;
+use AgenDAV\Controller\Translations;
 use AgenDAV\Middleware\AuthMiddleware;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -20,16 +21,17 @@ return function (App $app) {
     $app->get('/login', Authentication::class . ':loginAction')->setName('login');
     $app->post('/login', Authentication::class . ':loginAction');
     $app->get('/logout', Authentication::class . ':logoutAction')->setName('logout');
+    $app->get('/translations/{language}', Translations::class)->setName('translations');
 
     // Authenticated routes
     $app->group('', function (RouteCollectorProxy $g) use ($container) {
         $g->get('/', function (ServerRequestInterface $request, ResponseInterface $response) use ($container) {
-            $body = $container->get('twig')->render('calendar.html', [
-                'json_config' => (new JavaScriptCode($container))->renderConfig($request),
-            ]);
+            $body = $container->get('twig')->render('calendar.html');
             $response->getBody()->write($body);
             return $response;
         })->setName('calendar');
+
+        $g->get('/config', Config::class)->setName('config');
 
         $g->get('/preferences', Preferences::class . ':indexAction')->setName('preferences');
         $g->post('/preferences', Preferences::class . ':saveAction')->setName('preferences.save');

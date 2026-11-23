@@ -110,6 +110,10 @@ To add or update a translation:
 3. Translate the string values, keeping the PHP array key names unchanged.
 4. Placeholders like ``{name}`` must be preserved as-is.
 
+Missing keys are shown in English. The browser caches translations until the AgenDAV
+version changes, so use a hard reload (Ctrl+Shift+R) or disable the browser cache to see
+your changes.
+
 Building assets
 ---------------
 

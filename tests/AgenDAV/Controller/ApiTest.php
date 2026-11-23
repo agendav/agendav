@@ -532,6 +532,151 @@ class ApiTest extends TestCase
         );
     }
 
+    public function testConfigReturnsSettingsPreferencesAndToken()
+    {
+        $userContext = new \AgenDAV\UserContext();
+        $userContext->setPreferences(new \AgenDAV\Data\Preferences(['timezone' => 'Europe/Berlin']));
+
+        $csrfManager = $this->createMock(\Symfony\Component\Security\Csrf\CsrfTokenManagerInterface::class);
+        $csrfManager->method('getToken')->with('secret')
+            ->willReturn(new \Symfony\Component\Security\Csrf\CsrfToken('secret', 'token-value'));
+
+        $routeParser = $this->createMock(\Slim\Interfaces\RouteParserInterface::class);
+        $routeParser->method('urlFor')->with('calendar')->willReturn('/agendav/');
+
+        $services = [
+            \Slim\Interfaces\RouteParserInterface::class => $routeParser,
+            \AgenDAV\UserContext::class => $userContext,
+            'csrf.manager' => $csrfManager,
+            'csrf.secret' => 'secret',
+            'calendar.sharing' => true,
+            'calendar.subscriptions' => false,
+            'calendar.colors' => ['3a89c9', '#ff0000'],
+            'caldav.publicurls' => false,
+            'calendar.read_only' => false,
+            'calendar.kiosk_mode' => false,
+            'calendar.start_hidden' => true,
+        ];
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('get')->willReturnCallback(fn (string $id) => $services[$id]);
+
+        $response = (new Config($container))->__invoke($this->makeRequest('GET', []), $this->makeResponse());
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('application/json', $response->getHeaderLine('Content-Type'));
+        $body = $this->decode($response);
+        $this->assertSame(['config', 'preferences', 'csrf_token'], array_keys($body));
+        // Fixed list, so new settings (and secrets) are not exposed by accident
+        $this->assertSame(
+            [
+                'base_url', 'base_app_url', 'agendav_version', 'enable_calendar_sharing',
+                'enable_calendar_subscriptions', 'calendar_colors', 'default_calendar_color',
+                'show_public_caldav_url', 'calendar_read_only', 'calendar_kiosk_mode',
+                'calendar_start_hidden',
+            ],
+            array_keys($body['config'])
+        );
+        $this->assertSame('/agendav/', $body['config']['base_app_url']);
+        $this->assertSame('/agendav', $body['config']['base_url']);
+        $this->assertSame(['#3a89c9', '#ff0000'], $body['config']['calendar_colors']);
+        $this->assertSame('#3a89c9', $body['config']['default_calendar_color']);
+        $this->assertTrue($body['config']['calendar_start_hidden']);
+        $this->assertSame('Europe/Berlin', $body['preferences']['timezone']);
+        $this->assertSame('token-value', $body['csrf_token']);
+    }
+
+    public static function translationLanguages(): array
+    {
+        return [
+            'complete language' => [
+                ['labels.today' => 'Heute', 'labels.save' => 'Speichern'],
+                ['labels.today' => 'Heute', 'labels.save' => 'Speichern'],
+            ],
+            'missing message falls back to English' => [
+                ['labels.today' => 'Heute'],
+                ['labels.today' => 'Heute', 'labels.save' => 'Save'],
+            ],
+            'empty language falls back to English' => [
+                [],
+                ['labels.today' => 'Today', 'labels.save' => 'Save'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider translationLanguages
+     */
+    public function testTranslationsReturnLanguageWithEnglishFallback(array $germanMessages, array $expected)
+    {
+        $response = $this->requestTranslations('de_DE', $germanMessages);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('application/json', $response->getHeaderLine('Content-Type'));
+        $this->assertSame($expected, $this->decode($response));
+    }
+
+    public function testTranslationsForUnknownLanguageReturn404()
+    {
+        $response = $this->requestTranslations('doesnotexist', []);
+
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('', (string) $response->getBody());
+    }
+
+    public function testTranslationsAreCached()
+    {
+        $response = $this->requestTranslations('de_DE', []);
+
+        $this->assertSame('public, max-age=31536000, immutable', $response->getHeaderLine('Cache-Control'));
+    }
+
+    public function testNoStoreKeepsCacheControlSetByController()
+    {
+        $handler = $this->createMock(\Psr\Http\Server\RequestHandlerInterface::class);
+        $handler->method('handle')->willReturn(
+            $this->makeResponse()->withHeader('Cache-Control', 'public, max-age=60')
+        );
+
+        $response = (new \AgenDAV\Middleware\NoStoreMiddleware())->process($this->makeRequest('GET', []), $handler);
+
+        $this->assertSame('public, max-age=60', $response->getHeaderLine('Cache-Control'));
+    }
+
+    public function testNoStoreIsDefault()
+    {
+        $handler = $this->createMock(\Psr\Http\Server\RequestHandlerInterface::class);
+        $handler->method('handle')->willReturn($this->makeResponse());
+
+        $response = (new \AgenDAV\Middleware\NoStoreMiddleware())->process($this->makeRequest('GET', []), $handler);
+
+        $this->assertSame('no-store, max-age=0', $response->getHeaderLine('Cache-Control'));
+    }
+
+    private function requestTranslations(string $language, array $germanMessages): ResponseInterface
+    {
+        $translator = $this->createMock(\Symfony\Component\Translation\Translator::class);
+        $translator->method('getCatalogue')->willReturnMap([
+            ['de_DE', new \Symfony\Component\Translation\MessageCatalogue('de_DE', ['messages' => $germanMessages])],
+            ['en', new \Symfony\Component\Translation\MessageCatalogue('en', ['messages' => [
+                'labels.today' => 'Today',
+                'labels.save' => 'Save',
+            ]])],
+        ]);
+
+        $services = [
+            'translator' => $translator,
+            'languages' => ['en' => 'English', 'de_DE' => 'Deutsch'],
+        ];
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('get')->willReturnCallback(fn (string $id) => $services[$id]);
+
+        return (new Translations($container))->__invoke(
+            $this->makeRequest('GET', []),
+            $this->makeResponse(),
+            $language
+        );
+    }
+
     private function makeWritableCalendar(string $url): Calendar
     {
         $calendar = new Calendar($url);

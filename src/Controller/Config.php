@@ -23,31 +23,36 @@ namespace AgenDAV\Controller;
 
 use AgenDAV\UserContext;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\RouteParserInterface;
 
-class JavaScriptCode
+/**
+ * GET /config - site settings, user preferences and the CSRF token the
+ * frontend needs to start. Translations are served by GET /translations.
+ */
+class Config
 {
     public function __construct(private ContainerInterface $container)
     {
     }
 
-    /**
-    * Single public entry point for routes.php to fetch config settings and
-    * render them as inline JSON afterwards.
-    */
-    public function renderConfig(ServerRequestInterface $request): string
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        return $this->container->get('twig')->render('config-data.html', [
-            'site_config' => $this->getSiteConfig($request),
+        $payload = [
+            'config' => $this->getSiteConfig(),
             'preferences' => $this->getPreferences(),
-        ]);
+            'csrf_token' => $this->getCsrfToken(),
+        ];
+
+        $response->getBody()->write((string) json_encode($payload));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 
     /**
     * @return array<string, mixed>
     */
-    protected function getSiteConfig(ServerRequestInterface $request): array
+    protected function getSiteConfig(): array
     {
         // Derive base URLs from Slim's RouteParser rather than $_SERVER['SCRIPT_NAME'].
         // Behind a misconfigured reverse proxy SCRIPT_NAME can be attacker-
@@ -89,5 +94,12 @@ class JavaScriptCode
     protected function getPreferences(): array
     {
         return $this->container->get(UserContext::class)->getPreferences()->getAll();
+    }
+
+    protected function getCsrfToken(): string
+    {
+        return $this->container->get('csrf.manager')
+            ->getToken($this->container->get('csrf.secret'))
+            ->getValue();
     }
 }

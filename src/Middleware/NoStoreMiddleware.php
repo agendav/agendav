@@ -13,12 +13,19 @@ use Psr\Http\Server\RequestHandlerInterface;
  * cookies, CSRF tokens, calendar data); none of it should sit in shared
  * proxies or browser BFCache. Static assets are served by Apache directly
  * via .htaccess and never reach this middleware.
+ *
+ * Responses that set their own Cache-Control header (static content like
+ * translations) are left alone.
  */
 class NoStoreMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
+
+        if ($response->hasHeader('Cache-Control')) {
+            return $response;
+        }
 
         return $response
             ->withHeader('Cache-Control', 'no-store, max-age=0')

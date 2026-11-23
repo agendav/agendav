@@ -12,17 +12,16 @@ use Psr\Http\Server\RequestHandlerInterface;
  * are served by Apache directly via .htaccess and never reach this layer.
  *
  * - X-Frame-Options + frame-ancestors lock out click-jacking iframes.
- * - X-Content-Type-Options stops MIME sniffing of /jssettings and /calendars.
+ * - X-Content-Type-Options stops MIME sniffing of /config and /calendars.
  * - Referrer-Policy keeps full URLs off cross-origin Referer headers.
- * - CSP allows 'unsafe-inline' for scripts because parts/agendavjs.html ships
- *   one inline <script> block (translations + csrf token bootstrap) and for
- *   styles because login.html uses inline style attributes. Tightening either
- *   requires a template refactor — tracked separately.
+ * - CSP allows no inline scripts, the frontend loads its settings from
+ *   /config. It allows 'unsafe-inline' for styles because login.html uses
+ *   inline style attributes.
  */
 class SecurityHeadersMiddleware implements MiddlewareInterface
 {
     private const CSP = "default-src 'self'; "
-        . "script-src 'self' 'unsafe-inline'; "
+        . "script-src 'self'; "
         . "style-src 'self' 'unsafe-inline'; "
         . "img-src 'self' data:; "
         . "font-src 'self' data:; "

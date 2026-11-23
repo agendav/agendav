@@ -21,9 +21,71 @@
 var dustbase = {};
 var event_details_popup;
 
+// Loaded from GET /config and GET /translations before the app starts
+var AgenDAVConf;
+var AgenDAVUserPrefs;
+var translations;
+var csrf_id = '_token';
+var csrf_value;
+
 
 $(document).ready(function() {
-  // translations is loaded in HTML body (TODO make it more elegant)
+  load_config(init_app);
+});
+
+/**
+ * Loads site config, user preferences and the CSRF token, then the
+ * translations, then calls the given function.
+ *
+ * Translations are cached by the browser, the AgenDAV version in the URL
+ * loads new ones after an update. Unknown languages fall back to English.
+ */
+var load_config = function load_config(callback) {
+  var config_req = $.ajax({
+    url: $('#calendar_view').data('config-url'),
+    cache: false,
+    dataType: 'json'
+  });
+
+  var translations_req = config_req.then(function(data) {
+    AgenDAVConf = data.config;
+    AgenDAVUserPrefs = data.preferences;
+    csrf_value = data.csrf_token;
+
+    return load_translations(AgenDAVUserPrefs.language).then(null, function(jqXHR) {
+      if (jqXHR.status === 404) {
+        return load_translations('en');
+      }
+      return $.Deferred().reject(jqXHR);
+    });
+  });
+
+  translations_req.done(function(data) {
+    translations = data;
+    callback();
+  });
+
+  translations_req.fail(function(jqXHR) {
+    // A 401 means the session expired, send the user to the login page
+    if (jqXHR.status === 401) {
+      window.location.reload();
+      return;
+    }
+    // Translations are not loaded, so this message can not be translated
+    $('#calendar_view').text('Could not load the configuration (HTTP ' + jqXHR.status + ').');
+  });
+};
+
+var load_translations = function load_translations(language) {
+  return $.ajax({
+    url: AgenDAVConf.base_app_url + 'translations/' + encodeURIComponent(language),
+    data: { v: AgenDAVConf.agendav_version },
+    cache: true,
+    dataType: 'json'
+  });
+};
+
+var init_app = function init_app() {
   setTranslations(translations);
 
   // Dust.js i18n helper
@@ -414,7 +476,7 @@ $(document).ready(function() {
       }, next_reload - now);
     }
 
-});
+};
 
 
 /**

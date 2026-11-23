@@ -69,11 +69,9 @@ class AuthMiddleware implements MiddlewareInterface
         $locale = (string) $preferences->get('language');
         $translator->setLocale($locale);
 
-        // Twig middleware runs before, overwrite app language with the user settings with english as fallback
+        // Twig middleware runs before, overwrite app language with the user settings
         $twig = $this->container->get('twig');
         $twig->addGlobal('lang', $locale);
-        $translations = $translator->getCatalogue($locale)->all('messages');
-        $twig->addGlobal('translations', $translations ?: $translator->getCatalogue('en')->all('messages'));
         $twig->addGlobal('color_scheme', (string) $preferences->get('color_scheme'));
     }
 }
