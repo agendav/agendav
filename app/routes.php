@@ -34,7 +34,7 @@ return function (App $app) {
         $g->get('/config', Config::class)->setName('config');
 
         $g->get('/preferences', Preferences::class . ':indexAction')->setName('preferences');
-        $g->post('/preferences', Preferences::class . ':saveAction')->setName('preferences.save');
+        $g->post('/preferences/save', Preferences\Save::class)->setName('preferences.save');
 
         $g->get('/calendars', Calendars\Listing::class)->setName('calendars.list');
         $g->post('/calendars', Calendars\Create::class)->setName('calendar.create');

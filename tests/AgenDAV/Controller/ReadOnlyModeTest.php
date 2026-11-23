@@ -25,6 +25,7 @@ class ReadOnlyModeTest extends TestCase
             'event delete' => [Event\Delete::class],
             'event drop' => [Event\Drop::class],
             'event resize' => [Event\Resize::class],
+            'preferences save' => [Preferences\Save::class],
         ];
     }
 

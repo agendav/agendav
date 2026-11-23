@@ -27,7 +27,6 @@ use AgenDAV\UserContext;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\HttpBadRequestException;
 use Slim\Interfaces\RouteParserInterface;
 
 class Preferences
@@ -58,7 +57,7 @@ class Preferences
         $body = $this->container->get('twig')->render(
             'preferences.html',
             [
-                'scripts' => [],
+                'scripts' => ['preferences.js'],
                 'available_timezones' => DateHelper::getAllTimeZones(),
                 'available_languages' => $this->container->get('languages'),
                 'timezone' => $preferences->get('timezone'),
@@ -84,53 +83,6 @@ class Preferences
         return $response;
     }
 
-    public function saveAction(
-        ServerRequestInterface $request,
-        ResponseInterface $response
-    ): ResponseInterface {
-        if ($this->container->get('calendar.read_only') === true) {
-            return $this->redirectToCalendar($response);
-        }
-
-        $input = (array) ($request->getParsedBody() ?? []);
-
-        $required = [
-            'language', 'timezone', 'default_calendar', 'date_format',
-            'time_format', 'weekstart', 'show_week_nb',
-        ];
-        foreach ($required as $key) {
-            if (!array_key_exists($key, $input)) {
-                throw new HttpBadRequestException(
-                    $request,
-                    $this->container->get('translator')->trans('messages.error_empty_fields')
-                );
-            }
-        }
-
-        $username = $this->container->get('session')->get('username');
-        $preferences = $this->container->get(UserContext::class)->getPreferences();
-        $preferences->setAll([
-            'language' => $input['language'],
-            'timezone' => $input['timezone'],
-            'date_format' => $input['date_format'],
-            'time_format' => $input['time_format'],
-            'weekstart' => $input['weekstart'],
-            'default_calendar' => $input['default_calendar'],
-            'show_week_nb' => ($input['show_week_nb'] ?? null) === 'true',
-            'show_now_indicator' => ($input['show_now_indicator'] ?? null) === 'true',
-            'list_days' => $input['list_days'] ?? null,
-            'default_view' => $input['default_view'] ?? null,
-            'default_reminder' => $this->parseDefaultReminder($input),
-            'hide_weekends' => ($input['hide_weekends'] ?? null) === 'true',
-            'working_hours_start' => $this->parseWorkingHour($input['working_hours_start'] ?? null),
-            'working_hours_end' => $this->parseWorkingHour($input['working_hours_end'] ?? null),
-            'color_scheme' => $this->parseColorScheme($input['color_scheme'] ?? null),
-        ]);
-        $this->container->get('preferences.repository')->save($username, $preferences);
-
-        return $this->redirectToCalendar($response);
-    }
-
     private function redirectToCalendar(ResponseInterface $response): ResponseInterface
     {
         /** @var RouteParserInterface $routeParser */
@@ -138,37 +90,5 @@ class Preferences
         return $response
             ->withStatus(302)
             ->withHeader('Location', $routeParser->urlFor('calendar'));
-    }
-
-    private function parseWorkingHour(?string $value): ?string
-    {
-        if ($value === null || $value === '') {
-            return null;
-        }
-        if (!preg_match('/^([01]\d|2[0-3]):00$/', $value)) {
-            return null;
-        }
-        return $value;
-    }
-
-    private function parseColorScheme(?string $value): string
-    {
-        if (in_array($value, ['light', 'dark', 'auto'], true)) {
-            return $value;
-        }
-        return $this->container->get('defaults.color_scheme');
-    }
-
-    private function parseDefaultReminder(array $input): ?array
-    {
-        $count = $input['default_reminder_count'] ?? '';
-        $unit = $input['default_reminder_unit'] ?? '';
-        $allowed_units = ['minutes', 'hours', 'days', 'weeks', 'months'];
-
-        if ($count === '' || !ctype_digit((string) $count) || !in_array($unit, $allowed_units, true)) {
-            return null;
-        }
-
-        return ['count' => (int) $count, 'unit' => $unit];
     }
 }

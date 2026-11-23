@@ -19,6 +19,30 @@ use Slim\Psr7\Factory\ServerRequestFactory;
  */
 class ApiTest extends TestCase
 {
+    /**
+     * Input as sent by the preferences form (all values are strings)
+     */
+    private const PREFERENCES_FORM_INPUT = [
+        'language' => 'de_DE',
+        'timezone' => 'Europe/Berlin',
+        'default_calendar' => '/cal/',
+        'date_format' => 'dmy_dot',
+        'time_format' => '24',
+        'weekstart' => '1',
+        'show_week_nb' => 'true',
+        'show_now_indicator' => 'false',
+        'hide_weekends' => 'false',
+        'list_days' => '14',
+        'default_view' => 'week',
+        'color_scheme' => 'dark',
+        'working_hours_start' => '08:00',
+        'working_hours_end' => '18:00',
+        'default_reminder_count' => '15',
+        'default_reminder_unit' => 'minutes',
+    ];
+
+    private ?array $savedPreferences = null;
+
     public static function controllersWithRequiredInput(): array
     {
         return [
@@ -532,6 +556,108 @@ class ApiTest extends TestCase
         );
     }
 
+    public function testPreferencesSaveStoresFormInput()
+    {
+        $response = $this->savePreferences(self::PREFERENCES_FORM_INPUT);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(
+            [
+                'language' => 'de_DE',
+                'timezone' => 'Europe/Berlin',
+                'date_format' => 'dmy_dot',
+                'time_format' => '24',
+                'weekstart' => '1',
+                'default_calendar' => '/cal/',
+                'show_week_nb' => true,
+                'show_now_indicator' => false,
+                'list_days' => '14',
+                'default_view' => 'week',
+                'default_reminder' => ['count' => 15, 'unit' => 'minutes'],
+                'hide_weekends' => false,
+                'working_hours_start' => '08:00',
+                'working_hours_end' => '18:00',
+                'color_scheme' => 'dark',
+            ],
+            $this->savedPreferences
+        );
+    }
+
+    public function testPreferencesSaveAcceptsJsonBooleans()
+    {
+        $this->savePreferences(array_merge(self::PREFERENCES_FORM_INPUT, [
+            'show_week_nb' => true,
+            'show_now_indicator' => true,
+            'hide_weekends' => true,
+        ]));
+
+        $this->assertTrue($this->savedPreferences['show_week_nb']);
+        $this->assertTrue($this->savedPreferences['show_now_indicator']);
+        $this->assertTrue($this->savedPreferences['hide_weekends']);
+    }
+
+    public function testPreferencesSaveAcceptsMissingOptionalValues()
+    {
+        $input = self::PREFERENCES_FORM_INPUT;
+        unset(
+            $input['show_now_indicator'],
+            $input['hide_weekends'],
+            $input['list_days'],
+            $input['default_view'],
+            $input['color_scheme'],
+            $input['working_hours_start'],
+            $input['working_hours_end'],
+            $input['default_reminder_count']
+        );
+
+        $this->savePreferences($input);
+
+        $this->assertFalse($this->savedPreferences['show_now_indicator']);
+        $this->assertFalse($this->savedPreferences['hide_weekends']);
+        $this->assertNull($this->savedPreferences['list_days']);
+        $this->assertNull($this->savedPreferences['default_view']);
+        $this->assertNull($this->savedPreferences['color_scheme']);
+        $this->assertNull($this->savedPreferences['working_hours_start']);
+        $this->assertNull($this->savedPreferences['working_hours_end']);
+        $this->assertNull($this->savedPreferences['default_reminder']);
+    }
+
+    public static function preferencesRequiredFields(): array
+    {
+        return [
+            ['language'], ['timezone'], ['default_calendar'], ['date_format'],
+            ['time_format'], ['weekstart'], ['show_week_nb'],
+        ];
+    }
+
+    /**
+     * @dataProvider preferencesRequiredFields
+     */
+    public function testPreferencesSaveRejectsMissingRequiredField(string $field)
+    {
+        $input = self::PREFERENCES_FORM_INPUT;
+        unset($input[$field]);
+
+        $response = $this->savePreferences($input);
+
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', $this->decode($response)['result']);
+        $this->assertNull($this->savedPreferences);
+    }
+
+    public function testPreferencesSaveReturnsPreferencesWithDefaults()
+    {
+        $input = self::PREFERENCES_FORM_INPUT;
+        unset($input['color_scheme']);
+
+        $response = $this->savePreferences($input);
+
+        $body = $this->decode($response);
+        $this->assertSame('SUCCESS', $body['result']);
+        $this->assertSame('Europe/Berlin', $body['data']['preferences']['timezone']);
+        $this->assertSame('light', $body['data']['preferences']['color_scheme']);
+    }
+
     public function testConfigReturnsSettingsPreferencesAndToken()
     {
         $userContext = new \AgenDAV\UserContext();
@@ -674,6 +800,36 @@ class ApiTest extends TestCase
             $this->makeRequest('GET', []),
             $this->makeResponse(),
             $language
+        );
+    }
+
+    /**
+     * Posts $input to Preferences\Save, the saved preferences end up in
+     * $this->savedPreferences
+     */
+    private function savePreferences(array $input): ResponseInterface
+    {
+        $preferences = new \AgenDAV\Data\Preferences(['timezone' => 'UTC']);
+        $userContext = new \AgenDAV\UserContext();
+        $userContext->setPreferences($preferences);
+
+        $repository = $this->createMock(\AgenDAV\Repositories\PreferencesRepository::class);
+        $repository->method('save')->willReturnCallback(function ($username, $saved) {
+            $this->savedPreferences = $saved->getAll();
+        });
+        $repository->method('userPreferences')->willReturnCallback(function () use ($preferences) {
+            $preferences->addDefaults(['color_scheme' => 'light']);
+            return $preferences;
+        });
+
+        $container = $this->makeContainer($this->createMock(\AgenDAV\CalDAV\Client::class), [
+            \AgenDAV\UserContext::class => $userContext,
+            'preferences.repository' => $repository,
+        ]);
+
+        return (new Preferences\Save($container))->__invoke(
+            $this->makeRequest('POST', $input),
+            $this->makeResponse()
         );
     }
 

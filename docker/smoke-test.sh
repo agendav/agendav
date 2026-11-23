@@ -427,14 +427,15 @@ echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /events/delete" || fai
 # 15. /preferences GET
 assert_status "GET /preferences" http://localhost:8080/preferences 200 -b "$JAR"
 
-# 16. POST /preferences (save) → 302
+# 16. POST /preferences/save (as JSON, like the preferences page does)
 PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
 T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
-PREF_CODE=$(curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -c "$JAR" -X POST \
-  --data-urlencode "_token=$T" \
-  --data "language=fr_FR&timezone=Europe%2FParis&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
-  http://localhost:8080/preferences)
-[[ "$PREF_CODE" == "302" ]] && pass "POST /preferences [302]" || fail "POST /preferences expected 302 got $PREF_CODE"
+RESP=$(curl -s -b "$JAR" -c "$JAR" -X POST \
+  -H 'Content-Type: application/json' \
+  -H "X-CSRF-Token: $T" \
+  --data '{"language":"fr_FR","timezone":"Europe/Paris","default_calendar":"/dav.php/calendars/test/default/","date_format":"dmy","time_format":"24","weekstart":1,"show_week_nb":true,"show_now_indicator":true,"list_days":14,"default_view":"week"}' \
+  http://localhost:8080/preferences/save)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /preferences/save (JSON)" || fail "POST /preferences/save (JSON): $RESP"
 
 # 17. DB check: prefs persisted
 PREF_DB=$(docker compose exec -T db mysql -N -uagendav -pagendav agendav -e "SELECT options FROM prefs WHERE username='test';" 2>/dev/null)
@@ -447,9 +448,10 @@ assert_status "GET /keepalive" http://localhost:8080/keepalive 200 -b "$JAR"
 PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
 T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
 curl -s -o /dev/null -b "$JAR" -c "$JAR" -X POST \
-  --data-urlencode "_token=$T" \
-  --data "language=en&timezone=Europe%2FMadrid&default_calendar=%2Fdav.php%2Fcalendars%2Ftest%2Fdefault%2F&date_format=dmy&time_format=24&weekstart=1&show_week_nb=true&show_now_indicator=true&list_days=14&default_view=week" \
-  http://localhost:8080/preferences
+  -H 'Content-Type: application/json' \
+  -H "X-CSRF-Token: $T" \
+  --data '{"language":"en","timezone":"Europe/Madrid","default_calendar":"/dav.php/calendars/test/default/","date_format":"dmy","time_format":"24","weekstart":1,"show_week_nb":true,"show_now_indicator":true,"list_days":14,"default_view":"week"}' \
+  http://localhost:8080/preferences/save
 
 # 20. /logout → 302 → /login
 LOGOUT_LOC=$(curl -s -o /dev/null -w '%{redirect_url}' -b "$JAR" -c "$JAR" http://localhost:8080/logout)
@@ -483,7 +485,7 @@ else
 fi
 
 # 23. POST without _token → 401
-assert_status "POST /preferences (no _token)" http://localhost:8080/preferences 401 -b "$JAR_FRESH" -X POST -d "x=1"
+assert_status "POST /preferences/save (no _token)" http://localhost:8080/preferences/save 401 -b "$JAR_FRESH" -X POST -d "x=1"
 
 # 24. HTTP Basic auth → 200
 assert_status "GET /calendars (HTTP Basic)" http://localhost:8080/calendars 200 -u test:test

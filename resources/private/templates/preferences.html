@@ -6,8 +6,10 @@
     <h1>{% trans %}labels.preferences{% endtrans %}</h1>
 
     <div class="preferences-container">
-    <form method="post" id="prefs_form">
+    <form method="post" id="prefs_form" action="{{ url_for('preferences.save') }}" data-return-url="{{ url_for('calendar') }}" data-error-message="{% trans %}messages.error_oops{% endtrans %}">
     <input type="hidden" name="_token" value="{{ csrf_token.getValue() }}">
+
+    <div id="prefs_error" class="alert alert-danger" hidden></div>
 
     <div class="form-group">
         <label for="language">{% trans %}labels.language{% endtrans %}</label>

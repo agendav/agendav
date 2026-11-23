@@ -409,6 +409,64 @@ Response: envelope, ``data`` is ``{"etag": "…"}``.
 Response: envelope, ``data`` is ``{}``, or ``{"etag": "…"}`` when a single instance was
 removed.
 
+Preferences
+-----------
+
+``POST /preferences/save``
+**************************
+
+Saves the preferences of the current user. The current preferences are part of
+``GET /config``.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Required
+     - Description
+   * - ``language``
+     - yes
+     - Language code, for example ``de_DE``
+   * - ``timezone``
+     - yes
+     - IANA timezone name
+   * - ``default_calendar``
+     - yes
+     - URL of the calendar for new events
+   * - ``date_format``
+     - yes
+     - ``ymd``, ``dmy``, ``dmy_dot`` or ``mdy``
+   * - ``time_format``
+     - yes
+     - ``24`` or ``12``
+   * - ``weekstart``
+     - yes
+     - ``0`` (Sunday) or ``1`` (Monday)
+   * - ``show_week_nb``
+     - yes
+     - Boolean
+   * - ``show_now_indicator``, ``hide_weekends``
+     - no
+     - Boolean, default ``false``
+   * - ``list_days``
+     - no
+     - Days in the list view: ``7``, ``14`` or ``31``
+   * - ``default_view``
+     - no
+     - ``month``, ``week``, ``day`` or ``list``
+   * - ``color_scheme``
+     - no
+     - ``light``, ``dark`` or ``auto``, default from ``defaults.color_scheme``
+   * - ``working_hours_start``, ``working_hours_end``
+     - no
+     - Full hours like ``08:00``, empty for the whole day
+   * - ``default_reminder_count``, ``default_reminder_unit``
+     - no
+     - Reminder for new events, unit ``minutes``, ``hours``, ``days``, ``weeks`` or
+       ``months``. Empty count for no reminder
+
+Response: envelope, ``data`` is ``{"preferences": {…}}`` with the saved preferences.
+
 Other endpoints
 ---------------
 
