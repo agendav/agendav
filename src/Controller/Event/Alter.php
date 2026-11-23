@@ -22,6 +22,7 @@ namespace AgenDAV\Controller\Event;
  */
 
 use AgenDAV\Controller\JSONController;
+use AgenDAV\Data\Helper\Color;
 use AgenDAV\EventInstance;
 use AgenDAV\Event\RecurrenceId;
 use Psr\Http\Message\ResponseInterface;
@@ -70,6 +71,10 @@ abstract class Alter extends JSONController
         $minutes = $input->getInt('delta');
 
         $this->modifyInstance($instance, $timezone, $minutes, $input);
+
+        if ($this->container->get('calendar.event_color_format') === 'css3') {
+            $instance->setColor(Color::toName($instance->getColor()));
+        }
 
         $instance->touch();
         $event->storeInstance($instance);

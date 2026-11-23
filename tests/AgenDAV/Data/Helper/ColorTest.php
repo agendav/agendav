@@ -29,4 +29,29 @@ class ColorTest extends TestCase
             'unknown name' => ['transparent', '#transparent'],
         ];
     }
+
+    /**
+     * @dataProvider names
+     */
+    public function testToName($input, $expected)
+    {
+        $this->assertSame($expected, Color::toName($input));
+    }
+
+    public static function names()
+    {
+        return [
+            'null' => [null, null],
+            'empty' => ['', ''],
+            'name' => ['LimeGreen', 'limegreen'],
+            'exact hex' => ['#B8860B', 'darkgoldenrod'],
+            'hex without #' => ['32cd32', 'limegreen'],
+            'short hex' => ['#f00', 'red'],
+            'hex with alpha' => ['#ff6347ff', 'tomato'],
+            'short hex with alpha' => ['#f008', 'red'],
+            'invalid length' => ['#f00ff', '#f00ff'],
+            'nearest' => ['#03A9F4', 'deepskyblue'],
+            'unknown' => ['transparent', 'transparent'],
+        ];
+    }
 }

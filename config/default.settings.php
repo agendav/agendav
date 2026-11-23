@@ -188,6 +188,11 @@ return [
         '#C8E6C9', '#FFF9C4', '#F0F4C3', '#FFE0B2', '#D7CCC8', '#F5F5F5',
     ],
 
+    // Format used to write event colors (COLOR property): 'hex' (#rrggbb) or
+    // 'css3' (closest CSS3 color name, as defined by RFC 7986). Use 'css3'
+    // for clients that only read color names, such as DAVx5.
+    'calendar.event_color_format' => 'hex',
+
     // Hide all calendars when the page loads, so no events are fetched until
     // the user enables a calendar.
     'calendar.start_hidden' => false,

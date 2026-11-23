@@ -102,6 +102,22 @@ class VObjectBuilderTest extends TestCase
         $this->assertEquals($input['color'], $instance->getColor());
     }
 
+    public function testCreateEventInstanceWithCss3ColorFormat()
+    {
+        $builder = new VObjectBuilder($this->timezone, 'css3');
+        $event = $builder->createEvent('ABCDEFG');
+        $start = new \DateTimeImmutable('2015-08-25 16:34:00', $this->utc);
+
+        $instance = $builder->createEventInstanceWithInput($event, [
+            'start' => $start->format(self::INPUT_DATETIME_FORMAT),
+            'end' => $start->modify('+1 hour')->format(self::INPUT_DATETIME_FORMAT),
+            'summary' => 'My test event',
+            'color' => '#FF6347',
+        ]);
+
+        $this->assertEquals('tomato', $instance->getColor());
+    }
+
     public function testCreateEventInstanceWithInputAllDay()
     {
         $event = $this->builder->createEvent('ABCDEFG');

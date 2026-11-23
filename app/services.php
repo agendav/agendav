@@ -382,6 +382,9 @@ return [
     'event.builder' => \DI\factory(function (ContainerInterface $c) {
         $userContext = $c->get(\AgenDAV\UserContext::class);
         $tz = $userContext->getTimezone() ?? $c->get('defaults.timezone');
-        return new \AgenDAV\Event\Builder\VObjectBuilder(new \DateTimeZone($tz));
+        return new \AgenDAV\Event\Builder\VObjectBuilder(
+            new \DateTimeZone($tz),
+            $c->get('calendar.event_color_format')
+        );
     }),
 ];

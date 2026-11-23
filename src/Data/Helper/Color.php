@@ -194,4 +194,43 @@ class Color
 
         return self::NAMES[strtolower($color)] ?? '#' . ltrim($color, '#');
     }
+
+    /**
+     * Converts a color to the closest CSS3 color name, as defined by
+     * RFC 7986. Hex values (#rgb, #rrggbb, optionally with alpha) map to the
+     * exact or nearest name; names are lowercased; other values are kept.
+     */
+    public static function toName(?string $color): ?string
+    {
+        if ($color === null || trim($color) === '') {
+            return $color;
+        }
+
+        $color = trim($color);
+        if (isset(self::NAMES[strtolower($color)])) {
+            return strtolower($color);
+        }
+
+        if (preg_match('/^#?(?:([0-9a-f]{3})[0-9a-f]?|([0-9a-f]{6})(?:[0-9a-f]{2})?)$/i', $color, $m) !== 1) {
+            return $color;
+        }
+
+        $hex = ($m[2] ?? '') !== ''
+            ? $m[2]
+            : $m[1][0] . $m[1][0] . $m[1][1] . $m[1][1] . $m[1][2] . $m[1][2];
+        [$r, $g, $b] = array_map('hexdec', str_split($hex, 2));
+
+        $best = null;
+        $bestDistance = PHP_INT_MAX;
+        foreach (self::NAMES as $name => $value) {
+            [$nr, $ng, $nb] = array_map('hexdec', str_split(substr($value, 1), 2));
+            $distance = ($r - $nr) ** 2 + ($g - $ng) ** 2 + ($b - $nb) ** 2;
+            if ($distance < $bestDistance) {
+                $best = $name;
+                $bestDistance = $distance;
+            }
+        }
+
+        return $best;
+    }
 }
