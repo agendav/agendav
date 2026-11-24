@@ -29,6 +29,10 @@ namespace AgenDAV\Data\Helper;
  */
 class Color
 {
+    // Allowed values for colors: #rgb, #rgba, #rrggbb or #rrggbbaa. The '#' is
+    // optional, because calendar_colors still accepts colors without it (deprecated).
+    public const HEX_PATTERN ='/^#?([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i';
+
     /** CSS3 extended color keywords */
     private const NAMES = [
         'aliceblue' => '#f0f8ff',

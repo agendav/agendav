@@ -44,6 +44,13 @@ use the same parameter names. Form fields like ``shares[with][]`` become nested 
 Boolean values can be sent as JSON booleans or as the strings ``true``/``false`` or
 ``1``/``0``.
 
+Colors are hex values: ``#rgb``, ``#rgba``, ``#rrggbb`` or ``#rrggbbaa``. The leading ``#``
+is optional.
+
+Every value is checked before the request is processed. Missing required values, values of
+the wrong type (for example a list instead of a text) and values that are not allowed are
+rejected with ``400``.
+
 Date formats used in requests:
 
 - *Range dates* (``start``/``end`` of ``GET /events``): ``YYYY-MM-DD`` or
@@ -202,7 +209,7 @@ Updates name, color and shares of a calendar.
      - Principal URLs to share the calendar with (only with ``calendar.sharing`` enabled)
    * - ``shares[rw][]``
      - no
-     - ``1`` (read-write) or ``0`` (read-only), same order and length as ``shares[with][]``
+     - Boolean, ``true`` for read-write, same order and length as ``shares[with][]``
 
 Response: envelope, ``data`` is ``{}``.
 

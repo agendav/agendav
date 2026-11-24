@@ -37,8 +37,34 @@ class Save extends JSONController
 {
     protected function validateInput(ParameterBag $input)
     {
-        foreach (['calendar', 'displayname', 'calendar_color'] as $name) {
-            if (empty($input->get($name))) {
+        return $this->hasStrings($input, ['calendar', 'displayname', 'calendar_color'])
+            && $this->isColor($input->get('calendar_color'))
+            && $this->hasOptionalBools($input, ['is_subscribed', 'is_owned'])
+            && $this->isOptionalShares($input->get('shares'));
+    }
+
+    /**
+    * Shares are optional. If set, "with" (principal URLs) and "rw" (booleans)
+    * are lists of the same length.
+    */
+    private function isOptionalShares(mixed $shares): bool
+    {
+        if ($shares === null) {
+            return true;
+        }
+        if (!is_array($shares)) {
+            return false;
+        }
+        $with = $shares['with'] ?? [];
+        $rw = $shares['rw'] ?? [];
+        if (!is_array($with) || !is_array($rw)
+            || !array_is_list($with) || !array_is_list($rw)
+            || count($with) !== count($rw)
+        ) {
+            return false;
+        }
+        foreach ($with as $i => $principal) {
+            if (!is_string($principal) || $principal === '' || $this->parseBool($rw[$i]) === null) {
                 return false;
             }
         }

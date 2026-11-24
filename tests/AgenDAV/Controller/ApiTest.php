@@ -73,10 +73,12 @@ class ApiTest extends TestCase
         $this->assertSame(['result' => 'EXCEPTION', 'message' => 'Translated'], $this->decode($response));
     }
 
-    public static function requiredFields(): array
+    /**
+     * Minimal valid input per endpoint
+     */
+    private static function validInputs(): array
     {
-        $cases = [];
-        $controllers = [
+        return [
             'calendar create' => [Calendars\Create::class, 'POST', [
                 'displayname' => 'Work',
                 'calendar_color' => '#3a89c9',
@@ -138,8 +140,12 @@ class ApiTest extends TestCase
                 'delta' => '30',
             ]],
         ];
+    }
 
-        foreach ($controllers as $name => [$controllerClass, $method, $input]) {
+    public static function requiredFields(): array
+    {
+        $cases = [];
+        foreach (self::validInputs() as $name => [$controllerClass, $method, $input]) {
             foreach (array_keys($input) as $field) {
                 if ($name === 'event modify' && $field === 'uid') {
                     continue; // without uid it is a valid create request
@@ -166,6 +172,57 @@ class ApiTest extends TestCase
         $this->assertSame(400, $response->getStatusCode());
         $this->assertSame('EXCEPTION', $this->decode($response)['result']);
     }
+
+    public static function invalidValues(): array
+    {
+        $cases = [
+            'calendar create' => [
+                'name not a string' => ['displayname' => ['Work']],
+                'color name' => ['calendar_color' => 'blue'],
+                'color too short' => ['calendar_color' => '#12345'],
+                'subscribed not boolean' => ['is_subscribed' => 'maybe'],
+                'subscription without http' => ['is_subscribed' => 'true', 'url' => 'ftp://example.com/cal.ics'],
+                'subscription without url' => ['is_subscribed' => 'true'],
+            ],
+            'calendar save' => [
+                'color not hex' => ['calendar_color' => '#3a89zz'],
+                'owned not boolean' => ['is_owned' => 'maybe'],
+                'shares not a list' => ['shares' => 'all'],
+                'shares of different length' => ['shares' => ['with' => ['/principals/a/', '/principals/b/'], 'rw' => ['1']]],
+                'share permission not boolean' => ['shares' => ['with' => ['/principals/a/'], 'rw' => ['maybe']]],
+                'share without principal' => ['shares' => ['with' => [''], 'rw' => ['1']]],
+            ],
+            'calendar delete' => [
+                'calendar not a string' => ['calendar' => ['/cal/']],
+            ],
+        ];
+
+        $inputs = self::validInputs();
+        $result = [];
+        foreach ($cases as $name => $changes) {
+            [$controllerClass, $method, $input] = $inputs[$name];
+            foreach ($changes as $description => $values) {
+                $result[$name . ': ' . $description] = [$controllerClass, $method, $values + $input];
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @dataProvider invalidValues
+     */
+    public function testInvalidValuesAreRejected(string $controllerClass, string $method, array $input)
+    {
+        $client = $this->createMock(\AgenDAV\CalDAV\Client::class);
+        $client->expects($this->never())->method($this->anything());
+        $controller = new $controllerClass($this->makeContainer($client));
+
+        $response = $controller->__invoke($this->makeRequest($method, $input), $this->makeResponse());
+
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', $this->decode($response)['result']);
+    }
+
 
     public function testEventSaveRejectsEndBeforeStart()
     {

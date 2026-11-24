@@ -129,33 +129,6 @@ class Save extends JSONController
     }
 
     /**
-     * Accepts true/false from JSON and "true"/"false", "1"/"0" from forms.
-     *
-     * @return bool|null null if the value is missing or not a boolean
-     */
-    private function parseBool(mixed $value): ?bool
-    {
-        if ($value === null) {
-            return null;
-        }
-        return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-    }
-
-    /**
-     * Accepts integers from JSON and digit strings from forms.
-     */
-    private function parseInt(mixed $value): ?int
-    {
-        if (is_int($value)) {
-            return $value;
-        }
-        if (is_string($value) && ctype_digit($value)) {
-            return (int) $value;
-        }
-        return null;
-    }
-
-    /**
      * True if the value is missing, empty or a full hour like "08:00" matching $pattern
      */
     private function isOptionalHour(mixed $value, string $pattern): bool

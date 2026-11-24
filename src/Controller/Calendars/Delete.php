@@ -32,7 +32,8 @@ class Delete extends JSONController
 {
     protected function validateInput(ParameterBag $input)
     {
-        return !empty($input->get('calendar'));
+        return $this->hasStrings($input, ['calendar'])
+            && $this->hasOptionalBools($input, ['is_subscribed']);
     }
 
     protected function execute(

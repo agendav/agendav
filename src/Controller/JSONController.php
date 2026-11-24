@@ -22,6 +22,7 @@ namespace AgenDAV\Controller;
  */
 
 use AgenDAV\CalDAV\Client;
+use AgenDAV\Data\Helper\Color;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -150,6 +151,83 @@ abstract class JSONController
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface;
+
+    /*
+    * Input checks shared by validateInput() implementations
+    */
+
+    /**
+    * True if every named field is a non-empty string
+    */
+    protected function hasStrings(ParameterBag $input, array $names): bool
+    {
+        foreach ($names as $name) {
+            $value = $input->get($name);
+            if (!is_string($value) || $value === '') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+    * True if every named field is missing or a string
+    */
+    protected function hasOptionalStrings(ParameterBag $input, array $names): bool
+    {
+        foreach ($names as $name) {
+            $value = $input->get($name);
+            if ($value !== null && !is_string($value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+    * True if every named field is missing or a boolean (see parseBool())
+    */
+    protected function hasOptionalBools(ParameterBag $input, array $names): bool
+    {
+        foreach ($names as $name) {
+            if ($input->has($name) && $this->parseBool($input->get($name)) === null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+    * Accepts true/false from JSON and "true"/"false", "1"/"0" from forms.
+    *
+    * @return bool|null null if the value is missing or not a boolean
+    */
+    protected function parseBool(mixed $value): ?bool
+    {
+        if ($value === null) {
+            return null;
+        }
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
+
+    /**
+    * Accepts non-negative integers from JSON and digit strings from forms.
+    */
+    protected function parseInt(mixed $value): ?int
+    {
+        if (is_int($value) && $value >= 0) {
+            return $value;
+        }
+        if (is_string($value) && ctype_digit($value)) {
+            return (int) $value;
+        }
+        return null;
+    }
+
+    protected function isColor(mixed $value): bool
+    {
+        return is_string($value) && preg_match(Color::HEX_PATTERN, $value) === 1;
+    }
 
     protected function generateException(ResponseInterface $response, string $message, int $code = 400): ResponseInterface
     {

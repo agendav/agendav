@@ -34,10 +34,17 @@ class Create extends JSONController
 {
     protected function validateInput(ParameterBag $input)
     {
-        foreach (['displayname', 'calendar_color'] as $name) {
-            if (empty($input->get($name))) {
-                return false;
-            }
+        if (!$this->hasStrings($input, ['displayname', 'calendar_color'])
+            || !$this->isColor($input->get('calendar_color'))
+            || !$this->hasOptionalBools($input, ['is_subscribed'])
+        ) {
+            return false;
+        }
+
+        // Subscriptions need an http(s) feed URL
+        if ($this->parseBool($input->get('is_subscribed')) === true) {
+            $url = $input->get('url');
+            return is_string($url) && in_array(parse_url($url, PHP_URL_SCHEME), Subscription::URL_SCHEMES, true);
         }
         return true;
     }
@@ -57,11 +64,6 @@ class Create extends JSONController
         if ($input->getBoolean('is_subscribed') === true) {
             // If the calendar is a subscription, we save it in the database
             $feedUrl = $input->get('url');
-            $scheme = parse_url($feedUrl, PHP_URL_SCHEME);
-            if (!in_array($scheme, ['http', 'https'], true)) {
-                return $this->generateException($response, $this->container->get('translator')->trans('messages.error_invalidinput'));
-            }
-
             $subscription = new Subscription();
             $subscription->setOwner($current_user_principal->getURL());
             $subscription->setCalendar($feedUrl);

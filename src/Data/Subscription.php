@@ -39,6 +39,9 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'subscriptions')]
 class Subscription
 {
+    // Allowed values for the feed URL scheme
+    public const URL_SCHEMES = ['http', 'https'];
+
     #[Id]
     #[Column(type: 'integer')]
     #[GeneratedValue]
