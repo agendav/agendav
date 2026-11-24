@@ -32,12 +32,8 @@ class Delete extends JSONController
 {
     protected function validateInput(ParameterBag $input)
     {
-        foreach (['calendar', 'uid', 'href', 'etag'] as $name) {
-            if (empty($input->get($name))) {
-                return false;
-            }
-        }
-        return true;
+        return $this->hasStrings($input, ['calendar', 'uid', 'href', 'etag'])
+            && $this->isOptionalRecurrenceId($input->get('recurrence_id'));
     }
 
     protected function execute(

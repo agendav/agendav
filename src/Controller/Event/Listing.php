@@ -49,10 +49,23 @@ class Listing extends JSONController
 
     protected function validateInput(ParameterBag $input)
     {
-        foreach (['calendar', 'timezone', 'start', 'end'] as $name) {
-            if (empty($input->get($name))) {
-                return false;
-            }
+        return $this->hasStrings($input, ['calendar', 'timezone', 'start', 'end'])
+            && $this->hasOptionalStrings($input, ['uid'])
+            && $this->hasOptionalBools($input, ['is_subscribed'])
+            && $this->isTimezone($input->get('timezone'))
+            && $this->isRangeDate($input->get('start'))
+            && $this->isRangeDate($input->get('end'));
+    }
+
+    /**
+    * True for dates like 2026-11-23 or 2026-11-23T10:00:00
+    */
+    private function isRangeDate(string $value): bool
+    {
+        try {
+            DateHelper::fullcalendarToDateTime($value, $this->utc);
+        } catch (\InvalidArgumentException $exception) {
+            return false;
         }
         return true;
     }

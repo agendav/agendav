@@ -195,6 +195,42 @@ class ApiTest extends TestCase
             'calendar delete' => [
                 'calendar not a string' => ['calendar' => ['/cal/']],
             ],
+            'event listing' => [
+                'unknown timezone' => ['timezone' => 'Mars/Olympus'],
+                'start not a date' => ['start' => 'yesterday'],
+                'end not a date' => ['end' => '2026-13-01'],
+            ],
+            'event base' => [
+                'unknown timezone' => ['timezone' => 'Mars/Olympus'],
+            ],
+            'event create' => [
+                'summary not a string' => ['summary' => ['Meeting']],
+                'unknown timezone' => ['timezone' => 'Mars/Olympus'],
+                'start not a date' => ['start' => '2026-11-23 10:00'],
+                'all day not boolean' => ['allday' => 'maybe'],
+                'unknown class' => ['class' => 'SECRET'],
+                'unknown transp' => ['transp' => 'BUSY'],
+                'color name' => ['color' => 'red'],
+                'invalid repeat rule' => ['rrule' => 'FREQ=SOMETIMES'],
+                'invalid recurrence id' => ['recurrence_id' => 'yesterday'],
+                'reminders not a list' => ['reminders' => '15 minutes'],
+                'reminder count not a number' => ['reminders' => ['count' => ['ten'], 'unit' => ['minutes']]],
+                'reminder count negative' => ['reminders' => ['count' => [-5], 'unit' => ['minutes']]],
+                'unknown reminder unit' => ['reminders' => ['count' => ['1'], 'unit' => ['years']]],
+                'reminders of different length' => ['reminders' => ['count' => ['1', '2'], 'unit' => ['days']]],
+            ],
+            'event delete' => [
+                'invalid recurrence id' => ['recurrence_id' => 'yesterday'],
+            ],
+            'event drop' => [
+                'unknown timezone' => ['timezone' => 'Mars/Olympus'],
+                'all day not boolean' => ['allday' => 'maybe'],
+                'delta not an integer' => ['delta' => '1.5'],
+            ],
+            'event resize' => [
+                'delta not a number' => ['delta' => 'ten'],
+                'invalid recurrence id' => ['recurrence_id' => 'yesterday'],
+            ],
         ];
 
         $inputs = self::validInputs();
@@ -223,6 +259,36 @@ class ApiTest extends TestCase
         $this->assertSame('EXCEPTION', $this->decode($response)['result']);
     }
 
+    public function testEventCreateAcceptsAllOptionalValues()
+    {
+        $uploaded = null;
+        $client = $this->makeEventClient(['/cal/' => $this->makeWritableCalendar('/cal/')], $uploaded);
+
+        $response = (new Event\Save($this->makeContainer($client)))->__invoke(
+            $this->makeRequest('POST', [
+                'calendar' => '/cal/',
+                'summary' => 'Meeting',
+                'timezone' => 'Europe/Berlin',
+                'start' => '2026-11-23T10:00:00.000Z',
+                'end' => '2026-11-23T11:00:00.000Z',
+                'allday' => false,
+                'location' => 'Room 1',
+                'description' => 'Agenda',
+                'class' => 'PRIVATE',
+                'transp' => 'TRANSPARENT',
+                'color' => '#3a89c9',
+                'rrule' => 'RRULE:FREQ=WEEKLY;BYDAY=MO',
+                'reminders' => ['count' => ['15', 1], 'unit' => ['minutes', 'days']],
+            ]),
+            $this->makeResponse()
+        );
+
+        $this->assertSame(200, $response->getStatusCode());
+        $instance = $uploaded->getEvent()->getEventInstance();
+        $this->assertSame('PRIVATE', $instance->getClass());
+        $this->assertSame('FREQ=WEEKLY;BYDAY=MO', $instance->getRepeatRule());
+        $this->assertCount(2, $instance->getReminders());
+    }
 
     public function testEventSaveRejectsEndBeforeStart()
     {

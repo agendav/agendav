@@ -23,9 +23,11 @@ namespace AgenDAV\Controller;
 
 use AgenDAV\CalDAV\Client;
 use AgenDAV\Data\Helper\Color;
+use AgenDAV\Event\RecurrenceId;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Sabre\VObject\InvalidDataException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -224,9 +226,41 @@ abstract class JSONController
         return null;
     }
 
+    protected function isTimezone(mixed $value): bool
+    {
+        if (!is_string($value) || $value === '') {
+            return false;
+        }
+        try {
+            new \DateTimeZone($value);
+        } catch (\Exception $exception) {
+            return false;
+        }
+        return true;
+    }
+
     protected function isColor(mixed $value): bool
     {
         return is_string($value) && preg_match(Color::HEX_PATTERN, $value) === 1;
+    }
+
+    /**
+    * True if the value is missing, empty or an iCalendar date-time like 20261123T100000Z
+    */
+    protected function isOptionalRecurrenceId(mixed $value): bool
+    {
+        if ($value === null || $value === '') {
+            return true;
+        }
+        if (!is_string($value)) {
+            return false;
+        }
+        try {
+            RecurrenceId::buildFromString($value);
+        } catch (InvalidDataException $exception) {
+            return false;
+        }
+        return true;
     }
 
     protected function generateException(ResponseInterface $response, string $message, int $code = 400): ResponseInterface

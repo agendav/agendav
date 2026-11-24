@@ -40,7 +40,7 @@ class Preferences
     public const VIEWS = ['month', 'week', 'day', 'list'];
     public const LIST_DAYS = [7, 14, 31];
     public const COLOR_SCHEMES = ['light', 'dark', 'auto'];
-    public const REMINDER_UNITS = ['minutes', 'hours', 'days', 'weeks', 'months'];
+    public const REMINDER_UNITS = Reminder::UNITS;
 
     #[Id]
     #[Column(type: 'string')]

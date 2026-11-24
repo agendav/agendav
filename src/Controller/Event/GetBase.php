@@ -35,12 +35,8 @@ class GetBase extends Listing
 {
     protected function validateInput(ParameterBag $input)
     {
-        foreach (['calendar', 'uid', 'timezone'] as $name) {
-            if (empty($input->get($name))) {
-                return false;
-            }
-        }
-        return true;
+        return $this->hasStrings($input, ['calendar', 'uid', 'timezone'])
+            && $this->isTimezone($input->get('timezone'));
     }
 
     protected function execute(

@@ -32,12 +32,11 @@ abstract class Alter extends JSONController
 {
     protected function validateInput(ParameterBag $input)
     {
-        foreach (['calendar', 'timezone', 'uid'] as $name) {
-            if (empty($input->get($name))) {
-                return false;
-            }
-        }
-        return is_numeric($input->get('delta'));
+        // delta: minutes, may be negative
+        return $this->hasStrings($input, ['calendar', 'timezone', 'uid'])
+            && $this->isTimezone($input->get('timezone'))
+            && $this->isOptionalRecurrenceId($input->get('recurrence_id'))
+            && filter_var($input->get('delta'), FILTER_VALIDATE_INT) !== false;
     }
 
     protected function execute(

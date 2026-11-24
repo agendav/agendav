@@ -58,6 +58,8 @@ Date formats used in requests:
 - *Event dates* (``start``/``end`` of ``POST /events/save``): ``YYYY-MM-DDTHH:MM:SS.uuuZ``
   (UTC, as produced by JavaScript ``Date.toISOString()``)
 - ``timezone``: an IANA timezone name, for example ``Europe/Berlin``
+- ``recurrence_id``: an iCalendar date-time like ``20261123T100000Z``, as returned in the
+  event object
 
 Response envelope
 *****************
@@ -351,12 +353,26 @@ Creates an event (no ``uid``) or modifies one (with ``uid``).
    * - ``recurrence_id``
      - no
      - Modify only this instance of a recurrent event
-   * - ``location``, ``description``, ``class``, ``transp``, ``color``, ``rrule``
+   * - ``location``, ``description``
      - no
-     - Event properties
+     - Text
+   * - ``class``
+     - no
+     - ``PUBLIC``, ``PRIVATE`` or ``CONFIDENTIAL``
+   * - ``transp``
+     - no
+     - ``OPAQUE`` (busy) or ``TRANSPARENT`` (free)
+   * - ``color``
+     - no
+     - Color, empty for the calendar color
+   * - ``rrule``
+     - no
+     - iCalendar repeat rule like ``FREQ=WEEKLY;BYDAY=MO`` (``RRULE:`` prefix optional),
+       empty for no repetition
    * - ``reminders[count][]``, ``reminders[unit][]``
      - no
-     - Reminders, same order and length
+     - Reminders before the start, same order and length. ``count`` is a number of
+       ``minutes``, ``hours``, ``days``, ``weeks`` or ``months``
 
 Response: envelope, ``data`` is ``{"calendars": […]}``, the calendar URLs that changed
 (one, or two when the event was moved).
@@ -377,7 +393,7 @@ Moves an event instance by a number of minutes (drag and drop).
      - Event to move
    * - ``delta``
      - yes
-     - Minutes to move, may be negative
+     - Minutes to move, an integer, may be negative
    * - ``was_allday``, ``allday``
      - yes
      - All-day state before and after the move

@@ -28,6 +28,10 @@ use AgenDAV\Event\RecurrenceId;
  */
 interface EventInstance
 {
+    // Allowed values for CLASS (classification) and TRANSP (time transparency, RFC 5545)
+    public const CLASSIFICATIONS = ['PUBLIC', 'PRIVATE', 'CONFIDENTIAL'];
+    public const TRANSPARENCIES = ['OPAQUE', 'TRANSPARENT'];
+
     /**
     * Return the UID for this VEVENT
     *

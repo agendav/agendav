@@ -25,8 +25,12 @@ use AgenDAV\Uuid;
 use AgenDAV\DateHelper;
 use AgenDAV\Controller\JSONController;
 use AgenDAV\CalDAV\Resource\CalendarObject;
+use AgenDAV\Data\Reminder;
+use AgenDAV\EventInstance;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Sabre\VObject\InvalidDataException;
+use Sabre\VObject\Recur\RRuleIterator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Save extends JSONController
@@ -43,16 +47,100 @@ class Save extends JSONController
             $fields[] = 'original_calendar';
         }
 
-        foreach ($fields as $name) {
-            if (empty($input->get($name))) {
+        if (!$this->hasStrings($input, $fields)
+            || !$this->hasOptionalStrings($input, ['uid', 'location', 'description', 'color', 'rrule'])
+            || !$this->hasOptionalBools($input, ['allday'])
+            || !$this->isTimezone($input->get('timezone'))
+            || !$this->isOptionalRecurrenceId($input->get('recurrence_id'))
+            || !$this->isOptionalOneOf($input->get('class'), EventInstance::CLASSIFICATIONS)
+            || !$this->isOptionalOneOf($input->get('transp'), EventInstance::TRANSPARENCIES)
+            || !$this->isOptionalColor($input->get('color'))
+            || !$this->isOptionalRepeatRule($input->get('rrule'))
+            || !$this->isOptionalReminders($input->get('reminders'))
+        ) {
+            return false;
+        }
+
+        $start = $this->parseEventDate($input->get('start'));
+        $end = $this->parseEventDate($input->get('end'));
+
+        return $start !== null && $end !== null && $end >= $start;
+    }
+
+    /**
+    * @return \DateTimeImmutable|null null if the value is no ISO 8601 UTC date like 2026-11-23T10:00:00.000Z
+    */
+    private function parseEventDate(string $value): ?\DateTimeImmutable
+    {
+        try {
+            return DateHelper::frontEndToDateTime($value);
+        } catch (\InvalidArgumentException $exception) {
+            return null;
+        }
+    }
+
+    private function isOptionalOneOf(mixed $value, array $allowed): bool
+    {
+        return $value === null || in_array($value, $allowed, true);
+    }
+
+    /**
+    * An empty color removes the event color
+    */
+    private function isOptionalColor(mixed $value): bool
+    {
+        return $value === null || $value === '' || $this->isColor($value);
+    }
+
+    /**
+    * An empty rule removes the repetition. Invalid rules would break the
+    * event listing of the whole calendar, so they are parsed here.
+    */
+    private function isOptionalRepeatRule(mixed $value): bool
+    {
+        if ($value === null || $value === '') {
+            return true;
+        }
+        if (!is_string($value)) {
+            return false;
+        }
+        if (strncasecmp($value, 'RRULE:', 6) === 0) {
+            $value = substr($value, 6);
+        }
+        try {
+            new RRuleIterator($value, new \DateTimeImmutable());
+        } catch (InvalidDataException $exception) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+    * Reminders are optional. If set, "count" (numbers) and "unit"
+    * (see Reminder::UNITS) are lists of the same length.
+    */
+    private function isOptionalReminders(mixed $reminders): bool
+    {
+        if ($reminders === null) {
+            return true;
+        }
+        if (!is_array($reminders)) {
+            return false;
+        }
+        $counts = $reminders['count'] ?? [];
+        $units = $reminders['unit'] ?? [];
+        if (!is_array($counts) || !is_array($units)
+            || !array_is_list($counts) || !array_is_list($units)
+            || count($counts) !== count($units)
+        ) {
+            return false;
+        }
+        foreach ($counts as $i => $count) {
+            if ($this->parseInt($count) === null || !in_array($units[$i], Reminder::UNITS, true)) {
                 return false;
             }
         }
-
-        $start = DateHelper::frontEndToDateTime($input->get('start'), new \DateTimeZone('UTC'));
-        $end = DateHelper::frontEndToDateTime($input->get('end'), new \DateTimeZone('UTC'));
-
-        return $end >= $start;
+        return true;
     }
 
     protected function execute(

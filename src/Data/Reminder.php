@@ -27,6 +27,9 @@ use Sabre\VObject;
 
 class Reminder
 {
+    // Allowed values for the reminder unit
+    public const UNITS =['minutes', 'hours', 'days', 'weeks', 'months'];
+
     /**
     * Stores the position for this reminder in the original
     * event

@@ -39,10 +39,9 @@ class Drop extends Alter
 
     protected function validateInput(ParameterBag $input)
     {
-        if (!$input->has('was_allday') || !$input->has('allday')) {
-            return false;
-        }
-        return parent::validateInput($input);
+        return $this->parseBool($input->get('was_allday')) !== null
+            && $this->parseBool($input->get('allday')) !== null
+            && parent::validateInput($input);
     }
 
     protected function modifyInstance(
