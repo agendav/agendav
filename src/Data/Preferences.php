@@ -33,6 +33,15 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'prefs')]
 class Preferences
 {
+    // Allowed values, used for validation and for the preferences form
+    public const DATE_FORMATS = ['ymd', 'dmy', 'dmy_dot', 'mdy'];
+    public const TIME_FORMATS = ['24', '12'];
+    public const WEEKSTARTS = [0, 1];
+    public const VIEWS = ['month', 'week', 'day', 'list'];
+    public const LIST_DAYS = [7, 14, 31];
+    public const COLOR_SCHEMES = ['light', 'dark', 'auto'];
+    public const REMINDER_UNITS = ['minutes', 'hours', 'days', 'weeks', 'months'];
+
     #[Id]
     #[Column(type: 'string')]
     private $username;

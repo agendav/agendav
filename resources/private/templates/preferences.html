@@ -88,7 +88,7 @@
     <div class="form-group">
         <label for="default_view">{% trans %}labels.default_view{% endtrans %}</label>
         <select class="form-control" name="default_view">
-            {% for view in ['month', 'week', 'day', 'list'] %}
+            {% for view in available_views %}
             <option value="{{ view }}"{% if default_view == view %} selected="selected"{% endif %}>
                 {{ ('labels.view_' ~ view) |trans }}
             </option>
@@ -124,7 +124,7 @@
     <div class="form-group">
         <label for="list_days">{% trans %}labels.list_days{% endtrans %}</label>
         <select class="form-control" name="list_days">
-            {% for days in [7, 14, 31] %}
+            {% for days in available_list_days %}
             <option value="{{ days }}"{% if list_days == days %} selected="selected"{% endif %}>
               {{ days }} {% trans %} labels.days {% endtrans %}
             </option>
@@ -195,7 +195,7 @@
             </div>
             <div class="col-md-3">
                 <select class="form-control" name="default_reminder_unit">
-                    {% for unit in ['minutes', 'hours', 'days', 'weeks', 'months'] %}
+                    {% for unit in available_reminder_units %}
                     <option value="{{ unit }}"{% if default_reminder and default_reminder.unit == unit %} selected="selected"{% endif %}>
                         {{ ('labels.' ~ unit) | trans }}
                     </option>

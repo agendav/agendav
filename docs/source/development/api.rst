@@ -418,6 +418,9 @@ Preferences
 Saves the preferences of the current user. The current preferences are part of
 ``GET /config``.
 
+Every value must be one of the allowed values below, otherwise the request is rejected
+with ``400``. Optional values that are left out use the configured defaults.
+
 .. list-table::
    :header-rows: 1
 
@@ -426,10 +429,10 @@ Saves the preferences of the current user. The current preferences are part of
      - Description
    * - ``language``
      - yes
-     - Language code, for example ``de_DE``
+     - One of the configured languages, for example ``de_DE``
    * - ``timezone``
      - yes
-     - IANA timezone name
+     - IANA timezone name, for example ``Europe/Berlin``
    * - ``default_calendar``
      - yes
      - URL of the calendar for new events
@@ -456,10 +459,11 @@ Saves the preferences of the current user. The current preferences are part of
      - ``month``, ``week``, ``day`` or ``list``
    * - ``color_scheme``
      - no
-     - ``light``, ``dark`` or ``auto``, default from ``defaults.color_scheme``
+     - ``light``, ``dark`` or ``auto``
    * - ``working_hours_start``, ``working_hours_end``
      - no
-     - Full hours like ``08:00``, empty for the whole day
+     - Full hours, start ``00:00`` to ``23:00``, end ``01:00`` to ``24:00``. Empty for
+       the whole day
    * - ``default_reminder_count``, ``default_reminder_unit``
      - no
      - Reminder for new events, unit ``minutes``, ``hours``, ``days``, ``weeks`` or

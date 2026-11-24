@@ -58,6 +58,9 @@ class Preferences
             'preferences.html',
             [
                 'scripts' => ['preferences.js'],
+                'available_views' => \AgenDAV\Data\Preferences::VIEWS,
+                'available_list_days' => \AgenDAV\Data\Preferences::LIST_DAYS,
+                'available_reminder_units' => \AgenDAV\Data\Preferences::REMINDER_UNITS,
                 'available_timezones' => DateHelper::getAllTimeZones(),
                 'available_languages' => $this->container->get('languages'),
                 'timezone' => $preferences->get('timezone'),

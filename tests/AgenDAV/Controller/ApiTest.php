@@ -36,7 +36,7 @@ class ApiTest extends TestCase
         'default_view' => 'week',
         'color_scheme' => 'dark',
         'working_hours_start' => '08:00',
-        'working_hours_end' => '18:00',
+        'working_hours_end' => '24:00',
         'default_reminder_count' => '15',
         'default_reminder_unit' => 'minutes',
     ];
@@ -567,29 +567,36 @@ class ApiTest extends TestCase
                 'timezone' => 'Europe/Berlin',
                 'date_format' => 'dmy_dot',
                 'time_format' => '24',
-                'weekstart' => '1',
+                'weekstart' => 1,
                 'default_calendar' => '/cal/',
                 'show_week_nb' => true,
                 'show_now_indicator' => false,
-                'list_days' => '14',
+                'list_days' => 14,
                 'default_view' => 'week',
                 'default_reminder' => ['count' => 15, 'unit' => 'minutes'],
                 'hide_weekends' => false,
                 'working_hours_start' => '08:00',
-                'working_hours_end' => '18:00',
+                'working_hours_end' => '24:00',
                 'color_scheme' => 'dark',
             ],
             $this->savedPreferences
         );
     }
 
-    public function testPreferencesSaveAcceptsJsonBooleans()
+    public function testPreferencesSaveAcceptsJsonValues()
     {
         $this->savePreferences(array_merge(self::PREFERENCES_FORM_INPUT, [
             'show_week_nb' => true,
             'show_now_indicator' => true,
             'hide_weekends' => true,
+            'weekstart' => 0,
+            'list_days' => 31,
+            'default_reminder_count' => 2,
         ]));
+
+        $this->assertSame(0, $this->savedPreferences['weekstart']);
+        $this->assertSame(31, $this->savedPreferences['list_days']);
+        $this->assertSame(['count' => 2, 'unit' => 'minutes'], $this->savedPreferences['default_reminder']);
 
         $this->assertTrue($this->savedPreferences['show_week_nb']);
         $this->assertTrue($this->savedPreferences['show_now_indicator']);
@@ -637,6 +644,45 @@ class ApiTest extends TestCase
     {
         $input = self::PREFERENCES_FORM_INPUT;
         unset($input[$field]);
+
+        $response = $this->savePreferences($input);
+
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame('EXCEPTION', $this->decode($response)['result']);
+        $this->assertNull($this->savedPreferences);
+    }
+
+    public static function preferencesInvalidValues(): array
+    {
+        return [
+            'unknown language' => ['language', 'xx'],
+            'unknown timezone' => ['timezone', 'Mars/Olympus'],
+            'default calendar not a string' => ['default_calendar', ['/cal/']],
+            'unknown date format' => ['date_format', 'y-m-d'],
+            'unknown time format' => ['time_format', '23'],
+            'unknown weekstart' => ['weekstart', '3'],
+            'week numbers not boolean' => ['show_week_nb', 'maybe'],
+            'now indicator not boolean' => ['show_now_indicator', 'maybe'],
+            'hide weekends not boolean' => ['hide_weekends', 'maybe'],
+            'unknown list days' => ['list_days', '10'],
+            'list days not a number' => ['list_days', 'many'],
+            'unknown view' => ['default_view', 'year'],
+            'unknown color scheme' => ['color_scheme', 'blue'],
+            'working hours start 24:00' => ['working_hours_start', '24:00'],
+            'working hours end 00:00' => ['working_hours_end', '00:00'],
+            'working hours not full hour' => ['working_hours_start', '08:30'],
+            'reminder count not a number' => ['default_reminder_count', 'ten'],
+            'unknown reminder unit' => ['default_reminder_unit', 'years'],
+        ];
+    }
+
+    /**
+     * @dataProvider preferencesInvalidValues
+     */
+    public function testPreferencesSaveRejectsInvalidValue(string $field, mixed $value)
+    {
+        $input = self::PREFERENCES_FORM_INPUT;
+        $input[$field] = $value;
 
         $response = $this->savePreferences($input);
 
@@ -825,6 +871,7 @@ class ApiTest extends TestCase
         $container = $this->makeContainer($this->createMock(\AgenDAV\CalDAV\Client::class), [
             \AgenDAV\UserContext::class => $userContext,
             'preferences.repository' => $repository,
+            'languages' => ['en' => 'English', 'de_DE' => 'Deutsch'],
         ]);
 
         return (new Preferences\Save($container))->__invoke(
