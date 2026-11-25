@@ -226,6 +226,13 @@ overwritten on upgrades.
    Configures ACL permissions for calendar sharing. The default values will
    work with DAViCal.
 
+.. confval:: calendar.event_color_format
+
+   Format used to write the ``COLOR`` property of events. ``hex`` (default)
+   writes ``#rrggbb``. ``css3`` writes the closest CSS3 color name, as
+   defined by RFC 7986, for clients that only read color names (e.g. DAVx5,
+   and Etar through it).
+
 .. confval:: calendar.start_hidden
 
    Hides all calendars when the page loads, so no events are fetched until

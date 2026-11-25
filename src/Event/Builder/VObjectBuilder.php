@@ -24,6 +24,7 @@ namespace AgenDAV\Event\Builder;
 use AgenDAV\Uuid;
 use AgenDAV\DateHelper;
 use AgenDAV\Event;
+use AgenDAV\Data\Helper\Color;
 use AgenDAV\Event\Builder;
 use AgenDAV\Event\VObjectEvent;
 use AgenDAV\Event\VObjectEventInstance;
@@ -36,14 +37,19 @@ class VObjectBuilder implements Builder
     /** @var \DateTimeZone */
     protected $timezone;
 
+    /** @var string Format used to write event colors: 'hex' or 'css3' */
+    protected $colorFormat;
+
     /**
     * Creates a new VObjectBuilder, specifying the user default timezone
     *
     * @param \DateTimeZone $timezone
+    * @param string $colorFormat 'hex' or 'css3'
     */
-    public function __construct(\DateTimeZone $timezone)
+    public function __construct(\DateTimeZone $timezone, string $colorFormat = 'hex')
     {
         $this->timezone = $timezone;
+        $this->colorFormat = $colorFormat;
     }
 
     /**
@@ -128,7 +134,7 @@ class VObjectBuilder implements Builder
                 $instance->setSummary($value);
                 break;
             case 'color':
-                $instance->setColor($value);
+                $instance->setColor($this->colorFormat === 'css3' ? Color::toName($value) : $value);
                 break;
             case 'location':
                 $instance->setLocation($value);
