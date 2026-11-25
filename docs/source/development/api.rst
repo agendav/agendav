@@ -33,6 +33,9 @@ The current token is returned by ``GET /config``.
 Request format
 **************
 
+``GET`` URLs name what is read (``/events``, ``/events/definition``), ``POST`` URLs name
+the action (``/calendars/create``, ``/events/drop``).
+
 ``GET`` endpoints read query parameters. ``POST`` endpoints read either a form-encoded
 body (``application/x-www-form-urlencoded``) or a JSON body (``application/json``). Both
 use the same parameter names. Form fields like ``shares[with][]`` become nested JSON:
@@ -82,7 +85,7 @@ Write endpoints answer with a JSON envelope:
 ``message`` is always text for the user, never data. Only ``SUCCESS`` responses have
 ``data``.
 
-Read endpoints (``GET /calendars``, ``GET /events``, ``GET /eventbase``,
+Read endpoints (``GET /calendars``, ``GET /events``, ``GET /events/definition``,
 ``GET /principals``) return their data directly, without the envelope. Errors on these
 endpoints use the envelope.
 
@@ -154,8 +157,8 @@ Response:
      }
    ]
 
-``POST /calendars``
-*******************
+``POST /calendars/create``
+**************************
 
 Creates a calendar, or a subscription to an external ``.ics`` feed.
 
@@ -239,7 +242,7 @@ Events
 Event object
 ************
 
-``GET /events`` and ``GET /eventbase`` return event objects:
+``GET /events`` and ``GET /events/definition`` return event objects:
 
 .. code-block:: json
 
@@ -306,10 +309,12 @@ Response: a JSON array of event objects. Response headers ``X-Fetch-Time`` and
 If the calendar is readable but its events are not, the response is ``403`` with an
 ``EXCEPTION`` envelope.
 
-``GET /eventbase``
-******************
+``GET /events/definition``
+**************************
 
-Returns the master instance of an event (used to edit recurrent events).
+Returns the definition of one event: the event as stored, not expanded into occurrences.
+For a recurrent event, this is the series with its repeat rule and original start (used
+to edit all repetitions). ``GET /events`` instead returns the computed occurrences.
 
 Parameters: ``calendar``, ``uid``, ``timezone`` (all required).
 

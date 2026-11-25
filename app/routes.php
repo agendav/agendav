@@ -37,16 +37,16 @@ return function (App $app) {
         $g->post('/preferences/save', Preferences\Save::class)->setName('preferences.save');
 
         $g->get('/calendars', Calendars\Listing::class)->setName('calendars.list');
-        $g->post('/calendars', Calendars\Create::class)->setName('calendar.create');
-        $g->post('/calendars/delete', Calendars\Delete::class)->setName('calendar.delete');
-        $g->post('/calendars/save', Calendars\Save::class)->setName('calendar.save');
+        $g->post('/calendars/create', Calendars\Create::class)->setName('calendars.create');
+        $g->post('/calendars/delete', Calendars\Delete::class)->setName('calendars.delete');
+        $g->post('/calendars/save', Calendars\Save::class)->setName('calendars.save');
 
         $g->get('/events', Event\Listing::class)->setName('events.list');
-        $g->get('/eventbase', Event\GetBase::class)->setName('event.getBase');
-        $g->post('/events/drop', Event\Drop::class)->setName('event.drop');
-        $g->post('/events/resize', Event\Resize::class)->setName('event.resize');
-        $g->post('/events/delete', Event\Delete::class)->setName('event.delete');
-        $g->post('/events/save', Event\Save::class)->setName('event.save');
+        $g->get('/events/definition', Event\Definition::class)->setName('events.definition');
+        $g->post('/events/drop', Event\Drop::class)->setName('events.drop');
+        $g->post('/events/resize', Event\Resize::class)->setName('events.resize');
+        $g->post('/events/delete', Event\Delete::class)->setName('events.delete');
+        $g->post('/events/save', Event\Save::class)->setName('events.save');
 
         $g->get('/principals', Principals::class . ':search')->setName('principals.search');
 

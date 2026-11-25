@@ -50,7 +50,7 @@ class ApiTest extends TestCase
             'calendar save' => [Calendars\Save::class, 'POST'],
             'calendar delete' => [Calendars\Delete::class, 'POST'],
             'event listing' => [Event\Listing::class, 'GET'],
-            'event base' => [Event\GetBase::class, 'GET'],
+            'event definition' => [Event\Definition::class, 'GET'],
             'event save' => [Event\Save::class, 'POST'],
             'event delete' => [Event\Delete::class, 'POST'],
             'event drop' => [Event\Drop::class, 'POST'],
@@ -97,7 +97,7 @@ class ApiTest extends TestCase
                 'start' => '2026-11-01',
                 'end' => '2026-12-01',
             ]],
-            'event base' => [Event\GetBase::class, 'GET', [
+            'event definition' => [Event\Definition::class, 'GET', [
                 'calendar' => '/cal/',
                 'uid' => 'uid1',
                 'timezone' => 'UTC',
@@ -200,7 +200,7 @@ class ApiTest extends TestCase
                 'start not a date' => ['start' => 'yesterday'],
                 'end not a date' => ['end' => '2026-13-01'],
             ],
-            'event base' => [
+            'event definition' => [
                 'unknown timezone' => ['timezone' => 'Mars/Olympus'],
             ],
             'event create' => [
@@ -505,12 +505,12 @@ class ApiTest extends TestCase
         $this->assertSame(['result' => 'SUCCESS', 'message' => '', 'data' => ['etag' => '"e2"']], $this->decode($response));
     }
 
-    public function testEventBaseReturnsSingleEventObject()
+    public function testEventDefinitionReturnsSingleEventObject()
     {
         $client = $this->createMock(\AgenDAV\CalDAV\Client::class);
         $client->method('fetchObjectByUid')->willReturn($this->makeEventObject('/cal/'));
 
-        $response = (new Event\GetBase($this->makeContainer($client)))->__invoke(
+        $response = (new Event\Definition($this->makeContainer($client)))->__invoke(
             $this->makeRequest('GET', ['calendar' => '/cal/', 'uid' => 'uid1', 'timezone' => 'Europe/Berlin']),
             $this->makeResponse()
         );

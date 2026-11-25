@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class GetBase extends Listing
+class Definition extends Listing
 {
     protected function validateInput(ParameterBag $input)
     {

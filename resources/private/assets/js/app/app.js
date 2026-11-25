@@ -1001,7 +1001,7 @@ var calculate_event_duration = function calculate_event_duration() {
 // Triggers a dialog for creating calendars
 var calendar_create_dialog = function calendar_create_dialog() {
 
-  var form_url = AgenDAVConf.base_app_url + 'calendars';
+  var form_url = AgenDAVConf.base_app_url + 'calendars/create';
   var title = t('labels', 'newcalendar');
 
   var data = {
@@ -1055,7 +1055,7 @@ var calendar_create_dialog = function calendar_create_dialog() {
 // Triggers a dialog for subscribing to calendars
 var calendar_subscribe_dialog = function calendar_subscribe_dialog() {
 
-  var form_url = AgenDAVConf.base_app_url + 'calendars';
+  var form_url = AgenDAVConf.base_app_url + 'calendars/create';
   var title = t('labels', 'newcalendar');
 
   var data = {
@@ -1586,7 +1586,7 @@ var get_event_data = function get_event_data(id) {
 var load_base_event_for = function load_base_event_for(instance, success, fail) {
   // Query the server
   var search = $.getJSON(
-      AgenDAVConf.base_app_url + 'eventbase',
+      AgenDAVConf.base_app_url + 'events/definition',
       {
         calendar: instance.calendar,
         timezone: AgenDAVUserPrefs.timezone,

@@ -247,15 +247,15 @@ assert_status "GET /translations/doesnotexist" http://localhost:8080/translation
 CAL_LIST=$(curl -s -b "$JAR" http://localhost:8080/calendars)
 echo "$CAL_LIST" | grep -q '"displayname":"Default calendar"' && pass "GET /calendars contains default" || fail "GET /calendars missing default ($CAL_LIST)"
 
-# 6. POST /calendars (create)
+# 6. POST /calendars/create
 PREF_HTML=$(curl -s -b "$JAR" -c "$JAR" http://localhost:8080/preferences)
 T=$(echo "$PREF_HTML" | grep -oP 'name="_token" value="\K[^"]+' | head -1)
 RESP=$(curl -s -b "$JAR" -X POST \
   --data-urlencode "_token=$T" \
   --data-urlencode "displayname=smoke-test cal" \
   --data-urlencode "calendar_color=FF0000" \
-  http://localhost:8080/calendars)
-echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars create" || fail "POST /calendars create: $RESP"
+  http://localhost:8080/calendars/create)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/create" || fail "POST /calendars/create: $RESP"
 
 # 7. /calendars now lists 2
 CAL_COUNT=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))')
@@ -293,8 +293,8 @@ RESP=$(curl -s -b "$JAR" -X POST \
   -H 'Content-Type: application/json' \
   -H "X-CSRF-Token: $T" \
   --data '{"displayname":"smoke-test json cal","calendar_color":"#0000FF"}' \
-  http://localhost:8080/calendars)
-echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars create (JSON)" || fail "POST /calendars create (JSON): $RESP"
+  http://localhost:8080/calendars/create)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/create (JSON)" || fail "POST /calendars/create (JSON): $RESP"
 JSON_URL=$(curl -s -b "$JAR" http://localhost:8080/calendars | python3 -c 'import sys,json;cs=json.load(sys.stdin);m=[c["url"] for c in cs if c["displayname"]=="smoke-test json cal"];print(m[0] if m else "")')
 RESP=$(curl -s -b "$JAR" -X POST \
   -H 'Content-Type: application/json' \
@@ -303,7 +303,7 @@ RESP=$(curl -s -b "$JAR" -X POST \
   http://localhost:8080/calendars/delete)
 echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/delete (JSON)" || fail "POST /calendars/delete (JSON): $RESP"
 
-# 8b. POST /calendars (subscribe to ICS)
+# 8b. POST /calendars/create (subscribe to ICS)
 cp tests/fixtures/test-calendar.ics public/test-calendar.ics
 ICS_URL='http://localhost/test-calendar.ics'
 ICS_URL_ENC='http%3A%2F%2Flocalhost%2Ftest-calendar.ics'
@@ -313,8 +313,8 @@ RESP=$(curl -s -b "$JAR" -X POST \
   --data-urlencode "displayname=Test ICS subscription" \
   --data-urlencode "calendar_color=#4CAF50" \
   --data-urlencode "url=$ICS_URL" \
-  http://localhost:8080/calendars)
-echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars (subscribe)" || fail "POST /calendars subscribe: $RESP"
+  http://localhost:8080/calendars/create)
+echo "$RESP" | grep -q '"result":"SUCCESS"' && pass "POST /calendars/create (subscribe)" || fail "POST /calendars/create subscribe: $RESP"
 
 # 8c. /calendars lists the subscription
 CALS=$(curl -s -b "$JAR" http://localhost:8080/calendars)
